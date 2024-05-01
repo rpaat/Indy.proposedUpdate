@@ -78,22 +78,112 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  ebcdic2ascii_procname = 'ebcdic2ascii';
+  ascii2ebcdic_procname = 'ascii2ebcdic';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_ebcdic2ascii(dest: Pointer; const srce: Pointer; count: TIdC_SIZET): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ebcdic2ascii_procname);
+end;
+
+
+function  ERR_ascii2ebcdic(dest: Pointer; const srce: Pointer; count: TIdC_SIZET): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ascii2ebcdic_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  ebcdic2ascii := LoadFunction('ebcdic2ascii',AFailed);
-  ascii2ebcdic := LoadFunction('ascii2ebcdic',AFailed);
+  ebcdic2ascii := LoadLibFunction(ADllHandle, ebcdic2ascii_procname);
+  FuncLoaded := assigned(ebcdic2ascii);
+  if not FuncLoaded then
+  begin
+    {$if declared(ebcdic2ascii_introduced)}
+    if LibVersion < ebcdic2ascii_introduced then
+    begin
+      {$if declared(FC_ebcdic2ascii)}
+      ebcdic2ascii := @FC_ebcdic2ascii;
+      {$else}
+      {$if not defined(ebcdic2ascii_allownil)}
+      ebcdic2ascii := @ERR_ebcdic2ascii;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ebcdic2ascii_removed)}
+    if ebcdic2ascii_removed <= LibVersion then
+    begin
+      {$if declared(_ebcdic2ascii)}
+      ebcdic2ascii := @_ebcdic2ascii;
+      {$else}
+      {$if not defined(ebcdic2ascii_allownil)}
+      ebcdic2ascii := @ERR_ebcdic2ascii;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ebcdic2ascii_allownil)}
+    if not FuncLoaded then
+    begin
+      ebcdic2ascii := @ERR_ebcdic2ascii;
+      AFailed.Add('ebcdic2ascii');
+    end;
+    {$ifend}
+  end;
+
+
+  ascii2ebcdic := LoadLibFunction(ADllHandle, ascii2ebcdic_procname);
+  FuncLoaded := assigned(ascii2ebcdic);
+  if not FuncLoaded then
+  begin
+    {$if declared(ascii2ebcdic_introduced)}
+    if LibVersion < ascii2ebcdic_introduced then
+    begin
+      {$if declared(FC_ascii2ebcdic)}
+      ascii2ebcdic := @FC_ascii2ebcdic;
+      {$else}
+      {$if not defined(ascii2ebcdic_allownil)}
+      ascii2ebcdic := @ERR_ascii2ebcdic;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ascii2ebcdic_removed)}
+    if ascii2ebcdic_removed <= LibVersion then
+    begin
+      {$if declared(_ascii2ebcdic)}
+      ascii2ebcdic := @_ascii2ebcdic;
+      {$else}
+      {$if not defined(ascii2ebcdic_allownil)}
+      ascii2ebcdic := @ERR_ascii2ebcdic;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ascii2ebcdic_allownil)}
+    if not FuncLoaded then
+    begin
+      ascii2ebcdic := @ERR_ascii2ebcdic;
+      AFailed.Add('ascii2ebcdic');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

@@ -274,6 +274,7 @@ var i: integer;
     FindSSLDir: boolean;
 
   procedure RunTest;
+  var i: integer;
   begin
     {$IFDEF UNIX}
     if FindSSLDir then
@@ -281,6 +282,14 @@ var i: integer;
     {$ENDIF}
 
     writeln('Using ',OpenSSLVersion, ', OpenSSLDir: ', OpenSSLDir);
+    if assigned(GetOpenSSLLoader) then
+    with GetOpenSSLLoader.FailedToLoad do
+    if Count > 0 then
+    begin
+      writeln('Note: The following functions failed to load and an exception will be raised if they are called:');
+      for i := 0 to Count - 1 do
+        writeln(Strings[i]);
+    end;
     writeln('Getting ',remoteSource,' with no verification');
     FNoVerification := true;
     DoTest;

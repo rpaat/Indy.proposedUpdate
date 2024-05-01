@@ -116,25 +116,255 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  TXT_DB_read_procname = 'TXT_DB_read';
+  TXT_DB_write_procname = 'TXT_DB_write';
+  //function TXT_DB_create_index(db: PTXT_DB; field: TIdC_INT; qual: TXT_DB_create_index_qual; hash: OPENSSL_LH_HashFunc; cmp: OPENSSL_LH_COMPFUNC): TIdC_INT;
+  TXT_DB_free_procname = 'TXT_DB_free';
+  TXT_DB_get_by_index_procname = 'TXT_DB_get_by_index';
+  TXT_DB_insert_procname = 'TXT_DB_insert';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_TXT_DB_read(in_: PBIO; num: TIdC_INT): PTXT_DB; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(TXT_DB_read_procname);
+end;
+
+
+function  ERR_TXT_DB_write(out_: PBIO; db: PTXT_DB): TIdC_LONG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(TXT_DB_write_procname);
+end;
+
+
+  //function TXT_DB_create_index(db: PTXT_DB; field: TIdC_INT; qual: TXT_DB_create_index_qual; hash: OPENSSL_LH_HashFunc; cmp: OPENSSL_LH_COMPFUNC): TIdC_INT;
+procedure  ERR_TXT_DB_free(db: PTXT_DB); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(TXT_DB_free_procname);
+end;
+
+
+function  ERR_TXT_DB_get_by_index(db: PTXT_DB; idx: TIdC_INT; value: POPENSSL_STRING): POPENSSL_STRING; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(TXT_DB_get_by_index_procname);
+end;
+
+
+function  ERR_TXT_DB_insert(db: PTXT_DB; value: POPENSSL_STRING): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(TXT_DB_insert_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  TXT_DB_read := LoadFunction('TXT_DB_read',AFailed);
-  TXT_DB_write := LoadFunction('TXT_DB_write',AFailed);
-  TXT_DB_free := LoadFunction('TXT_DB_free',AFailed);
-  TXT_DB_get_by_index := LoadFunction('TXT_DB_get_by_index',AFailed);
-  TXT_DB_insert := LoadFunction('TXT_DB_insert',AFailed);
+  TXT_DB_read := LoadLibFunction(ADllHandle, TXT_DB_read_procname);
+  FuncLoaded := assigned(TXT_DB_read);
+  if not FuncLoaded then
+  begin
+    {$if declared(TXT_DB_read_introduced)}
+    if LibVersion < TXT_DB_read_introduced then
+    begin
+      {$if declared(FC_TXT_DB_read)}
+      TXT_DB_read := @FC_TXT_DB_read;
+      {$else}
+      {$if not defined(TXT_DB_read_allownil)}
+      TXT_DB_read := @ERR_TXT_DB_read;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(TXT_DB_read_removed)}
+    if TXT_DB_read_removed <= LibVersion then
+    begin
+      {$if declared(_TXT_DB_read)}
+      TXT_DB_read := @_TXT_DB_read;
+      {$else}
+      {$if not defined(TXT_DB_read_allownil)}
+      TXT_DB_read := @ERR_TXT_DB_read;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(TXT_DB_read_allownil)}
+    if not FuncLoaded then
+    begin
+      TXT_DB_read := @ERR_TXT_DB_read;
+      AFailed.Add('TXT_DB_read');
+    end;
+    {$ifend}
+  end;
+
+
+  TXT_DB_write := LoadLibFunction(ADllHandle, TXT_DB_write_procname);
+  FuncLoaded := assigned(TXT_DB_write);
+  if not FuncLoaded then
+  begin
+    {$if declared(TXT_DB_write_introduced)}
+    if LibVersion < TXT_DB_write_introduced then
+    begin
+      {$if declared(FC_TXT_DB_write)}
+      TXT_DB_write := @FC_TXT_DB_write;
+      {$else}
+      {$if not defined(TXT_DB_write_allownil)}
+      TXT_DB_write := @ERR_TXT_DB_write;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(TXT_DB_write_removed)}
+    if TXT_DB_write_removed <= LibVersion then
+    begin
+      {$if declared(_TXT_DB_write)}
+      TXT_DB_write := @_TXT_DB_write;
+      {$else}
+      {$if not defined(TXT_DB_write_allownil)}
+      TXT_DB_write := @ERR_TXT_DB_write;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(TXT_DB_write_allownil)}
+    if not FuncLoaded then
+    begin
+      TXT_DB_write := @ERR_TXT_DB_write;
+      AFailed.Add('TXT_DB_write');
+    end;
+    {$ifend}
+  end;
+
+
+  TXT_DB_free := LoadLibFunction(ADllHandle, TXT_DB_free_procname);
+  FuncLoaded := assigned(TXT_DB_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(TXT_DB_free_introduced)}
+    if LibVersion < TXT_DB_free_introduced then
+    begin
+      {$if declared(FC_TXT_DB_free)}
+      TXT_DB_free := @FC_TXT_DB_free;
+      {$else}
+      {$if not defined(TXT_DB_free_allownil)}
+      TXT_DB_free := @ERR_TXT_DB_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(TXT_DB_free_removed)}
+    if TXT_DB_free_removed <= LibVersion then
+    begin
+      {$if declared(_TXT_DB_free)}
+      TXT_DB_free := @_TXT_DB_free;
+      {$else}
+      {$if not defined(TXT_DB_free_allownil)}
+      TXT_DB_free := @ERR_TXT_DB_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(TXT_DB_free_allownil)}
+    if not FuncLoaded then
+    begin
+      TXT_DB_free := @ERR_TXT_DB_free;
+      AFailed.Add('TXT_DB_free');
+    end;
+    {$ifend}
+  end;
+
+
+  TXT_DB_get_by_index := LoadLibFunction(ADllHandle, TXT_DB_get_by_index_procname);
+  FuncLoaded := assigned(TXT_DB_get_by_index);
+  if not FuncLoaded then
+  begin
+    {$if declared(TXT_DB_get_by_index_introduced)}
+    if LibVersion < TXT_DB_get_by_index_introduced then
+    begin
+      {$if declared(FC_TXT_DB_get_by_index)}
+      TXT_DB_get_by_index := @FC_TXT_DB_get_by_index;
+      {$else}
+      {$if not defined(TXT_DB_get_by_index_allownil)}
+      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(TXT_DB_get_by_index_removed)}
+    if TXT_DB_get_by_index_removed <= LibVersion then
+    begin
+      {$if declared(_TXT_DB_get_by_index)}
+      TXT_DB_get_by_index := @_TXT_DB_get_by_index;
+      {$else}
+      {$if not defined(TXT_DB_get_by_index_allownil)}
+      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(TXT_DB_get_by_index_allownil)}
+    if not FuncLoaded then
+    begin
+      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
+      AFailed.Add('TXT_DB_get_by_index');
+    end;
+    {$ifend}
+  end;
+
+
+  TXT_DB_insert := LoadLibFunction(ADllHandle, TXT_DB_insert_procname);
+  FuncLoaded := assigned(TXT_DB_insert);
+  if not FuncLoaded then
+  begin
+    {$if declared(TXT_DB_insert_introduced)}
+    if LibVersion < TXT_DB_insert_introduced then
+    begin
+      {$if declared(FC_TXT_DB_insert)}
+      TXT_DB_insert := @FC_TXT_DB_insert;
+      {$else}
+      {$if not defined(TXT_DB_insert_allownil)}
+      TXT_DB_insert := @ERR_TXT_DB_insert;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(TXT_DB_insert_removed)}
+    if TXT_DB_insert_removed <= LibVersion then
+    begin
+      {$if declared(_TXT_DB_insert)}
+      TXT_DB_insert := @_TXT_DB_insert;
+      {$else}
+      {$if not defined(TXT_DB_insert_allownil)}
+      TXT_DB_insert := @ERR_TXT_DB_insert;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(TXT_DB_insert_allownil)}
+    if not FuncLoaded then
+    begin
+      TXT_DB_insert := @ERR_TXT_DB_insert;
+      AFailed.Add('TXT_DB_insert');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

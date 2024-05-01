@@ -47,3 +47,11 @@ This Log File records changes to the Indy Proposed Update since its initial publ
 
 2024/5/1  HMAC header file markup corrected to avoid missing function reports for OpenSSL 1.0.2.
 
+2024/5/1  New OpenSSL library load strategy for dynamic laoding: The error handling has been changed. Previously,
+          library load would be aborted if there were any procedures/functions not found in the
+          external library. The new strategy raises a run time exception if a procedure/function
+          that is not present in the library - but only when the procedure/function is called.
+          Note: the OpenSSLLoader.FailedToLoad list will still contain the name of every procedure/function
+          that was not found. This may be checked by user code after the library has been successfully
+          loaded. See OpenSSLClient and OpenSSLServer examples for an example of checking this list.
+

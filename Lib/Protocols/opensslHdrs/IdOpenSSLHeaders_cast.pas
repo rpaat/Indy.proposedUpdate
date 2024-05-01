@@ -107,27 +107,347 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  CAST_set_key_procname = 'CAST_set_key';
+  CAST_ecb_encrypt_procname = 'CAST_ecb_encrypt';
+  CAST_encrypt_procname = 'CAST_encrypt';
+  CAST_decrypt_procname = 'CAST_decrypt';
+  CAST_cbc_encrypt_procname = 'CAST_cbc_encrypt';
+  CAST_cfb64_encrypt_procname = 'CAST_cfb64_encrypt';
+  CAST_ofb64_encrypt_procname = 'CAST_ofb64_encrypt';
+
 
 {$WARN  NO_RETVAL OFF}
+procedure  ERR_CAST_set_key(key: PCast_Key; len: TIdC_INT; const data: PByte); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_set_key_procname);
+end;
+
+
+procedure  ERR_CAST_ecb_encrypt(const in_: PByte; out_: PByte; const key: PCast_Key; enc: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_ecb_encrypt_procname);
+end;
+
+
+procedure  ERR_CAST_encrypt(data: PCAST_LONG; const key: PCast_Key); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_encrypt_procname);
+end;
+
+
+procedure  ERR_CAST_decrypt(data: PCAST_LONG; const key: PCast_Key); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_decrypt_procname);
+end;
+
+
+procedure  ERR_CAST_cbc_encrypt(const in_: PByte; out_: PByte; length: TIdC_LONG; const ks: PCast_Key; iv: PByte; enc: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_cbc_encrypt_procname);
+end;
+
+
+procedure  ERR_CAST_cfb64_encrypt(const in_: PByte; out_: PByte; length: TIdC_LONG; const schedule: PCast_Key; ivec: PByte; num: PIdC_INT; enc: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_cfb64_encrypt_procname);
+end;
+
+
+procedure  ERR_CAST_ofb64_encrypt(const in_: PByte; out_: PByte; length: TIdC_LONG; const schedule: PCast_Key; ivec: PByte; num: PIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CAST_ofb64_encrypt_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  CAST_set_key := LoadFunction('CAST_set_key',AFailed);
-  CAST_ecb_encrypt := LoadFunction('CAST_ecb_encrypt',AFailed);
-  CAST_encrypt := LoadFunction('CAST_encrypt',AFailed);
-  CAST_decrypt := LoadFunction('CAST_decrypt',AFailed);
-  CAST_cbc_encrypt := LoadFunction('CAST_cbc_encrypt',AFailed);
-  CAST_cfb64_encrypt := LoadFunction('CAST_cfb64_encrypt',AFailed);
-  CAST_ofb64_encrypt := LoadFunction('CAST_ofb64_encrypt',AFailed);
+  CAST_set_key := LoadLibFunction(ADllHandle, CAST_set_key_procname);
+  FuncLoaded := assigned(CAST_set_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_set_key_introduced)}
+    if LibVersion < CAST_set_key_introduced then
+    begin
+      {$if declared(FC_CAST_set_key)}
+      CAST_set_key := @FC_CAST_set_key;
+      {$else}
+      {$if not defined(CAST_set_key_allownil)}
+      CAST_set_key := @ERR_CAST_set_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_set_key_removed)}
+    if CAST_set_key_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_set_key)}
+      CAST_set_key := @_CAST_set_key;
+      {$else}
+      {$if not defined(CAST_set_key_allownil)}
+      CAST_set_key := @ERR_CAST_set_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_set_key_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_set_key := @ERR_CAST_set_key;
+      AFailed.Add('CAST_set_key');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_ecb_encrypt := LoadLibFunction(ADllHandle, CAST_ecb_encrypt_procname);
+  FuncLoaded := assigned(CAST_ecb_encrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_ecb_encrypt_introduced)}
+    if LibVersion < CAST_ecb_encrypt_introduced then
+    begin
+      {$if declared(FC_CAST_ecb_encrypt)}
+      CAST_ecb_encrypt := @FC_CAST_ecb_encrypt;
+      {$else}
+      {$if not defined(CAST_ecb_encrypt_allownil)}
+      CAST_ecb_encrypt := @ERR_CAST_ecb_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_ecb_encrypt_removed)}
+    if CAST_ecb_encrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_ecb_encrypt)}
+      CAST_ecb_encrypt := @_CAST_ecb_encrypt;
+      {$else}
+      {$if not defined(CAST_ecb_encrypt_allownil)}
+      CAST_ecb_encrypt := @ERR_CAST_ecb_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_ecb_encrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_ecb_encrypt := @ERR_CAST_ecb_encrypt;
+      AFailed.Add('CAST_ecb_encrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_encrypt := LoadLibFunction(ADllHandle, CAST_encrypt_procname);
+  FuncLoaded := assigned(CAST_encrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_encrypt_introduced)}
+    if LibVersion < CAST_encrypt_introduced then
+    begin
+      {$if declared(FC_CAST_encrypt)}
+      CAST_encrypt := @FC_CAST_encrypt;
+      {$else}
+      {$if not defined(CAST_encrypt_allownil)}
+      CAST_encrypt := @ERR_CAST_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_encrypt_removed)}
+    if CAST_encrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_encrypt)}
+      CAST_encrypt := @_CAST_encrypt;
+      {$else}
+      {$if not defined(CAST_encrypt_allownil)}
+      CAST_encrypt := @ERR_CAST_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_encrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_encrypt := @ERR_CAST_encrypt;
+      AFailed.Add('CAST_encrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_decrypt := LoadLibFunction(ADllHandle, CAST_decrypt_procname);
+  FuncLoaded := assigned(CAST_decrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_decrypt_introduced)}
+    if LibVersion < CAST_decrypt_introduced then
+    begin
+      {$if declared(FC_CAST_decrypt)}
+      CAST_decrypt := @FC_CAST_decrypt;
+      {$else}
+      {$if not defined(CAST_decrypt_allownil)}
+      CAST_decrypt := @ERR_CAST_decrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_decrypt_removed)}
+    if CAST_decrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_decrypt)}
+      CAST_decrypt := @_CAST_decrypt;
+      {$else}
+      {$if not defined(CAST_decrypt_allownil)}
+      CAST_decrypt := @ERR_CAST_decrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_decrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_decrypt := @ERR_CAST_decrypt;
+      AFailed.Add('CAST_decrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_cbc_encrypt := LoadLibFunction(ADllHandle, CAST_cbc_encrypt_procname);
+  FuncLoaded := assigned(CAST_cbc_encrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_cbc_encrypt_introduced)}
+    if LibVersion < CAST_cbc_encrypt_introduced then
+    begin
+      {$if declared(FC_CAST_cbc_encrypt)}
+      CAST_cbc_encrypt := @FC_CAST_cbc_encrypt;
+      {$else}
+      {$if not defined(CAST_cbc_encrypt_allownil)}
+      CAST_cbc_encrypt := @ERR_CAST_cbc_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_cbc_encrypt_removed)}
+    if CAST_cbc_encrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_cbc_encrypt)}
+      CAST_cbc_encrypt := @_CAST_cbc_encrypt;
+      {$else}
+      {$if not defined(CAST_cbc_encrypt_allownil)}
+      CAST_cbc_encrypt := @ERR_CAST_cbc_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_cbc_encrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_cbc_encrypt := @ERR_CAST_cbc_encrypt;
+      AFailed.Add('CAST_cbc_encrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_cfb64_encrypt := LoadLibFunction(ADllHandle, CAST_cfb64_encrypt_procname);
+  FuncLoaded := assigned(CAST_cfb64_encrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_cfb64_encrypt_introduced)}
+    if LibVersion < CAST_cfb64_encrypt_introduced then
+    begin
+      {$if declared(FC_CAST_cfb64_encrypt)}
+      CAST_cfb64_encrypt := @FC_CAST_cfb64_encrypt;
+      {$else}
+      {$if not defined(CAST_cfb64_encrypt_allownil)}
+      CAST_cfb64_encrypt := @ERR_CAST_cfb64_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_cfb64_encrypt_removed)}
+    if CAST_cfb64_encrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_cfb64_encrypt)}
+      CAST_cfb64_encrypt := @_CAST_cfb64_encrypt;
+      {$else}
+      {$if not defined(CAST_cfb64_encrypt_allownil)}
+      CAST_cfb64_encrypt := @ERR_CAST_cfb64_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_cfb64_encrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_cfb64_encrypt := @ERR_CAST_cfb64_encrypt;
+      AFailed.Add('CAST_cfb64_encrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  CAST_ofb64_encrypt := LoadLibFunction(ADllHandle, CAST_ofb64_encrypt_procname);
+  FuncLoaded := assigned(CAST_ofb64_encrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(CAST_ofb64_encrypt_introduced)}
+    if LibVersion < CAST_ofb64_encrypt_introduced then
+    begin
+      {$if declared(FC_CAST_ofb64_encrypt)}
+      CAST_ofb64_encrypt := @FC_CAST_ofb64_encrypt;
+      {$else}
+      {$if not defined(CAST_ofb64_encrypt_allownil)}
+      CAST_ofb64_encrypt := @ERR_CAST_ofb64_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CAST_ofb64_encrypt_removed)}
+    if CAST_ofb64_encrypt_removed <= LibVersion then
+    begin
+      {$if declared(_CAST_ofb64_encrypt)}
+      CAST_ofb64_encrypt := @_CAST_ofb64_encrypt;
+      {$else}
+      {$if not defined(CAST_ofb64_encrypt_allownil)}
+      CAST_ofb64_encrypt := @ERR_CAST_ofb64_encrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CAST_ofb64_encrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      CAST_ofb64_encrypt := @ERR_CAST_ofb64_encrypt;
+      AFailed.Add('CAST_ofb64_encrypt');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

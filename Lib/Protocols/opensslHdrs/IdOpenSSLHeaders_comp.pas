@@ -106,30 +106,494 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  COMP_CTX_new_procname = 'COMP_CTX_new';
+  COMP_CTX_get_method_procname = 'COMP_CTX_get_method';
+  COMP_CTX_get_type_procname = 'COMP_CTX_get_type';
+  COMP_get_type_procname = 'COMP_get_type';
+  COMP_get_name_procname = 'COMP_get_name';
+  COMP_CTX_free_procname = 'COMP_CTX_free';
+
+  COMP_compress_block_procname = 'COMP_compress_block';
+  COMP_expand_block_procname = 'COMP_expand_block';
+
+  COMP_zlib_procname = 'COMP_zlib';
+
+  BIO_f_zlib_procname = 'BIO_f_zlib';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_COMP_CTX_new(meth: PCOMP_METHOD): PCOMP_CTX; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_CTX_new_procname);
+end;
+
+
+function  ERR_COMP_CTX_get_method(const ctx: PCOMP_CTX): PCOMP_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_CTX_get_method_procname);
+end;
+
+
+function  ERR_COMP_CTX_get_type(const comp: PCOMP_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_CTX_get_type_procname);
+end;
+
+
+function  ERR_COMP_get_type(const meth: PCOMP_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_get_type_procname);
+end;
+
+
+function  ERR_COMP_get_name(const meth: PCOMP_METHOD): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_get_name_procname);
+end;
+
+
+procedure  ERR_COMP_CTX_free(ctx: PCOMP_CTX); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_CTX_free_procname);
+end;
+
+
+
+function  ERR_COMP_compress_block(ctx: PCOMP_CTX; out_: PByte; olen: TIdC_INT; in_: PByte; ilen: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_compress_block_procname);
+end;
+
+
+function  ERR_COMP_expand_block(ctx: PCOMP_CTX; out_: PByte; olen: TIdC_INT; in_: PByte; ilen: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_expand_block_procname);
+end;
+
+
+
+function  ERR_COMP_zlib: PCOMP_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(COMP_zlib_procname);
+end;
+
+
+
+function  ERR_BIO_f_zlib: PBIO_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(BIO_f_zlib_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  COMP_CTX_new := LoadFunction('COMP_CTX_new',AFailed);
-  COMP_CTX_get_method := LoadFunction('COMP_CTX_get_method',AFailed);
-  COMP_CTX_get_type := LoadFunction('COMP_CTX_get_type',AFailed);
-  COMP_get_type := LoadFunction('COMP_get_type',AFailed);
-  COMP_get_name := LoadFunction('COMP_get_name',AFailed);
-  COMP_CTX_free := LoadFunction('COMP_CTX_free',AFailed);
-  COMP_compress_block := LoadFunction('COMP_compress_block',AFailed);
-  COMP_expand_block := LoadFunction('COMP_expand_block',AFailed);
-  COMP_zlib := LoadFunction('COMP_zlib',AFailed);
-  BIO_f_zlib := LoadFunction('BIO_f_zlib',AFailed);
+  COMP_CTX_new := LoadLibFunction(ADllHandle, COMP_CTX_new_procname);
+  FuncLoaded := assigned(COMP_CTX_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_CTX_new_introduced)}
+    if LibVersion < COMP_CTX_new_introduced then
+    begin
+      {$if declared(FC_COMP_CTX_new)}
+      COMP_CTX_new := @FC_COMP_CTX_new;
+      {$else}
+      {$if not defined(COMP_CTX_new_allownil)}
+      COMP_CTX_new := @ERR_COMP_CTX_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_CTX_new_removed)}
+    if COMP_CTX_new_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_CTX_new)}
+      COMP_CTX_new := @_COMP_CTX_new;
+      {$else}
+      {$if not defined(COMP_CTX_new_allownil)}
+      COMP_CTX_new := @ERR_COMP_CTX_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_CTX_new_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_CTX_new := @ERR_COMP_CTX_new;
+      AFailed.Add('COMP_CTX_new');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_CTX_get_method := LoadLibFunction(ADllHandle, COMP_CTX_get_method_procname);
+  FuncLoaded := assigned(COMP_CTX_get_method);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_CTX_get_method_introduced)}
+    if LibVersion < COMP_CTX_get_method_introduced then
+    begin
+      {$if declared(FC_COMP_CTX_get_method)}
+      COMP_CTX_get_method := @FC_COMP_CTX_get_method;
+      {$else}
+      {$if not defined(COMP_CTX_get_method_allownil)}
+      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_CTX_get_method_removed)}
+    if COMP_CTX_get_method_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_CTX_get_method)}
+      COMP_CTX_get_method := @_COMP_CTX_get_method;
+      {$else}
+      {$if not defined(COMP_CTX_get_method_allownil)}
+      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_CTX_get_method_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
+      AFailed.Add('COMP_CTX_get_method');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_CTX_get_type := LoadLibFunction(ADllHandle, COMP_CTX_get_type_procname);
+  FuncLoaded := assigned(COMP_CTX_get_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_CTX_get_type_introduced)}
+    if LibVersion < COMP_CTX_get_type_introduced then
+    begin
+      {$if declared(FC_COMP_CTX_get_type)}
+      COMP_CTX_get_type := @FC_COMP_CTX_get_type;
+      {$else}
+      {$if not defined(COMP_CTX_get_type_allownil)}
+      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_CTX_get_type_removed)}
+    if COMP_CTX_get_type_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_CTX_get_type)}
+      COMP_CTX_get_type := @_COMP_CTX_get_type;
+      {$else}
+      {$if not defined(COMP_CTX_get_type_allownil)}
+      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_CTX_get_type_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
+      AFailed.Add('COMP_CTX_get_type');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_get_type := LoadLibFunction(ADllHandle, COMP_get_type_procname);
+  FuncLoaded := assigned(COMP_get_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_get_type_introduced)}
+    if LibVersion < COMP_get_type_introduced then
+    begin
+      {$if declared(FC_COMP_get_type)}
+      COMP_get_type := @FC_COMP_get_type;
+      {$else}
+      {$if not defined(COMP_get_type_allownil)}
+      COMP_get_type := @ERR_COMP_get_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_get_type_removed)}
+    if COMP_get_type_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_get_type)}
+      COMP_get_type := @_COMP_get_type;
+      {$else}
+      {$if not defined(COMP_get_type_allownil)}
+      COMP_get_type := @ERR_COMP_get_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_get_type_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_get_type := @ERR_COMP_get_type;
+      AFailed.Add('COMP_get_type');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_get_name := LoadLibFunction(ADllHandle, COMP_get_name_procname);
+  FuncLoaded := assigned(COMP_get_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_get_name_introduced)}
+    if LibVersion < COMP_get_name_introduced then
+    begin
+      {$if declared(FC_COMP_get_name)}
+      COMP_get_name := @FC_COMP_get_name;
+      {$else}
+      {$if not defined(COMP_get_name_allownil)}
+      COMP_get_name := @ERR_COMP_get_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_get_name_removed)}
+    if COMP_get_name_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_get_name)}
+      COMP_get_name := @_COMP_get_name;
+      {$else}
+      {$if not defined(COMP_get_name_allownil)}
+      COMP_get_name := @ERR_COMP_get_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_get_name_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_get_name := @ERR_COMP_get_name;
+      AFailed.Add('COMP_get_name');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_CTX_free := LoadLibFunction(ADllHandle, COMP_CTX_free_procname);
+  FuncLoaded := assigned(COMP_CTX_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_CTX_free_introduced)}
+    if LibVersion < COMP_CTX_free_introduced then
+    begin
+      {$if declared(FC_COMP_CTX_free)}
+      COMP_CTX_free := @FC_COMP_CTX_free;
+      {$else}
+      {$if not defined(COMP_CTX_free_allownil)}
+      COMP_CTX_free := @ERR_COMP_CTX_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_CTX_free_removed)}
+    if COMP_CTX_free_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_CTX_free)}
+      COMP_CTX_free := @_COMP_CTX_free;
+      {$else}
+      {$if not defined(COMP_CTX_free_allownil)}
+      COMP_CTX_free := @ERR_COMP_CTX_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_CTX_free_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_CTX_free := @ERR_COMP_CTX_free;
+      AFailed.Add('COMP_CTX_free');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_compress_block := LoadLibFunction(ADllHandle, COMP_compress_block_procname);
+  FuncLoaded := assigned(COMP_compress_block);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_compress_block_introduced)}
+    if LibVersion < COMP_compress_block_introduced then
+    begin
+      {$if declared(FC_COMP_compress_block)}
+      COMP_compress_block := @FC_COMP_compress_block;
+      {$else}
+      {$if not defined(COMP_compress_block_allownil)}
+      COMP_compress_block := @ERR_COMP_compress_block;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_compress_block_removed)}
+    if COMP_compress_block_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_compress_block)}
+      COMP_compress_block := @_COMP_compress_block;
+      {$else}
+      {$if not defined(COMP_compress_block_allownil)}
+      COMP_compress_block := @ERR_COMP_compress_block;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_compress_block_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_compress_block := @ERR_COMP_compress_block;
+      AFailed.Add('COMP_compress_block');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_expand_block := LoadLibFunction(ADllHandle, COMP_expand_block_procname);
+  FuncLoaded := assigned(COMP_expand_block);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_expand_block_introduced)}
+    if LibVersion < COMP_expand_block_introduced then
+    begin
+      {$if declared(FC_COMP_expand_block)}
+      COMP_expand_block := @FC_COMP_expand_block;
+      {$else}
+      {$if not defined(COMP_expand_block_allownil)}
+      COMP_expand_block := @ERR_COMP_expand_block;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_expand_block_removed)}
+    if COMP_expand_block_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_expand_block)}
+      COMP_expand_block := @_COMP_expand_block;
+      {$else}
+      {$if not defined(COMP_expand_block_allownil)}
+      COMP_expand_block := @ERR_COMP_expand_block;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_expand_block_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_expand_block := @ERR_COMP_expand_block;
+      AFailed.Add('COMP_expand_block');
+    end;
+    {$ifend}
+  end;
+
+
+  COMP_zlib := LoadLibFunction(ADllHandle, COMP_zlib_procname);
+  FuncLoaded := assigned(COMP_zlib);
+  if not FuncLoaded then
+  begin
+    {$if declared(COMP_zlib_introduced)}
+    if LibVersion < COMP_zlib_introduced then
+    begin
+      {$if declared(FC_COMP_zlib)}
+      COMP_zlib := @FC_COMP_zlib;
+      {$else}
+      {$if not defined(COMP_zlib_allownil)}
+      COMP_zlib := @ERR_COMP_zlib;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(COMP_zlib_removed)}
+    if COMP_zlib_removed <= LibVersion then
+    begin
+      {$if declared(_COMP_zlib)}
+      COMP_zlib := @_COMP_zlib;
+      {$else}
+      {$if not defined(COMP_zlib_allownil)}
+      COMP_zlib := @ERR_COMP_zlib;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(COMP_zlib_allownil)}
+    if not FuncLoaded then
+    begin
+      COMP_zlib := @ERR_COMP_zlib;
+      AFailed.Add('COMP_zlib');
+    end;
+    {$ifend}
+  end;
+
+
+  BIO_f_zlib := LoadLibFunction(ADllHandle, BIO_f_zlib_procname);
+  FuncLoaded := assigned(BIO_f_zlib);
+  if not FuncLoaded then
+  begin
+    {$if declared(BIO_f_zlib_introduced)}
+    if LibVersion < BIO_f_zlib_introduced then
+    begin
+      {$if declared(FC_BIO_f_zlib)}
+      BIO_f_zlib := @FC_BIO_f_zlib;
+      {$else}
+      {$if not defined(BIO_f_zlib_allownil)}
+      BIO_f_zlib := @ERR_BIO_f_zlib;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(BIO_f_zlib_removed)}
+    if BIO_f_zlib_removed <= LibVersion then
+    begin
+      {$if declared(_BIO_f_zlib)}
+      BIO_f_zlib := @_BIO_f_zlib;
+      {$else}
+      {$if not defined(BIO_f_zlib_allownil)}
+      BIO_f_zlib := @ERR_BIO_f_zlib;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(BIO_f_zlib_allownil)}
+    if not FuncLoaded then
+    begin
+      BIO_f_zlib := @ERR_BIO_f_zlib;
+      AFailed.Add('BIO_f_zlib');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

@@ -105,27 +105,361 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  _CONF_new_section_procname = '_CONF_new_section';
+  //* Up until OpenSSL 0.9.5a, this was get_section */
+  _CONF_get_section_procname = '_CONF_get_section';
+  //* Up until OpenSSL 0.9.5a, this was CONF_get_section */
+  //STACK_OF(CONF_VALUE) *_CONF_get_section_values(const CONF *conf,
+  //                                               const char *section);
+
+  _CONF_add_string_procname = '_CONF_add_string';
+  _CONF_get_string_procname = '_CONF_get_string';
+  _CONF_get_number_procname = '_CONF_get_number';
+
+  _CONF_new_data_procname = '_CONF_new_data';
+  _CONF_free_data_procname = '_CONF_free_data';
+
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR__CONF_new_section(conf: PCONF; const section: PAnsiChar): PCONF_VALUE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_new_section_procname);
+end;
+
+
+  //* Up until OpenSSL 0.9.5a, this was get_section */
+function  ERR__CONF_get_section(const conf: PCONF; const section: PAnsiChar): PCONF_VALUE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_get_section_procname);
+end;
+
+
+  //* Up until OpenSSL 0.9.5a, this was CONF_get_section */
+  //STACK_OF(CONF_VALUE) *_CONF_get_section_values(const CONF *conf,
+  //                                               const char *section);
+
+function  ERR__CONF_add_string(conf: PCONF; section: PCONF_VALUE; value: PCONF_VALUE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_add_string_procname);
+end;
+
+
+function  ERR__CONF_get_string(const conf: PCONF; const section: PAnsiChar; const name: PAnsiChar): PAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_get_string_procname);
+end;
+
+
+function  ERR__CONF_get_number(const conf: PCONF; const section: PAnsiChar; const name: PAnsiChar): TIdC_LONG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_get_number_procname);
+end;
+
+
+
+function  ERR__CONF_new_data(conf: PCONF): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_new_data_procname);
+end;
+
+
+procedure  ERR__CONF_free_data(conf: PCONF); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(_CONF_free_data_procname);
+end;
+
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  _CONF_new_section := LoadFunction('_CONF_new_section',AFailed);
-  _CONF_get_section := LoadFunction('_CONF_get_section',AFailed);
-  _CONF_add_string := LoadFunction('_CONF_add_string',AFailed);
-  _CONF_get_string := LoadFunction('_CONF_get_string',AFailed);
-  _CONF_get_number := LoadFunction('_CONF_get_number',AFailed);
-  _CONF_new_data := LoadFunction('_CONF_new_data',AFailed);
-  _CONF_free_data := LoadFunction('_CONF_free_data',AFailed);
+  _CONF_new_section := LoadLibFunction(ADllHandle, _CONF_new_section_procname);
+  FuncLoaded := assigned(_CONF_new_section);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_new_section_introduced)}
+    if LibVersion < _CONF_new_section_introduced then
+    begin
+      {$if declared(FC__CONF_new_section)}
+      _CONF_new_section := @FC__CONF_new_section;
+      {$else}
+      {$if not defined(_CONF_new_section_allownil)}
+      _CONF_new_section := @ERR__CONF_new_section;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_new_section_removed)}
+    if _CONF_new_section_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_new_section)}
+      _CONF_new_section := @__CONF_new_section;
+      {$else}
+      {$if not defined(_CONF_new_section_allownil)}
+      _CONF_new_section := @ERR__CONF_new_section;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_new_section_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_new_section := @ERR__CONF_new_section;
+      AFailed.Add('_CONF_new_section');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_get_section := LoadLibFunction(ADllHandle, _CONF_get_section_procname);
+  FuncLoaded := assigned(_CONF_get_section);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_get_section_introduced)}
+    if LibVersion < _CONF_get_section_introduced then
+    begin
+      {$if declared(FC__CONF_get_section)}
+      _CONF_get_section := @FC__CONF_get_section;
+      {$else}
+      {$if not defined(_CONF_get_section_allownil)}
+      _CONF_get_section := @ERR__CONF_get_section;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_get_section_removed)}
+    if _CONF_get_section_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_get_section)}
+      _CONF_get_section := @__CONF_get_section;
+      {$else}
+      {$if not defined(_CONF_get_section_allownil)}
+      _CONF_get_section := @ERR__CONF_get_section;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_get_section_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_get_section := @ERR__CONF_get_section;
+      AFailed.Add('_CONF_get_section');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_add_string := LoadLibFunction(ADllHandle, _CONF_add_string_procname);
+  FuncLoaded := assigned(_CONF_add_string);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_add_string_introduced)}
+    if LibVersion < _CONF_add_string_introduced then
+    begin
+      {$if declared(FC__CONF_add_string)}
+      _CONF_add_string := @FC__CONF_add_string;
+      {$else}
+      {$if not defined(_CONF_add_string_allownil)}
+      _CONF_add_string := @ERR__CONF_add_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_add_string_removed)}
+    if _CONF_add_string_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_add_string)}
+      _CONF_add_string := @__CONF_add_string;
+      {$else}
+      {$if not defined(_CONF_add_string_allownil)}
+      _CONF_add_string := @ERR__CONF_add_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_add_string_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_add_string := @ERR__CONF_add_string;
+      AFailed.Add('_CONF_add_string');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_get_string := LoadLibFunction(ADllHandle, _CONF_get_string_procname);
+  FuncLoaded := assigned(_CONF_get_string);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_get_string_introduced)}
+    if LibVersion < _CONF_get_string_introduced then
+    begin
+      {$if declared(FC__CONF_get_string)}
+      _CONF_get_string := @FC__CONF_get_string;
+      {$else}
+      {$if not defined(_CONF_get_string_allownil)}
+      _CONF_get_string := @ERR__CONF_get_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_get_string_removed)}
+    if _CONF_get_string_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_get_string)}
+      _CONF_get_string := @__CONF_get_string;
+      {$else}
+      {$if not defined(_CONF_get_string_allownil)}
+      _CONF_get_string := @ERR__CONF_get_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_get_string_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_get_string := @ERR__CONF_get_string;
+      AFailed.Add('_CONF_get_string');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_get_number := LoadLibFunction(ADllHandle, _CONF_get_number_procname);
+  FuncLoaded := assigned(_CONF_get_number);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_get_number_introduced)}
+    if LibVersion < _CONF_get_number_introduced then
+    begin
+      {$if declared(FC__CONF_get_number)}
+      _CONF_get_number := @FC__CONF_get_number;
+      {$else}
+      {$if not defined(_CONF_get_number_allownil)}
+      _CONF_get_number := @ERR__CONF_get_number;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_get_number_removed)}
+    if _CONF_get_number_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_get_number)}
+      _CONF_get_number := @__CONF_get_number;
+      {$else}
+      {$if not defined(_CONF_get_number_allownil)}
+      _CONF_get_number := @ERR__CONF_get_number;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_get_number_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_get_number := @ERR__CONF_get_number;
+      AFailed.Add('_CONF_get_number');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_new_data := LoadLibFunction(ADllHandle, _CONF_new_data_procname);
+  FuncLoaded := assigned(_CONF_new_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_new_data_introduced)}
+    if LibVersion < _CONF_new_data_introduced then
+    begin
+      {$if declared(FC__CONF_new_data)}
+      _CONF_new_data := @FC__CONF_new_data;
+      {$else}
+      {$if not defined(_CONF_new_data_allownil)}
+      _CONF_new_data := @ERR__CONF_new_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_new_data_removed)}
+    if _CONF_new_data_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_new_data)}
+      _CONF_new_data := @__CONF_new_data;
+      {$else}
+      {$if not defined(_CONF_new_data_allownil)}
+      _CONF_new_data := @ERR__CONF_new_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_new_data_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_new_data := @ERR__CONF_new_data;
+      AFailed.Add('_CONF_new_data');
+    end;
+    {$ifend}
+  end;
+
+
+  _CONF_free_data := LoadLibFunction(ADllHandle, _CONF_free_data_procname);
+  FuncLoaded := assigned(_CONF_free_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(_CONF_free_data_introduced)}
+    if LibVersion < _CONF_free_data_introduced then
+    begin
+      {$if declared(FC__CONF_free_data)}
+      _CONF_free_data := @FC__CONF_free_data;
+      {$else}
+      {$if not defined(_CONF_free_data_allownil)}
+      _CONF_free_data := @ERR__CONF_free_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(_CONF_free_data_removed)}
+    if _CONF_free_data_removed <= LibVersion then
+    begin
+      {$if declared(__CONF_free_data)}
+      _CONF_free_data := @__CONF_free_data;
+      {$else}
+      {$if not defined(_CONF_free_data_allownil)}
+      _CONF_free_data := @ERR__CONF_free_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(_CONF_free_data_allownil)}
+    if not FuncLoaded then
+    begin
+      _CONF_free_data := @ERR__CONF_free_data;
+      AFailed.Add('_CONF_free_data');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

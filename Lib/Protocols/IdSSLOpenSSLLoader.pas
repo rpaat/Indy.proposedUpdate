@@ -210,33 +210,9 @@ type
 var i: integer;
     OpenSSL_version_num: TOpenSSL_version_num;
     SSLVersionNo: TIdC_ULONG;
-    LegacyDLLsLoaded: boolean;
-
-  {$IFDEF WINDOWS}
-  procedure ProcessFailedList;
-  var AllowedList: TStringList;
-      i,j: integer;
-  begin
-    AllowedList := TStringList.Create;
-    try
-      AllowedList.Delimiter := ',';
-      AllowedList.StrictDelimiter := true;
-      AllowedList.DelimitedText := LegacyAllowFailed;
-      for i := 0 to AllowedList.Count - 1 do
-      begin
-        j := FFailed.IndexOf(AllowedList[i]);
-        if j <> -1 then
-          FFailed.Delete(j);
-      end;
-    finally
-      AllowedList.Free;
-    end;
-  end;
-  {$ENDIF}
 
 begin                                  //FI:C101
   Result := not FFailedToLoad;
-  LegacyDLLsLoaded := false;
   if not Result then
     Exit;
   FLibraryLoaded.Lock();
@@ -253,7 +229,6 @@ begin                                  //FI:C101
         FLibCrypto := FindLibrary(LegacyLibCrypto,'');
         FLibSSL := FindLibrary(LegacyLibssl,'');
         Result := not (FLibCrypto = IdNilHandle) and not (FLibSSL = IdNilHandle);
-        LegacyDLLsLoaded := Result;
       end;
       {$ENDIF}
       if not Result then
@@ -279,24 +254,6 @@ begin                                  //FI:C101
       for i := 0 to GLibSSLLoadList.Count - 1 do
          TOpenSSLLoadProc(GLibSSLLoadList[i])(FLibSSL,SSLVersionNo,FFailed);
 
-      {$IFNDEF OPENSSL_IGNORE_MISSING_FUNCTIONS}
-      {$IFDEF WINDOWS}
-      if LegacyDLLsLoaded and (FFailed.Count > 0) then
-        ProcessFailedList;
-      {$ENDIF}
-      FFailedToLoad :=  FFailed.Count > 0;
-      Result := not FFailedToLoad;
-
-      {$IFDEF DEBUG}
-      if not Result then
-      begin
-        writeln;
-        writeln(RSOSSLProcLoadErrorHdr);
-        for i := 0 to FFailed.Count - 1 do
-          writeln(FFailed[i]);
-      end;
-      {$ENDIF}
-      {$ENDIF}
     end;
     FLibraryLoaded.Value := true;
   finally

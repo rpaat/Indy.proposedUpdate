@@ -546,65 +546,2305 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  PKCS7_ISSUER_AND_SERIAL_digest_procname = 'PKCS7_ISSUER_AND_SERIAL_digest';
+
+  PKCS7_dup_procname = 'PKCS7_dup';
+  d2i_PKCS7_bio_procname = 'd2i_PKCS7_bio';
+  i2d_PKCS7_bio_procname = 'i2d_PKCS7_bio';
+  i2d_PKCS7_bio_stream_procname = 'i2d_PKCS7_bio_stream';
+  PEM_write_bio_PKCS7_stream_procname = 'PEM_write_bio_PKCS7_stream';
+
+//  function PKCS7_SIGNER_INFO_new: PPKCS7_SIGNER_INFO;
+//  procedure PKCS7_SIGNER_INFO_free(a: PPKCS7_SIGNER_INFO);
+//  function d2i_PKCS7_SIGNER_INFO(a: PPPKCS7_SIGNER_INFO; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGNER_INFO;
+//  function i2d_PKCS7_SIGNER_INFO(const a: PPKCS7_SIGNER_INFO; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGNER_INFO_it: PASN1_ITEM;
+//
+//  function PKCS7_RECIP_INFO_new: PPKCS7_RECIP_INFO;
+//  procedure PKCS7_RECIP_INFO_free(a: PPKCS7_RECIP_INFO);
+//  function d2i_PKCS7_RECIP_INFO(a: PPPKCS7_RECIP_INFO; const in_: PByte; len: TIdC_LONG): PPKCS7_RECIP_INFO;
+//  function i2d_PKCS7_RECIP_INFO(const a: PPKCS7_RECIP_INFO; out_: PByte): TIdC_INT;
+//  function PKCS7_RECIP_INFO_it: PASN1_ITEM;
+//
+//  function PKCS7_SIGNED_new: PPKCS7_SIGNED;
+//  procedure PKCS7_SIGNED_free(a: PPKCS7_SIGNED);
+//  function d2i_PKCS7_SIGNED(a: PPPKCS7_SIGNED; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGNED;
+//  function i2d_PKCS7_SIGNED(const a: PPKCS7_SIGNED; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGNED_it: PASN1_ITEM;
+//
+//  function PKCS7_ENC_CONTENT_new: PPKCS7_ENC_CONTENT;
+//  procedure PKCS7_ENC_CONTENT_free(a: PPKCS7_ENC_CONTENT);
+//  function d2i_PKCS7_ENC_CONTENT(a: PPPKCS7_ENC_CONTENT; const in_: PByte; len: TIdC_LONG): PPKCS7_ENC_CONTENT;
+//  function i2d_PKCS7_ENC_CONTENT(const a: PPKCS7_ENC_CONTENT; out_: PByte): TIdC_INT;
+//  function PKCS7_ENC_CONTENT_it: PASN1_ITEM;
+//
+//  function PKCS7_ENVELOPE_new: PPKCS7_ENVELOPE;
+//  procedure PKCS7_ENVELOPE_free(a: PPKCS7_ENVELOPE);
+//  function d2i_PKCS7_ENVELOPE(a: PPPKCS7_ENVELOPE; const in_: PByte; len: TIdC_LONG): PPKCS7_ENVELOPE;
+//  function i2d_PKCS7_ENVELOPE(const a: PPKCS7_ENVELOPE; out_: PByte): TIdC_INT;
+//  function PKCS7_ENVELOPE_it: PASN1_ITEM;
+//
+//  function PKCS7_SIGN_ENVELOPE_new: PPKCS7_SIGN_ENVELOPE;
+//  procedure PKCS7_SIGN_ENVELOPE_free(a: PPKCS7_SIGN_ENVELOPE);
+//  function d2i_PKCS7_SIGN_ENVELOPE(a: PPPKCS7_SIGN_ENVELOPE; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGN_ENVELOPE;
+//  function i2d_PKCS7_SIGN_ENVELOPE(const a: PPKCS7_SIGN_ENVELOPE; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGN_ENVELOPE_it: PASN1_ITEM;
+//
+//  function PKCS7_DIGEST_new: PPKCS7_DIGEST;
+//  procedure PKCS7_DIGEST_free(a: PPKCS7_DIGEST);
+//  function d2i_PKCS7_DIGEST(a: PPPKCS7_DIGEST; const in_: PByte; len: TIdC_LONG): PPKCS7_DIGEST;
+//  function i2d_PKCS7_DIGEST(const a: PPKCS7_DIGEST; out_: PByte): TIdC_INT;
+//  function PKCS7_DIGEST_it: PASN1_ITEM;
+//
+//  function PKCS7_ENCRYPT_new: PPKCS7_ENCRYPT_STRUCT;
+//  procedure PKCS7_ENCRYPT_free(a: PPKCS7_ENCRYPT_STRUCT);
+//  function d2i_PKCS7_ENCRYPT(a: PPPKCS7_ENCRYPT_STRUCT; const in_: PByte; len: TIdC_LONG): PPKCS7_ENCRYPT_STRUCT;
+//  function i2d_PKCS7_ENCRYPT(const a: PPKCS7_ENCRYPT_STRUCT; out_: PByte): TIdC_INT;
+//  function PKCS7_ENCRYPT_it: PASN1_ITEM;
+//
+//  function PKCS7_new: PPKCS7;
+//  procedure PKCS7_free(a: PPKCS7);
+//  function d2i_PKCS7(a: PPPKCS7; const in_: PByte; len: TIdC_LONG): PPKCS7;
+//  function i2d_PKCS7(const a: PPKCS7; out_: PByte): TIdC_INT;
+//  function PKCS7_it: PASN1_ITEM;
+//
+//  function PKCS7_ATTR_SIGN_it: PASN1_ITEM;
+//
+//  function PKCS7_ATTR_VERIFY_it: PASN1_ITEM;
+//
+//  function i2d_PKCS7_NDEF(const a: PPKCS7; out_: PPByte): TIdC_INT;
+//  function PKCS7_print_ctx(out_: PBIO; const x: PPKCS7; indent: TIdC_INT; const pctx: PASN1_PCTX): TIdC_INT;
+
+  PKCS7_ctrl_procname = 'PKCS7_ctrl';
+
+  PKCS7_set_type_procname = 'PKCS7_set_type';
+  PKCS7_set0_type_other_procname = 'PKCS7_set0_type_other';
+  PKCS7_set_content_procname = 'PKCS7_set_content';
+  PKCS7_SIGNER_INFO_set_procname = 'PKCS7_SIGNER_INFO_set';
+  PKCS7_SIGNER_INFO_sign_procname = 'PKCS7_SIGNER_INFO_sign';
+  PKCS7_add_signer_procname = 'PKCS7_add_signer';
+  PKCS7_add_certificate_procname = 'PKCS7_add_certificate';
+  PKCS7_add_crl_procname = 'PKCS7_add_crl';
+  PKCS7_content_new_procname = 'PKCS7_content_new';
+  PKCS7_dataVerify_procname = 'PKCS7_dataVerify';
+  PKCS7_signatureVerify_procname = 'PKCS7_signatureVerify';
+
+  PKCS7_dataInit_procname = 'PKCS7_dataInit';
+  PKCS7_dataFinal_procname = 'PKCS7_dataFinal';
+  PKCS7_dataDecode_procname = 'PKCS7_dataDecode';
+
+  PKCS7_add_signature_procname = 'PKCS7_add_signature';
+  PKCS7_cert_from_signer_info_procname = 'PKCS7_cert_from_signer_info';
+  PKCS7_set_digest_procname = 'PKCS7_set_digest';
+//  function PKCS7_get_signer_info(p7: PPKCS7): PSTACK_OF_PKCS7_SIGNER_INFO;
+
+  PKCS7_add_recipient_procname = 'PKCS7_add_recipient';
+  PKCS7_SIGNER_INFO_get0_algs_procname = 'PKCS7_SIGNER_INFO_get0_algs';
+  PKCS7_RECIP_INFO_get0_alg_procname = 'PKCS7_RECIP_INFO_get0_alg';
+  PKCS7_add_recipient_info_procname = 'PKCS7_add_recipient_info';
+  PKCS7_RECIP_INFO_set_procname = 'PKCS7_RECIP_INFO_set';
+  PKCS7_set_cipher_procname = 'PKCS7_set_cipher';
+  PKCS7_stream_procname = 'PKCS7_stream';
+
+  PKCS7_get_issuer_and_serial_procname = 'PKCS7_get_issuer_and_serial';
+  //function PKCS7_digest_from_attributes(sk: Pointer{PSTACK_OF_X509_ATTRIBUTE}): PASN1_OCTET_STRING;
+  PKCS7_add_signed_attribute_procname = 'PKCS7_add_signed_attribute';
+  PKCS7_add_attribute_procname = 'PKCS7_add_attribute';
+  PKCS7_get_attribute_procname = 'PKCS7_get_attribute';
+  PKCS7_get_signed_attribute_procname = 'PKCS7_get_signed_attribute';
+  //function PKCS7_set_signed_attributes(p7si: PPKCS7_SIGNER_INFO; sk: PSTACK_OF_X509): TIdC_INT;
+  //function PKCS7_set_attributes(p7si: PPKCS7_SIGNER_INFO; sk: PSTACK_OF_X509_ATTRIBUTE): TIdC_INT;
+
+  //function PKCS7_sign(signcert: PX509; pkey: PEVP_PKEY; certs: PSTACK_OF_X509; data: PBIO; flags: TIdC_INT): PPKCS7;
+
+  PKCS7_sign_add_signer_procname = 'PKCS7_sign_add_signer';
+
+  PKCS7_final_procname = 'PKCS7_final';
+  //function PKCS7_verify(p7: PPKCS7; certs: PSTACK_OF_X509; store: PX509_STORE; indata: PBIO; out_: PBIO; flags: TIdC_INT): TIdC_INT;
+  //function PKCS7_get0_signers(p7: PPKCS7; certs: PSTACK_OF_X509; flags: TIdC_INT): PSTACK_OF_X509;
+  //function PKCS7_encrypt(certs: PSTACK_OF_X509; in_: PBIO; const cipher: PEVP_CIPHER; flags: TIdC_INT): PPKCS7;
+  PKCS7_decrypt_procname = 'PKCS7_decrypt';
+
+  //function PKCS7_add_attrib_smimecap(si: PPKCS7_SIGNER_INFO; cap: PSTACK_OF_X509_ALGOR): TIdC_INT;
+  //function PKCS7_get_smimecap(si: PPKCS7_SIGNER_INFO): PSTACK_OF_X509_ALGOR;
+  //function PKCS7_simple_smimecap(sk: PSTACK_OF_X509_ALGOR; nid: TIdC_INT; arg: TIdC_INT): TIdC_INT;
+
+  PKCS7_add_attrib_content_type_procname = 'PKCS7_add_attrib_content_type';
+  PKCS7_add0_attrib_signing_time_procname = 'PKCS7_add0_attrib_signing_time';
+  PKCS7_add1_attrib_digest_procname = 'PKCS7_add1_attrib_digest';
+
+  SMIME_write_PKCS7_procname = 'SMIME_write_PKCS7';
+  SMIME_read_PKCS7_procname = 'SMIME_read_PKCS7';
+
+  BIO_new_PKCS7_procname = 'BIO_new_PKCS7';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_PKCS7_ISSUER_AND_SERIAL_digest(data: PPKCS7_ISSUER_AND_SERIAL; const type_: PEVP_MD; md: PByte; len: PIdC_UINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_ISSUER_AND_SERIAL_digest_procname);
+end;
+
+
+
+function  ERR_PKCS7_dup(p7: PPKCS7): PPKCS7; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_dup_procname);
+end;
+
+
+function  ERR_d2i_PKCS7_bio(bp: PBIO; p7: PPPKCS7): PPKCS7; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(d2i_PKCS7_bio_procname);
+end;
+
+
+function  ERR_i2d_PKCS7_bio(bp: PBIO; p7: PPKCS7): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2d_PKCS7_bio_procname);
+end;
+
+
+function  ERR_i2d_PKCS7_bio_stream(out_: PBIO; p7: PPKCS7; in_: PBIO; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2d_PKCS7_bio_stream_procname);
+end;
+
+
+function  ERR_PEM_write_bio_PKCS7_stream(out_: PBIO; p7: PPKCS7; in_: PBIO; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PEM_write_bio_PKCS7_stream_procname);
+end;
+
+
+
+//  function PKCS7_SIGNER_INFO_new: PPKCS7_SIGNER_INFO;
+//  procedure PKCS7_SIGNER_INFO_free(a: PPKCS7_SIGNER_INFO);
+//  function d2i_PKCS7_SIGNER_INFO(a: PPPKCS7_SIGNER_INFO; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGNER_INFO;
+//  function i2d_PKCS7_SIGNER_INFO(const a: PPKCS7_SIGNER_INFO; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGNER_INFO_it: PASN1_ITEM;
+//
+//  function PKCS7_RECIP_INFO_new: PPKCS7_RECIP_INFO;
+//  procedure PKCS7_RECIP_INFO_free(a: PPKCS7_RECIP_INFO);
+//  function d2i_PKCS7_RECIP_INFO(a: PPPKCS7_RECIP_INFO; const in_: PByte; len: TIdC_LONG): PPKCS7_RECIP_INFO;
+//  function i2d_PKCS7_RECIP_INFO(const a: PPKCS7_RECIP_INFO; out_: PByte): TIdC_INT;
+//  function PKCS7_RECIP_INFO_it: PASN1_ITEM;
+//
+//  function PKCS7_SIGNED_new: PPKCS7_SIGNED;
+//  procedure PKCS7_SIGNED_free(a: PPKCS7_SIGNED);
+//  function d2i_PKCS7_SIGNED(a: PPPKCS7_SIGNED; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGNED;
+//  function i2d_PKCS7_SIGNED(const a: PPKCS7_SIGNED; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGNED_it: PASN1_ITEM;
+//
+//  function PKCS7_ENC_CONTENT_new: PPKCS7_ENC_CONTENT;
+//  procedure PKCS7_ENC_CONTENT_free(a: PPKCS7_ENC_CONTENT);
+//  function d2i_PKCS7_ENC_CONTENT(a: PPPKCS7_ENC_CONTENT; const in_: PByte; len: TIdC_LONG): PPKCS7_ENC_CONTENT;
+//  function i2d_PKCS7_ENC_CONTENT(const a: PPKCS7_ENC_CONTENT; out_: PByte): TIdC_INT;
+//  function PKCS7_ENC_CONTENT_it: PASN1_ITEM;
+//
+//  function PKCS7_ENVELOPE_new: PPKCS7_ENVELOPE;
+//  procedure PKCS7_ENVELOPE_free(a: PPKCS7_ENVELOPE);
+//  function d2i_PKCS7_ENVELOPE(a: PPPKCS7_ENVELOPE; const in_: PByte; len: TIdC_LONG): PPKCS7_ENVELOPE;
+//  function i2d_PKCS7_ENVELOPE(const a: PPKCS7_ENVELOPE; out_: PByte): TIdC_INT;
+//  function PKCS7_ENVELOPE_it: PASN1_ITEM;
+//
+//  function PKCS7_SIGN_ENVELOPE_new: PPKCS7_SIGN_ENVELOPE;
+//  procedure PKCS7_SIGN_ENVELOPE_free(a: PPKCS7_SIGN_ENVELOPE);
+//  function d2i_PKCS7_SIGN_ENVELOPE(a: PPPKCS7_SIGN_ENVELOPE; const in_: PByte; len: TIdC_LONG): PPKCS7_SIGN_ENVELOPE;
+//  function i2d_PKCS7_SIGN_ENVELOPE(const a: PPKCS7_SIGN_ENVELOPE; out_: PByte): TIdC_INT;
+//  function PKCS7_SIGN_ENVELOPE_it: PASN1_ITEM;
+//
+//  function PKCS7_DIGEST_new: PPKCS7_DIGEST;
+//  procedure PKCS7_DIGEST_free(a: PPKCS7_DIGEST);
+//  function d2i_PKCS7_DIGEST(a: PPPKCS7_DIGEST; const in_: PByte; len: TIdC_LONG): PPKCS7_DIGEST;
+//  function i2d_PKCS7_DIGEST(const a: PPKCS7_DIGEST; out_: PByte): TIdC_INT;
+//  function PKCS7_DIGEST_it: PASN1_ITEM;
+//
+//  function PKCS7_ENCRYPT_new: PPKCS7_ENCRYPT_STRUCT;
+//  procedure PKCS7_ENCRYPT_free(a: PPKCS7_ENCRYPT_STRUCT);
+//  function d2i_PKCS7_ENCRYPT(a: PPPKCS7_ENCRYPT_STRUCT; const in_: PByte; len: TIdC_LONG): PPKCS7_ENCRYPT_STRUCT;
+//  function i2d_PKCS7_ENCRYPT(const a: PPKCS7_ENCRYPT_STRUCT; out_: PByte): TIdC_INT;
+//  function PKCS7_ENCRYPT_it: PASN1_ITEM;
+//
+//  function PKCS7_new: PPKCS7;
+//  procedure PKCS7_free(a: PPKCS7);
+//  function d2i_PKCS7(a: PPPKCS7; const in_: PByte; len: TIdC_LONG): PPKCS7;
+//  function i2d_PKCS7(const a: PPKCS7; out_: PByte): TIdC_INT;
+//  function PKCS7_it: PASN1_ITEM;
+//
+//  function PKCS7_ATTR_SIGN_it: PASN1_ITEM;
+//
+//  function PKCS7_ATTR_VERIFY_it: PASN1_ITEM;
+//
+//  function i2d_PKCS7_NDEF(const a: PPKCS7; out_: PPByte): TIdC_INT;
+//  function PKCS7_print_ctx(out_: PBIO; const x: PPKCS7; indent: TIdC_INT; const pctx: PASN1_PCTX): TIdC_INT;
+
+function  ERR_PKCS7_ctrl(p7: PPKCS7; cmd: TIdC_INT; larg: TIdC_LONG; parg: PIdAnsiChar): TIdC_LONG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_ctrl_procname);
+end;
+
+
+
+function  ERR_PKCS7_set_type(p7: PPKCS7; type_: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_set_type_procname);
+end;
+
+
+function  ERR_PKCS7_set0_type_other(p7: PPKCS7; type_: TIdC_INT; other: PASN1_TYPE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_set0_type_other_procname);
+end;
+
+
+function  ERR_PKCS7_set_content(p7: PPKCS7; p7_data: PPKCS7): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_set_content_procname);
+end;
+
+
+function  ERR_PKCS7_SIGNER_INFO_set(p7i: PPKCS7_SIGNER_INFO; x509: PX509; pkey: PEVP_PKEY; const dgst: PEVP_MD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_SIGNER_INFO_set_procname);
+end;
+
+
+function  ERR_PKCS7_SIGNER_INFO_sign(si: PPKCS7_SIGNER_INFO): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_SIGNER_INFO_sign_procname);
+end;
+
+
+function  ERR_PKCS7_add_signer(p7: PPKCS7; p7i: PPKCS7_SIGNER_INFO): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_signer_procname);
+end;
+
+
+function  ERR_PKCS7_add_certificate(p7: PPKCS7; x509: PX509): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_certificate_procname);
+end;
+
+
+function  ERR_PKCS7_add_crl(p7: PPKCS7; x509: PX509_CRL): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_crl_procname);
+end;
+
+
+function  ERR_PKCS7_content_new(p7: PPKCS7; nid: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_content_new_procname);
+end;
+
+
+function  ERR_PKCS7_dataVerify(cert_store: PX509_STORE; ctx: PX509_STORE_CTX; bio: PBIO; p7: PPKCS7; si: PPKCS7_SIGNER_INFO): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_dataVerify_procname);
+end;
+
+
+function  ERR_PKCS7_signatureVerify(bio: PBIO; p7: PPKCS7; si: PPKCS7_SIGNER_INFO; x509: PX509): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_signatureVerify_procname);
+end;
+
+
+
+function  ERR_PKCS7_dataInit(p7: PPKCS7; bio: PBIO): PBIO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_dataInit_procname);
+end;
+
+
+function  ERR_PKCS7_dataFinal(p7: PPKCS7; bio: PBIO): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_dataFinal_procname);
+end;
+
+
+function  ERR_PKCS7_dataDecode(p7: PPKCS7; pkey: PEVP_PKEY; in_bio: PBIO; pcert: PX509): PBIO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_dataDecode_procname);
+end;
+
+
+
+function  ERR_PKCS7_add_signature(p7: PPKCS7; x509: PX509; pkey: PEVP_PKEY; const dgst: PEVP_MD): PPKCS7_SIGNER_INFO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_signature_procname);
+end;
+
+
+function  ERR_PKCS7_cert_from_signer_info(p7: PPKCS7; si: PPKCS7_SIGNER_INFO): PX509; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_cert_from_signer_info_procname);
+end;
+
+
+function  ERR_PKCS7_set_digest(p7: PPKCS7; const md: PEVP_MD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_set_digest_procname);
+end;
+
+
+//  function PKCS7_get_signer_info(p7: PPKCS7): PSTACK_OF_PKCS7_SIGNER_INFO;
+
+function  ERR_PKCS7_add_recipient(p7: PPKCS7; x509: PX509): PPKCS7_RECIP_INFO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_recipient_procname);
+end;
+
+
+procedure  ERR_PKCS7_SIGNER_INFO_get0_algs(si: PPKCS7_SIGNER_INFO; pk: PPEVP_PKEY; pdig: PPX509_ALGOR; psig: PPX509_ALGOR); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_SIGNER_INFO_get0_algs_procname);
+end;
+
+
+procedure  ERR_PKCS7_RECIP_INFO_get0_alg(ri: PPKCS7_RECIP_INFO; penc: PPX509_ALGOR); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_RECIP_INFO_get0_alg_procname);
+end;
+
+
+function  ERR_PKCS7_add_recipient_info(p7: PPKCS7; ri: PPKCS7_RECIP_INFO): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_recipient_info_procname);
+end;
+
+
+function  ERR_PKCS7_RECIP_INFO_set(p7i: PPKCS7_RECIP_INFO; x509: PX509): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_RECIP_INFO_set_procname);
+end;
+
+
+function  ERR_PKCS7_set_cipher(p7: PPKCS7; const cipher: PEVP_CIPHER): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_set_cipher_procname);
+end;
+
+
+function  ERR_PKCS7_stream(boundary: PPPByte; p7: PPKCS7): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_stream_procname);
+end;
+
+
+
+function  ERR_PKCS7_get_issuer_and_serial(p7: PPKCS7; idx: TIdC_INT): PPKCS7_ISSUER_AND_SERIAL; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_get_issuer_and_serial_procname);
+end;
+
+
+  //function PKCS7_digest_from_attributes(sk: Pointer{PSTACK_OF_X509_ATTRIBUTE}): PASN1_OCTET_STRING;
+function  ERR_PKCS7_add_signed_attribute(p7si: PPKCS7_SIGNER_INFO; nid: TIdC_INT; type_: TIdC_INT; data: Pointer): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_signed_attribute_procname);
+end;
+
+
+function  ERR_PKCS7_add_attribute(p7si: PPKCS7_SIGNER_INFO; nid: TIdC_INT; atrtype: TIdC_INT; value: Pointer): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_attribute_procname);
+end;
+
+
+function  ERR_PKCS7_get_attribute(si: PPKCS7_SIGNER_INFO; nid: TIdC_INT): PASN1_TYPE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_get_attribute_procname);
+end;
+
+
+function  ERR_PKCS7_get_signed_attribute(si: PPKCS7_SIGNER_INFO; nid: TIdC_INT): PASN1_TYPE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_get_signed_attribute_procname);
+end;
+
+
+  //function PKCS7_set_signed_attributes(p7si: PPKCS7_SIGNER_INFO; sk: PSTACK_OF_X509): TIdC_INT;
+  //function PKCS7_set_attributes(p7si: PPKCS7_SIGNER_INFO; sk: PSTACK_OF_X509_ATTRIBUTE): TIdC_INT;
+
+  //function PKCS7_sign(signcert: PX509; pkey: PEVP_PKEY; certs: PSTACK_OF_X509; data: PBIO; flags: TIdC_INT): PPKCS7;
+
+function  ERR_PKCS7_sign_add_signer(p7: PPKCS7; signcert: PX509; pkey: PEVP_PKEY; const md: PEVP_MD; flags: TIdC_INT): PPKCS7_SIGNER_INFO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_sign_add_signer_procname);
+end;
+
+
+
+function  ERR_PKCS7_final(p7: PPKCS7; data: PBIO; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_final_procname);
+end;
+
+
+  //function PKCS7_verify(p7: PPKCS7; certs: PSTACK_OF_X509; store: PX509_STORE; indata: PBIO; out_: PBIO; flags: TIdC_INT): TIdC_INT;
+  //function PKCS7_get0_signers(p7: PPKCS7; certs: PSTACK_OF_X509; flags: TIdC_INT): PSTACK_OF_X509;
+  //function PKCS7_encrypt(certs: PSTACK_OF_X509; in_: PBIO; const cipher: PEVP_CIPHER; flags: TIdC_INT): PPKCS7;
+function  ERR_PKCS7_decrypt(p7: PPKCS7; pkey: PEVP_PKEY; cert: PX509; data: PBIO; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_decrypt_procname);
+end;
+
+
+
+  //function PKCS7_add_attrib_smimecap(si: PPKCS7_SIGNER_INFO; cap: PSTACK_OF_X509_ALGOR): TIdC_INT;
+  //function PKCS7_get_smimecap(si: PPKCS7_SIGNER_INFO): PSTACK_OF_X509_ALGOR;
+  //function PKCS7_simple_smimecap(sk: PSTACK_OF_X509_ALGOR; nid: TIdC_INT; arg: TIdC_INT): TIdC_INT;
+
+function  ERR_PKCS7_add_attrib_content_type(si: PPKCS7_SIGNER_INFO; coid: PASN1_OBJECT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add_attrib_content_type_procname);
+end;
+
+
+function  ERR_PKCS7_add0_attrib_signing_time(si: PPKCS7_SIGNER_INFO; t: PASN1_TIME): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add0_attrib_signing_time_procname);
+end;
+
+
+function  ERR_PKCS7_add1_attrib_digest(si: PPKCS7_SIGNER_INFO; const md: PByte; mdlen: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(PKCS7_add1_attrib_digest_procname);
+end;
+
+
+
+function  ERR_SMIME_write_PKCS7(bio: PBIO; p7: PPKCS7; data: PBIO; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SMIME_write_PKCS7_procname);
+end;
+
+
+function  ERR_SMIME_read_PKCS7(bio: PBIO; bcont: PPBIO): PPKCS7; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SMIME_read_PKCS7_procname);
+end;
+
+
+
+function  ERR_BIO_new_PKCS7(out_: PBIO; p7: PPKCS7): PBIO; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(BIO_new_PKCS7_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  PKCS7_ISSUER_AND_SERIAL_digest := LoadFunction('PKCS7_ISSUER_AND_SERIAL_digest',AFailed);
-  PKCS7_dup := LoadFunction('PKCS7_dup',AFailed);
-  d2i_PKCS7_bio := LoadFunction('d2i_PKCS7_bio',AFailed);
-  i2d_PKCS7_bio := LoadFunction('i2d_PKCS7_bio',AFailed);
-  i2d_PKCS7_bio_stream := LoadFunction('i2d_PKCS7_bio_stream',AFailed);
-  PEM_write_bio_PKCS7_stream := LoadFunction('PEM_write_bio_PKCS7_stream',AFailed);
-  PKCS7_ctrl := LoadFunction('PKCS7_ctrl',AFailed);
-  PKCS7_set_type := LoadFunction('PKCS7_set_type',AFailed);
-  PKCS7_set0_type_other := LoadFunction('PKCS7_set0_type_other',AFailed);
-  PKCS7_set_content := LoadFunction('PKCS7_set_content',AFailed);
-  PKCS7_SIGNER_INFO_set := LoadFunction('PKCS7_SIGNER_INFO_set',AFailed);
-  PKCS7_SIGNER_INFO_sign := LoadFunction('PKCS7_SIGNER_INFO_sign',AFailed);
-  PKCS7_add_signer := LoadFunction('PKCS7_add_signer',AFailed);
-  PKCS7_add_certificate := LoadFunction('PKCS7_add_certificate',AFailed);
-  PKCS7_add_crl := LoadFunction('PKCS7_add_crl',AFailed);
-  PKCS7_content_new := LoadFunction('PKCS7_content_new',AFailed);
-  PKCS7_dataVerify := LoadFunction('PKCS7_dataVerify',AFailed);
-  PKCS7_signatureVerify := LoadFunction('PKCS7_signatureVerify',AFailed);
-  PKCS7_dataInit := LoadFunction('PKCS7_dataInit',AFailed);
-  PKCS7_dataFinal := LoadFunction('PKCS7_dataFinal',AFailed);
-  PKCS7_dataDecode := LoadFunction('PKCS7_dataDecode',AFailed);
-  PKCS7_add_signature := LoadFunction('PKCS7_add_signature',AFailed);
-  PKCS7_cert_from_signer_info := LoadFunction('PKCS7_cert_from_signer_info',AFailed);
-  PKCS7_set_digest := LoadFunction('PKCS7_set_digest',AFailed);
-  PKCS7_add_recipient := LoadFunction('PKCS7_add_recipient',AFailed);
-  PKCS7_SIGNER_INFO_get0_algs := LoadFunction('PKCS7_SIGNER_INFO_get0_algs',AFailed);
-  PKCS7_RECIP_INFO_get0_alg := LoadFunction('PKCS7_RECIP_INFO_get0_alg',AFailed);
-  PKCS7_add_recipient_info := LoadFunction('PKCS7_add_recipient_info',AFailed);
-  PKCS7_RECIP_INFO_set := LoadFunction('PKCS7_RECIP_INFO_set',AFailed);
-  PKCS7_set_cipher := LoadFunction('PKCS7_set_cipher',AFailed);
-  PKCS7_stream := LoadFunction('PKCS7_stream',AFailed);
-  PKCS7_get_issuer_and_serial := LoadFunction('PKCS7_get_issuer_and_serial',AFailed);
-  PKCS7_add_signed_attribute := LoadFunction('PKCS7_add_signed_attribute',AFailed);
-  PKCS7_add_attribute := LoadFunction('PKCS7_add_attribute',AFailed);
-  PKCS7_get_attribute := LoadFunction('PKCS7_get_attribute',AFailed);
-  PKCS7_get_signed_attribute := LoadFunction('PKCS7_get_signed_attribute',AFailed);
-  PKCS7_sign_add_signer := LoadFunction('PKCS7_sign_add_signer',AFailed);
-  PKCS7_final := LoadFunction('PKCS7_final',AFailed);
-  PKCS7_decrypt := LoadFunction('PKCS7_decrypt',AFailed);
-  PKCS7_add_attrib_content_type := LoadFunction('PKCS7_add_attrib_content_type',AFailed);
-  PKCS7_add0_attrib_signing_time := LoadFunction('PKCS7_add0_attrib_signing_time',AFailed);
-  PKCS7_add1_attrib_digest := LoadFunction('PKCS7_add1_attrib_digest',AFailed);
-  SMIME_write_PKCS7 := LoadFunction('SMIME_write_PKCS7',AFailed);
-  SMIME_read_PKCS7 := LoadFunction('SMIME_read_PKCS7',AFailed);
-  BIO_new_PKCS7 := LoadFunction('BIO_new_PKCS7',AFailed);
+  PKCS7_ISSUER_AND_SERIAL_digest := LoadLibFunction(ADllHandle, PKCS7_ISSUER_AND_SERIAL_digest_procname);
+  FuncLoaded := assigned(PKCS7_ISSUER_AND_SERIAL_digest);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_ISSUER_AND_SERIAL_digest_introduced)}
+    if LibVersion < PKCS7_ISSUER_AND_SERIAL_digest_introduced then
+    begin
+      {$if declared(FC_PKCS7_ISSUER_AND_SERIAL_digest)}
+      PKCS7_ISSUER_AND_SERIAL_digest := @FC_PKCS7_ISSUER_AND_SERIAL_digest;
+      {$else}
+      {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
+      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_ISSUER_AND_SERIAL_digest_removed)}
+    if PKCS7_ISSUER_AND_SERIAL_digest_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_ISSUER_AND_SERIAL_digest)}
+      PKCS7_ISSUER_AND_SERIAL_digest := @_PKCS7_ISSUER_AND_SERIAL_digest;
+      {$else}
+      {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
+      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
+      AFailed.Add('PKCS7_ISSUER_AND_SERIAL_digest');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_dup := LoadLibFunction(ADllHandle, PKCS7_dup_procname);
+  FuncLoaded := assigned(PKCS7_dup);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_dup_introduced)}
+    if LibVersion < PKCS7_dup_introduced then
+    begin
+      {$if declared(FC_PKCS7_dup)}
+      PKCS7_dup := @FC_PKCS7_dup;
+      {$else}
+      {$if not defined(PKCS7_dup_allownil)}
+      PKCS7_dup := @ERR_PKCS7_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_dup_removed)}
+    if PKCS7_dup_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_dup)}
+      PKCS7_dup := @_PKCS7_dup;
+      {$else}
+      {$if not defined(PKCS7_dup_allownil)}
+      PKCS7_dup := @ERR_PKCS7_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_dup_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_dup := @ERR_PKCS7_dup;
+      AFailed.Add('PKCS7_dup');
+    end;
+    {$ifend}
+  end;
+
+
+  d2i_PKCS7_bio := LoadLibFunction(ADllHandle, d2i_PKCS7_bio_procname);
+  FuncLoaded := assigned(d2i_PKCS7_bio);
+  if not FuncLoaded then
+  begin
+    {$if declared(d2i_PKCS7_bio_introduced)}
+    if LibVersion < d2i_PKCS7_bio_introduced then
+    begin
+      {$if declared(FC_d2i_PKCS7_bio)}
+      d2i_PKCS7_bio := @FC_d2i_PKCS7_bio;
+      {$else}
+      {$if not defined(d2i_PKCS7_bio_allownil)}
+      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(d2i_PKCS7_bio_removed)}
+    if d2i_PKCS7_bio_removed <= LibVersion then
+    begin
+      {$if declared(_d2i_PKCS7_bio)}
+      d2i_PKCS7_bio := @_d2i_PKCS7_bio;
+      {$else}
+      {$if not defined(d2i_PKCS7_bio_allownil)}
+      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(d2i_PKCS7_bio_allownil)}
+    if not FuncLoaded then
+    begin
+      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
+      AFailed.Add('d2i_PKCS7_bio');
+    end;
+    {$ifend}
+  end;
+
+
+  i2d_PKCS7_bio := LoadLibFunction(ADllHandle, i2d_PKCS7_bio_procname);
+  FuncLoaded := assigned(i2d_PKCS7_bio);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2d_PKCS7_bio_introduced)}
+    if LibVersion < i2d_PKCS7_bio_introduced then
+    begin
+      {$if declared(FC_i2d_PKCS7_bio)}
+      i2d_PKCS7_bio := @FC_i2d_PKCS7_bio;
+      {$else}
+      {$if not defined(i2d_PKCS7_bio_allownil)}
+      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2d_PKCS7_bio_removed)}
+    if i2d_PKCS7_bio_removed <= LibVersion then
+    begin
+      {$if declared(_i2d_PKCS7_bio)}
+      i2d_PKCS7_bio := @_i2d_PKCS7_bio;
+      {$else}
+      {$if not defined(i2d_PKCS7_bio_allownil)}
+      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2d_PKCS7_bio_allownil)}
+    if not FuncLoaded then
+    begin
+      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
+      AFailed.Add('i2d_PKCS7_bio');
+    end;
+    {$ifend}
+  end;
+
+
+  i2d_PKCS7_bio_stream := LoadLibFunction(ADllHandle, i2d_PKCS7_bio_stream_procname);
+  FuncLoaded := assigned(i2d_PKCS7_bio_stream);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2d_PKCS7_bio_stream_introduced)}
+    if LibVersion < i2d_PKCS7_bio_stream_introduced then
+    begin
+      {$if declared(FC_i2d_PKCS7_bio_stream)}
+      i2d_PKCS7_bio_stream := @FC_i2d_PKCS7_bio_stream;
+      {$else}
+      {$if not defined(i2d_PKCS7_bio_stream_allownil)}
+      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2d_PKCS7_bio_stream_removed)}
+    if i2d_PKCS7_bio_stream_removed <= LibVersion then
+    begin
+      {$if declared(_i2d_PKCS7_bio_stream)}
+      i2d_PKCS7_bio_stream := @_i2d_PKCS7_bio_stream;
+      {$else}
+      {$if not defined(i2d_PKCS7_bio_stream_allownil)}
+      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2d_PKCS7_bio_stream_allownil)}
+    if not FuncLoaded then
+    begin
+      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
+      AFailed.Add('i2d_PKCS7_bio_stream');
+    end;
+    {$ifend}
+  end;
+
+
+  PEM_write_bio_PKCS7_stream := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS7_stream_procname);
+  FuncLoaded := assigned(PEM_write_bio_PKCS7_stream);
+  if not FuncLoaded then
+  begin
+    {$if declared(PEM_write_bio_PKCS7_stream_introduced)}
+    if LibVersion < PEM_write_bio_PKCS7_stream_introduced then
+    begin
+      {$if declared(FC_PEM_write_bio_PKCS7_stream)}
+      PEM_write_bio_PKCS7_stream := @FC_PEM_write_bio_PKCS7_stream;
+      {$else}
+      {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
+      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PEM_write_bio_PKCS7_stream_removed)}
+    if PEM_write_bio_PKCS7_stream_removed <= LibVersion then
+    begin
+      {$if declared(_PEM_write_bio_PKCS7_stream)}
+      PEM_write_bio_PKCS7_stream := @_PEM_write_bio_PKCS7_stream;
+      {$else}
+      {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
+      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
+    if not FuncLoaded then
+    begin
+      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
+      AFailed.Add('PEM_write_bio_PKCS7_stream');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_ctrl := LoadLibFunction(ADllHandle, PKCS7_ctrl_procname);
+  FuncLoaded := assigned(PKCS7_ctrl);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_ctrl_introduced)}
+    if LibVersion < PKCS7_ctrl_introduced then
+    begin
+      {$if declared(FC_PKCS7_ctrl)}
+      PKCS7_ctrl := @FC_PKCS7_ctrl;
+      {$else}
+      {$if not defined(PKCS7_ctrl_allownil)}
+      PKCS7_ctrl := @ERR_PKCS7_ctrl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_ctrl_removed)}
+    if PKCS7_ctrl_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_ctrl)}
+      PKCS7_ctrl := @_PKCS7_ctrl;
+      {$else}
+      {$if not defined(PKCS7_ctrl_allownil)}
+      PKCS7_ctrl := @ERR_PKCS7_ctrl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_ctrl_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_ctrl := @ERR_PKCS7_ctrl;
+      AFailed.Add('PKCS7_ctrl');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_set_type := LoadLibFunction(ADllHandle, PKCS7_set_type_procname);
+  FuncLoaded := assigned(PKCS7_set_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_set_type_introduced)}
+    if LibVersion < PKCS7_set_type_introduced then
+    begin
+      {$if declared(FC_PKCS7_set_type)}
+      PKCS7_set_type := @FC_PKCS7_set_type;
+      {$else}
+      {$if not defined(PKCS7_set_type_allownil)}
+      PKCS7_set_type := @ERR_PKCS7_set_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_set_type_removed)}
+    if PKCS7_set_type_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_set_type)}
+      PKCS7_set_type := @_PKCS7_set_type;
+      {$else}
+      {$if not defined(PKCS7_set_type_allownil)}
+      PKCS7_set_type := @ERR_PKCS7_set_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_set_type_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_set_type := @ERR_PKCS7_set_type;
+      AFailed.Add('PKCS7_set_type');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_set0_type_other := LoadLibFunction(ADllHandle, PKCS7_set0_type_other_procname);
+  FuncLoaded := assigned(PKCS7_set0_type_other);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_set0_type_other_introduced)}
+    if LibVersion < PKCS7_set0_type_other_introduced then
+    begin
+      {$if declared(FC_PKCS7_set0_type_other)}
+      PKCS7_set0_type_other := @FC_PKCS7_set0_type_other;
+      {$else}
+      {$if not defined(PKCS7_set0_type_other_allownil)}
+      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_set0_type_other_removed)}
+    if PKCS7_set0_type_other_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_set0_type_other)}
+      PKCS7_set0_type_other := @_PKCS7_set0_type_other;
+      {$else}
+      {$if not defined(PKCS7_set0_type_other_allownil)}
+      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_set0_type_other_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
+      AFailed.Add('PKCS7_set0_type_other');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_set_content := LoadLibFunction(ADllHandle, PKCS7_set_content_procname);
+  FuncLoaded := assigned(PKCS7_set_content);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_set_content_introduced)}
+    if LibVersion < PKCS7_set_content_introduced then
+    begin
+      {$if declared(FC_PKCS7_set_content)}
+      PKCS7_set_content := @FC_PKCS7_set_content;
+      {$else}
+      {$if not defined(PKCS7_set_content_allownil)}
+      PKCS7_set_content := @ERR_PKCS7_set_content;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_set_content_removed)}
+    if PKCS7_set_content_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_set_content)}
+      PKCS7_set_content := @_PKCS7_set_content;
+      {$else}
+      {$if not defined(PKCS7_set_content_allownil)}
+      PKCS7_set_content := @ERR_PKCS7_set_content;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_set_content_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_set_content := @ERR_PKCS7_set_content;
+      AFailed.Add('PKCS7_set_content');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_SIGNER_INFO_set := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_set_procname);
+  FuncLoaded := assigned(PKCS7_SIGNER_INFO_set);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_SIGNER_INFO_set_introduced)}
+    if LibVersion < PKCS7_SIGNER_INFO_set_introduced then
+    begin
+      {$if declared(FC_PKCS7_SIGNER_INFO_set)}
+      PKCS7_SIGNER_INFO_set := @FC_PKCS7_SIGNER_INFO_set;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
+      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_SIGNER_INFO_set_removed)}
+    if PKCS7_SIGNER_INFO_set_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_SIGNER_INFO_set)}
+      PKCS7_SIGNER_INFO_set := @_PKCS7_SIGNER_INFO_set;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
+      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
+      AFailed.Add('PKCS7_SIGNER_INFO_set');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_SIGNER_INFO_sign := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_sign_procname);
+  FuncLoaded := assigned(PKCS7_SIGNER_INFO_sign);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_SIGNER_INFO_sign_introduced)}
+    if LibVersion < PKCS7_SIGNER_INFO_sign_introduced then
+    begin
+      {$if declared(FC_PKCS7_SIGNER_INFO_sign)}
+      PKCS7_SIGNER_INFO_sign := @FC_PKCS7_SIGNER_INFO_sign;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
+      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_SIGNER_INFO_sign_removed)}
+    if PKCS7_SIGNER_INFO_sign_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_SIGNER_INFO_sign)}
+      PKCS7_SIGNER_INFO_sign := @_PKCS7_SIGNER_INFO_sign;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
+      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
+      AFailed.Add('PKCS7_SIGNER_INFO_sign');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_signer := LoadLibFunction(ADllHandle, PKCS7_add_signer_procname);
+  FuncLoaded := assigned(PKCS7_add_signer);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_signer_introduced)}
+    if LibVersion < PKCS7_add_signer_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_signer)}
+      PKCS7_add_signer := @FC_PKCS7_add_signer;
+      {$else}
+      {$if not defined(PKCS7_add_signer_allownil)}
+      PKCS7_add_signer := @ERR_PKCS7_add_signer;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_signer_removed)}
+    if PKCS7_add_signer_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_signer)}
+      PKCS7_add_signer := @_PKCS7_add_signer;
+      {$else}
+      {$if not defined(PKCS7_add_signer_allownil)}
+      PKCS7_add_signer := @ERR_PKCS7_add_signer;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_signer_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_signer := @ERR_PKCS7_add_signer;
+      AFailed.Add('PKCS7_add_signer');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_certificate := LoadLibFunction(ADllHandle, PKCS7_add_certificate_procname);
+  FuncLoaded := assigned(PKCS7_add_certificate);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_certificate_introduced)}
+    if LibVersion < PKCS7_add_certificate_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_certificate)}
+      PKCS7_add_certificate := @FC_PKCS7_add_certificate;
+      {$else}
+      {$if not defined(PKCS7_add_certificate_allownil)}
+      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_certificate_removed)}
+    if PKCS7_add_certificate_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_certificate)}
+      PKCS7_add_certificate := @_PKCS7_add_certificate;
+      {$else}
+      {$if not defined(PKCS7_add_certificate_allownil)}
+      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_certificate_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
+      AFailed.Add('PKCS7_add_certificate');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_crl := LoadLibFunction(ADllHandle, PKCS7_add_crl_procname);
+  FuncLoaded := assigned(PKCS7_add_crl);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_crl_introduced)}
+    if LibVersion < PKCS7_add_crl_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_crl)}
+      PKCS7_add_crl := @FC_PKCS7_add_crl;
+      {$else}
+      {$if not defined(PKCS7_add_crl_allownil)}
+      PKCS7_add_crl := @ERR_PKCS7_add_crl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_crl_removed)}
+    if PKCS7_add_crl_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_crl)}
+      PKCS7_add_crl := @_PKCS7_add_crl;
+      {$else}
+      {$if not defined(PKCS7_add_crl_allownil)}
+      PKCS7_add_crl := @ERR_PKCS7_add_crl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_crl_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_crl := @ERR_PKCS7_add_crl;
+      AFailed.Add('PKCS7_add_crl');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_content_new := LoadLibFunction(ADllHandle, PKCS7_content_new_procname);
+  FuncLoaded := assigned(PKCS7_content_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_content_new_introduced)}
+    if LibVersion < PKCS7_content_new_introduced then
+    begin
+      {$if declared(FC_PKCS7_content_new)}
+      PKCS7_content_new := @FC_PKCS7_content_new;
+      {$else}
+      {$if not defined(PKCS7_content_new_allownil)}
+      PKCS7_content_new := @ERR_PKCS7_content_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_content_new_removed)}
+    if PKCS7_content_new_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_content_new)}
+      PKCS7_content_new := @_PKCS7_content_new;
+      {$else}
+      {$if not defined(PKCS7_content_new_allownil)}
+      PKCS7_content_new := @ERR_PKCS7_content_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_content_new_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_content_new := @ERR_PKCS7_content_new;
+      AFailed.Add('PKCS7_content_new');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_dataVerify := LoadLibFunction(ADllHandle, PKCS7_dataVerify_procname);
+  FuncLoaded := assigned(PKCS7_dataVerify);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_dataVerify_introduced)}
+    if LibVersion < PKCS7_dataVerify_introduced then
+    begin
+      {$if declared(FC_PKCS7_dataVerify)}
+      PKCS7_dataVerify := @FC_PKCS7_dataVerify;
+      {$else}
+      {$if not defined(PKCS7_dataVerify_allownil)}
+      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_dataVerify_removed)}
+    if PKCS7_dataVerify_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_dataVerify)}
+      PKCS7_dataVerify := @_PKCS7_dataVerify;
+      {$else}
+      {$if not defined(PKCS7_dataVerify_allownil)}
+      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_dataVerify_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
+      AFailed.Add('PKCS7_dataVerify');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_signatureVerify := LoadLibFunction(ADllHandle, PKCS7_signatureVerify_procname);
+  FuncLoaded := assigned(PKCS7_signatureVerify);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_signatureVerify_introduced)}
+    if LibVersion < PKCS7_signatureVerify_introduced then
+    begin
+      {$if declared(FC_PKCS7_signatureVerify)}
+      PKCS7_signatureVerify := @FC_PKCS7_signatureVerify;
+      {$else}
+      {$if not defined(PKCS7_signatureVerify_allownil)}
+      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_signatureVerify_removed)}
+    if PKCS7_signatureVerify_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_signatureVerify)}
+      PKCS7_signatureVerify := @_PKCS7_signatureVerify;
+      {$else}
+      {$if not defined(PKCS7_signatureVerify_allownil)}
+      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_signatureVerify_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
+      AFailed.Add('PKCS7_signatureVerify');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_dataInit := LoadLibFunction(ADllHandle, PKCS7_dataInit_procname);
+  FuncLoaded := assigned(PKCS7_dataInit);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_dataInit_introduced)}
+    if LibVersion < PKCS7_dataInit_introduced then
+    begin
+      {$if declared(FC_PKCS7_dataInit)}
+      PKCS7_dataInit := @FC_PKCS7_dataInit;
+      {$else}
+      {$if not defined(PKCS7_dataInit_allownil)}
+      PKCS7_dataInit := @ERR_PKCS7_dataInit;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_dataInit_removed)}
+    if PKCS7_dataInit_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_dataInit)}
+      PKCS7_dataInit := @_PKCS7_dataInit;
+      {$else}
+      {$if not defined(PKCS7_dataInit_allownil)}
+      PKCS7_dataInit := @ERR_PKCS7_dataInit;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_dataInit_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_dataInit := @ERR_PKCS7_dataInit;
+      AFailed.Add('PKCS7_dataInit');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_dataFinal := LoadLibFunction(ADllHandle, PKCS7_dataFinal_procname);
+  FuncLoaded := assigned(PKCS7_dataFinal);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_dataFinal_introduced)}
+    if LibVersion < PKCS7_dataFinal_introduced then
+    begin
+      {$if declared(FC_PKCS7_dataFinal)}
+      PKCS7_dataFinal := @FC_PKCS7_dataFinal;
+      {$else}
+      {$if not defined(PKCS7_dataFinal_allownil)}
+      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_dataFinal_removed)}
+    if PKCS7_dataFinal_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_dataFinal)}
+      PKCS7_dataFinal := @_PKCS7_dataFinal;
+      {$else}
+      {$if not defined(PKCS7_dataFinal_allownil)}
+      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_dataFinal_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
+      AFailed.Add('PKCS7_dataFinal');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_dataDecode := LoadLibFunction(ADllHandle, PKCS7_dataDecode_procname);
+  FuncLoaded := assigned(PKCS7_dataDecode);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_dataDecode_introduced)}
+    if LibVersion < PKCS7_dataDecode_introduced then
+    begin
+      {$if declared(FC_PKCS7_dataDecode)}
+      PKCS7_dataDecode := @FC_PKCS7_dataDecode;
+      {$else}
+      {$if not defined(PKCS7_dataDecode_allownil)}
+      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_dataDecode_removed)}
+    if PKCS7_dataDecode_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_dataDecode)}
+      PKCS7_dataDecode := @_PKCS7_dataDecode;
+      {$else}
+      {$if not defined(PKCS7_dataDecode_allownil)}
+      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_dataDecode_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
+      AFailed.Add('PKCS7_dataDecode');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_signature := LoadLibFunction(ADllHandle, PKCS7_add_signature_procname);
+  FuncLoaded := assigned(PKCS7_add_signature);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_signature_introduced)}
+    if LibVersion < PKCS7_add_signature_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_signature)}
+      PKCS7_add_signature := @FC_PKCS7_add_signature;
+      {$else}
+      {$if not defined(PKCS7_add_signature_allownil)}
+      PKCS7_add_signature := @ERR_PKCS7_add_signature;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_signature_removed)}
+    if PKCS7_add_signature_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_signature)}
+      PKCS7_add_signature := @_PKCS7_add_signature;
+      {$else}
+      {$if not defined(PKCS7_add_signature_allownil)}
+      PKCS7_add_signature := @ERR_PKCS7_add_signature;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_signature_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_signature := @ERR_PKCS7_add_signature;
+      AFailed.Add('PKCS7_add_signature');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_cert_from_signer_info := LoadLibFunction(ADllHandle, PKCS7_cert_from_signer_info_procname);
+  FuncLoaded := assigned(PKCS7_cert_from_signer_info);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_cert_from_signer_info_introduced)}
+    if LibVersion < PKCS7_cert_from_signer_info_introduced then
+    begin
+      {$if declared(FC_PKCS7_cert_from_signer_info)}
+      PKCS7_cert_from_signer_info := @FC_PKCS7_cert_from_signer_info;
+      {$else}
+      {$if not defined(PKCS7_cert_from_signer_info_allownil)}
+      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_cert_from_signer_info_removed)}
+    if PKCS7_cert_from_signer_info_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_cert_from_signer_info)}
+      PKCS7_cert_from_signer_info := @_PKCS7_cert_from_signer_info;
+      {$else}
+      {$if not defined(PKCS7_cert_from_signer_info_allownil)}
+      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_cert_from_signer_info_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
+      AFailed.Add('PKCS7_cert_from_signer_info');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_set_digest := LoadLibFunction(ADllHandle, PKCS7_set_digest_procname);
+  FuncLoaded := assigned(PKCS7_set_digest);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_set_digest_introduced)}
+    if LibVersion < PKCS7_set_digest_introduced then
+    begin
+      {$if declared(FC_PKCS7_set_digest)}
+      PKCS7_set_digest := @FC_PKCS7_set_digest;
+      {$else}
+      {$if not defined(PKCS7_set_digest_allownil)}
+      PKCS7_set_digest := @ERR_PKCS7_set_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_set_digest_removed)}
+    if PKCS7_set_digest_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_set_digest)}
+      PKCS7_set_digest := @_PKCS7_set_digest;
+      {$else}
+      {$if not defined(PKCS7_set_digest_allownil)}
+      PKCS7_set_digest := @ERR_PKCS7_set_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_set_digest_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_set_digest := @ERR_PKCS7_set_digest;
+      AFailed.Add('PKCS7_set_digest');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_recipient := LoadLibFunction(ADllHandle, PKCS7_add_recipient_procname);
+  FuncLoaded := assigned(PKCS7_add_recipient);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_recipient_introduced)}
+    if LibVersion < PKCS7_add_recipient_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_recipient)}
+      PKCS7_add_recipient := @FC_PKCS7_add_recipient;
+      {$else}
+      {$if not defined(PKCS7_add_recipient_allownil)}
+      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_recipient_removed)}
+    if PKCS7_add_recipient_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_recipient)}
+      PKCS7_add_recipient := @_PKCS7_add_recipient;
+      {$else}
+      {$if not defined(PKCS7_add_recipient_allownil)}
+      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_recipient_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
+      AFailed.Add('PKCS7_add_recipient');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_SIGNER_INFO_get0_algs := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_get0_algs_procname);
+  FuncLoaded := assigned(PKCS7_SIGNER_INFO_get0_algs);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_SIGNER_INFO_get0_algs_introduced)}
+    if LibVersion < PKCS7_SIGNER_INFO_get0_algs_introduced then
+    begin
+      {$if declared(FC_PKCS7_SIGNER_INFO_get0_algs)}
+      PKCS7_SIGNER_INFO_get0_algs := @FC_PKCS7_SIGNER_INFO_get0_algs;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
+      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_SIGNER_INFO_get0_algs_removed)}
+    if PKCS7_SIGNER_INFO_get0_algs_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_SIGNER_INFO_get0_algs)}
+      PKCS7_SIGNER_INFO_get0_algs := @_PKCS7_SIGNER_INFO_get0_algs;
+      {$else}
+      {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
+      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
+      AFailed.Add('PKCS7_SIGNER_INFO_get0_algs');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_RECIP_INFO_get0_alg := LoadLibFunction(ADllHandle, PKCS7_RECIP_INFO_get0_alg_procname);
+  FuncLoaded := assigned(PKCS7_RECIP_INFO_get0_alg);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_RECIP_INFO_get0_alg_introduced)}
+    if LibVersion < PKCS7_RECIP_INFO_get0_alg_introduced then
+    begin
+      {$if declared(FC_PKCS7_RECIP_INFO_get0_alg)}
+      PKCS7_RECIP_INFO_get0_alg := @FC_PKCS7_RECIP_INFO_get0_alg;
+      {$else}
+      {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
+      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_RECIP_INFO_get0_alg_removed)}
+    if PKCS7_RECIP_INFO_get0_alg_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_RECIP_INFO_get0_alg)}
+      PKCS7_RECIP_INFO_get0_alg := @_PKCS7_RECIP_INFO_get0_alg;
+      {$else}
+      {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
+      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
+      AFailed.Add('PKCS7_RECIP_INFO_get0_alg');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_recipient_info := LoadLibFunction(ADllHandle, PKCS7_add_recipient_info_procname);
+  FuncLoaded := assigned(PKCS7_add_recipient_info);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_recipient_info_introduced)}
+    if LibVersion < PKCS7_add_recipient_info_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_recipient_info)}
+      PKCS7_add_recipient_info := @FC_PKCS7_add_recipient_info;
+      {$else}
+      {$if not defined(PKCS7_add_recipient_info_allownil)}
+      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_recipient_info_removed)}
+    if PKCS7_add_recipient_info_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_recipient_info)}
+      PKCS7_add_recipient_info := @_PKCS7_add_recipient_info;
+      {$else}
+      {$if not defined(PKCS7_add_recipient_info_allownil)}
+      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_recipient_info_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
+      AFailed.Add('PKCS7_add_recipient_info');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_RECIP_INFO_set := LoadLibFunction(ADllHandle, PKCS7_RECIP_INFO_set_procname);
+  FuncLoaded := assigned(PKCS7_RECIP_INFO_set);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_RECIP_INFO_set_introduced)}
+    if LibVersion < PKCS7_RECIP_INFO_set_introduced then
+    begin
+      {$if declared(FC_PKCS7_RECIP_INFO_set)}
+      PKCS7_RECIP_INFO_set := @FC_PKCS7_RECIP_INFO_set;
+      {$else}
+      {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
+      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_RECIP_INFO_set_removed)}
+    if PKCS7_RECIP_INFO_set_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_RECIP_INFO_set)}
+      PKCS7_RECIP_INFO_set := @_PKCS7_RECIP_INFO_set;
+      {$else}
+      {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
+      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
+      AFailed.Add('PKCS7_RECIP_INFO_set');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_set_cipher := LoadLibFunction(ADllHandle, PKCS7_set_cipher_procname);
+  FuncLoaded := assigned(PKCS7_set_cipher);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_set_cipher_introduced)}
+    if LibVersion < PKCS7_set_cipher_introduced then
+    begin
+      {$if declared(FC_PKCS7_set_cipher)}
+      PKCS7_set_cipher := @FC_PKCS7_set_cipher;
+      {$else}
+      {$if not defined(PKCS7_set_cipher_allownil)}
+      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_set_cipher_removed)}
+    if PKCS7_set_cipher_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_set_cipher)}
+      PKCS7_set_cipher := @_PKCS7_set_cipher;
+      {$else}
+      {$if not defined(PKCS7_set_cipher_allownil)}
+      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_set_cipher_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
+      AFailed.Add('PKCS7_set_cipher');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_stream := LoadLibFunction(ADllHandle, PKCS7_stream_procname);
+  FuncLoaded := assigned(PKCS7_stream);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_stream_introduced)}
+    if LibVersion < PKCS7_stream_introduced then
+    begin
+      {$if declared(FC_PKCS7_stream)}
+      PKCS7_stream := @FC_PKCS7_stream;
+      {$else}
+      {$if not defined(PKCS7_stream_allownil)}
+      PKCS7_stream := @ERR_PKCS7_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_stream_removed)}
+    if PKCS7_stream_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_stream)}
+      PKCS7_stream := @_PKCS7_stream;
+      {$else}
+      {$if not defined(PKCS7_stream_allownil)}
+      PKCS7_stream := @ERR_PKCS7_stream;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_stream_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_stream := @ERR_PKCS7_stream;
+      AFailed.Add('PKCS7_stream');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_get_issuer_and_serial := LoadLibFunction(ADllHandle, PKCS7_get_issuer_and_serial_procname);
+  FuncLoaded := assigned(PKCS7_get_issuer_and_serial);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_get_issuer_and_serial_introduced)}
+    if LibVersion < PKCS7_get_issuer_and_serial_introduced then
+    begin
+      {$if declared(FC_PKCS7_get_issuer_and_serial)}
+      PKCS7_get_issuer_and_serial := @FC_PKCS7_get_issuer_and_serial;
+      {$else}
+      {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
+      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_get_issuer_and_serial_removed)}
+    if PKCS7_get_issuer_and_serial_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_get_issuer_and_serial)}
+      PKCS7_get_issuer_and_serial := @_PKCS7_get_issuer_and_serial;
+      {$else}
+      {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
+      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
+      AFailed.Add('PKCS7_get_issuer_and_serial');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_signed_attribute := LoadLibFunction(ADllHandle, PKCS7_add_signed_attribute_procname);
+  FuncLoaded := assigned(PKCS7_add_signed_attribute);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_signed_attribute_introduced)}
+    if LibVersion < PKCS7_add_signed_attribute_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_signed_attribute)}
+      PKCS7_add_signed_attribute := @FC_PKCS7_add_signed_attribute;
+      {$else}
+      {$if not defined(PKCS7_add_signed_attribute_allownil)}
+      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_signed_attribute_removed)}
+    if PKCS7_add_signed_attribute_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_signed_attribute)}
+      PKCS7_add_signed_attribute := @_PKCS7_add_signed_attribute;
+      {$else}
+      {$if not defined(PKCS7_add_signed_attribute_allownil)}
+      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_signed_attribute_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
+      AFailed.Add('PKCS7_add_signed_attribute');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_attribute := LoadLibFunction(ADllHandle, PKCS7_add_attribute_procname);
+  FuncLoaded := assigned(PKCS7_add_attribute);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_attribute_introduced)}
+    if LibVersion < PKCS7_add_attribute_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_attribute)}
+      PKCS7_add_attribute := @FC_PKCS7_add_attribute;
+      {$else}
+      {$if not defined(PKCS7_add_attribute_allownil)}
+      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_attribute_removed)}
+    if PKCS7_add_attribute_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_attribute)}
+      PKCS7_add_attribute := @_PKCS7_add_attribute;
+      {$else}
+      {$if not defined(PKCS7_add_attribute_allownil)}
+      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_attribute_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
+      AFailed.Add('PKCS7_add_attribute');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_get_attribute := LoadLibFunction(ADllHandle, PKCS7_get_attribute_procname);
+  FuncLoaded := assigned(PKCS7_get_attribute);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_get_attribute_introduced)}
+    if LibVersion < PKCS7_get_attribute_introduced then
+    begin
+      {$if declared(FC_PKCS7_get_attribute)}
+      PKCS7_get_attribute := @FC_PKCS7_get_attribute;
+      {$else}
+      {$if not defined(PKCS7_get_attribute_allownil)}
+      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_get_attribute_removed)}
+    if PKCS7_get_attribute_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_get_attribute)}
+      PKCS7_get_attribute := @_PKCS7_get_attribute;
+      {$else}
+      {$if not defined(PKCS7_get_attribute_allownil)}
+      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_get_attribute_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
+      AFailed.Add('PKCS7_get_attribute');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_get_signed_attribute := LoadLibFunction(ADllHandle, PKCS7_get_signed_attribute_procname);
+  FuncLoaded := assigned(PKCS7_get_signed_attribute);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_get_signed_attribute_introduced)}
+    if LibVersion < PKCS7_get_signed_attribute_introduced then
+    begin
+      {$if declared(FC_PKCS7_get_signed_attribute)}
+      PKCS7_get_signed_attribute := @FC_PKCS7_get_signed_attribute;
+      {$else}
+      {$if not defined(PKCS7_get_signed_attribute_allownil)}
+      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_get_signed_attribute_removed)}
+    if PKCS7_get_signed_attribute_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_get_signed_attribute)}
+      PKCS7_get_signed_attribute := @_PKCS7_get_signed_attribute;
+      {$else}
+      {$if not defined(PKCS7_get_signed_attribute_allownil)}
+      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_get_signed_attribute_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
+      AFailed.Add('PKCS7_get_signed_attribute');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_sign_add_signer := LoadLibFunction(ADllHandle, PKCS7_sign_add_signer_procname);
+  FuncLoaded := assigned(PKCS7_sign_add_signer);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_sign_add_signer_introduced)}
+    if LibVersion < PKCS7_sign_add_signer_introduced then
+    begin
+      {$if declared(FC_PKCS7_sign_add_signer)}
+      PKCS7_sign_add_signer := @FC_PKCS7_sign_add_signer;
+      {$else}
+      {$if not defined(PKCS7_sign_add_signer_allownil)}
+      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_sign_add_signer_removed)}
+    if PKCS7_sign_add_signer_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_sign_add_signer)}
+      PKCS7_sign_add_signer := @_PKCS7_sign_add_signer;
+      {$else}
+      {$if not defined(PKCS7_sign_add_signer_allownil)}
+      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_sign_add_signer_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
+      AFailed.Add('PKCS7_sign_add_signer');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_final := LoadLibFunction(ADllHandle, PKCS7_final_procname);
+  FuncLoaded := assigned(PKCS7_final);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_final_introduced)}
+    if LibVersion < PKCS7_final_introduced then
+    begin
+      {$if declared(FC_PKCS7_final)}
+      PKCS7_final := @FC_PKCS7_final;
+      {$else}
+      {$if not defined(PKCS7_final_allownil)}
+      PKCS7_final := @ERR_PKCS7_final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_final_removed)}
+    if PKCS7_final_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_final)}
+      PKCS7_final := @_PKCS7_final;
+      {$else}
+      {$if not defined(PKCS7_final_allownil)}
+      PKCS7_final := @ERR_PKCS7_final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_final_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_final := @ERR_PKCS7_final;
+      AFailed.Add('PKCS7_final');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_decrypt := LoadLibFunction(ADllHandle, PKCS7_decrypt_procname);
+  FuncLoaded := assigned(PKCS7_decrypt);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_decrypt_introduced)}
+    if LibVersion < PKCS7_decrypt_introduced then
+    begin
+      {$if declared(FC_PKCS7_decrypt)}
+      PKCS7_decrypt := @FC_PKCS7_decrypt;
+      {$else}
+      {$if not defined(PKCS7_decrypt_allownil)}
+      PKCS7_decrypt := @ERR_PKCS7_decrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_decrypt_removed)}
+    if PKCS7_decrypt_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_decrypt)}
+      PKCS7_decrypt := @_PKCS7_decrypt;
+      {$else}
+      {$if not defined(PKCS7_decrypt_allownil)}
+      PKCS7_decrypt := @ERR_PKCS7_decrypt;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_decrypt_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_decrypt := @ERR_PKCS7_decrypt;
+      AFailed.Add('PKCS7_decrypt');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add_attrib_content_type := LoadLibFunction(ADllHandle, PKCS7_add_attrib_content_type_procname);
+  FuncLoaded := assigned(PKCS7_add_attrib_content_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add_attrib_content_type_introduced)}
+    if LibVersion < PKCS7_add_attrib_content_type_introduced then
+    begin
+      {$if declared(FC_PKCS7_add_attrib_content_type)}
+      PKCS7_add_attrib_content_type := @FC_PKCS7_add_attrib_content_type;
+      {$else}
+      {$if not defined(PKCS7_add_attrib_content_type_allownil)}
+      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add_attrib_content_type_removed)}
+    if PKCS7_add_attrib_content_type_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add_attrib_content_type)}
+      PKCS7_add_attrib_content_type := @_PKCS7_add_attrib_content_type;
+      {$else}
+      {$if not defined(PKCS7_add_attrib_content_type_allownil)}
+      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add_attrib_content_type_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
+      AFailed.Add('PKCS7_add_attrib_content_type');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add0_attrib_signing_time := LoadLibFunction(ADllHandle, PKCS7_add0_attrib_signing_time_procname);
+  FuncLoaded := assigned(PKCS7_add0_attrib_signing_time);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add0_attrib_signing_time_introduced)}
+    if LibVersion < PKCS7_add0_attrib_signing_time_introduced then
+    begin
+      {$if declared(FC_PKCS7_add0_attrib_signing_time)}
+      PKCS7_add0_attrib_signing_time := @FC_PKCS7_add0_attrib_signing_time;
+      {$else}
+      {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
+      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add0_attrib_signing_time_removed)}
+    if PKCS7_add0_attrib_signing_time_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add0_attrib_signing_time)}
+      PKCS7_add0_attrib_signing_time := @_PKCS7_add0_attrib_signing_time;
+      {$else}
+      {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
+      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
+      AFailed.Add('PKCS7_add0_attrib_signing_time');
+    end;
+    {$ifend}
+  end;
+
+
+  PKCS7_add1_attrib_digest := LoadLibFunction(ADllHandle, PKCS7_add1_attrib_digest_procname);
+  FuncLoaded := assigned(PKCS7_add1_attrib_digest);
+  if not FuncLoaded then
+  begin
+    {$if declared(PKCS7_add1_attrib_digest_introduced)}
+    if LibVersion < PKCS7_add1_attrib_digest_introduced then
+    begin
+      {$if declared(FC_PKCS7_add1_attrib_digest)}
+      PKCS7_add1_attrib_digest := @FC_PKCS7_add1_attrib_digest;
+      {$else}
+      {$if not defined(PKCS7_add1_attrib_digest_allownil)}
+      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(PKCS7_add1_attrib_digest_removed)}
+    if PKCS7_add1_attrib_digest_removed <= LibVersion then
+    begin
+      {$if declared(_PKCS7_add1_attrib_digest)}
+      PKCS7_add1_attrib_digest := @_PKCS7_add1_attrib_digest;
+      {$else}
+      {$if not defined(PKCS7_add1_attrib_digest_allownil)}
+      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(PKCS7_add1_attrib_digest_allownil)}
+    if not FuncLoaded then
+    begin
+      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
+      AFailed.Add('PKCS7_add1_attrib_digest');
+    end;
+    {$ifend}
+  end;
+
+
+  SMIME_write_PKCS7 := LoadLibFunction(ADllHandle, SMIME_write_PKCS7_procname);
+  FuncLoaded := assigned(SMIME_write_PKCS7);
+  if not FuncLoaded then
+  begin
+    {$if declared(SMIME_write_PKCS7_introduced)}
+    if LibVersion < SMIME_write_PKCS7_introduced then
+    begin
+      {$if declared(FC_SMIME_write_PKCS7)}
+      SMIME_write_PKCS7 := @FC_SMIME_write_PKCS7;
+      {$else}
+      {$if not defined(SMIME_write_PKCS7_allownil)}
+      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SMIME_write_PKCS7_removed)}
+    if SMIME_write_PKCS7_removed <= LibVersion then
+    begin
+      {$if declared(_SMIME_write_PKCS7)}
+      SMIME_write_PKCS7 := @_SMIME_write_PKCS7;
+      {$else}
+      {$if not defined(SMIME_write_PKCS7_allownil)}
+      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SMIME_write_PKCS7_allownil)}
+    if not FuncLoaded then
+    begin
+      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
+      AFailed.Add('SMIME_write_PKCS7');
+    end;
+    {$ifend}
+  end;
+
+
+  SMIME_read_PKCS7 := LoadLibFunction(ADllHandle, SMIME_read_PKCS7_procname);
+  FuncLoaded := assigned(SMIME_read_PKCS7);
+  if not FuncLoaded then
+  begin
+    {$if declared(SMIME_read_PKCS7_introduced)}
+    if LibVersion < SMIME_read_PKCS7_introduced then
+    begin
+      {$if declared(FC_SMIME_read_PKCS7)}
+      SMIME_read_PKCS7 := @FC_SMIME_read_PKCS7;
+      {$else}
+      {$if not defined(SMIME_read_PKCS7_allownil)}
+      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SMIME_read_PKCS7_removed)}
+    if SMIME_read_PKCS7_removed <= LibVersion then
+    begin
+      {$if declared(_SMIME_read_PKCS7)}
+      SMIME_read_PKCS7 := @_SMIME_read_PKCS7;
+      {$else}
+      {$if not defined(SMIME_read_PKCS7_allownil)}
+      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SMIME_read_PKCS7_allownil)}
+    if not FuncLoaded then
+    begin
+      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
+      AFailed.Add('SMIME_read_PKCS7');
+    end;
+    {$ifend}
+  end;
+
+
+  BIO_new_PKCS7 := LoadLibFunction(ADllHandle, BIO_new_PKCS7_procname);
+  FuncLoaded := assigned(BIO_new_PKCS7);
+  if not FuncLoaded then
+  begin
+    {$if declared(BIO_new_PKCS7_introduced)}
+    if LibVersion < BIO_new_PKCS7_introduced then
+    begin
+      {$if declared(FC_BIO_new_PKCS7)}
+      BIO_new_PKCS7 := @FC_BIO_new_PKCS7;
+      {$else}
+      {$if not defined(BIO_new_PKCS7_allownil)}
+      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(BIO_new_PKCS7_removed)}
+    if BIO_new_PKCS7_removed <= LibVersion then
+    begin
+      {$if declared(_BIO_new_PKCS7)}
+      BIO_new_PKCS7 := @_BIO_new_PKCS7;
+      {$else}
+      {$if not defined(BIO_new_PKCS7_allownil)}
+      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(BIO_new_PKCS7_allownil)}
+    if not FuncLoaded then
+    begin
+      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
+      AFailed.Add('BIO_new_PKCS7');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

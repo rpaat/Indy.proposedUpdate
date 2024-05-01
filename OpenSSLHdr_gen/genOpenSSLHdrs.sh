@@ -185,6 +185,16 @@ EOT
     
     #Start Dynamic Interface section
     echo "{\$IFNDEF USE_EXTERNAL_LIBRARY}" >>$UNITFILE
+    
+    #Create constant names for each function/procedure
+    echo "const" >>$UNITFILE
+    sed  '/^implementation.*$/,$d' $FILE | sed "${HELPERS}d" | sed "${DEFINES}d" |sed -n '/^ *\(procedure \|function \)/,$p' |\
+    sed "s/$PROCFILTER/  \2_procname = '\2';/" >> $UNITFILE
+    
+    #Note allow_nil functions
+    sed  '/^implementation.*$/,$d' $FILE | sed "${HELPERS}d" | sed "${DEFINES}d" |sed -n '/^ *\(procedure \|function \)/,$p' | grep "{.*${ALLOW_NIL} *}" |\
+    sed "s/$PROCFILTER/{\$DEFINE \2_allownil}/" >> $UNITFILE
+        
 
     #include implementation body for dynamic interface
 	if [ -z "$USESFILTER" ] ; then
@@ -197,14 +207,13 @@ EOT
 
     #Copy forward compatibility functions to implementation section
     sed '0,/^implementation.*$/d' $FILE| sed '/^end\..*$/,$d' | sed -n "${FORWARDS}p" | sed "s/$PROCFILTER/\1 FC_\2\3; cdecl;/" >>$UNITFILE
-    
-    #Add Exception generators for each introduced/removed procedure/function
+    #Add Exception Generators for each procedure/function
     echo '{$WARN  NO_RETVAL OFF}' >>$UNITFILE
-    sed  '/^implementation.*$/,$d' $FILE | sed -n '/^ *\(procedure \|function \)/,$p'  | grep  "\($INTRODUCED\|$REMOVEDNOTNILFILTER\)" |\
-    sed "s/$PROCFILTER *\({.*}\)/\
+    sed  '/^implementation.*$/,$d' $FILE | sed "${HELPERS}d" | sed "${DEFINES}d" |sed -n '/^ *\(procedure \|function \)/,$p' | sed "s/$REMOVEDNOTNILFILTER//" |\
+    sed "s/$PROCFILTER/\
 \1 ERR_\2\3; \4\n\
 begin\n\
-  EIdAPIFunctionNotPresent.RaiseException('\2');\n\
+  EIdAPIFunctionNotPresent.RaiseException(\2_procname);\n\
 end;\n\\n/" >>$UNITFILE
     echo '{$WARN  NO_RETVAL ON}' >>$UNITFILE
 
@@ -214,55 +223,56 @@ end;\n\\n/" >>$UNITFILE
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
 EOT
 
 
     #Generate Load procedures
-    #If the procedure/function is neither "introduced" nor "removed" then a failure to load is handled 
+    #If the procedure/function is not found then report 
     #by adding the procedure/function name to the "failed" list
-    sed  '/^implementation.*$/,$d' $FILE |sed "${HELPERS}d" |  grep -i '^ *\(procedure \|function \)' | grep -v "$REMOVED" | grep -v "$INTRODUCED" | grep -v "$ALLOW_NIL" |\
-    sed "s/$PROCFILTER/  \2 := LoadFunction('\2',AFailed);/" >> $UNITFILE
-    
-    sed  '/^implementation.*$/,$d' $FILE | sed "${HELPERS}d" | sed -n '/^ *\(procedure \|function \)/,$p'  | grep  "\($REMOVED\|$INTRODUCED\|$ALLOW_NIL\)" | \
-    sed "s/$PROCFILTER/  \2 := LoadFunction('\2',nil);/" >> $UNITFILE
-    
-      
-    sed  '/^implementation.*$/,$d' $FILE | sed "${HELPERS}d" | sed -n '/^ *\(procedure \|function \)/,$p'  | grep  "\($REMOVED\|$INTRODUCED\)" |\
-    sed "s/$PROCFILTER *\({.*}\)/\
-  if not assigned(\2) then \n\
+    sed  '/^implementation.*$/,$d' $FILE |sed "${HELPERS}d" |  grep -i '^ *\(procedure \|function \)' |sed "s/$REMOVEDNOTNILFILTER//" |\
+    sed "s/$PROCFILTER/\
+  \2 := LoadLibFunction(ADllHandle, \2_procname);\n\
+  FuncLoaded := assigned(\2);\n\
+  if not FuncLoaded then\n\
   begin\n\
     {\$if declared(\2_introduced)}\n\
     if LibVersion < \2_introduced then\n\
+    begin\n\
       {\$if declared(FC_\2)}\n\
-      \2 := @FC_\2\n\
+      \2 := @FC_\2;\n\
       {\$else}\n\
-      \2 := @ERR_\2\n\
+      {\$if not defined(\2_allownil)}\n\
+      \2 := @ERR_\2;\n\
       {\$ifend}\n\
-    else\n\
+      {\$ifend}\n\
+      FuncLoaded := true;\n\
+    end;\n\
     {\$ifend}\n\
-   {\$if declared(\2_removed)}\n\
-   if \2_removed <= LibVersion then\n\
-     {\$if declared(_\2)}\n\
-     \2 := @_\2\n\
-     {\$else}\n\
-       {\$IF declared(ERR_\2)}\n\
-       \2 := @ERR_\2\n\
-       {\$ifend}\n\
-     {\$ifend}\n\
-    else\n\
-   {$\ifend}\n\
-   if not assigned(\2) and Assigned(AFailed) then \n\
-     AFailed.Add('\2');\n\
-  end;\n\n/" >>$UNITFILE
-
+    {\$if declared(\2_removed)}\n\
+    if \2_removed <= LibVersion then\n\
+    begin\n\
+      {\$if declared(_\2)}\n\
+      \2 := @_\2;\n\
+      {\$else}\n\
+      {\$if not defined(\2_allownil)}\n\
+      \2 := @ERR_\2;\n\
+      {\$ifend}\n\
+      {\$ifend}\n\
+      FuncLoaded := true;\n\
+    end;\n\
+    {$\ifend}\n\
+    {\$if not defined(\2_allownil)}\n\
+    if not FuncLoaded then\n\
+    begin\n\
+      \2 := @ERR_\2;\n\
+      AFailed.Add('\2');\n\
+    end;\n\
+    {\$ifend}\n\
+  end;\n\n/" >> $UNITFILE
+ 
     cat <<EOT >> $UNITFILE
 end;
 

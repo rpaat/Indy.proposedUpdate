@@ -1333,6 +1333,103 @@ const
 
 //# define SSL_set_tlsext_host_name(s,name)         SSL_ctrl(s,SSL_CTRL_SET_TLSEXT_HOSTNAME,TLSEXT_NAMETYPE_host_name, (void *)name)
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  SSL_set_tlsext_host_name_procname = 'SSL_set_tlsext_host_name'; {removed 1.0.0}
+
+  SSL_CTX_set_tlsext_max_fragment_length_procname = 'SSL_CTX_set_tlsext_max_fragment_length'; {introduced 1.1.0}
+  SSL_set_tlsext_max_fragment_length_procname = 'SSL_set_tlsext_max_fragment_length'; {introduced 1.1.0}
+
+  SSL_get_servername_procname = 'SSL_get_servername';
+  SSL_get_servername_type_procname = 'SSL_get_servername_type';
+  (*
+   * SSL_export_keying_material exports a value derived from the master secret,
+   * as specified in RFC 5705. It writes |olen| bytes to |out| given a label and
+   * optional context. (Since a zero length context is allowed, the |use_context|
+   * flag controls whether a context is included.) It returns 1 on success and
+   * 0 or -1 otherwise.
+   *)
+  SSL_export_keying_material_procname = 'SSL_export_keying_material';
+
+  (*
+   * SSL_export_keying_material_early exports a value derived from the
+   * early exporter master secret, as specified in
+   * https://tools.ietf.org/html/draft-ietf-tls-tls13-23. It writes
+   * |olen| bytes to |out| given a label and optional context. It
+   * returns 1 on success and 0 otherwise.
+   *)
+  SSL_export_keying_material_early_procname = 'SSL_export_keying_material_early'; {introduced 1.1.0}
+
+  SSL_get_peer_signature_type_nid_procname = 'SSL_get_peer_signature_type_nid'; {introduced 1.1.0}
+  SSL_get_signature_type_nid_procname = 'SSL_get_signature_type_nid'; {introduced 1.1.0}
+  SSL_get_sigalgs_procname = 'SSL_get_sigalgs';
+  SSL_get_shared_sigalgs_procname = 'SSL_get_shared_sigalgs';
+
+  //__owur TIdC_INT SSL_check_chain(s: PSSL, X509 *x, EVP_PKEY *pk, STACK_OF(X509) *chain);
+
+  //# define SSL_set_tlsext_debug_callback(ssl, cb) \
+  //        SSL_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_DEBUG_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_set_tlsext_debug_arg(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_DEBUG_ARG,0,arg)
+  //
+  //# define SSL_get_tlsext_status_type(ssl) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_TYPE,0,NULL)
+  //
+  //# define SSL_set_tlsext_status_type(ssl, type) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_TYPE,type,NULL)
+  //
+  //# define SSL_get_tlsext_status_exts(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_EXTS,0,arg)
+  //
+  //# define SSL_set_tlsext_status_exts(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_EXTS,0,arg)
+  //
+  //# define SSL_get_tlsext_status_ids(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_IDS,0,arg)
+  //
+  //# define SSL_set_tlsext_status_ids(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_IDS,0,arg)
+  //
+  //# define SSL_get_tlsext_status_ocsp_resp(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_OCSP_RESP,0,arg)
+  //
+  //# define SSL_set_tlsext_status_ocsp_resp(ssl, arg, arglen) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_OCSP_RESP,arglen,arg)
+  //
+  //# define SSL_CTX_set_tlsext_servername_callback(ctx, cb) \
+  //        SSL_CTX_callback_ctrl(ctx,SSL_CTRL_SET_TLSEXT_SERVERNAME_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_CTX_set_tlsext_servername_arg(ctx, arg) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_SET_TLSEXT_SERVERNAME_ARG,0,arg)
+  //
+  //# define SSL_CTX_get_tlsext_ticket_keys(ctx, keys, keylen) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_GET_TLSEXT_TICKET_KEYS,keylen,keys)
+  //# define SSL_CTX_set_tlsext_ticket_keys(ctx, keys, keylen) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_SET_TLSEXT_TICKET_KEYS,keylen,keys)
+  //
+  //# define SSL_CTX_get_tlsext_status_cb(ssl, cb) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_CB,0,(void *)cb)
+  //# define SSL_CTX_set_tlsext_status_cb(ssl, cb) \
+  //        SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_CTX_get_tlsext_status_arg(ssl, arg) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_CB_ARG,0,arg)
+  //# define SSL_CTX_set_tlsext_status_arg(ssl, arg) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_CB_ARG,0,arg)
+  //
+  //# define SSL_CTX_set_tlsext_status_type(ssl, type) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_TYPE,type,NULL)
+  //
+  //# define SSL_CTX_get_tlsext_status_type(ssl) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_TYPE,0,NULL)
+  //
+  //# define SSL_CTX_set_tlsext_ticket_key_cb(ssl, cb) \
+  //        SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_TICKET_KEY_CB,\
+  //                (void (*)(void))cb)
+
 
 
 //# define SSL_set_tlsext_host_name(s,name)         SSL_ctrl(s,SSL_CTRL_SET_TLSEXT_HOSTNAME,TLSEXT_NAMETYPE_host_name, (void *)name)
@@ -1344,222 +1441,599 @@ end;
 {$WARN  NO_RETVAL OFF}
 function  ERR_SSL_set_tlsext_host_name(s: PSSL; const name: PIdAnsiChar): TIdC_LONG; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_set_tlsext_host_name');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_set_tlsext_host_name_procname);
 end;
 
+ 
 
 function  ERR_SSL_CTX_set_tlsext_max_fragment_length(ctx: PSSL_CTx; mode: TIdC_UINT8): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_CTX_set_tlsext_max_fragment_length');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_CTX_set_tlsext_max_fragment_length_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_SSL_set_tlsext_max_fragment_length(ssl: PSSL; mode: TIdC_UINT8): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_set_tlsext_max_fragment_length');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_set_tlsext_max_fragment_length_procname);
+end;
+
+ {introduced 1.1.0}
+
+function  ERR_SSL_get_servername(const s: PSSL; const type_: TIdC_INT): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_servername_procname);
 end;
 
 
+function  ERR_SSL_get_servername_type(const s: PSSL): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_servername_type_procname);
+end;
+
+
+  (*
+   * SSL_export_keying_material exports a value derived from the master secret,
+   * as specified in RFC 5705. It writes |olen| bytes to |out| given a label and
+   * optional context. (Since a zero length context is allowed, the |use_context|
+   * flag controls whether a context is included.) It returns 1 on success and
+   * 0 or -1 otherwise.
+   *)
+function  ERR_SSL_export_keying_material(s: PSSL; out_: PByte; olen: TIdC_SIZET; const label_: PIdAnsiChar; llen: TIdC_SIZET; const context: PByte; contextlen: TIdC_SIZET; use_context: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_export_keying_material_procname);
+end;
+
+
+
+  (*
+   * SSL_export_keying_material_early exports a value derived from the
+   * early exporter master secret, as specified in
+   * https://tools.ietf.org/html/draft-ietf-tls-tls13-23. It writes
+   * |olen| bytes to |out| given a label and optional context. It
+   * returns 1 on success and 0 otherwise.
+   *)
 function  ERR_SSL_export_keying_material_early(s: PSSL; out_: PByte; olen: TIdC_SIZET; const label_: PIdAnsiChar; llen: TIdC_SIZET; const context: PByte; contextlen: TIdC_SIZET): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_export_keying_material_early');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_export_keying_material_early_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_SSL_get_peer_signature_type_nid(const s: PSSl; pnid: PIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_get_peer_signature_type_nid');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_peer_signature_type_nid_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_SSL_get_signature_type_nid(const s: PSSl; pnid: PIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSL_get_signature_type_nid');
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_signature_type_nid_procname);
 end;
 
+ {introduced 1.1.0}
+function  ERR_SSL_get_sigalgs(s: PSSl; idx: TIdC_INT; psign: PIdC_INT; phash: PIdC_INT; psignandhash: PIdC_INT; rsig: PByte; rhash: PByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_sigalgs_procname);
+end;
+
+
+function  ERR_SSL_get_shared_sigalgs(s: PSSl; idx: TIdC_INT; psign: PIdC_INT; phash: PIdC_INT; psignandhash: PIdC_INT; rsig: PByte; rhash: PByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_shared_sigalgs_procname);
+end;
+
+
+
+  //__owur TIdC_INT SSL_check_chain(s: PSSL, X509 *x, EVP_PKEY *pk, STACK_OF(X509) *chain);
+
+  //# define SSL_set_tlsext_debug_callback(ssl, cb) \
+  //        SSL_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_DEBUG_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_set_tlsext_debug_arg(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_DEBUG_ARG,0,arg)
+  //
+  //# define SSL_get_tlsext_status_type(ssl) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_TYPE,0,NULL)
+  //
+  //# define SSL_set_tlsext_status_type(ssl, type) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_TYPE,type,NULL)
+  //
+  //# define SSL_get_tlsext_status_exts(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_EXTS,0,arg)
+  //
+  //# define SSL_set_tlsext_status_exts(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_EXTS,0,arg)
+  //
+  //# define SSL_get_tlsext_status_ids(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_IDS,0,arg)
+  //
+  //# define SSL_set_tlsext_status_ids(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_IDS,0,arg)
+  //
+  //# define SSL_get_tlsext_status_ocsp_resp(ssl, arg) \
+  //        SSL_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_OCSP_RESP,0,arg)
+  //
+  //# define SSL_set_tlsext_status_ocsp_resp(ssl, arg, arglen) \
+  //        SSL_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_OCSP_RESP,arglen,arg)
+  //
+  //# define SSL_CTX_set_tlsext_servername_callback(ctx, cb) \
+  //        SSL_CTX_callback_ctrl(ctx,SSL_CTRL_SET_TLSEXT_SERVERNAME_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_CTX_set_tlsext_servername_arg(ctx, arg) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_SET_TLSEXT_SERVERNAME_ARG,0,arg)
+  //
+  //# define SSL_CTX_get_tlsext_ticket_keys(ctx, keys, keylen) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_GET_TLSEXT_TICKET_KEYS,keylen,keys)
+  //# define SSL_CTX_set_tlsext_ticket_keys(ctx, keys, keylen) \
+  //        SSL_CTX_ctrl(ctx,SSL_CTRL_SET_TLSEXT_TICKET_KEYS,keylen,keys)
+  //
+  //# define SSL_CTX_get_tlsext_status_cb(ssl, cb) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_CB,0,(void *)cb)
+  //# define SSL_CTX_set_tlsext_status_cb(ssl, cb) \
+  //        SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_CB,\
+  //                (void (*)(void))cb)
+
+  //# define SSL_CTX_get_tlsext_status_arg(ssl, arg) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_CB_ARG,0,arg)
+  //# define SSL_CTX_set_tlsext_status_arg(ssl, arg) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_CB_ARG,0,arg)
+  //
+  //# define SSL_CTX_set_tlsext_status_type(ssl, type) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_SET_TLSEXT_STATUS_REQ_TYPE,type,NULL)
+  //
+  //# define SSL_CTX_get_tlsext_status_type(ssl) \
+  //        SSL_CTX_ctrl(ssl,SSL_CTRL_GET_TLSEXT_STATUS_REQ_TYPE,0,NULL)
+  //
+  //# define SSL_CTX_set_tlsext_ticket_key_cb(ssl, cb) \
+  //        SSL_CTX_callback_ctrl(ssl,SSL_CTRL_SET_TLSEXT_TICKET_KEY_CB,\
+  //                (void (*)(void))cb)
 
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  SSL_get_servername := LoadFunction('SSL_get_servername',AFailed);
-  SSL_get_servername_type := LoadFunction('SSL_get_servername_type',AFailed);
-  SSL_export_keying_material := LoadFunction('SSL_export_keying_material',AFailed);
-  SSL_get_sigalgs := LoadFunction('SSL_get_sigalgs',AFailed);
-  SSL_get_shared_sigalgs := LoadFunction('SSL_get_shared_sigalgs',AFailed);
-  SSL_set_tlsext_host_name := LoadFunction('SSL_set_tlsext_host_name',nil); {removed 1.0.0}
-  SSL_CTX_set_tlsext_max_fragment_length := LoadFunction('SSL_CTX_set_tlsext_max_fragment_length',nil); {introduced 1.1.0}
-  SSL_set_tlsext_max_fragment_length := LoadFunction('SSL_set_tlsext_max_fragment_length',nil); {introduced 1.1.0}
-  SSL_export_keying_material_early := LoadFunction('SSL_export_keying_material_early',nil); {introduced 1.1.0}
-  SSL_get_peer_signature_type_nid := LoadFunction('SSL_get_peer_signature_type_nid',nil); {introduced 1.1.0}
-  SSL_get_signature_type_nid := LoadFunction('SSL_get_signature_type_nid',nil); {introduced 1.1.0}
-  if not assigned(SSL_set_tlsext_host_name) then 
+  SSL_set_tlsext_host_name := LoadLibFunction(ADllHandle, SSL_set_tlsext_host_name_procname);
+  FuncLoaded := assigned(SSL_set_tlsext_host_name);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_set_tlsext_host_name_introduced)}
     if LibVersion < SSL_set_tlsext_host_name_introduced then
+    begin
       {$if declared(FC_SSL_set_tlsext_host_name)}
-      SSL_set_tlsext_host_name := @FC_SSL_set_tlsext_host_name
+      SSL_set_tlsext_host_name := @FC_SSL_set_tlsext_host_name;
       {$else}
-      SSL_set_tlsext_host_name := @ERR_SSL_set_tlsext_host_name
+      {$if not defined(SSL_set_tlsext_host_name_allownil)}
+      SSL_set_tlsext_host_name := @ERR_SSL_set_tlsext_host_name;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_set_tlsext_host_name_removed)}
-   if SSL_set_tlsext_host_name_removed <= LibVersion then
-     {$if declared(_SSL_set_tlsext_host_name)}
-     SSL_set_tlsext_host_name := @_SSL_set_tlsext_host_name
-     {$else}
-       {$IF declared(ERR_SSL_set_tlsext_host_name)}
-       SSL_set_tlsext_host_name := @ERR_SSL_set_tlsext_host_name
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_set_tlsext_host_name) and Assigned(AFailed) then 
-     AFailed.Add('SSL_set_tlsext_host_name');
+    {$if declared(SSL_set_tlsext_host_name_removed)}
+    if SSL_set_tlsext_host_name_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_set_tlsext_host_name)}
+      SSL_set_tlsext_host_name := @_SSL_set_tlsext_host_name;
+      {$else}
+      {$if not defined(SSL_set_tlsext_host_name_allownil)}
+      SSL_set_tlsext_host_name := @ERR_SSL_set_tlsext_host_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_set_tlsext_host_name_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_set_tlsext_host_name := @ERR_SSL_set_tlsext_host_name;
+      AFailed.Add('SSL_set_tlsext_host_name');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSL_CTX_set_tlsext_max_fragment_length) then 
+ 
+  SSL_CTX_set_tlsext_max_fragment_length := LoadLibFunction(ADllHandle, SSL_CTX_set_tlsext_max_fragment_length_procname);
+  FuncLoaded := assigned(SSL_CTX_set_tlsext_max_fragment_length);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_CTX_set_tlsext_max_fragment_length_introduced)}
     if LibVersion < SSL_CTX_set_tlsext_max_fragment_length_introduced then
+    begin
       {$if declared(FC_SSL_CTX_set_tlsext_max_fragment_length)}
-      SSL_CTX_set_tlsext_max_fragment_length := @FC_SSL_CTX_set_tlsext_max_fragment_length
+      SSL_CTX_set_tlsext_max_fragment_length := @FC_SSL_CTX_set_tlsext_max_fragment_length;
       {$else}
-      SSL_CTX_set_tlsext_max_fragment_length := @ERR_SSL_CTX_set_tlsext_max_fragment_length
+      {$if not defined(SSL_CTX_set_tlsext_max_fragment_length_allownil)}
+      SSL_CTX_set_tlsext_max_fragment_length := @ERR_SSL_CTX_set_tlsext_max_fragment_length;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_CTX_set_tlsext_max_fragment_length_removed)}
-   if SSL_CTX_set_tlsext_max_fragment_length_removed <= LibVersion then
-     {$if declared(_SSL_CTX_set_tlsext_max_fragment_length)}
-     SSL_CTX_set_tlsext_max_fragment_length := @_SSL_CTX_set_tlsext_max_fragment_length
-     {$else}
-       {$IF declared(ERR_SSL_CTX_set_tlsext_max_fragment_length)}
-       SSL_CTX_set_tlsext_max_fragment_length := @ERR_SSL_CTX_set_tlsext_max_fragment_length
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_CTX_set_tlsext_max_fragment_length) and Assigned(AFailed) then 
-     AFailed.Add('SSL_CTX_set_tlsext_max_fragment_length');
+    {$if declared(SSL_CTX_set_tlsext_max_fragment_length_removed)}
+    if SSL_CTX_set_tlsext_max_fragment_length_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_CTX_set_tlsext_max_fragment_length)}
+      SSL_CTX_set_tlsext_max_fragment_length := @_SSL_CTX_set_tlsext_max_fragment_length;
+      {$else}
+      {$if not defined(SSL_CTX_set_tlsext_max_fragment_length_allownil)}
+      SSL_CTX_set_tlsext_max_fragment_length := @ERR_SSL_CTX_set_tlsext_max_fragment_length;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_CTX_set_tlsext_max_fragment_length_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_CTX_set_tlsext_max_fragment_length := @ERR_SSL_CTX_set_tlsext_max_fragment_length;
+      AFailed.Add('SSL_CTX_set_tlsext_max_fragment_length');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSL_set_tlsext_max_fragment_length) then 
+ {introduced 1.1.0}
+  SSL_set_tlsext_max_fragment_length := LoadLibFunction(ADllHandle, SSL_set_tlsext_max_fragment_length_procname);
+  FuncLoaded := assigned(SSL_set_tlsext_max_fragment_length);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_set_tlsext_max_fragment_length_introduced)}
     if LibVersion < SSL_set_tlsext_max_fragment_length_introduced then
+    begin
       {$if declared(FC_SSL_set_tlsext_max_fragment_length)}
-      SSL_set_tlsext_max_fragment_length := @FC_SSL_set_tlsext_max_fragment_length
+      SSL_set_tlsext_max_fragment_length := @FC_SSL_set_tlsext_max_fragment_length;
       {$else}
-      SSL_set_tlsext_max_fragment_length := @ERR_SSL_set_tlsext_max_fragment_length
+      {$if not defined(SSL_set_tlsext_max_fragment_length_allownil)}
+      SSL_set_tlsext_max_fragment_length := @ERR_SSL_set_tlsext_max_fragment_length;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_set_tlsext_max_fragment_length_removed)}
-   if SSL_set_tlsext_max_fragment_length_removed <= LibVersion then
-     {$if declared(_SSL_set_tlsext_max_fragment_length)}
-     SSL_set_tlsext_max_fragment_length := @_SSL_set_tlsext_max_fragment_length
-     {$else}
-       {$IF declared(ERR_SSL_set_tlsext_max_fragment_length)}
-       SSL_set_tlsext_max_fragment_length := @ERR_SSL_set_tlsext_max_fragment_length
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_set_tlsext_max_fragment_length) and Assigned(AFailed) then 
-     AFailed.Add('SSL_set_tlsext_max_fragment_length');
+    {$if declared(SSL_set_tlsext_max_fragment_length_removed)}
+    if SSL_set_tlsext_max_fragment_length_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_set_tlsext_max_fragment_length)}
+      SSL_set_tlsext_max_fragment_length := @_SSL_set_tlsext_max_fragment_length;
+      {$else}
+      {$if not defined(SSL_set_tlsext_max_fragment_length_allownil)}
+      SSL_set_tlsext_max_fragment_length := @ERR_SSL_set_tlsext_max_fragment_length;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_set_tlsext_max_fragment_length_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_set_tlsext_max_fragment_length := @ERR_SSL_set_tlsext_max_fragment_length;
+      AFailed.Add('SSL_set_tlsext_max_fragment_length');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  SSL_get_servername := LoadLibFunction(ADllHandle, SSL_get_servername_procname);
+  FuncLoaded := assigned(SSL_get_servername);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_get_servername_introduced)}
+    if LibVersion < SSL_get_servername_introduced then
+    begin
+      {$if declared(FC_SSL_get_servername)}
+      SSL_get_servername := @FC_SSL_get_servername;
+      {$else}
+      {$if not defined(SSL_get_servername_allownil)}
+      SSL_get_servername := @ERR_SSL_get_servername;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_get_servername_removed)}
+    if SSL_get_servername_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_servername)}
+      SSL_get_servername := @_SSL_get_servername;
+      {$else}
+      {$if not defined(SSL_get_servername_allownil)}
+      SSL_get_servername := @ERR_SSL_get_servername;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_servername_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_servername := @ERR_SSL_get_servername;
+      AFailed.Add('SSL_get_servername');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(SSL_export_keying_material_early) then 
+  SSL_get_servername_type := LoadLibFunction(ADllHandle, SSL_get_servername_type_procname);
+  FuncLoaded := assigned(SSL_get_servername_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_get_servername_type_introduced)}
+    if LibVersion < SSL_get_servername_type_introduced then
+    begin
+      {$if declared(FC_SSL_get_servername_type)}
+      SSL_get_servername_type := @FC_SSL_get_servername_type;
+      {$else}
+      {$if not defined(SSL_get_servername_type_allownil)}
+      SSL_get_servername_type := @ERR_SSL_get_servername_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_get_servername_type_removed)}
+    if SSL_get_servername_type_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_servername_type)}
+      SSL_get_servername_type := @_SSL_get_servername_type;
+      {$else}
+      {$if not defined(SSL_get_servername_type_allownil)}
+      SSL_get_servername_type := @ERR_SSL_get_servername_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_servername_type_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_servername_type := @ERR_SSL_get_servername_type;
+      AFailed.Add('SSL_get_servername_type');
+    end;
+    {$ifend}
+  end;
+
+
+  SSL_export_keying_material := LoadLibFunction(ADllHandle, SSL_export_keying_material_procname);
+  FuncLoaded := assigned(SSL_export_keying_material);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_export_keying_material_introduced)}
+    if LibVersion < SSL_export_keying_material_introduced then
+    begin
+      {$if declared(FC_SSL_export_keying_material)}
+      SSL_export_keying_material := @FC_SSL_export_keying_material;
+      {$else}
+      {$if not defined(SSL_export_keying_material_allownil)}
+      SSL_export_keying_material := @ERR_SSL_export_keying_material;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_export_keying_material_removed)}
+    if SSL_export_keying_material_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_export_keying_material)}
+      SSL_export_keying_material := @_SSL_export_keying_material;
+      {$else}
+      {$if not defined(SSL_export_keying_material_allownil)}
+      SSL_export_keying_material := @ERR_SSL_export_keying_material;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_export_keying_material_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_export_keying_material := @ERR_SSL_export_keying_material;
+      AFailed.Add('SSL_export_keying_material');
+    end;
+    {$ifend}
+  end;
+
+
+  SSL_export_keying_material_early := LoadLibFunction(ADllHandle, SSL_export_keying_material_early_procname);
+  FuncLoaded := assigned(SSL_export_keying_material_early);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_export_keying_material_early_introduced)}
     if LibVersion < SSL_export_keying_material_early_introduced then
+    begin
       {$if declared(FC_SSL_export_keying_material_early)}
-      SSL_export_keying_material_early := @FC_SSL_export_keying_material_early
+      SSL_export_keying_material_early := @FC_SSL_export_keying_material_early;
       {$else}
-      SSL_export_keying_material_early := @ERR_SSL_export_keying_material_early
+      {$if not defined(SSL_export_keying_material_early_allownil)}
+      SSL_export_keying_material_early := @ERR_SSL_export_keying_material_early;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_export_keying_material_early_removed)}
-   if SSL_export_keying_material_early_removed <= LibVersion then
-     {$if declared(_SSL_export_keying_material_early)}
-     SSL_export_keying_material_early := @_SSL_export_keying_material_early
-     {$else}
-       {$IF declared(ERR_SSL_export_keying_material_early)}
-       SSL_export_keying_material_early := @ERR_SSL_export_keying_material_early
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_export_keying_material_early) and Assigned(AFailed) then 
-     AFailed.Add('SSL_export_keying_material_early');
+    {$if declared(SSL_export_keying_material_early_removed)}
+    if SSL_export_keying_material_early_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_export_keying_material_early)}
+      SSL_export_keying_material_early := @_SSL_export_keying_material_early;
+      {$else}
+      {$if not defined(SSL_export_keying_material_early_allownil)}
+      SSL_export_keying_material_early := @ERR_SSL_export_keying_material_early;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_export_keying_material_early_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_export_keying_material_early := @ERR_SSL_export_keying_material_early;
+      AFailed.Add('SSL_export_keying_material_early');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSL_get_peer_signature_type_nid) then 
+ {introduced 1.1.0}
+  SSL_get_peer_signature_type_nid := LoadLibFunction(ADllHandle, SSL_get_peer_signature_type_nid_procname);
+  FuncLoaded := assigned(SSL_get_peer_signature_type_nid);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_get_peer_signature_type_nid_introduced)}
     if LibVersion < SSL_get_peer_signature_type_nid_introduced then
+    begin
       {$if declared(FC_SSL_get_peer_signature_type_nid)}
-      SSL_get_peer_signature_type_nid := @FC_SSL_get_peer_signature_type_nid
+      SSL_get_peer_signature_type_nid := @FC_SSL_get_peer_signature_type_nid;
       {$else}
-      SSL_get_peer_signature_type_nid := @ERR_SSL_get_peer_signature_type_nid
+      {$if not defined(SSL_get_peer_signature_type_nid_allownil)}
+      SSL_get_peer_signature_type_nid := @ERR_SSL_get_peer_signature_type_nid;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_get_peer_signature_type_nid_removed)}
-   if SSL_get_peer_signature_type_nid_removed <= LibVersion then
-     {$if declared(_SSL_get_peer_signature_type_nid)}
-     SSL_get_peer_signature_type_nid := @_SSL_get_peer_signature_type_nid
-     {$else}
-       {$IF declared(ERR_SSL_get_peer_signature_type_nid)}
-       SSL_get_peer_signature_type_nid := @ERR_SSL_get_peer_signature_type_nid
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_get_peer_signature_type_nid) and Assigned(AFailed) then 
-     AFailed.Add('SSL_get_peer_signature_type_nid');
+    {$if declared(SSL_get_peer_signature_type_nid_removed)}
+    if SSL_get_peer_signature_type_nid_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_peer_signature_type_nid)}
+      SSL_get_peer_signature_type_nid := @_SSL_get_peer_signature_type_nid;
+      {$else}
+      {$if not defined(SSL_get_peer_signature_type_nid_allownil)}
+      SSL_get_peer_signature_type_nid := @ERR_SSL_get_peer_signature_type_nid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_peer_signature_type_nid_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_peer_signature_type_nid := @ERR_SSL_get_peer_signature_type_nid;
+      AFailed.Add('SSL_get_peer_signature_type_nid');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSL_get_signature_type_nid) then 
+ {introduced 1.1.0}
+  SSL_get_signature_type_nid := LoadLibFunction(ADllHandle, SSL_get_signature_type_nid_procname);
+  FuncLoaded := assigned(SSL_get_signature_type_nid);
+  if not FuncLoaded then
   begin
     {$if declared(SSL_get_signature_type_nid_introduced)}
     if LibVersion < SSL_get_signature_type_nid_introduced then
+    begin
       {$if declared(FC_SSL_get_signature_type_nid)}
-      SSL_get_signature_type_nid := @FC_SSL_get_signature_type_nid
+      SSL_get_signature_type_nid := @FC_SSL_get_signature_type_nid;
       {$else}
-      SSL_get_signature_type_nid := @ERR_SSL_get_signature_type_nid
+      {$if not defined(SSL_get_signature_type_nid_allownil)}
+      SSL_get_signature_type_nid := @ERR_SSL_get_signature_type_nid;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSL_get_signature_type_nid_removed)}
-   if SSL_get_signature_type_nid_removed <= LibVersion then
-     {$if declared(_SSL_get_signature_type_nid)}
-     SSL_get_signature_type_nid := @_SSL_get_signature_type_nid
-     {$else}
-       {$IF declared(ERR_SSL_get_signature_type_nid)}
-       SSL_get_signature_type_nid := @ERR_SSL_get_signature_type_nid
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSL_get_signature_type_nid) and Assigned(AFailed) then 
-     AFailed.Add('SSL_get_signature_type_nid');
+    {$if declared(SSL_get_signature_type_nid_removed)}
+    if SSL_get_signature_type_nid_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_signature_type_nid)}
+      SSL_get_signature_type_nid := @_SSL_get_signature_type_nid;
+      {$else}
+      {$if not defined(SSL_get_signature_type_nid_allownil)}
+      SSL_get_signature_type_nid := @ERR_SSL_get_signature_type_nid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_signature_type_nid_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_signature_type_nid := @ERR_SSL_get_signature_type_nid;
+      AFailed.Add('SSL_get_signature_type_nid');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  SSL_get_sigalgs := LoadLibFunction(ADllHandle, SSL_get_sigalgs_procname);
+  FuncLoaded := assigned(SSL_get_sigalgs);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_get_sigalgs_introduced)}
+    if LibVersion < SSL_get_sigalgs_introduced then
+    begin
+      {$if declared(FC_SSL_get_sigalgs)}
+      SSL_get_sigalgs := @FC_SSL_get_sigalgs;
+      {$else}
+      {$if not defined(SSL_get_sigalgs_allownil)}
+      SSL_get_sigalgs := @ERR_SSL_get_sigalgs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_get_sigalgs_removed)}
+    if SSL_get_sigalgs_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_sigalgs)}
+      SSL_get_sigalgs := @_SSL_get_sigalgs;
+      {$else}
+      {$if not defined(SSL_get_sigalgs_allownil)}
+      SSL_get_sigalgs := @ERR_SSL_get_sigalgs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_sigalgs_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_sigalgs := @ERR_SSL_get_sigalgs;
+      AFailed.Add('SSL_get_sigalgs');
+    end;
+    {$ifend}
+  end;
+
+
+  SSL_get_shared_sigalgs := LoadLibFunction(ADllHandle, SSL_get_shared_sigalgs_procname);
+  FuncLoaded := assigned(SSL_get_shared_sigalgs);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_get_shared_sigalgs_introduced)}
+    if LibVersion < SSL_get_shared_sigalgs_introduced then
+    begin
+      {$if declared(FC_SSL_get_shared_sigalgs)}
+      SSL_get_shared_sigalgs := @FC_SSL_get_shared_sigalgs;
+      {$else}
+      {$if not defined(SSL_get_shared_sigalgs_allownil)}
+      SSL_get_shared_sigalgs := @ERR_SSL_get_shared_sigalgs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_get_shared_sigalgs_removed)}
+    if SSL_get_shared_sigalgs_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_shared_sigalgs)}
+      SSL_get_shared_sigalgs := @_SSL_get_shared_sigalgs;
+      {$else}
+      {$if not defined(SSL_get_shared_sigalgs_allownil)}
+      SSL_get_shared_sigalgs := @ERR_SSL_get_shared_sigalgs;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_shared_sigalgs_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_shared_sigalgs := @ERR_SSL_get_shared_sigalgs;
+      AFailed.Add('SSL_get_shared_sigalgs');
+    end;
+    {$ifend}
   end;
 
 

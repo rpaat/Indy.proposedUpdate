@@ -95,23 +95,163 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  SSL_CTX_set_tlsext_use_srtp_procname = 'SSL_CTX_set_tlsext_use_srtp';
+  SSL_set_tlsext_use_srtp_procname = 'SSL_set_tlsext_use_srtp';
+
+  //function SSL_get_srtp_profiles(s: PSSL): PSTACK_OF_SRTP_PROTECTION_PROFILE;
+  SSL_get_selected_srtp_profile_procname = 'SSL_get_selected_srtp_profile';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_SSL_CTX_set_tlsext_use_srtp(ctx: PSSL_CTX; const profiles: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_CTX_set_tlsext_use_srtp_procname);
+end;
+
+
+function  ERR_SSL_set_tlsext_use_srtp(ctx: PSSL_CTX; const profiles: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_set_tlsext_use_srtp_procname);
+end;
+
+
+
+  //function SSL_get_srtp_profiles(s: PSSL): PSTACK_OF_SRTP_PROTECTION_PROFILE;
+function  ERR_SSL_get_selected_srtp_profile(s: PSSL): PSRTP_PROTECTION_PROFILE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SSL_get_selected_srtp_profile_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  SSL_CTX_set_tlsext_use_srtp := LoadFunction('SSL_CTX_set_tlsext_use_srtp',AFailed);
-  SSL_set_tlsext_use_srtp := LoadFunction('SSL_set_tlsext_use_srtp',AFailed);
-  SSL_get_selected_srtp_profile := LoadFunction('SSL_get_selected_srtp_profile',AFailed);
+  SSL_CTX_set_tlsext_use_srtp := LoadLibFunction(ADllHandle, SSL_CTX_set_tlsext_use_srtp_procname);
+  FuncLoaded := assigned(SSL_CTX_set_tlsext_use_srtp);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_CTX_set_tlsext_use_srtp_introduced)}
+    if LibVersion < SSL_CTX_set_tlsext_use_srtp_introduced then
+    begin
+      {$if declared(FC_SSL_CTX_set_tlsext_use_srtp)}
+      SSL_CTX_set_tlsext_use_srtp := @FC_SSL_CTX_set_tlsext_use_srtp;
+      {$else}
+      {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
+      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_CTX_set_tlsext_use_srtp_removed)}
+    if SSL_CTX_set_tlsext_use_srtp_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_CTX_set_tlsext_use_srtp)}
+      SSL_CTX_set_tlsext_use_srtp := @_SSL_CTX_set_tlsext_use_srtp;
+      {$else}
+      {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
+      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
+      AFailed.Add('SSL_CTX_set_tlsext_use_srtp');
+    end;
+    {$ifend}
+  end;
+
+
+  SSL_set_tlsext_use_srtp := LoadLibFunction(ADllHandle, SSL_set_tlsext_use_srtp_procname);
+  FuncLoaded := assigned(SSL_set_tlsext_use_srtp);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_set_tlsext_use_srtp_introduced)}
+    if LibVersion < SSL_set_tlsext_use_srtp_introduced then
+    begin
+      {$if declared(FC_SSL_set_tlsext_use_srtp)}
+      SSL_set_tlsext_use_srtp := @FC_SSL_set_tlsext_use_srtp;
+      {$else}
+      {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
+      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_set_tlsext_use_srtp_removed)}
+    if SSL_set_tlsext_use_srtp_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_set_tlsext_use_srtp)}
+      SSL_set_tlsext_use_srtp := @_SSL_set_tlsext_use_srtp;
+      {$else}
+      {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
+      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
+      AFailed.Add('SSL_set_tlsext_use_srtp');
+    end;
+    {$ifend}
+  end;
+
+
+  SSL_get_selected_srtp_profile := LoadLibFunction(ADllHandle, SSL_get_selected_srtp_profile_procname);
+  FuncLoaded := assigned(SSL_get_selected_srtp_profile);
+  if not FuncLoaded then
+  begin
+    {$if declared(SSL_get_selected_srtp_profile_introduced)}
+    if LibVersion < SSL_get_selected_srtp_profile_introduced then
+    begin
+      {$if declared(FC_SSL_get_selected_srtp_profile)}
+      SSL_get_selected_srtp_profile := @FC_SSL_get_selected_srtp_profile;
+      {$else}
+      {$if not defined(SSL_get_selected_srtp_profile_allownil)}
+      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SSL_get_selected_srtp_profile_removed)}
+    if SSL_get_selected_srtp_profile_removed <= LibVersion then
+    begin
+      {$if declared(_SSL_get_selected_srtp_profile)}
+      SSL_get_selected_srtp_profile := @_SSL_get_selected_srtp_profile;
+      {$else}
+      {$if not defined(SSL_get_selected_srtp_profile_allownil)}
+      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSL_get_selected_srtp_profile_allownil)}
+    if not FuncLoaded then
+    begin
+      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
+      AFailed.Add('SSL_get_selected_srtp_profile');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

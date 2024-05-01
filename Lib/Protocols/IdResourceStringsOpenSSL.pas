@@ -59,7 +59,6 @@ resourcestring
   RSOSSLConnectExit =  'Connect Exit';
   RSOSSLHandshakeStart = 'Handshake Start';
   RSOSSLHandshakeDone =  'Handshake Done';
-  RSOSSLProcLoadErrorHdr = 'The following functions were not loaded';
   {IdSSLOpenSSLFIPS}
   RSOSSLEVPDigestExError = 'EVP_DigestInit_ex error';
   RSOSSLEVPDigestUpdateError = 'EVP_DigestUpdate error';

@@ -1185,138 +1185,5990 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  ENGINE_get_first_procname = 'ENGINE_get_first';
+  ENGINE_get_last_procname = 'ENGINE_get_last';
+  ENGINE_get_next_procname = 'ENGINE_get_next';
+  ENGINE_get_prev_procname = 'ENGINE_get_prev';
+  ENGINE_add_procname = 'ENGINE_add';
+  ENGINE_remove_procname = 'ENGINE_remove';
+  ENGINE_by_id_procname = 'ENGINE_by_id';
+
+  ENGINE_load_builtin_engines_procname = 'ENGINE_load_builtin_engines';
+
+  //
+  // Get and set global flags (ENGINE_TABLE_FLAG_***) for the implementation
+  // "registry" handling.
+  //
+  ENGINE_get_table_flags_procname = 'ENGINE_get_table_flags';
+  ENGINE_set_table_flags_procname = 'ENGINE_set_table_flags';
+
+  //- Manage registration of ENGINEs per "table". For each type, there are 3
+  // functions;
+  //   ENGINE_register_***(e) - registers the implementation from 'e' (if it has one)
+  //   ENGINE_unregister_***(e) - unregister the implementation from 'e'
+  //   ENGINE_register_all_***() - call ENGINE_register_***() for each 'e' in the list
+  // Cleanup is automatically registered from each table when required.
+  //
+
+  ENGINE_register_RSA_procname = 'ENGINE_register_RSA';
+  ENGINE_unregister_RSA_procname = 'ENGINE_unregister_RSA';
+  ENGINE_register_all_RSA_procname = 'ENGINE_register_all_RSA';
+
+  ENGINE_register_DSA_procname = 'ENGINE_register_DSA';
+  ENGINE_unregister_DSA_procname = 'ENGINE_unregister_DSA';
+  ENGINE_register_all_DSA_procname = 'ENGINE_register_all_DSA';
+
+  ENGINE_register_EC_procname = 'ENGINE_register_EC';
+  ENGINE_unregister_EC_procname = 'ENGINE_unregister_EC';
+  ENGINE_register_all_EC_procname = 'ENGINE_register_all_EC';
+
+  ENGINE_register_DH_procname = 'ENGINE_register_DH';
+  ENGINE_unregister_DH_procname = 'ENGINE_unregister_DH';
+  ENGINE_register_all_DH_procname = 'ENGINE_register_all_DH';
+
+  ENGINE_register_RAND_procname = 'ENGINE_register_RAND';
+  ENGINE_unregister_RAND_procname = 'ENGINE_unregister_RAND';
+  ENGINE_register_all_RAND_procname = 'ENGINE_register_all_RAND';
+
+  ENGINE_register_ciphers_procname = 'ENGINE_register_ciphers';
+  ENGINE_unregister_ciphers_procname = 'ENGINE_unregister_ciphers';
+  ENGINE_register_all_ciphers_procname = 'ENGINE_register_all_ciphers';
+
+  ENGINE_register_digests_procname = 'ENGINE_register_digests';
+  ENGINE_unregister_digests_procname = 'ENGINE_unregister_digests';
+  ENGINE_register_all_digests_procname = 'ENGINE_register_all_digests';
+
+  ENGINE_register_pkey_meths_procname = 'ENGINE_register_pkey_meths';
+  ENGINE_unregister_pkey_meths_procname = 'ENGINE_unregister_pkey_meths';
+  ENGINE_register_all_pkey_meths_procname = 'ENGINE_register_all_pkey_meths';
+
+  ENGINE_register_pkey_asn1_meths_procname = 'ENGINE_register_pkey_asn1_meths';
+  ENGINE_unregister_pkey_asn1_meths_procname = 'ENGINE_unregister_pkey_asn1_meths';
+  ENGINE_register_all_pkey_asn1_meths_procname = 'ENGINE_register_all_pkey_asn1_meths';
+
+  //
+  // These functions register all support from the above categories. Note, use
+  // of these functions can result in static linkage of code your application
+  // may not need. If you only need a subset of functionality, consider using
+  // more selective initialisation.
+  //
+  ENGINE_register_complete_procname = 'ENGINE_register_complete';
+  ENGINE_register_all_complete_procname = 'ENGINE_register_all_complete';
+
+  //
+  // Send parameterised control commands to the engine. The possibilities to
+  // send down an integer, a pointer to data or a function pointer are
+  // provided. Any of the parameters may or may not be NULL, depending on the
+  // command number. In actuality, this function only requires a structural
+  // (rather than functional) reference to an engine, but many control commands
+  // may require the engine be functional. The caller should be aware of trying
+  // commands that require an operational ENGINE, and only use functional
+  // references in such situations.
+  //
+  ENGINE_ctrl_procname = 'ENGINE_ctrl';
+
+  //
+  // This function tests if an ENGINE-specific command is usable as a
+  // "setting". Eg. in an application's config file that gets processed through
+  // ENGINE_ctrl_cmd_string(). If this returns zero, it is not available to
+  // ENGINE_ctrl_cmd_string(), only ENGINE_ctrl().
+  //
+  ENGINE_cmd_is_executable_procname = 'ENGINE_cmd_is_executable';
+
+  //
+  // This function works like ENGINE_ctrl() with the exception of taking a
+  // command name instead of a command number, and can handle optional
+  // commands. See the comment on ENGINE_ctrl_cmd_string() for an explanation
+  // on how to use the cmd_name and cmd_optional.
+  //
+  ENGINE_ctrl_cmd_procname = 'ENGINE_ctrl_cmd';
+
+  //
+  // This function passes a command-name and argument to an ENGINE. The
+  // cmd_name is converted to a command number and the control command is
+  // called using 'arg' as an argument (unless the ENGINE doesn't support such
+  // a command, in which case no control command is called). The command is
+  // checked for input flags, and if necessary the argument will be converted
+  // to a numeric value. If cmd_optional is non-zero, then if the ENGINE
+  // doesn't support the given cmd_name the return value will be success
+  // anyway. This function is intended for applications to use so that users
+  // (or config files) can supply engine-specific config data to the ENGINE at
+  // run-time to control behaviour of specific engines. As such, it shouldn't
+  // be used for calling ENGINE_ctrl() functions that return data, deal with
+  // binary data, or that are otherwise supposed to be used directly through
+  // ENGINE_ctrl() in application code. Any "return" data from an ENGINE_ctrl()
+  // operation in this function will be lost - the return value is interpreted
+  // as failure if the return value is zero, success otherwise, and this
+  // function returns a boolean value as a result. In other words, vendors of
+  // 'ENGINE'-enabled devices should write ENGINE implementations with
+  // parameterisations that work in this scheme, so that compliant ENGINE-based
+  // applications can work consistently with the same configuration for the
+  // same ENGINE-enabled devices, across applications.
+  //
+  ENGINE_ctrl_cmd_string_procname = 'ENGINE_ctrl_cmd_string';
+
+  //
+  // These functions are useful for manufacturing new ENGINE structures. They
+  // don't address reference counting at all - one uses them to populate an
+  // ENGINE structure with personalised implementations of things prior to
+  // using it directly or adding it to the builtin ENGINE list in OpenSSL.
+  // These are also here so that the ENGINE structure doesn't have to be
+  // exposed and break binary compatibility!
+  //
+  ENGINE_new_procname = 'ENGINE_new';
+  ENGINE_free_procname = 'ENGINE_free';
+  ENGINE_up_ref_procname = 'ENGINE_up_ref';
+  ENGINE_set_id_procname = 'ENGINE_set_id';
+  ENGINE_set_name_procname = 'ENGINE_set_name';
+  ENGINE_set_RSA_procname = 'ENGINE_set_RSA';
+  ENGINE_set_DSA_procname = 'ENGINE_set_DSA';
+  ENGINE_set_EC_procname = 'ENGINE_set_EC';
+  ENGINE_set_DH_procname = 'ENGINE_set_DH';
+  ENGINE_set_RAND_procname = 'ENGINE_set_RAND';
+  ENGINE_set_destroy_function_procname = 'ENGINE_set_destroy_function';
+  ENGINE_set_init_function_procname = 'ENGINE_set_init_function';
+  ENGINE_set_finish_function_procname = 'ENGINE_set_finish_function';
+  ENGINE_set_ctrl_function_procname = 'ENGINE_set_ctrl_function';
+  ENGINE_set_load_privkey_function_procname = 'ENGINE_set_load_privkey_function';
+  ENGINE_set_load_pubkey_function_procname = 'ENGINE_set_load_pubkey_function';
+  //function ENGINE_set_load_ssl_client_cert_function(e: PENGINE; loadssl_f: ENGINE_SSL_CLIENT_CERT_PTR): TIdC_INT;
+  ENGINE_set_ciphers_procname = 'ENGINE_set_ciphers';
+  ENGINE_set_digests_procname = 'ENGINE_set_digests';
+  ENGINE_set_pkey_meths_procname = 'ENGINE_set_pkey_meths';
+  ENGINE_set_pkey_asn1_meths_procname = 'ENGINE_set_pkey_asn1_meths';
+  ENGINE_set_flags_procname = 'ENGINE_set_flags';
+  ENGINE_set_cmd_defns_procname = 'ENGINE_set_cmd_defns';
+  // These functions allow control over any per-structure ENGINE data. */
+  //#define ENGINE_get_ex_new_index(l, p, newf, dupf, freef) CRYPTO_get_ex_new_index(CRYPTO_EX_INDEX_ENGINE, l, p, newf, dupf, freef)
+  ENGINE_set_ex_data_procname = 'ENGINE_set_ex_data';
+  ENGINE_get_ex_data_procname = 'ENGINE_get_ex_data';
+
+  //
+  // These return values from within the ENGINE structure. These can be useful
+  // with functional references as well as structural references - it depends
+  // which you obtained. Using the result for functional purposes if you only
+  // obtained a structural reference may be problematic!
+  //
+  ENGINE_get_id_procname = 'ENGINE_get_id';
+  ENGINE_get_name_procname = 'ENGINE_get_name';
+  ENGINE_get_RSA_procname = 'ENGINE_get_RSA';
+  ENGINE_get_DSA_procname = 'ENGINE_get_DSA';
+  ENGINE_get_EC_procname = 'ENGINE_get_EC';
+  ENGINE_get_DH_procname = 'ENGINE_get_DH';
+  ENGINE_get_RAND_procname = 'ENGINE_get_RAND';
+  ENGINE_get_destroy_function_procname = 'ENGINE_get_destroy_function';
+  ENGINE_get_init_function_procname = 'ENGINE_get_init_function';
+  ENGINE_get_finish_function_procname = 'ENGINE_get_finish_function';
+  ENGINE_get_ctrl_function_procname = 'ENGINE_get_ctrl_function';
+  ENGINE_get_load_privkey_function_procname = 'ENGINE_get_load_privkey_function';
+  ENGINE_get_load_pubkey_function_procname = 'ENGINE_get_load_pubkey_function';
+  //function ENGINE_get_ssl_client_cert_function(const e: PENGINE): ENGINE_SSL_CLIENT_CERT_PTR;
+  
+  ENGINE_get_ciphers_procname = 'ENGINE_get_ciphers';
+  ENGINE_get_digests_procname = 'ENGINE_get_digests';
+  ENGINE_get_pkey_meths_procname = 'ENGINE_get_pkey_meths';
+  ENGINE_get_pkey_asn1_meths_procname = 'ENGINE_get_pkey_asn1_meths';
+  ENGINE_get_cipher_procname = 'ENGINE_get_cipher';
+  ENGINE_get_digest_procname = 'ENGINE_get_digest';
+  ENGINE_get_pkey_meth_procname = 'ENGINE_get_pkey_meth';
+  ENGINE_get_pkey_asn1_meth_procname = 'ENGINE_get_pkey_asn1_meth';
+  ENGINE_get_pkey_asn1_meth_str_procname = 'ENGINE_get_pkey_asn1_meth_str';
+  ENGINE_pkey_asn1_find_str_procname = 'ENGINE_pkey_asn1_find_str';
+  ENGINE_get_cmd_defns_procname = 'ENGINE_get_cmd_defns';
+  ENGINE_get_flags_procname = 'ENGINE_get_flags';
+
+  ///*
+  // * FUNCTIONAL functions. These functions deal with ENGINE structures that
+  // * have (or will) be initialised for use. Broadly speaking, the structural
+  // * functions are useful for iterating the list of available engine types,
+  // * creating new engine types, and other "list" operations. These functions
+  // * actually deal with ENGINEs that are to be used. As such these functions
+  // * can fail (if applicable) when particular engines are unavailable - eg. if
+  // * a hardware accelerator is not attached or not functioning correctly. Each
+  // * ENGINE has 2 reference counts; structural and functional. Every time a
+  // * functional reference is obtained or released, a corresponding structural
+  // * reference is automatically obtained or released too.
+  // */
+
+  ///*
+  // * Initialise a engine type for use (or up its reference count if it's
+  // * already in use). This will fail if the engine is not currently operational
+  // * and cannot initialise.
+  // */
+  ENGINE_init_procname = 'ENGINE_init';
+  ///*
+  // * Free a functional reference to a engine type. This does not require a
+  // * corresponding call to ENGINE_free as it also releases a structural
+  // * reference.
+  // */
+  ENGINE_finish_procname = 'ENGINE_finish';
+
+  ///*
+  // * The following functions handle keys that are stored in some secondary
+  // * location, handled by the engine.  The storage may be on a card or
+  // * whatever.
+  // */
+  ENGINE_load_private_key_procname = 'ENGINE_load_private_key';
+  ENGINE_load_public_key_procname = 'ENGINE_load_public_key';
+  //function ENGINE_load_ssl_client_cert(e: PENGINE; s: PSSL;
+  //  {STACK_OF(X509) *ca_dn;} {STACK_OF(X509) **pother;} ui_method: PUI_METHOD;
+  //  callback_data: Pointer): TIdC_INT;
+
+  ///*
+  // * This returns a pointer for the current ENGINE structure that is (by
+  // * default) performing any RSA operations. The value returned is an
+  // * incremented reference, so it should be free'd (ENGINE_finish) before it is
+  // * discarded.
+  // */
+  ENGINE_get_default_RSA_procname = 'ENGINE_get_default_RSA';
+  //* Same for the other "methods" */
+  ENGINE_get_default_DSA_procname = 'ENGINE_get_default_DSA';
+  ENGINE_get_default_EC_procname = 'ENGINE_get_default_EC';
+  ENGINE_get_default_DH_procname = 'ENGINE_get_default_DH';
+  ENGINE_get_default_RAND_procname = 'ENGINE_get_default_RAND';
+  ///*
+  // * These functions can be used to get a functional reference to perform
+  // * ciphering or digesting corresponding to "nid".
+  // */
+  ENGINE_get_cipher_engine_procname = 'ENGINE_get_cipher_engine';
+  ENGINE_get_digest_engine_procname = 'ENGINE_get_digest_engine';
+  ENGINE_get_pkey_meth_engine_procname = 'ENGINE_get_pkey_meth_engine';
+  ENGINE_get_pkey_asn1_meth_engine_procname = 'ENGINE_get_pkey_asn1_meth_engine';
+  ///*
+  // * This sets a new default ENGINE structure for performing RSA operations. If
+  // * the result is non-zero (success) then the ENGINE structure will have had
+  // * its reference count up'd so the caller should still free their own
+  // * reference 'e'.
+  // */
+  ENGINE_set_default_RSA_procname = 'ENGINE_set_default_RSA';
+  ENGINE_set_default_string_procname = 'ENGINE_set_default_string';
+  // Same for the other "methods"
+  ENGINE_set_default_DSA_procname = 'ENGINE_set_default_DSA';
+  ENGINE_set_default_EC_procname = 'ENGINE_set_default_EC';
+  ENGINE_set_default_DH_procname = 'ENGINE_set_default_DH';
+  ENGINE_set_default_RAND_procname = 'ENGINE_set_default_RAND';
+  ENGINE_set_default_ciphers_procname = 'ENGINE_set_default_ciphers';
+  ENGINE_set_default_digests_procname = 'ENGINE_set_default_digests';
+  ENGINE_set_default_pkey_meths_procname = 'ENGINE_set_default_pkey_meths';
+  ENGINE_set_default_pkey_asn1_meths_procname = 'ENGINE_set_default_pkey_asn1_meths';
+
+  ///*
+  // * The combination "set" - the flags are bitwise "OR"d from the
+  // * ENGINE_METHOD_*** defines above. As with the "ENGINE_register_complete()"
+  // * function, this function can result in unnecessary static linkage. If your
+  // * application requires only specific functionality, consider using more
+  // * selective functions.
+  // */
+  ENGINE_set_default_procname = 'ENGINE_set_default';
+
+  ENGINE_add_conf_module_procname = 'ENGINE_add_conf_module';
+
+  ///* Deprecated functions ... */
+  ///* int ENGINE_clear_defaults(void); */
+  //
+  //**************************/
+  //* DYNAMIC ENGINE SUPPORT */
+  //**************************/
+  //
+  //* Binary/behaviour compatibility levels */
+  //# define OSSL_DYNAMIC_VERSION            (unsigned long)0x00030000
+  //*
+  // * Binary versions older than this are too old for us (whether we're a loader
+  // * or a loadee)
+  // */
+  //# define OSSL_DYNAMIC_OLDEST             (unsigned long)0x00030000
+  //
+  //*
+  // * When compiling an ENGINE entirely as an external shared library, loadable
+  // * by the "dynamic" ENGINE, these types are needed. The 'dynamic_fns'
+  // * structure type provides the calling application's (or library's) error
+  // * functionality and memory management function pointers to the loaded
+  // * library. These should be used/set in the loaded library code so that the
+  // * loading application's 'state' will be used/changed in all operations. The
+  // * 'static_state' pointer allows the loaded library to know if it shares the
+  // * same static data as the calling application (or library), and thus whether
+  // * these callbacks need to be set or not.
+  // */
+
+
+  //# define IMPLEMENT_DYNAMIC_BIND_FN(fn) \
+  //        OPENSSL_EXPORT \
+  //        int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns); \
+  //        OPENSSL_EXPORT \
+  //        int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns) { \
+  //            if (ENGINE_get_static_state() == fns->static_state) goto skip_cbs; \
+  //            CRYPTO_set_mem_functions(fns->mem_fns.malloc_fn, \
+  //                                     fns->mem_fns.realloc_fn, \
+  //                                     fns->mem_fns.free_fn); \
+  //        skip_cbs: \
+  //            if (!fn(e, id)) return 0; \
+  //            return 1; }
+  //
+  //*
+  // * If the loading application (or library) and the loaded ENGINE library
+  // * share the same static data (eg. they're both dynamically linked to the
+  // * same libcrypto.so) we need a way to avoid trying to set system callbacks -
+  // * this would fail, and for the same reason that it's unnecessary to try. If
+  // * the loaded ENGINE has (or gets from through the loader) its own copy of
+  // * the libcrypto static data, we will need to set the callbacks. The easiest
+  // * way to detect this is to have a function that returns a pointer to some
+  // * static data and let the loading application and loaded ENGINE compare
+  // * their respective values.
+  // */
+  ENGINE_get_static_state_procname = 'ENGINE_get_static_state';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_ENGINE_get_first: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_first_procname);
+end;
+
+
+function  ERR_ENGINE_get_last: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_last_procname);
+end;
+
+
+function  ERR_ENGINE_get_next(e: PENGINE): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_next_procname);
+end;
+
+
+function  ERR_ENGINE_get_prev(e: PENGINE): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_prev_procname);
+end;
+
+
+function  ERR_ENGINE_add(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_add_procname);
+end;
+
+
+function  ERR_ENGINE_remove(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_remove_procname);
+end;
+
+
+function  ERR_ENGINE_by_id(const id: PIdAnsiChar): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_by_id_procname);
+end;
+
+
+
+procedure  ERR_ENGINE_load_builtin_engines; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_load_builtin_engines_procname);
+end;
+
+
+
+  //
+  // Get and set global flags (ENGINE_TABLE_FLAG_***) for the implementation
+  // "registry" handling.
+  //
+function  ERR_ENGINE_get_table_flags: TIdC_UINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_table_flags_procname);
+end;
+
+
+procedure  ERR_ENGINE_set_table_flags(flags: TIdC_UINT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_table_flags_procname);
+end;
+
+
+
+  //- Manage registration of ENGINEs per "table". For each type, there are 3
+  // functions;
+  //   ENGINE_register_***(e) - registers the implementation from 'e' (if it has one)
+  //   ENGINE_unregister_***(e) - unregister the implementation from 'e'
+  //   ENGINE_register_all_***() - call ENGINE_register_***() for each 'e' in the list
+  // Cleanup is automatically registered from each table when required.
+  //
+
+function  ERR_ENGINE_register_RSA(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_RSA_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_RSA(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_RSA_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_RSA; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_RSA_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_DSA(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_DSA_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_DSA(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_DSA_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_DSA; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_DSA_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_EC(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_EC_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_EC(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_EC_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_EC; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_EC_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_DH(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_DH_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_DH(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_DH_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_DH; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_DH_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_RAND(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_RAND_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_RAND(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_RAND_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_RAND; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_RAND_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_ciphers(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_ciphers_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_ciphers(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_ciphers_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_ciphers; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_ciphers_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_digests(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_digests_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_digests(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_digests_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_digests; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_digests_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_pkey_meths(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_pkey_meths_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_pkey_meths(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_pkey_meths_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_pkey_meths; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_pkey_meths_procname);
+end;
+
+
+
+function  ERR_ENGINE_register_pkey_asn1_meths(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_pkey_asn1_meths_procname);
+end;
+
+
+procedure  ERR_ENGINE_unregister_pkey_asn1_meths(e: PENGINE); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_unregister_pkey_asn1_meths_procname);
+end;
+
+
+procedure  ERR_ENGINE_register_all_pkey_asn1_meths; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_pkey_asn1_meths_procname);
+end;
+
+
+
+  //
+  // These functions register all support from the above categories. Note, use
+  // of these functions can result in static linkage of code your application
+  // may not need. If you only need a subset of functionality, consider using
+  // more selective initialisation.
+  //
+function  ERR_ENGINE_register_complete(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_complete_procname);
+end;
+
+
+function  ERR_ENGINE_register_all_complete: TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_register_all_complete_procname);
+end;
+
+
+
+  //
+  // Send parameterised control commands to the engine. The possibilities to
+  // send down an integer, a pointer to data or a function pointer are
+  // provided. Any of the parameters may or may not be NULL, depending on the
+  // command number. In actuality, this function only requires a structural
+  // (rather than functional) reference to an engine, but many control commands
+  // may require the engine be functional. The caller should be aware of trying
+  // commands that require an operational ENGINE, and only use functional
+  // references in such situations.
+  //
+function  ERR_ENGINE_ctrl(e: PENGINE; cmd: TIdC_INT; i: TIdC_LONG; p: Pointer; v1: f): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_ctrl_procname);
+end;
+
+
+
+  //
+  // This function tests if an ENGINE-specific command is usable as a
+  // "setting". Eg. in an application's config file that gets processed through
+  // ENGINE_ctrl_cmd_string(). If this returns zero, it is not available to
+  // ENGINE_ctrl_cmd_string(), only ENGINE_ctrl().
+  //
+function  ERR_ENGINE_cmd_is_executable(e: PENGINE; cmd: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_cmd_is_executable_procname);
+end;
+
+
+
+  //
+  // This function works like ENGINE_ctrl() with the exception of taking a
+  // command name instead of a command number, and can handle optional
+  // commands. See the comment on ENGINE_ctrl_cmd_string() for an explanation
+  // on how to use the cmd_name and cmd_optional.
+  //
+function  ERR_ENGINE_ctrl_cmd(e: PENGINE; const cmd_name: PIdAnsiChar; i: TIdC_LONG; p: Pointer; v1: f; cmd_optional: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_ctrl_cmd_procname);
+end;
+
+
+
+  //
+  // This function passes a command-name and argument to an ENGINE. The
+  // cmd_name is converted to a command number and the control command is
+  // called using 'arg' as an argument (unless the ENGINE doesn't support such
+  // a command, in which case no control command is called). The command is
+  // checked for input flags, and if necessary the argument will be converted
+  // to a numeric value. If cmd_optional is non-zero, then if the ENGINE
+  // doesn't support the given cmd_name the return value will be success
+  // anyway. This function is intended for applications to use so that users
+  // (or config files) can supply engine-specific config data to the ENGINE at
+  // run-time to control behaviour of specific engines. As such, it shouldn't
+  // be used for calling ENGINE_ctrl() functions that return data, deal with
+  // binary data, or that are otherwise supposed to be used directly through
+  // ENGINE_ctrl() in application code. Any "return" data from an ENGINE_ctrl()
+  // operation in this function will be lost - the return value is interpreted
+  // as failure if the return value is zero, success otherwise, and this
+  // function returns a boolean value as a result. In other words, vendors of
+  // 'ENGINE'-enabled devices should write ENGINE implementations with
+  // parameterisations that work in this scheme, so that compliant ENGINE-based
+  // applications can work consistently with the same configuration for the
+  // same ENGINE-enabled devices, across applications.
+  //
+function  ERR_ENGINE_ctrl_cmd_string(e: PENGINE; const cmd_name: PIdAnsiChar; const arg: PIdAnsiChar; cmd_optional: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_ctrl_cmd_string_procname);
+end;
+
+
+
+  //
+  // These functions are useful for manufacturing new ENGINE structures. They
+  // don't address reference counting at all - one uses them to populate an
+  // ENGINE structure with personalised implementations of things prior to
+  // using it directly or adding it to the builtin ENGINE list in OpenSSL.
+  // These are also here so that the ENGINE structure doesn't have to be
+  // exposed and break binary compatibility!
+  //
+function  ERR_ENGINE_new: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_new_procname);
+end;
+
+
+function  ERR_ENGINE_free(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_free_procname);
+end;
+
+
+function  ERR_ENGINE_up_ref(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_up_ref_procname);
+end;
+
+
+function  ERR_ENGINE_set_id(e: PENGINE; const id: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_id_procname);
+end;
+
+
+function  ERR_ENGINE_set_name(e: PENGINE; const name: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_name_procname);
+end;
+
+
+function  ERR_ENGINE_set_RSA(e: PENGINE; const rsa_meth: PRSA_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_RSA_procname);
+end;
+
+
+function  ERR_ENGINE_set_DSA(e: PENGINE; const dsa_meth: PDSA_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_DSA_procname);
+end;
+
+
+function  ERR_ENGINE_set_EC(e: PENGINE; const ecdsa_meth: PEC_KEY_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_EC_procname);
+end;
+
+
+function  ERR_ENGINE_set_DH(e: PENGINE; const dh_meth: PDH_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_DH_procname);
+end;
+
+
+function  ERR_ENGINE_set_RAND(e: PENGINE; const rand_meth: PRAND_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_RAND_procname);
+end;
+
+
+function  ERR_ENGINE_set_destroy_function(e: PENGINE; destroy_f: ENGINE_GEN_INT_FUNC_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_destroy_function_procname);
+end;
+
+
+function  ERR_ENGINE_set_init_function(e: PENGINE; init_f: ENGINE_GEN_INT_FUNC_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_init_function_procname);
+end;
+
+
+function  ERR_ENGINE_set_finish_function(e: PENGINE; finish_f: ENGINE_GEN_INT_FUNC_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_finish_function_procname);
+end;
+
+
+function  ERR_ENGINE_set_ctrl_function(e: PENGINE; ctrl_f: ENGINE_CTRL_FUNC_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_ctrl_function_procname);
+end;
+
+
+function  ERR_ENGINE_set_load_privkey_function(e: PENGINE; loadpriv_f: ENGINE_LOAD_KEY_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_load_privkey_function_procname);
+end;
+
+
+function  ERR_ENGINE_set_load_pubkey_function(e: PENGINE; loadpub_f: ENGINE_LOAD_KEY_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_load_pubkey_function_procname);
+end;
+
+
+  //function ENGINE_set_load_ssl_client_cert_function(e: PENGINE; loadssl_f: ENGINE_SSL_CLIENT_CERT_PTR): TIdC_INT;
+function  ERR_ENGINE_set_ciphers(e: PENGINE; f: ENGINE_CIPHERS_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_ciphers_procname);
+end;
+
+
+function  ERR_ENGINE_set_digests(e: PENGINE; f: ENGINE_DIGESTS_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_digests_procname);
+end;
+
+
+function  ERR_ENGINE_set_pkey_meths(e: PENGINE; f: ENGINE_PKEY_METHS_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_pkey_meths_procname);
+end;
+
+
+function  ERR_ENGINE_set_pkey_asn1_meths(e: PENGINE; f: ENGINE_PKEY_ASN1_METHS_PTR): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_pkey_asn1_meths_procname);
+end;
+
+
+function  ERR_ENGINE_set_flags(e: PENGINE; flags: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_flags_procname);
+end;
+
+
+function  ERR_ENGINE_set_cmd_defns(e: PENGINE; const defns: PENGINE_CMD_DEFN): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_cmd_defns_procname);
+end;
+
+
+  // These functions allow control over any per-structure ENGINE data. */
+  //#define ENGINE_get_ex_new_index(l, p, newf, dupf, freef) CRYPTO_get_ex_new_index(CRYPTO_EX_INDEX_ENGINE, l, p, newf, dupf, freef)
+function  ERR_ENGINE_set_ex_data(e: PENGINE; idx: TIdC_INT; arg: Pointer): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_ex_data_procname);
+end;
+
+
+function  ERR_ENGINE_get_ex_data(const e: PENGINE; idx: TIdC_INT): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_ex_data_procname);
+end;
+
+
+
+  //
+  // These return values from within the ENGINE structure. These can be useful
+  // with functional references as well as structural references - it depends
+  // which you obtained. Using the result for functional purposes if you only
+  // obtained a structural reference may be problematic!
+  //
+function  ERR_ENGINE_get_id(const e: PENGINE): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_id_procname);
+end;
+
+
+function  ERR_ENGINE_get_name(const e: PENGINE): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_name_procname);
+end;
+
+
+function  ERR_ENGINE_get_RSA(const e: PENGINE): PRSA_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_RSA_procname);
+end;
+
+
+function  ERR_ENGINE_get_DSA(const e: PENGINE): PDSA_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_DSA_procname);
+end;
+
+
+function  ERR_ENGINE_get_EC(const e: PENGINE): PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_EC_procname);
+end;
+
+
+function  ERR_ENGINE_get_DH(const e: PENGINE): PDH_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_DH_procname);
+end;
+
+
+function  ERR_ENGINE_get_RAND(const e: PENGINE): PRAND_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_RAND_procname);
+end;
+
+
+function  ERR_ENGINE_get_destroy_function(const e: PENGINE): ENGINE_GEN_INT_FUNC_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_destroy_function_procname);
+end;
+
+
+function  ERR_ENGINE_get_init_function(const e: PENGINE): ENGINE_GEN_INT_FUNC_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_init_function_procname);
+end;
+
+
+function  ERR_ENGINE_get_finish_function(const e: PENGINE): ENGINE_GEN_INT_FUNC_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_finish_function_procname);
+end;
+
+
+function  ERR_ENGINE_get_ctrl_function(const e: PENGINE): ENGINE_CTRL_FUNC_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_ctrl_function_procname);
+end;
+
+
+function  ERR_ENGINE_get_load_privkey_function(const e: PENGINE): ENGINE_LOAD_KEY_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_load_privkey_function_procname);
+end;
+
+
+function  ERR_ENGINE_get_load_pubkey_function(const e: PENGINE): ENGINE_LOAD_KEY_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_load_pubkey_function_procname);
+end;
+
+
+  //function ENGINE_get_ssl_client_cert_function(const e: PENGINE): ENGINE_SSL_CLIENT_CERT_PTR;
+  
+function  ERR_ENGINE_get_ciphers(const e: PENGINE): ENGINE_CIPHERS_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_ciphers_procname);
+end;
+
+
+function  ERR_ENGINE_get_digests(const e: PENGINE): ENGINE_DIGESTS_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_digests_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_meths(const e: PENGINE): ENGINE_PKEY_METHS_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_meths_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_asn1_meths(const e: PENGINE): ENGINE_PKEY_ASN1_METHS_PTR; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_asn1_meths_procname);
+end;
+
+
+function  ERR_ENGINE_get_cipher(e: PENGINE; nid: TIdC_INT): PEVP_CIPHER; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_cipher_procname);
+end;
+
+
+function  ERR_ENGINE_get_digest(e: PENGINE; nid: TIdC_INT): PEVP_MD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_digest_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_meth(e: PENGINE; nid: TIdC_INT): PEVP_PKEY_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_meth_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_asn1_meth(e: PENGINE; nid: TIdC_INT): PEVP_PKEY_ASN1_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_asn1_meth_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_asn1_meth_str(e: PENGINE; const str: PIdAnsiChar; len: TIdC_INT): PEVP_PKEY_ASN1_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_asn1_meth_str_procname);
+end;
+
+
+function  ERR_ENGINE_pkey_asn1_find_str(pe: PPENGINE; const str: PIdAnsiChar; len: TIdC_INT): PEVP_PKEY_ASN1_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_pkey_asn1_find_str_procname);
+end;
+
+
+function  ERR_ENGINE_get_cmd_defns(const e: PENGINE): PENGINE_CMD_DEFN; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_cmd_defns_procname);
+end;
+
+
+function  ERR_ENGINE_get_flags(const e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_flags_procname);
+end;
+
+
+
+  ///*
+  // * FUNCTIONAL functions. These functions deal with ENGINE structures that
+  // * have (or will) be initialised for use. Broadly speaking, the structural
+  // * functions are useful for iterating the list of available engine types,
+  // * creating new engine types, and other "list" operations. These functions
+  // * actually deal with ENGINEs that are to be used. As such these functions
+  // * can fail (if applicable) when particular engines are unavailable - eg. if
+  // * a hardware accelerator is not attached or not functioning correctly. Each
+  // * ENGINE has 2 reference counts; structural and functional. Every time a
+  // * functional reference is obtained or released, a corresponding structural
+  // * reference is automatically obtained or released too.
+  // */
+
+  ///*
+  // * Initialise a engine type for use (or up its reference count if it's
+  // * already in use). This will fail if the engine is not currently operational
+  // * and cannot initialise.
+  // */
+function  ERR_ENGINE_init(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_init_procname);
+end;
+
+
+  ///*
+  // * Free a functional reference to a engine type. This does not require a
+  // * corresponding call to ENGINE_free as it also releases a structural
+  // * reference.
+  // */
+function  ERR_ENGINE_finish(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_finish_procname);
+end;
+
+
+
+  ///*
+  // * The following functions handle keys that are stored in some secondary
+  // * location, handled by the engine.  The storage may be on a card or
+  // * whatever.
+  // */
+function  ERR_ENGINE_load_private_key(e: PENGINE; const key_id: PIdAnsiChar; ui_method: PUI_METHOD; callback_data: Pointer): PEVP_PKEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_load_private_key_procname);
+end;
+
+
+function  ERR_ENGINE_load_public_key(e: PENGINE; const key_id: PIdAnsiChar; ui_method: PUI_METHOD; callback_data: Pointer): PEVP_PKEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_load_public_key_procname);
+end;
+
+
+  //function ENGINE_load_ssl_client_cert(e: PENGINE; s: PSSL;
+  //  {STACK_OF(X509) *ca_dn;} {STACK_OF(X509) **pother;} ui_method: PUI_METHOD;
+  //  callback_data: Pointer): TIdC_INT;
+
+  ///*
+  // * This returns a pointer for the current ENGINE structure that is (by
+  // * default) performing any RSA operations. The value returned is an
+  // * incremented reference, so it should be free'd (ENGINE_finish) before it is
+  // * discarded.
+  // */
+function  ERR_ENGINE_get_default_RSA: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_default_RSA_procname);
+end;
+
+
+  //* Same for the other "methods" */
+function  ERR_ENGINE_get_default_DSA: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_default_DSA_procname);
+end;
+
+
+function  ERR_ENGINE_get_default_EC: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_default_EC_procname);
+end;
+
+
+function  ERR_ENGINE_get_default_DH: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_default_DH_procname);
+end;
+
+
+function  ERR_ENGINE_get_default_RAND: PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_default_RAND_procname);
+end;
+
+
+  ///*
+  // * These functions can be used to get a functional reference to perform
+  // * ciphering or digesting corresponding to "nid".
+  // */
+function  ERR_ENGINE_get_cipher_engine(nid: TIdC_INT): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_cipher_engine_procname);
+end;
+
+
+function  ERR_ENGINE_get_digest_engine(nid: TIdC_INT): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_digest_engine_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_meth_engine(nid: TIdC_INT): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_meth_engine_procname);
+end;
+
+
+function  ERR_ENGINE_get_pkey_asn1_meth_engine(nid: TIdC_INT): PENGINE; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_pkey_asn1_meth_engine_procname);
+end;
+
+
+  ///*
+  // * This sets a new default ENGINE structure for performing RSA operations. If
+  // * the result is non-zero (success) then the ENGINE structure will have had
+  // * its reference count up'd so the caller should still free their own
+  // * reference 'e'.
+  // */
+function  ERR_ENGINE_set_default_RSA(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_RSA_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_string(e: PENGINE; const def_list: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_string_procname);
+end;
+
+
+  // Same for the other "methods"
+function  ERR_ENGINE_set_default_DSA(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_DSA_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_EC(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_EC_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_DH(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_DH_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_RAND(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_RAND_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_ciphers(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_ciphers_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_digests(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_digests_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_pkey_meths(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_pkey_meths_procname);
+end;
+
+
+function  ERR_ENGINE_set_default_pkey_asn1_meths(e: PENGINE): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_pkey_asn1_meths_procname);
+end;
+
+
+
+  ///*
+  // * The combination "set" - the flags are bitwise "OR"d from the
+  // * ENGINE_METHOD_*** defines above. As with the "ENGINE_register_complete()"
+  // * function, this function can result in unnecessary static linkage. If your
+  // * application requires only specific functionality, consider using more
+  // * selective functions.
+  // */
+function  ERR_ENGINE_set_default(e: PENGINE; flags: TIdC_ULONG): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_set_default_procname);
+end;
+
+
+
+procedure  ERR_ENGINE_add_conf_module; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_add_conf_module_procname);
+end;
+
+
+
+  ///* Deprecated functions ... */
+  ///* int ENGINE_clear_defaults(void); */
+  //
+  //**************************/
+  //* DYNAMIC ENGINE SUPPORT */
+  //**************************/
+  //
+  //* Binary/behaviour compatibility levels */
+  //# define OSSL_DYNAMIC_VERSION            (unsigned long)0x00030000
+  //*
+  // * Binary versions older than this are too old for us (whether we're a loader
+  // * or a loadee)
+  // */
+  //# define OSSL_DYNAMIC_OLDEST             (unsigned long)0x00030000
+  //
+  //*
+  // * When compiling an ENGINE entirely as an external shared library, loadable
+  // * by the "dynamic" ENGINE, these types are needed. The 'dynamic_fns'
+  // * structure type provides the calling application's (or library's) error
+  // * functionality and memory management function pointers to the loaded
+  // * library. These should be used/set in the loaded library code so that the
+  // * loading application's 'state' will be used/changed in all operations. The
+  // * 'static_state' pointer allows the loaded library to know if it shares the
+  // * same static data as the calling application (or library), and thus whether
+  // * these callbacks need to be set or not.
+  // */
+
+
+  //# define IMPLEMENT_DYNAMIC_BIND_FN(fn) \
+  //        OPENSSL_EXPORT \
+  //        int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns); \
+  //        OPENSSL_EXPORT \
+  //        int bind_engine(ENGINE *e, const char *id, const dynamic_fns *fns) { \
+  //            if (ENGINE_get_static_state() == fns->static_state) goto skip_cbs; \
+  //            CRYPTO_set_mem_functions(fns->mem_fns.malloc_fn, \
+  //                                     fns->mem_fns.realloc_fn, \
+  //                                     fns->mem_fns.free_fn); \
+  //        skip_cbs: \
+  //            if (!fn(e, id)) return 0; \
+  //            return 1; }
+  //
+  //*
+  // * If the loading application (or library) and the loaded ENGINE library
+  // * share the same static data (eg. they're both dynamically linked to the
+  // * same libcrypto.so) we need a way to avoid trying to set system callbacks -
+  // * this would fail, and for the same reason that it's unnecessary to try. If
+  // * the loaded ENGINE has (or gets from through the loader) its own copy of
+  // * the libcrypto static data, we will need to set the callbacks. The easiest
+  // * way to detect this is to have a function that returns a pointer to some
+  // * static data and let the loading application and loaded ENGINE compare
+  // * their respective values.
+  // */
+function  ERR_ENGINE_get_static_state: Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ENGINE_get_static_state_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  ENGINE_get_first := LoadFunction('ENGINE_get_first',AFailed);
-  ENGINE_get_last := LoadFunction('ENGINE_get_last',AFailed);
-  ENGINE_get_next := LoadFunction('ENGINE_get_next',AFailed);
-  ENGINE_get_prev := LoadFunction('ENGINE_get_prev',AFailed);
-  ENGINE_add := LoadFunction('ENGINE_add',AFailed);
-  ENGINE_remove := LoadFunction('ENGINE_remove',AFailed);
-  ENGINE_by_id := LoadFunction('ENGINE_by_id',AFailed);
-  ENGINE_load_builtin_engines := LoadFunction('ENGINE_load_builtin_engines',AFailed);
-  ENGINE_get_table_flags := LoadFunction('ENGINE_get_table_flags',AFailed);
-  ENGINE_set_table_flags := LoadFunction('ENGINE_set_table_flags',AFailed);
-  ENGINE_register_RSA := LoadFunction('ENGINE_register_RSA',AFailed);
-  ENGINE_unregister_RSA := LoadFunction('ENGINE_unregister_RSA',AFailed);
-  ENGINE_register_all_RSA := LoadFunction('ENGINE_register_all_RSA',AFailed);
-  ENGINE_register_DSA := LoadFunction('ENGINE_register_DSA',AFailed);
-  ENGINE_unregister_DSA := LoadFunction('ENGINE_unregister_DSA',AFailed);
-  ENGINE_register_all_DSA := LoadFunction('ENGINE_register_all_DSA',AFailed);
-  ENGINE_register_EC := LoadFunction('ENGINE_register_EC',AFailed);
-  ENGINE_unregister_EC := LoadFunction('ENGINE_unregister_EC',AFailed);
-  ENGINE_register_all_EC := LoadFunction('ENGINE_register_all_EC',AFailed);
-  ENGINE_register_DH := LoadFunction('ENGINE_register_DH',AFailed);
-  ENGINE_unregister_DH := LoadFunction('ENGINE_unregister_DH',AFailed);
-  ENGINE_register_all_DH := LoadFunction('ENGINE_register_all_DH',AFailed);
-  ENGINE_register_RAND := LoadFunction('ENGINE_register_RAND',AFailed);
-  ENGINE_unregister_RAND := LoadFunction('ENGINE_unregister_RAND',AFailed);
-  ENGINE_register_all_RAND := LoadFunction('ENGINE_register_all_RAND',AFailed);
-  ENGINE_register_ciphers := LoadFunction('ENGINE_register_ciphers',AFailed);
-  ENGINE_unregister_ciphers := LoadFunction('ENGINE_unregister_ciphers',AFailed);
-  ENGINE_register_all_ciphers := LoadFunction('ENGINE_register_all_ciphers',AFailed);
-  ENGINE_register_digests := LoadFunction('ENGINE_register_digests',AFailed);
-  ENGINE_unregister_digests := LoadFunction('ENGINE_unregister_digests',AFailed);
-  ENGINE_register_all_digests := LoadFunction('ENGINE_register_all_digests',AFailed);
-  ENGINE_register_pkey_meths := LoadFunction('ENGINE_register_pkey_meths',AFailed);
-  ENGINE_unregister_pkey_meths := LoadFunction('ENGINE_unregister_pkey_meths',AFailed);
-  ENGINE_register_all_pkey_meths := LoadFunction('ENGINE_register_all_pkey_meths',AFailed);
-  ENGINE_register_pkey_asn1_meths := LoadFunction('ENGINE_register_pkey_asn1_meths',AFailed);
-  ENGINE_unregister_pkey_asn1_meths := LoadFunction('ENGINE_unregister_pkey_asn1_meths',AFailed);
-  ENGINE_register_all_pkey_asn1_meths := LoadFunction('ENGINE_register_all_pkey_asn1_meths',AFailed);
-  ENGINE_register_complete := LoadFunction('ENGINE_register_complete',AFailed);
-  ENGINE_register_all_complete := LoadFunction('ENGINE_register_all_complete',AFailed);
-  ENGINE_ctrl := LoadFunction('ENGINE_ctrl',AFailed);
-  ENGINE_cmd_is_executable := LoadFunction('ENGINE_cmd_is_executable',AFailed);
-  ENGINE_ctrl_cmd := LoadFunction('ENGINE_ctrl_cmd',AFailed);
-  ENGINE_ctrl_cmd_string := LoadFunction('ENGINE_ctrl_cmd_string',AFailed);
-  ENGINE_new := LoadFunction('ENGINE_new',AFailed);
-  ENGINE_free := LoadFunction('ENGINE_free',AFailed);
-  ENGINE_up_ref := LoadFunction('ENGINE_up_ref',AFailed);
-  ENGINE_set_id := LoadFunction('ENGINE_set_id',AFailed);
-  ENGINE_set_name := LoadFunction('ENGINE_set_name',AFailed);
-  ENGINE_set_RSA := LoadFunction('ENGINE_set_RSA',AFailed);
-  ENGINE_set_DSA := LoadFunction('ENGINE_set_DSA',AFailed);
-  ENGINE_set_EC := LoadFunction('ENGINE_set_EC',AFailed);
-  ENGINE_set_DH := LoadFunction('ENGINE_set_DH',AFailed);
-  ENGINE_set_RAND := LoadFunction('ENGINE_set_RAND',AFailed);
-  ENGINE_set_destroy_function := LoadFunction('ENGINE_set_destroy_function',AFailed);
-  ENGINE_set_init_function := LoadFunction('ENGINE_set_init_function',AFailed);
-  ENGINE_set_finish_function := LoadFunction('ENGINE_set_finish_function',AFailed);
-  ENGINE_set_ctrl_function := LoadFunction('ENGINE_set_ctrl_function',AFailed);
-  ENGINE_set_load_privkey_function := LoadFunction('ENGINE_set_load_privkey_function',AFailed);
-  ENGINE_set_load_pubkey_function := LoadFunction('ENGINE_set_load_pubkey_function',AFailed);
-  ENGINE_set_ciphers := LoadFunction('ENGINE_set_ciphers',AFailed);
-  ENGINE_set_digests := LoadFunction('ENGINE_set_digests',AFailed);
-  ENGINE_set_pkey_meths := LoadFunction('ENGINE_set_pkey_meths',AFailed);
-  ENGINE_set_pkey_asn1_meths := LoadFunction('ENGINE_set_pkey_asn1_meths',AFailed);
-  ENGINE_set_flags := LoadFunction('ENGINE_set_flags',AFailed);
-  ENGINE_set_cmd_defns := LoadFunction('ENGINE_set_cmd_defns',AFailed);
-  ENGINE_set_ex_data := LoadFunction('ENGINE_set_ex_data',AFailed);
-  ENGINE_get_ex_data := LoadFunction('ENGINE_get_ex_data',AFailed);
-  ENGINE_get_id := LoadFunction('ENGINE_get_id',AFailed);
-  ENGINE_get_name := LoadFunction('ENGINE_get_name',AFailed);
-  ENGINE_get_RSA := LoadFunction('ENGINE_get_RSA',AFailed);
-  ENGINE_get_DSA := LoadFunction('ENGINE_get_DSA',AFailed);
-  ENGINE_get_EC := LoadFunction('ENGINE_get_EC',AFailed);
-  ENGINE_get_DH := LoadFunction('ENGINE_get_DH',AFailed);
-  ENGINE_get_RAND := LoadFunction('ENGINE_get_RAND',AFailed);
-  ENGINE_get_destroy_function := LoadFunction('ENGINE_get_destroy_function',AFailed);
-  ENGINE_get_init_function := LoadFunction('ENGINE_get_init_function',AFailed);
-  ENGINE_get_finish_function := LoadFunction('ENGINE_get_finish_function',AFailed);
-  ENGINE_get_ctrl_function := LoadFunction('ENGINE_get_ctrl_function',AFailed);
-  ENGINE_get_load_privkey_function := LoadFunction('ENGINE_get_load_privkey_function',AFailed);
-  ENGINE_get_load_pubkey_function := LoadFunction('ENGINE_get_load_pubkey_function',AFailed);
-  ENGINE_get_ciphers := LoadFunction('ENGINE_get_ciphers',AFailed);
-  ENGINE_get_digests := LoadFunction('ENGINE_get_digests',AFailed);
-  ENGINE_get_pkey_meths := LoadFunction('ENGINE_get_pkey_meths',AFailed);
-  ENGINE_get_pkey_asn1_meths := LoadFunction('ENGINE_get_pkey_asn1_meths',AFailed);
-  ENGINE_get_cipher := LoadFunction('ENGINE_get_cipher',AFailed);
-  ENGINE_get_digest := LoadFunction('ENGINE_get_digest',AFailed);
-  ENGINE_get_pkey_meth := LoadFunction('ENGINE_get_pkey_meth',AFailed);
-  ENGINE_get_pkey_asn1_meth := LoadFunction('ENGINE_get_pkey_asn1_meth',AFailed);
-  ENGINE_get_pkey_asn1_meth_str := LoadFunction('ENGINE_get_pkey_asn1_meth_str',AFailed);
-  ENGINE_pkey_asn1_find_str := LoadFunction('ENGINE_pkey_asn1_find_str',AFailed);
-  ENGINE_get_cmd_defns := LoadFunction('ENGINE_get_cmd_defns',AFailed);
-  ENGINE_get_flags := LoadFunction('ENGINE_get_flags',AFailed);
-  ENGINE_init := LoadFunction('ENGINE_init',AFailed);
-  ENGINE_finish := LoadFunction('ENGINE_finish',AFailed);
-  ENGINE_load_private_key := LoadFunction('ENGINE_load_private_key',AFailed);
-  ENGINE_load_public_key := LoadFunction('ENGINE_load_public_key',AFailed);
-  ENGINE_get_default_RSA := LoadFunction('ENGINE_get_default_RSA',AFailed);
-  ENGINE_get_default_DSA := LoadFunction('ENGINE_get_default_DSA',AFailed);
-  ENGINE_get_default_EC := LoadFunction('ENGINE_get_default_EC',AFailed);
-  ENGINE_get_default_DH := LoadFunction('ENGINE_get_default_DH',AFailed);
-  ENGINE_get_default_RAND := LoadFunction('ENGINE_get_default_RAND',AFailed);
-  ENGINE_get_cipher_engine := LoadFunction('ENGINE_get_cipher_engine',AFailed);
-  ENGINE_get_digest_engine := LoadFunction('ENGINE_get_digest_engine',AFailed);
-  ENGINE_get_pkey_meth_engine := LoadFunction('ENGINE_get_pkey_meth_engine',AFailed);
-  ENGINE_get_pkey_asn1_meth_engine := LoadFunction('ENGINE_get_pkey_asn1_meth_engine',AFailed);
-  ENGINE_set_default_RSA := LoadFunction('ENGINE_set_default_RSA',AFailed);
-  ENGINE_set_default_string := LoadFunction('ENGINE_set_default_string',AFailed);
-  ENGINE_set_default_DSA := LoadFunction('ENGINE_set_default_DSA',AFailed);
-  ENGINE_set_default_EC := LoadFunction('ENGINE_set_default_EC',AFailed);
-  ENGINE_set_default_DH := LoadFunction('ENGINE_set_default_DH',AFailed);
-  ENGINE_set_default_RAND := LoadFunction('ENGINE_set_default_RAND',AFailed);
-  ENGINE_set_default_ciphers := LoadFunction('ENGINE_set_default_ciphers',AFailed);
-  ENGINE_set_default_digests := LoadFunction('ENGINE_set_default_digests',AFailed);
-  ENGINE_set_default_pkey_meths := LoadFunction('ENGINE_set_default_pkey_meths',AFailed);
-  ENGINE_set_default_pkey_asn1_meths := LoadFunction('ENGINE_set_default_pkey_asn1_meths',AFailed);
-  ENGINE_set_default := LoadFunction('ENGINE_set_default',AFailed);
-  ENGINE_add_conf_module := LoadFunction('ENGINE_add_conf_module',AFailed);
-  ENGINE_get_static_state := LoadFunction('ENGINE_get_static_state',AFailed);
+  ENGINE_get_first := LoadLibFunction(ADllHandle, ENGINE_get_first_procname);
+  FuncLoaded := assigned(ENGINE_get_first);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_first_introduced)}
+    if LibVersion < ENGINE_get_first_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_first)}
+      ENGINE_get_first := @FC_ENGINE_get_first;
+      {$else}
+      {$if not defined(ENGINE_get_first_allownil)}
+      ENGINE_get_first := @ERR_ENGINE_get_first;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_first_removed)}
+    if ENGINE_get_first_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_first)}
+      ENGINE_get_first := @_ENGINE_get_first;
+      {$else}
+      {$if not defined(ENGINE_get_first_allownil)}
+      ENGINE_get_first := @ERR_ENGINE_get_first;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_first_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_first := @ERR_ENGINE_get_first;
+      AFailed.Add('ENGINE_get_first');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_last := LoadLibFunction(ADllHandle, ENGINE_get_last_procname);
+  FuncLoaded := assigned(ENGINE_get_last);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_last_introduced)}
+    if LibVersion < ENGINE_get_last_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_last)}
+      ENGINE_get_last := @FC_ENGINE_get_last;
+      {$else}
+      {$if not defined(ENGINE_get_last_allownil)}
+      ENGINE_get_last := @ERR_ENGINE_get_last;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_last_removed)}
+    if ENGINE_get_last_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_last)}
+      ENGINE_get_last := @_ENGINE_get_last;
+      {$else}
+      {$if not defined(ENGINE_get_last_allownil)}
+      ENGINE_get_last := @ERR_ENGINE_get_last;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_last_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_last := @ERR_ENGINE_get_last;
+      AFailed.Add('ENGINE_get_last');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_next := LoadLibFunction(ADllHandle, ENGINE_get_next_procname);
+  FuncLoaded := assigned(ENGINE_get_next);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_next_introduced)}
+    if LibVersion < ENGINE_get_next_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_next)}
+      ENGINE_get_next := @FC_ENGINE_get_next;
+      {$else}
+      {$if not defined(ENGINE_get_next_allownil)}
+      ENGINE_get_next := @ERR_ENGINE_get_next;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_next_removed)}
+    if ENGINE_get_next_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_next)}
+      ENGINE_get_next := @_ENGINE_get_next;
+      {$else}
+      {$if not defined(ENGINE_get_next_allownil)}
+      ENGINE_get_next := @ERR_ENGINE_get_next;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_next_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_next := @ERR_ENGINE_get_next;
+      AFailed.Add('ENGINE_get_next');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_prev := LoadLibFunction(ADllHandle, ENGINE_get_prev_procname);
+  FuncLoaded := assigned(ENGINE_get_prev);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_prev_introduced)}
+    if LibVersion < ENGINE_get_prev_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_prev)}
+      ENGINE_get_prev := @FC_ENGINE_get_prev;
+      {$else}
+      {$if not defined(ENGINE_get_prev_allownil)}
+      ENGINE_get_prev := @ERR_ENGINE_get_prev;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_prev_removed)}
+    if ENGINE_get_prev_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_prev)}
+      ENGINE_get_prev := @_ENGINE_get_prev;
+      {$else}
+      {$if not defined(ENGINE_get_prev_allownil)}
+      ENGINE_get_prev := @ERR_ENGINE_get_prev;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_prev_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_prev := @ERR_ENGINE_get_prev;
+      AFailed.Add('ENGINE_get_prev');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_add := LoadLibFunction(ADllHandle, ENGINE_add_procname);
+  FuncLoaded := assigned(ENGINE_add);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_add_introduced)}
+    if LibVersion < ENGINE_add_introduced then
+    begin
+      {$if declared(FC_ENGINE_add)}
+      ENGINE_add := @FC_ENGINE_add;
+      {$else}
+      {$if not defined(ENGINE_add_allownil)}
+      ENGINE_add := @ERR_ENGINE_add;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_add_removed)}
+    if ENGINE_add_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_add)}
+      ENGINE_add := @_ENGINE_add;
+      {$else}
+      {$if not defined(ENGINE_add_allownil)}
+      ENGINE_add := @ERR_ENGINE_add;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_add_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_add := @ERR_ENGINE_add;
+      AFailed.Add('ENGINE_add');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_remove := LoadLibFunction(ADllHandle, ENGINE_remove_procname);
+  FuncLoaded := assigned(ENGINE_remove);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_remove_introduced)}
+    if LibVersion < ENGINE_remove_introduced then
+    begin
+      {$if declared(FC_ENGINE_remove)}
+      ENGINE_remove := @FC_ENGINE_remove;
+      {$else}
+      {$if not defined(ENGINE_remove_allownil)}
+      ENGINE_remove := @ERR_ENGINE_remove;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_remove_removed)}
+    if ENGINE_remove_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_remove)}
+      ENGINE_remove := @_ENGINE_remove;
+      {$else}
+      {$if not defined(ENGINE_remove_allownil)}
+      ENGINE_remove := @ERR_ENGINE_remove;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_remove_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_remove := @ERR_ENGINE_remove;
+      AFailed.Add('ENGINE_remove');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_by_id := LoadLibFunction(ADllHandle, ENGINE_by_id_procname);
+  FuncLoaded := assigned(ENGINE_by_id);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_by_id_introduced)}
+    if LibVersion < ENGINE_by_id_introduced then
+    begin
+      {$if declared(FC_ENGINE_by_id)}
+      ENGINE_by_id := @FC_ENGINE_by_id;
+      {$else}
+      {$if not defined(ENGINE_by_id_allownil)}
+      ENGINE_by_id := @ERR_ENGINE_by_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_by_id_removed)}
+    if ENGINE_by_id_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_by_id)}
+      ENGINE_by_id := @_ENGINE_by_id;
+      {$else}
+      {$if not defined(ENGINE_by_id_allownil)}
+      ENGINE_by_id := @ERR_ENGINE_by_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_by_id_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_by_id := @ERR_ENGINE_by_id;
+      AFailed.Add('ENGINE_by_id');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_load_builtin_engines := LoadLibFunction(ADllHandle, ENGINE_load_builtin_engines_procname);
+  FuncLoaded := assigned(ENGINE_load_builtin_engines);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_load_builtin_engines_introduced)}
+    if LibVersion < ENGINE_load_builtin_engines_introduced then
+    begin
+      {$if declared(FC_ENGINE_load_builtin_engines)}
+      ENGINE_load_builtin_engines := @FC_ENGINE_load_builtin_engines;
+      {$else}
+      {$if not defined(ENGINE_load_builtin_engines_allownil)}
+      ENGINE_load_builtin_engines := @ERR_ENGINE_load_builtin_engines;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_load_builtin_engines_removed)}
+    if ENGINE_load_builtin_engines_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_load_builtin_engines)}
+      ENGINE_load_builtin_engines := @_ENGINE_load_builtin_engines;
+      {$else}
+      {$if not defined(ENGINE_load_builtin_engines_allownil)}
+      ENGINE_load_builtin_engines := @ERR_ENGINE_load_builtin_engines;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_load_builtin_engines_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_load_builtin_engines := @ERR_ENGINE_load_builtin_engines;
+      AFailed.Add('ENGINE_load_builtin_engines');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_table_flags := LoadLibFunction(ADllHandle, ENGINE_get_table_flags_procname);
+  FuncLoaded := assigned(ENGINE_get_table_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_table_flags_introduced)}
+    if LibVersion < ENGINE_get_table_flags_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_table_flags)}
+      ENGINE_get_table_flags := @FC_ENGINE_get_table_flags;
+      {$else}
+      {$if not defined(ENGINE_get_table_flags_allownil)}
+      ENGINE_get_table_flags := @ERR_ENGINE_get_table_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_table_flags_removed)}
+    if ENGINE_get_table_flags_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_table_flags)}
+      ENGINE_get_table_flags := @_ENGINE_get_table_flags;
+      {$else}
+      {$if not defined(ENGINE_get_table_flags_allownil)}
+      ENGINE_get_table_flags := @ERR_ENGINE_get_table_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_table_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_table_flags := @ERR_ENGINE_get_table_flags;
+      AFailed.Add('ENGINE_get_table_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_table_flags := LoadLibFunction(ADllHandle, ENGINE_set_table_flags_procname);
+  FuncLoaded := assigned(ENGINE_set_table_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_table_flags_introduced)}
+    if LibVersion < ENGINE_set_table_flags_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_table_flags)}
+      ENGINE_set_table_flags := @FC_ENGINE_set_table_flags;
+      {$else}
+      {$if not defined(ENGINE_set_table_flags_allownil)}
+      ENGINE_set_table_flags := @ERR_ENGINE_set_table_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_table_flags_removed)}
+    if ENGINE_set_table_flags_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_table_flags)}
+      ENGINE_set_table_flags := @_ENGINE_set_table_flags;
+      {$else}
+      {$if not defined(ENGINE_set_table_flags_allownil)}
+      ENGINE_set_table_flags := @ERR_ENGINE_set_table_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_table_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_table_flags := @ERR_ENGINE_set_table_flags;
+      AFailed.Add('ENGINE_set_table_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_RSA := LoadLibFunction(ADllHandle, ENGINE_register_RSA_procname);
+  FuncLoaded := assigned(ENGINE_register_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_RSA_introduced)}
+    if LibVersion < ENGINE_register_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_RSA)}
+      ENGINE_register_RSA := @FC_ENGINE_register_RSA;
+      {$else}
+      {$if not defined(ENGINE_register_RSA_allownil)}
+      ENGINE_register_RSA := @ERR_ENGINE_register_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_RSA_removed)}
+    if ENGINE_register_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_RSA)}
+      ENGINE_register_RSA := @_ENGINE_register_RSA;
+      {$else}
+      {$if not defined(ENGINE_register_RSA_allownil)}
+      ENGINE_register_RSA := @ERR_ENGINE_register_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_RSA := @ERR_ENGINE_register_RSA;
+      AFailed.Add('ENGINE_register_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_RSA := LoadLibFunction(ADllHandle, ENGINE_unregister_RSA_procname);
+  FuncLoaded := assigned(ENGINE_unregister_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_RSA_introduced)}
+    if LibVersion < ENGINE_unregister_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_RSA)}
+      ENGINE_unregister_RSA := @FC_ENGINE_unregister_RSA;
+      {$else}
+      {$if not defined(ENGINE_unregister_RSA_allownil)}
+      ENGINE_unregister_RSA := @ERR_ENGINE_unregister_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_RSA_removed)}
+    if ENGINE_unregister_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_RSA)}
+      ENGINE_unregister_RSA := @_ENGINE_unregister_RSA;
+      {$else}
+      {$if not defined(ENGINE_unregister_RSA_allownil)}
+      ENGINE_unregister_RSA := @ERR_ENGINE_unregister_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_RSA := @ERR_ENGINE_unregister_RSA;
+      AFailed.Add('ENGINE_unregister_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_RSA := LoadLibFunction(ADllHandle, ENGINE_register_all_RSA_procname);
+  FuncLoaded := assigned(ENGINE_register_all_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_RSA_introduced)}
+    if LibVersion < ENGINE_register_all_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_RSA)}
+      ENGINE_register_all_RSA := @FC_ENGINE_register_all_RSA;
+      {$else}
+      {$if not defined(ENGINE_register_all_RSA_allownil)}
+      ENGINE_register_all_RSA := @ERR_ENGINE_register_all_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_RSA_removed)}
+    if ENGINE_register_all_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_RSA)}
+      ENGINE_register_all_RSA := @_ENGINE_register_all_RSA;
+      {$else}
+      {$if not defined(ENGINE_register_all_RSA_allownil)}
+      ENGINE_register_all_RSA := @ERR_ENGINE_register_all_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_RSA := @ERR_ENGINE_register_all_RSA;
+      AFailed.Add('ENGINE_register_all_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_DSA := LoadLibFunction(ADllHandle, ENGINE_register_DSA_procname);
+  FuncLoaded := assigned(ENGINE_register_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_DSA_introduced)}
+    if LibVersion < ENGINE_register_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_DSA)}
+      ENGINE_register_DSA := @FC_ENGINE_register_DSA;
+      {$else}
+      {$if not defined(ENGINE_register_DSA_allownil)}
+      ENGINE_register_DSA := @ERR_ENGINE_register_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_DSA_removed)}
+    if ENGINE_register_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_DSA)}
+      ENGINE_register_DSA := @_ENGINE_register_DSA;
+      {$else}
+      {$if not defined(ENGINE_register_DSA_allownil)}
+      ENGINE_register_DSA := @ERR_ENGINE_register_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_DSA := @ERR_ENGINE_register_DSA;
+      AFailed.Add('ENGINE_register_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_DSA := LoadLibFunction(ADllHandle, ENGINE_unregister_DSA_procname);
+  FuncLoaded := assigned(ENGINE_unregister_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_DSA_introduced)}
+    if LibVersion < ENGINE_unregister_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_DSA)}
+      ENGINE_unregister_DSA := @FC_ENGINE_unregister_DSA;
+      {$else}
+      {$if not defined(ENGINE_unregister_DSA_allownil)}
+      ENGINE_unregister_DSA := @ERR_ENGINE_unregister_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_DSA_removed)}
+    if ENGINE_unregister_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_DSA)}
+      ENGINE_unregister_DSA := @_ENGINE_unregister_DSA;
+      {$else}
+      {$if not defined(ENGINE_unregister_DSA_allownil)}
+      ENGINE_unregister_DSA := @ERR_ENGINE_unregister_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_DSA := @ERR_ENGINE_unregister_DSA;
+      AFailed.Add('ENGINE_unregister_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_DSA := LoadLibFunction(ADllHandle, ENGINE_register_all_DSA_procname);
+  FuncLoaded := assigned(ENGINE_register_all_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_DSA_introduced)}
+    if LibVersion < ENGINE_register_all_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_DSA)}
+      ENGINE_register_all_DSA := @FC_ENGINE_register_all_DSA;
+      {$else}
+      {$if not defined(ENGINE_register_all_DSA_allownil)}
+      ENGINE_register_all_DSA := @ERR_ENGINE_register_all_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_DSA_removed)}
+    if ENGINE_register_all_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_DSA)}
+      ENGINE_register_all_DSA := @_ENGINE_register_all_DSA;
+      {$else}
+      {$if not defined(ENGINE_register_all_DSA_allownil)}
+      ENGINE_register_all_DSA := @ERR_ENGINE_register_all_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_DSA := @ERR_ENGINE_register_all_DSA;
+      AFailed.Add('ENGINE_register_all_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_EC := LoadLibFunction(ADllHandle, ENGINE_register_EC_procname);
+  FuncLoaded := assigned(ENGINE_register_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_EC_introduced)}
+    if LibVersion < ENGINE_register_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_EC)}
+      ENGINE_register_EC := @FC_ENGINE_register_EC;
+      {$else}
+      {$if not defined(ENGINE_register_EC_allownil)}
+      ENGINE_register_EC := @ERR_ENGINE_register_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_EC_removed)}
+    if ENGINE_register_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_EC)}
+      ENGINE_register_EC := @_ENGINE_register_EC;
+      {$else}
+      {$if not defined(ENGINE_register_EC_allownil)}
+      ENGINE_register_EC := @ERR_ENGINE_register_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_EC := @ERR_ENGINE_register_EC;
+      AFailed.Add('ENGINE_register_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_EC := LoadLibFunction(ADllHandle, ENGINE_unregister_EC_procname);
+  FuncLoaded := assigned(ENGINE_unregister_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_EC_introduced)}
+    if LibVersion < ENGINE_unregister_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_EC)}
+      ENGINE_unregister_EC := @FC_ENGINE_unregister_EC;
+      {$else}
+      {$if not defined(ENGINE_unregister_EC_allownil)}
+      ENGINE_unregister_EC := @ERR_ENGINE_unregister_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_EC_removed)}
+    if ENGINE_unregister_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_EC)}
+      ENGINE_unregister_EC := @_ENGINE_unregister_EC;
+      {$else}
+      {$if not defined(ENGINE_unregister_EC_allownil)}
+      ENGINE_unregister_EC := @ERR_ENGINE_unregister_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_EC := @ERR_ENGINE_unregister_EC;
+      AFailed.Add('ENGINE_unregister_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_EC := LoadLibFunction(ADllHandle, ENGINE_register_all_EC_procname);
+  FuncLoaded := assigned(ENGINE_register_all_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_EC_introduced)}
+    if LibVersion < ENGINE_register_all_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_EC)}
+      ENGINE_register_all_EC := @FC_ENGINE_register_all_EC;
+      {$else}
+      {$if not defined(ENGINE_register_all_EC_allownil)}
+      ENGINE_register_all_EC := @ERR_ENGINE_register_all_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_EC_removed)}
+    if ENGINE_register_all_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_EC)}
+      ENGINE_register_all_EC := @_ENGINE_register_all_EC;
+      {$else}
+      {$if not defined(ENGINE_register_all_EC_allownil)}
+      ENGINE_register_all_EC := @ERR_ENGINE_register_all_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_EC := @ERR_ENGINE_register_all_EC;
+      AFailed.Add('ENGINE_register_all_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_DH := LoadLibFunction(ADllHandle, ENGINE_register_DH_procname);
+  FuncLoaded := assigned(ENGINE_register_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_DH_introduced)}
+    if LibVersion < ENGINE_register_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_DH)}
+      ENGINE_register_DH := @FC_ENGINE_register_DH;
+      {$else}
+      {$if not defined(ENGINE_register_DH_allownil)}
+      ENGINE_register_DH := @ERR_ENGINE_register_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_DH_removed)}
+    if ENGINE_register_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_DH)}
+      ENGINE_register_DH := @_ENGINE_register_DH;
+      {$else}
+      {$if not defined(ENGINE_register_DH_allownil)}
+      ENGINE_register_DH := @ERR_ENGINE_register_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_DH := @ERR_ENGINE_register_DH;
+      AFailed.Add('ENGINE_register_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_DH := LoadLibFunction(ADllHandle, ENGINE_unregister_DH_procname);
+  FuncLoaded := assigned(ENGINE_unregister_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_DH_introduced)}
+    if LibVersion < ENGINE_unregister_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_DH)}
+      ENGINE_unregister_DH := @FC_ENGINE_unregister_DH;
+      {$else}
+      {$if not defined(ENGINE_unregister_DH_allownil)}
+      ENGINE_unregister_DH := @ERR_ENGINE_unregister_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_DH_removed)}
+    if ENGINE_unregister_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_DH)}
+      ENGINE_unregister_DH := @_ENGINE_unregister_DH;
+      {$else}
+      {$if not defined(ENGINE_unregister_DH_allownil)}
+      ENGINE_unregister_DH := @ERR_ENGINE_unregister_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_DH := @ERR_ENGINE_unregister_DH;
+      AFailed.Add('ENGINE_unregister_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_DH := LoadLibFunction(ADllHandle, ENGINE_register_all_DH_procname);
+  FuncLoaded := assigned(ENGINE_register_all_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_DH_introduced)}
+    if LibVersion < ENGINE_register_all_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_DH)}
+      ENGINE_register_all_DH := @FC_ENGINE_register_all_DH;
+      {$else}
+      {$if not defined(ENGINE_register_all_DH_allownil)}
+      ENGINE_register_all_DH := @ERR_ENGINE_register_all_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_DH_removed)}
+    if ENGINE_register_all_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_DH)}
+      ENGINE_register_all_DH := @_ENGINE_register_all_DH;
+      {$else}
+      {$if not defined(ENGINE_register_all_DH_allownil)}
+      ENGINE_register_all_DH := @ERR_ENGINE_register_all_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_DH := @ERR_ENGINE_register_all_DH;
+      AFailed.Add('ENGINE_register_all_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_RAND := LoadLibFunction(ADllHandle, ENGINE_register_RAND_procname);
+  FuncLoaded := assigned(ENGINE_register_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_RAND_introduced)}
+    if LibVersion < ENGINE_register_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_RAND)}
+      ENGINE_register_RAND := @FC_ENGINE_register_RAND;
+      {$else}
+      {$if not defined(ENGINE_register_RAND_allownil)}
+      ENGINE_register_RAND := @ERR_ENGINE_register_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_RAND_removed)}
+    if ENGINE_register_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_RAND)}
+      ENGINE_register_RAND := @_ENGINE_register_RAND;
+      {$else}
+      {$if not defined(ENGINE_register_RAND_allownil)}
+      ENGINE_register_RAND := @ERR_ENGINE_register_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_RAND := @ERR_ENGINE_register_RAND;
+      AFailed.Add('ENGINE_register_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_RAND := LoadLibFunction(ADllHandle, ENGINE_unregister_RAND_procname);
+  FuncLoaded := assigned(ENGINE_unregister_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_RAND_introduced)}
+    if LibVersion < ENGINE_unregister_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_RAND)}
+      ENGINE_unregister_RAND := @FC_ENGINE_unregister_RAND;
+      {$else}
+      {$if not defined(ENGINE_unregister_RAND_allownil)}
+      ENGINE_unregister_RAND := @ERR_ENGINE_unregister_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_RAND_removed)}
+    if ENGINE_unregister_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_RAND)}
+      ENGINE_unregister_RAND := @_ENGINE_unregister_RAND;
+      {$else}
+      {$if not defined(ENGINE_unregister_RAND_allownil)}
+      ENGINE_unregister_RAND := @ERR_ENGINE_unregister_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_RAND := @ERR_ENGINE_unregister_RAND;
+      AFailed.Add('ENGINE_unregister_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_RAND := LoadLibFunction(ADllHandle, ENGINE_register_all_RAND_procname);
+  FuncLoaded := assigned(ENGINE_register_all_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_RAND_introduced)}
+    if LibVersion < ENGINE_register_all_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_RAND)}
+      ENGINE_register_all_RAND := @FC_ENGINE_register_all_RAND;
+      {$else}
+      {$if not defined(ENGINE_register_all_RAND_allownil)}
+      ENGINE_register_all_RAND := @ERR_ENGINE_register_all_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_RAND_removed)}
+    if ENGINE_register_all_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_RAND)}
+      ENGINE_register_all_RAND := @_ENGINE_register_all_RAND;
+      {$else}
+      {$if not defined(ENGINE_register_all_RAND_allownil)}
+      ENGINE_register_all_RAND := @ERR_ENGINE_register_all_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_RAND := @ERR_ENGINE_register_all_RAND;
+      AFailed.Add('ENGINE_register_all_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_ciphers := LoadLibFunction(ADllHandle, ENGINE_register_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_register_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_ciphers_introduced)}
+    if LibVersion < ENGINE_register_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_ciphers)}
+      ENGINE_register_ciphers := @FC_ENGINE_register_ciphers;
+      {$else}
+      {$if not defined(ENGINE_register_ciphers_allownil)}
+      ENGINE_register_ciphers := @ERR_ENGINE_register_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_ciphers_removed)}
+    if ENGINE_register_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_ciphers)}
+      ENGINE_register_ciphers := @_ENGINE_register_ciphers;
+      {$else}
+      {$if not defined(ENGINE_register_ciphers_allownil)}
+      ENGINE_register_ciphers := @ERR_ENGINE_register_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_ciphers := @ERR_ENGINE_register_ciphers;
+      AFailed.Add('ENGINE_register_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_ciphers := LoadLibFunction(ADllHandle, ENGINE_unregister_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_unregister_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_ciphers_introduced)}
+    if LibVersion < ENGINE_unregister_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_ciphers)}
+      ENGINE_unregister_ciphers := @FC_ENGINE_unregister_ciphers;
+      {$else}
+      {$if not defined(ENGINE_unregister_ciphers_allownil)}
+      ENGINE_unregister_ciphers := @ERR_ENGINE_unregister_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_ciphers_removed)}
+    if ENGINE_unregister_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_ciphers)}
+      ENGINE_unregister_ciphers := @_ENGINE_unregister_ciphers;
+      {$else}
+      {$if not defined(ENGINE_unregister_ciphers_allownil)}
+      ENGINE_unregister_ciphers := @ERR_ENGINE_unregister_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_ciphers := @ERR_ENGINE_unregister_ciphers;
+      AFailed.Add('ENGINE_unregister_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_ciphers := LoadLibFunction(ADllHandle, ENGINE_register_all_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_register_all_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_ciphers_introduced)}
+    if LibVersion < ENGINE_register_all_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_ciphers)}
+      ENGINE_register_all_ciphers := @FC_ENGINE_register_all_ciphers;
+      {$else}
+      {$if not defined(ENGINE_register_all_ciphers_allownil)}
+      ENGINE_register_all_ciphers := @ERR_ENGINE_register_all_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_ciphers_removed)}
+    if ENGINE_register_all_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_ciphers)}
+      ENGINE_register_all_ciphers := @_ENGINE_register_all_ciphers;
+      {$else}
+      {$if not defined(ENGINE_register_all_ciphers_allownil)}
+      ENGINE_register_all_ciphers := @ERR_ENGINE_register_all_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_ciphers := @ERR_ENGINE_register_all_ciphers;
+      AFailed.Add('ENGINE_register_all_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_digests := LoadLibFunction(ADllHandle, ENGINE_register_digests_procname);
+  FuncLoaded := assigned(ENGINE_register_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_digests_introduced)}
+    if LibVersion < ENGINE_register_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_digests)}
+      ENGINE_register_digests := @FC_ENGINE_register_digests;
+      {$else}
+      {$if not defined(ENGINE_register_digests_allownil)}
+      ENGINE_register_digests := @ERR_ENGINE_register_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_digests_removed)}
+    if ENGINE_register_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_digests)}
+      ENGINE_register_digests := @_ENGINE_register_digests;
+      {$else}
+      {$if not defined(ENGINE_register_digests_allownil)}
+      ENGINE_register_digests := @ERR_ENGINE_register_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_digests := @ERR_ENGINE_register_digests;
+      AFailed.Add('ENGINE_register_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_digests := LoadLibFunction(ADllHandle, ENGINE_unregister_digests_procname);
+  FuncLoaded := assigned(ENGINE_unregister_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_digests_introduced)}
+    if LibVersion < ENGINE_unregister_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_digests)}
+      ENGINE_unregister_digests := @FC_ENGINE_unregister_digests;
+      {$else}
+      {$if not defined(ENGINE_unregister_digests_allownil)}
+      ENGINE_unregister_digests := @ERR_ENGINE_unregister_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_digests_removed)}
+    if ENGINE_unregister_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_digests)}
+      ENGINE_unregister_digests := @_ENGINE_unregister_digests;
+      {$else}
+      {$if not defined(ENGINE_unregister_digests_allownil)}
+      ENGINE_unregister_digests := @ERR_ENGINE_unregister_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_digests := @ERR_ENGINE_unregister_digests;
+      AFailed.Add('ENGINE_unregister_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_digests := LoadLibFunction(ADllHandle, ENGINE_register_all_digests_procname);
+  FuncLoaded := assigned(ENGINE_register_all_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_digests_introduced)}
+    if LibVersion < ENGINE_register_all_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_digests)}
+      ENGINE_register_all_digests := @FC_ENGINE_register_all_digests;
+      {$else}
+      {$if not defined(ENGINE_register_all_digests_allownil)}
+      ENGINE_register_all_digests := @ERR_ENGINE_register_all_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_digests_removed)}
+    if ENGINE_register_all_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_digests)}
+      ENGINE_register_all_digests := @_ENGINE_register_all_digests;
+      {$else}
+      {$if not defined(ENGINE_register_all_digests_allownil)}
+      ENGINE_register_all_digests := @ERR_ENGINE_register_all_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_digests := @ERR_ENGINE_register_all_digests;
+      AFailed.Add('ENGINE_register_all_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_register_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_register_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_pkey_meths_introduced)}
+    if LibVersion < ENGINE_register_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_pkey_meths)}
+      ENGINE_register_pkey_meths := @FC_ENGINE_register_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_register_pkey_meths_allownil)}
+      ENGINE_register_pkey_meths := @ERR_ENGINE_register_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_pkey_meths_removed)}
+    if ENGINE_register_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_pkey_meths)}
+      ENGINE_register_pkey_meths := @_ENGINE_register_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_register_pkey_meths_allownil)}
+      ENGINE_register_pkey_meths := @ERR_ENGINE_register_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_pkey_meths := @ERR_ENGINE_register_pkey_meths;
+      AFailed.Add('ENGINE_register_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_unregister_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_unregister_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_pkey_meths_introduced)}
+    if LibVersion < ENGINE_unregister_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_pkey_meths)}
+      ENGINE_unregister_pkey_meths := @FC_ENGINE_unregister_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_unregister_pkey_meths_allownil)}
+      ENGINE_unregister_pkey_meths := @ERR_ENGINE_unregister_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_pkey_meths_removed)}
+    if ENGINE_unregister_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_pkey_meths)}
+      ENGINE_unregister_pkey_meths := @_ENGINE_unregister_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_unregister_pkey_meths_allownil)}
+      ENGINE_unregister_pkey_meths := @ERR_ENGINE_unregister_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_pkey_meths := @ERR_ENGINE_unregister_pkey_meths;
+      AFailed.Add('ENGINE_unregister_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_register_all_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_register_all_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_pkey_meths_introduced)}
+    if LibVersion < ENGINE_register_all_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_pkey_meths)}
+      ENGINE_register_all_pkey_meths := @FC_ENGINE_register_all_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_register_all_pkey_meths_allownil)}
+      ENGINE_register_all_pkey_meths := @ERR_ENGINE_register_all_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_pkey_meths_removed)}
+    if ENGINE_register_all_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_pkey_meths)}
+      ENGINE_register_all_pkey_meths := @_ENGINE_register_all_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_register_all_pkey_meths_allownil)}
+      ENGINE_register_all_pkey_meths := @ERR_ENGINE_register_all_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_pkey_meths := @ERR_ENGINE_register_all_pkey_meths;
+      AFailed.Add('ENGINE_register_all_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_register_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_register_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_register_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_pkey_asn1_meths)}
+      ENGINE_register_pkey_asn1_meths := @FC_ENGINE_register_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_register_pkey_asn1_meths_allownil)}
+      ENGINE_register_pkey_asn1_meths := @ERR_ENGINE_register_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_pkey_asn1_meths_removed)}
+    if ENGINE_register_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_pkey_asn1_meths)}
+      ENGINE_register_pkey_asn1_meths := @_ENGINE_register_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_register_pkey_asn1_meths_allownil)}
+      ENGINE_register_pkey_asn1_meths := @ERR_ENGINE_register_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_pkey_asn1_meths := @ERR_ENGINE_register_pkey_asn1_meths;
+      AFailed.Add('ENGINE_register_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_unregister_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_unregister_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_unregister_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_unregister_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_unregister_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_unregister_pkey_asn1_meths)}
+      ENGINE_unregister_pkey_asn1_meths := @FC_ENGINE_unregister_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_unregister_pkey_asn1_meths_allownil)}
+      ENGINE_unregister_pkey_asn1_meths := @ERR_ENGINE_unregister_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_unregister_pkey_asn1_meths_removed)}
+    if ENGINE_unregister_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_unregister_pkey_asn1_meths)}
+      ENGINE_unregister_pkey_asn1_meths := @_ENGINE_unregister_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_unregister_pkey_asn1_meths_allownil)}
+      ENGINE_unregister_pkey_asn1_meths := @ERR_ENGINE_unregister_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_unregister_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_unregister_pkey_asn1_meths := @ERR_ENGINE_unregister_pkey_asn1_meths;
+      AFailed.Add('ENGINE_unregister_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_register_all_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_register_all_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_register_all_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_pkey_asn1_meths)}
+      ENGINE_register_all_pkey_asn1_meths := @FC_ENGINE_register_all_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_register_all_pkey_asn1_meths_allownil)}
+      ENGINE_register_all_pkey_asn1_meths := @ERR_ENGINE_register_all_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_pkey_asn1_meths_removed)}
+    if ENGINE_register_all_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_pkey_asn1_meths)}
+      ENGINE_register_all_pkey_asn1_meths := @_ENGINE_register_all_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_register_all_pkey_asn1_meths_allownil)}
+      ENGINE_register_all_pkey_asn1_meths := @ERR_ENGINE_register_all_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_pkey_asn1_meths := @ERR_ENGINE_register_all_pkey_asn1_meths;
+      AFailed.Add('ENGINE_register_all_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_complete := LoadLibFunction(ADllHandle, ENGINE_register_complete_procname);
+  FuncLoaded := assigned(ENGINE_register_complete);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_complete_introduced)}
+    if LibVersion < ENGINE_register_complete_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_complete)}
+      ENGINE_register_complete := @FC_ENGINE_register_complete;
+      {$else}
+      {$if not defined(ENGINE_register_complete_allownil)}
+      ENGINE_register_complete := @ERR_ENGINE_register_complete;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_complete_removed)}
+    if ENGINE_register_complete_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_complete)}
+      ENGINE_register_complete := @_ENGINE_register_complete;
+      {$else}
+      {$if not defined(ENGINE_register_complete_allownil)}
+      ENGINE_register_complete := @ERR_ENGINE_register_complete;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_complete_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_complete := @ERR_ENGINE_register_complete;
+      AFailed.Add('ENGINE_register_complete');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_register_all_complete := LoadLibFunction(ADllHandle, ENGINE_register_all_complete_procname);
+  FuncLoaded := assigned(ENGINE_register_all_complete);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_register_all_complete_introduced)}
+    if LibVersion < ENGINE_register_all_complete_introduced then
+    begin
+      {$if declared(FC_ENGINE_register_all_complete)}
+      ENGINE_register_all_complete := @FC_ENGINE_register_all_complete;
+      {$else}
+      {$if not defined(ENGINE_register_all_complete_allownil)}
+      ENGINE_register_all_complete := @ERR_ENGINE_register_all_complete;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_register_all_complete_removed)}
+    if ENGINE_register_all_complete_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_register_all_complete)}
+      ENGINE_register_all_complete := @_ENGINE_register_all_complete;
+      {$else}
+      {$if not defined(ENGINE_register_all_complete_allownil)}
+      ENGINE_register_all_complete := @ERR_ENGINE_register_all_complete;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_register_all_complete_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_register_all_complete := @ERR_ENGINE_register_all_complete;
+      AFailed.Add('ENGINE_register_all_complete');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_ctrl := LoadLibFunction(ADllHandle, ENGINE_ctrl_procname);
+  FuncLoaded := assigned(ENGINE_ctrl);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_ctrl_introduced)}
+    if LibVersion < ENGINE_ctrl_introduced then
+    begin
+      {$if declared(FC_ENGINE_ctrl)}
+      ENGINE_ctrl := @FC_ENGINE_ctrl;
+      {$else}
+      {$if not defined(ENGINE_ctrl_allownil)}
+      ENGINE_ctrl := @ERR_ENGINE_ctrl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_ctrl_removed)}
+    if ENGINE_ctrl_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_ctrl)}
+      ENGINE_ctrl := @_ENGINE_ctrl;
+      {$else}
+      {$if not defined(ENGINE_ctrl_allownil)}
+      ENGINE_ctrl := @ERR_ENGINE_ctrl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_ctrl_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_ctrl := @ERR_ENGINE_ctrl;
+      AFailed.Add('ENGINE_ctrl');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_cmd_is_executable := LoadLibFunction(ADllHandle, ENGINE_cmd_is_executable_procname);
+  FuncLoaded := assigned(ENGINE_cmd_is_executable);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_cmd_is_executable_introduced)}
+    if LibVersion < ENGINE_cmd_is_executable_introduced then
+    begin
+      {$if declared(FC_ENGINE_cmd_is_executable)}
+      ENGINE_cmd_is_executable := @FC_ENGINE_cmd_is_executable;
+      {$else}
+      {$if not defined(ENGINE_cmd_is_executable_allownil)}
+      ENGINE_cmd_is_executable := @ERR_ENGINE_cmd_is_executable;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_cmd_is_executable_removed)}
+    if ENGINE_cmd_is_executable_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_cmd_is_executable)}
+      ENGINE_cmd_is_executable := @_ENGINE_cmd_is_executable;
+      {$else}
+      {$if not defined(ENGINE_cmd_is_executable_allownil)}
+      ENGINE_cmd_is_executable := @ERR_ENGINE_cmd_is_executable;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_cmd_is_executable_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_cmd_is_executable := @ERR_ENGINE_cmd_is_executable;
+      AFailed.Add('ENGINE_cmd_is_executable');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_ctrl_cmd := LoadLibFunction(ADllHandle, ENGINE_ctrl_cmd_procname);
+  FuncLoaded := assigned(ENGINE_ctrl_cmd);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_ctrl_cmd_introduced)}
+    if LibVersion < ENGINE_ctrl_cmd_introduced then
+    begin
+      {$if declared(FC_ENGINE_ctrl_cmd)}
+      ENGINE_ctrl_cmd := @FC_ENGINE_ctrl_cmd;
+      {$else}
+      {$if not defined(ENGINE_ctrl_cmd_allownil)}
+      ENGINE_ctrl_cmd := @ERR_ENGINE_ctrl_cmd;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_ctrl_cmd_removed)}
+    if ENGINE_ctrl_cmd_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_ctrl_cmd)}
+      ENGINE_ctrl_cmd := @_ENGINE_ctrl_cmd;
+      {$else}
+      {$if not defined(ENGINE_ctrl_cmd_allownil)}
+      ENGINE_ctrl_cmd := @ERR_ENGINE_ctrl_cmd;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_ctrl_cmd_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_ctrl_cmd := @ERR_ENGINE_ctrl_cmd;
+      AFailed.Add('ENGINE_ctrl_cmd');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_ctrl_cmd_string := LoadLibFunction(ADllHandle, ENGINE_ctrl_cmd_string_procname);
+  FuncLoaded := assigned(ENGINE_ctrl_cmd_string);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_ctrl_cmd_string_introduced)}
+    if LibVersion < ENGINE_ctrl_cmd_string_introduced then
+    begin
+      {$if declared(FC_ENGINE_ctrl_cmd_string)}
+      ENGINE_ctrl_cmd_string := @FC_ENGINE_ctrl_cmd_string;
+      {$else}
+      {$if not defined(ENGINE_ctrl_cmd_string_allownil)}
+      ENGINE_ctrl_cmd_string := @ERR_ENGINE_ctrl_cmd_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_ctrl_cmd_string_removed)}
+    if ENGINE_ctrl_cmd_string_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_ctrl_cmd_string)}
+      ENGINE_ctrl_cmd_string := @_ENGINE_ctrl_cmd_string;
+      {$else}
+      {$if not defined(ENGINE_ctrl_cmd_string_allownil)}
+      ENGINE_ctrl_cmd_string := @ERR_ENGINE_ctrl_cmd_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_ctrl_cmd_string_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_ctrl_cmd_string := @ERR_ENGINE_ctrl_cmd_string;
+      AFailed.Add('ENGINE_ctrl_cmd_string');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_new := LoadLibFunction(ADllHandle, ENGINE_new_procname);
+  FuncLoaded := assigned(ENGINE_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_new_introduced)}
+    if LibVersion < ENGINE_new_introduced then
+    begin
+      {$if declared(FC_ENGINE_new)}
+      ENGINE_new := @FC_ENGINE_new;
+      {$else}
+      {$if not defined(ENGINE_new_allownil)}
+      ENGINE_new := @ERR_ENGINE_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_new_removed)}
+    if ENGINE_new_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_new)}
+      ENGINE_new := @_ENGINE_new;
+      {$else}
+      {$if not defined(ENGINE_new_allownil)}
+      ENGINE_new := @ERR_ENGINE_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_new_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_new := @ERR_ENGINE_new;
+      AFailed.Add('ENGINE_new');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_free := LoadLibFunction(ADllHandle, ENGINE_free_procname);
+  FuncLoaded := assigned(ENGINE_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_free_introduced)}
+    if LibVersion < ENGINE_free_introduced then
+    begin
+      {$if declared(FC_ENGINE_free)}
+      ENGINE_free := @FC_ENGINE_free;
+      {$else}
+      {$if not defined(ENGINE_free_allownil)}
+      ENGINE_free := @ERR_ENGINE_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_free_removed)}
+    if ENGINE_free_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_free)}
+      ENGINE_free := @_ENGINE_free;
+      {$else}
+      {$if not defined(ENGINE_free_allownil)}
+      ENGINE_free := @ERR_ENGINE_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_free_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_free := @ERR_ENGINE_free;
+      AFailed.Add('ENGINE_free');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_up_ref := LoadLibFunction(ADllHandle, ENGINE_up_ref_procname);
+  FuncLoaded := assigned(ENGINE_up_ref);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_up_ref_introduced)}
+    if LibVersion < ENGINE_up_ref_introduced then
+    begin
+      {$if declared(FC_ENGINE_up_ref)}
+      ENGINE_up_ref := @FC_ENGINE_up_ref;
+      {$else}
+      {$if not defined(ENGINE_up_ref_allownil)}
+      ENGINE_up_ref := @ERR_ENGINE_up_ref;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_up_ref_removed)}
+    if ENGINE_up_ref_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_up_ref)}
+      ENGINE_up_ref := @_ENGINE_up_ref;
+      {$else}
+      {$if not defined(ENGINE_up_ref_allownil)}
+      ENGINE_up_ref := @ERR_ENGINE_up_ref;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_up_ref_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_up_ref := @ERR_ENGINE_up_ref;
+      AFailed.Add('ENGINE_up_ref');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_id := LoadLibFunction(ADllHandle, ENGINE_set_id_procname);
+  FuncLoaded := assigned(ENGINE_set_id);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_id_introduced)}
+    if LibVersion < ENGINE_set_id_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_id)}
+      ENGINE_set_id := @FC_ENGINE_set_id;
+      {$else}
+      {$if not defined(ENGINE_set_id_allownil)}
+      ENGINE_set_id := @ERR_ENGINE_set_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_id_removed)}
+    if ENGINE_set_id_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_id)}
+      ENGINE_set_id := @_ENGINE_set_id;
+      {$else}
+      {$if not defined(ENGINE_set_id_allownil)}
+      ENGINE_set_id := @ERR_ENGINE_set_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_id_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_id := @ERR_ENGINE_set_id;
+      AFailed.Add('ENGINE_set_id');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_name := LoadLibFunction(ADllHandle, ENGINE_set_name_procname);
+  FuncLoaded := assigned(ENGINE_set_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_name_introduced)}
+    if LibVersion < ENGINE_set_name_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_name)}
+      ENGINE_set_name := @FC_ENGINE_set_name;
+      {$else}
+      {$if not defined(ENGINE_set_name_allownil)}
+      ENGINE_set_name := @ERR_ENGINE_set_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_name_removed)}
+    if ENGINE_set_name_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_name)}
+      ENGINE_set_name := @_ENGINE_set_name;
+      {$else}
+      {$if not defined(ENGINE_set_name_allownil)}
+      ENGINE_set_name := @ERR_ENGINE_set_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_name_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_name := @ERR_ENGINE_set_name;
+      AFailed.Add('ENGINE_set_name');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_RSA := LoadLibFunction(ADllHandle, ENGINE_set_RSA_procname);
+  FuncLoaded := assigned(ENGINE_set_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_RSA_introduced)}
+    if LibVersion < ENGINE_set_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_RSA)}
+      ENGINE_set_RSA := @FC_ENGINE_set_RSA;
+      {$else}
+      {$if not defined(ENGINE_set_RSA_allownil)}
+      ENGINE_set_RSA := @ERR_ENGINE_set_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_RSA_removed)}
+    if ENGINE_set_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_RSA)}
+      ENGINE_set_RSA := @_ENGINE_set_RSA;
+      {$else}
+      {$if not defined(ENGINE_set_RSA_allownil)}
+      ENGINE_set_RSA := @ERR_ENGINE_set_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_RSA := @ERR_ENGINE_set_RSA;
+      AFailed.Add('ENGINE_set_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_DSA := LoadLibFunction(ADllHandle, ENGINE_set_DSA_procname);
+  FuncLoaded := assigned(ENGINE_set_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_DSA_introduced)}
+    if LibVersion < ENGINE_set_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_DSA)}
+      ENGINE_set_DSA := @FC_ENGINE_set_DSA;
+      {$else}
+      {$if not defined(ENGINE_set_DSA_allownil)}
+      ENGINE_set_DSA := @ERR_ENGINE_set_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_DSA_removed)}
+    if ENGINE_set_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_DSA)}
+      ENGINE_set_DSA := @_ENGINE_set_DSA;
+      {$else}
+      {$if not defined(ENGINE_set_DSA_allownil)}
+      ENGINE_set_DSA := @ERR_ENGINE_set_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_DSA := @ERR_ENGINE_set_DSA;
+      AFailed.Add('ENGINE_set_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_EC := LoadLibFunction(ADllHandle, ENGINE_set_EC_procname);
+  FuncLoaded := assigned(ENGINE_set_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_EC_introduced)}
+    if LibVersion < ENGINE_set_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_EC)}
+      ENGINE_set_EC := @FC_ENGINE_set_EC;
+      {$else}
+      {$if not defined(ENGINE_set_EC_allownil)}
+      ENGINE_set_EC := @ERR_ENGINE_set_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_EC_removed)}
+    if ENGINE_set_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_EC)}
+      ENGINE_set_EC := @_ENGINE_set_EC;
+      {$else}
+      {$if not defined(ENGINE_set_EC_allownil)}
+      ENGINE_set_EC := @ERR_ENGINE_set_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_EC := @ERR_ENGINE_set_EC;
+      AFailed.Add('ENGINE_set_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_DH := LoadLibFunction(ADllHandle, ENGINE_set_DH_procname);
+  FuncLoaded := assigned(ENGINE_set_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_DH_introduced)}
+    if LibVersion < ENGINE_set_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_DH)}
+      ENGINE_set_DH := @FC_ENGINE_set_DH;
+      {$else}
+      {$if not defined(ENGINE_set_DH_allownil)}
+      ENGINE_set_DH := @ERR_ENGINE_set_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_DH_removed)}
+    if ENGINE_set_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_DH)}
+      ENGINE_set_DH := @_ENGINE_set_DH;
+      {$else}
+      {$if not defined(ENGINE_set_DH_allownil)}
+      ENGINE_set_DH := @ERR_ENGINE_set_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_DH := @ERR_ENGINE_set_DH;
+      AFailed.Add('ENGINE_set_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_RAND := LoadLibFunction(ADllHandle, ENGINE_set_RAND_procname);
+  FuncLoaded := assigned(ENGINE_set_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_RAND_introduced)}
+    if LibVersion < ENGINE_set_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_RAND)}
+      ENGINE_set_RAND := @FC_ENGINE_set_RAND;
+      {$else}
+      {$if not defined(ENGINE_set_RAND_allownil)}
+      ENGINE_set_RAND := @ERR_ENGINE_set_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_RAND_removed)}
+    if ENGINE_set_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_RAND)}
+      ENGINE_set_RAND := @_ENGINE_set_RAND;
+      {$else}
+      {$if not defined(ENGINE_set_RAND_allownil)}
+      ENGINE_set_RAND := @ERR_ENGINE_set_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_RAND := @ERR_ENGINE_set_RAND;
+      AFailed.Add('ENGINE_set_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_destroy_function := LoadLibFunction(ADllHandle, ENGINE_set_destroy_function_procname);
+  FuncLoaded := assigned(ENGINE_set_destroy_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_destroy_function_introduced)}
+    if LibVersion < ENGINE_set_destroy_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_destroy_function)}
+      ENGINE_set_destroy_function := @FC_ENGINE_set_destroy_function;
+      {$else}
+      {$if not defined(ENGINE_set_destroy_function_allownil)}
+      ENGINE_set_destroy_function := @ERR_ENGINE_set_destroy_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_destroy_function_removed)}
+    if ENGINE_set_destroy_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_destroy_function)}
+      ENGINE_set_destroy_function := @_ENGINE_set_destroy_function;
+      {$else}
+      {$if not defined(ENGINE_set_destroy_function_allownil)}
+      ENGINE_set_destroy_function := @ERR_ENGINE_set_destroy_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_destroy_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_destroy_function := @ERR_ENGINE_set_destroy_function;
+      AFailed.Add('ENGINE_set_destroy_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_init_function := LoadLibFunction(ADllHandle, ENGINE_set_init_function_procname);
+  FuncLoaded := assigned(ENGINE_set_init_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_init_function_introduced)}
+    if LibVersion < ENGINE_set_init_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_init_function)}
+      ENGINE_set_init_function := @FC_ENGINE_set_init_function;
+      {$else}
+      {$if not defined(ENGINE_set_init_function_allownil)}
+      ENGINE_set_init_function := @ERR_ENGINE_set_init_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_init_function_removed)}
+    if ENGINE_set_init_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_init_function)}
+      ENGINE_set_init_function := @_ENGINE_set_init_function;
+      {$else}
+      {$if not defined(ENGINE_set_init_function_allownil)}
+      ENGINE_set_init_function := @ERR_ENGINE_set_init_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_init_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_init_function := @ERR_ENGINE_set_init_function;
+      AFailed.Add('ENGINE_set_init_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_finish_function := LoadLibFunction(ADllHandle, ENGINE_set_finish_function_procname);
+  FuncLoaded := assigned(ENGINE_set_finish_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_finish_function_introduced)}
+    if LibVersion < ENGINE_set_finish_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_finish_function)}
+      ENGINE_set_finish_function := @FC_ENGINE_set_finish_function;
+      {$else}
+      {$if not defined(ENGINE_set_finish_function_allownil)}
+      ENGINE_set_finish_function := @ERR_ENGINE_set_finish_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_finish_function_removed)}
+    if ENGINE_set_finish_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_finish_function)}
+      ENGINE_set_finish_function := @_ENGINE_set_finish_function;
+      {$else}
+      {$if not defined(ENGINE_set_finish_function_allownil)}
+      ENGINE_set_finish_function := @ERR_ENGINE_set_finish_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_finish_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_finish_function := @ERR_ENGINE_set_finish_function;
+      AFailed.Add('ENGINE_set_finish_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_ctrl_function := LoadLibFunction(ADllHandle, ENGINE_set_ctrl_function_procname);
+  FuncLoaded := assigned(ENGINE_set_ctrl_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_ctrl_function_introduced)}
+    if LibVersion < ENGINE_set_ctrl_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_ctrl_function)}
+      ENGINE_set_ctrl_function := @FC_ENGINE_set_ctrl_function;
+      {$else}
+      {$if not defined(ENGINE_set_ctrl_function_allownil)}
+      ENGINE_set_ctrl_function := @ERR_ENGINE_set_ctrl_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_ctrl_function_removed)}
+    if ENGINE_set_ctrl_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_ctrl_function)}
+      ENGINE_set_ctrl_function := @_ENGINE_set_ctrl_function;
+      {$else}
+      {$if not defined(ENGINE_set_ctrl_function_allownil)}
+      ENGINE_set_ctrl_function := @ERR_ENGINE_set_ctrl_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_ctrl_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_ctrl_function := @ERR_ENGINE_set_ctrl_function;
+      AFailed.Add('ENGINE_set_ctrl_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_load_privkey_function := LoadLibFunction(ADllHandle, ENGINE_set_load_privkey_function_procname);
+  FuncLoaded := assigned(ENGINE_set_load_privkey_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_load_privkey_function_introduced)}
+    if LibVersion < ENGINE_set_load_privkey_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_load_privkey_function)}
+      ENGINE_set_load_privkey_function := @FC_ENGINE_set_load_privkey_function;
+      {$else}
+      {$if not defined(ENGINE_set_load_privkey_function_allownil)}
+      ENGINE_set_load_privkey_function := @ERR_ENGINE_set_load_privkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_load_privkey_function_removed)}
+    if ENGINE_set_load_privkey_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_load_privkey_function)}
+      ENGINE_set_load_privkey_function := @_ENGINE_set_load_privkey_function;
+      {$else}
+      {$if not defined(ENGINE_set_load_privkey_function_allownil)}
+      ENGINE_set_load_privkey_function := @ERR_ENGINE_set_load_privkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_load_privkey_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_load_privkey_function := @ERR_ENGINE_set_load_privkey_function;
+      AFailed.Add('ENGINE_set_load_privkey_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_load_pubkey_function := LoadLibFunction(ADllHandle, ENGINE_set_load_pubkey_function_procname);
+  FuncLoaded := assigned(ENGINE_set_load_pubkey_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_load_pubkey_function_introduced)}
+    if LibVersion < ENGINE_set_load_pubkey_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_load_pubkey_function)}
+      ENGINE_set_load_pubkey_function := @FC_ENGINE_set_load_pubkey_function;
+      {$else}
+      {$if not defined(ENGINE_set_load_pubkey_function_allownil)}
+      ENGINE_set_load_pubkey_function := @ERR_ENGINE_set_load_pubkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_load_pubkey_function_removed)}
+    if ENGINE_set_load_pubkey_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_load_pubkey_function)}
+      ENGINE_set_load_pubkey_function := @_ENGINE_set_load_pubkey_function;
+      {$else}
+      {$if not defined(ENGINE_set_load_pubkey_function_allownil)}
+      ENGINE_set_load_pubkey_function := @ERR_ENGINE_set_load_pubkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_load_pubkey_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_load_pubkey_function := @ERR_ENGINE_set_load_pubkey_function;
+      AFailed.Add('ENGINE_set_load_pubkey_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_ciphers := LoadLibFunction(ADllHandle, ENGINE_set_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_set_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_ciphers_introduced)}
+    if LibVersion < ENGINE_set_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_ciphers)}
+      ENGINE_set_ciphers := @FC_ENGINE_set_ciphers;
+      {$else}
+      {$if not defined(ENGINE_set_ciphers_allownil)}
+      ENGINE_set_ciphers := @ERR_ENGINE_set_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_ciphers_removed)}
+    if ENGINE_set_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_ciphers)}
+      ENGINE_set_ciphers := @_ENGINE_set_ciphers;
+      {$else}
+      {$if not defined(ENGINE_set_ciphers_allownil)}
+      ENGINE_set_ciphers := @ERR_ENGINE_set_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_ciphers := @ERR_ENGINE_set_ciphers;
+      AFailed.Add('ENGINE_set_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_digests := LoadLibFunction(ADllHandle, ENGINE_set_digests_procname);
+  FuncLoaded := assigned(ENGINE_set_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_digests_introduced)}
+    if LibVersion < ENGINE_set_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_digests)}
+      ENGINE_set_digests := @FC_ENGINE_set_digests;
+      {$else}
+      {$if not defined(ENGINE_set_digests_allownil)}
+      ENGINE_set_digests := @ERR_ENGINE_set_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_digests_removed)}
+    if ENGINE_set_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_digests)}
+      ENGINE_set_digests := @_ENGINE_set_digests;
+      {$else}
+      {$if not defined(ENGINE_set_digests_allownil)}
+      ENGINE_set_digests := @ERR_ENGINE_set_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_digests := @ERR_ENGINE_set_digests;
+      AFailed.Add('ENGINE_set_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_set_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_set_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_pkey_meths_introduced)}
+    if LibVersion < ENGINE_set_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_pkey_meths)}
+      ENGINE_set_pkey_meths := @FC_ENGINE_set_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_set_pkey_meths_allownil)}
+      ENGINE_set_pkey_meths := @ERR_ENGINE_set_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_pkey_meths_removed)}
+    if ENGINE_set_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_pkey_meths)}
+      ENGINE_set_pkey_meths := @_ENGINE_set_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_set_pkey_meths_allownil)}
+      ENGINE_set_pkey_meths := @ERR_ENGINE_set_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_pkey_meths := @ERR_ENGINE_set_pkey_meths;
+      AFailed.Add('ENGINE_set_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_set_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_set_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_set_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_pkey_asn1_meths)}
+      ENGINE_set_pkey_asn1_meths := @FC_ENGINE_set_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_set_pkey_asn1_meths_allownil)}
+      ENGINE_set_pkey_asn1_meths := @ERR_ENGINE_set_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_pkey_asn1_meths_removed)}
+    if ENGINE_set_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_pkey_asn1_meths)}
+      ENGINE_set_pkey_asn1_meths := @_ENGINE_set_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_set_pkey_asn1_meths_allownil)}
+      ENGINE_set_pkey_asn1_meths := @ERR_ENGINE_set_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_pkey_asn1_meths := @ERR_ENGINE_set_pkey_asn1_meths;
+      AFailed.Add('ENGINE_set_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_flags := LoadLibFunction(ADllHandle, ENGINE_set_flags_procname);
+  FuncLoaded := assigned(ENGINE_set_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_flags_introduced)}
+    if LibVersion < ENGINE_set_flags_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_flags)}
+      ENGINE_set_flags := @FC_ENGINE_set_flags;
+      {$else}
+      {$if not defined(ENGINE_set_flags_allownil)}
+      ENGINE_set_flags := @ERR_ENGINE_set_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_flags_removed)}
+    if ENGINE_set_flags_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_flags)}
+      ENGINE_set_flags := @_ENGINE_set_flags;
+      {$else}
+      {$if not defined(ENGINE_set_flags_allownil)}
+      ENGINE_set_flags := @ERR_ENGINE_set_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_flags := @ERR_ENGINE_set_flags;
+      AFailed.Add('ENGINE_set_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_cmd_defns := LoadLibFunction(ADllHandle, ENGINE_set_cmd_defns_procname);
+  FuncLoaded := assigned(ENGINE_set_cmd_defns);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_cmd_defns_introduced)}
+    if LibVersion < ENGINE_set_cmd_defns_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_cmd_defns)}
+      ENGINE_set_cmd_defns := @FC_ENGINE_set_cmd_defns;
+      {$else}
+      {$if not defined(ENGINE_set_cmd_defns_allownil)}
+      ENGINE_set_cmd_defns := @ERR_ENGINE_set_cmd_defns;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_cmd_defns_removed)}
+    if ENGINE_set_cmd_defns_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_cmd_defns)}
+      ENGINE_set_cmd_defns := @_ENGINE_set_cmd_defns;
+      {$else}
+      {$if not defined(ENGINE_set_cmd_defns_allownil)}
+      ENGINE_set_cmd_defns := @ERR_ENGINE_set_cmd_defns;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_cmd_defns_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_cmd_defns := @ERR_ENGINE_set_cmd_defns;
+      AFailed.Add('ENGINE_set_cmd_defns');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_ex_data := LoadLibFunction(ADllHandle, ENGINE_set_ex_data_procname);
+  FuncLoaded := assigned(ENGINE_set_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_ex_data_introduced)}
+    if LibVersion < ENGINE_set_ex_data_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_ex_data)}
+      ENGINE_set_ex_data := @FC_ENGINE_set_ex_data;
+      {$else}
+      {$if not defined(ENGINE_set_ex_data_allownil)}
+      ENGINE_set_ex_data := @ERR_ENGINE_set_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_ex_data_removed)}
+    if ENGINE_set_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_ex_data)}
+      ENGINE_set_ex_data := @_ENGINE_set_ex_data;
+      {$else}
+      {$if not defined(ENGINE_set_ex_data_allownil)}
+      ENGINE_set_ex_data := @ERR_ENGINE_set_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_ex_data := @ERR_ENGINE_set_ex_data;
+      AFailed.Add('ENGINE_set_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_ex_data := LoadLibFunction(ADllHandle, ENGINE_get_ex_data_procname);
+  FuncLoaded := assigned(ENGINE_get_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_ex_data_introduced)}
+    if LibVersion < ENGINE_get_ex_data_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_ex_data)}
+      ENGINE_get_ex_data := @FC_ENGINE_get_ex_data;
+      {$else}
+      {$if not defined(ENGINE_get_ex_data_allownil)}
+      ENGINE_get_ex_data := @ERR_ENGINE_get_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_ex_data_removed)}
+    if ENGINE_get_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_ex_data)}
+      ENGINE_get_ex_data := @_ENGINE_get_ex_data;
+      {$else}
+      {$if not defined(ENGINE_get_ex_data_allownil)}
+      ENGINE_get_ex_data := @ERR_ENGINE_get_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_ex_data := @ERR_ENGINE_get_ex_data;
+      AFailed.Add('ENGINE_get_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_id := LoadLibFunction(ADllHandle, ENGINE_get_id_procname);
+  FuncLoaded := assigned(ENGINE_get_id);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_id_introduced)}
+    if LibVersion < ENGINE_get_id_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_id)}
+      ENGINE_get_id := @FC_ENGINE_get_id;
+      {$else}
+      {$if not defined(ENGINE_get_id_allownil)}
+      ENGINE_get_id := @ERR_ENGINE_get_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_id_removed)}
+    if ENGINE_get_id_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_id)}
+      ENGINE_get_id := @_ENGINE_get_id;
+      {$else}
+      {$if not defined(ENGINE_get_id_allownil)}
+      ENGINE_get_id := @ERR_ENGINE_get_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_id_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_id := @ERR_ENGINE_get_id;
+      AFailed.Add('ENGINE_get_id');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_name := LoadLibFunction(ADllHandle, ENGINE_get_name_procname);
+  FuncLoaded := assigned(ENGINE_get_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_name_introduced)}
+    if LibVersion < ENGINE_get_name_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_name)}
+      ENGINE_get_name := @FC_ENGINE_get_name;
+      {$else}
+      {$if not defined(ENGINE_get_name_allownil)}
+      ENGINE_get_name := @ERR_ENGINE_get_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_name_removed)}
+    if ENGINE_get_name_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_name)}
+      ENGINE_get_name := @_ENGINE_get_name;
+      {$else}
+      {$if not defined(ENGINE_get_name_allownil)}
+      ENGINE_get_name := @ERR_ENGINE_get_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_name_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_name := @ERR_ENGINE_get_name;
+      AFailed.Add('ENGINE_get_name');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_RSA := LoadLibFunction(ADllHandle, ENGINE_get_RSA_procname);
+  FuncLoaded := assigned(ENGINE_get_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_RSA_introduced)}
+    if LibVersion < ENGINE_get_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_RSA)}
+      ENGINE_get_RSA := @FC_ENGINE_get_RSA;
+      {$else}
+      {$if not defined(ENGINE_get_RSA_allownil)}
+      ENGINE_get_RSA := @ERR_ENGINE_get_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_RSA_removed)}
+    if ENGINE_get_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_RSA)}
+      ENGINE_get_RSA := @_ENGINE_get_RSA;
+      {$else}
+      {$if not defined(ENGINE_get_RSA_allownil)}
+      ENGINE_get_RSA := @ERR_ENGINE_get_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_RSA := @ERR_ENGINE_get_RSA;
+      AFailed.Add('ENGINE_get_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_DSA := LoadLibFunction(ADllHandle, ENGINE_get_DSA_procname);
+  FuncLoaded := assigned(ENGINE_get_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_DSA_introduced)}
+    if LibVersion < ENGINE_get_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_DSA)}
+      ENGINE_get_DSA := @FC_ENGINE_get_DSA;
+      {$else}
+      {$if not defined(ENGINE_get_DSA_allownil)}
+      ENGINE_get_DSA := @ERR_ENGINE_get_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_DSA_removed)}
+    if ENGINE_get_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_DSA)}
+      ENGINE_get_DSA := @_ENGINE_get_DSA;
+      {$else}
+      {$if not defined(ENGINE_get_DSA_allownil)}
+      ENGINE_get_DSA := @ERR_ENGINE_get_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_DSA := @ERR_ENGINE_get_DSA;
+      AFailed.Add('ENGINE_get_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_EC := LoadLibFunction(ADllHandle, ENGINE_get_EC_procname);
+  FuncLoaded := assigned(ENGINE_get_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_EC_introduced)}
+    if LibVersion < ENGINE_get_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_EC)}
+      ENGINE_get_EC := @FC_ENGINE_get_EC;
+      {$else}
+      {$if not defined(ENGINE_get_EC_allownil)}
+      ENGINE_get_EC := @ERR_ENGINE_get_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_EC_removed)}
+    if ENGINE_get_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_EC)}
+      ENGINE_get_EC := @_ENGINE_get_EC;
+      {$else}
+      {$if not defined(ENGINE_get_EC_allownil)}
+      ENGINE_get_EC := @ERR_ENGINE_get_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_EC := @ERR_ENGINE_get_EC;
+      AFailed.Add('ENGINE_get_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_DH := LoadLibFunction(ADllHandle, ENGINE_get_DH_procname);
+  FuncLoaded := assigned(ENGINE_get_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_DH_introduced)}
+    if LibVersion < ENGINE_get_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_DH)}
+      ENGINE_get_DH := @FC_ENGINE_get_DH;
+      {$else}
+      {$if not defined(ENGINE_get_DH_allownil)}
+      ENGINE_get_DH := @ERR_ENGINE_get_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_DH_removed)}
+    if ENGINE_get_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_DH)}
+      ENGINE_get_DH := @_ENGINE_get_DH;
+      {$else}
+      {$if not defined(ENGINE_get_DH_allownil)}
+      ENGINE_get_DH := @ERR_ENGINE_get_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_DH := @ERR_ENGINE_get_DH;
+      AFailed.Add('ENGINE_get_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_RAND := LoadLibFunction(ADllHandle, ENGINE_get_RAND_procname);
+  FuncLoaded := assigned(ENGINE_get_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_RAND_introduced)}
+    if LibVersion < ENGINE_get_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_RAND)}
+      ENGINE_get_RAND := @FC_ENGINE_get_RAND;
+      {$else}
+      {$if not defined(ENGINE_get_RAND_allownil)}
+      ENGINE_get_RAND := @ERR_ENGINE_get_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_RAND_removed)}
+    if ENGINE_get_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_RAND)}
+      ENGINE_get_RAND := @_ENGINE_get_RAND;
+      {$else}
+      {$if not defined(ENGINE_get_RAND_allownil)}
+      ENGINE_get_RAND := @ERR_ENGINE_get_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_RAND := @ERR_ENGINE_get_RAND;
+      AFailed.Add('ENGINE_get_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_destroy_function := LoadLibFunction(ADllHandle, ENGINE_get_destroy_function_procname);
+  FuncLoaded := assigned(ENGINE_get_destroy_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_destroy_function_introduced)}
+    if LibVersion < ENGINE_get_destroy_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_destroy_function)}
+      ENGINE_get_destroy_function := @FC_ENGINE_get_destroy_function;
+      {$else}
+      {$if not defined(ENGINE_get_destroy_function_allownil)}
+      ENGINE_get_destroy_function := @ERR_ENGINE_get_destroy_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_destroy_function_removed)}
+    if ENGINE_get_destroy_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_destroy_function)}
+      ENGINE_get_destroy_function := @_ENGINE_get_destroy_function;
+      {$else}
+      {$if not defined(ENGINE_get_destroy_function_allownil)}
+      ENGINE_get_destroy_function := @ERR_ENGINE_get_destroy_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_destroy_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_destroy_function := @ERR_ENGINE_get_destroy_function;
+      AFailed.Add('ENGINE_get_destroy_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_init_function := LoadLibFunction(ADllHandle, ENGINE_get_init_function_procname);
+  FuncLoaded := assigned(ENGINE_get_init_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_init_function_introduced)}
+    if LibVersion < ENGINE_get_init_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_init_function)}
+      ENGINE_get_init_function := @FC_ENGINE_get_init_function;
+      {$else}
+      {$if not defined(ENGINE_get_init_function_allownil)}
+      ENGINE_get_init_function := @ERR_ENGINE_get_init_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_init_function_removed)}
+    if ENGINE_get_init_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_init_function)}
+      ENGINE_get_init_function := @_ENGINE_get_init_function;
+      {$else}
+      {$if not defined(ENGINE_get_init_function_allownil)}
+      ENGINE_get_init_function := @ERR_ENGINE_get_init_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_init_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_init_function := @ERR_ENGINE_get_init_function;
+      AFailed.Add('ENGINE_get_init_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_finish_function := LoadLibFunction(ADllHandle, ENGINE_get_finish_function_procname);
+  FuncLoaded := assigned(ENGINE_get_finish_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_finish_function_introduced)}
+    if LibVersion < ENGINE_get_finish_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_finish_function)}
+      ENGINE_get_finish_function := @FC_ENGINE_get_finish_function;
+      {$else}
+      {$if not defined(ENGINE_get_finish_function_allownil)}
+      ENGINE_get_finish_function := @ERR_ENGINE_get_finish_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_finish_function_removed)}
+    if ENGINE_get_finish_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_finish_function)}
+      ENGINE_get_finish_function := @_ENGINE_get_finish_function;
+      {$else}
+      {$if not defined(ENGINE_get_finish_function_allownil)}
+      ENGINE_get_finish_function := @ERR_ENGINE_get_finish_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_finish_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_finish_function := @ERR_ENGINE_get_finish_function;
+      AFailed.Add('ENGINE_get_finish_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_ctrl_function := LoadLibFunction(ADllHandle, ENGINE_get_ctrl_function_procname);
+  FuncLoaded := assigned(ENGINE_get_ctrl_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_ctrl_function_introduced)}
+    if LibVersion < ENGINE_get_ctrl_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_ctrl_function)}
+      ENGINE_get_ctrl_function := @FC_ENGINE_get_ctrl_function;
+      {$else}
+      {$if not defined(ENGINE_get_ctrl_function_allownil)}
+      ENGINE_get_ctrl_function := @ERR_ENGINE_get_ctrl_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_ctrl_function_removed)}
+    if ENGINE_get_ctrl_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_ctrl_function)}
+      ENGINE_get_ctrl_function := @_ENGINE_get_ctrl_function;
+      {$else}
+      {$if not defined(ENGINE_get_ctrl_function_allownil)}
+      ENGINE_get_ctrl_function := @ERR_ENGINE_get_ctrl_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_ctrl_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_ctrl_function := @ERR_ENGINE_get_ctrl_function;
+      AFailed.Add('ENGINE_get_ctrl_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_load_privkey_function := LoadLibFunction(ADllHandle, ENGINE_get_load_privkey_function_procname);
+  FuncLoaded := assigned(ENGINE_get_load_privkey_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_load_privkey_function_introduced)}
+    if LibVersion < ENGINE_get_load_privkey_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_load_privkey_function)}
+      ENGINE_get_load_privkey_function := @FC_ENGINE_get_load_privkey_function;
+      {$else}
+      {$if not defined(ENGINE_get_load_privkey_function_allownil)}
+      ENGINE_get_load_privkey_function := @ERR_ENGINE_get_load_privkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_load_privkey_function_removed)}
+    if ENGINE_get_load_privkey_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_load_privkey_function)}
+      ENGINE_get_load_privkey_function := @_ENGINE_get_load_privkey_function;
+      {$else}
+      {$if not defined(ENGINE_get_load_privkey_function_allownil)}
+      ENGINE_get_load_privkey_function := @ERR_ENGINE_get_load_privkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_load_privkey_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_load_privkey_function := @ERR_ENGINE_get_load_privkey_function;
+      AFailed.Add('ENGINE_get_load_privkey_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_load_pubkey_function := LoadLibFunction(ADllHandle, ENGINE_get_load_pubkey_function_procname);
+  FuncLoaded := assigned(ENGINE_get_load_pubkey_function);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_load_pubkey_function_introduced)}
+    if LibVersion < ENGINE_get_load_pubkey_function_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_load_pubkey_function)}
+      ENGINE_get_load_pubkey_function := @FC_ENGINE_get_load_pubkey_function;
+      {$else}
+      {$if not defined(ENGINE_get_load_pubkey_function_allownil)}
+      ENGINE_get_load_pubkey_function := @ERR_ENGINE_get_load_pubkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_load_pubkey_function_removed)}
+    if ENGINE_get_load_pubkey_function_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_load_pubkey_function)}
+      ENGINE_get_load_pubkey_function := @_ENGINE_get_load_pubkey_function;
+      {$else}
+      {$if not defined(ENGINE_get_load_pubkey_function_allownil)}
+      ENGINE_get_load_pubkey_function := @ERR_ENGINE_get_load_pubkey_function;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_load_pubkey_function_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_load_pubkey_function := @ERR_ENGINE_get_load_pubkey_function;
+      AFailed.Add('ENGINE_get_load_pubkey_function');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_ciphers := LoadLibFunction(ADllHandle, ENGINE_get_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_get_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_ciphers_introduced)}
+    if LibVersion < ENGINE_get_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_ciphers)}
+      ENGINE_get_ciphers := @FC_ENGINE_get_ciphers;
+      {$else}
+      {$if not defined(ENGINE_get_ciphers_allownil)}
+      ENGINE_get_ciphers := @ERR_ENGINE_get_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_ciphers_removed)}
+    if ENGINE_get_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_ciphers)}
+      ENGINE_get_ciphers := @_ENGINE_get_ciphers;
+      {$else}
+      {$if not defined(ENGINE_get_ciphers_allownil)}
+      ENGINE_get_ciphers := @ERR_ENGINE_get_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_ciphers := @ERR_ENGINE_get_ciphers;
+      AFailed.Add('ENGINE_get_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_digests := LoadLibFunction(ADllHandle, ENGINE_get_digests_procname);
+  FuncLoaded := assigned(ENGINE_get_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_digests_introduced)}
+    if LibVersion < ENGINE_get_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_digests)}
+      ENGINE_get_digests := @FC_ENGINE_get_digests;
+      {$else}
+      {$if not defined(ENGINE_get_digests_allownil)}
+      ENGINE_get_digests := @ERR_ENGINE_get_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_digests_removed)}
+    if ENGINE_get_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_digests)}
+      ENGINE_get_digests := @_ENGINE_get_digests;
+      {$else}
+      {$if not defined(ENGINE_get_digests_allownil)}
+      ENGINE_get_digests := @ERR_ENGINE_get_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_digests := @ERR_ENGINE_get_digests;
+      AFailed.Add('ENGINE_get_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_get_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_meths_introduced)}
+    if LibVersion < ENGINE_get_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_meths)}
+      ENGINE_get_pkey_meths := @FC_ENGINE_get_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meths_allownil)}
+      ENGINE_get_pkey_meths := @ERR_ENGINE_get_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_meths_removed)}
+    if ENGINE_get_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_meths)}
+      ENGINE_get_pkey_meths := @_ENGINE_get_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meths_allownil)}
+      ENGINE_get_pkey_meths := @ERR_ENGINE_get_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_meths := @ERR_ENGINE_get_pkey_meths;
+      AFailed.Add('ENGINE_get_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_get_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_get_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_asn1_meths)}
+      ENGINE_get_pkey_asn1_meths := @FC_ENGINE_get_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meths_allownil)}
+      ENGINE_get_pkey_asn1_meths := @ERR_ENGINE_get_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_asn1_meths_removed)}
+    if ENGINE_get_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_asn1_meths)}
+      ENGINE_get_pkey_asn1_meths := @_ENGINE_get_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meths_allownil)}
+      ENGINE_get_pkey_asn1_meths := @ERR_ENGINE_get_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_asn1_meths := @ERR_ENGINE_get_pkey_asn1_meths;
+      AFailed.Add('ENGINE_get_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_cipher := LoadLibFunction(ADllHandle, ENGINE_get_cipher_procname);
+  FuncLoaded := assigned(ENGINE_get_cipher);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_cipher_introduced)}
+    if LibVersion < ENGINE_get_cipher_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_cipher)}
+      ENGINE_get_cipher := @FC_ENGINE_get_cipher;
+      {$else}
+      {$if not defined(ENGINE_get_cipher_allownil)}
+      ENGINE_get_cipher := @ERR_ENGINE_get_cipher;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_cipher_removed)}
+    if ENGINE_get_cipher_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_cipher)}
+      ENGINE_get_cipher := @_ENGINE_get_cipher;
+      {$else}
+      {$if not defined(ENGINE_get_cipher_allownil)}
+      ENGINE_get_cipher := @ERR_ENGINE_get_cipher;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_cipher_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_cipher := @ERR_ENGINE_get_cipher;
+      AFailed.Add('ENGINE_get_cipher');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_digest := LoadLibFunction(ADllHandle, ENGINE_get_digest_procname);
+  FuncLoaded := assigned(ENGINE_get_digest);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_digest_introduced)}
+    if LibVersion < ENGINE_get_digest_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_digest)}
+      ENGINE_get_digest := @FC_ENGINE_get_digest;
+      {$else}
+      {$if not defined(ENGINE_get_digest_allownil)}
+      ENGINE_get_digest := @ERR_ENGINE_get_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_digest_removed)}
+    if ENGINE_get_digest_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_digest)}
+      ENGINE_get_digest := @_ENGINE_get_digest;
+      {$else}
+      {$if not defined(ENGINE_get_digest_allownil)}
+      ENGINE_get_digest := @ERR_ENGINE_get_digest;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_digest_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_digest := @ERR_ENGINE_get_digest;
+      AFailed.Add('ENGINE_get_digest');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_meth := LoadLibFunction(ADllHandle, ENGINE_get_pkey_meth_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_meth);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_meth_introduced)}
+    if LibVersion < ENGINE_get_pkey_meth_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_meth)}
+      ENGINE_get_pkey_meth := @FC_ENGINE_get_pkey_meth;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meth_allownil)}
+      ENGINE_get_pkey_meth := @ERR_ENGINE_get_pkey_meth;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_meth_removed)}
+    if ENGINE_get_pkey_meth_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_meth)}
+      ENGINE_get_pkey_meth := @_ENGINE_get_pkey_meth;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meth_allownil)}
+      ENGINE_get_pkey_meth := @ERR_ENGINE_get_pkey_meth;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_meth_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_meth := @ERR_ENGINE_get_pkey_meth;
+      AFailed.Add('ENGINE_get_pkey_meth');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_asn1_meth := LoadLibFunction(ADllHandle, ENGINE_get_pkey_asn1_meth_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_asn1_meth);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_asn1_meth_introduced)}
+    if LibVersion < ENGINE_get_pkey_asn1_meth_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_asn1_meth)}
+      ENGINE_get_pkey_asn1_meth := @FC_ENGINE_get_pkey_asn1_meth;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_allownil)}
+      ENGINE_get_pkey_asn1_meth := @ERR_ENGINE_get_pkey_asn1_meth;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_asn1_meth_removed)}
+    if ENGINE_get_pkey_asn1_meth_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_asn1_meth)}
+      ENGINE_get_pkey_asn1_meth := @_ENGINE_get_pkey_asn1_meth;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_allownil)}
+      ENGINE_get_pkey_asn1_meth := @ERR_ENGINE_get_pkey_asn1_meth;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_asn1_meth_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_asn1_meth := @ERR_ENGINE_get_pkey_asn1_meth;
+      AFailed.Add('ENGINE_get_pkey_asn1_meth');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_asn1_meth_str := LoadLibFunction(ADllHandle, ENGINE_get_pkey_asn1_meth_str_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_asn1_meth_str);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_asn1_meth_str_introduced)}
+    if LibVersion < ENGINE_get_pkey_asn1_meth_str_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_asn1_meth_str)}
+      ENGINE_get_pkey_asn1_meth_str := @FC_ENGINE_get_pkey_asn1_meth_str;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_str_allownil)}
+      ENGINE_get_pkey_asn1_meth_str := @ERR_ENGINE_get_pkey_asn1_meth_str;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_asn1_meth_str_removed)}
+    if ENGINE_get_pkey_asn1_meth_str_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_asn1_meth_str)}
+      ENGINE_get_pkey_asn1_meth_str := @_ENGINE_get_pkey_asn1_meth_str;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_str_allownil)}
+      ENGINE_get_pkey_asn1_meth_str := @ERR_ENGINE_get_pkey_asn1_meth_str;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_asn1_meth_str_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_asn1_meth_str := @ERR_ENGINE_get_pkey_asn1_meth_str;
+      AFailed.Add('ENGINE_get_pkey_asn1_meth_str');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_pkey_asn1_find_str := LoadLibFunction(ADllHandle, ENGINE_pkey_asn1_find_str_procname);
+  FuncLoaded := assigned(ENGINE_pkey_asn1_find_str);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_pkey_asn1_find_str_introduced)}
+    if LibVersion < ENGINE_pkey_asn1_find_str_introduced then
+    begin
+      {$if declared(FC_ENGINE_pkey_asn1_find_str)}
+      ENGINE_pkey_asn1_find_str := @FC_ENGINE_pkey_asn1_find_str;
+      {$else}
+      {$if not defined(ENGINE_pkey_asn1_find_str_allownil)}
+      ENGINE_pkey_asn1_find_str := @ERR_ENGINE_pkey_asn1_find_str;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_pkey_asn1_find_str_removed)}
+    if ENGINE_pkey_asn1_find_str_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_pkey_asn1_find_str)}
+      ENGINE_pkey_asn1_find_str := @_ENGINE_pkey_asn1_find_str;
+      {$else}
+      {$if not defined(ENGINE_pkey_asn1_find_str_allownil)}
+      ENGINE_pkey_asn1_find_str := @ERR_ENGINE_pkey_asn1_find_str;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_pkey_asn1_find_str_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_pkey_asn1_find_str := @ERR_ENGINE_pkey_asn1_find_str;
+      AFailed.Add('ENGINE_pkey_asn1_find_str');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_cmd_defns := LoadLibFunction(ADllHandle, ENGINE_get_cmd_defns_procname);
+  FuncLoaded := assigned(ENGINE_get_cmd_defns);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_cmd_defns_introduced)}
+    if LibVersion < ENGINE_get_cmd_defns_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_cmd_defns)}
+      ENGINE_get_cmd_defns := @FC_ENGINE_get_cmd_defns;
+      {$else}
+      {$if not defined(ENGINE_get_cmd_defns_allownil)}
+      ENGINE_get_cmd_defns := @ERR_ENGINE_get_cmd_defns;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_cmd_defns_removed)}
+    if ENGINE_get_cmd_defns_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_cmd_defns)}
+      ENGINE_get_cmd_defns := @_ENGINE_get_cmd_defns;
+      {$else}
+      {$if not defined(ENGINE_get_cmd_defns_allownil)}
+      ENGINE_get_cmd_defns := @ERR_ENGINE_get_cmd_defns;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_cmd_defns_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_cmd_defns := @ERR_ENGINE_get_cmd_defns;
+      AFailed.Add('ENGINE_get_cmd_defns');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_flags := LoadLibFunction(ADllHandle, ENGINE_get_flags_procname);
+  FuncLoaded := assigned(ENGINE_get_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_flags_introduced)}
+    if LibVersion < ENGINE_get_flags_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_flags)}
+      ENGINE_get_flags := @FC_ENGINE_get_flags;
+      {$else}
+      {$if not defined(ENGINE_get_flags_allownil)}
+      ENGINE_get_flags := @ERR_ENGINE_get_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_flags_removed)}
+    if ENGINE_get_flags_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_flags)}
+      ENGINE_get_flags := @_ENGINE_get_flags;
+      {$else}
+      {$if not defined(ENGINE_get_flags_allownil)}
+      ENGINE_get_flags := @ERR_ENGINE_get_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_flags := @ERR_ENGINE_get_flags;
+      AFailed.Add('ENGINE_get_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_init := LoadLibFunction(ADllHandle, ENGINE_init_procname);
+  FuncLoaded := assigned(ENGINE_init);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_init_introduced)}
+    if LibVersion < ENGINE_init_introduced then
+    begin
+      {$if declared(FC_ENGINE_init)}
+      ENGINE_init := @FC_ENGINE_init;
+      {$else}
+      {$if not defined(ENGINE_init_allownil)}
+      ENGINE_init := @ERR_ENGINE_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_init_removed)}
+    if ENGINE_init_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_init)}
+      ENGINE_init := @_ENGINE_init;
+      {$else}
+      {$if not defined(ENGINE_init_allownil)}
+      ENGINE_init := @ERR_ENGINE_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_init_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_init := @ERR_ENGINE_init;
+      AFailed.Add('ENGINE_init');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_finish := LoadLibFunction(ADllHandle, ENGINE_finish_procname);
+  FuncLoaded := assigned(ENGINE_finish);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_finish_introduced)}
+    if LibVersion < ENGINE_finish_introduced then
+    begin
+      {$if declared(FC_ENGINE_finish)}
+      ENGINE_finish := @FC_ENGINE_finish;
+      {$else}
+      {$if not defined(ENGINE_finish_allownil)}
+      ENGINE_finish := @ERR_ENGINE_finish;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_finish_removed)}
+    if ENGINE_finish_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_finish)}
+      ENGINE_finish := @_ENGINE_finish;
+      {$else}
+      {$if not defined(ENGINE_finish_allownil)}
+      ENGINE_finish := @ERR_ENGINE_finish;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_finish_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_finish := @ERR_ENGINE_finish;
+      AFailed.Add('ENGINE_finish');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_load_private_key := LoadLibFunction(ADllHandle, ENGINE_load_private_key_procname);
+  FuncLoaded := assigned(ENGINE_load_private_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_load_private_key_introduced)}
+    if LibVersion < ENGINE_load_private_key_introduced then
+    begin
+      {$if declared(FC_ENGINE_load_private_key)}
+      ENGINE_load_private_key := @FC_ENGINE_load_private_key;
+      {$else}
+      {$if not defined(ENGINE_load_private_key_allownil)}
+      ENGINE_load_private_key := @ERR_ENGINE_load_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_load_private_key_removed)}
+    if ENGINE_load_private_key_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_load_private_key)}
+      ENGINE_load_private_key := @_ENGINE_load_private_key;
+      {$else}
+      {$if not defined(ENGINE_load_private_key_allownil)}
+      ENGINE_load_private_key := @ERR_ENGINE_load_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_load_private_key_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_load_private_key := @ERR_ENGINE_load_private_key;
+      AFailed.Add('ENGINE_load_private_key');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_load_public_key := LoadLibFunction(ADllHandle, ENGINE_load_public_key_procname);
+  FuncLoaded := assigned(ENGINE_load_public_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_load_public_key_introduced)}
+    if LibVersion < ENGINE_load_public_key_introduced then
+    begin
+      {$if declared(FC_ENGINE_load_public_key)}
+      ENGINE_load_public_key := @FC_ENGINE_load_public_key;
+      {$else}
+      {$if not defined(ENGINE_load_public_key_allownil)}
+      ENGINE_load_public_key := @ERR_ENGINE_load_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_load_public_key_removed)}
+    if ENGINE_load_public_key_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_load_public_key)}
+      ENGINE_load_public_key := @_ENGINE_load_public_key;
+      {$else}
+      {$if not defined(ENGINE_load_public_key_allownil)}
+      ENGINE_load_public_key := @ERR_ENGINE_load_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_load_public_key_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_load_public_key := @ERR_ENGINE_load_public_key;
+      AFailed.Add('ENGINE_load_public_key');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_default_RSA := LoadLibFunction(ADllHandle, ENGINE_get_default_RSA_procname);
+  FuncLoaded := assigned(ENGINE_get_default_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_default_RSA_introduced)}
+    if LibVersion < ENGINE_get_default_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_default_RSA)}
+      ENGINE_get_default_RSA := @FC_ENGINE_get_default_RSA;
+      {$else}
+      {$if not defined(ENGINE_get_default_RSA_allownil)}
+      ENGINE_get_default_RSA := @ERR_ENGINE_get_default_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_default_RSA_removed)}
+    if ENGINE_get_default_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_default_RSA)}
+      ENGINE_get_default_RSA := @_ENGINE_get_default_RSA;
+      {$else}
+      {$if not defined(ENGINE_get_default_RSA_allownil)}
+      ENGINE_get_default_RSA := @ERR_ENGINE_get_default_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_default_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_default_RSA := @ERR_ENGINE_get_default_RSA;
+      AFailed.Add('ENGINE_get_default_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_default_DSA := LoadLibFunction(ADllHandle, ENGINE_get_default_DSA_procname);
+  FuncLoaded := assigned(ENGINE_get_default_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_default_DSA_introduced)}
+    if LibVersion < ENGINE_get_default_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_default_DSA)}
+      ENGINE_get_default_DSA := @FC_ENGINE_get_default_DSA;
+      {$else}
+      {$if not defined(ENGINE_get_default_DSA_allownil)}
+      ENGINE_get_default_DSA := @ERR_ENGINE_get_default_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_default_DSA_removed)}
+    if ENGINE_get_default_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_default_DSA)}
+      ENGINE_get_default_DSA := @_ENGINE_get_default_DSA;
+      {$else}
+      {$if not defined(ENGINE_get_default_DSA_allownil)}
+      ENGINE_get_default_DSA := @ERR_ENGINE_get_default_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_default_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_default_DSA := @ERR_ENGINE_get_default_DSA;
+      AFailed.Add('ENGINE_get_default_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_default_EC := LoadLibFunction(ADllHandle, ENGINE_get_default_EC_procname);
+  FuncLoaded := assigned(ENGINE_get_default_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_default_EC_introduced)}
+    if LibVersion < ENGINE_get_default_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_default_EC)}
+      ENGINE_get_default_EC := @FC_ENGINE_get_default_EC;
+      {$else}
+      {$if not defined(ENGINE_get_default_EC_allownil)}
+      ENGINE_get_default_EC := @ERR_ENGINE_get_default_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_default_EC_removed)}
+    if ENGINE_get_default_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_default_EC)}
+      ENGINE_get_default_EC := @_ENGINE_get_default_EC;
+      {$else}
+      {$if not defined(ENGINE_get_default_EC_allownil)}
+      ENGINE_get_default_EC := @ERR_ENGINE_get_default_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_default_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_default_EC := @ERR_ENGINE_get_default_EC;
+      AFailed.Add('ENGINE_get_default_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_default_DH := LoadLibFunction(ADllHandle, ENGINE_get_default_DH_procname);
+  FuncLoaded := assigned(ENGINE_get_default_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_default_DH_introduced)}
+    if LibVersion < ENGINE_get_default_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_default_DH)}
+      ENGINE_get_default_DH := @FC_ENGINE_get_default_DH;
+      {$else}
+      {$if not defined(ENGINE_get_default_DH_allownil)}
+      ENGINE_get_default_DH := @ERR_ENGINE_get_default_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_default_DH_removed)}
+    if ENGINE_get_default_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_default_DH)}
+      ENGINE_get_default_DH := @_ENGINE_get_default_DH;
+      {$else}
+      {$if not defined(ENGINE_get_default_DH_allownil)}
+      ENGINE_get_default_DH := @ERR_ENGINE_get_default_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_default_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_default_DH := @ERR_ENGINE_get_default_DH;
+      AFailed.Add('ENGINE_get_default_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_default_RAND := LoadLibFunction(ADllHandle, ENGINE_get_default_RAND_procname);
+  FuncLoaded := assigned(ENGINE_get_default_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_default_RAND_introduced)}
+    if LibVersion < ENGINE_get_default_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_default_RAND)}
+      ENGINE_get_default_RAND := @FC_ENGINE_get_default_RAND;
+      {$else}
+      {$if not defined(ENGINE_get_default_RAND_allownil)}
+      ENGINE_get_default_RAND := @ERR_ENGINE_get_default_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_default_RAND_removed)}
+    if ENGINE_get_default_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_default_RAND)}
+      ENGINE_get_default_RAND := @_ENGINE_get_default_RAND;
+      {$else}
+      {$if not defined(ENGINE_get_default_RAND_allownil)}
+      ENGINE_get_default_RAND := @ERR_ENGINE_get_default_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_default_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_default_RAND := @ERR_ENGINE_get_default_RAND;
+      AFailed.Add('ENGINE_get_default_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_cipher_engine := LoadLibFunction(ADllHandle, ENGINE_get_cipher_engine_procname);
+  FuncLoaded := assigned(ENGINE_get_cipher_engine);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_cipher_engine_introduced)}
+    if LibVersion < ENGINE_get_cipher_engine_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_cipher_engine)}
+      ENGINE_get_cipher_engine := @FC_ENGINE_get_cipher_engine;
+      {$else}
+      {$if not defined(ENGINE_get_cipher_engine_allownil)}
+      ENGINE_get_cipher_engine := @ERR_ENGINE_get_cipher_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_cipher_engine_removed)}
+    if ENGINE_get_cipher_engine_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_cipher_engine)}
+      ENGINE_get_cipher_engine := @_ENGINE_get_cipher_engine;
+      {$else}
+      {$if not defined(ENGINE_get_cipher_engine_allownil)}
+      ENGINE_get_cipher_engine := @ERR_ENGINE_get_cipher_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_cipher_engine_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_cipher_engine := @ERR_ENGINE_get_cipher_engine;
+      AFailed.Add('ENGINE_get_cipher_engine');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_digest_engine := LoadLibFunction(ADllHandle, ENGINE_get_digest_engine_procname);
+  FuncLoaded := assigned(ENGINE_get_digest_engine);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_digest_engine_introduced)}
+    if LibVersion < ENGINE_get_digest_engine_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_digest_engine)}
+      ENGINE_get_digest_engine := @FC_ENGINE_get_digest_engine;
+      {$else}
+      {$if not defined(ENGINE_get_digest_engine_allownil)}
+      ENGINE_get_digest_engine := @ERR_ENGINE_get_digest_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_digest_engine_removed)}
+    if ENGINE_get_digest_engine_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_digest_engine)}
+      ENGINE_get_digest_engine := @_ENGINE_get_digest_engine;
+      {$else}
+      {$if not defined(ENGINE_get_digest_engine_allownil)}
+      ENGINE_get_digest_engine := @ERR_ENGINE_get_digest_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_digest_engine_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_digest_engine := @ERR_ENGINE_get_digest_engine;
+      AFailed.Add('ENGINE_get_digest_engine');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_meth_engine := LoadLibFunction(ADllHandle, ENGINE_get_pkey_meth_engine_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_meth_engine);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_meth_engine_introduced)}
+    if LibVersion < ENGINE_get_pkey_meth_engine_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_meth_engine)}
+      ENGINE_get_pkey_meth_engine := @FC_ENGINE_get_pkey_meth_engine;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meth_engine_allownil)}
+      ENGINE_get_pkey_meth_engine := @ERR_ENGINE_get_pkey_meth_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_meth_engine_removed)}
+    if ENGINE_get_pkey_meth_engine_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_meth_engine)}
+      ENGINE_get_pkey_meth_engine := @_ENGINE_get_pkey_meth_engine;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_meth_engine_allownil)}
+      ENGINE_get_pkey_meth_engine := @ERR_ENGINE_get_pkey_meth_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_meth_engine_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_meth_engine := @ERR_ENGINE_get_pkey_meth_engine;
+      AFailed.Add('ENGINE_get_pkey_meth_engine');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_pkey_asn1_meth_engine := LoadLibFunction(ADllHandle, ENGINE_get_pkey_asn1_meth_engine_procname);
+  FuncLoaded := assigned(ENGINE_get_pkey_asn1_meth_engine);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_pkey_asn1_meth_engine_introduced)}
+    if LibVersion < ENGINE_get_pkey_asn1_meth_engine_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_pkey_asn1_meth_engine)}
+      ENGINE_get_pkey_asn1_meth_engine := @FC_ENGINE_get_pkey_asn1_meth_engine;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_engine_allownil)}
+      ENGINE_get_pkey_asn1_meth_engine := @ERR_ENGINE_get_pkey_asn1_meth_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_pkey_asn1_meth_engine_removed)}
+    if ENGINE_get_pkey_asn1_meth_engine_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_pkey_asn1_meth_engine)}
+      ENGINE_get_pkey_asn1_meth_engine := @_ENGINE_get_pkey_asn1_meth_engine;
+      {$else}
+      {$if not defined(ENGINE_get_pkey_asn1_meth_engine_allownil)}
+      ENGINE_get_pkey_asn1_meth_engine := @ERR_ENGINE_get_pkey_asn1_meth_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_pkey_asn1_meth_engine_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_pkey_asn1_meth_engine := @ERR_ENGINE_get_pkey_asn1_meth_engine;
+      AFailed.Add('ENGINE_get_pkey_asn1_meth_engine');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_RSA := LoadLibFunction(ADllHandle, ENGINE_set_default_RSA_procname);
+  FuncLoaded := assigned(ENGINE_set_default_RSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_RSA_introduced)}
+    if LibVersion < ENGINE_set_default_RSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_RSA)}
+      ENGINE_set_default_RSA := @FC_ENGINE_set_default_RSA;
+      {$else}
+      {$if not defined(ENGINE_set_default_RSA_allownil)}
+      ENGINE_set_default_RSA := @ERR_ENGINE_set_default_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_RSA_removed)}
+    if ENGINE_set_default_RSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_RSA)}
+      ENGINE_set_default_RSA := @_ENGINE_set_default_RSA;
+      {$else}
+      {$if not defined(ENGINE_set_default_RSA_allownil)}
+      ENGINE_set_default_RSA := @ERR_ENGINE_set_default_RSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_RSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_RSA := @ERR_ENGINE_set_default_RSA;
+      AFailed.Add('ENGINE_set_default_RSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_string := LoadLibFunction(ADllHandle, ENGINE_set_default_string_procname);
+  FuncLoaded := assigned(ENGINE_set_default_string);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_string_introduced)}
+    if LibVersion < ENGINE_set_default_string_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_string)}
+      ENGINE_set_default_string := @FC_ENGINE_set_default_string;
+      {$else}
+      {$if not defined(ENGINE_set_default_string_allownil)}
+      ENGINE_set_default_string := @ERR_ENGINE_set_default_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_string_removed)}
+    if ENGINE_set_default_string_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_string)}
+      ENGINE_set_default_string := @_ENGINE_set_default_string;
+      {$else}
+      {$if not defined(ENGINE_set_default_string_allownil)}
+      ENGINE_set_default_string := @ERR_ENGINE_set_default_string;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_string_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_string := @ERR_ENGINE_set_default_string;
+      AFailed.Add('ENGINE_set_default_string');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_DSA := LoadLibFunction(ADllHandle, ENGINE_set_default_DSA_procname);
+  FuncLoaded := assigned(ENGINE_set_default_DSA);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_DSA_introduced)}
+    if LibVersion < ENGINE_set_default_DSA_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_DSA)}
+      ENGINE_set_default_DSA := @FC_ENGINE_set_default_DSA;
+      {$else}
+      {$if not defined(ENGINE_set_default_DSA_allownil)}
+      ENGINE_set_default_DSA := @ERR_ENGINE_set_default_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_DSA_removed)}
+    if ENGINE_set_default_DSA_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_DSA)}
+      ENGINE_set_default_DSA := @_ENGINE_set_default_DSA;
+      {$else}
+      {$if not defined(ENGINE_set_default_DSA_allownil)}
+      ENGINE_set_default_DSA := @ERR_ENGINE_set_default_DSA;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_DSA_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_DSA := @ERR_ENGINE_set_default_DSA;
+      AFailed.Add('ENGINE_set_default_DSA');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_EC := LoadLibFunction(ADllHandle, ENGINE_set_default_EC_procname);
+  FuncLoaded := assigned(ENGINE_set_default_EC);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_EC_introduced)}
+    if LibVersion < ENGINE_set_default_EC_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_EC)}
+      ENGINE_set_default_EC := @FC_ENGINE_set_default_EC;
+      {$else}
+      {$if not defined(ENGINE_set_default_EC_allownil)}
+      ENGINE_set_default_EC := @ERR_ENGINE_set_default_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_EC_removed)}
+    if ENGINE_set_default_EC_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_EC)}
+      ENGINE_set_default_EC := @_ENGINE_set_default_EC;
+      {$else}
+      {$if not defined(ENGINE_set_default_EC_allownil)}
+      ENGINE_set_default_EC := @ERR_ENGINE_set_default_EC;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_EC_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_EC := @ERR_ENGINE_set_default_EC;
+      AFailed.Add('ENGINE_set_default_EC');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_DH := LoadLibFunction(ADllHandle, ENGINE_set_default_DH_procname);
+  FuncLoaded := assigned(ENGINE_set_default_DH);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_DH_introduced)}
+    if LibVersion < ENGINE_set_default_DH_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_DH)}
+      ENGINE_set_default_DH := @FC_ENGINE_set_default_DH;
+      {$else}
+      {$if not defined(ENGINE_set_default_DH_allownil)}
+      ENGINE_set_default_DH := @ERR_ENGINE_set_default_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_DH_removed)}
+    if ENGINE_set_default_DH_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_DH)}
+      ENGINE_set_default_DH := @_ENGINE_set_default_DH;
+      {$else}
+      {$if not defined(ENGINE_set_default_DH_allownil)}
+      ENGINE_set_default_DH := @ERR_ENGINE_set_default_DH;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_DH_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_DH := @ERR_ENGINE_set_default_DH;
+      AFailed.Add('ENGINE_set_default_DH');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_RAND := LoadLibFunction(ADllHandle, ENGINE_set_default_RAND_procname);
+  FuncLoaded := assigned(ENGINE_set_default_RAND);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_RAND_introduced)}
+    if LibVersion < ENGINE_set_default_RAND_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_RAND)}
+      ENGINE_set_default_RAND := @FC_ENGINE_set_default_RAND;
+      {$else}
+      {$if not defined(ENGINE_set_default_RAND_allownil)}
+      ENGINE_set_default_RAND := @ERR_ENGINE_set_default_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_RAND_removed)}
+    if ENGINE_set_default_RAND_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_RAND)}
+      ENGINE_set_default_RAND := @_ENGINE_set_default_RAND;
+      {$else}
+      {$if not defined(ENGINE_set_default_RAND_allownil)}
+      ENGINE_set_default_RAND := @ERR_ENGINE_set_default_RAND;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_RAND_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_RAND := @ERR_ENGINE_set_default_RAND;
+      AFailed.Add('ENGINE_set_default_RAND');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_ciphers := LoadLibFunction(ADllHandle, ENGINE_set_default_ciphers_procname);
+  FuncLoaded := assigned(ENGINE_set_default_ciphers);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_ciphers_introduced)}
+    if LibVersion < ENGINE_set_default_ciphers_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_ciphers)}
+      ENGINE_set_default_ciphers := @FC_ENGINE_set_default_ciphers;
+      {$else}
+      {$if not defined(ENGINE_set_default_ciphers_allownil)}
+      ENGINE_set_default_ciphers := @ERR_ENGINE_set_default_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_ciphers_removed)}
+    if ENGINE_set_default_ciphers_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_ciphers)}
+      ENGINE_set_default_ciphers := @_ENGINE_set_default_ciphers;
+      {$else}
+      {$if not defined(ENGINE_set_default_ciphers_allownil)}
+      ENGINE_set_default_ciphers := @ERR_ENGINE_set_default_ciphers;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_ciphers_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_ciphers := @ERR_ENGINE_set_default_ciphers;
+      AFailed.Add('ENGINE_set_default_ciphers');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_digests := LoadLibFunction(ADllHandle, ENGINE_set_default_digests_procname);
+  FuncLoaded := assigned(ENGINE_set_default_digests);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_digests_introduced)}
+    if LibVersion < ENGINE_set_default_digests_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_digests)}
+      ENGINE_set_default_digests := @FC_ENGINE_set_default_digests;
+      {$else}
+      {$if not defined(ENGINE_set_default_digests_allownil)}
+      ENGINE_set_default_digests := @ERR_ENGINE_set_default_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_digests_removed)}
+    if ENGINE_set_default_digests_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_digests)}
+      ENGINE_set_default_digests := @_ENGINE_set_default_digests;
+      {$else}
+      {$if not defined(ENGINE_set_default_digests_allownil)}
+      ENGINE_set_default_digests := @ERR_ENGINE_set_default_digests;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_digests_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_digests := @ERR_ENGINE_set_default_digests;
+      AFailed.Add('ENGINE_set_default_digests');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_pkey_meths := LoadLibFunction(ADllHandle, ENGINE_set_default_pkey_meths_procname);
+  FuncLoaded := assigned(ENGINE_set_default_pkey_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_pkey_meths_introduced)}
+    if LibVersion < ENGINE_set_default_pkey_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_pkey_meths)}
+      ENGINE_set_default_pkey_meths := @FC_ENGINE_set_default_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_set_default_pkey_meths_allownil)}
+      ENGINE_set_default_pkey_meths := @ERR_ENGINE_set_default_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_pkey_meths_removed)}
+    if ENGINE_set_default_pkey_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_pkey_meths)}
+      ENGINE_set_default_pkey_meths := @_ENGINE_set_default_pkey_meths;
+      {$else}
+      {$if not defined(ENGINE_set_default_pkey_meths_allownil)}
+      ENGINE_set_default_pkey_meths := @ERR_ENGINE_set_default_pkey_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_pkey_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_pkey_meths := @ERR_ENGINE_set_default_pkey_meths;
+      AFailed.Add('ENGINE_set_default_pkey_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default_pkey_asn1_meths := LoadLibFunction(ADllHandle, ENGINE_set_default_pkey_asn1_meths_procname);
+  FuncLoaded := assigned(ENGINE_set_default_pkey_asn1_meths);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_pkey_asn1_meths_introduced)}
+    if LibVersion < ENGINE_set_default_pkey_asn1_meths_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default_pkey_asn1_meths)}
+      ENGINE_set_default_pkey_asn1_meths := @FC_ENGINE_set_default_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_set_default_pkey_asn1_meths_allownil)}
+      ENGINE_set_default_pkey_asn1_meths := @ERR_ENGINE_set_default_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_pkey_asn1_meths_removed)}
+    if ENGINE_set_default_pkey_asn1_meths_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default_pkey_asn1_meths)}
+      ENGINE_set_default_pkey_asn1_meths := @_ENGINE_set_default_pkey_asn1_meths;
+      {$else}
+      {$if not defined(ENGINE_set_default_pkey_asn1_meths_allownil)}
+      ENGINE_set_default_pkey_asn1_meths := @ERR_ENGINE_set_default_pkey_asn1_meths;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_pkey_asn1_meths_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default_pkey_asn1_meths := @ERR_ENGINE_set_default_pkey_asn1_meths;
+      AFailed.Add('ENGINE_set_default_pkey_asn1_meths');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_set_default := LoadLibFunction(ADllHandle, ENGINE_set_default_procname);
+  FuncLoaded := assigned(ENGINE_set_default);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_set_default_introduced)}
+    if LibVersion < ENGINE_set_default_introduced then
+    begin
+      {$if declared(FC_ENGINE_set_default)}
+      ENGINE_set_default := @FC_ENGINE_set_default;
+      {$else}
+      {$if not defined(ENGINE_set_default_allownil)}
+      ENGINE_set_default := @ERR_ENGINE_set_default;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_set_default_removed)}
+    if ENGINE_set_default_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_set_default)}
+      ENGINE_set_default := @_ENGINE_set_default;
+      {$else}
+      {$if not defined(ENGINE_set_default_allownil)}
+      ENGINE_set_default := @ERR_ENGINE_set_default;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_set_default_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_set_default := @ERR_ENGINE_set_default;
+      AFailed.Add('ENGINE_set_default');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_add_conf_module := LoadLibFunction(ADllHandle, ENGINE_add_conf_module_procname);
+  FuncLoaded := assigned(ENGINE_add_conf_module);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_add_conf_module_introduced)}
+    if LibVersion < ENGINE_add_conf_module_introduced then
+    begin
+      {$if declared(FC_ENGINE_add_conf_module)}
+      ENGINE_add_conf_module := @FC_ENGINE_add_conf_module;
+      {$else}
+      {$if not defined(ENGINE_add_conf_module_allownil)}
+      ENGINE_add_conf_module := @ERR_ENGINE_add_conf_module;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_add_conf_module_removed)}
+    if ENGINE_add_conf_module_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_add_conf_module)}
+      ENGINE_add_conf_module := @_ENGINE_add_conf_module;
+      {$else}
+      {$if not defined(ENGINE_add_conf_module_allownil)}
+      ENGINE_add_conf_module := @ERR_ENGINE_add_conf_module;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_add_conf_module_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_add_conf_module := @ERR_ENGINE_add_conf_module;
+      AFailed.Add('ENGINE_add_conf_module');
+    end;
+    {$ifend}
+  end;
+
+
+  ENGINE_get_static_state := LoadLibFunction(ADllHandle, ENGINE_get_static_state_procname);
+  FuncLoaded := assigned(ENGINE_get_static_state);
+  if not FuncLoaded then
+  begin
+    {$if declared(ENGINE_get_static_state_introduced)}
+    if LibVersion < ENGINE_get_static_state_introduced then
+    begin
+      {$if declared(FC_ENGINE_get_static_state)}
+      ENGINE_get_static_state := @FC_ENGINE_get_static_state;
+      {$else}
+      {$if not defined(ENGINE_get_static_state_allownil)}
+      ENGINE_get_static_state := @ERR_ENGINE_get_static_state;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ENGINE_get_static_state_removed)}
+    if ENGINE_get_static_state_removed <= LibVersion then
+    begin
+      {$if declared(_ENGINE_get_static_state)}
+      ENGINE_get_static_state := @_ENGINE_get_static_state;
+      {$else}
+      {$if not defined(ENGINE_get_static_state_allownil)}
+      ENGINE_get_static_state := @ERR_ENGINE_get_static_state;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ENGINE_get_static_state_allownil)}
+    if not FuncLoaded then
+    begin
+      ENGINE_get_static_state := @ERR_ENGINE_get_static_state;
+      AFailed.Add('ENGINE_get_static_state');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

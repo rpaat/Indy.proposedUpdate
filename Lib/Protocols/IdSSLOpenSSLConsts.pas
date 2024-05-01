@@ -60,11 +60,6 @@ const
   LegacyLibCrypto = 'libeay32';
   LegacyLibssl = 'ssleay32';
 
-  {This list is a pragmatic solution to the following functions not being present
-   in the ssleay and libeay libraries for 1.0.2 distributed on the Indy github
-   website}
-  LegacyAllowFailed = 'BIO_s_log,ECPKPARAMETERS_it,ECPKPARAMETERS_new,ECPKPARAMETERS_free,'+
-                'ECPARAMETERS_it,ECPARAMETERS_new,ECPARAMETERS_free,HMAC_size,HMAC_CTX_reset,HMAC_CTX_get_md';
   {$IFDEF CPU64}
   CLibCrypto = 'libcrypto-3-x64.dll';
   CLibSSL = 'libssl-3-x64.dll';

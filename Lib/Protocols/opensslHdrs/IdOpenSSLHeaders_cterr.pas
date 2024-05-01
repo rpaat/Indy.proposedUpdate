@@ -125,21 +125,65 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  ERR_load_CT_strings_procname = 'ERR_load_CT_strings';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_ERR_load_CT_strings: TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ERR_load_CT_strings_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  ERR_load_CT_strings := LoadFunction('ERR_load_CT_strings',AFailed);
+  ERR_load_CT_strings := LoadLibFunction(ADllHandle, ERR_load_CT_strings_procname);
+  FuncLoaded := assigned(ERR_load_CT_strings);
+  if not FuncLoaded then
+  begin
+    {$if declared(ERR_load_CT_strings_introduced)}
+    if LibVersion < ERR_load_CT_strings_introduced then
+    begin
+      {$if declared(FC_ERR_load_CT_strings)}
+      ERR_load_CT_strings := @FC_ERR_load_CT_strings;
+      {$else}
+      {$if not defined(ERR_load_CT_strings_allownil)}
+      ERR_load_CT_strings := @ERR_ERR_load_CT_strings;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ERR_load_CT_strings_removed)}
+    if ERR_load_CT_strings_removed <= LibVersion then
+    begin
+      {$if declared(_ERR_load_CT_strings)}
+      ERR_load_CT_strings := @_ERR_load_CT_strings;
+      {$else}
+      {$if not defined(ERR_load_CT_strings_allownil)}
+      ERR_load_CT_strings := @ERR_ERR_load_CT_strings;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ERR_load_CT_strings_allownil)}
+    if not FuncLoaded then
+    begin
+      ERR_load_CT_strings := @ERR_ERR_load_CT_strings;
+      AFailed.Add('ERR_load_CT_strings');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

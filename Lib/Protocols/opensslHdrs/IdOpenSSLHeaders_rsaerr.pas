@@ -216,21 +216,65 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  ERR_load_RSA_strings_procname = 'ERR_load_RSA_strings';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_ERR_load_RSA_strings: TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ERR_load_RSA_strings_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  ERR_load_RSA_strings := LoadFunction('ERR_load_RSA_strings',AFailed);
+  ERR_load_RSA_strings := LoadLibFunction(ADllHandle, ERR_load_RSA_strings_procname);
+  FuncLoaded := assigned(ERR_load_RSA_strings);
+  if not FuncLoaded then
+  begin
+    {$if declared(ERR_load_RSA_strings_introduced)}
+    if LibVersion < ERR_load_RSA_strings_introduced then
+    begin
+      {$if declared(FC_ERR_load_RSA_strings)}
+      ERR_load_RSA_strings := @FC_ERR_load_RSA_strings;
+      {$else}
+      {$if not defined(ERR_load_RSA_strings_allownil)}
+      ERR_load_RSA_strings := @ERR_ERR_load_RSA_strings;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ERR_load_RSA_strings_removed)}
+    if ERR_load_RSA_strings_removed <= LibVersion then
+    begin
+      {$if declared(_ERR_load_RSA_strings)}
+      ERR_load_RSA_strings := @_ERR_load_RSA_strings;
+      {$else}
+      {$if not defined(ERR_load_RSA_strings_allownil)}
+      ERR_load_RSA_strings := @ERR_ERR_load_RSA_strings;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ERR_load_RSA_strings_allownil)}
+    if not FuncLoaded then
+    begin
+      ERR_load_RSA_strings := @ERR_ERR_load_RSA_strings;
+      AFailed.Add('ERR_load_RSA_strings');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

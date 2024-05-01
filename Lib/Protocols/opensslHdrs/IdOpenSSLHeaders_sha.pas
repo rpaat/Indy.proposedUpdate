@@ -199,43 +199,1107 @@ implementation
   
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  SHA1_Init_procname = 'SHA1_Init';
+  SHA1_Update_procname = 'SHA1_Update';
+  SHA1_Final_procname = 'SHA1_Final';
+  SHA1_procname = 'SHA1';
+  SHA1_Transform_procname = 'SHA1_Transform';
+
+  SHA224_Init_procname = 'SHA224_Init';
+  SHA224_Update_procname = 'SHA224_Update';
+  SHA224_Final_procname = 'SHA224_Final';
+  SHA224_procname = 'SHA224';
+
+  SHA256_Init_procname = 'SHA256_Init';
+  SHA256_Update_procname = 'SHA256_Update';
+  SHA256_Final_procname = 'SHA256_Final';
+  SHA256_procname = 'SHA256';
+  SHA256_Transform_procname = 'SHA256_Transform';
+
+  SHA384_Init_procname = 'SHA384_Init';
+  SHA384_Update_procname = 'SHA384_Update';
+  SHA384_Final_procname = 'SHA384_Final';
+  SHA384_procname = 'SHA384';
+
+  SHA512_Init_procname = 'SHA512_Init';
+  SHA512_Update_procname = 'SHA512_Update';
+  SHA512_Final_procname = 'SHA512_Final';
+  SHA512_procname = 'SHA512';
+  SHA512_Transform_procname = 'SHA512_Transform';
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_SHA1_Init(c: PSHA_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA1_Init_procname);
+end;
+
+
+function  ERR_SHA1_Update(c: PSHA_CTX; const data: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA1_Update_procname);
+end;
+
+
+function  ERR_SHA1_Final(md: PByte; c: PSHA_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA1_Final_procname);
+end;
+
+
+function  ERR_SHA1(const d: PByte; n: TIdC_SIZET; md: PByte): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA1_procname);
+end;
+
+
+procedure  ERR_SHA1_Transform(c: PSHA_CTX; const data: PByte); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA1_Transform_procname);
+end;
+
+
+
+function  ERR_SHA224_Init(c: PSHA256_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA224_Init_procname);
+end;
+
+
+function  ERR_SHA224_Update(c: PSHA256_CTX; const data: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA224_Update_procname);
+end;
+
+
+function  ERR_SHA224_Final(md: PByte; c: PSHA256_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA224_Final_procname);
+end;
+
+
+function  ERR_SHA224(const d: PByte; n: TIdC_SIZET; md: PByte): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA224_procname);
+end;
+
+
+
+function  ERR_SHA256_Init(c: PSHA256_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA256_Init_procname);
+end;
+
+
+function  ERR_SHA256_Update(c: PSHA256_CTX; const data: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA256_Update_procname);
+end;
+
+
+function  ERR_SHA256_Final(md: PByte; c: PSHA256_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA256_Final_procname);
+end;
+
+
+function  ERR_SHA256(const d: PByte; n: TIdC_SIZET; md: PByte): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA256_procname);
+end;
+
+
+procedure  ERR_SHA256_Transform(c: PSHA256_CTX; const data: PByte); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA256_Transform_procname);
+end;
+
+
+
+function  ERR_SHA384_Init(c: PSHA512_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA384_Init_procname);
+end;
+
+
+function  ERR_SHA384_Update(c: PSHA512_CTX; const data: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA384_Update_procname);
+end;
+
+
+function  ERR_SHA384_Final(md: PByte; c: PSHA512_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA384_Final_procname);
+end;
+
+
+function  ERR_SHA384(const d: PByte; n: TIdC_SIZET; md: PByte): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA384_procname);
+end;
+
+
+
+function  ERR_SHA512_Init(c: PSHA512_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA512_Init_procname);
+end;
+
+
+function  ERR_SHA512_Update(c: PSHA512_CTX; const data: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA512_Update_procname);
+end;
+
+
+function  ERR_SHA512_Final(md: PByte; c: PSHA512_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA512_Final_procname);
+end;
+
+
+function  ERR_SHA512(const d: PByte; n: TIdC_SIZET; md: PByte): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA512_procname);
+end;
+
+
+procedure  ERR_SHA512_Transform(c: PSHA512_CTX; const data: PByte); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(SHA512_Transform_procname);
+end;
+
+
+
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  SHA1_Init := LoadFunction('SHA1_Init',AFailed);
-  SHA1_Update := LoadFunction('SHA1_Update',AFailed);
-  SHA1_Final := LoadFunction('SHA1_Final',AFailed);
-  SHA1 := LoadFunction('SHA1',AFailed);
-  SHA1_Transform := LoadFunction('SHA1_Transform',AFailed);
-  SHA224_Init := LoadFunction('SHA224_Init',AFailed);
-  SHA224_Update := LoadFunction('SHA224_Update',AFailed);
-  SHA224_Final := LoadFunction('SHA224_Final',AFailed);
-  SHA224 := LoadFunction('SHA224',AFailed);
-  SHA256_Init := LoadFunction('SHA256_Init',AFailed);
-  SHA256_Update := LoadFunction('SHA256_Update',AFailed);
-  SHA256_Final := LoadFunction('SHA256_Final',AFailed);
-  SHA256 := LoadFunction('SHA256',AFailed);
-  SHA256_Transform := LoadFunction('SHA256_Transform',AFailed);
-  SHA384_Init := LoadFunction('SHA384_Init',AFailed);
-  SHA384_Update := LoadFunction('SHA384_Update',AFailed);
-  SHA384_Final := LoadFunction('SHA384_Final',AFailed);
-  SHA384 := LoadFunction('SHA384',AFailed);
-  SHA512_Init := LoadFunction('SHA512_Init',AFailed);
-  SHA512_Update := LoadFunction('SHA512_Update',AFailed);
-  SHA512_Final := LoadFunction('SHA512_Final',AFailed);
-  SHA512 := LoadFunction('SHA512',AFailed);
-  SHA512_Transform := LoadFunction('SHA512_Transform',AFailed);
+  SHA1_Init := LoadLibFunction(ADllHandle, SHA1_Init_procname);
+  FuncLoaded := assigned(SHA1_Init);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA1_Init_introduced)}
+    if LibVersion < SHA1_Init_introduced then
+    begin
+      {$if declared(FC_SHA1_Init)}
+      SHA1_Init := @FC_SHA1_Init;
+      {$else}
+      {$if not defined(SHA1_Init_allownil)}
+      SHA1_Init := @ERR_SHA1_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA1_Init_removed)}
+    if SHA1_Init_removed <= LibVersion then
+    begin
+      {$if declared(_SHA1_Init)}
+      SHA1_Init := @_SHA1_Init;
+      {$else}
+      {$if not defined(SHA1_Init_allownil)}
+      SHA1_Init := @ERR_SHA1_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA1_Init_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA1_Init := @ERR_SHA1_Init;
+      AFailed.Add('SHA1_Init');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA1_Update := LoadLibFunction(ADllHandle, SHA1_Update_procname);
+  FuncLoaded := assigned(SHA1_Update);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA1_Update_introduced)}
+    if LibVersion < SHA1_Update_introduced then
+    begin
+      {$if declared(FC_SHA1_Update)}
+      SHA1_Update := @FC_SHA1_Update;
+      {$else}
+      {$if not defined(SHA1_Update_allownil)}
+      SHA1_Update := @ERR_SHA1_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA1_Update_removed)}
+    if SHA1_Update_removed <= LibVersion then
+    begin
+      {$if declared(_SHA1_Update)}
+      SHA1_Update := @_SHA1_Update;
+      {$else}
+      {$if not defined(SHA1_Update_allownil)}
+      SHA1_Update := @ERR_SHA1_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA1_Update_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA1_Update := @ERR_SHA1_Update;
+      AFailed.Add('SHA1_Update');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA1_Final := LoadLibFunction(ADllHandle, SHA1_Final_procname);
+  FuncLoaded := assigned(SHA1_Final);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA1_Final_introduced)}
+    if LibVersion < SHA1_Final_introduced then
+    begin
+      {$if declared(FC_SHA1_Final)}
+      SHA1_Final := @FC_SHA1_Final;
+      {$else}
+      {$if not defined(SHA1_Final_allownil)}
+      SHA1_Final := @ERR_SHA1_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA1_Final_removed)}
+    if SHA1_Final_removed <= LibVersion then
+    begin
+      {$if declared(_SHA1_Final)}
+      SHA1_Final := @_SHA1_Final;
+      {$else}
+      {$if not defined(SHA1_Final_allownil)}
+      SHA1_Final := @ERR_SHA1_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA1_Final_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA1_Final := @ERR_SHA1_Final;
+      AFailed.Add('SHA1_Final');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA1 := LoadLibFunction(ADllHandle, SHA1_procname);
+  FuncLoaded := assigned(SHA1);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA1_introduced)}
+    if LibVersion < SHA1_introduced then
+    begin
+      {$if declared(FC_SHA1)}
+      SHA1 := @FC_SHA1;
+      {$else}
+      {$if not defined(SHA1_allownil)}
+      SHA1 := @ERR_SHA1;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA1_removed)}
+    if SHA1_removed <= LibVersion then
+    begin
+      {$if declared(_SHA1)}
+      SHA1 := @_SHA1;
+      {$else}
+      {$if not defined(SHA1_allownil)}
+      SHA1 := @ERR_SHA1;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA1_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA1 := @ERR_SHA1;
+      AFailed.Add('SHA1');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA1_Transform := LoadLibFunction(ADllHandle, SHA1_Transform_procname);
+  FuncLoaded := assigned(SHA1_Transform);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA1_Transform_introduced)}
+    if LibVersion < SHA1_Transform_introduced then
+    begin
+      {$if declared(FC_SHA1_Transform)}
+      SHA1_Transform := @FC_SHA1_Transform;
+      {$else}
+      {$if not defined(SHA1_Transform_allownil)}
+      SHA1_Transform := @ERR_SHA1_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA1_Transform_removed)}
+    if SHA1_Transform_removed <= LibVersion then
+    begin
+      {$if declared(_SHA1_Transform)}
+      SHA1_Transform := @_SHA1_Transform;
+      {$else}
+      {$if not defined(SHA1_Transform_allownil)}
+      SHA1_Transform := @ERR_SHA1_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA1_Transform_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA1_Transform := @ERR_SHA1_Transform;
+      AFailed.Add('SHA1_Transform');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA224_Init := LoadLibFunction(ADllHandle, SHA224_Init_procname);
+  FuncLoaded := assigned(SHA224_Init);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA224_Init_introduced)}
+    if LibVersion < SHA224_Init_introduced then
+    begin
+      {$if declared(FC_SHA224_Init)}
+      SHA224_Init := @FC_SHA224_Init;
+      {$else}
+      {$if not defined(SHA224_Init_allownil)}
+      SHA224_Init := @ERR_SHA224_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA224_Init_removed)}
+    if SHA224_Init_removed <= LibVersion then
+    begin
+      {$if declared(_SHA224_Init)}
+      SHA224_Init := @_SHA224_Init;
+      {$else}
+      {$if not defined(SHA224_Init_allownil)}
+      SHA224_Init := @ERR_SHA224_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA224_Init_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA224_Init := @ERR_SHA224_Init;
+      AFailed.Add('SHA224_Init');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA224_Update := LoadLibFunction(ADllHandle, SHA224_Update_procname);
+  FuncLoaded := assigned(SHA224_Update);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA224_Update_introduced)}
+    if LibVersion < SHA224_Update_introduced then
+    begin
+      {$if declared(FC_SHA224_Update)}
+      SHA224_Update := @FC_SHA224_Update;
+      {$else}
+      {$if not defined(SHA224_Update_allownil)}
+      SHA224_Update := @ERR_SHA224_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA224_Update_removed)}
+    if SHA224_Update_removed <= LibVersion then
+    begin
+      {$if declared(_SHA224_Update)}
+      SHA224_Update := @_SHA224_Update;
+      {$else}
+      {$if not defined(SHA224_Update_allownil)}
+      SHA224_Update := @ERR_SHA224_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA224_Update_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA224_Update := @ERR_SHA224_Update;
+      AFailed.Add('SHA224_Update');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA224_Final := LoadLibFunction(ADllHandle, SHA224_Final_procname);
+  FuncLoaded := assigned(SHA224_Final);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA224_Final_introduced)}
+    if LibVersion < SHA224_Final_introduced then
+    begin
+      {$if declared(FC_SHA224_Final)}
+      SHA224_Final := @FC_SHA224_Final;
+      {$else}
+      {$if not defined(SHA224_Final_allownil)}
+      SHA224_Final := @ERR_SHA224_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA224_Final_removed)}
+    if SHA224_Final_removed <= LibVersion then
+    begin
+      {$if declared(_SHA224_Final)}
+      SHA224_Final := @_SHA224_Final;
+      {$else}
+      {$if not defined(SHA224_Final_allownil)}
+      SHA224_Final := @ERR_SHA224_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA224_Final_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA224_Final := @ERR_SHA224_Final;
+      AFailed.Add('SHA224_Final');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA224 := LoadLibFunction(ADllHandle, SHA224_procname);
+  FuncLoaded := assigned(SHA224);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA224_introduced)}
+    if LibVersion < SHA224_introduced then
+    begin
+      {$if declared(FC_SHA224)}
+      SHA224 := @FC_SHA224;
+      {$else}
+      {$if not defined(SHA224_allownil)}
+      SHA224 := @ERR_SHA224;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA224_removed)}
+    if SHA224_removed <= LibVersion then
+    begin
+      {$if declared(_SHA224)}
+      SHA224 := @_SHA224;
+      {$else}
+      {$if not defined(SHA224_allownil)}
+      SHA224 := @ERR_SHA224;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA224_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA224 := @ERR_SHA224;
+      AFailed.Add('SHA224');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA256_Init := LoadLibFunction(ADllHandle, SHA256_Init_procname);
+  FuncLoaded := assigned(SHA256_Init);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA256_Init_introduced)}
+    if LibVersion < SHA256_Init_introduced then
+    begin
+      {$if declared(FC_SHA256_Init)}
+      SHA256_Init := @FC_SHA256_Init;
+      {$else}
+      {$if not defined(SHA256_Init_allownil)}
+      SHA256_Init := @ERR_SHA256_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA256_Init_removed)}
+    if SHA256_Init_removed <= LibVersion then
+    begin
+      {$if declared(_SHA256_Init)}
+      SHA256_Init := @_SHA256_Init;
+      {$else}
+      {$if not defined(SHA256_Init_allownil)}
+      SHA256_Init := @ERR_SHA256_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA256_Init_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA256_Init := @ERR_SHA256_Init;
+      AFailed.Add('SHA256_Init');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA256_Update := LoadLibFunction(ADllHandle, SHA256_Update_procname);
+  FuncLoaded := assigned(SHA256_Update);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA256_Update_introduced)}
+    if LibVersion < SHA256_Update_introduced then
+    begin
+      {$if declared(FC_SHA256_Update)}
+      SHA256_Update := @FC_SHA256_Update;
+      {$else}
+      {$if not defined(SHA256_Update_allownil)}
+      SHA256_Update := @ERR_SHA256_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA256_Update_removed)}
+    if SHA256_Update_removed <= LibVersion then
+    begin
+      {$if declared(_SHA256_Update)}
+      SHA256_Update := @_SHA256_Update;
+      {$else}
+      {$if not defined(SHA256_Update_allownil)}
+      SHA256_Update := @ERR_SHA256_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA256_Update_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA256_Update := @ERR_SHA256_Update;
+      AFailed.Add('SHA256_Update');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA256_Final := LoadLibFunction(ADllHandle, SHA256_Final_procname);
+  FuncLoaded := assigned(SHA256_Final);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA256_Final_introduced)}
+    if LibVersion < SHA256_Final_introduced then
+    begin
+      {$if declared(FC_SHA256_Final)}
+      SHA256_Final := @FC_SHA256_Final;
+      {$else}
+      {$if not defined(SHA256_Final_allownil)}
+      SHA256_Final := @ERR_SHA256_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA256_Final_removed)}
+    if SHA256_Final_removed <= LibVersion then
+    begin
+      {$if declared(_SHA256_Final)}
+      SHA256_Final := @_SHA256_Final;
+      {$else}
+      {$if not defined(SHA256_Final_allownil)}
+      SHA256_Final := @ERR_SHA256_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA256_Final_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA256_Final := @ERR_SHA256_Final;
+      AFailed.Add('SHA256_Final');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA256 := LoadLibFunction(ADllHandle, SHA256_procname);
+  FuncLoaded := assigned(SHA256);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA256_introduced)}
+    if LibVersion < SHA256_introduced then
+    begin
+      {$if declared(FC_SHA256)}
+      SHA256 := @FC_SHA256;
+      {$else}
+      {$if not defined(SHA256_allownil)}
+      SHA256 := @ERR_SHA256;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA256_removed)}
+    if SHA256_removed <= LibVersion then
+    begin
+      {$if declared(_SHA256)}
+      SHA256 := @_SHA256;
+      {$else}
+      {$if not defined(SHA256_allownil)}
+      SHA256 := @ERR_SHA256;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA256_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA256 := @ERR_SHA256;
+      AFailed.Add('SHA256');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA256_Transform := LoadLibFunction(ADllHandle, SHA256_Transform_procname);
+  FuncLoaded := assigned(SHA256_Transform);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA256_Transform_introduced)}
+    if LibVersion < SHA256_Transform_introduced then
+    begin
+      {$if declared(FC_SHA256_Transform)}
+      SHA256_Transform := @FC_SHA256_Transform;
+      {$else}
+      {$if not defined(SHA256_Transform_allownil)}
+      SHA256_Transform := @ERR_SHA256_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA256_Transform_removed)}
+    if SHA256_Transform_removed <= LibVersion then
+    begin
+      {$if declared(_SHA256_Transform)}
+      SHA256_Transform := @_SHA256_Transform;
+      {$else}
+      {$if not defined(SHA256_Transform_allownil)}
+      SHA256_Transform := @ERR_SHA256_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA256_Transform_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA256_Transform := @ERR_SHA256_Transform;
+      AFailed.Add('SHA256_Transform');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA384_Init := LoadLibFunction(ADllHandle, SHA384_Init_procname);
+  FuncLoaded := assigned(SHA384_Init);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA384_Init_introduced)}
+    if LibVersion < SHA384_Init_introduced then
+    begin
+      {$if declared(FC_SHA384_Init)}
+      SHA384_Init := @FC_SHA384_Init;
+      {$else}
+      {$if not defined(SHA384_Init_allownil)}
+      SHA384_Init := @ERR_SHA384_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA384_Init_removed)}
+    if SHA384_Init_removed <= LibVersion then
+    begin
+      {$if declared(_SHA384_Init)}
+      SHA384_Init := @_SHA384_Init;
+      {$else}
+      {$if not defined(SHA384_Init_allownil)}
+      SHA384_Init := @ERR_SHA384_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA384_Init_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA384_Init := @ERR_SHA384_Init;
+      AFailed.Add('SHA384_Init');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA384_Update := LoadLibFunction(ADllHandle, SHA384_Update_procname);
+  FuncLoaded := assigned(SHA384_Update);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA384_Update_introduced)}
+    if LibVersion < SHA384_Update_introduced then
+    begin
+      {$if declared(FC_SHA384_Update)}
+      SHA384_Update := @FC_SHA384_Update;
+      {$else}
+      {$if not defined(SHA384_Update_allownil)}
+      SHA384_Update := @ERR_SHA384_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA384_Update_removed)}
+    if SHA384_Update_removed <= LibVersion then
+    begin
+      {$if declared(_SHA384_Update)}
+      SHA384_Update := @_SHA384_Update;
+      {$else}
+      {$if not defined(SHA384_Update_allownil)}
+      SHA384_Update := @ERR_SHA384_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA384_Update_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA384_Update := @ERR_SHA384_Update;
+      AFailed.Add('SHA384_Update');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA384_Final := LoadLibFunction(ADllHandle, SHA384_Final_procname);
+  FuncLoaded := assigned(SHA384_Final);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA384_Final_introduced)}
+    if LibVersion < SHA384_Final_introduced then
+    begin
+      {$if declared(FC_SHA384_Final)}
+      SHA384_Final := @FC_SHA384_Final;
+      {$else}
+      {$if not defined(SHA384_Final_allownil)}
+      SHA384_Final := @ERR_SHA384_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA384_Final_removed)}
+    if SHA384_Final_removed <= LibVersion then
+    begin
+      {$if declared(_SHA384_Final)}
+      SHA384_Final := @_SHA384_Final;
+      {$else}
+      {$if not defined(SHA384_Final_allownil)}
+      SHA384_Final := @ERR_SHA384_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA384_Final_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA384_Final := @ERR_SHA384_Final;
+      AFailed.Add('SHA384_Final');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA384 := LoadLibFunction(ADllHandle, SHA384_procname);
+  FuncLoaded := assigned(SHA384);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA384_introduced)}
+    if LibVersion < SHA384_introduced then
+    begin
+      {$if declared(FC_SHA384)}
+      SHA384 := @FC_SHA384;
+      {$else}
+      {$if not defined(SHA384_allownil)}
+      SHA384 := @ERR_SHA384;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA384_removed)}
+    if SHA384_removed <= LibVersion then
+    begin
+      {$if declared(_SHA384)}
+      SHA384 := @_SHA384;
+      {$else}
+      {$if not defined(SHA384_allownil)}
+      SHA384 := @ERR_SHA384;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA384_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA384 := @ERR_SHA384;
+      AFailed.Add('SHA384');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA512_Init := LoadLibFunction(ADllHandle, SHA512_Init_procname);
+  FuncLoaded := assigned(SHA512_Init);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA512_Init_introduced)}
+    if LibVersion < SHA512_Init_introduced then
+    begin
+      {$if declared(FC_SHA512_Init)}
+      SHA512_Init := @FC_SHA512_Init;
+      {$else}
+      {$if not defined(SHA512_Init_allownil)}
+      SHA512_Init := @ERR_SHA512_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA512_Init_removed)}
+    if SHA512_Init_removed <= LibVersion then
+    begin
+      {$if declared(_SHA512_Init)}
+      SHA512_Init := @_SHA512_Init;
+      {$else}
+      {$if not defined(SHA512_Init_allownil)}
+      SHA512_Init := @ERR_SHA512_Init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA512_Init_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA512_Init := @ERR_SHA512_Init;
+      AFailed.Add('SHA512_Init');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA512_Update := LoadLibFunction(ADllHandle, SHA512_Update_procname);
+  FuncLoaded := assigned(SHA512_Update);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA512_Update_introduced)}
+    if LibVersion < SHA512_Update_introduced then
+    begin
+      {$if declared(FC_SHA512_Update)}
+      SHA512_Update := @FC_SHA512_Update;
+      {$else}
+      {$if not defined(SHA512_Update_allownil)}
+      SHA512_Update := @ERR_SHA512_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA512_Update_removed)}
+    if SHA512_Update_removed <= LibVersion then
+    begin
+      {$if declared(_SHA512_Update)}
+      SHA512_Update := @_SHA512_Update;
+      {$else}
+      {$if not defined(SHA512_Update_allownil)}
+      SHA512_Update := @ERR_SHA512_Update;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA512_Update_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA512_Update := @ERR_SHA512_Update;
+      AFailed.Add('SHA512_Update');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA512_Final := LoadLibFunction(ADllHandle, SHA512_Final_procname);
+  FuncLoaded := assigned(SHA512_Final);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA512_Final_introduced)}
+    if LibVersion < SHA512_Final_introduced then
+    begin
+      {$if declared(FC_SHA512_Final)}
+      SHA512_Final := @FC_SHA512_Final;
+      {$else}
+      {$if not defined(SHA512_Final_allownil)}
+      SHA512_Final := @ERR_SHA512_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA512_Final_removed)}
+    if SHA512_Final_removed <= LibVersion then
+    begin
+      {$if declared(_SHA512_Final)}
+      SHA512_Final := @_SHA512_Final;
+      {$else}
+      {$if not defined(SHA512_Final_allownil)}
+      SHA512_Final := @ERR_SHA512_Final;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA512_Final_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA512_Final := @ERR_SHA512_Final;
+      AFailed.Add('SHA512_Final');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA512 := LoadLibFunction(ADllHandle, SHA512_procname);
+  FuncLoaded := assigned(SHA512);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA512_introduced)}
+    if LibVersion < SHA512_introduced then
+    begin
+      {$if declared(FC_SHA512)}
+      SHA512 := @FC_SHA512;
+      {$else}
+      {$if not defined(SHA512_allownil)}
+      SHA512 := @ERR_SHA512;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA512_removed)}
+    if SHA512_removed <= LibVersion then
+    begin
+      {$if declared(_SHA512)}
+      SHA512 := @_SHA512;
+      {$else}
+      {$if not defined(SHA512_allownil)}
+      SHA512 := @ERR_SHA512;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA512_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA512 := @ERR_SHA512;
+      AFailed.Add('SHA512');
+    end;
+    {$ifend}
+  end;
+
+
+  SHA512_Transform := LoadLibFunction(ADllHandle, SHA512_Transform_procname);
+  FuncLoaded := assigned(SHA512_Transform);
+  if not FuncLoaded then
+  begin
+    {$if declared(SHA512_Transform_introduced)}
+    if LibVersion < SHA512_Transform_introduced then
+    begin
+      {$if declared(FC_SHA512_Transform)}
+      SHA512_Transform := @FC_SHA512_Transform;
+      {$else}
+      {$if not defined(SHA512_Transform_allownil)}
+      SHA512_Transform := @ERR_SHA512_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(SHA512_Transform_removed)}
+    if SHA512_Transform_removed <= LibVersion then
+    begin
+      {$if declared(_SHA512_Transform)}
+      SHA512_Transform := @_SHA512_Transform;
+      {$else}
+      {$if not defined(SHA512_Transform_allownil)}
+      SHA512_Transform := @ERR_SHA512_Transform;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SHA512_Transform_allownil)}
+    if not FuncLoaded then
+    begin
+      SHA512_Transform := @ERR_SHA512_Transform;
+      AFailed.Add('SHA512_Transform');
+    end;
+    {$ifend}
+  end;
+
+
 end;
 
 procedure Unload;

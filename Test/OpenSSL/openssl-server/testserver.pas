@@ -307,10 +307,19 @@ end;
 procedure TOpenSSLServerTest.DoRun;
 
   procedure RunTest;
+  var i: integer;
   begin
     FServer.Active := true;
     Sleep(1000); {let server get going}
     writeln('Using ',OpenSSLVersion);
+    if assigned(GetOpenSSLLoader) then
+    with GetOpenSSLLoader.FailedToLoad do
+    if Count > 0 then
+    begin
+      writeln('Note: The following functions failed to load and an exception will be raised if they are called:');
+      for i := 0 to Count - 1 do
+        writeln(Strings[i]);
+    end;
     writeln('Getting ',remoteSource,' with verification');
     writeln;
 

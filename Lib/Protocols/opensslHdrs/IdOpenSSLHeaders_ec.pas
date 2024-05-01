@@ -795,1746 +795,8297 @@ const
   EC_GFp_nistp521_method_removed = (byte(3) shl 8 or byte(0)) shl 8 or byte(0);
 
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  EC_GFp_simple_method_procname = 'EC_GFp_simple_method';
+  EC_GFp_mont_method_procname = 'EC_GFp_mont_method';
+  EC_GFp_nist_method_procname = 'EC_GFp_nist_method';
+  EC_GFp_nistp224_method_procname = 'EC_GFp_nistp224_method'; {introduced 1.1.0 removed 3.0.0}
+  EC_GFp_nistp256_method_procname = 'EC_GFp_nistp256_method'; {introduced 1.1.0 removed 3.0.0}
+  EC_GFp_nistp521_method_procname = 'EC_GFp_nistp521_method'; {introduced 1.1.0 removed 3.0.0}
+
+  EC_GF2m_simple_method_procname = 'EC_GF2m_simple_method';
+
+  EC_GROUP_new_procname = 'EC_GROUP_new';
+  EC_GROUP_free_procname = 'EC_GROUP_free';
+  EC_GROUP_clear_free_procname = 'EC_GROUP_clear_free';
+  EC_GROUP_copy_procname = 'EC_GROUP_copy';
+  EC_GROUP_dup_procname = 'EC_GROUP_dup';
+  EC_GROUP_method_of_procname = 'EC_GROUP_method_of';
+  EC_METHOD_get_field_type_procname = 'EC_METHOD_get_field_type';
+  EC_GROUP_set_generator_procname = 'EC_GROUP_set_generator';
+  EC_GROUP_get0_generator_procname = 'EC_GROUP_get0_generator';
+  EC_GROUP_get_mont_data_procname = 'EC_GROUP_get_mont_data';
+  EC_GROUP_get_order_procname = 'EC_GROUP_get_order';
+  EC_GROUP_get0_order_procname = 'EC_GROUP_get0_order'; {introduced 1.1.0}
+  EC_GROUP_order_bits_procname = 'EC_GROUP_order_bits'; {introduced 1.1.0}
+  EC_GROUP_get_cofactor_procname = 'EC_GROUP_get_cofactor';
+  EC_GROUP_get0_cofactor_procname = 'EC_GROUP_get0_cofactor'; {introduced 1.1.0}
+  EC_GROUP_set_curve_name_procname = 'EC_GROUP_set_curve_name';
+  EC_GROUP_get_curve_name_procname = 'EC_GROUP_get_curve_name';
+
+  EC_GROUP_set_asn1_flag_procname = 'EC_GROUP_set_asn1_flag';
+  EC_GROUP_get_asn1_flag_procname = 'EC_GROUP_get_asn1_flag';
+
+  EC_GROUP_set_point_conversion_form_procname = 'EC_GROUP_set_point_conversion_form';
+  EC_GROUP_get_point_conversion_form_procname = 'EC_GROUP_get_point_conversion_form';
+
+  EC_GROUP_get0_seed_procname = 'EC_GROUP_get0_seed';
+  EC_GROUP_get_seed_len_procname = 'EC_GROUP_get_seed_len';
+  EC_GROUP_set_seed_procname = 'EC_GROUP_set_seed';
+
+  EC_GROUP_set_curve_procname = 'EC_GROUP_set_curve'; {introduced 1.1.0}
+  EC_GROUP_get_curve_procname = 'EC_GROUP_get_curve'; {introduced 1.1.0}
+  EC_GROUP_set_curve_GFp_procname = 'EC_GROUP_set_curve_GFp';
+  EC_GROUP_get_curve_GFp_procname = 'EC_GROUP_get_curve_GFp';
+  EC_GROUP_set_curve_GF2m_procname = 'EC_GROUP_set_curve_GF2m';
+  EC_GROUP_get_curve_GF2m_procname = 'EC_GROUP_get_curve_GF2m';
+
+  EC_GROUP_get_degree_procname = 'EC_GROUP_get_degree';
+  EC_GROUP_check_procname = 'EC_GROUP_check';
+  EC_GROUP_check_discriminant_procname = 'EC_GROUP_check_discriminant';
+  EC_GROUP_cmp_procname = 'EC_GROUP_cmp';
+
+  EC_GROUP_new_curve_GFp_procname = 'EC_GROUP_new_curve_GFp';
+  EC_GROUP_new_curve_GF2m_procname = 'EC_GROUP_new_curve_GF2m';
+  EC_GROUP_new_by_curve_name_procname = 'EC_GROUP_new_by_curve_name';
+  EC_GROUP_new_from_ecparameters_procname = 'EC_GROUP_new_from_ecparameters'; {introduced 1.1.0}
+  EC_GROUP_get_ecparameters_procname = 'EC_GROUP_get_ecparameters'; {introduced 1.1.0}
+  EC_GROUP_new_from_ecpkparameters_procname = 'EC_GROUP_new_from_ecpkparameters'; {introduced 1.1.0}
+  EC_GROUP_get_ecpkparameters_procname = 'EC_GROUP_get_ecpkparameters'; {introduced 1.1.0}
+
+  EC_get_builtin_curves_procname = 'EC_get_builtin_curves';
+
+  EC_curve_nid2nist_procname = 'EC_curve_nid2nist';
+  EC_curve_nist2nid_procname = 'EC_curve_nist2nid';
+
+  EC_POINT_new_procname = 'EC_POINT_new';
+  EC_POINT_free_procname = 'EC_POINT_free';
+  EC_POINT_clear_free_procname = 'EC_POINT_clear_free';
+  EC_POINT_copy_procname = 'EC_POINT_copy';
+  EC_POINT_dup_procname = 'EC_POINT_dup';
+  EC_POINT_method_of_procname = 'EC_POINT_method_of';
+  EC_POINT_set_to_infinity_procname = 'EC_POINT_set_to_infinity';
+  EC_POINT_set_Jprojective_coordinates_GFp_procname = 'EC_POINT_set_Jprojective_coordinates_GFp';
+  EC_POINT_get_Jprojective_coordinates_GFp_procname = 'EC_POINT_get_Jprojective_coordinates_GFp';
+  EC_POINT_set_affine_coordinates_procname = 'EC_POINT_set_affine_coordinates'; {introduced 1.1.0}
+  EC_POINT_get_affine_coordinates_procname = 'EC_POINT_get_affine_coordinates'; {introduced 1.1.0}
+  EC_POINT_set_affine_coordinates_GFp_procname = 'EC_POINT_set_affine_coordinates_GFp';
+  EC_POINT_get_affine_coordinates_GFp_procname = 'EC_POINT_get_affine_coordinates_GFp';
+  EC_POINT_set_compressed_coordinates_procname = 'EC_POINT_set_compressed_coordinates'; {introduced 1.1.0}
+  EC_POINT_set_compressed_coordinates_GFp_procname = 'EC_POINT_set_compressed_coordinates_GFp';
+  EC_POINT_set_affine_coordinates_GF2m_procname = 'EC_POINT_set_affine_coordinates_GF2m';
+  EC_POINT_get_affine_coordinates_GF2m_procname = 'EC_POINT_get_affine_coordinates_GF2m';
+  EC_POINT_set_compressed_coordinates_GF2m_procname = 'EC_POINT_set_compressed_coordinates_GF2m';
+
+  EC_POINT_point2oct_procname = 'EC_POINT_point2oct';
+  EC_POINT_oct2point_procname = 'EC_POINT_oct2point';
+  EC_POINT_point2buf_procname = 'EC_POINT_point2buf'; {introduced 1.1.0}
+  EC_POINT_point2bn_procname = 'EC_POINT_point2bn';
+  EC_POINT_bn2point_procname = 'EC_POINT_bn2point';
+  EC_POINT_point2hex_procname = 'EC_POINT_point2hex';
+  EC_POINT_hex2point_procname = 'EC_POINT_hex2point';
+
+  EC_POINT_add_procname = 'EC_POINT_add';
+  EC_POINT_dbl_procname = 'EC_POINT_dbl';
+  EC_POINT_invert_procname = 'EC_POINT_invert';
+  EC_POINT_is_at_infinity_procname = 'EC_POINT_is_at_infinity';
+  EC_POINT_is_on_curve_procname = 'EC_POINT_is_on_curve';
+  EC_POINT_cmp_procname = 'EC_POINT_cmp';
+  EC_POINT_make_affine_procname = 'EC_POINT_make_affine';
+  EC_POINTs_make_affine_procname = 'EC_POINTs_make_affine';
+  EC_POINTs_mul_procname = 'EC_POINTs_mul';
+  EC_POINT_mul_procname = 'EC_POINT_mul';
+
+  EC_GROUP_precompute_mult_procname = 'EC_GROUP_precompute_mult';
+  EC_GROUP_have_precompute_mult_procname = 'EC_GROUP_have_precompute_mult';
+
+  ECPKPARAMETERS_it_procname = 'ECPKPARAMETERS_it';
+  ECPKPARAMETERS_new_procname = 'ECPKPARAMETERS_new';
+  ECPKPARAMETERS_free_procname = 'ECPKPARAMETERS_free';
+
+  ECPARAMETERS_it_procname = 'ECPARAMETERS_it';
+  ECPARAMETERS_new_procname = 'ECPARAMETERS_new';
+  ECPARAMETERS_free_procname = 'ECPARAMETERS_free';
+
+  EC_GROUP_get_basis_type_procname = 'EC_GROUP_get_basis_type';
+  EC_GROUP_get_trinomial_basis_procname = 'EC_GROUP_get_trinomial_basis';
+  EC_GROUP_get_pentanomial_basis_procname = 'EC_GROUP_get_pentanomial_basis';
+
+  d2i_ECPKParameters_procname = 'd2i_ECPKParameters';
+  i2d_ECPKParameters_procname = 'i2d_ECPKParameters';
+
+  ECPKParameters_print_procname = 'ECPKParameters_print';
+
+  EC_KEY_new_procname = 'EC_KEY_new';
+  EC_KEY_get_flags_procname = 'EC_KEY_get_flags';
+  EC_KEY_set_flags_procname = 'EC_KEY_set_flags';
+  EC_KEY_clear_flags_procname = 'EC_KEY_clear_flags';
+  EC_KEY_new_by_curve_name_procname = 'EC_KEY_new_by_curve_name';
+  EC_KEY_free_procname = 'EC_KEY_free';
+  EC_KEY_copy_procname = 'EC_KEY_copy';
+  EC_KEY_dup_procname = 'EC_KEY_dup';
+  EC_KEY_up_ref_procname = 'EC_KEY_up_ref';
+  EC_KEY_get0_engine_procname = 'EC_KEY_get0_engine'; {introduced 1.1.0}
+  EC_KEY_get0_group_procname = 'EC_KEY_get0_group';
+  EC_KEY_set_group_procname = 'EC_KEY_set_group';
+  EC_KEY_get0_private_key_procname = 'EC_KEY_get0_private_key';
+  EC_KEY_set_private_key_procname = 'EC_KEY_set_private_key';
+  EC_KEY_get0_public_key_procname = 'EC_KEY_get0_public_key';
+  EC_KEY_set_public_key_procname = 'EC_KEY_set_public_key';
+  EC_KEY_get_enc_flags_procname = 'EC_KEY_get_enc_flags';
+  EC_KEY_set_enc_flags_procname = 'EC_KEY_set_enc_flags';
+  EC_KEY_get_conv_form_procname = 'EC_KEY_get_conv_form';
+  EC_KEY_set_conv_form_procname = 'EC_KEY_set_conv_form';
+  EC_KEY_set_ex_data_procname = 'EC_KEY_set_ex_data'; {introduced 1.1.0}
+  EC_KEY_get_ex_data_procname = 'EC_KEY_get_ex_data'; {introduced 1.1.0}
+  EC_KEY_set_asn1_flag_procname = 'EC_KEY_set_asn1_flag';
+  EC_KEY_precompute_mult_procname = 'EC_KEY_precompute_mult';
+  EC_KEY_generate_key_procname = 'EC_KEY_generate_key';
+  EC_KEY_check_key_procname = 'EC_KEY_check_key';
+  EC_KEY_can_sign_procname = 'EC_KEY_can_sign'; {introduced 1.1.0}
+  EC_KEY_set_public_key_affine_coordinates_procname = 'EC_KEY_set_public_key_affine_coordinates';
+  EC_KEY_key2buf_procname = 'EC_KEY_key2buf'; {introduced 1.1.0}
+  EC_KEY_oct2key_procname = 'EC_KEY_oct2key'; {introduced 1.1.0}
+  EC_KEY_oct2priv_procname = 'EC_KEY_oct2priv'; {introduced 1.1.0}
+  EC_KEY_priv2oct_procname = 'EC_KEY_priv2oct'; {introduced 1.1.0}
+  EC_KEY_priv2buf_procname = 'EC_KEY_priv2buf'; {introduced 1.1.0}
+
+  d2i_ECPrivateKey_procname = 'd2i_ECPrivateKey';
+  i2d_ECPrivateKey_procname = 'i2d_ECPrivateKey';
+  o2i_ECPublicKey_procname = 'o2i_ECPublicKey';
+  i2o_ECPublicKey_procname = 'i2o_ECPublicKey';
+
+  ECParameters_print_procname = 'ECParameters_print';
+  EC_KEY_print_procname = 'EC_KEY_print';
+
+  EC_KEY_OpenSSL_procname = 'EC_KEY_OpenSSL'; {introduced 1.1.0}
+  EC_KEY_get_default_method_procname = 'EC_KEY_get_default_method'; {introduced 1.1.0}
+  EC_KEY_set_default_method_procname = 'EC_KEY_set_default_method'; {introduced 1.1.0}
+  EC_KEY_get_method_procname = 'EC_KEY_get_method'; {introduced 1.1.0}
+  EC_KEY_set_method_procname = 'EC_KEY_set_method'; {introduced 1.1.0}
+  EC_KEY_new_method_procname = 'EC_KEY_new_method'; {introduced 1.1.0}
+
+  ECDH_KDF_X9_62_procname = 'ECDH_KDF_X9_62';
+  ECDH_compute_key_procname = 'ECDH_compute_key';
+
+  ECDSA_SIG_new_procname = 'ECDSA_SIG_new';
+  ECDSA_SIG_free_procname = 'ECDSA_SIG_free';
+  i2d_ECDSA_SIG_procname = 'i2d_ECDSA_SIG';
+  d2i_ECDSA_SIG_procname = 'd2i_ECDSA_SIG';
+  ECDSA_SIG_get0_procname = 'ECDSA_SIG_get0'; {introduced 1.1.0}
+  ECDSA_SIG_get0_r_procname = 'ECDSA_SIG_get0_r'; {introduced 1.1.0}
+  ECDSA_SIG_get0_s_procname = 'ECDSA_SIG_get0_s'; {introduced 1.1.0}
+  ECDSA_SIG_set0_procname = 'ECDSA_SIG_set0'; {introduced 1.1.0}
+  ECDSA_do_sign_procname = 'ECDSA_do_sign';
+  ECDSA_do_sign_ex_procname = 'ECDSA_do_sign_ex';
+  ECDSA_do_verify_procname = 'ECDSA_do_verify';
+  ECDSA_sign_setup_procname = 'ECDSA_sign_setup';
+  ECDSA_sign_procname = 'ECDSA_sign';
+  ECDSA_sign_ex_procname = 'ECDSA_sign_ex';
+  ECDSA_verify_procname = 'ECDSA_verify';
+  ECDSA_size_procname = 'ECDSA_size';
+
+  EC_KEY_METHOD_new_procname = 'EC_KEY_METHOD_new'; {introduced 1.1.0}
+  EC_KEY_METHOD_free_procname = 'EC_KEY_METHOD_free'; {introduced 1.1.0}
+  EC_KEY_METHOD_set_init_procname = 'EC_KEY_METHOD_set_init'; {introduced 1.1.0}
+  EC_KEY_METHOD_set_keygen_procname = 'EC_KEY_METHOD_set_keygen'; {introduced 1.1.0}
+  EC_KEY_METHOD_set_compute_key_procname = 'EC_KEY_METHOD_set_compute_key'; {introduced 1.1.0}
+  EC_KEY_METHOD_set_sign_procname = 'EC_KEY_METHOD_set_sign'; {introduced 1.1.0}
+  EC_KEY_METHOD_set_verify_procname = 'EC_KEY_METHOD_set_verify'; {introduced 1.1.0}
+
+  EC_KEY_METHOD_get_init_procname = 'EC_KEY_METHOD_get_init'; {introduced 1.1.0}
+  EC_KEY_METHOD_get_keygen_procname = 'EC_KEY_METHOD_get_keygen'; {introduced 1.1.0}
+  EC_KEY_METHOD_get_compute_key_procname = 'EC_KEY_METHOD_get_compute_key'; {introduced 1.1.0}
+  EC_KEY_METHOD_get_sign_procname = 'EC_KEY_METHOD_get_sign'; {introduced 1.1.0}
+  EC_KEY_METHOD_get_verify_procname = 'EC_KEY_METHOD_get_verify'; {introduced 1.1.0}
+
 
 {$WARN  NO_RETVAL OFF}
+function  ERR_EC_GFp_simple_method: PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_simple_method_procname);
+end;
+
+
+function  ERR_EC_GFp_mont_method: PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_mont_method_procname);
+end;
+
+
+function  ERR_EC_GFp_nist_method: PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_nist_method_procname);
+end;
+
+
 function  ERR_EC_GFp_nistp224_method: PEC_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GFp_nistp224_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_nistp224_method_procname);
 end;
 
-
+ 
 function  ERR_EC_GFp_nistp256_method: PEC_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GFp_nistp256_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_nistp256_method_procname);
+end;
+
+ 
+function  ERR_EC_GFp_nistp521_method: PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GFp_nistp521_method_procname);
+end;
+
+ 
+
+function  ERR_EC_GF2m_simple_method: PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GF2m_simple_method_procname);
 end;
 
 
-function  ERR_EC_GFp_nistp521_method: PEC_METHOD; 
+
+function  ERR_EC_GROUP_new(const meth: PEC_METHOD): PEC_GROUP; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GFp_nistp521_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_procname);
+end;
+
+
+procedure  ERR_EC_GROUP_free(group: PEC_GROUP); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_free_procname);
+end;
+
+
+procedure  ERR_EC_GROUP_clear_free(group: PEC_GROUP); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_clear_free_procname);
+end;
+
+
+function  ERR_EC_GROUP_copy(dst: PEC_GROUP; const src: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_copy_procname);
+end;
+
+
+function  ERR_EC_GROUP_dup(const src: PEC_GROUP): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_dup_procname);
+end;
+
+
+function  ERR_EC_GROUP_method_of(const group: PEC_GROUP): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_method_of_procname);
+end;
+
+
+function  ERR_EC_METHOD_get_field_type(const meth: PEC_METHOD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_METHOD_get_field_type_procname);
+end;
+
+
+function  ERR_EC_GROUP_set_generator(group: PEC_GROUP; const generator: PEC_POINT; const order: PBIGNUM; const cofactor: PBIGNUM): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_generator_procname);
+end;
+
+
+function  ERR_EC_GROUP_get0_generator(const group: PEC_GROUP): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get0_generator_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_mont_data(const group: PEC_GROUP): PBN_MONT_CTX; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_mont_data_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_order(const group: PEC_GROUP; order: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_order_procname);
 end;
 
 
 function  ERR_EC_GROUP_get0_order(const group: PEC_GROUP): PBIGNUM; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_get0_order');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get0_order_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_GROUP_order_bits(const group: PEC_GROUP): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_order_bits');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_order_bits_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_GROUP_get_cofactor(const group: PEC_GROUP; cofactor: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_cofactor_procname);
 end;
 
 
 function  ERR_EC_GROUP_get0_cofactor(const group: PEC_GROUP): PBIGNUM; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_get0_cofactor');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get0_cofactor_procname);
 end;
+
+ {introduced 1.1.0}
+procedure  ERR_EC_GROUP_set_curve_name(group: PEC_GROUP; nid: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_curve_name_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_curve_name(const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_curve_name_procname);
+end;
+
+
+
+procedure  ERR_EC_GROUP_set_asn1_flag(group: PEC_GROUP; flag: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_asn1_flag_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_asn1_flag(const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_asn1_flag_procname);
+end;
+
+
+
+procedure  ERR_EC_GROUP_set_point_conversion_form(group: PEC_GROUP; form: point_conversion_form_t); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_point_conversion_form_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_point_conversion_form(const group: PEC_GROUP): point_conversion_form_t; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_point_conversion_form_procname);
+end;
+
+
+
+function  ERR_EC_GROUP_get0_seed(const x: PEC_GROUP): PByte; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get0_seed_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_seed_len(const x: PEC_GROUP): TIdC_SIZET; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_seed_len_procname);
+end;
+
+
+function  ERR_EC_GROUP_set_seed(x: PEC_GROUP; const p: PByte; len: TIdC_SIZET): TIdC_SIZET; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_seed_procname);
+end;
+
 
 
 function  ERR_EC_GROUP_set_curve(group: PEC_GROUP; const p: PBIGNUM; const a: PBIGNUM; const b: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_set_curve');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_curve_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_GROUP_get_curve(const group: PEC_GROUP; p: PBIGNUM; a: PBIGNUM; b: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_curve_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_GROUP_set_curve_GFp(group: PEC_GROUP; const p: PBIGNUM; const a: PBIGNUM; const b: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_curve_GFp_procname);
 end;
 
 
-function  ERR_EC_GROUP_get_curve(const group: PEC_GROUP; p: PBIGNUM; a: PBIGNUM; b: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+function  ERR_EC_GROUP_get_curve_GFp(const group: PEC_GROUP; p: PBIGNUM; a: PBIGNUM; b: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_get_curve');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_curve_GFp_procname);
+end;
+
+
+function  ERR_EC_GROUP_set_curve_GF2m(group: PEC_GROUP; const p: PBIGNUM; const a: PBIGNUM; const b:PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_set_curve_GF2m_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_curve_GF2m(const group: PEC_GROUP; p: PBIGNUM; a: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_curve_GF2m_procname);
+end;
+
+
+
+function  ERR_EC_GROUP_get_degree(const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_degree_procname);
+end;
+
+
+function  ERR_EC_GROUP_check(const group: PEC_GROUP; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_check_procname);
+end;
+
+
+function  ERR_EC_GROUP_check_discriminant(const group: PEC_GROUP; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_check_discriminant_procname);
+end;
+
+
+function  ERR_EC_GROUP_cmp(const a: PEC_GROUP; const b: PEC_GROUP; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_cmp_procname);
+end;
+
+
+
+function  ERR_EC_GROUP_new_curve_GFp(const p: PBIGNUM; const a: PBIGNUM; const b: PBIGNUM; ctx: PBN_CTX): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_curve_GFp_procname);
+end;
+
+
+function  ERR_EC_GROUP_new_curve_GF2m(const p: PBIGNUM; const a: PBIGNUM; const b: PBIGNUM; ctx: PBN_CTX): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_curve_GF2m_procname);
+end;
+
+
+function  ERR_EC_GROUP_new_by_curve_name(nid: TIdC_INT): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_by_curve_name_procname);
 end;
 
 
 function  ERR_EC_GROUP_new_from_ecparameters(const params: PECPARAMETERS): PEC_GROUP; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_new_from_ecparameters');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_from_ecparameters_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_GROUP_get_ecparameters(const group: PEC_GROUP; params: PECPARAMETERS): PECPARAMETERS; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_get_ecparameters');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_ecparameters_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_GROUP_new_from_ecpkparameters(const params: PECPKPARAMETERS): PEC_GROUP; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_new_from_ecpkparameters');
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_new_from_ecpkparameters_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_GROUP_get_ecpkparameters(const group: PEC_GROUP; params: PECPKPARAMETERS): PECPKPARAMETERS; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_ecpkparameters_procname);
+end;
+
+ {introduced 1.1.0}
+
+function  ERR_EC_get_builtin_curves(r: PEC_builtin_curve; nitems: TIdC_SIZET): TIdC_SIZET; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_get_builtin_curves_procname);
 end;
 
 
-function  ERR_EC_GROUP_get_ecpkparameters(const group: PEC_GROUP; params: PECPKPARAMETERS): PECPKPARAMETERS; 
+
+function  ERR_EC_curve_nid2nist(nid: TIdC_INT): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_GROUP_get_ecpkparameters');
+  EIdAPIFunctionNotPresent.RaiseException(EC_curve_nid2nist_procname);
+end;
+
+
+function  ERR_EC_curve_nist2nid(const name: PIdAnsiChar): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_curve_nist2nid_procname);
+end;
+
+
+
+function  ERR_EC_POINT_new(const group: PEC_GROUP): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_new_procname);
+end;
+
+
+procedure  ERR_EC_POINT_free(point: PEC_POINT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_free_procname);
+end;
+
+
+procedure  ERR_EC_POINT_clear_free(point: PEC_POINT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_clear_free_procname);
+end;
+
+
+function  ERR_EC_POINT_copy(dst: PEC_POINT; const src: PEC_POINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_copy_procname);
+end;
+
+
+function  ERR_EC_POINT_dup(const src: PEC_POINT; const group: PEC_GROUP): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_dup_procname);
+end;
+
+
+function  ERR_EC_POINT_method_of(const point: PEC_POINT): PEC_METHOD; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_method_of_procname);
+end;
+
+
+function  ERR_EC_POINT_set_to_infinity(const group: PEC_GROUP; point: PEC_POINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_to_infinity_procname);
+end;
+
+
+function  ERR_EC_POINT_set_Jprojective_coordinates_GFp(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; const y: PBIGNUM; const z: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_Jprojective_coordinates_GFp_procname);
+end;
+
+
+function  ERR_EC_POINT_get_Jprojective_coordinates_GFp(const group: PEC_METHOD; const p: PEC_POINT; x: PBIGNUM; y: PBIGNUM; z: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_get_Jprojective_coordinates_GFp_procname);
 end;
 
 
 function  ERR_EC_POINT_set_affine_coordinates(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; const y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_POINT_set_affine_coordinates');
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_affine_coordinates_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_POINT_get_affine_coordinates(const group: PEC_GROUP; const p: PEC_POINT; x: PBIGNUM; y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_get_affine_coordinates_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_POINT_set_affine_coordinates_GFp(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; const y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_affine_coordinates_GFp_procname);
 end;
 
 
-function  ERR_EC_POINT_get_affine_coordinates(const group: PEC_GROUP; const p: PEC_POINT; x: PBIGNUM; y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+function  ERR_EC_POINT_get_affine_coordinates_GFp(const group: PEC_GROUP; const p: PEC_POINT; x: PBIGNUM; y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_POINT_get_affine_coordinates');
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_get_affine_coordinates_GFp_procname);
 end;
 
 
 function  ERR_EC_POINT_set_compressed_coordinates(const group: PEC_GROUP; p: PEC_POINT; x: PBIGNUM; y_bit: TIdC_INT; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_POINT_set_compressed_coordinates');
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_compressed_coordinates_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_POINT_set_compressed_coordinates_GFp(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; y_bit: TIdC_INT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_compressed_coordinates_GFp_procname);
+end;
+
+
+function  ERR_EC_POINT_set_affine_coordinates_GF2m(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; const y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_affine_coordinates_GF2m_procname);
+end;
+
+
+function  ERR_EC_POINT_get_affine_coordinates_GF2m(const group: PEC_GROUP; p: PEC_POINT; x: PBIGNUM; y: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_get_affine_coordinates_GF2m_procname);
+end;
+
+
+function  ERR_EC_POINT_set_compressed_coordinates_GF2m(const group: PEC_GROUP; p: PEC_POINT; const x: PBIGNUM; y_bit: TIdC_INT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_set_compressed_coordinates_GF2m_procname);
+end;
+
+
+
+function  ERR_EC_POINT_point2oct(const group: PEC_GROUP; const p: PEC_POINT; form: point_conversion_form_t; buf: PByte; len: TIdC_SIZET; ctx: PBN_CTX): TIdC_SIZET; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_point2oct_procname);
+end;
+
+
+function  ERR_EC_POINT_oct2point(const group: PEC_GROUP; p: PEC_POINT; const buf: PByte; len: TIdC_SIZET; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_oct2point_procname);
 end;
 
 
 function  ERR_EC_POINT_point2buf(const group: PEC_GROUP; const point: PEC_POINT; form: point_conversion_form_t; pbuf: PPByte; ctx: PBN_CTX): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_POINT_point2buf');
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_point2buf_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_POINT_point2bn(const group: PEC_GROUP; const p: PEC_POINT; form: point_conversion_form_t; bn: PBIGNUM; ctx: PBN_CTX): PBIGNUM; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_point2bn_procname);
+end;
+
+
+function  ERR_EC_POINT_bn2point(const group: PEC_GROUP; const bn: PBIGNUM; p: PEC_POINT; ctx: PBN_CTX): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_bn2point_procname);
+end;
+
+
+function  ERR_EC_POINT_point2hex(const group: PEC_GROUP; const p: PEC_POINT; form: point_conversion_form_t; ctx: PBN_CTX): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_point2hex_procname);
+end;
+
+
+function  ERR_EC_POINT_hex2point(const group: PEC_GROUP; const buf: PIdAnsiChar; p: PEC_POINT; ctx: PBN_CTX): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_hex2point_procname);
+end;
+
+
+
+function  ERR_EC_POINT_add(const group: PEC_GROUP; r: PEC_POINT; const a: PEC_POINT; const b: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_add_procname);
+end;
+
+
+function  ERR_EC_POINT_dbl(const group: PEC_GROUP; r: PEC_POINT; const a: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_dbl_procname);
+end;
+
+
+function  ERR_EC_POINT_invert(const group: PEC_GROUP; a: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_invert_procname);
+end;
+
+
+function  ERR_EC_POINT_is_at_infinity(const group: PEC_GROUP; const p: PEC_POINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_is_at_infinity_procname);
+end;
+
+
+function  ERR_EC_POINT_is_on_curve(const group: PEC_GROUP; const point: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_is_on_curve_procname);
+end;
+
+
+function  ERR_EC_POINT_cmp(const group: PEC_GROUP; const a: PEC_POINT; const b: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_cmp_procname);
+end;
+
+
+function  ERR_EC_POINT_make_affine(const group: PEC_GROUP; point: PEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_make_affine_procname);
+end;
+
+
+function  ERR_EC_POINTs_make_affine(const group: PEC_METHOD; num: TIdC_SIZET; points: PPEC_POINT; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINTs_make_affine_procname);
+end;
+
+
+function  ERR_EC_POINTs_mul(const group: PEC_GROUP; r: PEC_POINT; const n: PBIGNUM; num: TIdC_SIZET; const p: PPEC_POINT; const m: PPBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINTs_mul_procname);
+end;
+
+
+function  ERR_EC_POINT_mul(const group: PEC_GROUP; r: PEC_POINT; const n: PBIGNUM; const q: PEC_POINT; const m: PBIGNUM; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_POINT_mul_procname);
+end;
+
+
+
+function  ERR_EC_GROUP_precompute_mult(group: PEC_GROUP; ctx: PBN_CTX): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_precompute_mult_procname);
+end;
+
+
+function  ERR_EC_GROUP_have_precompute_mult(const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_have_precompute_mult_procname);
+end;
+
+
+
+function  ERR_ECPKPARAMETERS_it: PASN1_ITEM; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPKPARAMETERS_it_procname);
+end;
+
+
+function  ERR_ECPKPARAMETERS_new: PECPKPARAMETERS; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPKPARAMETERS_new_procname);
+end;
+
+
+procedure  ERR_ECPKPARAMETERS_free(a: PECPKPARAMETERS); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPKPARAMETERS_free_procname);
+end;
+
+
+
+function  ERR_ECPARAMETERS_it: PASN1_ITEM; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPARAMETERS_it_procname);
+end;
+
+
+function  ERR_ECPARAMETERS_new: PECPARAMETERS; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPARAMETERS_new_procname);
+end;
+
+
+procedure  ERR_ECPARAMETERS_free(a: PECPARAMETERS); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPARAMETERS_free_procname);
+end;
+
+
+
+function  ERR_EC_GROUP_get_basis_type(const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_basis_type_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_trinomial_basis(const group: PEC_GROUP; k: PIdC_UINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_trinomial_basis_procname);
+end;
+
+
+function  ERR_EC_GROUP_get_pentanomial_basis(const group: PEC_GROUP; k1: PIdC_UINT; k2: PIdC_UINT; k3: PIdC_UINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_GROUP_get_pentanomial_basis_procname);
+end;
+
+
+
+function  ERR_d2i_ECPKParameters(group: PPEC_GROUP; const in_: PPByte; len: TIdC_LONG): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(d2i_ECPKParameters_procname);
+end;
+
+
+function  ERR_i2d_ECPKParameters(const group: PEC_GROUP; out_: PPByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2d_ECPKParameters_procname);
+end;
+
+
+
+function  ERR_ECPKParameters_print(bp: PBIO; const x: PEC_GROUP; off: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECPKParameters_print_procname);
+end;
+
+
+
+function  ERR_EC_KEY_new: PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_new_procname);
+end;
+
+
+function  ERR_EC_KEY_get_flags(const key: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_flags_procname);
+end;
+
+
+procedure  ERR_EC_KEY_set_flags(key: PEC_KEY; flags: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_flags_procname);
+end;
+
+
+procedure  ERR_EC_KEY_clear_flags(key: PEC_KEY; flags: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_clear_flags_procname);
+end;
+
+
+function  ERR_EC_KEY_new_by_curve_name(nid: TIdC_INT): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_new_by_curve_name_procname);
+end;
+
+
+procedure  ERR_EC_KEY_free(key: PEC_KEY); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_free_procname);
+end;
+
+
+function  ERR_EC_KEY_copy(dst: PEC_KEY; const src: PEC_KEY): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_copy_procname);
+end;
+
+
+function  ERR_EC_KEY_dup(const src: PEC_KEY): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_dup_procname);
+end;
+
+
+function  ERR_EC_KEY_up_ref(key: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_up_ref_procname);
 end;
 
 
 function  ERR_EC_KEY_get0_engine(const eckey: PEC_KEY): PENGINE; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_get0_engine');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get0_engine_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_KEY_get0_group(const key: PEC_KEY): PEC_GROUP; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get0_group_procname);
+end;
+
+
+function  ERR_EC_KEY_set_group(key: PEC_KEY; const group: PEC_GROUP): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_group_procname);
+end;
+
+
+function  ERR_EC_KEY_get0_private_key(const key: PEC_KEY): PBIGNUM; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get0_private_key_procname);
+end;
+
+
+function  ERR_EC_KEY_set_private_key(const key: PEC_KEY; const prv: PBIGNUM): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_private_key_procname);
+end;
+
+
+function  ERR_EC_KEY_get0_public_key(const key: PEC_KEY): PEC_POINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get0_public_key_procname);
+end;
+
+
+function  ERR_EC_KEY_set_public_key(key: PEC_KEY; const pub: PEC_POINT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_public_key_procname);
+end;
+
+
+function  ERR_EC_KEY_get_enc_flags(const key: PEC_KEY): TIdC_UINT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_enc_flags_procname);
+end;
+
+
+procedure  ERR_EC_KEY_set_enc_flags(eckey: PEC_KEY; flags: TIdC_UINT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_enc_flags_procname);
+end;
+
+
+function  ERR_EC_KEY_get_conv_form(const key: PEC_KEY): point_conversion_form_t; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_conv_form_procname);
+end;
+
+
+procedure  ERR_EC_KEY_set_conv_form(eckey: PEC_KEY; cform: point_conversion_form_t); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_conv_form_procname);
 end;
 
 
 function  ERR_EC_KEY_set_ex_data(key: PEC_KEY; idx: TIdC_INT; arg: Pointer): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_set_ex_data');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_ex_data_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_KEY_get_ex_data(const key: PEC_KEY; idx: TIdC_INT): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_ex_data_procname);
+end;
+
+ {introduced 1.1.0}
+procedure  ERR_EC_KEY_set_asn1_flag(eckey: PEC_KEY; asn1_flag: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_asn1_flag_procname);
 end;
 
 
-function  ERR_EC_KEY_get_ex_data(const key: PEC_KEY; idx: TIdC_INT): Pointer; 
+function  ERR_EC_KEY_precompute_mult(key: PEC_KEY; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_get_ex_data');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_precompute_mult_procname);
+end;
+
+
+function  ERR_EC_KEY_generate_key(key: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_generate_key_procname);
+end;
+
+
+function  ERR_EC_KEY_check_key(const key: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_check_key_procname);
 end;
 
 
 function  ERR_EC_KEY_can_sign(const eckey: PEC_KEY): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_can_sign');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_can_sign_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_KEY_set_public_key_affine_coordinates(key: PEC_KEY; x: PBIGNUM; y: PBIGNUM): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_public_key_affine_coordinates_procname);
 end;
 
 
 function  ERR_EC_KEY_key2buf(const key: PEC_KEY; form: point_conversion_form_t; pbuf: PPByte; ctx: PBN_CTX): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_key2buf');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_key2buf_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_oct2key(key: PEC_KEY; const buf: PByte; len: TIdC_SIZET; ctx: PBN_CTX): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_oct2key');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_oct2key_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_oct2priv(key: PEC_KEY; const buf: PByte; len: TIdC_SIZET): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_oct2priv');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_oct2priv_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_priv2oct(const key: PEC_KEY; buf: PByte; len: TIdC_SIZET): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_priv2oct');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_priv2oct_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_priv2buf(const eckey: PEC_KEY; buf: PPByte): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_priv2buf');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_priv2buf_procname);
 end;
+
+ {introduced 1.1.0}
+
+function  ERR_d2i_ECPrivateKey(key: PPEC_KEY; const in_: PPByte; len: TIdC_LONG): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(d2i_ECPrivateKey_procname);
+end;
+
+
+function  ERR_i2d_ECPrivateKey(key: PEC_KEY; out_: PPByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2d_ECPrivateKey_procname);
+end;
+
+
+function  ERR_o2i_ECPublicKey(key: PPEC_KEY; const in_: PPByte; len: TIdC_LONG): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(o2i_ECPublicKey_procname);
+end;
+
+
+function  ERR_i2o_ECPublicKey(const key: PEC_KEY; out_: PPByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2o_ECPublicKey_procname);
+end;
+
+
+
+function  ERR_ECParameters_print(bp: PBIO; const key: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECParameters_print_procname);
+end;
+
+
+function  ERR_EC_KEY_print(bp: PBIO; const key: PEC_KEY; off: TIdC_INT): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_print_procname);
+end;
+
 
 
 function  ERR_EC_KEY_OpenSSL: PEC_KEY_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_OpenSSL');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_OpenSSL_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_get_default_method: PEC_KEY_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_get_default_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_default_method_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_set_default_method(const meth: PEC_KEY_METHOD); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_set_default_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_default_method_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_get_method(const key: PEC_KEY): PEC_KEY_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_get_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_get_method_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_EC_KEY_set_method(key: PEC_KEY; const meth: PEC_KEY_METHOD): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_set_method');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_set_method_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_EC_KEY_new_method(engine: PENGINE): PEC_KEY; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_new_method_procname);
+end;
+
+ {introduced 1.1.0}
+
+function  ERR_ECDH_KDF_X9_62(out_: PByte; outlen: TIdC_SIZET; const Z: PByte; Zlen: TIdC_SIZET; const sinfo: PByte; sinfolen: TIdC_SIZET; const md: PEVP_MD): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDH_KDF_X9_62_procname);
 end;
 
 
-function  ERR_EC_KEY_new_method(engine: PENGINE): PEC_KEY; 
+function  ERR_ECDH_compute_key(out_: Pointer; oulen: TIdC_SIZET; const pub_key: PEC_POINT; const ecdh: PEC_KEY; kdf: ECDH_compute_key_KDF): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_new_method');
+  EIdAPIFunctionNotPresent.RaiseException(ECDH_compute_key_procname);
+end;
+
+
+
+function  ERR_ECDSA_SIG_new: PECDSA_SIG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_new_procname);
+end;
+
+
+procedure  ERR_ECDSA_SIG_free(sig: PECDSA_SIG); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_free_procname);
+end;
+
+
+function  ERR_i2d_ECDSA_SIG(const sig: PECDSA_SIG; pp: PPByte): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(i2d_ECDSA_SIG_procname);
+end;
+
+
+function  ERR_d2i_ECDSA_SIG(sig: PPECDSA_SIG; const pp: PPByte; len: TIdC_LONG): PECDSA_SIG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(d2i_ECDSA_SIG_procname);
 end;
 
 
 procedure  ERR_ECDSA_SIG_get0(const sig: PECDSA_SIG; const pr: PPBIGNUM; const ps: PPBIGNUM); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('ECDSA_SIG_get0');
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_get0_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_ECDSA_SIG_get0_r(const sig: PECDSA_SIG): PBIGNUM; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('ECDSA_SIG_get0_r');
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_get0_r_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_ECDSA_SIG_get0_s(const sig: PECDSA_SIG): PBIGNUM; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('ECDSA_SIG_get0_s');
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_get0_s_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_ECDSA_SIG_set0(sig: PECDSA_SIG; r: PBIGNUM; s: PBIGNUM): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('ECDSA_SIG_set0');
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_SIG_set0_procname);
 end;
+
+ {introduced 1.1.0}
+function  ERR_ECDSA_do_sign(const dgst: PByte; dgst_len: TIdC_INT; eckey: PEC_KEY): PECDSA_SIG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_do_sign_procname);
+end;
+
+
+function  ERR_ECDSA_do_sign_ex(const dgst: PByte; dgst_len: TIdC_INT; const kinv: PBIGNUM; const rp: PBIGNUM; eckey: PEC_KEY): PECDSA_SIG; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_do_sign_ex_procname);
+end;
+
+
+function  ERR_ECDSA_do_verify(const dgst: PByte; dgst_len: TIdC_INT; const sig: PECDSA_SIG; eckey: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_do_verify_procname);
+end;
+
+
+function  ERR_ECDSA_sign_setup(eckey: PEC_KEY; ctx: PBN_CTX; kiv: PPBIGNUM; rp: PPBIGNUM): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_sign_setup_procname);
+end;
+
+
+function  ERR_ECDSA_sign(type_: TIdC_INT; const dgst: PByte; dgstlen: TIdC_INT; sig: PByte; siglen: PIdC_UINT; eckey: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_sign_procname);
+end;
+
+
+function  ERR_ECDSA_sign_ex(type_: TIdC_INT; const dgst: PByte; dgstlen: TIdC_INT; sig: PByte; siglen: PIdC_UINT; const kinv: PBIGNUM; const rp: PBIGNUM; eckey: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_sign_ex_procname);
+end;
+
+
+function  ERR_ECDSA_verify(type_: TIdC_INT; const dgst: PByte; dgstlen: TIdC_INT; const sig: PByte; siglen: TIdC_INT; eckey: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_verify_procname);
+end;
+
+
+function  ERR_ECDSA_size(const eckey: PEC_KEY): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(ECDSA_size_procname);
+end;
+
 
 
 function  ERR_EC_KEY_METHOD_new(const meth: PEC_KEY_METHOD): PEC_KEY_METHOD; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_new');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_new_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_free(meth: PEC_KEY_METHOD); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_free');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_free_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_set_init(meth: PEC_KEY_METHOD; init: EC_KEY_METHOD_init_init; finish: EC_KEY_METHOD_init_finish; copy: EC_KEY_METHOD_init_copy; set_group: EC_KEY_METHOD_init_set_group; set_private: EC_KEY_METHOD_init_set_private; set_public: EC_KEY_METHOD_init_set_public); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_set_init');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_set_init_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_set_keygen(meth: PEC_KEY_METHOD; keygen: EC_KEY_METHOD_keygen_keygen); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_set_keygen');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_set_keygen_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_set_compute_key(meth: PEC_KEY_METHOD; ckey: EC_KEY_METHOD_compute_key_ckey); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_set_compute_key');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_set_compute_key_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_set_sign(meth: PEC_KEY_METHOD; sign: EC_KEY_METHOD_sign_sign; sign_setup: EC_KEY_METHOD_sign_sign_setup; sign_sig: EC_KEY_METHOD_sign_sign_sig); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_set_sign');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_set_sign_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_set_verify(meth: PEC_KEY_METHOD; verify: EC_KEY_METHOD_verify_verify; verify_sig: EC_KEY_METHOD_verify_verify_sig); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_set_verify');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_set_verify_procname);
 end;
 
+ {introduced 1.1.0}
 
 procedure  ERR_EC_KEY_METHOD_get_init(const meth: PEC_KEY_METHOD; pinit: PEC_KEY_METHOD_init_init; pfinish: PEC_KEY_METHOD_init_finish; pcopy: PEC_KEY_METHOD_init_copy; pset_group: PEC_KEY_METHOD_init_set_group; pset_private: PEC_KEY_METHOD_init_set_private; pset_public: PEC_KEY_METHOD_init_set_public); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_get_init');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_get_init_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_get_keygen(const meth: PEC_KEY_METHOD; pkeygen: PEC_KEY_METHOD_keygen_keygen); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_get_keygen');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_get_keygen_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_get_compute_key(const meth: PEC_KEY_METHOD; pck: PEC_KEY_METHOD_compute_key_ckey); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_get_compute_key');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_get_compute_key_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_get_sign(const meth: PEC_KEY_METHOD; psign: PEC_KEY_METHOD_sign_sign; psign_setup: PEC_KEY_METHOD_sign_sign_setup; psign_sig: PEC_KEY_METHOD_sign_sign_sig); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_get_sign');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_get_sign_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_EC_KEY_METHOD_get_verify(const meth: PEC_KEY_METHOD; pverify: PEC_KEY_METHOD_verify_verify; pverify_sig: PEC_KEY_METHOD_verify_verify_sig); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('EC_KEY_METHOD_get_verify');
+  EIdAPIFunctionNotPresent.RaiseException(EC_KEY_METHOD_get_verify_procname);
 end;
 
+ {introduced 1.1.0}
 
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  EC_GFp_simple_method := LoadFunction('EC_GFp_simple_method',AFailed);
-  EC_GFp_mont_method := LoadFunction('EC_GFp_mont_method',AFailed);
-  EC_GFp_nist_method := LoadFunction('EC_GFp_nist_method',AFailed);
-  EC_GF2m_simple_method := LoadFunction('EC_GF2m_simple_method',AFailed);
-  EC_GROUP_new := LoadFunction('EC_GROUP_new',AFailed);
-  EC_GROUP_free := LoadFunction('EC_GROUP_free',AFailed);
-  EC_GROUP_clear_free := LoadFunction('EC_GROUP_clear_free',AFailed);
-  EC_GROUP_copy := LoadFunction('EC_GROUP_copy',AFailed);
-  EC_GROUP_dup := LoadFunction('EC_GROUP_dup',AFailed);
-  EC_GROUP_method_of := LoadFunction('EC_GROUP_method_of',AFailed);
-  EC_METHOD_get_field_type := LoadFunction('EC_METHOD_get_field_type',AFailed);
-  EC_GROUP_set_generator := LoadFunction('EC_GROUP_set_generator',AFailed);
-  EC_GROUP_get0_generator := LoadFunction('EC_GROUP_get0_generator',AFailed);
-  EC_GROUP_get_mont_data := LoadFunction('EC_GROUP_get_mont_data',AFailed);
-  EC_GROUP_get_order := LoadFunction('EC_GROUP_get_order',AFailed);
-  EC_GROUP_get_cofactor := LoadFunction('EC_GROUP_get_cofactor',AFailed);
-  EC_GROUP_set_curve_name := LoadFunction('EC_GROUP_set_curve_name',AFailed);
-  EC_GROUP_get_curve_name := LoadFunction('EC_GROUP_get_curve_name',AFailed);
-  EC_GROUP_set_asn1_flag := LoadFunction('EC_GROUP_set_asn1_flag',AFailed);
-  EC_GROUP_get_asn1_flag := LoadFunction('EC_GROUP_get_asn1_flag',AFailed);
-  EC_GROUP_set_point_conversion_form := LoadFunction('EC_GROUP_set_point_conversion_form',AFailed);
-  EC_GROUP_get_point_conversion_form := LoadFunction('EC_GROUP_get_point_conversion_form',AFailed);
-  EC_GROUP_get0_seed := LoadFunction('EC_GROUP_get0_seed',AFailed);
-  EC_GROUP_get_seed_len := LoadFunction('EC_GROUP_get_seed_len',AFailed);
-  EC_GROUP_set_seed := LoadFunction('EC_GROUP_set_seed',AFailed);
-  EC_GROUP_set_curve_GFp := LoadFunction('EC_GROUP_set_curve_GFp',AFailed);
-  EC_GROUP_get_curve_GFp := LoadFunction('EC_GROUP_get_curve_GFp',AFailed);
-  EC_GROUP_set_curve_GF2m := LoadFunction('EC_GROUP_set_curve_GF2m',AFailed);
-  EC_GROUP_get_curve_GF2m := LoadFunction('EC_GROUP_get_curve_GF2m',AFailed);
-  EC_GROUP_get_degree := LoadFunction('EC_GROUP_get_degree',AFailed);
-  EC_GROUP_check := LoadFunction('EC_GROUP_check',AFailed);
-  EC_GROUP_check_discriminant := LoadFunction('EC_GROUP_check_discriminant',AFailed);
-  EC_GROUP_cmp := LoadFunction('EC_GROUP_cmp',AFailed);
-  EC_GROUP_new_curve_GFp := LoadFunction('EC_GROUP_new_curve_GFp',AFailed);
-  EC_GROUP_new_curve_GF2m := LoadFunction('EC_GROUP_new_curve_GF2m',AFailed);
-  EC_GROUP_new_by_curve_name := LoadFunction('EC_GROUP_new_by_curve_name',AFailed);
-  EC_get_builtin_curves := LoadFunction('EC_get_builtin_curves',AFailed);
-  EC_curve_nid2nist := LoadFunction('EC_curve_nid2nist',AFailed);
-  EC_curve_nist2nid := LoadFunction('EC_curve_nist2nid',AFailed);
-  EC_POINT_new := LoadFunction('EC_POINT_new',AFailed);
-  EC_POINT_free := LoadFunction('EC_POINT_free',AFailed);
-  EC_POINT_clear_free := LoadFunction('EC_POINT_clear_free',AFailed);
-  EC_POINT_copy := LoadFunction('EC_POINT_copy',AFailed);
-  EC_POINT_dup := LoadFunction('EC_POINT_dup',AFailed);
-  EC_POINT_method_of := LoadFunction('EC_POINT_method_of',AFailed);
-  EC_POINT_set_to_infinity := LoadFunction('EC_POINT_set_to_infinity',AFailed);
-  EC_POINT_set_Jprojective_coordinates_GFp := LoadFunction('EC_POINT_set_Jprojective_coordinates_GFp',AFailed);
-  EC_POINT_get_Jprojective_coordinates_GFp := LoadFunction('EC_POINT_get_Jprojective_coordinates_GFp',AFailed);
-  EC_POINT_set_affine_coordinates_GFp := LoadFunction('EC_POINT_set_affine_coordinates_GFp',AFailed);
-  EC_POINT_get_affine_coordinates_GFp := LoadFunction('EC_POINT_get_affine_coordinates_GFp',AFailed);
-  EC_POINT_set_compressed_coordinates_GFp := LoadFunction('EC_POINT_set_compressed_coordinates_GFp',AFailed);
-  EC_POINT_set_affine_coordinates_GF2m := LoadFunction('EC_POINT_set_affine_coordinates_GF2m',AFailed);
-  EC_POINT_get_affine_coordinates_GF2m := LoadFunction('EC_POINT_get_affine_coordinates_GF2m',AFailed);
-  EC_POINT_set_compressed_coordinates_GF2m := LoadFunction('EC_POINT_set_compressed_coordinates_GF2m',AFailed);
-  EC_POINT_point2oct := LoadFunction('EC_POINT_point2oct',AFailed);
-  EC_POINT_oct2point := LoadFunction('EC_POINT_oct2point',AFailed);
-  EC_POINT_point2bn := LoadFunction('EC_POINT_point2bn',AFailed);
-  EC_POINT_bn2point := LoadFunction('EC_POINT_bn2point',AFailed);
-  EC_POINT_point2hex := LoadFunction('EC_POINT_point2hex',AFailed);
-  EC_POINT_hex2point := LoadFunction('EC_POINT_hex2point',AFailed);
-  EC_POINT_add := LoadFunction('EC_POINT_add',AFailed);
-  EC_POINT_dbl := LoadFunction('EC_POINT_dbl',AFailed);
-  EC_POINT_invert := LoadFunction('EC_POINT_invert',AFailed);
-  EC_POINT_is_at_infinity := LoadFunction('EC_POINT_is_at_infinity',AFailed);
-  EC_POINT_is_on_curve := LoadFunction('EC_POINT_is_on_curve',AFailed);
-  EC_POINT_cmp := LoadFunction('EC_POINT_cmp',AFailed);
-  EC_POINT_make_affine := LoadFunction('EC_POINT_make_affine',AFailed);
-  EC_POINTs_make_affine := LoadFunction('EC_POINTs_make_affine',AFailed);
-  EC_POINTs_mul := LoadFunction('EC_POINTs_mul',AFailed);
-  EC_POINT_mul := LoadFunction('EC_POINT_mul',AFailed);
-  EC_GROUP_precompute_mult := LoadFunction('EC_GROUP_precompute_mult',AFailed);
-  EC_GROUP_have_precompute_mult := LoadFunction('EC_GROUP_have_precompute_mult',AFailed);
-  ECPKPARAMETERS_it := LoadFunction('ECPKPARAMETERS_it',AFailed);
-  ECPKPARAMETERS_new := LoadFunction('ECPKPARAMETERS_new',AFailed);
-  ECPKPARAMETERS_free := LoadFunction('ECPKPARAMETERS_free',AFailed);
-  ECPARAMETERS_it := LoadFunction('ECPARAMETERS_it',AFailed);
-  ECPARAMETERS_new := LoadFunction('ECPARAMETERS_new',AFailed);
-  ECPARAMETERS_free := LoadFunction('ECPARAMETERS_free',AFailed);
-  EC_GROUP_get_basis_type := LoadFunction('EC_GROUP_get_basis_type',AFailed);
-  EC_GROUP_get_trinomial_basis := LoadFunction('EC_GROUP_get_trinomial_basis',AFailed);
-  EC_GROUP_get_pentanomial_basis := LoadFunction('EC_GROUP_get_pentanomial_basis',AFailed);
-  d2i_ECPKParameters := LoadFunction('d2i_ECPKParameters',AFailed);
-  i2d_ECPKParameters := LoadFunction('i2d_ECPKParameters',AFailed);
-  ECPKParameters_print := LoadFunction('ECPKParameters_print',AFailed);
-  EC_KEY_new := LoadFunction('EC_KEY_new',AFailed);
-  EC_KEY_get_flags := LoadFunction('EC_KEY_get_flags',AFailed);
-  EC_KEY_set_flags := LoadFunction('EC_KEY_set_flags',AFailed);
-  EC_KEY_clear_flags := LoadFunction('EC_KEY_clear_flags',AFailed);
-  EC_KEY_new_by_curve_name := LoadFunction('EC_KEY_new_by_curve_name',AFailed);
-  EC_KEY_free := LoadFunction('EC_KEY_free',AFailed);
-  EC_KEY_copy := LoadFunction('EC_KEY_copy',AFailed);
-  EC_KEY_dup := LoadFunction('EC_KEY_dup',AFailed);
-  EC_KEY_up_ref := LoadFunction('EC_KEY_up_ref',AFailed);
-  EC_KEY_get0_group := LoadFunction('EC_KEY_get0_group',AFailed);
-  EC_KEY_set_group := LoadFunction('EC_KEY_set_group',AFailed);
-  EC_KEY_get0_private_key := LoadFunction('EC_KEY_get0_private_key',AFailed);
-  EC_KEY_set_private_key := LoadFunction('EC_KEY_set_private_key',AFailed);
-  EC_KEY_get0_public_key := LoadFunction('EC_KEY_get0_public_key',AFailed);
-  EC_KEY_set_public_key := LoadFunction('EC_KEY_set_public_key',AFailed);
-  EC_KEY_get_enc_flags := LoadFunction('EC_KEY_get_enc_flags',AFailed);
-  EC_KEY_set_enc_flags := LoadFunction('EC_KEY_set_enc_flags',AFailed);
-  EC_KEY_get_conv_form := LoadFunction('EC_KEY_get_conv_form',AFailed);
-  EC_KEY_set_conv_form := LoadFunction('EC_KEY_set_conv_form',AFailed);
-  EC_KEY_set_asn1_flag := LoadFunction('EC_KEY_set_asn1_flag',AFailed);
-  EC_KEY_precompute_mult := LoadFunction('EC_KEY_precompute_mult',AFailed);
-  EC_KEY_generate_key := LoadFunction('EC_KEY_generate_key',AFailed);
-  EC_KEY_check_key := LoadFunction('EC_KEY_check_key',AFailed);
-  EC_KEY_set_public_key_affine_coordinates := LoadFunction('EC_KEY_set_public_key_affine_coordinates',AFailed);
-  d2i_ECPrivateKey := LoadFunction('d2i_ECPrivateKey',AFailed);
-  i2d_ECPrivateKey := LoadFunction('i2d_ECPrivateKey',AFailed);
-  o2i_ECPublicKey := LoadFunction('o2i_ECPublicKey',AFailed);
-  i2o_ECPublicKey := LoadFunction('i2o_ECPublicKey',AFailed);
-  ECParameters_print := LoadFunction('ECParameters_print',AFailed);
-  EC_KEY_print := LoadFunction('EC_KEY_print',AFailed);
-  ECDH_KDF_X9_62 := LoadFunction('ECDH_KDF_X9_62',AFailed);
-  ECDH_compute_key := LoadFunction('ECDH_compute_key',AFailed);
-  ECDSA_SIG_new := LoadFunction('ECDSA_SIG_new',AFailed);
-  ECDSA_SIG_free := LoadFunction('ECDSA_SIG_free',AFailed);
-  i2d_ECDSA_SIG := LoadFunction('i2d_ECDSA_SIG',AFailed);
-  d2i_ECDSA_SIG := LoadFunction('d2i_ECDSA_SIG',AFailed);
-  ECDSA_do_sign := LoadFunction('ECDSA_do_sign',AFailed);
-  ECDSA_do_sign_ex := LoadFunction('ECDSA_do_sign_ex',AFailed);
-  ECDSA_do_verify := LoadFunction('ECDSA_do_verify',AFailed);
-  ECDSA_sign_setup := LoadFunction('ECDSA_sign_setup',AFailed);
-  ECDSA_sign := LoadFunction('ECDSA_sign',AFailed);
-  ECDSA_sign_ex := LoadFunction('ECDSA_sign_ex',AFailed);
-  ECDSA_verify := LoadFunction('ECDSA_verify',AFailed);
-  ECDSA_size := LoadFunction('ECDSA_size',AFailed);
-  EC_GFp_nistp224_method := LoadFunction('EC_GFp_nistp224_method',nil); {introduced 1.1.0 removed 3.0.0}
-  EC_GFp_nistp256_method := LoadFunction('EC_GFp_nistp256_method',nil); {introduced 1.1.0 removed 3.0.0}
-  EC_GFp_nistp521_method := LoadFunction('EC_GFp_nistp521_method',nil); {introduced 1.1.0 removed 3.0.0}
-  EC_GROUP_get0_order := LoadFunction('EC_GROUP_get0_order',nil); {introduced 1.1.0}
-  EC_GROUP_order_bits := LoadFunction('EC_GROUP_order_bits',nil); {introduced 1.1.0}
-  EC_GROUP_get0_cofactor := LoadFunction('EC_GROUP_get0_cofactor',nil); {introduced 1.1.0}
-  EC_GROUP_set_curve := LoadFunction('EC_GROUP_set_curve',nil); {introduced 1.1.0}
-  EC_GROUP_get_curve := LoadFunction('EC_GROUP_get_curve',nil); {introduced 1.1.0}
-  EC_GROUP_new_from_ecparameters := LoadFunction('EC_GROUP_new_from_ecparameters',nil); {introduced 1.1.0}
-  EC_GROUP_get_ecparameters := LoadFunction('EC_GROUP_get_ecparameters',nil); {introduced 1.1.0}
-  EC_GROUP_new_from_ecpkparameters := LoadFunction('EC_GROUP_new_from_ecpkparameters',nil); {introduced 1.1.0}
-  EC_GROUP_get_ecpkparameters := LoadFunction('EC_GROUP_get_ecpkparameters',nil); {introduced 1.1.0}
-  EC_POINT_set_affine_coordinates := LoadFunction('EC_POINT_set_affine_coordinates',nil); {introduced 1.1.0}
-  EC_POINT_get_affine_coordinates := LoadFunction('EC_POINT_get_affine_coordinates',nil); {introduced 1.1.0}
-  EC_POINT_set_compressed_coordinates := LoadFunction('EC_POINT_set_compressed_coordinates',nil); {introduced 1.1.0}
-  EC_POINT_point2buf := LoadFunction('EC_POINT_point2buf',nil); {introduced 1.1.0}
-  EC_KEY_get0_engine := LoadFunction('EC_KEY_get0_engine',nil); {introduced 1.1.0}
-  EC_KEY_set_ex_data := LoadFunction('EC_KEY_set_ex_data',nil); {introduced 1.1.0}
-  EC_KEY_get_ex_data := LoadFunction('EC_KEY_get_ex_data',nil); {introduced 1.1.0}
-  EC_KEY_can_sign := LoadFunction('EC_KEY_can_sign',nil); {introduced 1.1.0}
-  EC_KEY_key2buf := LoadFunction('EC_KEY_key2buf',nil); {introduced 1.1.0}
-  EC_KEY_oct2key := LoadFunction('EC_KEY_oct2key',nil); {introduced 1.1.0}
-  EC_KEY_oct2priv := LoadFunction('EC_KEY_oct2priv',nil); {introduced 1.1.0}
-  EC_KEY_priv2oct := LoadFunction('EC_KEY_priv2oct',nil); {introduced 1.1.0}
-  EC_KEY_priv2buf := LoadFunction('EC_KEY_priv2buf',nil); {introduced 1.1.0}
-  EC_KEY_OpenSSL := LoadFunction('EC_KEY_OpenSSL',nil); {introduced 1.1.0}
-  EC_KEY_get_default_method := LoadFunction('EC_KEY_get_default_method',nil); {introduced 1.1.0}
-  EC_KEY_set_default_method := LoadFunction('EC_KEY_set_default_method',nil); {introduced 1.1.0}
-  EC_KEY_get_method := LoadFunction('EC_KEY_get_method',nil); {introduced 1.1.0}
-  EC_KEY_set_method := LoadFunction('EC_KEY_set_method',nil); {introduced 1.1.0}
-  EC_KEY_new_method := LoadFunction('EC_KEY_new_method',nil); {introduced 1.1.0}
-  ECDSA_SIG_get0 := LoadFunction('ECDSA_SIG_get0',nil); {introduced 1.1.0}
-  ECDSA_SIG_get0_r := LoadFunction('ECDSA_SIG_get0_r',nil); {introduced 1.1.0}
-  ECDSA_SIG_get0_s := LoadFunction('ECDSA_SIG_get0_s',nil); {introduced 1.1.0}
-  ECDSA_SIG_set0 := LoadFunction('ECDSA_SIG_set0',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_new := LoadFunction('EC_KEY_METHOD_new',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_free := LoadFunction('EC_KEY_METHOD_free',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_set_init := LoadFunction('EC_KEY_METHOD_set_init',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_set_keygen := LoadFunction('EC_KEY_METHOD_set_keygen',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_set_compute_key := LoadFunction('EC_KEY_METHOD_set_compute_key',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_set_sign := LoadFunction('EC_KEY_METHOD_set_sign',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_set_verify := LoadFunction('EC_KEY_METHOD_set_verify',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_get_init := LoadFunction('EC_KEY_METHOD_get_init',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_get_keygen := LoadFunction('EC_KEY_METHOD_get_keygen',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_get_compute_key := LoadFunction('EC_KEY_METHOD_get_compute_key',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_get_sign := LoadFunction('EC_KEY_METHOD_get_sign',nil); {introduced 1.1.0}
-  EC_KEY_METHOD_get_verify := LoadFunction('EC_KEY_METHOD_get_verify',nil); {introduced 1.1.0}
-  if not assigned(EC_GFp_nistp224_method) then 
+  EC_GFp_simple_method := LoadLibFunction(ADllHandle, EC_GFp_simple_method_procname);
+  FuncLoaded := assigned(EC_GFp_simple_method);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GFp_simple_method_introduced)}
+    if LibVersion < EC_GFp_simple_method_introduced then
+    begin
+      {$if declared(FC_EC_GFp_simple_method)}
+      EC_GFp_simple_method := @FC_EC_GFp_simple_method;
+      {$else}
+      {$if not defined(EC_GFp_simple_method_allownil)}
+      EC_GFp_simple_method := @ERR_EC_GFp_simple_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GFp_simple_method_removed)}
+    if EC_GFp_simple_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_simple_method)}
+      EC_GFp_simple_method := @_EC_GFp_simple_method;
+      {$else}
+      {$if not defined(EC_GFp_simple_method_allownil)}
+      EC_GFp_simple_method := @ERR_EC_GFp_simple_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_simple_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_simple_method := @ERR_EC_GFp_simple_method;
+      AFailed.Add('EC_GFp_simple_method');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GFp_mont_method := LoadLibFunction(ADllHandle, EC_GFp_mont_method_procname);
+  FuncLoaded := assigned(EC_GFp_mont_method);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GFp_mont_method_introduced)}
+    if LibVersion < EC_GFp_mont_method_introduced then
+    begin
+      {$if declared(FC_EC_GFp_mont_method)}
+      EC_GFp_mont_method := @FC_EC_GFp_mont_method;
+      {$else}
+      {$if not defined(EC_GFp_mont_method_allownil)}
+      EC_GFp_mont_method := @ERR_EC_GFp_mont_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GFp_mont_method_removed)}
+    if EC_GFp_mont_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_mont_method)}
+      EC_GFp_mont_method := @_EC_GFp_mont_method;
+      {$else}
+      {$if not defined(EC_GFp_mont_method_allownil)}
+      EC_GFp_mont_method := @ERR_EC_GFp_mont_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_mont_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_mont_method := @ERR_EC_GFp_mont_method;
+      AFailed.Add('EC_GFp_mont_method');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GFp_nist_method := LoadLibFunction(ADllHandle, EC_GFp_nist_method_procname);
+  FuncLoaded := assigned(EC_GFp_nist_method);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GFp_nist_method_introduced)}
+    if LibVersion < EC_GFp_nist_method_introduced then
+    begin
+      {$if declared(FC_EC_GFp_nist_method)}
+      EC_GFp_nist_method := @FC_EC_GFp_nist_method;
+      {$else}
+      {$if not defined(EC_GFp_nist_method_allownil)}
+      EC_GFp_nist_method := @ERR_EC_GFp_nist_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GFp_nist_method_removed)}
+    if EC_GFp_nist_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_nist_method)}
+      EC_GFp_nist_method := @_EC_GFp_nist_method;
+      {$else}
+      {$if not defined(EC_GFp_nist_method_allownil)}
+      EC_GFp_nist_method := @ERR_EC_GFp_nist_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_nist_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_nist_method := @ERR_EC_GFp_nist_method;
+      AFailed.Add('EC_GFp_nist_method');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GFp_nistp224_method := LoadLibFunction(ADllHandle, EC_GFp_nistp224_method_procname);
+  FuncLoaded := assigned(EC_GFp_nistp224_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GFp_nistp224_method_introduced)}
     if LibVersion < EC_GFp_nistp224_method_introduced then
+    begin
       {$if declared(FC_EC_GFp_nistp224_method)}
-      EC_GFp_nistp224_method := @FC_EC_GFp_nistp224_method
+      EC_GFp_nistp224_method := @FC_EC_GFp_nistp224_method;
       {$else}
-      EC_GFp_nistp224_method := @ERR_EC_GFp_nistp224_method
+      {$if not defined(EC_GFp_nistp224_method_allownil)}
+      EC_GFp_nistp224_method := @ERR_EC_GFp_nistp224_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GFp_nistp224_method_removed)}
-   if EC_GFp_nistp224_method_removed <= LibVersion then
-     {$if declared(_EC_GFp_nistp224_method)}
-     EC_GFp_nistp224_method := @_EC_GFp_nistp224_method
-     {$else}
-       {$IF declared(ERR_EC_GFp_nistp224_method)}
-       EC_GFp_nistp224_method := @ERR_EC_GFp_nistp224_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GFp_nistp224_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_GFp_nistp224_method');
+    {$if declared(EC_GFp_nistp224_method_removed)}
+    if EC_GFp_nistp224_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_nistp224_method)}
+      EC_GFp_nistp224_method := @_EC_GFp_nistp224_method;
+      {$else}
+      {$if not defined(EC_GFp_nistp224_method_allownil)}
+      EC_GFp_nistp224_method := @ERR_EC_GFp_nistp224_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_nistp224_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_nistp224_method := @ERR_EC_GFp_nistp224_method;
+      AFailed.Add('EC_GFp_nistp224_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GFp_nistp256_method) then 
+ 
+  EC_GFp_nistp256_method := LoadLibFunction(ADllHandle, EC_GFp_nistp256_method_procname);
+  FuncLoaded := assigned(EC_GFp_nistp256_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GFp_nistp256_method_introduced)}
     if LibVersion < EC_GFp_nistp256_method_introduced then
+    begin
       {$if declared(FC_EC_GFp_nistp256_method)}
-      EC_GFp_nistp256_method := @FC_EC_GFp_nistp256_method
+      EC_GFp_nistp256_method := @FC_EC_GFp_nistp256_method;
       {$else}
-      EC_GFp_nistp256_method := @ERR_EC_GFp_nistp256_method
+      {$if not defined(EC_GFp_nistp256_method_allownil)}
+      EC_GFp_nistp256_method := @ERR_EC_GFp_nistp256_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GFp_nistp256_method_removed)}
-   if EC_GFp_nistp256_method_removed <= LibVersion then
-     {$if declared(_EC_GFp_nistp256_method)}
-     EC_GFp_nistp256_method := @_EC_GFp_nistp256_method
-     {$else}
-       {$IF declared(ERR_EC_GFp_nistp256_method)}
-       EC_GFp_nistp256_method := @ERR_EC_GFp_nistp256_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GFp_nistp256_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_GFp_nistp256_method');
+    {$if declared(EC_GFp_nistp256_method_removed)}
+    if EC_GFp_nistp256_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_nistp256_method)}
+      EC_GFp_nistp256_method := @_EC_GFp_nistp256_method;
+      {$else}
+      {$if not defined(EC_GFp_nistp256_method_allownil)}
+      EC_GFp_nistp256_method := @ERR_EC_GFp_nistp256_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_nistp256_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_nistp256_method := @ERR_EC_GFp_nistp256_method;
+      AFailed.Add('EC_GFp_nistp256_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GFp_nistp521_method) then 
+ 
+  EC_GFp_nistp521_method := LoadLibFunction(ADllHandle, EC_GFp_nistp521_method_procname);
+  FuncLoaded := assigned(EC_GFp_nistp521_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GFp_nistp521_method_introduced)}
     if LibVersion < EC_GFp_nistp521_method_introduced then
+    begin
       {$if declared(FC_EC_GFp_nistp521_method)}
-      EC_GFp_nistp521_method := @FC_EC_GFp_nistp521_method
+      EC_GFp_nistp521_method := @FC_EC_GFp_nistp521_method;
       {$else}
-      EC_GFp_nistp521_method := @ERR_EC_GFp_nistp521_method
+      {$if not defined(EC_GFp_nistp521_method_allownil)}
+      EC_GFp_nistp521_method := @ERR_EC_GFp_nistp521_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GFp_nistp521_method_removed)}
-   if EC_GFp_nistp521_method_removed <= LibVersion then
-     {$if declared(_EC_GFp_nistp521_method)}
-     EC_GFp_nistp521_method := @_EC_GFp_nistp521_method
-     {$else}
-       {$IF declared(ERR_EC_GFp_nistp521_method)}
-       EC_GFp_nistp521_method := @ERR_EC_GFp_nistp521_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GFp_nistp521_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_GFp_nistp521_method');
+    {$if declared(EC_GFp_nistp521_method_removed)}
+    if EC_GFp_nistp521_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GFp_nistp521_method)}
+      EC_GFp_nistp521_method := @_EC_GFp_nistp521_method;
+      {$else}
+      {$if not defined(EC_GFp_nistp521_method_allownil)}
+      EC_GFp_nistp521_method := @ERR_EC_GFp_nistp521_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GFp_nistp521_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GFp_nistp521_method := @ERR_EC_GFp_nistp521_method;
+      AFailed.Add('EC_GFp_nistp521_method');
+    end;
+    {$ifend}
+  end;
+
+ 
+  EC_GF2m_simple_method := LoadLibFunction(ADllHandle, EC_GF2m_simple_method_procname);
+  FuncLoaded := assigned(EC_GF2m_simple_method);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GF2m_simple_method_introduced)}
+    if LibVersion < EC_GF2m_simple_method_introduced then
+    begin
+      {$if declared(FC_EC_GF2m_simple_method)}
+      EC_GF2m_simple_method := @FC_EC_GF2m_simple_method;
+      {$else}
+      {$if not defined(EC_GF2m_simple_method_allownil)}
+      EC_GF2m_simple_method := @ERR_EC_GF2m_simple_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GF2m_simple_method_removed)}
+    if EC_GF2m_simple_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GF2m_simple_method)}
+      EC_GF2m_simple_method := @_EC_GF2m_simple_method;
+      {$else}
+      {$if not defined(EC_GF2m_simple_method_allownil)}
+      EC_GF2m_simple_method := @ERR_EC_GF2m_simple_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GF2m_simple_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GF2m_simple_method := @ERR_EC_GF2m_simple_method;
+      AFailed.Add('EC_GF2m_simple_method');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_GROUP_get0_order) then 
+  EC_GROUP_new := LoadLibFunction(ADllHandle, EC_GROUP_new_procname);
+  FuncLoaded := assigned(EC_GROUP_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_new_introduced)}
+    if LibVersion < EC_GROUP_new_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_new)}
+      EC_GROUP_new := @FC_EC_GROUP_new;
+      {$else}
+      {$if not defined(EC_GROUP_new_allownil)}
+      EC_GROUP_new := @ERR_EC_GROUP_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_new_removed)}
+    if EC_GROUP_new_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new)}
+      EC_GROUP_new := @_EC_GROUP_new;
+      {$else}
+      {$if not defined(EC_GROUP_new_allownil)}
+      EC_GROUP_new := @ERR_EC_GROUP_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new := @ERR_EC_GROUP_new;
+      AFailed.Add('EC_GROUP_new');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_free := LoadLibFunction(ADllHandle, EC_GROUP_free_procname);
+  FuncLoaded := assigned(EC_GROUP_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_free_introduced)}
+    if LibVersion < EC_GROUP_free_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_free)}
+      EC_GROUP_free := @FC_EC_GROUP_free;
+      {$else}
+      {$if not defined(EC_GROUP_free_allownil)}
+      EC_GROUP_free := @ERR_EC_GROUP_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_free_removed)}
+    if EC_GROUP_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_free)}
+      EC_GROUP_free := @_EC_GROUP_free;
+      {$else}
+      {$if not defined(EC_GROUP_free_allownil)}
+      EC_GROUP_free := @ERR_EC_GROUP_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_free := @ERR_EC_GROUP_free;
+      AFailed.Add('EC_GROUP_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_clear_free := LoadLibFunction(ADllHandle, EC_GROUP_clear_free_procname);
+  FuncLoaded := assigned(EC_GROUP_clear_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_clear_free_introduced)}
+    if LibVersion < EC_GROUP_clear_free_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_clear_free)}
+      EC_GROUP_clear_free := @FC_EC_GROUP_clear_free;
+      {$else}
+      {$if not defined(EC_GROUP_clear_free_allownil)}
+      EC_GROUP_clear_free := @ERR_EC_GROUP_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_clear_free_removed)}
+    if EC_GROUP_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_clear_free)}
+      EC_GROUP_clear_free := @_EC_GROUP_clear_free;
+      {$else}
+      {$if not defined(EC_GROUP_clear_free_allownil)}
+      EC_GROUP_clear_free := @ERR_EC_GROUP_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_clear_free := @ERR_EC_GROUP_clear_free;
+      AFailed.Add('EC_GROUP_clear_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_copy := LoadLibFunction(ADllHandle, EC_GROUP_copy_procname);
+  FuncLoaded := assigned(EC_GROUP_copy);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_copy_introduced)}
+    if LibVersion < EC_GROUP_copy_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_copy)}
+      EC_GROUP_copy := @FC_EC_GROUP_copy;
+      {$else}
+      {$if not defined(EC_GROUP_copy_allownil)}
+      EC_GROUP_copy := @ERR_EC_GROUP_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_copy_removed)}
+    if EC_GROUP_copy_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_copy)}
+      EC_GROUP_copy := @_EC_GROUP_copy;
+      {$else}
+      {$if not defined(EC_GROUP_copy_allownil)}
+      EC_GROUP_copy := @ERR_EC_GROUP_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_copy_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_copy := @ERR_EC_GROUP_copy;
+      AFailed.Add('EC_GROUP_copy');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_dup := LoadLibFunction(ADllHandle, EC_GROUP_dup_procname);
+  FuncLoaded := assigned(EC_GROUP_dup);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_dup_introduced)}
+    if LibVersion < EC_GROUP_dup_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_dup)}
+      EC_GROUP_dup := @FC_EC_GROUP_dup;
+      {$else}
+      {$if not defined(EC_GROUP_dup_allownil)}
+      EC_GROUP_dup := @ERR_EC_GROUP_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_dup_removed)}
+    if EC_GROUP_dup_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_dup)}
+      EC_GROUP_dup := @_EC_GROUP_dup;
+      {$else}
+      {$if not defined(EC_GROUP_dup_allownil)}
+      EC_GROUP_dup := @ERR_EC_GROUP_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_dup_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_dup := @ERR_EC_GROUP_dup;
+      AFailed.Add('EC_GROUP_dup');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_method_of := LoadLibFunction(ADllHandle, EC_GROUP_method_of_procname);
+  FuncLoaded := assigned(EC_GROUP_method_of);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_method_of_introduced)}
+    if LibVersion < EC_GROUP_method_of_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_method_of)}
+      EC_GROUP_method_of := @FC_EC_GROUP_method_of;
+      {$else}
+      {$if not defined(EC_GROUP_method_of_allownil)}
+      EC_GROUP_method_of := @ERR_EC_GROUP_method_of;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_method_of_removed)}
+    if EC_GROUP_method_of_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_method_of)}
+      EC_GROUP_method_of := @_EC_GROUP_method_of;
+      {$else}
+      {$if not defined(EC_GROUP_method_of_allownil)}
+      EC_GROUP_method_of := @ERR_EC_GROUP_method_of;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_method_of_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_method_of := @ERR_EC_GROUP_method_of;
+      AFailed.Add('EC_GROUP_method_of');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_METHOD_get_field_type := LoadLibFunction(ADllHandle, EC_METHOD_get_field_type_procname);
+  FuncLoaded := assigned(EC_METHOD_get_field_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_METHOD_get_field_type_introduced)}
+    if LibVersion < EC_METHOD_get_field_type_introduced then
+    begin
+      {$if declared(FC_EC_METHOD_get_field_type)}
+      EC_METHOD_get_field_type := @FC_EC_METHOD_get_field_type;
+      {$else}
+      {$if not defined(EC_METHOD_get_field_type_allownil)}
+      EC_METHOD_get_field_type := @ERR_EC_METHOD_get_field_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_METHOD_get_field_type_removed)}
+    if EC_METHOD_get_field_type_removed <= LibVersion then
+    begin
+      {$if declared(_EC_METHOD_get_field_type)}
+      EC_METHOD_get_field_type := @_EC_METHOD_get_field_type;
+      {$else}
+      {$if not defined(EC_METHOD_get_field_type_allownil)}
+      EC_METHOD_get_field_type := @ERR_EC_METHOD_get_field_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_METHOD_get_field_type_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_METHOD_get_field_type := @ERR_EC_METHOD_get_field_type;
+      AFailed.Add('EC_METHOD_get_field_type');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_generator := LoadLibFunction(ADllHandle, EC_GROUP_set_generator_procname);
+  FuncLoaded := assigned(EC_GROUP_set_generator);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_generator_introduced)}
+    if LibVersion < EC_GROUP_set_generator_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_generator)}
+      EC_GROUP_set_generator := @FC_EC_GROUP_set_generator;
+      {$else}
+      {$if not defined(EC_GROUP_set_generator_allownil)}
+      EC_GROUP_set_generator := @ERR_EC_GROUP_set_generator;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_generator_removed)}
+    if EC_GROUP_set_generator_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_generator)}
+      EC_GROUP_set_generator := @_EC_GROUP_set_generator;
+      {$else}
+      {$if not defined(EC_GROUP_set_generator_allownil)}
+      EC_GROUP_set_generator := @ERR_EC_GROUP_set_generator;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_generator_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_generator := @ERR_EC_GROUP_set_generator;
+      AFailed.Add('EC_GROUP_set_generator');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get0_generator := LoadLibFunction(ADllHandle, EC_GROUP_get0_generator_procname);
+  FuncLoaded := assigned(EC_GROUP_get0_generator);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get0_generator_introduced)}
+    if LibVersion < EC_GROUP_get0_generator_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get0_generator)}
+      EC_GROUP_get0_generator := @FC_EC_GROUP_get0_generator;
+      {$else}
+      {$if not defined(EC_GROUP_get0_generator_allownil)}
+      EC_GROUP_get0_generator := @ERR_EC_GROUP_get0_generator;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get0_generator_removed)}
+    if EC_GROUP_get0_generator_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get0_generator)}
+      EC_GROUP_get0_generator := @_EC_GROUP_get0_generator;
+      {$else}
+      {$if not defined(EC_GROUP_get0_generator_allownil)}
+      EC_GROUP_get0_generator := @ERR_EC_GROUP_get0_generator;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get0_generator_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get0_generator := @ERR_EC_GROUP_get0_generator;
+      AFailed.Add('EC_GROUP_get0_generator');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_mont_data := LoadLibFunction(ADllHandle, EC_GROUP_get_mont_data_procname);
+  FuncLoaded := assigned(EC_GROUP_get_mont_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_mont_data_introduced)}
+    if LibVersion < EC_GROUP_get_mont_data_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_mont_data)}
+      EC_GROUP_get_mont_data := @FC_EC_GROUP_get_mont_data;
+      {$else}
+      {$if not defined(EC_GROUP_get_mont_data_allownil)}
+      EC_GROUP_get_mont_data := @ERR_EC_GROUP_get_mont_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_mont_data_removed)}
+    if EC_GROUP_get_mont_data_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_mont_data)}
+      EC_GROUP_get_mont_data := @_EC_GROUP_get_mont_data;
+      {$else}
+      {$if not defined(EC_GROUP_get_mont_data_allownil)}
+      EC_GROUP_get_mont_data := @ERR_EC_GROUP_get_mont_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_mont_data_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_mont_data := @ERR_EC_GROUP_get_mont_data;
+      AFailed.Add('EC_GROUP_get_mont_data');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_order := LoadLibFunction(ADllHandle, EC_GROUP_get_order_procname);
+  FuncLoaded := assigned(EC_GROUP_get_order);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_order_introduced)}
+    if LibVersion < EC_GROUP_get_order_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_order)}
+      EC_GROUP_get_order := @FC_EC_GROUP_get_order;
+      {$else}
+      {$if not defined(EC_GROUP_get_order_allownil)}
+      EC_GROUP_get_order := @ERR_EC_GROUP_get_order;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_order_removed)}
+    if EC_GROUP_get_order_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_order)}
+      EC_GROUP_get_order := @_EC_GROUP_get_order;
+      {$else}
+      {$if not defined(EC_GROUP_get_order_allownil)}
+      EC_GROUP_get_order := @ERR_EC_GROUP_get_order;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_order_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_order := @ERR_EC_GROUP_get_order;
+      AFailed.Add('EC_GROUP_get_order');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get0_order := LoadLibFunction(ADllHandle, EC_GROUP_get0_order_procname);
+  FuncLoaded := assigned(EC_GROUP_get0_order);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_get0_order_introduced)}
     if LibVersion < EC_GROUP_get0_order_introduced then
+    begin
       {$if declared(FC_EC_GROUP_get0_order)}
-      EC_GROUP_get0_order := @FC_EC_GROUP_get0_order
+      EC_GROUP_get0_order := @FC_EC_GROUP_get0_order;
       {$else}
-      EC_GROUP_get0_order := @ERR_EC_GROUP_get0_order
+      {$if not defined(EC_GROUP_get0_order_allownil)}
+      EC_GROUP_get0_order := @ERR_EC_GROUP_get0_order;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_get0_order_removed)}
-   if EC_GROUP_get0_order_removed <= LibVersion then
-     {$if declared(_EC_GROUP_get0_order)}
-     EC_GROUP_get0_order := @_EC_GROUP_get0_order
-     {$else}
-       {$IF declared(ERR_EC_GROUP_get0_order)}
-       EC_GROUP_get0_order := @ERR_EC_GROUP_get0_order
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_get0_order) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_get0_order');
+    {$if declared(EC_GROUP_get0_order_removed)}
+    if EC_GROUP_get0_order_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get0_order)}
+      EC_GROUP_get0_order := @_EC_GROUP_get0_order;
+      {$else}
+      {$if not defined(EC_GROUP_get0_order_allownil)}
+      EC_GROUP_get0_order := @ERR_EC_GROUP_get0_order;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get0_order_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get0_order := @ERR_EC_GROUP_get0_order;
+      AFailed.Add('EC_GROUP_get0_order');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GROUP_order_bits) then 
+ {introduced 1.1.0}
+  EC_GROUP_order_bits := LoadLibFunction(ADllHandle, EC_GROUP_order_bits_procname);
+  FuncLoaded := assigned(EC_GROUP_order_bits);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_order_bits_introduced)}
     if LibVersion < EC_GROUP_order_bits_introduced then
+    begin
       {$if declared(FC_EC_GROUP_order_bits)}
-      EC_GROUP_order_bits := @FC_EC_GROUP_order_bits
+      EC_GROUP_order_bits := @FC_EC_GROUP_order_bits;
       {$else}
-      EC_GROUP_order_bits := @ERR_EC_GROUP_order_bits
+      {$if not defined(EC_GROUP_order_bits_allownil)}
+      EC_GROUP_order_bits := @ERR_EC_GROUP_order_bits;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_order_bits_removed)}
-   if EC_GROUP_order_bits_removed <= LibVersion then
-     {$if declared(_EC_GROUP_order_bits)}
-     EC_GROUP_order_bits := @_EC_GROUP_order_bits
-     {$else}
-       {$IF declared(ERR_EC_GROUP_order_bits)}
-       EC_GROUP_order_bits := @ERR_EC_GROUP_order_bits
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_order_bits) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_order_bits');
+    {$if declared(EC_GROUP_order_bits_removed)}
+    if EC_GROUP_order_bits_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_order_bits)}
+      EC_GROUP_order_bits := @_EC_GROUP_order_bits;
+      {$else}
+      {$if not defined(EC_GROUP_order_bits_allownil)}
+      EC_GROUP_order_bits := @ERR_EC_GROUP_order_bits;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_order_bits_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_order_bits := @ERR_EC_GROUP_order_bits;
+      AFailed.Add('EC_GROUP_order_bits');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_GROUP_get_cofactor := LoadLibFunction(ADllHandle, EC_GROUP_get_cofactor_procname);
+  FuncLoaded := assigned(EC_GROUP_get_cofactor);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_cofactor_introduced)}
+    if LibVersion < EC_GROUP_get_cofactor_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_cofactor)}
+      EC_GROUP_get_cofactor := @FC_EC_GROUP_get_cofactor;
+      {$else}
+      {$if not defined(EC_GROUP_get_cofactor_allownil)}
+      EC_GROUP_get_cofactor := @ERR_EC_GROUP_get_cofactor;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_cofactor_removed)}
+    if EC_GROUP_get_cofactor_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_cofactor)}
+      EC_GROUP_get_cofactor := @_EC_GROUP_get_cofactor;
+      {$else}
+      {$if not defined(EC_GROUP_get_cofactor_allownil)}
+      EC_GROUP_get_cofactor := @ERR_EC_GROUP_get_cofactor;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_cofactor_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_cofactor := @ERR_EC_GROUP_get_cofactor;
+      AFailed.Add('EC_GROUP_get_cofactor');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_GROUP_get0_cofactor) then 
+  EC_GROUP_get0_cofactor := LoadLibFunction(ADllHandle, EC_GROUP_get0_cofactor_procname);
+  FuncLoaded := assigned(EC_GROUP_get0_cofactor);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_get0_cofactor_introduced)}
     if LibVersion < EC_GROUP_get0_cofactor_introduced then
+    begin
       {$if declared(FC_EC_GROUP_get0_cofactor)}
-      EC_GROUP_get0_cofactor := @FC_EC_GROUP_get0_cofactor
+      EC_GROUP_get0_cofactor := @FC_EC_GROUP_get0_cofactor;
       {$else}
-      EC_GROUP_get0_cofactor := @ERR_EC_GROUP_get0_cofactor
+      {$if not defined(EC_GROUP_get0_cofactor_allownil)}
+      EC_GROUP_get0_cofactor := @ERR_EC_GROUP_get0_cofactor;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_get0_cofactor_removed)}
-   if EC_GROUP_get0_cofactor_removed <= LibVersion then
-     {$if declared(_EC_GROUP_get0_cofactor)}
-     EC_GROUP_get0_cofactor := @_EC_GROUP_get0_cofactor
-     {$else}
-       {$IF declared(ERR_EC_GROUP_get0_cofactor)}
-       EC_GROUP_get0_cofactor := @ERR_EC_GROUP_get0_cofactor
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_get0_cofactor) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_get0_cofactor');
+    {$if declared(EC_GROUP_get0_cofactor_removed)}
+    if EC_GROUP_get0_cofactor_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get0_cofactor)}
+      EC_GROUP_get0_cofactor := @_EC_GROUP_get0_cofactor;
+      {$else}
+      {$if not defined(EC_GROUP_get0_cofactor_allownil)}
+      EC_GROUP_get0_cofactor := @ERR_EC_GROUP_get0_cofactor;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get0_cofactor_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get0_cofactor := @ERR_EC_GROUP_get0_cofactor;
+      AFailed.Add('EC_GROUP_get0_cofactor');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_GROUP_set_curve_name := LoadLibFunction(ADllHandle, EC_GROUP_set_curve_name_procname);
+  FuncLoaded := assigned(EC_GROUP_set_curve_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_curve_name_introduced)}
+    if LibVersion < EC_GROUP_set_curve_name_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_curve_name)}
+      EC_GROUP_set_curve_name := @FC_EC_GROUP_set_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_name_allownil)}
+      EC_GROUP_set_curve_name := @ERR_EC_GROUP_set_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_curve_name_removed)}
+    if EC_GROUP_set_curve_name_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_curve_name)}
+      EC_GROUP_set_curve_name := @_EC_GROUP_set_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_name_allownil)}
+      EC_GROUP_set_curve_name := @ERR_EC_GROUP_set_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_curve_name_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_curve_name := @ERR_EC_GROUP_set_curve_name;
+      AFailed.Add('EC_GROUP_set_curve_name');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_GROUP_set_curve) then 
+  EC_GROUP_get_curve_name := LoadLibFunction(ADllHandle, EC_GROUP_get_curve_name_procname);
+  FuncLoaded := assigned(EC_GROUP_get_curve_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_curve_name_introduced)}
+    if LibVersion < EC_GROUP_get_curve_name_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_curve_name)}
+      EC_GROUP_get_curve_name := @FC_EC_GROUP_get_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_name_allownil)}
+      EC_GROUP_get_curve_name := @ERR_EC_GROUP_get_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_curve_name_removed)}
+    if EC_GROUP_get_curve_name_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_curve_name)}
+      EC_GROUP_get_curve_name := @_EC_GROUP_get_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_name_allownil)}
+      EC_GROUP_get_curve_name := @ERR_EC_GROUP_get_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_curve_name_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_curve_name := @ERR_EC_GROUP_get_curve_name;
+      AFailed.Add('EC_GROUP_get_curve_name');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_asn1_flag := LoadLibFunction(ADllHandle, EC_GROUP_set_asn1_flag_procname);
+  FuncLoaded := assigned(EC_GROUP_set_asn1_flag);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_asn1_flag_introduced)}
+    if LibVersion < EC_GROUP_set_asn1_flag_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_asn1_flag)}
+      EC_GROUP_set_asn1_flag := @FC_EC_GROUP_set_asn1_flag;
+      {$else}
+      {$if not defined(EC_GROUP_set_asn1_flag_allownil)}
+      EC_GROUP_set_asn1_flag := @ERR_EC_GROUP_set_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_asn1_flag_removed)}
+    if EC_GROUP_set_asn1_flag_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_asn1_flag)}
+      EC_GROUP_set_asn1_flag := @_EC_GROUP_set_asn1_flag;
+      {$else}
+      {$if not defined(EC_GROUP_set_asn1_flag_allownil)}
+      EC_GROUP_set_asn1_flag := @ERR_EC_GROUP_set_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_asn1_flag_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_asn1_flag := @ERR_EC_GROUP_set_asn1_flag;
+      AFailed.Add('EC_GROUP_set_asn1_flag');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_asn1_flag := LoadLibFunction(ADllHandle, EC_GROUP_get_asn1_flag_procname);
+  FuncLoaded := assigned(EC_GROUP_get_asn1_flag);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_asn1_flag_introduced)}
+    if LibVersion < EC_GROUP_get_asn1_flag_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_asn1_flag)}
+      EC_GROUP_get_asn1_flag := @FC_EC_GROUP_get_asn1_flag;
+      {$else}
+      {$if not defined(EC_GROUP_get_asn1_flag_allownil)}
+      EC_GROUP_get_asn1_flag := @ERR_EC_GROUP_get_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_asn1_flag_removed)}
+    if EC_GROUP_get_asn1_flag_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_asn1_flag)}
+      EC_GROUP_get_asn1_flag := @_EC_GROUP_get_asn1_flag;
+      {$else}
+      {$if not defined(EC_GROUP_get_asn1_flag_allownil)}
+      EC_GROUP_get_asn1_flag := @ERR_EC_GROUP_get_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_asn1_flag_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_asn1_flag := @ERR_EC_GROUP_get_asn1_flag;
+      AFailed.Add('EC_GROUP_get_asn1_flag');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_point_conversion_form := LoadLibFunction(ADllHandle, EC_GROUP_set_point_conversion_form_procname);
+  FuncLoaded := assigned(EC_GROUP_set_point_conversion_form);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_point_conversion_form_introduced)}
+    if LibVersion < EC_GROUP_set_point_conversion_form_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_point_conversion_form)}
+      EC_GROUP_set_point_conversion_form := @FC_EC_GROUP_set_point_conversion_form;
+      {$else}
+      {$if not defined(EC_GROUP_set_point_conversion_form_allownil)}
+      EC_GROUP_set_point_conversion_form := @ERR_EC_GROUP_set_point_conversion_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_point_conversion_form_removed)}
+    if EC_GROUP_set_point_conversion_form_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_point_conversion_form)}
+      EC_GROUP_set_point_conversion_form := @_EC_GROUP_set_point_conversion_form;
+      {$else}
+      {$if not defined(EC_GROUP_set_point_conversion_form_allownil)}
+      EC_GROUP_set_point_conversion_form := @ERR_EC_GROUP_set_point_conversion_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_point_conversion_form_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_point_conversion_form := @ERR_EC_GROUP_set_point_conversion_form;
+      AFailed.Add('EC_GROUP_set_point_conversion_form');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_point_conversion_form := LoadLibFunction(ADllHandle, EC_GROUP_get_point_conversion_form_procname);
+  FuncLoaded := assigned(EC_GROUP_get_point_conversion_form);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_point_conversion_form_introduced)}
+    if LibVersion < EC_GROUP_get_point_conversion_form_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_point_conversion_form)}
+      EC_GROUP_get_point_conversion_form := @FC_EC_GROUP_get_point_conversion_form;
+      {$else}
+      {$if not defined(EC_GROUP_get_point_conversion_form_allownil)}
+      EC_GROUP_get_point_conversion_form := @ERR_EC_GROUP_get_point_conversion_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_point_conversion_form_removed)}
+    if EC_GROUP_get_point_conversion_form_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_point_conversion_form)}
+      EC_GROUP_get_point_conversion_form := @_EC_GROUP_get_point_conversion_form;
+      {$else}
+      {$if not defined(EC_GROUP_get_point_conversion_form_allownil)}
+      EC_GROUP_get_point_conversion_form := @ERR_EC_GROUP_get_point_conversion_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_point_conversion_form_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_point_conversion_form := @ERR_EC_GROUP_get_point_conversion_form;
+      AFailed.Add('EC_GROUP_get_point_conversion_form');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get0_seed := LoadLibFunction(ADllHandle, EC_GROUP_get0_seed_procname);
+  FuncLoaded := assigned(EC_GROUP_get0_seed);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get0_seed_introduced)}
+    if LibVersion < EC_GROUP_get0_seed_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get0_seed)}
+      EC_GROUP_get0_seed := @FC_EC_GROUP_get0_seed;
+      {$else}
+      {$if not defined(EC_GROUP_get0_seed_allownil)}
+      EC_GROUP_get0_seed := @ERR_EC_GROUP_get0_seed;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get0_seed_removed)}
+    if EC_GROUP_get0_seed_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get0_seed)}
+      EC_GROUP_get0_seed := @_EC_GROUP_get0_seed;
+      {$else}
+      {$if not defined(EC_GROUP_get0_seed_allownil)}
+      EC_GROUP_get0_seed := @ERR_EC_GROUP_get0_seed;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get0_seed_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get0_seed := @ERR_EC_GROUP_get0_seed;
+      AFailed.Add('EC_GROUP_get0_seed');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_seed_len := LoadLibFunction(ADllHandle, EC_GROUP_get_seed_len_procname);
+  FuncLoaded := assigned(EC_GROUP_get_seed_len);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_seed_len_introduced)}
+    if LibVersion < EC_GROUP_get_seed_len_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_seed_len)}
+      EC_GROUP_get_seed_len := @FC_EC_GROUP_get_seed_len;
+      {$else}
+      {$if not defined(EC_GROUP_get_seed_len_allownil)}
+      EC_GROUP_get_seed_len := @ERR_EC_GROUP_get_seed_len;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_seed_len_removed)}
+    if EC_GROUP_get_seed_len_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_seed_len)}
+      EC_GROUP_get_seed_len := @_EC_GROUP_get_seed_len;
+      {$else}
+      {$if not defined(EC_GROUP_get_seed_len_allownil)}
+      EC_GROUP_get_seed_len := @ERR_EC_GROUP_get_seed_len;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_seed_len_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_seed_len := @ERR_EC_GROUP_get_seed_len;
+      AFailed.Add('EC_GROUP_get_seed_len');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_seed := LoadLibFunction(ADllHandle, EC_GROUP_set_seed_procname);
+  FuncLoaded := assigned(EC_GROUP_set_seed);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_seed_introduced)}
+    if LibVersion < EC_GROUP_set_seed_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_seed)}
+      EC_GROUP_set_seed := @FC_EC_GROUP_set_seed;
+      {$else}
+      {$if not defined(EC_GROUP_set_seed_allownil)}
+      EC_GROUP_set_seed := @ERR_EC_GROUP_set_seed;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_seed_removed)}
+    if EC_GROUP_set_seed_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_seed)}
+      EC_GROUP_set_seed := @_EC_GROUP_set_seed;
+      {$else}
+      {$if not defined(EC_GROUP_set_seed_allownil)}
+      EC_GROUP_set_seed := @ERR_EC_GROUP_set_seed;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_seed_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_seed := @ERR_EC_GROUP_set_seed;
+      AFailed.Add('EC_GROUP_set_seed');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_curve := LoadLibFunction(ADllHandle, EC_GROUP_set_curve_procname);
+  FuncLoaded := assigned(EC_GROUP_set_curve);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_set_curve_introduced)}
     if LibVersion < EC_GROUP_set_curve_introduced then
+    begin
       {$if declared(FC_EC_GROUP_set_curve)}
-      EC_GROUP_set_curve := @FC_EC_GROUP_set_curve
+      EC_GROUP_set_curve := @FC_EC_GROUP_set_curve;
       {$else}
-      EC_GROUP_set_curve := @ERR_EC_GROUP_set_curve
+      {$if not defined(EC_GROUP_set_curve_allownil)}
+      EC_GROUP_set_curve := @ERR_EC_GROUP_set_curve;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_set_curve_removed)}
-   if EC_GROUP_set_curve_removed <= LibVersion then
-     {$if declared(_EC_GROUP_set_curve)}
-     EC_GROUP_set_curve := @_EC_GROUP_set_curve
-     {$else}
-       {$IF declared(ERR_EC_GROUP_set_curve)}
-       EC_GROUP_set_curve := @ERR_EC_GROUP_set_curve
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_set_curve) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_set_curve');
+    {$if declared(EC_GROUP_set_curve_removed)}
+    if EC_GROUP_set_curve_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_curve)}
+      EC_GROUP_set_curve := @_EC_GROUP_set_curve;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_allownil)}
+      EC_GROUP_set_curve := @ERR_EC_GROUP_set_curve;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_curve_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_curve := @ERR_EC_GROUP_set_curve;
+      AFailed.Add('EC_GROUP_set_curve');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GROUP_get_curve) then 
+ {introduced 1.1.0}
+  EC_GROUP_get_curve := LoadLibFunction(ADllHandle, EC_GROUP_get_curve_procname);
+  FuncLoaded := assigned(EC_GROUP_get_curve);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_get_curve_introduced)}
     if LibVersion < EC_GROUP_get_curve_introduced then
+    begin
       {$if declared(FC_EC_GROUP_get_curve)}
-      EC_GROUP_get_curve := @FC_EC_GROUP_get_curve
+      EC_GROUP_get_curve := @FC_EC_GROUP_get_curve;
       {$else}
-      EC_GROUP_get_curve := @ERR_EC_GROUP_get_curve
+      {$if not defined(EC_GROUP_get_curve_allownil)}
+      EC_GROUP_get_curve := @ERR_EC_GROUP_get_curve;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_get_curve_removed)}
-   if EC_GROUP_get_curve_removed <= LibVersion then
-     {$if declared(_EC_GROUP_get_curve)}
-     EC_GROUP_get_curve := @_EC_GROUP_get_curve
-     {$else}
-       {$IF declared(ERR_EC_GROUP_get_curve)}
-       EC_GROUP_get_curve := @ERR_EC_GROUP_get_curve
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_get_curve) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_get_curve');
+    {$if declared(EC_GROUP_get_curve_removed)}
+    if EC_GROUP_get_curve_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_curve)}
+      EC_GROUP_get_curve := @_EC_GROUP_get_curve;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_allownil)}
+      EC_GROUP_get_curve := @ERR_EC_GROUP_get_curve;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_curve_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_curve := @ERR_EC_GROUP_get_curve;
+      AFailed.Add('EC_GROUP_get_curve');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_GROUP_set_curve_GFp := LoadLibFunction(ADllHandle, EC_GROUP_set_curve_GFp_procname);
+  FuncLoaded := assigned(EC_GROUP_set_curve_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_curve_GFp_introduced)}
+    if LibVersion < EC_GROUP_set_curve_GFp_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_curve_GFp)}
+      EC_GROUP_set_curve_GFp := @FC_EC_GROUP_set_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_GFp_allownil)}
+      EC_GROUP_set_curve_GFp := @ERR_EC_GROUP_set_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_curve_GFp_removed)}
+    if EC_GROUP_set_curve_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_curve_GFp)}
+      EC_GROUP_set_curve_GFp := @_EC_GROUP_set_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_GFp_allownil)}
+      EC_GROUP_set_curve_GFp := @ERR_EC_GROUP_set_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_curve_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_curve_GFp := @ERR_EC_GROUP_set_curve_GFp;
+      AFailed.Add('EC_GROUP_set_curve_GFp');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_GROUP_new_from_ecparameters) then 
+  EC_GROUP_get_curve_GFp := LoadLibFunction(ADllHandle, EC_GROUP_get_curve_GFp_procname);
+  FuncLoaded := assigned(EC_GROUP_get_curve_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_curve_GFp_introduced)}
+    if LibVersion < EC_GROUP_get_curve_GFp_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_curve_GFp)}
+      EC_GROUP_get_curve_GFp := @FC_EC_GROUP_get_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_GFp_allownil)}
+      EC_GROUP_get_curve_GFp := @ERR_EC_GROUP_get_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_curve_GFp_removed)}
+    if EC_GROUP_get_curve_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_curve_GFp)}
+      EC_GROUP_get_curve_GFp := @_EC_GROUP_get_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_GFp_allownil)}
+      EC_GROUP_get_curve_GFp := @ERR_EC_GROUP_get_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_curve_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_curve_GFp := @ERR_EC_GROUP_get_curve_GFp;
+      AFailed.Add('EC_GROUP_get_curve_GFp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_set_curve_GF2m := LoadLibFunction(ADllHandle, EC_GROUP_set_curve_GF2m_procname);
+  FuncLoaded := assigned(EC_GROUP_set_curve_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_set_curve_GF2m_introduced)}
+    if LibVersion < EC_GROUP_set_curve_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_set_curve_GF2m)}
+      EC_GROUP_set_curve_GF2m := @FC_EC_GROUP_set_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_GF2m_allownil)}
+      EC_GROUP_set_curve_GF2m := @ERR_EC_GROUP_set_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_set_curve_GF2m_removed)}
+    if EC_GROUP_set_curve_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_set_curve_GF2m)}
+      EC_GROUP_set_curve_GF2m := @_EC_GROUP_set_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_set_curve_GF2m_allownil)}
+      EC_GROUP_set_curve_GF2m := @ERR_EC_GROUP_set_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_set_curve_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_set_curve_GF2m := @ERR_EC_GROUP_set_curve_GF2m;
+      AFailed.Add('EC_GROUP_set_curve_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_curve_GF2m := LoadLibFunction(ADllHandle, EC_GROUP_get_curve_GF2m_procname);
+  FuncLoaded := assigned(EC_GROUP_get_curve_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_curve_GF2m_introduced)}
+    if LibVersion < EC_GROUP_get_curve_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_curve_GF2m)}
+      EC_GROUP_get_curve_GF2m := @FC_EC_GROUP_get_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_GF2m_allownil)}
+      EC_GROUP_get_curve_GF2m := @ERR_EC_GROUP_get_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_curve_GF2m_removed)}
+    if EC_GROUP_get_curve_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_curve_GF2m)}
+      EC_GROUP_get_curve_GF2m := @_EC_GROUP_get_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_get_curve_GF2m_allownil)}
+      EC_GROUP_get_curve_GF2m := @ERR_EC_GROUP_get_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_curve_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_curve_GF2m := @ERR_EC_GROUP_get_curve_GF2m;
+      AFailed.Add('EC_GROUP_get_curve_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_degree := LoadLibFunction(ADllHandle, EC_GROUP_get_degree_procname);
+  FuncLoaded := assigned(EC_GROUP_get_degree);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_degree_introduced)}
+    if LibVersion < EC_GROUP_get_degree_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_degree)}
+      EC_GROUP_get_degree := @FC_EC_GROUP_get_degree;
+      {$else}
+      {$if not defined(EC_GROUP_get_degree_allownil)}
+      EC_GROUP_get_degree := @ERR_EC_GROUP_get_degree;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_degree_removed)}
+    if EC_GROUP_get_degree_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_degree)}
+      EC_GROUP_get_degree := @_EC_GROUP_get_degree;
+      {$else}
+      {$if not defined(EC_GROUP_get_degree_allownil)}
+      EC_GROUP_get_degree := @ERR_EC_GROUP_get_degree;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_degree_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_degree := @ERR_EC_GROUP_get_degree;
+      AFailed.Add('EC_GROUP_get_degree');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_check := LoadLibFunction(ADllHandle, EC_GROUP_check_procname);
+  FuncLoaded := assigned(EC_GROUP_check);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_check_introduced)}
+    if LibVersion < EC_GROUP_check_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_check)}
+      EC_GROUP_check := @FC_EC_GROUP_check;
+      {$else}
+      {$if not defined(EC_GROUP_check_allownil)}
+      EC_GROUP_check := @ERR_EC_GROUP_check;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_check_removed)}
+    if EC_GROUP_check_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_check)}
+      EC_GROUP_check := @_EC_GROUP_check;
+      {$else}
+      {$if not defined(EC_GROUP_check_allownil)}
+      EC_GROUP_check := @ERR_EC_GROUP_check;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_check_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_check := @ERR_EC_GROUP_check;
+      AFailed.Add('EC_GROUP_check');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_check_discriminant := LoadLibFunction(ADllHandle, EC_GROUP_check_discriminant_procname);
+  FuncLoaded := assigned(EC_GROUP_check_discriminant);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_check_discriminant_introduced)}
+    if LibVersion < EC_GROUP_check_discriminant_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_check_discriminant)}
+      EC_GROUP_check_discriminant := @FC_EC_GROUP_check_discriminant;
+      {$else}
+      {$if not defined(EC_GROUP_check_discriminant_allownil)}
+      EC_GROUP_check_discriminant := @ERR_EC_GROUP_check_discriminant;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_check_discriminant_removed)}
+    if EC_GROUP_check_discriminant_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_check_discriminant)}
+      EC_GROUP_check_discriminant := @_EC_GROUP_check_discriminant;
+      {$else}
+      {$if not defined(EC_GROUP_check_discriminant_allownil)}
+      EC_GROUP_check_discriminant := @ERR_EC_GROUP_check_discriminant;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_check_discriminant_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_check_discriminant := @ERR_EC_GROUP_check_discriminant;
+      AFailed.Add('EC_GROUP_check_discriminant');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_cmp := LoadLibFunction(ADllHandle, EC_GROUP_cmp_procname);
+  FuncLoaded := assigned(EC_GROUP_cmp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_cmp_introduced)}
+    if LibVersion < EC_GROUP_cmp_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_cmp)}
+      EC_GROUP_cmp := @FC_EC_GROUP_cmp;
+      {$else}
+      {$if not defined(EC_GROUP_cmp_allownil)}
+      EC_GROUP_cmp := @ERR_EC_GROUP_cmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_cmp_removed)}
+    if EC_GROUP_cmp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_cmp)}
+      EC_GROUP_cmp := @_EC_GROUP_cmp;
+      {$else}
+      {$if not defined(EC_GROUP_cmp_allownil)}
+      EC_GROUP_cmp := @ERR_EC_GROUP_cmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_cmp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_cmp := @ERR_EC_GROUP_cmp;
+      AFailed.Add('EC_GROUP_cmp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_new_curve_GFp := LoadLibFunction(ADllHandle, EC_GROUP_new_curve_GFp_procname);
+  FuncLoaded := assigned(EC_GROUP_new_curve_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_new_curve_GFp_introduced)}
+    if LibVersion < EC_GROUP_new_curve_GFp_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_new_curve_GFp)}
+      EC_GROUP_new_curve_GFp := @FC_EC_GROUP_new_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_new_curve_GFp_allownil)}
+      EC_GROUP_new_curve_GFp := @ERR_EC_GROUP_new_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_new_curve_GFp_removed)}
+    if EC_GROUP_new_curve_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new_curve_GFp)}
+      EC_GROUP_new_curve_GFp := @_EC_GROUP_new_curve_GFp;
+      {$else}
+      {$if not defined(EC_GROUP_new_curve_GFp_allownil)}
+      EC_GROUP_new_curve_GFp := @ERR_EC_GROUP_new_curve_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_curve_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new_curve_GFp := @ERR_EC_GROUP_new_curve_GFp;
+      AFailed.Add('EC_GROUP_new_curve_GFp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_new_curve_GF2m := LoadLibFunction(ADllHandle, EC_GROUP_new_curve_GF2m_procname);
+  FuncLoaded := assigned(EC_GROUP_new_curve_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_new_curve_GF2m_introduced)}
+    if LibVersion < EC_GROUP_new_curve_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_new_curve_GF2m)}
+      EC_GROUP_new_curve_GF2m := @FC_EC_GROUP_new_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_new_curve_GF2m_allownil)}
+      EC_GROUP_new_curve_GF2m := @ERR_EC_GROUP_new_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_new_curve_GF2m_removed)}
+    if EC_GROUP_new_curve_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new_curve_GF2m)}
+      EC_GROUP_new_curve_GF2m := @_EC_GROUP_new_curve_GF2m;
+      {$else}
+      {$if not defined(EC_GROUP_new_curve_GF2m_allownil)}
+      EC_GROUP_new_curve_GF2m := @ERR_EC_GROUP_new_curve_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_curve_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new_curve_GF2m := @ERR_EC_GROUP_new_curve_GF2m;
+      AFailed.Add('EC_GROUP_new_curve_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_new_by_curve_name := LoadLibFunction(ADllHandle, EC_GROUP_new_by_curve_name_procname);
+  FuncLoaded := assigned(EC_GROUP_new_by_curve_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_new_by_curve_name_introduced)}
+    if LibVersion < EC_GROUP_new_by_curve_name_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_new_by_curve_name)}
+      EC_GROUP_new_by_curve_name := @FC_EC_GROUP_new_by_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_new_by_curve_name_allownil)}
+      EC_GROUP_new_by_curve_name := @ERR_EC_GROUP_new_by_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_new_by_curve_name_removed)}
+    if EC_GROUP_new_by_curve_name_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new_by_curve_name)}
+      EC_GROUP_new_by_curve_name := @_EC_GROUP_new_by_curve_name;
+      {$else}
+      {$if not defined(EC_GROUP_new_by_curve_name_allownil)}
+      EC_GROUP_new_by_curve_name := @ERR_EC_GROUP_new_by_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_by_curve_name_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new_by_curve_name := @ERR_EC_GROUP_new_by_curve_name;
+      AFailed.Add('EC_GROUP_new_by_curve_name');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_new_from_ecparameters := LoadLibFunction(ADllHandle, EC_GROUP_new_from_ecparameters_procname);
+  FuncLoaded := assigned(EC_GROUP_new_from_ecparameters);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_new_from_ecparameters_introduced)}
     if LibVersion < EC_GROUP_new_from_ecparameters_introduced then
+    begin
       {$if declared(FC_EC_GROUP_new_from_ecparameters)}
-      EC_GROUP_new_from_ecparameters := @FC_EC_GROUP_new_from_ecparameters
+      EC_GROUP_new_from_ecparameters := @FC_EC_GROUP_new_from_ecparameters;
       {$else}
-      EC_GROUP_new_from_ecparameters := @ERR_EC_GROUP_new_from_ecparameters
+      {$if not defined(EC_GROUP_new_from_ecparameters_allownil)}
+      EC_GROUP_new_from_ecparameters := @ERR_EC_GROUP_new_from_ecparameters;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_new_from_ecparameters_removed)}
-   if EC_GROUP_new_from_ecparameters_removed <= LibVersion then
-     {$if declared(_EC_GROUP_new_from_ecparameters)}
-     EC_GROUP_new_from_ecparameters := @_EC_GROUP_new_from_ecparameters
-     {$else}
-       {$IF declared(ERR_EC_GROUP_new_from_ecparameters)}
-       EC_GROUP_new_from_ecparameters := @ERR_EC_GROUP_new_from_ecparameters
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_new_from_ecparameters) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_new_from_ecparameters');
+    {$if declared(EC_GROUP_new_from_ecparameters_removed)}
+    if EC_GROUP_new_from_ecparameters_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new_from_ecparameters)}
+      EC_GROUP_new_from_ecparameters := @_EC_GROUP_new_from_ecparameters;
+      {$else}
+      {$if not defined(EC_GROUP_new_from_ecparameters_allownil)}
+      EC_GROUP_new_from_ecparameters := @ERR_EC_GROUP_new_from_ecparameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_from_ecparameters_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new_from_ecparameters := @ERR_EC_GROUP_new_from_ecparameters;
+      AFailed.Add('EC_GROUP_new_from_ecparameters');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GROUP_get_ecparameters) then 
+ {introduced 1.1.0}
+  EC_GROUP_get_ecparameters := LoadLibFunction(ADllHandle, EC_GROUP_get_ecparameters_procname);
+  FuncLoaded := assigned(EC_GROUP_get_ecparameters);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_get_ecparameters_introduced)}
     if LibVersion < EC_GROUP_get_ecparameters_introduced then
+    begin
       {$if declared(FC_EC_GROUP_get_ecparameters)}
-      EC_GROUP_get_ecparameters := @FC_EC_GROUP_get_ecparameters
+      EC_GROUP_get_ecparameters := @FC_EC_GROUP_get_ecparameters;
       {$else}
-      EC_GROUP_get_ecparameters := @ERR_EC_GROUP_get_ecparameters
+      {$if not defined(EC_GROUP_get_ecparameters_allownil)}
+      EC_GROUP_get_ecparameters := @ERR_EC_GROUP_get_ecparameters;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_get_ecparameters_removed)}
-   if EC_GROUP_get_ecparameters_removed <= LibVersion then
-     {$if declared(_EC_GROUP_get_ecparameters)}
-     EC_GROUP_get_ecparameters := @_EC_GROUP_get_ecparameters
-     {$else}
-       {$IF declared(ERR_EC_GROUP_get_ecparameters)}
-       EC_GROUP_get_ecparameters := @ERR_EC_GROUP_get_ecparameters
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_get_ecparameters) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_get_ecparameters');
+    {$if declared(EC_GROUP_get_ecparameters_removed)}
+    if EC_GROUP_get_ecparameters_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_ecparameters)}
+      EC_GROUP_get_ecparameters := @_EC_GROUP_get_ecparameters;
+      {$else}
+      {$if not defined(EC_GROUP_get_ecparameters_allownil)}
+      EC_GROUP_get_ecparameters := @ERR_EC_GROUP_get_ecparameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_ecparameters_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_ecparameters := @ERR_EC_GROUP_get_ecparameters;
+      AFailed.Add('EC_GROUP_get_ecparameters');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GROUP_new_from_ecpkparameters) then 
+ {introduced 1.1.0}
+  EC_GROUP_new_from_ecpkparameters := LoadLibFunction(ADllHandle, EC_GROUP_new_from_ecpkparameters_procname);
+  FuncLoaded := assigned(EC_GROUP_new_from_ecpkparameters);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_new_from_ecpkparameters_introduced)}
     if LibVersion < EC_GROUP_new_from_ecpkparameters_introduced then
+    begin
       {$if declared(FC_EC_GROUP_new_from_ecpkparameters)}
-      EC_GROUP_new_from_ecpkparameters := @FC_EC_GROUP_new_from_ecpkparameters
+      EC_GROUP_new_from_ecpkparameters := @FC_EC_GROUP_new_from_ecpkparameters;
       {$else}
-      EC_GROUP_new_from_ecpkparameters := @ERR_EC_GROUP_new_from_ecpkparameters
+      {$if not defined(EC_GROUP_new_from_ecpkparameters_allownil)}
+      EC_GROUP_new_from_ecpkparameters := @ERR_EC_GROUP_new_from_ecpkparameters;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_new_from_ecpkparameters_removed)}
-   if EC_GROUP_new_from_ecpkparameters_removed <= LibVersion then
-     {$if declared(_EC_GROUP_new_from_ecpkparameters)}
-     EC_GROUP_new_from_ecpkparameters := @_EC_GROUP_new_from_ecpkparameters
-     {$else}
-       {$IF declared(ERR_EC_GROUP_new_from_ecpkparameters)}
-       EC_GROUP_new_from_ecpkparameters := @ERR_EC_GROUP_new_from_ecpkparameters
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_new_from_ecpkparameters) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_new_from_ecpkparameters');
+    {$if declared(EC_GROUP_new_from_ecpkparameters_removed)}
+    if EC_GROUP_new_from_ecpkparameters_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_new_from_ecpkparameters)}
+      EC_GROUP_new_from_ecpkparameters := @_EC_GROUP_new_from_ecpkparameters;
+      {$else}
+      {$if not defined(EC_GROUP_new_from_ecpkparameters_allownil)}
+      EC_GROUP_new_from_ecpkparameters := @ERR_EC_GROUP_new_from_ecpkparameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_new_from_ecpkparameters_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_new_from_ecpkparameters := @ERR_EC_GROUP_new_from_ecpkparameters;
+      AFailed.Add('EC_GROUP_new_from_ecpkparameters');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_GROUP_get_ecpkparameters) then 
+ {introduced 1.1.0}
+  EC_GROUP_get_ecpkparameters := LoadLibFunction(ADllHandle, EC_GROUP_get_ecpkparameters_procname);
+  FuncLoaded := assigned(EC_GROUP_get_ecpkparameters);
+  if not FuncLoaded then
   begin
     {$if declared(EC_GROUP_get_ecpkparameters_introduced)}
     if LibVersion < EC_GROUP_get_ecpkparameters_introduced then
+    begin
       {$if declared(FC_EC_GROUP_get_ecpkparameters)}
-      EC_GROUP_get_ecpkparameters := @FC_EC_GROUP_get_ecpkparameters
+      EC_GROUP_get_ecpkparameters := @FC_EC_GROUP_get_ecpkparameters;
       {$else}
-      EC_GROUP_get_ecpkparameters := @ERR_EC_GROUP_get_ecpkparameters
+      {$if not defined(EC_GROUP_get_ecpkparameters_allownil)}
+      EC_GROUP_get_ecpkparameters := @ERR_EC_GROUP_get_ecpkparameters;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_GROUP_get_ecpkparameters_removed)}
-   if EC_GROUP_get_ecpkparameters_removed <= LibVersion then
-     {$if declared(_EC_GROUP_get_ecpkparameters)}
-     EC_GROUP_get_ecpkparameters := @_EC_GROUP_get_ecpkparameters
-     {$else}
-       {$IF declared(ERR_EC_GROUP_get_ecpkparameters)}
-       EC_GROUP_get_ecpkparameters := @ERR_EC_GROUP_get_ecpkparameters
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_GROUP_get_ecpkparameters) and Assigned(AFailed) then 
-     AFailed.Add('EC_GROUP_get_ecpkparameters');
+    {$if declared(EC_GROUP_get_ecpkparameters_removed)}
+    if EC_GROUP_get_ecpkparameters_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_ecpkparameters)}
+      EC_GROUP_get_ecpkparameters := @_EC_GROUP_get_ecpkparameters;
+      {$else}
+      {$if not defined(EC_GROUP_get_ecpkparameters_allownil)}
+      EC_GROUP_get_ecpkparameters := @ERR_EC_GROUP_get_ecpkparameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_ecpkparameters_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_ecpkparameters := @ERR_EC_GROUP_get_ecpkparameters;
+      AFailed.Add('EC_GROUP_get_ecpkparameters');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_get_builtin_curves := LoadLibFunction(ADllHandle, EC_get_builtin_curves_procname);
+  FuncLoaded := assigned(EC_get_builtin_curves);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_get_builtin_curves_introduced)}
+    if LibVersion < EC_get_builtin_curves_introduced then
+    begin
+      {$if declared(FC_EC_get_builtin_curves)}
+      EC_get_builtin_curves := @FC_EC_get_builtin_curves;
+      {$else}
+      {$if not defined(EC_get_builtin_curves_allownil)}
+      EC_get_builtin_curves := @ERR_EC_get_builtin_curves;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_get_builtin_curves_removed)}
+    if EC_get_builtin_curves_removed <= LibVersion then
+    begin
+      {$if declared(_EC_get_builtin_curves)}
+      EC_get_builtin_curves := @_EC_get_builtin_curves;
+      {$else}
+      {$if not defined(EC_get_builtin_curves_allownil)}
+      EC_get_builtin_curves := @ERR_EC_get_builtin_curves;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_get_builtin_curves_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_get_builtin_curves := @ERR_EC_get_builtin_curves;
+      AFailed.Add('EC_get_builtin_curves');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_POINT_set_affine_coordinates) then 
+  EC_curve_nid2nist := LoadLibFunction(ADllHandle, EC_curve_nid2nist_procname);
+  FuncLoaded := assigned(EC_curve_nid2nist);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_curve_nid2nist_introduced)}
+    if LibVersion < EC_curve_nid2nist_introduced then
+    begin
+      {$if declared(FC_EC_curve_nid2nist)}
+      EC_curve_nid2nist := @FC_EC_curve_nid2nist;
+      {$else}
+      {$if not defined(EC_curve_nid2nist_allownil)}
+      EC_curve_nid2nist := @ERR_EC_curve_nid2nist;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_curve_nid2nist_removed)}
+    if EC_curve_nid2nist_removed <= LibVersion then
+    begin
+      {$if declared(_EC_curve_nid2nist)}
+      EC_curve_nid2nist := @_EC_curve_nid2nist;
+      {$else}
+      {$if not defined(EC_curve_nid2nist_allownil)}
+      EC_curve_nid2nist := @ERR_EC_curve_nid2nist;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_curve_nid2nist_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_curve_nid2nist := @ERR_EC_curve_nid2nist;
+      AFailed.Add('EC_curve_nid2nist');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_curve_nist2nid := LoadLibFunction(ADllHandle, EC_curve_nist2nid_procname);
+  FuncLoaded := assigned(EC_curve_nist2nid);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_curve_nist2nid_introduced)}
+    if LibVersion < EC_curve_nist2nid_introduced then
+    begin
+      {$if declared(FC_EC_curve_nist2nid)}
+      EC_curve_nist2nid := @FC_EC_curve_nist2nid;
+      {$else}
+      {$if not defined(EC_curve_nist2nid_allownil)}
+      EC_curve_nist2nid := @ERR_EC_curve_nist2nid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_curve_nist2nid_removed)}
+    if EC_curve_nist2nid_removed <= LibVersion then
+    begin
+      {$if declared(_EC_curve_nist2nid)}
+      EC_curve_nist2nid := @_EC_curve_nist2nid;
+      {$else}
+      {$if not defined(EC_curve_nist2nid_allownil)}
+      EC_curve_nist2nid := @ERR_EC_curve_nist2nid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_curve_nist2nid_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_curve_nist2nid := @ERR_EC_curve_nist2nid;
+      AFailed.Add('EC_curve_nist2nid');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_new := LoadLibFunction(ADllHandle, EC_POINT_new_procname);
+  FuncLoaded := assigned(EC_POINT_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_new_introduced)}
+    if LibVersion < EC_POINT_new_introduced then
+    begin
+      {$if declared(FC_EC_POINT_new)}
+      EC_POINT_new := @FC_EC_POINT_new;
+      {$else}
+      {$if not defined(EC_POINT_new_allownil)}
+      EC_POINT_new := @ERR_EC_POINT_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_new_removed)}
+    if EC_POINT_new_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_new)}
+      EC_POINT_new := @_EC_POINT_new;
+      {$else}
+      {$if not defined(EC_POINT_new_allownil)}
+      EC_POINT_new := @ERR_EC_POINT_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_new_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_new := @ERR_EC_POINT_new;
+      AFailed.Add('EC_POINT_new');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_free := LoadLibFunction(ADllHandle, EC_POINT_free_procname);
+  FuncLoaded := assigned(EC_POINT_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_free_introduced)}
+    if LibVersion < EC_POINT_free_introduced then
+    begin
+      {$if declared(FC_EC_POINT_free)}
+      EC_POINT_free := @FC_EC_POINT_free;
+      {$else}
+      {$if not defined(EC_POINT_free_allownil)}
+      EC_POINT_free := @ERR_EC_POINT_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_free_removed)}
+    if EC_POINT_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_free)}
+      EC_POINT_free := @_EC_POINT_free;
+      {$else}
+      {$if not defined(EC_POINT_free_allownil)}
+      EC_POINT_free := @ERR_EC_POINT_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_free := @ERR_EC_POINT_free;
+      AFailed.Add('EC_POINT_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_clear_free := LoadLibFunction(ADllHandle, EC_POINT_clear_free_procname);
+  FuncLoaded := assigned(EC_POINT_clear_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_clear_free_introduced)}
+    if LibVersion < EC_POINT_clear_free_introduced then
+    begin
+      {$if declared(FC_EC_POINT_clear_free)}
+      EC_POINT_clear_free := @FC_EC_POINT_clear_free;
+      {$else}
+      {$if not defined(EC_POINT_clear_free_allownil)}
+      EC_POINT_clear_free := @ERR_EC_POINT_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_clear_free_removed)}
+    if EC_POINT_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_clear_free)}
+      EC_POINT_clear_free := @_EC_POINT_clear_free;
+      {$else}
+      {$if not defined(EC_POINT_clear_free_allownil)}
+      EC_POINT_clear_free := @ERR_EC_POINT_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_clear_free := @ERR_EC_POINT_clear_free;
+      AFailed.Add('EC_POINT_clear_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_copy := LoadLibFunction(ADllHandle, EC_POINT_copy_procname);
+  FuncLoaded := assigned(EC_POINT_copy);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_copy_introduced)}
+    if LibVersion < EC_POINT_copy_introduced then
+    begin
+      {$if declared(FC_EC_POINT_copy)}
+      EC_POINT_copy := @FC_EC_POINT_copy;
+      {$else}
+      {$if not defined(EC_POINT_copy_allownil)}
+      EC_POINT_copy := @ERR_EC_POINT_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_copy_removed)}
+    if EC_POINT_copy_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_copy)}
+      EC_POINT_copy := @_EC_POINT_copy;
+      {$else}
+      {$if not defined(EC_POINT_copy_allownil)}
+      EC_POINT_copy := @ERR_EC_POINT_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_copy_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_copy := @ERR_EC_POINT_copy;
+      AFailed.Add('EC_POINT_copy');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_dup := LoadLibFunction(ADllHandle, EC_POINT_dup_procname);
+  FuncLoaded := assigned(EC_POINT_dup);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_dup_introduced)}
+    if LibVersion < EC_POINT_dup_introduced then
+    begin
+      {$if declared(FC_EC_POINT_dup)}
+      EC_POINT_dup := @FC_EC_POINT_dup;
+      {$else}
+      {$if not defined(EC_POINT_dup_allownil)}
+      EC_POINT_dup := @ERR_EC_POINT_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_dup_removed)}
+    if EC_POINT_dup_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_dup)}
+      EC_POINT_dup := @_EC_POINT_dup;
+      {$else}
+      {$if not defined(EC_POINT_dup_allownil)}
+      EC_POINT_dup := @ERR_EC_POINT_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_dup_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_dup := @ERR_EC_POINT_dup;
+      AFailed.Add('EC_POINT_dup');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_method_of := LoadLibFunction(ADllHandle, EC_POINT_method_of_procname);
+  FuncLoaded := assigned(EC_POINT_method_of);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_method_of_introduced)}
+    if LibVersion < EC_POINT_method_of_introduced then
+    begin
+      {$if declared(FC_EC_POINT_method_of)}
+      EC_POINT_method_of := @FC_EC_POINT_method_of;
+      {$else}
+      {$if not defined(EC_POINT_method_of_allownil)}
+      EC_POINT_method_of := @ERR_EC_POINT_method_of;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_method_of_removed)}
+    if EC_POINT_method_of_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_method_of)}
+      EC_POINT_method_of := @_EC_POINT_method_of;
+      {$else}
+      {$if not defined(EC_POINT_method_of_allownil)}
+      EC_POINT_method_of := @ERR_EC_POINT_method_of;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_method_of_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_method_of := @ERR_EC_POINT_method_of;
+      AFailed.Add('EC_POINT_method_of');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_set_to_infinity := LoadLibFunction(ADllHandle, EC_POINT_set_to_infinity_procname);
+  FuncLoaded := assigned(EC_POINT_set_to_infinity);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_to_infinity_introduced)}
+    if LibVersion < EC_POINT_set_to_infinity_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_to_infinity)}
+      EC_POINT_set_to_infinity := @FC_EC_POINT_set_to_infinity;
+      {$else}
+      {$if not defined(EC_POINT_set_to_infinity_allownil)}
+      EC_POINT_set_to_infinity := @ERR_EC_POINT_set_to_infinity;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_to_infinity_removed)}
+    if EC_POINT_set_to_infinity_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_to_infinity)}
+      EC_POINT_set_to_infinity := @_EC_POINT_set_to_infinity;
+      {$else}
+      {$if not defined(EC_POINT_set_to_infinity_allownil)}
+      EC_POINT_set_to_infinity := @ERR_EC_POINT_set_to_infinity;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_to_infinity_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_to_infinity := @ERR_EC_POINT_set_to_infinity;
+      AFailed.Add('EC_POINT_set_to_infinity');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_set_Jprojective_coordinates_GFp := LoadLibFunction(ADllHandle, EC_POINT_set_Jprojective_coordinates_GFp_procname);
+  FuncLoaded := assigned(EC_POINT_set_Jprojective_coordinates_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_Jprojective_coordinates_GFp_introduced)}
+    if LibVersion < EC_POINT_set_Jprojective_coordinates_GFp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_Jprojective_coordinates_GFp)}
+      EC_POINT_set_Jprojective_coordinates_GFp := @FC_EC_POINT_set_Jprojective_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_Jprojective_coordinates_GFp_allownil)}
+      EC_POINT_set_Jprojective_coordinates_GFp := @ERR_EC_POINT_set_Jprojective_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_Jprojective_coordinates_GFp_removed)}
+    if EC_POINT_set_Jprojective_coordinates_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_Jprojective_coordinates_GFp)}
+      EC_POINT_set_Jprojective_coordinates_GFp := @_EC_POINT_set_Jprojective_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_Jprojective_coordinates_GFp_allownil)}
+      EC_POINT_set_Jprojective_coordinates_GFp := @ERR_EC_POINT_set_Jprojective_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_Jprojective_coordinates_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_Jprojective_coordinates_GFp := @ERR_EC_POINT_set_Jprojective_coordinates_GFp;
+      AFailed.Add('EC_POINT_set_Jprojective_coordinates_GFp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_get_Jprojective_coordinates_GFp := LoadLibFunction(ADllHandle, EC_POINT_get_Jprojective_coordinates_GFp_procname);
+  FuncLoaded := assigned(EC_POINT_get_Jprojective_coordinates_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_get_Jprojective_coordinates_GFp_introduced)}
+    if LibVersion < EC_POINT_get_Jprojective_coordinates_GFp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_get_Jprojective_coordinates_GFp)}
+      EC_POINT_get_Jprojective_coordinates_GFp := @FC_EC_POINT_get_Jprojective_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_get_Jprojective_coordinates_GFp_allownil)}
+      EC_POINT_get_Jprojective_coordinates_GFp := @ERR_EC_POINT_get_Jprojective_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_get_Jprojective_coordinates_GFp_removed)}
+    if EC_POINT_get_Jprojective_coordinates_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_get_Jprojective_coordinates_GFp)}
+      EC_POINT_get_Jprojective_coordinates_GFp := @_EC_POINT_get_Jprojective_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_get_Jprojective_coordinates_GFp_allownil)}
+      EC_POINT_get_Jprojective_coordinates_GFp := @ERR_EC_POINT_get_Jprojective_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_get_Jprojective_coordinates_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_get_Jprojective_coordinates_GFp := @ERR_EC_POINT_get_Jprojective_coordinates_GFp;
+      AFailed.Add('EC_POINT_get_Jprojective_coordinates_GFp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_set_affine_coordinates := LoadLibFunction(ADllHandle, EC_POINT_set_affine_coordinates_procname);
+  FuncLoaded := assigned(EC_POINT_set_affine_coordinates);
+  if not FuncLoaded then
   begin
     {$if declared(EC_POINT_set_affine_coordinates_introduced)}
     if LibVersion < EC_POINT_set_affine_coordinates_introduced then
+    begin
       {$if declared(FC_EC_POINT_set_affine_coordinates)}
-      EC_POINT_set_affine_coordinates := @FC_EC_POINT_set_affine_coordinates
+      EC_POINT_set_affine_coordinates := @FC_EC_POINT_set_affine_coordinates;
       {$else}
-      EC_POINT_set_affine_coordinates := @ERR_EC_POINT_set_affine_coordinates
+      {$if not defined(EC_POINT_set_affine_coordinates_allownil)}
+      EC_POINT_set_affine_coordinates := @ERR_EC_POINT_set_affine_coordinates;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_POINT_set_affine_coordinates_removed)}
-   if EC_POINT_set_affine_coordinates_removed <= LibVersion then
-     {$if declared(_EC_POINT_set_affine_coordinates)}
-     EC_POINT_set_affine_coordinates := @_EC_POINT_set_affine_coordinates
-     {$else}
-       {$IF declared(ERR_EC_POINT_set_affine_coordinates)}
-       EC_POINT_set_affine_coordinates := @ERR_EC_POINT_set_affine_coordinates
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_POINT_set_affine_coordinates) and Assigned(AFailed) then 
-     AFailed.Add('EC_POINT_set_affine_coordinates');
+    {$if declared(EC_POINT_set_affine_coordinates_removed)}
+    if EC_POINT_set_affine_coordinates_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_affine_coordinates)}
+      EC_POINT_set_affine_coordinates := @_EC_POINT_set_affine_coordinates;
+      {$else}
+      {$if not defined(EC_POINT_set_affine_coordinates_allownil)}
+      EC_POINT_set_affine_coordinates := @ERR_EC_POINT_set_affine_coordinates;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_affine_coordinates_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_affine_coordinates := @ERR_EC_POINT_set_affine_coordinates;
+      AFailed.Add('EC_POINT_set_affine_coordinates');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_POINT_get_affine_coordinates) then 
+ {introduced 1.1.0}
+  EC_POINT_get_affine_coordinates := LoadLibFunction(ADllHandle, EC_POINT_get_affine_coordinates_procname);
+  FuncLoaded := assigned(EC_POINT_get_affine_coordinates);
+  if not FuncLoaded then
   begin
     {$if declared(EC_POINT_get_affine_coordinates_introduced)}
     if LibVersion < EC_POINT_get_affine_coordinates_introduced then
+    begin
       {$if declared(FC_EC_POINT_get_affine_coordinates)}
-      EC_POINT_get_affine_coordinates := @FC_EC_POINT_get_affine_coordinates
+      EC_POINT_get_affine_coordinates := @FC_EC_POINT_get_affine_coordinates;
       {$else}
-      EC_POINT_get_affine_coordinates := @ERR_EC_POINT_get_affine_coordinates
+      {$if not defined(EC_POINT_get_affine_coordinates_allownil)}
+      EC_POINT_get_affine_coordinates := @ERR_EC_POINT_get_affine_coordinates;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_POINT_get_affine_coordinates_removed)}
-   if EC_POINT_get_affine_coordinates_removed <= LibVersion then
-     {$if declared(_EC_POINT_get_affine_coordinates)}
-     EC_POINT_get_affine_coordinates := @_EC_POINT_get_affine_coordinates
-     {$else}
-       {$IF declared(ERR_EC_POINT_get_affine_coordinates)}
-       EC_POINT_get_affine_coordinates := @ERR_EC_POINT_get_affine_coordinates
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_POINT_get_affine_coordinates) and Assigned(AFailed) then 
-     AFailed.Add('EC_POINT_get_affine_coordinates');
+    {$if declared(EC_POINT_get_affine_coordinates_removed)}
+    if EC_POINT_get_affine_coordinates_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_get_affine_coordinates)}
+      EC_POINT_get_affine_coordinates := @_EC_POINT_get_affine_coordinates;
+      {$else}
+      {$if not defined(EC_POINT_get_affine_coordinates_allownil)}
+      EC_POINT_get_affine_coordinates := @ERR_EC_POINT_get_affine_coordinates;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_get_affine_coordinates_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_get_affine_coordinates := @ERR_EC_POINT_get_affine_coordinates;
+      AFailed.Add('EC_POINT_get_affine_coordinates');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_POINT_set_affine_coordinates_GFp := LoadLibFunction(ADllHandle, EC_POINT_set_affine_coordinates_GFp_procname);
+  FuncLoaded := assigned(EC_POINT_set_affine_coordinates_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_affine_coordinates_GFp_introduced)}
+    if LibVersion < EC_POINT_set_affine_coordinates_GFp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_affine_coordinates_GFp)}
+      EC_POINT_set_affine_coordinates_GFp := @FC_EC_POINT_set_affine_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_affine_coordinates_GFp_allownil)}
+      EC_POINT_set_affine_coordinates_GFp := @ERR_EC_POINT_set_affine_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_affine_coordinates_GFp_removed)}
+    if EC_POINT_set_affine_coordinates_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_affine_coordinates_GFp)}
+      EC_POINT_set_affine_coordinates_GFp := @_EC_POINT_set_affine_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_affine_coordinates_GFp_allownil)}
+      EC_POINT_set_affine_coordinates_GFp := @ERR_EC_POINT_set_affine_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_affine_coordinates_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_affine_coordinates_GFp := @ERR_EC_POINT_set_affine_coordinates_GFp;
+      AFailed.Add('EC_POINT_set_affine_coordinates_GFp');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_POINT_set_compressed_coordinates) then 
+  EC_POINT_get_affine_coordinates_GFp := LoadLibFunction(ADllHandle, EC_POINT_get_affine_coordinates_GFp_procname);
+  FuncLoaded := assigned(EC_POINT_get_affine_coordinates_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_get_affine_coordinates_GFp_introduced)}
+    if LibVersion < EC_POINT_get_affine_coordinates_GFp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_get_affine_coordinates_GFp)}
+      EC_POINT_get_affine_coordinates_GFp := @FC_EC_POINT_get_affine_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_get_affine_coordinates_GFp_allownil)}
+      EC_POINT_get_affine_coordinates_GFp := @ERR_EC_POINT_get_affine_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_get_affine_coordinates_GFp_removed)}
+    if EC_POINT_get_affine_coordinates_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_get_affine_coordinates_GFp)}
+      EC_POINT_get_affine_coordinates_GFp := @_EC_POINT_get_affine_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_get_affine_coordinates_GFp_allownil)}
+      EC_POINT_get_affine_coordinates_GFp := @ERR_EC_POINT_get_affine_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_get_affine_coordinates_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_get_affine_coordinates_GFp := @ERR_EC_POINT_get_affine_coordinates_GFp;
+      AFailed.Add('EC_POINT_get_affine_coordinates_GFp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_set_compressed_coordinates := LoadLibFunction(ADllHandle, EC_POINT_set_compressed_coordinates_procname);
+  FuncLoaded := assigned(EC_POINT_set_compressed_coordinates);
+  if not FuncLoaded then
   begin
     {$if declared(EC_POINT_set_compressed_coordinates_introduced)}
     if LibVersion < EC_POINT_set_compressed_coordinates_introduced then
+    begin
       {$if declared(FC_EC_POINT_set_compressed_coordinates)}
-      EC_POINT_set_compressed_coordinates := @FC_EC_POINT_set_compressed_coordinates
+      EC_POINT_set_compressed_coordinates := @FC_EC_POINT_set_compressed_coordinates;
       {$else}
-      EC_POINT_set_compressed_coordinates := @ERR_EC_POINT_set_compressed_coordinates
+      {$if not defined(EC_POINT_set_compressed_coordinates_allownil)}
+      EC_POINT_set_compressed_coordinates := @ERR_EC_POINT_set_compressed_coordinates;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_POINT_set_compressed_coordinates_removed)}
-   if EC_POINT_set_compressed_coordinates_removed <= LibVersion then
-     {$if declared(_EC_POINT_set_compressed_coordinates)}
-     EC_POINT_set_compressed_coordinates := @_EC_POINT_set_compressed_coordinates
-     {$else}
-       {$IF declared(ERR_EC_POINT_set_compressed_coordinates)}
-       EC_POINT_set_compressed_coordinates := @ERR_EC_POINT_set_compressed_coordinates
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_POINT_set_compressed_coordinates) and Assigned(AFailed) then 
-     AFailed.Add('EC_POINT_set_compressed_coordinates');
+    {$if declared(EC_POINT_set_compressed_coordinates_removed)}
+    if EC_POINT_set_compressed_coordinates_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_compressed_coordinates)}
+      EC_POINT_set_compressed_coordinates := @_EC_POINT_set_compressed_coordinates;
+      {$else}
+      {$if not defined(EC_POINT_set_compressed_coordinates_allownil)}
+      EC_POINT_set_compressed_coordinates := @ERR_EC_POINT_set_compressed_coordinates;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_compressed_coordinates_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_compressed_coordinates := @ERR_EC_POINT_set_compressed_coordinates;
+      AFailed.Add('EC_POINT_set_compressed_coordinates');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_POINT_set_compressed_coordinates_GFp := LoadLibFunction(ADllHandle, EC_POINT_set_compressed_coordinates_GFp_procname);
+  FuncLoaded := assigned(EC_POINT_set_compressed_coordinates_GFp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_compressed_coordinates_GFp_introduced)}
+    if LibVersion < EC_POINT_set_compressed_coordinates_GFp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_compressed_coordinates_GFp)}
+      EC_POINT_set_compressed_coordinates_GFp := @FC_EC_POINT_set_compressed_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_compressed_coordinates_GFp_allownil)}
+      EC_POINT_set_compressed_coordinates_GFp := @ERR_EC_POINT_set_compressed_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_compressed_coordinates_GFp_removed)}
+    if EC_POINT_set_compressed_coordinates_GFp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_compressed_coordinates_GFp)}
+      EC_POINT_set_compressed_coordinates_GFp := @_EC_POINT_set_compressed_coordinates_GFp;
+      {$else}
+      {$if not defined(EC_POINT_set_compressed_coordinates_GFp_allownil)}
+      EC_POINT_set_compressed_coordinates_GFp := @ERR_EC_POINT_set_compressed_coordinates_GFp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_compressed_coordinates_GFp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_compressed_coordinates_GFp := @ERR_EC_POINT_set_compressed_coordinates_GFp;
+      AFailed.Add('EC_POINT_set_compressed_coordinates_GFp');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_POINT_point2buf) then 
+  EC_POINT_set_affine_coordinates_GF2m := LoadLibFunction(ADllHandle, EC_POINT_set_affine_coordinates_GF2m_procname);
+  FuncLoaded := assigned(EC_POINT_set_affine_coordinates_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_affine_coordinates_GF2m_introduced)}
+    if LibVersion < EC_POINT_set_affine_coordinates_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_affine_coordinates_GF2m)}
+      EC_POINT_set_affine_coordinates_GF2m := @FC_EC_POINT_set_affine_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_set_affine_coordinates_GF2m_allownil)}
+      EC_POINT_set_affine_coordinates_GF2m := @ERR_EC_POINT_set_affine_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_affine_coordinates_GF2m_removed)}
+    if EC_POINT_set_affine_coordinates_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_affine_coordinates_GF2m)}
+      EC_POINT_set_affine_coordinates_GF2m := @_EC_POINT_set_affine_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_set_affine_coordinates_GF2m_allownil)}
+      EC_POINT_set_affine_coordinates_GF2m := @ERR_EC_POINT_set_affine_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_affine_coordinates_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_affine_coordinates_GF2m := @ERR_EC_POINT_set_affine_coordinates_GF2m;
+      AFailed.Add('EC_POINT_set_affine_coordinates_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_get_affine_coordinates_GF2m := LoadLibFunction(ADllHandle, EC_POINT_get_affine_coordinates_GF2m_procname);
+  FuncLoaded := assigned(EC_POINT_get_affine_coordinates_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_get_affine_coordinates_GF2m_introduced)}
+    if LibVersion < EC_POINT_get_affine_coordinates_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_POINT_get_affine_coordinates_GF2m)}
+      EC_POINT_get_affine_coordinates_GF2m := @FC_EC_POINT_get_affine_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_get_affine_coordinates_GF2m_allownil)}
+      EC_POINT_get_affine_coordinates_GF2m := @ERR_EC_POINT_get_affine_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_get_affine_coordinates_GF2m_removed)}
+    if EC_POINT_get_affine_coordinates_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_get_affine_coordinates_GF2m)}
+      EC_POINT_get_affine_coordinates_GF2m := @_EC_POINT_get_affine_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_get_affine_coordinates_GF2m_allownil)}
+      EC_POINT_get_affine_coordinates_GF2m := @ERR_EC_POINT_get_affine_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_get_affine_coordinates_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_get_affine_coordinates_GF2m := @ERR_EC_POINT_get_affine_coordinates_GF2m;
+      AFailed.Add('EC_POINT_get_affine_coordinates_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_set_compressed_coordinates_GF2m := LoadLibFunction(ADllHandle, EC_POINT_set_compressed_coordinates_GF2m_procname);
+  FuncLoaded := assigned(EC_POINT_set_compressed_coordinates_GF2m);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_set_compressed_coordinates_GF2m_introduced)}
+    if LibVersion < EC_POINT_set_compressed_coordinates_GF2m_introduced then
+    begin
+      {$if declared(FC_EC_POINT_set_compressed_coordinates_GF2m)}
+      EC_POINT_set_compressed_coordinates_GF2m := @FC_EC_POINT_set_compressed_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_set_compressed_coordinates_GF2m_allownil)}
+      EC_POINT_set_compressed_coordinates_GF2m := @ERR_EC_POINT_set_compressed_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_set_compressed_coordinates_GF2m_removed)}
+    if EC_POINT_set_compressed_coordinates_GF2m_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_set_compressed_coordinates_GF2m)}
+      EC_POINT_set_compressed_coordinates_GF2m := @_EC_POINT_set_compressed_coordinates_GF2m;
+      {$else}
+      {$if not defined(EC_POINT_set_compressed_coordinates_GF2m_allownil)}
+      EC_POINT_set_compressed_coordinates_GF2m := @ERR_EC_POINT_set_compressed_coordinates_GF2m;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_set_compressed_coordinates_GF2m_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_set_compressed_coordinates_GF2m := @ERR_EC_POINT_set_compressed_coordinates_GF2m;
+      AFailed.Add('EC_POINT_set_compressed_coordinates_GF2m');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_point2oct := LoadLibFunction(ADllHandle, EC_POINT_point2oct_procname);
+  FuncLoaded := assigned(EC_POINT_point2oct);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_point2oct_introduced)}
+    if LibVersion < EC_POINT_point2oct_introduced then
+    begin
+      {$if declared(FC_EC_POINT_point2oct)}
+      EC_POINT_point2oct := @FC_EC_POINT_point2oct;
+      {$else}
+      {$if not defined(EC_POINT_point2oct_allownil)}
+      EC_POINT_point2oct := @ERR_EC_POINT_point2oct;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_point2oct_removed)}
+    if EC_POINT_point2oct_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_point2oct)}
+      EC_POINT_point2oct := @_EC_POINT_point2oct;
+      {$else}
+      {$if not defined(EC_POINT_point2oct_allownil)}
+      EC_POINT_point2oct := @ERR_EC_POINT_point2oct;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_point2oct_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_point2oct := @ERR_EC_POINT_point2oct;
+      AFailed.Add('EC_POINT_point2oct');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_oct2point := LoadLibFunction(ADllHandle, EC_POINT_oct2point_procname);
+  FuncLoaded := assigned(EC_POINT_oct2point);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_oct2point_introduced)}
+    if LibVersion < EC_POINT_oct2point_introduced then
+    begin
+      {$if declared(FC_EC_POINT_oct2point)}
+      EC_POINT_oct2point := @FC_EC_POINT_oct2point;
+      {$else}
+      {$if not defined(EC_POINT_oct2point_allownil)}
+      EC_POINT_oct2point := @ERR_EC_POINT_oct2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_oct2point_removed)}
+    if EC_POINT_oct2point_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_oct2point)}
+      EC_POINT_oct2point := @_EC_POINT_oct2point;
+      {$else}
+      {$if not defined(EC_POINT_oct2point_allownil)}
+      EC_POINT_oct2point := @ERR_EC_POINT_oct2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_oct2point_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_oct2point := @ERR_EC_POINT_oct2point;
+      AFailed.Add('EC_POINT_oct2point');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_point2buf := LoadLibFunction(ADllHandle, EC_POINT_point2buf_procname);
+  FuncLoaded := assigned(EC_POINT_point2buf);
+  if not FuncLoaded then
   begin
     {$if declared(EC_POINT_point2buf_introduced)}
     if LibVersion < EC_POINT_point2buf_introduced then
+    begin
       {$if declared(FC_EC_POINT_point2buf)}
-      EC_POINT_point2buf := @FC_EC_POINT_point2buf
+      EC_POINT_point2buf := @FC_EC_POINT_point2buf;
       {$else}
-      EC_POINT_point2buf := @ERR_EC_POINT_point2buf
+      {$if not defined(EC_POINT_point2buf_allownil)}
+      EC_POINT_point2buf := @ERR_EC_POINT_point2buf;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_POINT_point2buf_removed)}
-   if EC_POINT_point2buf_removed <= LibVersion then
-     {$if declared(_EC_POINT_point2buf)}
-     EC_POINT_point2buf := @_EC_POINT_point2buf
-     {$else}
-       {$IF declared(ERR_EC_POINT_point2buf)}
-       EC_POINT_point2buf := @ERR_EC_POINT_point2buf
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_POINT_point2buf) and Assigned(AFailed) then 
-     AFailed.Add('EC_POINT_point2buf');
+    {$if declared(EC_POINT_point2buf_removed)}
+    if EC_POINT_point2buf_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_point2buf)}
+      EC_POINT_point2buf := @_EC_POINT_point2buf;
+      {$else}
+      {$if not defined(EC_POINT_point2buf_allownil)}
+      EC_POINT_point2buf := @ERR_EC_POINT_point2buf;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_point2buf_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_point2buf := @ERR_EC_POINT_point2buf;
+      AFailed.Add('EC_POINT_point2buf');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_POINT_point2bn := LoadLibFunction(ADllHandle, EC_POINT_point2bn_procname);
+  FuncLoaded := assigned(EC_POINT_point2bn);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_point2bn_introduced)}
+    if LibVersion < EC_POINT_point2bn_introduced then
+    begin
+      {$if declared(FC_EC_POINT_point2bn)}
+      EC_POINT_point2bn := @FC_EC_POINT_point2bn;
+      {$else}
+      {$if not defined(EC_POINT_point2bn_allownil)}
+      EC_POINT_point2bn := @ERR_EC_POINT_point2bn;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_point2bn_removed)}
+    if EC_POINT_point2bn_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_point2bn)}
+      EC_POINT_point2bn := @_EC_POINT_point2bn;
+      {$else}
+      {$if not defined(EC_POINT_point2bn_allownil)}
+      EC_POINT_point2bn := @ERR_EC_POINT_point2bn;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_point2bn_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_point2bn := @ERR_EC_POINT_point2bn;
+      AFailed.Add('EC_POINT_point2bn');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_get0_engine) then 
+  EC_POINT_bn2point := LoadLibFunction(ADllHandle, EC_POINT_bn2point_procname);
+  FuncLoaded := assigned(EC_POINT_bn2point);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_bn2point_introduced)}
+    if LibVersion < EC_POINT_bn2point_introduced then
+    begin
+      {$if declared(FC_EC_POINT_bn2point)}
+      EC_POINT_bn2point := @FC_EC_POINT_bn2point;
+      {$else}
+      {$if not defined(EC_POINT_bn2point_allownil)}
+      EC_POINT_bn2point := @ERR_EC_POINT_bn2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_bn2point_removed)}
+    if EC_POINT_bn2point_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_bn2point)}
+      EC_POINT_bn2point := @_EC_POINT_bn2point;
+      {$else}
+      {$if not defined(EC_POINT_bn2point_allownil)}
+      EC_POINT_bn2point := @ERR_EC_POINT_bn2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_bn2point_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_bn2point := @ERR_EC_POINT_bn2point;
+      AFailed.Add('EC_POINT_bn2point');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_point2hex := LoadLibFunction(ADllHandle, EC_POINT_point2hex_procname);
+  FuncLoaded := assigned(EC_POINT_point2hex);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_point2hex_introduced)}
+    if LibVersion < EC_POINT_point2hex_introduced then
+    begin
+      {$if declared(FC_EC_POINT_point2hex)}
+      EC_POINT_point2hex := @FC_EC_POINT_point2hex;
+      {$else}
+      {$if not defined(EC_POINT_point2hex_allownil)}
+      EC_POINT_point2hex := @ERR_EC_POINT_point2hex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_point2hex_removed)}
+    if EC_POINT_point2hex_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_point2hex)}
+      EC_POINT_point2hex := @_EC_POINT_point2hex;
+      {$else}
+      {$if not defined(EC_POINT_point2hex_allownil)}
+      EC_POINT_point2hex := @ERR_EC_POINT_point2hex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_point2hex_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_point2hex := @ERR_EC_POINT_point2hex;
+      AFailed.Add('EC_POINT_point2hex');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_hex2point := LoadLibFunction(ADllHandle, EC_POINT_hex2point_procname);
+  FuncLoaded := assigned(EC_POINT_hex2point);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_hex2point_introduced)}
+    if LibVersion < EC_POINT_hex2point_introduced then
+    begin
+      {$if declared(FC_EC_POINT_hex2point)}
+      EC_POINT_hex2point := @FC_EC_POINT_hex2point;
+      {$else}
+      {$if not defined(EC_POINT_hex2point_allownil)}
+      EC_POINT_hex2point := @ERR_EC_POINT_hex2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_hex2point_removed)}
+    if EC_POINT_hex2point_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_hex2point)}
+      EC_POINT_hex2point := @_EC_POINT_hex2point;
+      {$else}
+      {$if not defined(EC_POINT_hex2point_allownil)}
+      EC_POINT_hex2point := @ERR_EC_POINT_hex2point;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_hex2point_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_hex2point := @ERR_EC_POINT_hex2point;
+      AFailed.Add('EC_POINT_hex2point');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_add := LoadLibFunction(ADllHandle, EC_POINT_add_procname);
+  FuncLoaded := assigned(EC_POINT_add);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_add_introduced)}
+    if LibVersion < EC_POINT_add_introduced then
+    begin
+      {$if declared(FC_EC_POINT_add)}
+      EC_POINT_add := @FC_EC_POINT_add;
+      {$else}
+      {$if not defined(EC_POINT_add_allownil)}
+      EC_POINT_add := @ERR_EC_POINT_add;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_add_removed)}
+    if EC_POINT_add_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_add)}
+      EC_POINT_add := @_EC_POINT_add;
+      {$else}
+      {$if not defined(EC_POINT_add_allownil)}
+      EC_POINT_add := @ERR_EC_POINT_add;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_add_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_add := @ERR_EC_POINT_add;
+      AFailed.Add('EC_POINT_add');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_dbl := LoadLibFunction(ADllHandle, EC_POINT_dbl_procname);
+  FuncLoaded := assigned(EC_POINT_dbl);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_dbl_introduced)}
+    if LibVersion < EC_POINT_dbl_introduced then
+    begin
+      {$if declared(FC_EC_POINT_dbl)}
+      EC_POINT_dbl := @FC_EC_POINT_dbl;
+      {$else}
+      {$if not defined(EC_POINT_dbl_allownil)}
+      EC_POINT_dbl := @ERR_EC_POINT_dbl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_dbl_removed)}
+    if EC_POINT_dbl_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_dbl)}
+      EC_POINT_dbl := @_EC_POINT_dbl;
+      {$else}
+      {$if not defined(EC_POINT_dbl_allownil)}
+      EC_POINT_dbl := @ERR_EC_POINT_dbl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_dbl_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_dbl := @ERR_EC_POINT_dbl;
+      AFailed.Add('EC_POINT_dbl');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_invert := LoadLibFunction(ADllHandle, EC_POINT_invert_procname);
+  FuncLoaded := assigned(EC_POINT_invert);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_invert_introduced)}
+    if LibVersion < EC_POINT_invert_introduced then
+    begin
+      {$if declared(FC_EC_POINT_invert)}
+      EC_POINT_invert := @FC_EC_POINT_invert;
+      {$else}
+      {$if not defined(EC_POINT_invert_allownil)}
+      EC_POINT_invert := @ERR_EC_POINT_invert;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_invert_removed)}
+    if EC_POINT_invert_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_invert)}
+      EC_POINT_invert := @_EC_POINT_invert;
+      {$else}
+      {$if not defined(EC_POINT_invert_allownil)}
+      EC_POINT_invert := @ERR_EC_POINT_invert;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_invert_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_invert := @ERR_EC_POINT_invert;
+      AFailed.Add('EC_POINT_invert');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_is_at_infinity := LoadLibFunction(ADllHandle, EC_POINT_is_at_infinity_procname);
+  FuncLoaded := assigned(EC_POINT_is_at_infinity);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_is_at_infinity_introduced)}
+    if LibVersion < EC_POINT_is_at_infinity_introduced then
+    begin
+      {$if declared(FC_EC_POINT_is_at_infinity)}
+      EC_POINT_is_at_infinity := @FC_EC_POINT_is_at_infinity;
+      {$else}
+      {$if not defined(EC_POINT_is_at_infinity_allownil)}
+      EC_POINT_is_at_infinity := @ERR_EC_POINT_is_at_infinity;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_is_at_infinity_removed)}
+    if EC_POINT_is_at_infinity_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_is_at_infinity)}
+      EC_POINT_is_at_infinity := @_EC_POINT_is_at_infinity;
+      {$else}
+      {$if not defined(EC_POINT_is_at_infinity_allownil)}
+      EC_POINT_is_at_infinity := @ERR_EC_POINT_is_at_infinity;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_is_at_infinity_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_is_at_infinity := @ERR_EC_POINT_is_at_infinity;
+      AFailed.Add('EC_POINT_is_at_infinity');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_is_on_curve := LoadLibFunction(ADllHandle, EC_POINT_is_on_curve_procname);
+  FuncLoaded := assigned(EC_POINT_is_on_curve);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_is_on_curve_introduced)}
+    if LibVersion < EC_POINT_is_on_curve_introduced then
+    begin
+      {$if declared(FC_EC_POINT_is_on_curve)}
+      EC_POINT_is_on_curve := @FC_EC_POINT_is_on_curve;
+      {$else}
+      {$if not defined(EC_POINT_is_on_curve_allownil)}
+      EC_POINT_is_on_curve := @ERR_EC_POINT_is_on_curve;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_is_on_curve_removed)}
+    if EC_POINT_is_on_curve_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_is_on_curve)}
+      EC_POINT_is_on_curve := @_EC_POINT_is_on_curve;
+      {$else}
+      {$if not defined(EC_POINT_is_on_curve_allownil)}
+      EC_POINT_is_on_curve := @ERR_EC_POINT_is_on_curve;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_is_on_curve_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_is_on_curve := @ERR_EC_POINT_is_on_curve;
+      AFailed.Add('EC_POINT_is_on_curve');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_cmp := LoadLibFunction(ADllHandle, EC_POINT_cmp_procname);
+  FuncLoaded := assigned(EC_POINT_cmp);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_cmp_introduced)}
+    if LibVersion < EC_POINT_cmp_introduced then
+    begin
+      {$if declared(FC_EC_POINT_cmp)}
+      EC_POINT_cmp := @FC_EC_POINT_cmp;
+      {$else}
+      {$if not defined(EC_POINT_cmp_allownil)}
+      EC_POINT_cmp := @ERR_EC_POINT_cmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_cmp_removed)}
+    if EC_POINT_cmp_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_cmp)}
+      EC_POINT_cmp := @_EC_POINT_cmp;
+      {$else}
+      {$if not defined(EC_POINT_cmp_allownil)}
+      EC_POINT_cmp := @ERR_EC_POINT_cmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_cmp_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_cmp := @ERR_EC_POINT_cmp;
+      AFailed.Add('EC_POINT_cmp');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_make_affine := LoadLibFunction(ADllHandle, EC_POINT_make_affine_procname);
+  FuncLoaded := assigned(EC_POINT_make_affine);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_make_affine_introduced)}
+    if LibVersion < EC_POINT_make_affine_introduced then
+    begin
+      {$if declared(FC_EC_POINT_make_affine)}
+      EC_POINT_make_affine := @FC_EC_POINT_make_affine;
+      {$else}
+      {$if not defined(EC_POINT_make_affine_allownil)}
+      EC_POINT_make_affine := @ERR_EC_POINT_make_affine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_make_affine_removed)}
+    if EC_POINT_make_affine_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_make_affine)}
+      EC_POINT_make_affine := @_EC_POINT_make_affine;
+      {$else}
+      {$if not defined(EC_POINT_make_affine_allownil)}
+      EC_POINT_make_affine := @ERR_EC_POINT_make_affine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_make_affine_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_make_affine := @ERR_EC_POINT_make_affine;
+      AFailed.Add('EC_POINT_make_affine');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINTs_make_affine := LoadLibFunction(ADllHandle, EC_POINTs_make_affine_procname);
+  FuncLoaded := assigned(EC_POINTs_make_affine);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINTs_make_affine_introduced)}
+    if LibVersion < EC_POINTs_make_affine_introduced then
+    begin
+      {$if declared(FC_EC_POINTs_make_affine)}
+      EC_POINTs_make_affine := @FC_EC_POINTs_make_affine;
+      {$else}
+      {$if not defined(EC_POINTs_make_affine_allownil)}
+      EC_POINTs_make_affine := @ERR_EC_POINTs_make_affine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINTs_make_affine_removed)}
+    if EC_POINTs_make_affine_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINTs_make_affine)}
+      EC_POINTs_make_affine := @_EC_POINTs_make_affine;
+      {$else}
+      {$if not defined(EC_POINTs_make_affine_allownil)}
+      EC_POINTs_make_affine := @ERR_EC_POINTs_make_affine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINTs_make_affine_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINTs_make_affine := @ERR_EC_POINTs_make_affine;
+      AFailed.Add('EC_POINTs_make_affine');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINTs_mul := LoadLibFunction(ADllHandle, EC_POINTs_mul_procname);
+  FuncLoaded := assigned(EC_POINTs_mul);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINTs_mul_introduced)}
+    if LibVersion < EC_POINTs_mul_introduced then
+    begin
+      {$if declared(FC_EC_POINTs_mul)}
+      EC_POINTs_mul := @FC_EC_POINTs_mul;
+      {$else}
+      {$if not defined(EC_POINTs_mul_allownil)}
+      EC_POINTs_mul := @ERR_EC_POINTs_mul;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINTs_mul_removed)}
+    if EC_POINTs_mul_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINTs_mul)}
+      EC_POINTs_mul := @_EC_POINTs_mul;
+      {$else}
+      {$if not defined(EC_POINTs_mul_allownil)}
+      EC_POINTs_mul := @ERR_EC_POINTs_mul;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINTs_mul_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINTs_mul := @ERR_EC_POINTs_mul;
+      AFailed.Add('EC_POINTs_mul');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_POINT_mul := LoadLibFunction(ADllHandle, EC_POINT_mul_procname);
+  FuncLoaded := assigned(EC_POINT_mul);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_POINT_mul_introduced)}
+    if LibVersion < EC_POINT_mul_introduced then
+    begin
+      {$if declared(FC_EC_POINT_mul)}
+      EC_POINT_mul := @FC_EC_POINT_mul;
+      {$else}
+      {$if not defined(EC_POINT_mul_allownil)}
+      EC_POINT_mul := @ERR_EC_POINT_mul;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_POINT_mul_removed)}
+    if EC_POINT_mul_removed <= LibVersion then
+    begin
+      {$if declared(_EC_POINT_mul)}
+      EC_POINT_mul := @_EC_POINT_mul;
+      {$else}
+      {$if not defined(EC_POINT_mul_allownil)}
+      EC_POINT_mul := @ERR_EC_POINT_mul;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_POINT_mul_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_POINT_mul := @ERR_EC_POINT_mul;
+      AFailed.Add('EC_POINT_mul');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_precompute_mult := LoadLibFunction(ADllHandle, EC_GROUP_precompute_mult_procname);
+  FuncLoaded := assigned(EC_GROUP_precompute_mult);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_precompute_mult_introduced)}
+    if LibVersion < EC_GROUP_precompute_mult_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_precompute_mult)}
+      EC_GROUP_precompute_mult := @FC_EC_GROUP_precompute_mult;
+      {$else}
+      {$if not defined(EC_GROUP_precompute_mult_allownil)}
+      EC_GROUP_precompute_mult := @ERR_EC_GROUP_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_precompute_mult_removed)}
+    if EC_GROUP_precompute_mult_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_precompute_mult)}
+      EC_GROUP_precompute_mult := @_EC_GROUP_precompute_mult;
+      {$else}
+      {$if not defined(EC_GROUP_precompute_mult_allownil)}
+      EC_GROUP_precompute_mult := @ERR_EC_GROUP_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_precompute_mult_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_precompute_mult := @ERR_EC_GROUP_precompute_mult;
+      AFailed.Add('EC_GROUP_precompute_mult');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_have_precompute_mult := LoadLibFunction(ADllHandle, EC_GROUP_have_precompute_mult_procname);
+  FuncLoaded := assigned(EC_GROUP_have_precompute_mult);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_have_precompute_mult_introduced)}
+    if LibVersion < EC_GROUP_have_precompute_mult_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_have_precompute_mult)}
+      EC_GROUP_have_precompute_mult := @FC_EC_GROUP_have_precompute_mult;
+      {$else}
+      {$if not defined(EC_GROUP_have_precompute_mult_allownil)}
+      EC_GROUP_have_precompute_mult := @ERR_EC_GROUP_have_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_have_precompute_mult_removed)}
+    if EC_GROUP_have_precompute_mult_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_have_precompute_mult)}
+      EC_GROUP_have_precompute_mult := @_EC_GROUP_have_precompute_mult;
+      {$else}
+      {$if not defined(EC_GROUP_have_precompute_mult_allownil)}
+      EC_GROUP_have_precompute_mult := @ERR_EC_GROUP_have_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_have_precompute_mult_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_have_precompute_mult := @ERR_EC_GROUP_have_precompute_mult;
+      AFailed.Add('EC_GROUP_have_precompute_mult');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPKPARAMETERS_it := LoadLibFunction(ADllHandle, ECPKPARAMETERS_it_procname);
+  FuncLoaded := assigned(ECPKPARAMETERS_it);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPKPARAMETERS_it_introduced)}
+    if LibVersion < ECPKPARAMETERS_it_introduced then
+    begin
+      {$if declared(FC_ECPKPARAMETERS_it)}
+      ECPKPARAMETERS_it := @FC_ECPKPARAMETERS_it;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_it_allownil)}
+      ECPKPARAMETERS_it := @ERR_ECPKPARAMETERS_it;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPKPARAMETERS_it_removed)}
+    if ECPKPARAMETERS_it_removed <= LibVersion then
+    begin
+      {$if declared(_ECPKPARAMETERS_it)}
+      ECPKPARAMETERS_it := @_ECPKPARAMETERS_it;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_it_allownil)}
+      ECPKPARAMETERS_it := @ERR_ECPKPARAMETERS_it;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPKPARAMETERS_it_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPKPARAMETERS_it := @ERR_ECPKPARAMETERS_it;
+      AFailed.Add('ECPKPARAMETERS_it');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPKPARAMETERS_new := LoadLibFunction(ADllHandle, ECPKPARAMETERS_new_procname);
+  FuncLoaded := assigned(ECPKPARAMETERS_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPKPARAMETERS_new_introduced)}
+    if LibVersion < ECPKPARAMETERS_new_introduced then
+    begin
+      {$if declared(FC_ECPKPARAMETERS_new)}
+      ECPKPARAMETERS_new := @FC_ECPKPARAMETERS_new;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_new_allownil)}
+      ECPKPARAMETERS_new := @ERR_ECPKPARAMETERS_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPKPARAMETERS_new_removed)}
+    if ECPKPARAMETERS_new_removed <= LibVersion then
+    begin
+      {$if declared(_ECPKPARAMETERS_new)}
+      ECPKPARAMETERS_new := @_ECPKPARAMETERS_new;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_new_allownil)}
+      ECPKPARAMETERS_new := @ERR_ECPKPARAMETERS_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPKPARAMETERS_new_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPKPARAMETERS_new := @ERR_ECPKPARAMETERS_new;
+      AFailed.Add('ECPKPARAMETERS_new');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPKPARAMETERS_free := LoadLibFunction(ADllHandle, ECPKPARAMETERS_free_procname);
+  FuncLoaded := assigned(ECPKPARAMETERS_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPKPARAMETERS_free_introduced)}
+    if LibVersion < ECPKPARAMETERS_free_introduced then
+    begin
+      {$if declared(FC_ECPKPARAMETERS_free)}
+      ECPKPARAMETERS_free := @FC_ECPKPARAMETERS_free;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_free_allownil)}
+      ECPKPARAMETERS_free := @ERR_ECPKPARAMETERS_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPKPARAMETERS_free_removed)}
+    if ECPKPARAMETERS_free_removed <= LibVersion then
+    begin
+      {$if declared(_ECPKPARAMETERS_free)}
+      ECPKPARAMETERS_free := @_ECPKPARAMETERS_free;
+      {$else}
+      {$if not defined(ECPKPARAMETERS_free_allownil)}
+      ECPKPARAMETERS_free := @ERR_ECPKPARAMETERS_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPKPARAMETERS_free_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPKPARAMETERS_free := @ERR_ECPKPARAMETERS_free;
+      AFailed.Add('ECPKPARAMETERS_free');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPARAMETERS_it := LoadLibFunction(ADllHandle, ECPARAMETERS_it_procname);
+  FuncLoaded := assigned(ECPARAMETERS_it);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPARAMETERS_it_introduced)}
+    if LibVersion < ECPARAMETERS_it_introduced then
+    begin
+      {$if declared(FC_ECPARAMETERS_it)}
+      ECPARAMETERS_it := @FC_ECPARAMETERS_it;
+      {$else}
+      {$if not defined(ECPARAMETERS_it_allownil)}
+      ECPARAMETERS_it := @ERR_ECPARAMETERS_it;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPARAMETERS_it_removed)}
+    if ECPARAMETERS_it_removed <= LibVersion then
+    begin
+      {$if declared(_ECPARAMETERS_it)}
+      ECPARAMETERS_it := @_ECPARAMETERS_it;
+      {$else}
+      {$if not defined(ECPARAMETERS_it_allownil)}
+      ECPARAMETERS_it := @ERR_ECPARAMETERS_it;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPARAMETERS_it_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPARAMETERS_it := @ERR_ECPARAMETERS_it;
+      AFailed.Add('ECPARAMETERS_it');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPARAMETERS_new := LoadLibFunction(ADllHandle, ECPARAMETERS_new_procname);
+  FuncLoaded := assigned(ECPARAMETERS_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPARAMETERS_new_introduced)}
+    if LibVersion < ECPARAMETERS_new_introduced then
+    begin
+      {$if declared(FC_ECPARAMETERS_new)}
+      ECPARAMETERS_new := @FC_ECPARAMETERS_new;
+      {$else}
+      {$if not defined(ECPARAMETERS_new_allownil)}
+      ECPARAMETERS_new := @ERR_ECPARAMETERS_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPARAMETERS_new_removed)}
+    if ECPARAMETERS_new_removed <= LibVersion then
+    begin
+      {$if declared(_ECPARAMETERS_new)}
+      ECPARAMETERS_new := @_ECPARAMETERS_new;
+      {$else}
+      {$if not defined(ECPARAMETERS_new_allownil)}
+      ECPARAMETERS_new := @ERR_ECPARAMETERS_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPARAMETERS_new_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPARAMETERS_new := @ERR_ECPARAMETERS_new;
+      AFailed.Add('ECPARAMETERS_new');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPARAMETERS_free := LoadLibFunction(ADllHandle, ECPARAMETERS_free_procname);
+  FuncLoaded := assigned(ECPARAMETERS_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPARAMETERS_free_introduced)}
+    if LibVersion < ECPARAMETERS_free_introduced then
+    begin
+      {$if declared(FC_ECPARAMETERS_free)}
+      ECPARAMETERS_free := @FC_ECPARAMETERS_free;
+      {$else}
+      {$if not defined(ECPARAMETERS_free_allownil)}
+      ECPARAMETERS_free := @ERR_ECPARAMETERS_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPARAMETERS_free_removed)}
+    if ECPARAMETERS_free_removed <= LibVersion then
+    begin
+      {$if declared(_ECPARAMETERS_free)}
+      ECPARAMETERS_free := @_ECPARAMETERS_free;
+      {$else}
+      {$if not defined(ECPARAMETERS_free_allownil)}
+      ECPARAMETERS_free := @ERR_ECPARAMETERS_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPARAMETERS_free_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPARAMETERS_free := @ERR_ECPARAMETERS_free;
+      AFailed.Add('ECPARAMETERS_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_basis_type := LoadLibFunction(ADllHandle, EC_GROUP_get_basis_type_procname);
+  FuncLoaded := assigned(EC_GROUP_get_basis_type);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_basis_type_introduced)}
+    if LibVersion < EC_GROUP_get_basis_type_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_basis_type)}
+      EC_GROUP_get_basis_type := @FC_EC_GROUP_get_basis_type;
+      {$else}
+      {$if not defined(EC_GROUP_get_basis_type_allownil)}
+      EC_GROUP_get_basis_type := @ERR_EC_GROUP_get_basis_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_basis_type_removed)}
+    if EC_GROUP_get_basis_type_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_basis_type)}
+      EC_GROUP_get_basis_type := @_EC_GROUP_get_basis_type;
+      {$else}
+      {$if not defined(EC_GROUP_get_basis_type_allownil)}
+      EC_GROUP_get_basis_type := @ERR_EC_GROUP_get_basis_type;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_basis_type_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_basis_type := @ERR_EC_GROUP_get_basis_type;
+      AFailed.Add('EC_GROUP_get_basis_type');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_trinomial_basis := LoadLibFunction(ADllHandle, EC_GROUP_get_trinomial_basis_procname);
+  FuncLoaded := assigned(EC_GROUP_get_trinomial_basis);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_trinomial_basis_introduced)}
+    if LibVersion < EC_GROUP_get_trinomial_basis_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_trinomial_basis)}
+      EC_GROUP_get_trinomial_basis := @FC_EC_GROUP_get_trinomial_basis;
+      {$else}
+      {$if not defined(EC_GROUP_get_trinomial_basis_allownil)}
+      EC_GROUP_get_trinomial_basis := @ERR_EC_GROUP_get_trinomial_basis;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_trinomial_basis_removed)}
+    if EC_GROUP_get_trinomial_basis_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_trinomial_basis)}
+      EC_GROUP_get_trinomial_basis := @_EC_GROUP_get_trinomial_basis;
+      {$else}
+      {$if not defined(EC_GROUP_get_trinomial_basis_allownil)}
+      EC_GROUP_get_trinomial_basis := @ERR_EC_GROUP_get_trinomial_basis;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_trinomial_basis_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_trinomial_basis := @ERR_EC_GROUP_get_trinomial_basis;
+      AFailed.Add('EC_GROUP_get_trinomial_basis');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_GROUP_get_pentanomial_basis := LoadLibFunction(ADllHandle, EC_GROUP_get_pentanomial_basis_procname);
+  FuncLoaded := assigned(EC_GROUP_get_pentanomial_basis);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_GROUP_get_pentanomial_basis_introduced)}
+    if LibVersion < EC_GROUP_get_pentanomial_basis_introduced then
+    begin
+      {$if declared(FC_EC_GROUP_get_pentanomial_basis)}
+      EC_GROUP_get_pentanomial_basis := @FC_EC_GROUP_get_pentanomial_basis;
+      {$else}
+      {$if not defined(EC_GROUP_get_pentanomial_basis_allownil)}
+      EC_GROUP_get_pentanomial_basis := @ERR_EC_GROUP_get_pentanomial_basis;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_GROUP_get_pentanomial_basis_removed)}
+    if EC_GROUP_get_pentanomial_basis_removed <= LibVersion then
+    begin
+      {$if declared(_EC_GROUP_get_pentanomial_basis)}
+      EC_GROUP_get_pentanomial_basis := @_EC_GROUP_get_pentanomial_basis;
+      {$else}
+      {$if not defined(EC_GROUP_get_pentanomial_basis_allownil)}
+      EC_GROUP_get_pentanomial_basis := @ERR_EC_GROUP_get_pentanomial_basis;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_GROUP_get_pentanomial_basis_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_GROUP_get_pentanomial_basis := @ERR_EC_GROUP_get_pentanomial_basis;
+      AFailed.Add('EC_GROUP_get_pentanomial_basis');
+    end;
+    {$ifend}
+  end;
+
+
+  d2i_ECPKParameters := LoadLibFunction(ADllHandle, d2i_ECPKParameters_procname);
+  FuncLoaded := assigned(d2i_ECPKParameters);
+  if not FuncLoaded then
+  begin
+    {$if declared(d2i_ECPKParameters_introduced)}
+    if LibVersion < d2i_ECPKParameters_introduced then
+    begin
+      {$if declared(FC_d2i_ECPKParameters)}
+      d2i_ECPKParameters := @FC_d2i_ECPKParameters;
+      {$else}
+      {$if not defined(d2i_ECPKParameters_allownil)}
+      d2i_ECPKParameters := @ERR_d2i_ECPKParameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(d2i_ECPKParameters_removed)}
+    if d2i_ECPKParameters_removed <= LibVersion then
+    begin
+      {$if declared(_d2i_ECPKParameters)}
+      d2i_ECPKParameters := @_d2i_ECPKParameters;
+      {$else}
+      {$if not defined(d2i_ECPKParameters_allownil)}
+      d2i_ECPKParameters := @ERR_d2i_ECPKParameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(d2i_ECPKParameters_allownil)}
+    if not FuncLoaded then
+    begin
+      d2i_ECPKParameters := @ERR_d2i_ECPKParameters;
+      AFailed.Add('d2i_ECPKParameters');
+    end;
+    {$ifend}
+  end;
+
+
+  i2d_ECPKParameters := LoadLibFunction(ADllHandle, i2d_ECPKParameters_procname);
+  FuncLoaded := assigned(i2d_ECPKParameters);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2d_ECPKParameters_introduced)}
+    if LibVersion < i2d_ECPKParameters_introduced then
+    begin
+      {$if declared(FC_i2d_ECPKParameters)}
+      i2d_ECPKParameters := @FC_i2d_ECPKParameters;
+      {$else}
+      {$if not defined(i2d_ECPKParameters_allownil)}
+      i2d_ECPKParameters := @ERR_i2d_ECPKParameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2d_ECPKParameters_removed)}
+    if i2d_ECPKParameters_removed <= LibVersion then
+    begin
+      {$if declared(_i2d_ECPKParameters)}
+      i2d_ECPKParameters := @_i2d_ECPKParameters;
+      {$else}
+      {$if not defined(i2d_ECPKParameters_allownil)}
+      i2d_ECPKParameters := @ERR_i2d_ECPKParameters;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2d_ECPKParameters_allownil)}
+    if not FuncLoaded then
+    begin
+      i2d_ECPKParameters := @ERR_i2d_ECPKParameters;
+      AFailed.Add('i2d_ECPKParameters');
+    end;
+    {$ifend}
+  end;
+
+
+  ECPKParameters_print := LoadLibFunction(ADllHandle, ECPKParameters_print_procname);
+  FuncLoaded := assigned(ECPKParameters_print);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECPKParameters_print_introduced)}
+    if LibVersion < ECPKParameters_print_introduced then
+    begin
+      {$if declared(FC_ECPKParameters_print)}
+      ECPKParameters_print := @FC_ECPKParameters_print;
+      {$else}
+      {$if not defined(ECPKParameters_print_allownil)}
+      ECPKParameters_print := @ERR_ECPKParameters_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECPKParameters_print_removed)}
+    if ECPKParameters_print_removed <= LibVersion then
+    begin
+      {$if declared(_ECPKParameters_print)}
+      ECPKParameters_print := @_ECPKParameters_print;
+      {$else}
+      {$if not defined(ECPKParameters_print_allownil)}
+      ECPKParameters_print := @ERR_ECPKParameters_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECPKParameters_print_allownil)}
+    if not FuncLoaded then
+    begin
+      ECPKParameters_print := @ERR_ECPKParameters_print;
+      AFailed.Add('ECPKParameters_print');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_new := LoadLibFunction(ADllHandle, EC_KEY_new_procname);
+  FuncLoaded := assigned(EC_KEY_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_new_introduced)}
+    if LibVersion < EC_KEY_new_introduced then
+    begin
+      {$if declared(FC_EC_KEY_new)}
+      EC_KEY_new := @FC_EC_KEY_new;
+      {$else}
+      {$if not defined(EC_KEY_new_allownil)}
+      EC_KEY_new := @ERR_EC_KEY_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_new_removed)}
+    if EC_KEY_new_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_new)}
+      EC_KEY_new := @_EC_KEY_new;
+      {$else}
+      {$if not defined(EC_KEY_new_allownil)}
+      EC_KEY_new := @ERR_EC_KEY_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_new_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_new := @ERR_EC_KEY_new;
+      AFailed.Add('EC_KEY_new');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get_flags := LoadLibFunction(ADllHandle, EC_KEY_get_flags_procname);
+  FuncLoaded := assigned(EC_KEY_get_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get_flags_introduced)}
+    if LibVersion < EC_KEY_get_flags_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get_flags)}
+      EC_KEY_get_flags := @FC_EC_KEY_get_flags;
+      {$else}
+      {$if not defined(EC_KEY_get_flags_allownil)}
+      EC_KEY_get_flags := @ERR_EC_KEY_get_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get_flags_removed)}
+    if EC_KEY_get_flags_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_flags)}
+      EC_KEY_get_flags := @_EC_KEY_get_flags;
+      {$else}
+      {$if not defined(EC_KEY_get_flags_allownil)}
+      EC_KEY_get_flags := @ERR_EC_KEY_get_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_flags := @ERR_EC_KEY_get_flags;
+      AFailed.Add('EC_KEY_get_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_flags := LoadLibFunction(ADllHandle, EC_KEY_set_flags_procname);
+  FuncLoaded := assigned(EC_KEY_set_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_flags_introduced)}
+    if LibVersion < EC_KEY_set_flags_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_flags)}
+      EC_KEY_set_flags := @FC_EC_KEY_set_flags;
+      {$else}
+      {$if not defined(EC_KEY_set_flags_allownil)}
+      EC_KEY_set_flags := @ERR_EC_KEY_set_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_flags_removed)}
+    if EC_KEY_set_flags_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_flags)}
+      EC_KEY_set_flags := @_EC_KEY_set_flags;
+      {$else}
+      {$if not defined(EC_KEY_set_flags_allownil)}
+      EC_KEY_set_flags := @ERR_EC_KEY_set_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_flags := @ERR_EC_KEY_set_flags;
+      AFailed.Add('EC_KEY_set_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_clear_flags := LoadLibFunction(ADllHandle, EC_KEY_clear_flags_procname);
+  FuncLoaded := assigned(EC_KEY_clear_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_clear_flags_introduced)}
+    if LibVersion < EC_KEY_clear_flags_introduced then
+    begin
+      {$if declared(FC_EC_KEY_clear_flags)}
+      EC_KEY_clear_flags := @FC_EC_KEY_clear_flags;
+      {$else}
+      {$if not defined(EC_KEY_clear_flags_allownil)}
+      EC_KEY_clear_flags := @ERR_EC_KEY_clear_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_clear_flags_removed)}
+    if EC_KEY_clear_flags_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_clear_flags)}
+      EC_KEY_clear_flags := @_EC_KEY_clear_flags;
+      {$else}
+      {$if not defined(EC_KEY_clear_flags_allownil)}
+      EC_KEY_clear_flags := @ERR_EC_KEY_clear_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_clear_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_clear_flags := @ERR_EC_KEY_clear_flags;
+      AFailed.Add('EC_KEY_clear_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_new_by_curve_name := LoadLibFunction(ADllHandle, EC_KEY_new_by_curve_name_procname);
+  FuncLoaded := assigned(EC_KEY_new_by_curve_name);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_new_by_curve_name_introduced)}
+    if LibVersion < EC_KEY_new_by_curve_name_introduced then
+    begin
+      {$if declared(FC_EC_KEY_new_by_curve_name)}
+      EC_KEY_new_by_curve_name := @FC_EC_KEY_new_by_curve_name;
+      {$else}
+      {$if not defined(EC_KEY_new_by_curve_name_allownil)}
+      EC_KEY_new_by_curve_name := @ERR_EC_KEY_new_by_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_new_by_curve_name_removed)}
+    if EC_KEY_new_by_curve_name_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_new_by_curve_name)}
+      EC_KEY_new_by_curve_name := @_EC_KEY_new_by_curve_name;
+      {$else}
+      {$if not defined(EC_KEY_new_by_curve_name_allownil)}
+      EC_KEY_new_by_curve_name := @ERR_EC_KEY_new_by_curve_name;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_new_by_curve_name_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_new_by_curve_name := @ERR_EC_KEY_new_by_curve_name;
+      AFailed.Add('EC_KEY_new_by_curve_name');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_free := LoadLibFunction(ADllHandle, EC_KEY_free_procname);
+  FuncLoaded := assigned(EC_KEY_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_free_introduced)}
+    if LibVersion < EC_KEY_free_introduced then
+    begin
+      {$if declared(FC_EC_KEY_free)}
+      EC_KEY_free := @FC_EC_KEY_free;
+      {$else}
+      {$if not defined(EC_KEY_free_allownil)}
+      EC_KEY_free := @ERR_EC_KEY_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_free_removed)}
+    if EC_KEY_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_free)}
+      EC_KEY_free := @_EC_KEY_free;
+      {$else}
+      {$if not defined(EC_KEY_free_allownil)}
+      EC_KEY_free := @ERR_EC_KEY_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_free := @ERR_EC_KEY_free;
+      AFailed.Add('EC_KEY_free');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_copy := LoadLibFunction(ADllHandle, EC_KEY_copy_procname);
+  FuncLoaded := assigned(EC_KEY_copy);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_copy_introduced)}
+    if LibVersion < EC_KEY_copy_introduced then
+    begin
+      {$if declared(FC_EC_KEY_copy)}
+      EC_KEY_copy := @FC_EC_KEY_copy;
+      {$else}
+      {$if not defined(EC_KEY_copy_allownil)}
+      EC_KEY_copy := @ERR_EC_KEY_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_copy_removed)}
+    if EC_KEY_copy_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_copy)}
+      EC_KEY_copy := @_EC_KEY_copy;
+      {$else}
+      {$if not defined(EC_KEY_copy_allownil)}
+      EC_KEY_copy := @ERR_EC_KEY_copy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_copy_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_copy := @ERR_EC_KEY_copy;
+      AFailed.Add('EC_KEY_copy');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_dup := LoadLibFunction(ADllHandle, EC_KEY_dup_procname);
+  FuncLoaded := assigned(EC_KEY_dup);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_dup_introduced)}
+    if LibVersion < EC_KEY_dup_introduced then
+    begin
+      {$if declared(FC_EC_KEY_dup)}
+      EC_KEY_dup := @FC_EC_KEY_dup;
+      {$else}
+      {$if not defined(EC_KEY_dup_allownil)}
+      EC_KEY_dup := @ERR_EC_KEY_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_dup_removed)}
+    if EC_KEY_dup_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_dup)}
+      EC_KEY_dup := @_EC_KEY_dup;
+      {$else}
+      {$if not defined(EC_KEY_dup_allownil)}
+      EC_KEY_dup := @ERR_EC_KEY_dup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_dup_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_dup := @ERR_EC_KEY_dup;
+      AFailed.Add('EC_KEY_dup');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_up_ref := LoadLibFunction(ADllHandle, EC_KEY_up_ref_procname);
+  FuncLoaded := assigned(EC_KEY_up_ref);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_up_ref_introduced)}
+    if LibVersion < EC_KEY_up_ref_introduced then
+    begin
+      {$if declared(FC_EC_KEY_up_ref)}
+      EC_KEY_up_ref := @FC_EC_KEY_up_ref;
+      {$else}
+      {$if not defined(EC_KEY_up_ref_allownil)}
+      EC_KEY_up_ref := @ERR_EC_KEY_up_ref;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_up_ref_removed)}
+    if EC_KEY_up_ref_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_up_ref)}
+      EC_KEY_up_ref := @_EC_KEY_up_ref;
+      {$else}
+      {$if not defined(EC_KEY_up_ref_allownil)}
+      EC_KEY_up_ref := @ERR_EC_KEY_up_ref;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_up_ref_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_up_ref := @ERR_EC_KEY_up_ref;
+      AFailed.Add('EC_KEY_up_ref');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get0_engine := LoadLibFunction(ADllHandle, EC_KEY_get0_engine_procname);
+  FuncLoaded := assigned(EC_KEY_get0_engine);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_get0_engine_introduced)}
     if LibVersion < EC_KEY_get0_engine_introduced then
+    begin
       {$if declared(FC_EC_KEY_get0_engine)}
-      EC_KEY_get0_engine := @FC_EC_KEY_get0_engine
+      EC_KEY_get0_engine := @FC_EC_KEY_get0_engine;
       {$else}
-      EC_KEY_get0_engine := @ERR_EC_KEY_get0_engine
+      {$if not defined(EC_KEY_get0_engine_allownil)}
+      EC_KEY_get0_engine := @ERR_EC_KEY_get0_engine;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_get0_engine_removed)}
-   if EC_KEY_get0_engine_removed <= LibVersion then
-     {$if declared(_EC_KEY_get0_engine)}
-     EC_KEY_get0_engine := @_EC_KEY_get0_engine
-     {$else}
-       {$IF declared(ERR_EC_KEY_get0_engine)}
-       EC_KEY_get0_engine := @ERR_EC_KEY_get0_engine
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_get0_engine) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_get0_engine');
+    {$if declared(EC_KEY_get0_engine_removed)}
+    if EC_KEY_get0_engine_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get0_engine)}
+      EC_KEY_get0_engine := @_EC_KEY_get0_engine;
+      {$else}
+      {$if not defined(EC_KEY_get0_engine_allownil)}
+      EC_KEY_get0_engine := @ERR_EC_KEY_get0_engine;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get0_engine_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get0_engine := @ERR_EC_KEY_get0_engine;
+      AFailed.Add('EC_KEY_get0_engine');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_KEY_get0_group := LoadLibFunction(ADllHandle, EC_KEY_get0_group_procname);
+  FuncLoaded := assigned(EC_KEY_get0_group);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get0_group_introduced)}
+    if LibVersion < EC_KEY_get0_group_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get0_group)}
+      EC_KEY_get0_group := @FC_EC_KEY_get0_group;
+      {$else}
+      {$if not defined(EC_KEY_get0_group_allownil)}
+      EC_KEY_get0_group := @ERR_EC_KEY_get0_group;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get0_group_removed)}
+    if EC_KEY_get0_group_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get0_group)}
+      EC_KEY_get0_group := @_EC_KEY_get0_group;
+      {$else}
+      {$if not defined(EC_KEY_get0_group_allownil)}
+      EC_KEY_get0_group := @ERR_EC_KEY_get0_group;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get0_group_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get0_group := @ERR_EC_KEY_get0_group;
+      AFailed.Add('EC_KEY_get0_group');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_set_ex_data) then 
+  EC_KEY_set_group := LoadLibFunction(ADllHandle, EC_KEY_set_group_procname);
+  FuncLoaded := assigned(EC_KEY_set_group);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_group_introduced)}
+    if LibVersion < EC_KEY_set_group_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_group)}
+      EC_KEY_set_group := @FC_EC_KEY_set_group;
+      {$else}
+      {$if not defined(EC_KEY_set_group_allownil)}
+      EC_KEY_set_group := @ERR_EC_KEY_set_group;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_group_removed)}
+    if EC_KEY_set_group_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_group)}
+      EC_KEY_set_group := @_EC_KEY_set_group;
+      {$else}
+      {$if not defined(EC_KEY_set_group_allownil)}
+      EC_KEY_set_group := @ERR_EC_KEY_set_group;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_group_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_group := @ERR_EC_KEY_set_group;
+      AFailed.Add('EC_KEY_set_group');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get0_private_key := LoadLibFunction(ADllHandle, EC_KEY_get0_private_key_procname);
+  FuncLoaded := assigned(EC_KEY_get0_private_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get0_private_key_introduced)}
+    if LibVersion < EC_KEY_get0_private_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get0_private_key)}
+      EC_KEY_get0_private_key := @FC_EC_KEY_get0_private_key;
+      {$else}
+      {$if not defined(EC_KEY_get0_private_key_allownil)}
+      EC_KEY_get0_private_key := @ERR_EC_KEY_get0_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get0_private_key_removed)}
+    if EC_KEY_get0_private_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get0_private_key)}
+      EC_KEY_get0_private_key := @_EC_KEY_get0_private_key;
+      {$else}
+      {$if not defined(EC_KEY_get0_private_key_allownil)}
+      EC_KEY_get0_private_key := @ERR_EC_KEY_get0_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get0_private_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get0_private_key := @ERR_EC_KEY_get0_private_key;
+      AFailed.Add('EC_KEY_get0_private_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_private_key := LoadLibFunction(ADllHandle, EC_KEY_set_private_key_procname);
+  FuncLoaded := assigned(EC_KEY_set_private_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_private_key_introduced)}
+    if LibVersion < EC_KEY_set_private_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_private_key)}
+      EC_KEY_set_private_key := @FC_EC_KEY_set_private_key;
+      {$else}
+      {$if not defined(EC_KEY_set_private_key_allownil)}
+      EC_KEY_set_private_key := @ERR_EC_KEY_set_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_private_key_removed)}
+    if EC_KEY_set_private_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_private_key)}
+      EC_KEY_set_private_key := @_EC_KEY_set_private_key;
+      {$else}
+      {$if not defined(EC_KEY_set_private_key_allownil)}
+      EC_KEY_set_private_key := @ERR_EC_KEY_set_private_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_private_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_private_key := @ERR_EC_KEY_set_private_key;
+      AFailed.Add('EC_KEY_set_private_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get0_public_key := LoadLibFunction(ADllHandle, EC_KEY_get0_public_key_procname);
+  FuncLoaded := assigned(EC_KEY_get0_public_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get0_public_key_introduced)}
+    if LibVersion < EC_KEY_get0_public_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get0_public_key)}
+      EC_KEY_get0_public_key := @FC_EC_KEY_get0_public_key;
+      {$else}
+      {$if not defined(EC_KEY_get0_public_key_allownil)}
+      EC_KEY_get0_public_key := @ERR_EC_KEY_get0_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get0_public_key_removed)}
+    if EC_KEY_get0_public_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get0_public_key)}
+      EC_KEY_get0_public_key := @_EC_KEY_get0_public_key;
+      {$else}
+      {$if not defined(EC_KEY_get0_public_key_allownil)}
+      EC_KEY_get0_public_key := @ERR_EC_KEY_get0_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get0_public_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get0_public_key := @ERR_EC_KEY_get0_public_key;
+      AFailed.Add('EC_KEY_get0_public_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_public_key := LoadLibFunction(ADllHandle, EC_KEY_set_public_key_procname);
+  FuncLoaded := assigned(EC_KEY_set_public_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_public_key_introduced)}
+    if LibVersion < EC_KEY_set_public_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_public_key)}
+      EC_KEY_set_public_key := @FC_EC_KEY_set_public_key;
+      {$else}
+      {$if not defined(EC_KEY_set_public_key_allownil)}
+      EC_KEY_set_public_key := @ERR_EC_KEY_set_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_public_key_removed)}
+    if EC_KEY_set_public_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_public_key)}
+      EC_KEY_set_public_key := @_EC_KEY_set_public_key;
+      {$else}
+      {$if not defined(EC_KEY_set_public_key_allownil)}
+      EC_KEY_set_public_key := @ERR_EC_KEY_set_public_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_public_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_public_key := @ERR_EC_KEY_set_public_key;
+      AFailed.Add('EC_KEY_set_public_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get_enc_flags := LoadLibFunction(ADllHandle, EC_KEY_get_enc_flags_procname);
+  FuncLoaded := assigned(EC_KEY_get_enc_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get_enc_flags_introduced)}
+    if LibVersion < EC_KEY_get_enc_flags_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get_enc_flags)}
+      EC_KEY_get_enc_flags := @FC_EC_KEY_get_enc_flags;
+      {$else}
+      {$if not defined(EC_KEY_get_enc_flags_allownil)}
+      EC_KEY_get_enc_flags := @ERR_EC_KEY_get_enc_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get_enc_flags_removed)}
+    if EC_KEY_get_enc_flags_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_enc_flags)}
+      EC_KEY_get_enc_flags := @_EC_KEY_get_enc_flags;
+      {$else}
+      {$if not defined(EC_KEY_get_enc_flags_allownil)}
+      EC_KEY_get_enc_flags := @ERR_EC_KEY_get_enc_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_enc_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_enc_flags := @ERR_EC_KEY_get_enc_flags;
+      AFailed.Add('EC_KEY_get_enc_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_enc_flags := LoadLibFunction(ADllHandle, EC_KEY_set_enc_flags_procname);
+  FuncLoaded := assigned(EC_KEY_set_enc_flags);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_enc_flags_introduced)}
+    if LibVersion < EC_KEY_set_enc_flags_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_enc_flags)}
+      EC_KEY_set_enc_flags := @FC_EC_KEY_set_enc_flags;
+      {$else}
+      {$if not defined(EC_KEY_set_enc_flags_allownil)}
+      EC_KEY_set_enc_flags := @ERR_EC_KEY_set_enc_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_enc_flags_removed)}
+    if EC_KEY_set_enc_flags_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_enc_flags)}
+      EC_KEY_set_enc_flags := @_EC_KEY_set_enc_flags;
+      {$else}
+      {$if not defined(EC_KEY_set_enc_flags_allownil)}
+      EC_KEY_set_enc_flags := @ERR_EC_KEY_set_enc_flags;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_enc_flags_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_enc_flags := @ERR_EC_KEY_set_enc_flags;
+      AFailed.Add('EC_KEY_set_enc_flags');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_get_conv_form := LoadLibFunction(ADllHandle, EC_KEY_get_conv_form_procname);
+  FuncLoaded := assigned(EC_KEY_get_conv_form);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_get_conv_form_introduced)}
+    if LibVersion < EC_KEY_get_conv_form_introduced then
+    begin
+      {$if declared(FC_EC_KEY_get_conv_form)}
+      EC_KEY_get_conv_form := @FC_EC_KEY_get_conv_form;
+      {$else}
+      {$if not defined(EC_KEY_get_conv_form_allownil)}
+      EC_KEY_get_conv_form := @ERR_EC_KEY_get_conv_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_get_conv_form_removed)}
+    if EC_KEY_get_conv_form_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_conv_form)}
+      EC_KEY_get_conv_form := @_EC_KEY_get_conv_form;
+      {$else}
+      {$if not defined(EC_KEY_get_conv_form_allownil)}
+      EC_KEY_get_conv_form := @ERR_EC_KEY_get_conv_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_conv_form_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_conv_form := @ERR_EC_KEY_get_conv_form;
+      AFailed.Add('EC_KEY_get_conv_form');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_conv_form := LoadLibFunction(ADllHandle, EC_KEY_set_conv_form_procname);
+  FuncLoaded := assigned(EC_KEY_set_conv_form);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_conv_form_introduced)}
+    if LibVersion < EC_KEY_set_conv_form_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_conv_form)}
+      EC_KEY_set_conv_form := @FC_EC_KEY_set_conv_form;
+      {$else}
+      {$if not defined(EC_KEY_set_conv_form_allownil)}
+      EC_KEY_set_conv_form := @ERR_EC_KEY_set_conv_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_conv_form_removed)}
+    if EC_KEY_set_conv_form_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_conv_form)}
+      EC_KEY_set_conv_form := @_EC_KEY_set_conv_form;
+      {$else}
+      {$if not defined(EC_KEY_set_conv_form_allownil)}
+      EC_KEY_set_conv_form := @ERR_EC_KEY_set_conv_form;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_conv_form_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_conv_form := @ERR_EC_KEY_set_conv_form;
+      AFailed.Add('EC_KEY_set_conv_form');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_set_ex_data := LoadLibFunction(ADllHandle, EC_KEY_set_ex_data_procname);
+  FuncLoaded := assigned(EC_KEY_set_ex_data);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_set_ex_data_introduced)}
     if LibVersion < EC_KEY_set_ex_data_introduced then
+    begin
       {$if declared(FC_EC_KEY_set_ex_data)}
-      EC_KEY_set_ex_data := @FC_EC_KEY_set_ex_data
+      EC_KEY_set_ex_data := @FC_EC_KEY_set_ex_data;
       {$else}
-      EC_KEY_set_ex_data := @ERR_EC_KEY_set_ex_data
+      {$if not defined(EC_KEY_set_ex_data_allownil)}
+      EC_KEY_set_ex_data := @ERR_EC_KEY_set_ex_data;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_set_ex_data_removed)}
-   if EC_KEY_set_ex_data_removed <= LibVersion then
-     {$if declared(_EC_KEY_set_ex_data)}
-     EC_KEY_set_ex_data := @_EC_KEY_set_ex_data
-     {$else}
-       {$IF declared(ERR_EC_KEY_set_ex_data)}
-       EC_KEY_set_ex_data := @ERR_EC_KEY_set_ex_data
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_set_ex_data) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_set_ex_data');
+    {$if declared(EC_KEY_set_ex_data_removed)}
+    if EC_KEY_set_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_ex_data)}
+      EC_KEY_set_ex_data := @_EC_KEY_set_ex_data;
+      {$else}
+      {$if not defined(EC_KEY_set_ex_data_allownil)}
+      EC_KEY_set_ex_data := @ERR_EC_KEY_set_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_ex_data := @ERR_EC_KEY_set_ex_data;
+      AFailed.Add('EC_KEY_set_ex_data');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_get_ex_data) then 
+ {introduced 1.1.0}
+  EC_KEY_get_ex_data := LoadLibFunction(ADllHandle, EC_KEY_get_ex_data_procname);
+  FuncLoaded := assigned(EC_KEY_get_ex_data);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_get_ex_data_introduced)}
     if LibVersion < EC_KEY_get_ex_data_introduced then
+    begin
       {$if declared(FC_EC_KEY_get_ex_data)}
-      EC_KEY_get_ex_data := @FC_EC_KEY_get_ex_data
+      EC_KEY_get_ex_data := @FC_EC_KEY_get_ex_data;
       {$else}
-      EC_KEY_get_ex_data := @ERR_EC_KEY_get_ex_data
+      {$if not defined(EC_KEY_get_ex_data_allownil)}
+      EC_KEY_get_ex_data := @ERR_EC_KEY_get_ex_data;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_get_ex_data_removed)}
-   if EC_KEY_get_ex_data_removed <= LibVersion then
-     {$if declared(_EC_KEY_get_ex_data)}
-     EC_KEY_get_ex_data := @_EC_KEY_get_ex_data
-     {$else}
-       {$IF declared(ERR_EC_KEY_get_ex_data)}
-       EC_KEY_get_ex_data := @ERR_EC_KEY_get_ex_data
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_get_ex_data) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_get_ex_data');
+    {$if declared(EC_KEY_get_ex_data_removed)}
+    if EC_KEY_get_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_ex_data)}
+      EC_KEY_get_ex_data := @_EC_KEY_get_ex_data;
+      {$else}
+      {$if not defined(EC_KEY_get_ex_data_allownil)}
+      EC_KEY_get_ex_data := @ERR_EC_KEY_get_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_ex_data := @ERR_EC_KEY_get_ex_data;
+      AFailed.Add('EC_KEY_get_ex_data');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_KEY_set_asn1_flag := LoadLibFunction(ADllHandle, EC_KEY_set_asn1_flag_procname);
+  FuncLoaded := assigned(EC_KEY_set_asn1_flag);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_asn1_flag_introduced)}
+    if LibVersion < EC_KEY_set_asn1_flag_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_asn1_flag)}
+      EC_KEY_set_asn1_flag := @FC_EC_KEY_set_asn1_flag;
+      {$else}
+      {$if not defined(EC_KEY_set_asn1_flag_allownil)}
+      EC_KEY_set_asn1_flag := @ERR_EC_KEY_set_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_asn1_flag_removed)}
+    if EC_KEY_set_asn1_flag_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_asn1_flag)}
+      EC_KEY_set_asn1_flag := @_EC_KEY_set_asn1_flag;
+      {$else}
+      {$if not defined(EC_KEY_set_asn1_flag_allownil)}
+      EC_KEY_set_asn1_flag := @ERR_EC_KEY_set_asn1_flag;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_asn1_flag_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_asn1_flag := @ERR_EC_KEY_set_asn1_flag;
+      AFailed.Add('EC_KEY_set_asn1_flag');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_can_sign) then 
+  EC_KEY_precompute_mult := LoadLibFunction(ADllHandle, EC_KEY_precompute_mult_procname);
+  FuncLoaded := assigned(EC_KEY_precompute_mult);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_precompute_mult_introduced)}
+    if LibVersion < EC_KEY_precompute_mult_introduced then
+    begin
+      {$if declared(FC_EC_KEY_precompute_mult)}
+      EC_KEY_precompute_mult := @FC_EC_KEY_precompute_mult;
+      {$else}
+      {$if not defined(EC_KEY_precompute_mult_allownil)}
+      EC_KEY_precompute_mult := @ERR_EC_KEY_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_precompute_mult_removed)}
+    if EC_KEY_precompute_mult_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_precompute_mult)}
+      EC_KEY_precompute_mult := @_EC_KEY_precompute_mult;
+      {$else}
+      {$if not defined(EC_KEY_precompute_mult_allownil)}
+      EC_KEY_precompute_mult := @ERR_EC_KEY_precompute_mult;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_precompute_mult_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_precompute_mult := @ERR_EC_KEY_precompute_mult;
+      AFailed.Add('EC_KEY_precompute_mult');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_generate_key := LoadLibFunction(ADllHandle, EC_KEY_generate_key_procname);
+  FuncLoaded := assigned(EC_KEY_generate_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_generate_key_introduced)}
+    if LibVersion < EC_KEY_generate_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_generate_key)}
+      EC_KEY_generate_key := @FC_EC_KEY_generate_key;
+      {$else}
+      {$if not defined(EC_KEY_generate_key_allownil)}
+      EC_KEY_generate_key := @ERR_EC_KEY_generate_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_generate_key_removed)}
+    if EC_KEY_generate_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_generate_key)}
+      EC_KEY_generate_key := @_EC_KEY_generate_key;
+      {$else}
+      {$if not defined(EC_KEY_generate_key_allownil)}
+      EC_KEY_generate_key := @ERR_EC_KEY_generate_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_generate_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_generate_key := @ERR_EC_KEY_generate_key;
+      AFailed.Add('EC_KEY_generate_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_check_key := LoadLibFunction(ADllHandle, EC_KEY_check_key_procname);
+  FuncLoaded := assigned(EC_KEY_check_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_check_key_introduced)}
+    if LibVersion < EC_KEY_check_key_introduced then
+    begin
+      {$if declared(FC_EC_KEY_check_key)}
+      EC_KEY_check_key := @FC_EC_KEY_check_key;
+      {$else}
+      {$if not defined(EC_KEY_check_key_allownil)}
+      EC_KEY_check_key := @ERR_EC_KEY_check_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_check_key_removed)}
+    if EC_KEY_check_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_check_key)}
+      EC_KEY_check_key := @_EC_KEY_check_key;
+      {$else}
+      {$if not defined(EC_KEY_check_key_allownil)}
+      EC_KEY_check_key := @ERR_EC_KEY_check_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_check_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_check_key := @ERR_EC_KEY_check_key;
+      AFailed.Add('EC_KEY_check_key');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_can_sign := LoadLibFunction(ADllHandle, EC_KEY_can_sign_procname);
+  FuncLoaded := assigned(EC_KEY_can_sign);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_can_sign_introduced)}
     if LibVersion < EC_KEY_can_sign_introduced then
+    begin
       {$if declared(FC_EC_KEY_can_sign)}
-      EC_KEY_can_sign := @FC_EC_KEY_can_sign
+      EC_KEY_can_sign := @FC_EC_KEY_can_sign;
       {$else}
-      EC_KEY_can_sign := @ERR_EC_KEY_can_sign
+      {$if not defined(EC_KEY_can_sign_allownil)}
+      EC_KEY_can_sign := @ERR_EC_KEY_can_sign;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_can_sign_removed)}
-   if EC_KEY_can_sign_removed <= LibVersion then
-     {$if declared(_EC_KEY_can_sign)}
-     EC_KEY_can_sign := @_EC_KEY_can_sign
-     {$else}
-       {$IF declared(ERR_EC_KEY_can_sign)}
-       EC_KEY_can_sign := @ERR_EC_KEY_can_sign
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_can_sign) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_can_sign');
+    {$if declared(EC_KEY_can_sign_removed)}
+    if EC_KEY_can_sign_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_can_sign)}
+      EC_KEY_can_sign := @_EC_KEY_can_sign;
+      {$else}
+      {$if not defined(EC_KEY_can_sign_allownil)}
+      EC_KEY_can_sign := @ERR_EC_KEY_can_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_can_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_can_sign := @ERR_EC_KEY_can_sign;
+      AFailed.Add('EC_KEY_can_sign');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  EC_KEY_set_public_key_affine_coordinates := LoadLibFunction(ADllHandle, EC_KEY_set_public_key_affine_coordinates_procname);
+  FuncLoaded := assigned(EC_KEY_set_public_key_affine_coordinates);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_set_public_key_affine_coordinates_introduced)}
+    if LibVersion < EC_KEY_set_public_key_affine_coordinates_introduced then
+    begin
+      {$if declared(FC_EC_KEY_set_public_key_affine_coordinates)}
+      EC_KEY_set_public_key_affine_coordinates := @FC_EC_KEY_set_public_key_affine_coordinates;
+      {$else}
+      {$if not defined(EC_KEY_set_public_key_affine_coordinates_allownil)}
+      EC_KEY_set_public_key_affine_coordinates := @ERR_EC_KEY_set_public_key_affine_coordinates;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_set_public_key_affine_coordinates_removed)}
+    if EC_KEY_set_public_key_affine_coordinates_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_public_key_affine_coordinates)}
+      EC_KEY_set_public_key_affine_coordinates := @_EC_KEY_set_public_key_affine_coordinates;
+      {$else}
+      {$if not defined(EC_KEY_set_public_key_affine_coordinates_allownil)}
+      EC_KEY_set_public_key_affine_coordinates := @ERR_EC_KEY_set_public_key_affine_coordinates;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_public_key_affine_coordinates_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_public_key_affine_coordinates := @ERR_EC_KEY_set_public_key_affine_coordinates;
+      AFailed.Add('EC_KEY_set_public_key_affine_coordinates');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_key2buf) then 
+  EC_KEY_key2buf := LoadLibFunction(ADllHandle, EC_KEY_key2buf_procname);
+  FuncLoaded := assigned(EC_KEY_key2buf);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_key2buf_introduced)}
     if LibVersion < EC_KEY_key2buf_introduced then
+    begin
       {$if declared(FC_EC_KEY_key2buf)}
-      EC_KEY_key2buf := @FC_EC_KEY_key2buf
+      EC_KEY_key2buf := @FC_EC_KEY_key2buf;
       {$else}
-      EC_KEY_key2buf := @ERR_EC_KEY_key2buf
+      {$if not defined(EC_KEY_key2buf_allownil)}
+      EC_KEY_key2buf := @ERR_EC_KEY_key2buf;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_key2buf_removed)}
-   if EC_KEY_key2buf_removed <= LibVersion then
-     {$if declared(_EC_KEY_key2buf)}
-     EC_KEY_key2buf := @_EC_KEY_key2buf
-     {$else}
-       {$IF declared(ERR_EC_KEY_key2buf)}
-       EC_KEY_key2buf := @ERR_EC_KEY_key2buf
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_key2buf) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_key2buf');
+    {$if declared(EC_KEY_key2buf_removed)}
+    if EC_KEY_key2buf_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_key2buf)}
+      EC_KEY_key2buf := @_EC_KEY_key2buf;
+      {$else}
+      {$if not defined(EC_KEY_key2buf_allownil)}
+      EC_KEY_key2buf := @ERR_EC_KEY_key2buf;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_key2buf_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_key2buf := @ERR_EC_KEY_key2buf;
+      AFailed.Add('EC_KEY_key2buf');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_oct2key) then 
+ {introduced 1.1.0}
+  EC_KEY_oct2key := LoadLibFunction(ADllHandle, EC_KEY_oct2key_procname);
+  FuncLoaded := assigned(EC_KEY_oct2key);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_oct2key_introduced)}
     if LibVersion < EC_KEY_oct2key_introduced then
+    begin
       {$if declared(FC_EC_KEY_oct2key)}
-      EC_KEY_oct2key := @FC_EC_KEY_oct2key
+      EC_KEY_oct2key := @FC_EC_KEY_oct2key;
       {$else}
-      EC_KEY_oct2key := @ERR_EC_KEY_oct2key
+      {$if not defined(EC_KEY_oct2key_allownil)}
+      EC_KEY_oct2key := @ERR_EC_KEY_oct2key;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_oct2key_removed)}
-   if EC_KEY_oct2key_removed <= LibVersion then
-     {$if declared(_EC_KEY_oct2key)}
-     EC_KEY_oct2key := @_EC_KEY_oct2key
-     {$else}
-       {$IF declared(ERR_EC_KEY_oct2key)}
-       EC_KEY_oct2key := @ERR_EC_KEY_oct2key
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_oct2key) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_oct2key');
+    {$if declared(EC_KEY_oct2key_removed)}
+    if EC_KEY_oct2key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_oct2key)}
+      EC_KEY_oct2key := @_EC_KEY_oct2key;
+      {$else}
+      {$if not defined(EC_KEY_oct2key_allownil)}
+      EC_KEY_oct2key := @ERR_EC_KEY_oct2key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_oct2key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_oct2key := @ERR_EC_KEY_oct2key;
+      AFailed.Add('EC_KEY_oct2key');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_oct2priv) then 
+ {introduced 1.1.0}
+  EC_KEY_oct2priv := LoadLibFunction(ADllHandle, EC_KEY_oct2priv_procname);
+  FuncLoaded := assigned(EC_KEY_oct2priv);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_oct2priv_introduced)}
     if LibVersion < EC_KEY_oct2priv_introduced then
+    begin
       {$if declared(FC_EC_KEY_oct2priv)}
-      EC_KEY_oct2priv := @FC_EC_KEY_oct2priv
+      EC_KEY_oct2priv := @FC_EC_KEY_oct2priv;
       {$else}
-      EC_KEY_oct2priv := @ERR_EC_KEY_oct2priv
+      {$if not defined(EC_KEY_oct2priv_allownil)}
+      EC_KEY_oct2priv := @ERR_EC_KEY_oct2priv;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_oct2priv_removed)}
-   if EC_KEY_oct2priv_removed <= LibVersion then
-     {$if declared(_EC_KEY_oct2priv)}
-     EC_KEY_oct2priv := @_EC_KEY_oct2priv
-     {$else}
-       {$IF declared(ERR_EC_KEY_oct2priv)}
-       EC_KEY_oct2priv := @ERR_EC_KEY_oct2priv
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_oct2priv) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_oct2priv');
+    {$if declared(EC_KEY_oct2priv_removed)}
+    if EC_KEY_oct2priv_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_oct2priv)}
+      EC_KEY_oct2priv := @_EC_KEY_oct2priv;
+      {$else}
+      {$if not defined(EC_KEY_oct2priv_allownil)}
+      EC_KEY_oct2priv := @ERR_EC_KEY_oct2priv;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_oct2priv_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_oct2priv := @ERR_EC_KEY_oct2priv;
+      AFailed.Add('EC_KEY_oct2priv');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_priv2oct) then 
+ {introduced 1.1.0}
+  EC_KEY_priv2oct := LoadLibFunction(ADllHandle, EC_KEY_priv2oct_procname);
+  FuncLoaded := assigned(EC_KEY_priv2oct);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_priv2oct_introduced)}
     if LibVersion < EC_KEY_priv2oct_introduced then
+    begin
       {$if declared(FC_EC_KEY_priv2oct)}
-      EC_KEY_priv2oct := @FC_EC_KEY_priv2oct
+      EC_KEY_priv2oct := @FC_EC_KEY_priv2oct;
       {$else}
-      EC_KEY_priv2oct := @ERR_EC_KEY_priv2oct
+      {$if not defined(EC_KEY_priv2oct_allownil)}
+      EC_KEY_priv2oct := @ERR_EC_KEY_priv2oct;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_priv2oct_removed)}
-   if EC_KEY_priv2oct_removed <= LibVersion then
-     {$if declared(_EC_KEY_priv2oct)}
-     EC_KEY_priv2oct := @_EC_KEY_priv2oct
-     {$else}
-       {$IF declared(ERR_EC_KEY_priv2oct)}
-       EC_KEY_priv2oct := @ERR_EC_KEY_priv2oct
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_priv2oct) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_priv2oct');
+    {$if declared(EC_KEY_priv2oct_removed)}
+    if EC_KEY_priv2oct_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_priv2oct)}
+      EC_KEY_priv2oct := @_EC_KEY_priv2oct;
+      {$else}
+      {$if not defined(EC_KEY_priv2oct_allownil)}
+      EC_KEY_priv2oct := @ERR_EC_KEY_priv2oct;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_priv2oct_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_priv2oct := @ERR_EC_KEY_priv2oct;
+      AFailed.Add('EC_KEY_priv2oct');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_priv2buf) then 
+ {introduced 1.1.0}
+  EC_KEY_priv2buf := LoadLibFunction(ADllHandle, EC_KEY_priv2buf_procname);
+  FuncLoaded := assigned(EC_KEY_priv2buf);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_priv2buf_introduced)}
     if LibVersion < EC_KEY_priv2buf_introduced then
+    begin
       {$if declared(FC_EC_KEY_priv2buf)}
-      EC_KEY_priv2buf := @FC_EC_KEY_priv2buf
+      EC_KEY_priv2buf := @FC_EC_KEY_priv2buf;
       {$else}
-      EC_KEY_priv2buf := @ERR_EC_KEY_priv2buf
+      {$if not defined(EC_KEY_priv2buf_allownil)}
+      EC_KEY_priv2buf := @ERR_EC_KEY_priv2buf;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_priv2buf_removed)}
-   if EC_KEY_priv2buf_removed <= LibVersion then
-     {$if declared(_EC_KEY_priv2buf)}
-     EC_KEY_priv2buf := @_EC_KEY_priv2buf
-     {$else}
-       {$IF declared(ERR_EC_KEY_priv2buf)}
-       EC_KEY_priv2buf := @ERR_EC_KEY_priv2buf
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_priv2buf) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_priv2buf');
+    {$if declared(EC_KEY_priv2buf_removed)}
+    if EC_KEY_priv2buf_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_priv2buf)}
+      EC_KEY_priv2buf := @_EC_KEY_priv2buf;
+      {$else}
+      {$if not defined(EC_KEY_priv2buf_allownil)}
+      EC_KEY_priv2buf := @ERR_EC_KEY_priv2buf;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_priv2buf_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_priv2buf := @ERR_EC_KEY_priv2buf;
+      AFailed.Add('EC_KEY_priv2buf');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  d2i_ECPrivateKey := LoadLibFunction(ADllHandle, d2i_ECPrivateKey_procname);
+  FuncLoaded := assigned(d2i_ECPrivateKey);
+  if not FuncLoaded then
+  begin
+    {$if declared(d2i_ECPrivateKey_introduced)}
+    if LibVersion < d2i_ECPrivateKey_introduced then
+    begin
+      {$if declared(FC_d2i_ECPrivateKey)}
+      d2i_ECPrivateKey := @FC_d2i_ECPrivateKey;
+      {$else}
+      {$if not defined(d2i_ECPrivateKey_allownil)}
+      d2i_ECPrivateKey := @ERR_d2i_ECPrivateKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(d2i_ECPrivateKey_removed)}
+    if d2i_ECPrivateKey_removed <= LibVersion then
+    begin
+      {$if declared(_d2i_ECPrivateKey)}
+      d2i_ECPrivateKey := @_d2i_ECPrivateKey;
+      {$else}
+      {$if not defined(d2i_ECPrivateKey_allownil)}
+      d2i_ECPrivateKey := @ERR_d2i_ECPrivateKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(d2i_ECPrivateKey_allownil)}
+    if not FuncLoaded then
+    begin
+      d2i_ECPrivateKey := @ERR_d2i_ECPrivateKey;
+      AFailed.Add('d2i_ECPrivateKey');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_OpenSSL) then 
+  i2d_ECPrivateKey := LoadLibFunction(ADllHandle, i2d_ECPrivateKey_procname);
+  FuncLoaded := assigned(i2d_ECPrivateKey);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2d_ECPrivateKey_introduced)}
+    if LibVersion < i2d_ECPrivateKey_introduced then
+    begin
+      {$if declared(FC_i2d_ECPrivateKey)}
+      i2d_ECPrivateKey := @FC_i2d_ECPrivateKey;
+      {$else}
+      {$if not defined(i2d_ECPrivateKey_allownil)}
+      i2d_ECPrivateKey := @ERR_i2d_ECPrivateKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2d_ECPrivateKey_removed)}
+    if i2d_ECPrivateKey_removed <= LibVersion then
+    begin
+      {$if declared(_i2d_ECPrivateKey)}
+      i2d_ECPrivateKey := @_i2d_ECPrivateKey;
+      {$else}
+      {$if not defined(i2d_ECPrivateKey_allownil)}
+      i2d_ECPrivateKey := @ERR_i2d_ECPrivateKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2d_ECPrivateKey_allownil)}
+    if not FuncLoaded then
+    begin
+      i2d_ECPrivateKey := @ERR_i2d_ECPrivateKey;
+      AFailed.Add('i2d_ECPrivateKey');
+    end;
+    {$ifend}
+  end;
+
+
+  o2i_ECPublicKey := LoadLibFunction(ADllHandle, o2i_ECPublicKey_procname);
+  FuncLoaded := assigned(o2i_ECPublicKey);
+  if not FuncLoaded then
+  begin
+    {$if declared(o2i_ECPublicKey_introduced)}
+    if LibVersion < o2i_ECPublicKey_introduced then
+    begin
+      {$if declared(FC_o2i_ECPublicKey)}
+      o2i_ECPublicKey := @FC_o2i_ECPublicKey;
+      {$else}
+      {$if not defined(o2i_ECPublicKey_allownil)}
+      o2i_ECPublicKey := @ERR_o2i_ECPublicKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(o2i_ECPublicKey_removed)}
+    if o2i_ECPublicKey_removed <= LibVersion then
+    begin
+      {$if declared(_o2i_ECPublicKey)}
+      o2i_ECPublicKey := @_o2i_ECPublicKey;
+      {$else}
+      {$if not defined(o2i_ECPublicKey_allownil)}
+      o2i_ECPublicKey := @ERR_o2i_ECPublicKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(o2i_ECPublicKey_allownil)}
+    if not FuncLoaded then
+    begin
+      o2i_ECPublicKey := @ERR_o2i_ECPublicKey;
+      AFailed.Add('o2i_ECPublicKey');
+    end;
+    {$ifend}
+  end;
+
+
+  i2o_ECPublicKey := LoadLibFunction(ADllHandle, i2o_ECPublicKey_procname);
+  FuncLoaded := assigned(i2o_ECPublicKey);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2o_ECPublicKey_introduced)}
+    if LibVersion < i2o_ECPublicKey_introduced then
+    begin
+      {$if declared(FC_i2o_ECPublicKey)}
+      i2o_ECPublicKey := @FC_i2o_ECPublicKey;
+      {$else}
+      {$if not defined(i2o_ECPublicKey_allownil)}
+      i2o_ECPublicKey := @ERR_i2o_ECPublicKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2o_ECPublicKey_removed)}
+    if i2o_ECPublicKey_removed <= LibVersion then
+    begin
+      {$if declared(_i2o_ECPublicKey)}
+      i2o_ECPublicKey := @_i2o_ECPublicKey;
+      {$else}
+      {$if not defined(i2o_ECPublicKey_allownil)}
+      i2o_ECPublicKey := @ERR_i2o_ECPublicKey;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2o_ECPublicKey_allownil)}
+    if not FuncLoaded then
+    begin
+      i2o_ECPublicKey := @ERR_i2o_ECPublicKey;
+      AFailed.Add('i2o_ECPublicKey');
+    end;
+    {$ifend}
+  end;
+
+
+  ECParameters_print := LoadLibFunction(ADllHandle, ECParameters_print_procname);
+  FuncLoaded := assigned(ECParameters_print);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECParameters_print_introduced)}
+    if LibVersion < ECParameters_print_introduced then
+    begin
+      {$if declared(FC_ECParameters_print)}
+      ECParameters_print := @FC_ECParameters_print;
+      {$else}
+      {$if not defined(ECParameters_print_allownil)}
+      ECParameters_print := @ERR_ECParameters_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECParameters_print_removed)}
+    if ECParameters_print_removed <= LibVersion then
+    begin
+      {$if declared(_ECParameters_print)}
+      ECParameters_print := @_ECParameters_print;
+      {$else}
+      {$if not defined(ECParameters_print_allownil)}
+      ECParameters_print := @ERR_ECParameters_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECParameters_print_allownil)}
+    if not FuncLoaded then
+    begin
+      ECParameters_print := @ERR_ECParameters_print;
+      AFailed.Add('ECParameters_print');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_print := LoadLibFunction(ADllHandle, EC_KEY_print_procname);
+  FuncLoaded := assigned(EC_KEY_print);
+  if not FuncLoaded then
+  begin
+    {$if declared(EC_KEY_print_introduced)}
+    if LibVersion < EC_KEY_print_introduced then
+    begin
+      {$if declared(FC_EC_KEY_print)}
+      EC_KEY_print := @FC_EC_KEY_print;
+      {$else}
+      {$if not defined(EC_KEY_print_allownil)}
+      EC_KEY_print := @ERR_EC_KEY_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(EC_KEY_print_removed)}
+    if EC_KEY_print_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_print)}
+      EC_KEY_print := @_EC_KEY_print;
+      {$else}
+      {$if not defined(EC_KEY_print_allownil)}
+      EC_KEY_print := @ERR_EC_KEY_print;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_print_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_print := @ERR_EC_KEY_print;
+      AFailed.Add('EC_KEY_print');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_OpenSSL := LoadLibFunction(ADllHandle, EC_KEY_OpenSSL_procname);
+  FuncLoaded := assigned(EC_KEY_OpenSSL);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_OpenSSL_introduced)}
     if LibVersion < EC_KEY_OpenSSL_introduced then
+    begin
       {$if declared(FC_EC_KEY_OpenSSL)}
-      EC_KEY_OpenSSL := @FC_EC_KEY_OpenSSL
+      EC_KEY_OpenSSL := @FC_EC_KEY_OpenSSL;
       {$else}
-      EC_KEY_OpenSSL := @ERR_EC_KEY_OpenSSL
+      {$if not defined(EC_KEY_OpenSSL_allownil)}
+      EC_KEY_OpenSSL := @ERR_EC_KEY_OpenSSL;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_OpenSSL_removed)}
-   if EC_KEY_OpenSSL_removed <= LibVersion then
-     {$if declared(_EC_KEY_OpenSSL)}
-     EC_KEY_OpenSSL := @_EC_KEY_OpenSSL
-     {$else}
-       {$IF declared(ERR_EC_KEY_OpenSSL)}
-       EC_KEY_OpenSSL := @ERR_EC_KEY_OpenSSL
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_OpenSSL) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_OpenSSL');
+    {$if declared(EC_KEY_OpenSSL_removed)}
+    if EC_KEY_OpenSSL_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_OpenSSL)}
+      EC_KEY_OpenSSL := @_EC_KEY_OpenSSL;
+      {$else}
+      {$if not defined(EC_KEY_OpenSSL_allownil)}
+      EC_KEY_OpenSSL := @ERR_EC_KEY_OpenSSL;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_OpenSSL_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_OpenSSL := @ERR_EC_KEY_OpenSSL;
+      AFailed.Add('EC_KEY_OpenSSL');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_get_default_method) then 
+ {introduced 1.1.0}
+  EC_KEY_get_default_method := LoadLibFunction(ADllHandle, EC_KEY_get_default_method_procname);
+  FuncLoaded := assigned(EC_KEY_get_default_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_get_default_method_introduced)}
     if LibVersion < EC_KEY_get_default_method_introduced then
+    begin
       {$if declared(FC_EC_KEY_get_default_method)}
-      EC_KEY_get_default_method := @FC_EC_KEY_get_default_method
+      EC_KEY_get_default_method := @FC_EC_KEY_get_default_method;
       {$else}
-      EC_KEY_get_default_method := @ERR_EC_KEY_get_default_method
+      {$if not defined(EC_KEY_get_default_method_allownil)}
+      EC_KEY_get_default_method := @ERR_EC_KEY_get_default_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_get_default_method_removed)}
-   if EC_KEY_get_default_method_removed <= LibVersion then
-     {$if declared(_EC_KEY_get_default_method)}
-     EC_KEY_get_default_method := @_EC_KEY_get_default_method
-     {$else}
-       {$IF declared(ERR_EC_KEY_get_default_method)}
-       EC_KEY_get_default_method := @ERR_EC_KEY_get_default_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_get_default_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_get_default_method');
+    {$if declared(EC_KEY_get_default_method_removed)}
+    if EC_KEY_get_default_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_default_method)}
+      EC_KEY_get_default_method := @_EC_KEY_get_default_method;
+      {$else}
+      {$if not defined(EC_KEY_get_default_method_allownil)}
+      EC_KEY_get_default_method := @ERR_EC_KEY_get_default_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_default_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_default_method := @ERR_EC_KEY_get_default_method;
+      AFailed.Add('EC_KEY_get_default_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_set_default_method) then 
+ {introduced 1.1.0}
+  EC_KEY_set_default_method := LoadLibFunction(ADllHandle, EC_KEY_set_default_method_procname);
+  FuncLoaded := assigned(EC_KEY_set_default_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_set_default_method_introduced)}
     if LibVersion < EC_KEY_set_default_method_introduced then
+    begin
       {$if declared(FC_EC_KEY_set_default_method)}
-      EC_KEY_set_default_method := @FC_EC_KEY_set_default_method
+      EC_KEY_set_default_method := @FC_EC_KEY_set_default_method;
       {$else}
-      EC_KEY_set_default_method := @ERR_EC_KEY_set_default_method
+      {$if not defined(EC_KEY_set_default_method_allownil)}
+      EC_KEY_set_default_method := @ERR_EC_KEY_set_default_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_set_default_method_removed)}
-   if EC_KEY_set_default_method_removed <= LibVersion then
-     {$if declared(_EC_KEY_set_default_method)}
-     EC_KEY_set_default_method := @_EC_KEY_set_default_method
-     {$else}
-       {$IF declared(ERR_EC_KEY_set_default_method)}
-       EC_KEY_set_default_method := @ERR_EC_KEY_set_default_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_set_default_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_set_default_method');
+    {$if declared(EC_KEY_set_default_method_removed)}
+    if EC_KEY_set_default_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_default_method)}
+      EC_KEY_set_default_method := @_EC_KEY_set_default_method;
+      {$else}
+      {$if not defined(EC_KEY_set_default_method_allownil)}
+      EC_KEY_set_default_method := @ERR_EC_KEY_set_default_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_default_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_default_method := @ERR_EC_KEY_set_default_method;
+      AFailed.Add('EC_KEY_set_default_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_get_method) then 
+ {introduced 1.1.0}
+  EC_KEY_get_method := LoadLibFunction(ADllHandle, EC_KEY_get_method_procname);
+  FuncLoaded := assigned(EC_KEY_get_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_get_method_introduced)}
     if LibVersion < EC_KEY_get_method_introduced then
+    begin
       {$if declared(FC_EC_KEY_get_method)}
-      EC_KEY_get_method := @FC_EC_KEY_get_method
+      EC_KEY_get_method := @FC_EC_KEY_get_method;
       {$else}
-      EC_KEY_get_method := @ERR_EC_KEY_get_method
+      {$if not defined(EC_KEY_get_method_allownil)}
+      EC_KEY_get_method := @ERR_EC_KEY_get_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_get_method_removed)}
-   if EC_KEY_get_method_removed <= LibVersion then
-     {$if declared(_EC_KEY_get_method)}
-     EC_KEY_get_method := @_EC_KEY_get_method
-     {$else}
-       {$IF declared(ERR_EC_KEY_get_method)}
-       EC_KEY_get_method := @ERR_EC_KEY_get_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_get_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_get_method');
+    {$if declared(EC_KEY_get_method_removed)}
+    if EC_KEY_get_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_get_method)}
+      EC_KEY_get_method := @_EC_KEY_get_method;
+      {$else}
+      {$if not defined(EC_KEY_get_method_allownil)}
+      EC_KEY_get_method := @ERR_EC_KEY_get_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_get_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_get_method := @ERR_EC_KEY_get_method;
+      AFailed.Add('EC_KEY_get_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_set_method) then 
+ {introduced 1.1.0}
+  EC_KEY_set_method := LoadLibFunction(ADllHandle, EC_KEY_set_method_procname);
+  FuncLoaded := assigned(EC_KEY_set_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_set_method_introduced)}
     if LibVersion < EC_KEY_set_method_introduced then
+    begin
       {$if declared(FC_EC_KEY_set_method)}
-      EC_KEY_set_method := @FC_EC_KEY_set_method
+      EC_KEY_set_method := @FC_EC_KEY_set_method;
       {$else}
-      EC_KEY_set_method := @ERR_EC_KEY_set_method
+      {$if not defined(EC_KEY_set_method_allownil)}
+      EC_KEY_set_method := @ERR_EC_KEY_set_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_set_method_removed)}
-   if EC_KEY_set_method_removed <= LibVersion then
-     {$if declared(_EC_KEY_set_method)}
-     EC_KEY_set_method := @_EC_KEY_set_method
-     {$else}
-       {$IF declared(ERR_EC_KEY_set_method)}
-       EC_KEY_set_method := @ERR_EC_KEY_set_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_set_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_set_method');
+    {$if declared(EC_KEY_set_method_removed)}
+    if EC_KEY_set_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_set_method)}
+      EC_KEY_set_method := @_EC_KEY_set_method;
+      {$else}
+      {$if not defined(EC_KEY_set_method_allownil)}
+      EC_KEY_set_method := @ERR_EC_KEY_set_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_set_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_set_method := @ERR_EC_KEY_set_method;
+      AFailed.Add('EC_KEY_set_method');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_new_method) then 
+ {introduced 1.1.0}
+  EC_KEY_new_method := LoadLibFunction(ADllHandle, EC_KEY_new_method_procname);
+  FuncLoaded := assigned(EC_KEY_new_method);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_new_method_introduced)}
     if LibVersion < EC_KEY_new_method_introduced then
+    begin
       {$if declared(FC_EC_KEY_new_method)}
-      EC_KEY_new_method := @FC_EC_KEY_new_method
+      EC_KEY_new_method := @FC_EC_KEY_new_method;
       {$else}
-      EC_KEY_new_method := @ERR_EC_KEY_new_method
+      {$if not defined(EC_KEY_new_method_allownil)}
+      EC_KEY_new_method := @ERR_EC_KEY_new_method;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_new_method_removed)}
-   if EC_KEY_new_method_removed <= LibVersion then
-     {$if declared(_EC_KEY_new_method)}
-     EC_KEY_new_method := @_EC_KEY_new_method
-     {$else}
-       {$IF declared(ERR_EC_KEY_new_method)}
-       EC_KEY_new_method := @ERR_EC_KEY_new_method
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_new_method) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_new_method');
+    {$if declared(EC_KEY_new_method_removed)}
+    if EC_KEY_new_method_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_new_method)}
+      EC_KEY_new_method := @_EC_KEY_new_method;
+      {$else}
+      {$if not defined(EC_KEY_new_method_allownil)}
+      EC_KEY_new_method := @ERR_EC_KEY_new_method;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_new_method_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_new_method := @ERR_EC_KEY_new_method;
+      AFailed.Add('EC_KEY_new_method');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  ECDH_KDF_X9_62 := LoadLibFunction(ADllHandle, ECDH_KDF_X9_62_procname);
+  FuncLoaded := assigned(ECDH_KDF_X9_62);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDH_KDF_X9_62_introduced)}
+    if LibVersion < ECDH_KDF_X9_62_introduced then
+    begin
+      {$if declared(FC_ECDH_KDF_X9_62)}
+      ECDH_KDF_X9_62 := @FC_ECDH_KDF_X9_62;
+      {$else}
+      {$if not defined(ECDH_KDF_X9_62_allownil)}
+      ECDH_KDF_X9_62 := @ERR_ECDH_KDF_X9_62;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDH_KDF_X9_62_removed)}
+    if ECDH_KDF_X9_62_removed <= LibVersion then
+    begin
+      {$if declared(_ECDH_KDF_X9_62)}
+      ECDH_KDF_X9_62 := @_ECDH_KDF_X9_62;
+      {$else}
+      {$if not defined(ECDH_KDF_X9_62_allownil)}
+      ECDH_KDF_X9_62 := @ERR_ECDH_KDF_X9_62;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDH_KDF_X9_62_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDH_KDF_X9_62 := @ERR_ECDH_KDF_X9_62;
+      AFailed.Add('ECDH_KDF_X9_62');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(ECDSA_SIG_get0) then 
+  ECDH_compute_key := LoadLibFunction(ADllHandle, ECDH_compute_key_procname);
+  FuncLoaded := assigned(ECDH_compute_key);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDH_compute_key_introduced)}
+    if LibVersion < ECDH_compute_key_introduced then
+    begin
+      {$if declared(FC_ECDH_compute_key)}
+      ECDH_compute_key := @FC_ECDH_compute_key;
+      {$else}
+      {$if not defined(ECDH_compute_key_allownil)}
+      ECDH_compute_key := @ERR_ECDH_compute_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDH_compute_key_removed)}
+    if ECDH_compute_key_removed <= LibVersion then
+    begin
+      {$if declared(_ECDH_compute_key)}
+      ECDH_compute_key := @_ECDH_compute_key;
+      {$else}
+      {$if not defined(ECDH_compute_key_allownil)}
+      ECDH_compute_key := @ERR_ECDH_compute_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDH_compute_key_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDH_compute_key := @ERR_ECDH_compute_key;
+      AFailed.Add('ECDH_compute_key');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_SIG_new := LoadLibFunction(ADllHandle, ECDSA_SIG_new_procname);
+  FuncLoaded := assigned(ECDSA_SIG_new);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_SIG_new_introduced)}
+    if LibVersion < ECDSA_SIG_new_introduced then
+    begin
+      {$if declared(FC_ECDSA_SIG_new)}
+      ECDSA_SIG_new := @FC_ECDSA_SIG_new;
+      {$else}
+      {$if not defined(ECDSA_SIG_new_allownil)}
+      ECDSA_SIG_new := @ERR_ECDSA_SIG_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_SIG_new_removed)}
+    if ECDSA_SIG_new_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_new)}
+      ECDSA_SIG_new := @_ECDSA_SIG_new;
+      {$else}
+      {$if not defined(ECDSA_SIG_new_allownil)}
+      ECDSA_SIG_new := @ERR_ECDSA_SIG_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_new_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_new := @ERR_ECDSA_SIG_new;
+      AFailed.Add('ECDSA_SIG_new');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_SIG_free := LoadLibFunction(ADllHandle, ECDSA_SIG_free_procname);
+  FuncLoaded := assigned(ECDSA_SIG_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_SIG_free_introduced)}
+    if LibVersion < ECDSA_SIG_free_introduced then
+    begin
+      {$if declared(FC_ECDSA_SIG_free)}
+      ECDSA_SIG_free := @FC_ECDSA_SIG_free;
+      {$else}
+      {$if not defined(ECDSA_SIG_free_allownil)}
+      ECDSA_SIG_free := @ERR_ECDSA_SIG_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_SIG_free_removed)}
+    if ECDSA_SIG_free_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_free)}
+      ECDSA_SIG_free := @_ECDSA_SIG_free;
+      {$else}
+      {$if not defined(ECDSA_SIG_free_allownil)}
+      ECDSA_SIG_free := @ERR_ECDSA_SIG_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_free_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_free := @ERR_ECDSA_SIG_free;
+      AFailed.Add('ECDSA_SIG_free');
+    end;
+    {$ifend}
+  end;
+
+
+  i2d_ECDSA_SIG := LoadLibFunction(ADllHandle, i2d_ECDSA_SIG_procname);
+  FuncLoaded := assigned(i2d_ECDSA_SIG);
+  if not FuncLoaded then
+  begin
+    {$if declared(i2d_ECDSA_SIG_introduced)}
+    if LibVersion < i2d_ECDSA_SIG_introduced then
+    begin
+      {$if declared(FC_i2d_ECDSA_SIG)}
+      i2d_ECDSA_SIG := @FC_i2d_ECDSA_SIG;
+      {$else}
+      {$if not defined(i2d_ECDSA_SIG_allownil)}
+      i2d_ECDSA_SIG := @ERR_i2d_ECDSA_SIG;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(i2d_ECDSA_SIG_removed)}
+    if i2d_ECDSA_SIG_removed <= LibVersion then
+    begin
+      {$if declared(_i2d_ECDSA_SIG)}
+      i2d_ECDSA_SIG := @_i2d_ECDSA_SIG;
+      {$else}
+      {$if not defined(i2d_ECDSA_SIG_allownil)}
+      i2d_ECDSA_SIG := @ERR_i2d_ECDSA_SIG;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(i2d_ECDSA_SIG_allownil)}
+    if not FuncLoaded then
+    begin
+      i2d_ECDSA_SIG := @ERR_i2d_ECDSA_SIG;
+      AFailed.Add('i2d_ECDSA_SIG');
+    end;
+    {$ifend}
+  end;
+
+
+  d2i_ECDSA_SIG := LoadLibFunction(ADllHandle, d2i_ECDSA_SIG_procname);
+  FuncLoaded := assigned(d2i_ECDSA_SIG);
+  if not FuncLoaded then
+  begin
+    {$if declared(d2i_ECDSA_SIG_introduced)}
+    if LibVersion < d2i_ECDSA_SIG_introduced then
+    begin
+      {$if declared(FC_d2i_ECDSA_SIG)}
+      d2i_ECDSA_SIG := @FC_d2i_ECDSA_SIG;
+      {$else}
+      {$if not defined(d2i_ECDSA_SIG_allownil)}
+      d2i_ECDSA_SIG := @ERR_d2i_ECDSA_SIG;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(d2i_ECDSA_SIG_removed)}
+    if d2i_ECDSA_SIG_removed <= LibVersion then
+    begin
+      {$if declared(_d2i_ECDSA_SIG)}
+      d2i_ECDSA_SIG := @_d2i_ECDSA_SIG;
+      {$else}
+      {$if not defined(d2i_ECDSA_SIG_allownil)}
+      d2i_ECDSA_SIG := @ERR_d2i_ECDSA_SIG;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(d2i_ECDSA_SIG_allownil)}
+    if not FuncLoaded then
+    begin
+      d2i_ECDSA_SIG := @ERR_d2i_ECDSA_SIG;
+      AFailed.Add('d2i_ECDSA_SIG');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_SIG_get0 := LoadLibFunction(ADllHandle, ECDSA_SIG_get0_procname);
+  FuncLoaded := assigned(ECDSA_SIG_get0);
+  if not FuncLoaded then
   begin
     {$if declared(ECDSA_SIG_get0_introduced)}
     if LibVersion < ECDSA_SIG_get0_introduced then
+    begin
       {$if declared(FC_ECDSA_SIG_get0)}
-      ECDSA_SIG_get0 := @FC_ECDSA_SIG_get0
+      ECDSA_SIG_get0 := @FC_ECDSA_SIG_get0;
       {$else}
-      ECDSA_SIG_get0 := @ERR_ECDSA_SIG_get0
+      {$if not defined(ECDSA_SIG_get0_allownil)}
+      ECDSA_SIG_get0 := @ERR_ECDSA_SIG_get0;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(ECDSA_SIG_get0_removed)}
-   if ECDSA_SIG_get0_removed <= LibVersion then
-     {$if declared(_ECDSA_SIG_get0)}
-     ECDSA_SIG_get0 := @_ECDSA_SIG_get0
-     {$else}
-       {$IF declared(ERR_ECDSA_SIG_get0)}
-       ECDSA_SIG_get0 := @ERR_ECDSA_SIG_get0
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(ECDSA_SIG_get0) and Assigned(AFailed) then 
-     AFailed.Add('ECDSA_SIG_get0');
+    {$if declared(ECDSA_SIG_get0_removed)}
+    if ECDSA_SIG_get0_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_get0)}
+      ECDSA_SIG_get0 := @_ECDSA_SIG_get0;
+      {$else}
+      {$if not defined(ECDSA_SIG_get0_allownil)}
+      ECDSA_SIG_get0 := @ERR_ECDSA_SIG_get0;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_get0_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_get0 := @ERR_ECDSA_SIG_get0;
+      AFailed.Add('ECDSA_SIG_get0');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(ECDSA_SIG_get0_r) then 
+ {introduced 1.1.0}
+  ECDSA_SIG_get0_r := LoadLibFunction(ADllHandle, ECDSA_SIG_get0_r_procname);
+  FuncLoaded := assigned(ECDSA_SIG_get0_r);
+  if not FuncLoaded then
   begin
     {$if declared(ECDSA_SIG_get0_r_introduced)}
     if LibVersion < ECDSA_SIG_get0_r_introduced then
+    begin
       {$if declared(FC_ECDSA_SIG_get0_r)}
-      ECDSA_SIG_get0_r := @FC_ECDSA_SIG_get0_r
+      ECDSA_SIG_get0_r := @FC_ECDSA_SIG_get0_r;
       {$else}
-      ECDSA_SIG_get0_r := @ERR_ECDSA_SIG_get0_r
+      {$if not defined(ECDSA_SIG_get0_r_allownil)}
+      ECDSA_SIG_get0_r := @ERR_ECDSA_SIG_get0_r;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(ECDSA_SIG_get0_r_removed)}
-   if ECDSA_SIG_get0_r_removed <= LibVersion then
-     {$if declared(_ECDSA_SIG_get0_r)}
-     ECDSA_SIG_get0_r := @_ECDSA_SIG_get0_r
-     {$else}
-       {$IF declared(ERR_ECDSA_SIG_get0_r)}
-       ECDSA_SIG_get0_r := @ERR_ECDSA_SIG_get0_r
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(ECDSA_SIG_get0_r) and Assigned(AFailed) then 
-     AFailed.Add('ECDSA_SIG_get0_r');
+    {$if declared(ECDSA_SIG_get0_r_removed)}
+    if ECDSA_SIG_get0_r_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_get0_r)}
+      ECDSA_SIG_get0_r := @_ECDSA_SIG_get0_r;
+      {$else}
+      {$if not defined(ECDSA_SIG_get0_r_allownil)}
+      ECDSA_SIG_get0_r := @ERR_ECDSA_SIG_get0_r;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_get0_r_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_get0_r := @ERR_ECDSA_SIG_get0_r;
+      AFailed.Add('ECDSA_SIG_get0_r');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(ECDSA_SIG_get0_s) then 
+ {introduced 1.1.0}
+  ECDSA_SIG_get0_s := LoadLibFunction(ADllHandle, ECDSA_SIG_get0_s_procname);
+  FuncLoaded := assigned(ECDSA_SIG_get0_s);
+  if not FuncLoaded then
   begin
     {$if declared(ECDSA_SIG_get0_s_introduced)}
     if LibVersion < ECDSA_SIG_get0_s_introduced then
+    begin
       {$if declared(FC_ECDSA_SIG_get0_s)}
-      ECDSA_SIG_get0_s := @FC_ECDSA_SIG_get0_s
+      ECDSA_SIG_get0_s := @FC_ECDSA_SIG_get0_s;
       {$else}
-      ECDSA_SIG_get0_s := @ERR_ECDSA_SIG_get0_s
+      {$if not defined(ECDSA_SIG_get0_s_allownil)}
+      ECDSA_SIG_get0_s := @ERR_ECDSA_SIG_get0_s;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(ECDSA_SIG_get0_s_removed)}
-   if ECDSA_SIG_get0_s_removed <= LibVersion then
-     {$if declared(_ECDSA_SIG_get0_s)}
-     ECDSA_SIG_get0_s := @_ECDSA_SIG_get0_s
-     {$else}
-       {$IF declared(ERR_ECDSA_SIG_get0_s)}
-       ECDSA_SIG_get0_s := @ERR_ECDSA_SIG_get0_s
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(ECDSA_SIG_get0_s) and Assigned(AFailed) then 
-     AFailed.Add('ECDSA_SIG_get0_s');
+    {$if declared(ECDSA_SIG_get0_s_removed)}
+    if ECDSA_SIG_get0_s_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_get0_s)}
+      ECDSA_SIG_get0_s := @_ECDSA_SIG_get0_s;
+      {$else}
+      {$if not defined(ECDSA_SIG_get0_s_allownil)}
+      ECDSA_SIG_get0_s := @ERR_ECDSA_SIG_get0_s;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_get0_s_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_get0_s := @ERR_ECDSA_SIG_get0_s;
+      AFailed.Add('ECDSA_SIG_get0_s');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(ECDSA_SIG_set0) then 
+ {introduced 1.1.0}
+  ECDSA_SIG_set0 := LoadLibFunction(ADllHandle, ECDSA_SIG_set0_procname);
+  FuncLoaded := assigned(ECDSA_SIG_set0);
+  if not FuncLoaded then
   begin
     {$if declared(ECDSA_SIG_set0_introduced)}
     if LibVersion < ECDSA_SIG_set0_introduced then
+    begin
       {$if declared(FC_ECDSA_SIG_set0)}
-      ECDSA_SIG_set0 := @FC_ECDSA_SIG_set0
+      ECDSA_SIG_set0 := @FC_ECDSA_SIG_set0;
       {$else}
-      ECDSA_SIG_set0 := @ERR_ECDSA_SIG_set0
+      {$if not defined(ECDSA_SIG_set0_allownil)}
+      ECDSA_SIG_set0 := @ERR_ECDSA_SIG_set0;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(ECDSA_SIG_set0_removed)}
-   if ECDSA_SIG_set0_removed <= LibVersion then
-     {$if declared(_ECDSA_SIG_set0)}
-     ECDSA_SIG_set0 := @_ECDSA_SIG_set0
-     {$else}
-       {$IF declared(ERR_ECDSA_SIG_set0)}
-       ECDSA_SIG_set0 := @ERR_ECDSA_SIG_set0
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(ECDSA_SIG_set0) and Assigned(AFailed) then 
-     AFailed.Add('ECDSA_SIG_set0');
+    {$if declared(ECDSA_SIG_set0_removed)}
+    if ECDSA_SIG_set0_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_SIG_set0)}
+      ECDSA_SIG_set0 := @_ECDSA_SIG_set0;
+      {$else}
+      {$if not defined(ECDSA_SIG_set0_allownil)}
+      ECDSA_SIG_set0 := @ERR_ECDSA_SIG_set0;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_SIG_set0_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_SIG_set0 := @ERR_ECDSA_SIG_set0;
+      AFailed.Add('ECDSA_SIG_set0');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  ECDSA_do_sign := LoadLibFunction(ADllHandle, ECDSA_do_sign_procname);
+  FuncLoaded := assigned(ECDSA_do_sign);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_do_sign_introduced)}
+    if LibVersion < ECDSA_do_sign_introduced then
+    begin
+      {$if declared(FC_ECDSA_do_sign)}
+      ECDSA_do_sign := @FC_ECDSA_do_sign;
+      {$else}
+      {$if not defined(ECDSA_do_sign_allownil)}
+      ECDSA_do_sign := @ERR_ECDSA_do_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_do_sign_removed)}
+    if ECDSA_do_sign_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_do_sign)}
+      ECDSA_do_sign := @_ECDSA_do_sign;
+      {$else}
+      {$if not defined(ECDSA_do_sign_allownil)}
+      ECDSA_do_sign := @ERR_ECDSA_do_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_do_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_do_sign := @ERR_ECDSA_do_sign;
+      AFailed.Add('ECDSA_do_sign');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(EC_KEY_METHOD_new) then 
+  ECDSA_do_sign_ex := LoadLibFunction(ADllHandle, ECDSA_do_sign_ex_procname);
+  FuncLoaded := assigned(ECDSA_do_sign_ex);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_do_sign_ex_introduced)}
+    if LibVersion < ECDSA_do_sign_ex_introduced then
+    begin
+      {$if declared(FC_ECDSA_do_sign_ex)}
+      ECDSA_do_sign_ex := @FC_ECDSA_do_sign_ex;
+      {$else}
+      {$if not defined(ECDSA_do_sign_ex_allownil)}
+      ECDSA_do_sign_ex := @ERR_ECDSA_do_sign_ex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_do_sign_ex_removed)}
+    if ECDSA_do_sign_ex_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_do_sign_ex)}
+      ECDSA_do_sign_ex := @_ECDSA_do_sign_ex;
+      {$else}
+      {$if not defined(ECDSA_do_sign_ex_allownil)}
+      ECDSA_do_sign_ex := @ERR_ECDSA_do_sign_ex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_do_sign_ex_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_do_sign_ex := @ERR_ECDSA_do_sign_ex;
+      AFailed.Add('ECDSA_do_sign_ex');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_do_verify := LoadLibFunction(ADllHandle, ECDSA_do_verify_procname);
+  FuncLoaded := assigned(ECDSA_do_verify);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_do_verify_introduced)}
+    if LibVersion < ECDSA_do_verify_introduced then
+    begin
+      {$if declared(FC_ECDSA_do_verify)}
+      ECDSA_do_verify := @FC_ECDSA_do_verify;
+      {$else}
+      {$if not defined(ECDSA_do_verify_allownil)}
+      ECDSA_do_verify := @ERR_ECDSA_do_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_do_verify_removed)}
+    if ECDSA_do_verify_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_do_verify)}
+      ECDSA_do_verify := @_ECDSA_do_verify;
+      {$else}
+      {$if not defined(ECDSA_do_verify_allownil)}
+      ECDSA_do_verify := @ERR_ECDSA_do_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_do_verify_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_do_verify := @ERR_ECDSA_do_verify;
+      AFailed.Add('ECDSA_do_verify');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_sign_setup := LoadLibFunction(ADllHandle, ECDSA_sign_setup_procname);
+  FuncLoaded := assigned(ECDSA_sign_setup);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_sign_setup_introduced)}
+    if LibVersion < ECDSA_sign_setup_introduced then
+    begin
+      {$if declared(FC_ECDSA_sign_setup)}
+      ECDSA_sign_setup := @FC_ECDSA_sign_setup;
+      {$else}
+      {$if not defined(ECDSA_sign_setup_allownil)}
+      ECDSA_sign_setup := @ERR_ECDSA_sign_setup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_sign_setup_removed)}
+    if ECDSA_sign_setup_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_sign_setup)}
+      ECDSA_sign_setup := @_ECDSA_sign_setup;
+      {$else}
+      {$if not defined(ECDSA_sign_setup_allownil)}
+      ECDSA_sign_setup := @ERR_ECDSA_sign_setup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_sign_setup_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_sign_setup := @ERR_ECDSA_sign_setup;
+      AFailed.Add('ECDSA_sign_setup');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_sign := LoadLibFunction(ADllHandle, ECDSA_sign_procname);
+  FuncLoaded := assigned(ECDSA_sign);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_sign_introduced)}
+    if LibVersion < ECDSA_sign_introduced then
+    begin
+      {$if declared(FC_ECDSA_sign)}
+      ECDSA_sign := @FC_ECDSA_sign;
+      {$else}
+      {$if not defined(ECDSA_sign_allownil)}
+      ECDSA_sign := @ERR_ECDSA_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_sign_removed)}
+    if ECDSA_sign_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_sign)}
+      ECDSA_sign := @_ECDSA_sign;
+      {$else}
+      {$if not defined(ECDSA_sign_allownil)}
+      ECDSA_sign := @ERR_ECDSA_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_sign := @ERR_ECDSA_sign;
+      AFailed.Add('ECDSA_sign');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_sign_ex := LoadLibFunction(ADllHandle, ECDSA_sign_ex_procname);
+  FuncLoaded := assigned(ECDSA_sign_ex);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_sign_ex_introduced)}
+    if LibVersion < ECDSA_sign_ex_introduced then
+    begin
+      {$if declared(FC_ECDSA_sign_ex)}
+      ECDSA_sign_ex := @FC_ECDSA_sign_ex;
+      {$else}
+      {$if not defined(ECDSA_sign_ex_allownil)}
+      ECDSA_sign_ex := @ERR_ECDSA_sign_ex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_sign_ex_removed)}
+    if ECDSA_sign_ex_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_sign_ex)}
+      ECDSA_sign_ex := @_ECDSA_sign_ex;
+      {$else}
+      {$if not defined(ECDSA_sign_ex_allownil)}
+      ECDSA_sign_ex := @ERR_ECDSA_sign_ex;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_sign_ex_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_sign_ex := @ERR_ECDSA_sign_ex;
+      AFailed.Add('ECDSA_sign_ex');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_verify := LoadLibFunction(ADllHandle, ECDSA_verify_procname);
+  FuncLoaded := assigned(ECDSA_verify);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_verify_introduced)}
+    if LibVersion < ECDSA_verify_introduced then
+    begin
+      {$if declared(FC_ECDSA_verify)}
+      ECDSA_verify := @FC_ECDSA_verify;
+      {$else}
+      {$if not defined(ECDSA_verify_allownil)}
+      ECDSA_verify := @ERR_ECDSA_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_verify_removed)}
+    if ECDSA_verify_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_verify)}
+      ECDSA_verify := @_ECDSA_verify;
+      {$else}
+      {$if not defined(ECDSA_verify_allownil)}
+      ECDSA_verify := @ERR_ECDSA_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_verify_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_verify := @ERR_ECDSA_verify;
+      AFailed.Add('ECDSA_verify');
+    end;
+    {$ifend}
+  end;
+
+
+  ECDSA_size := LoadLibFunction(ADllHandle, ECDSA_size_procname);
+  FuncLoaded := assigned(ECDSA_size);
+  if not FuncLoaded then
+  begin
+    {$if declared(ECDSA_size_introduced)}
+    if LibVersion < ECDSA_size_introduced then
+    begin
+      {$if declared(FC_ECDSA_size)}
+      ECDSA_size := @FC_ECDSA_size;
+      {$else}
+      {$if not defined(ECDSA_size_allownil)}
+      ECDSA_size := @ERR_ECDSA_size;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(ECDSA_size_removed)}
+    if ECDSA_size_removed <= LibVersion then
+    begin
+      {$if declared(_ECDSA_size)}
+      ECDSA_size := @_ECDSA_size;
+      {$else}
+      {$if not defined(ECDSA_size_allownil)}
+      ECDSA_size := @ERR_ECDSA_size;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(ECDSA_size_allownil)}
+    if not FuncLoaded then
+    begin
+      ECDSA_size := @ERR_ECDSA_size;
+      AFailed.Add('ECDSA_size');
+    end;
+    {$ifend}
+  end;
+
+
+  EC_KEY_METHOD_new := LoadLibFunction(ADllHandle, EC_KEY_METHOD_new_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_new);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_new_introduced)}
     if LibVersion < EC_KEY_METHOD_new_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_new)}
-      EC_KEY_METHOD_new := @FC_EC_KEY_METHOD_new
+      EC_KEY_METHOD_new := @FC_EC_KEY_METHOD_new;
       {$else}
-      EC_KEY_METHOD_new := @ERR_EC_KEY_METHOD_new
+      {$if not defined(EC_KEY_METHOD_new_allownil)}
+      EC_KEY_METHOD_new := @ERR_EC_KEY_METHOD_new;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_new_removed)}
-   if EC_KEY_METHOD_new_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_new)}
-     EC_KEY_METHOD_new := @_EC_KEY_METHOD_new
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_new)}
-       EC_KEY_METHOD_new := @ERR_EC_KEY_METHOD_new
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_new) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_new');
+    {$if declared(EC_KEY_METHOD_new_removed)}
+    if EC_KEY_METHOD_new_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_new)}
+      EC_KEY_METHOD_new := @_EC_KEY_METHOD_new;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_new_allownil)}
+      EC_KEY_METHOD_new := @ERR_EC_KEY_METHOD_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_new_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_new := @ERR_EC_KEY_METHOD_new;
+      AFailed.Add('EC_KEY_METHOD_new');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_free) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_free := LoadLibFunction(ADllHandle, EC_KEY_METHOD_free_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_free);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_free_introduced)}
     if LibVersion < EC_KEY_METHOD_free_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_free)}
-      EC_KEY_METHOD_free := @FC_EC_KEY_METHOD_free
+      EC_KEY_METHOD_free := @FC_EC_KEY_METHOD_free;
       {$else}
-      EC_KEY_METHOD_free := @ERR_EC_KEY_METHOD_free
+      {$if not defined(EC_KEY_METHOD_free_allownil)}
+      EC_KEY_METHOD_free := @ERR_EC_KEY_METHOD_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_free_removed)}
-   if EC_KEY_METHOD_free_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_free)}
-     EC_KEY_METHOD_free := @_EC_KEY_METHOD_free
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_free)}
-       EC_KEY_METHOD_free := @ERR_EC_KEY_METHOD_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_free) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_free');
+    {$if declared(EC_KEY_METHOD_free_removed)}
+    if EC_KEY_METHOD_free_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_free)}
+      EC_KEY_METHOD_free := @_EC_KEY_METHOD_free;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_free_allownil)}
+      EC_KEY_METHOD_free := @ERR_EC_KEY_METHOD_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_free_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_free := @ERR_EC_KEY_METHOD_free;
+      AFailed.Add('EC_KEY_METHOD_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_set_init) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_set_init := LoadLibFunction(ADllHandle, EC_KEY_METHOD_set_init_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_set_init);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_set_init_introduced)}
     if LibVersion < EC_KEY_METHOD_set_init_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_set_init)}
-      EC_KEY_METHOD_set_init := @FC_EC_KEY_METHOD_set_init
+      EC_KEY_METHOD_set_init := @FC_EC_KEY_METHOD_set_init;
       {$else}
-      EC_KEY_METHOD_set_init := @ERR_EC_KEY_METHOD_set_init
+      {$if not defined(EC_KEY_METHOD_set_init_allownil)}
+      EC_KEY_METHOD_set_init := @ERR_EC_KEY_METHOD_set_init;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_set_init_removed)}
-   if EC_KEY_METHOD_set_init_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_set_init)}
-     EC_KEY_METHOD_set_init := @_EC_KEY_METHOD_set_init
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_set_init)}
-       EC_KEY_METHOD_set_init := @ERR_EC_KEY_METHOD_set_init
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_set_init) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_set_init');
+    {$if declared(EC_KEY_METHOD_set_init_removed)}
+    if EC_KEY_METHOD_set_init_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_set_init)}
+      EC_KEY_METHOD_set_init := @_EC_KEY_METHOD_set_init;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_set_init_allownil)}
+      EC_KEY_METHOD_set_init := @ERR_EC_KEY_METHOD_set_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_set_init_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_set_init := @ERR_EC_KEY_METHOD_set_init;
+      AFailed.Add('EC_KEY_METHOD_set_init');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_set_keygen) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_set_keygen := LoadLibFunction(ADllHandle, EC_KEY_METHOD_set_keygen_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_set_keygen);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_set_keygen_introduced)}
     if LibVersion < EC_KEY_METHOD_set_keygen_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_set_keygen)}
-      EC_KEY_METHOD_set_keygen := @FC_EC_KEY_METHOD_set_keygen
+      EC_KEY_METHOD_set_keygen := @FC_EC_KEY_METHOD_set_keygen;
       {$else}
-      EC_KEY_METHOD_set_keygen := @ERR_EC_KEY_METHOD_set_keygen
+      {$if not defined(EC_KEY_METHOD_set_keygen_allownil)}
+      EC_KEY_METHOD_set_keygen := @ERR_EC_KEY_METHOD_set_keygen;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_set_keygen_removed)}
-   if EC_KEY_METHOD_set_keygen_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_set_keygen)}
-     EC_KEY_METHOD_set_keygen := @_EC_KEY_METHOD_set_keygen
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_set_keygen)}
-       EC_KEY_METHOD_set_keygen := @ERR_EC_KEY_METHOD_set_keygen
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_set_keygen) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_set_keygen');
+    {$if declared(EC_KEY_METHOD_set_keygen_removed)}
+    if EC_KEY_METHOD_set_keygen_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_set_keygen)}
+      EC_KEY_METHOD_set_keygen := @_EC_KEY_METHOD_set_keygen;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_set_keygen_allownil)}
+      EC_KEY_METHOD_set_keygen := @ERR_EC_KEY_METHOD_set_keygen;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_set_keygen_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_set_keygen := @ERR_EC_KEY_METHOD_set_keygen;
+      AFailed.Add('EC_KEY_METHOD_set_keygen');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_set_compute_key) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_set_compute_key := LoadLibFunction(ADllHandle, EC_KEY_METHOD_set_compute_key_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_set_compute_key);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_set_compute_key_introduced)}
     if LibVersion < EC_KEY_METHOD_set_compute_key_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_set_compute_key)}
-      EC_KEY_METHOD_set_compute_key := @FC_EC_KEY_METHOD_set_compute_key
+      EC_KEY_METHOD_set_compute_key := @FC_EC_KEY_METHOD_set_compute_key;
       {$else}
-      EC_KEY_METHOD_set_compute_key := @ERR_EC_KEY_METHOD_set_compute_key
+      {$if not defined(EC_KEY_METHOD_set_compute_key_allownil)}
+      EC_KEY_METHOD_set_compute_key := @ERR_EC_KEY_METHOD_set_compute_key;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_set_compute_key_removed)}
-   if EC_KEY_METHOD_set_compute_key_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_set_compute_key)}
-     EC_KEY_METHOD_set_compute_key := @_EC_KEY_METHOD_set_compute_key
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_set_compute_key)}
-       EC_KEY_METHOD_set_compute_key := @ERR_EC_KEY_METHOD_set_compute_key
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_set_compute_key) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_set_compute_key');
+    {$if declared(EC_KEY_METHOD_set_compute_key_removed)}
+    if EC_KEY_METHOD_set_compute_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_set_compute_key)}
+      EC_KEY_METHOD_set_compute_key := @_EC_KEY_METHOD_set_compute_key;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_set_compute_key_allownil)}
+      EC_KEY_METHOD_set_compute_key := @ERR_EC_KEY_METHOD_set_compute_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_set_compute_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_set_compute_key := @ERR_EC_KEY_METHOD_set_compute_key;
+      AFailed.Add('EC_KEY_METHOD_set_compute_key');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_set_sign) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_set_sign := LoadLibFunction(ADllHandle, EC_KEY_METHOD_set_sign_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_set_sign);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_set_sign_introduced)}
     if LibVersion < EC_KEY_METHOD_set_sign_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_set_sign)}
-      EC_KEY_METHOD_set_sign := @FC_EC_KEY_METHOD_set_sign
+      EC_KEY_METHOD_set_sign := @FC_EC_KEY_METHOD_set_sign;
       {$else}
-      EC_KEY_METHOD_set_sign := @ERR_EC_KEY_METHOD_set_sign
+      {$if not defined(EC_KEY_METHOD_set_sign_allownil)}
+      EC_KEY_METHOD_set_sign := @ERR_EC_KEY_METHOD_set_sign;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_set_sign_removed)}
-   if EC_KEY_METHOD_set_sign_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_set_sign)}
-     EC_KEY_METHOD_set_sign := @_EC_KEY_METHOD_set_sign
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_set_sign)}
-       EC_KEY_METHOD_set_sign := @ERR_EC_KEY_METHOD_set_sign
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_set_sign) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_set_sign');
+    {$if declared(EC_KEY_METHOD_set_sign_removed)}
+    if EC_KEY_METHOD_set_sign_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_set_sign)}
+      EC_KEY_METHOD_set_sign := @_EC_KEY_METHOD_set_sign;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_set_sign_allownil)}
+      EC_KEY_METHOD_set_sign := @ERR_EC_KEY_METHOD_set_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_set_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_set_sign := @ERR_EC_KEY_METHOD_set_sign;
+      AFailed.Add('EC_KEY_METHOD_set_sign');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_set_verify) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_set_verify := LoadLibFunction(ADllHandle, EC_KEY_METHOD_set_verify_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_set_verify);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_set_verify_introduced)}
     if LibVersion < EC_KEY_METHOD_set_verify_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_set_verify)}
-      EC_KEY_METHOD_set_verify := @FC_EC_KEY_METHOD_set_verify
+      EC_KEY_METHOD_set_verify := @FC_EC_KEY_METHOD_set_verify;
       {$else}
-      EC_KEY_METHOD_set_verify := @ERR_EC_KEY_METHOD_set_verify
+      {$if not defined(EC_KEY_METHOD_set_verify_allownil)}
+      EC_KEY_METHOD_set_verify := @ERR_EC_KEY_METHOD_set_verify;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_set_verify_removed)}
-   if EC_KEY_METHOD_set_verify_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_set_verify)}
-     EC_KEY_METHOD_set_verify := @_EC_KEY_METHOD_set_verify
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_set_verify)}
-       EC_KEY_METHOD_set_verify := @ERR_EC_KEY_METHOD_set_verify
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_set_verify) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_set_verify');
+    {$if declared(EC_KEY_METHOD_set_verify_removed)}
+    if EC_KEY_METHOD_set_verify_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_set_verify)}
+      EC_KEY_METHOD_set_verify := @_EC_KEY_METHOD_set_verify;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_set_verify_allownil)}
+      EC_KEY_METHOD_set_verify := @ERR_EC_KEY_METHOD_set_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_set_verify_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_set_verify := @ERR_EC_KEY_METHOD_set_verify;
+      AFailed.Add('EC_KEY_METHOD_set_verify');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_get_init) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_get_init := LoadLibFunction(ADllHandle, EC_KEY_METHOD_get_init_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_get_init);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_get_init_introduced)}
     if LibVersion < EC_KEY_METHOD_get_init_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_get_init)}
-      EC_KEY_METHOD_get_init := @FC_EC_KEY_METHOD_get_init
+      EC_KEY_METHOD_get_init := @FC_EC_KEY_METHOD_get_init;
       {$else}
-      EC_KEY_METHOD_get_init := @ERR_EC_KEY_METHOD_get_init
+      {$if not defined(EC_KEY_METHOD_get_init_allownil)}
+      EC_KEY_METHOD_get_init := @ERR_EC_KEY_METHOD_get_init;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_get_init_removed)}
-   if EC_KEY_METHOD_get_init_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_get_init)}
-     EC_KEY_METHOD_get_init := @_EC_KEY_METHOD_get_init
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_get_init)}
-       EC_KEY_METHOD_get_init := @ERR_EC_KEY_METHOD_get_init
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_get_init) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_get_init');
+    {$if declared(EC_KEY_METHOD_get_init_removed)}
+    if EC_KEY_METHOD_get_init_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_get_init)}
+      EC_KEY_METHOD_get_init := @_EC_KEY_METHOD_get_init;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_get_init_allownil)}
+      EC_KEY_METHOD_get_init := @ERR_EC_KEY_METHOD_get_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_get_init_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_get_init := @ERR_EC_KEY_METHOD_get_init;
+      AFailed.Add('EC_KEY_METHOD_get_init');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_get_keygen) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_get_keygen := LoadLibFunction(ADllHandle, EC_KEY_METHOD_get_keygen_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_get_keygen);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_get_keygen_introduced)}
     if LibVersion < EC_KEY_METHOD_get_keygen_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_get_keygen)}
-      EC_KEY_METHOD_get_keygen := @FC_EC_KEY_METHOD_get_keygen
+      EC_KEY_METHOD_get_keygen := @FC_EC_KEY_METHOD_get_keygen;
       {$else}
-      EC_KEY_METHOD_get_keygen := @ERR_EC_KEY_METHOD_get_keygen
+      {$if not defined(EC_KEY_METHOD_get_keygen_allownil)}
+      EC_KEY_METHOD_get_keygen := @ERR_EC_KEY_METHOD_get_keygen;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_get_keygen_removed)}
-   if EC_KEY_METHOD_get_keygen_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_get_keygen)}
-     EC_KEY_METHOD_get_keygen := @_EC_KEY_METHOD_get_keygen
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_get_keygen)}
-       EC_KEY_METHOD_get_keygen := @ERR_EC_KEY_METHOD_get_keygen
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_get_keygen) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_get_keygen');
+    {$if declared(EC_KEY_METHOD_get_keygen_removed)}
+    if EC_KEY_METHOD_get_keygen_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_get_keygen)}
+      EC_KEY_METHOD_get_keygen := @_EC_KEY_METHOD_get_keygen;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_get_keygen_allownil)}
+      EC_KEY_METHOD_get_keygen := @ERR_EC_KEY_METHOD_get_keygen;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_get_keygen_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_get_keygen := @ERR_EC_KEY_METHOD_get_keygen;
+      AFailed.Add('EC_KEY_METHOD_get_keygen');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_get_compute_key) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_get_compute_key := LoadLibFunction(ADllHandle, EC_KEY_METHOD_get_compute_key_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_get_compute_key);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_get_compute_key_introduced)}
     if LibVersion < EC_KEY_METHOD_get_compute_key_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_get_compute_key)}
-      EC_KEY_METHOD_get_compute_key := @FC_EC_KEY_METHOD_get_compute_key
+      EC_KEY_METHOD_get_compute_key := @FC_EC_KEY_METHOD_get_compute_key;
       {$else}
-      EC_KEY_METHOD_get_compute_key := @ERR_EC_KEY_METHOD_get_compute_key
+      {$if not defined(EC_KEY_METHOD_get_compute_key_allownil)}
+      EC_KEY_METHOD_get_compute_key := @ERR_EC_KEY_METHOD_get_compute_key;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_get_compute_key_removed)}
-   if EC_KEY_METHOD_get_compute_key_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_get_compute_key)}
-     EC_KEY_METHOD_get_compute_key := @_EC_KEY_METHOD_get_compute_key
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_get_compute_key)}
-       EC_KEY_METHOD_get_compute_key := @ERR_EC_KEY_METHOD_get_compute_key
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_get_compute_key) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_get_compute_key');
+    {$if declared(EC_KEY_METHOD_get_compute_key_removed)}
+    if EC_KEY_METHOD_get_compute_key_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_get_compute_key)}
+      EC_KEY_METHOD_get_compute_key := @_EC_KEY_METHOD_get_compute_key;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_get_compute_key_allownil)}
+      EC_KEY_METHOD_get_compute_key := @ERR_EC_KEY_METHOD_get_compute_key;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_get_compute_key_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_get_compute_key := @ERR_EC_KEY_METHOD_get_compute_key;
+      AFailed.Add('EC_KEY_METHOD_get_compute_key');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_get_sign) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_get_sign := LoadLibFunction(ADllHandle, EC_KEY_METHOD_get_sign_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_get_sign);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_get_sign_introduced)}
     if LibVersion < EC_KEY_METHOD_get_sign_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_get_sign)}
-      EC_KEY_METHOD_get_sign := @FC_EC_KEY_METHOD_get_sign
+      EC_KEY_METHOD_get_sign := @FC_EC_KEY_METHOD_get_sign;
       {$else}
-      EC_KEY_METHOD_get_sign := @ERR_EC_KEY_METHOD_get_sign
+      {$if not defined(EC_KEY_METHOD_get_sign_allownil)}
+      EC_KEY_METHOD_get_sign := @ERR_EC_KEY_METHOD_get_sign;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_get_sign_removed)}
-   if EC_KEY_METHOD_get_sign_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_get_sign)}
-     EC_KEY_METHOD_get_sign := @_EC_KEY_METHOD_get_sign
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_get_sign)}
-       EC_KEY_METHOD_get_sign := @ERR_EC_KEY_METHOD_get_sign
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_get_sign) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_get_sign');
+    {$if declared(EC_KEY_METHOD_get_sign_removed)}
+    if EC_KEY_METHOD_get_sign_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_get_sign)}
+      EC_KEY_METHOD_get_sign := @_EC_KEY_METHOD_get_sign;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_get_sign_allownil)}
+      EC_KEY_METHOD_get_sign := @ERR_EC_KEY_METHOD_get_sign;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_get_sign_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_get_sign := @ERR_EC_KEY_METHOD_get_sign;
+      AFailed.Add('EC_KEY_METHOD_get_sign');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(EC_KEY_METHOD_get_verify) then 
+ {introduced 1.1.0}
+  EC_KEY_METHOD_get_verify := LoadLibFunction(ADllHandle, EC_KEY_METHOD_get_verify_procname);
+  FuncLoaded := assigned(EC_KEY_METHOD_get_verify);
+  if not FuncLoaded then
   begin
     {$if declared(EC_KEY_METHOD_get_verify_introduced)}
     if LibVersion < EC_KEY_METHOD_get_verify_introduced then
+    begin
       {$if declared(FC_EC_KEY_METHOD_get_verify)}
-      EC_KEY_METHOD_get_verify := @FC_EC_KEY_METHOD_get_verify
+      EC_KEY_METHOD_get_verify := @FC_EC_KEY_METHOD_get_verify;
       {$else}
-      EC_KEY_METHOD_get_verify := @ERR_EC_KEY_METHOD_get_verify
+      {$if not defined(EC_KEY_METHOD_get_verify_allownil)}
+      EC_KEY_METHOD_get_verify := @ERR_EC_KEY_METHOD_get_verify;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(EC_KEY_METHOD_get_verify_removed)}
-   if EC_KEY_METHOD_get_verify_removed <= LibVersion then
-     {$if declared(_EC_KEY_METHOD_get_verify)}
-     EC_KEY_METHOD_get_verify := @_EC_KEY_METHOD_get_verify
-     {$else}
-       {$IF declared(ERR_EC_KEY_METHOD_get_verify)}
-       EC_KEY_METHOD_get_verify := @ERR_EC_KEY_METHOD_get_verify
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(EC_KEY_METHOD_get_verify) and Assigned(AFailed) then 
-     AFailed.Add('EC_KEY_METHOD_get_verify');
+    {$if declared(EC_KEY_METHOD_get_verify_removed)}
+    if EC_KEY_METHOD_get_verify_removed <= LibVersion then
+    begin
+      {$if declared(_EC_KEY_METHOD_get_verify)}
+      EC_KEY_METHOD_get_verify := @_EC_KEY_METHOD_get_verify;
+      {$else}
+      {$if not defined(EC_KEY_METHOD_get_verify_allownil)}
+      EC_KEY_METHOD_get_verify := @ERR_EC_KEY_METHOD_get_verify;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(EC_KEY_METHOD_get_verify_allownil)}
+    if not FuncLoaded then
+    begin
+      EC_KEY_METHOD_get_verify := @ERR_EC_KEY_METHOD_get_verify;
+      AFailed.Add('EC_KEY_METHOD_get_verify');
+    end;
+    {$ifend}
   end;
 
-
+ {introduced 1.1.0}
 end;
 
 procedure Unload;

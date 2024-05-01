@@ -754,6 +754,215 @@ const
 
 //# define OPENSSL_malloc(num) CRYPTO_malloc(num, OPENSSL_FILE, OPENSSL_LINE)
 {$IFNDEF USE_EXTERNAL_LIBRARY}
+const
+  OPENSSL_malloc_procname = 'OPENSSL_malloc'; {removed 1.0.0}
+  OPENSSL_zalloc_procname = 'OPENSSL_zalloc'; {removed 1.0.0}
+  OPENSSL_realloc_procname = 'OPENSSL_realloc'; {removed 1.0.0}
+  OPENSSL_clear_realloc_procname = 'OPENSSL_clear_realloc'; {removed 1.0.0}
+  OPENSSL_clear_free_procname = 'OPENSSL_clear_free'; {removed 1.0.0}
+  OPENSSL_free_procname = 'OPENSSL_free'; {removed 1.0.0}
+  OPENSSL_memdup_procname = 'OPENSSL_memdup'; {removed 1.0.0}
+  OPENSSL_strdup_procname = 'OPENSSL_strdup'; {removed 1.0.0}
+  OPENSSL_strndup_procname = 'OPENSSL_strndup'; {removed 1.0.0}
+  OPENSSL_secure_malloc_procname = 'OPENSSL_secure_malloc'; {removed 1.0.0}
+  OPENSSL_secure_zalloc_procname = 'OPENSSL_secure_zalloc'; {removed 1.0.0}
+  OPENSSL_secure_free_procname = 'OPENSSL_secure_free'; {removed 1.0.0}
+  OPENSSL_secure_clear_free_procname = 'OPENSSL_secure_clear_free'; {removed 1.0.0}
+  OPENSSL_secure_actual_size_procname = 'OPENSSL_secure_actual_size'; {removed 1.0.0}
+
+  CRYPTO_THREAD_lock_new_procname = 'CRYPTO_THREAD_lock_new'; {introduced 1.1.0}
+  CRYPTO_THREAD_read_lock_procname = 'CRYPTO_THREAD_read_lock'; {introduced 1.1.0}
+  CRYPTO_THREAD_write_lock_procname = 'CRYPTO_THREAD_write_lock'; {introduced 1.1.0}
+  CRYPTO_THREAD_unlock_procname = 'CRYPTO_THREAD_unlock'; {introduced 1.1.0}
+  CRYPTO_THREAD_lock_free_procname = 'CRYPTO_THREAD_lock_free'; {introduced 1.1.0}
+
+  CRYPTO_atomic_add_procname = 'CRYPTO_atomic_add'; {introduced 1.1.0}
+
+  CRYPTO_mem_ctrl_procname = 'CRYPTO_mem_ctrl'; {removed 3.0.0}
+
+  OPENSSL_strlcpy_procname = 'OPENSSL_strlcpy'; {introduced 1.1.0}
+  OPENSSL_strlcat_procname = 'OPENSSL_strlcat'; {introduced 1.1.0}
+  OPENSSL_strnlen_procname = 'OPENSSL_strnlen'; {introduced 1.1.0}
+  OPENSSL_buf2hexstr_procname = 'OPENSSL_buf2hexstr'; {introduced 1.1.0}
+  OPENSSL_hexstr2buf_procname = 'OPENSSL_hexstr2buf'; {introduced 1.1.0}
+  OPENSSL_hexchar2int_procname = 'OPENSSL_hexchar2int'; {introduced 1.1.0}
+
+  // # define OPENSSL_MALLOC_MAX_NELEMS(type)  (((1U<<(sizeof(int)*8-1))-1)/sizeof(type))
+
+  OpenSSL_version_num_procname = 'OpenSSL_version_num'; {introduced 1.1.0}
+  OpenSSL_version_procname = 'OpenSSL_version'; {introduced 1.1.0}
+
+  OPENSSL_issetugid_procname = 'OPENSSL_issetugid';
+
+  (* No longer use an index. *)
+  //function CRYPTO_free_ex_index(class_index: TIdC_INT; idx: TIdC_INT): TIdC_INT;
+
+  (*
+   * Initialise/duplicate/free CRYPTO_EX_DATA variables corresponding to a
+   * given class (invokes whatever per-class callbacks are applicable)
+   *)
+  CRYPTO_new_ex_data_procname = 'CRYPTO_new_ex_data';
+  CRYPTO_dup_ex_data_procname = 'CRYPTO_dup_ex_data';
+
+  CRYPTO_free_ex_data_procname = 'CRYPTO_free_ex_data';
+
+  (*
+   * Get/set data in a CRYPTO_EX_DATA variable corresponding to a particular
+   * index (relative to the class type involved)
+   *)
+  CRYPTO_set_ex_data_procname = 'CRYPTO_set_ex_data';
+  CRYPTO_get_ex_data_procname = 'CRYPTO_get_ex_data';
+
+  ///*
+  // * The old locking functions have been removed completely without compatibility
+  // * macros. This is because the old functions either could not properly report
+  // * errors, or the returned error values were not clearly documented.
+  // * Replacing the locking functions with no-ops would cause race condition
+  // * issues in the affected applications. It is far better for them to fail at
+  // * compile time.
+  // * On the other hand, the locking callbacks are no longer used.  Consequently,
+  // * the callback management functions can be safely replaced with no-op macros.
+  // */
+  //#  define CRYPTO_num_locks()            (1)
+  CRYPTO_num_locks_procname = 'CRYPTO_num_locks'; {removed 1.1.0}
+  //#  define CRYPTO_set_locking_callback(func)
+  //#  define CRYPTO_get_locking_callback()         (NULL)
+  //#  define CRYPTO_set_add_lock_callback(func)
+  //#  define CRYPTO_get_add_lock_callback()        (NULL)
+  CRYPTO_set_locking_callback_procname = 'CRYPTO_set_locking_callback'; {removed 1.1.0}
+
+  ///* Only use CRYPTO_THREADID_set_[numeric|pointer]() within callbacks */
+  //#  define CRYPTO_THREADID_set_numeric(id, val)
+  CRYPTO_THREADID_set_numeric_procname = 'CRYPTO_THREADID_set_numeric'; {removed 1.1.0}
+  //#  define CRYPTO_THREADID_set_pointer(id, ptr)
+  //#  define CRYPTO_THREADID_set_callback(threadid_func)   (0)
+  CRYPTO_THREADID_set_callback_procname = 'CRYPTO_THREADID_set_callback'; {removed 1.1.0}
+  //#  define CRYPTO_THREADID_get_callback()                (NULL)
+  //#  define CRYPTO_THREADID_current(id)
+  //#  define CRYPTO_THREADID_cmp(a, b)                     (-1)
+  //#  define CRYPTO_THREADID_cpy(dest, src)
+  //#  define CRYPTO_THREADID_hash(id)                      (0UL)
+
+  CRYPTO_set_id_callback_procname = 'CRYPTO_set_id_callback'; {removed 1.1.0}
+  //
+  //#  define CRYPTO_set_dynlock_create_callback(dyn_create_function)
+  //#  define CRYPTO_set_dynlock_lock_callback(dyn_lock_function)
+  //#  define CRYPTO_set_dynlock_destroy_callback(dyn_destroy_function)
+  //#  define CRYPTO_get_dynlock_create_callback()          (NULL)
+  //#  define CRYPTO_get_dynlock_lock_callback()            (NULL)
+  //#  define CRYPTO_get_dynlock_destroy_callback()         (NULL)
+  //# endif /* OPENSSL_API_COMPAT < 0x10100000L */
+
+  CRYPTO_set_mem_functions_procname = 'CRYPTO_set_mem_functions';
+  CRYPTO_set_mem_debug_procname = 'CRYPTO_set_mem_debug'; {introduced 1.1.0 removed 3.0.0}
+    //void CRYPTO_get_mem_functions(
+  //        void *(**m) (TIdC_SIZET, const char *, int),
+  //        void *(**r) (void *, TIdC_SIZET, const char *, int),
+  //        void (**f) (void *, const char *, int));
+
+  CRYPTO_malloc_procname = 'CRYPTO_malloc';
+  CRYPTO_zalloc_procname = 'CRYPTO_zalloc'; {introduced 1.1.0}
+  CRYPTO_memdup_procname = 'CRYPTO_memdup'; {introduced 1.1.0}
+  CRYPTO_strdup_procname = 'CRYPTO_strdup';
+  CRYPTO_strndup_procname = 'CRYPTO_strndup'; {introduced 1.1.0}
+  CRYPTO_free_procname = 'CRYPTO_free';
+  CRYPTO_clear_free_procname = 'CRYPTO_clear_free'; {introduced 1.1.0}
+  CRYPTO_realloc_procname = 'CRYPTO_realloc';
+  CRYPTO_clear_realloc_procname = 'CRYPTO_clear_realloc'; {introduced 1.1.0}
+
+  CRYPTO_secure_malloc_init_procname = 'CRYPTO_secure_malloc_init'; {introduced 1.1.0}
+  CRYPTO_secure_malloc_done_procname = 'CRYPTO_secure_malloc_done'; {introduced 1.1.0}
+  CRYPTO_secure_malloc_procname = 'CRYPTO_secure_malloc'; {introduced 1.1.0}
+  CRYPTO_secure_zalloc_procname = 'CRYPTO_secure_zalloc'; {introduced 1.1.0}
+  CRYPTO_secure_free_procname = 'CRYPTO_secure_free'; {introduced 1.1.0}
+  CRYPTO_secure_clear_free_procname = 'CRYPTO_secure_clear_free'; {introduced 1.1.0}
+  CRYPTO_secure_allocated_procname = 'CRYPTO_secure_allocated'; {introduced 1.1.0}
+  CRYPTO_secure_malloc_initialized_procname = 'CRYPTO_secure_malloc_initialized'; {introduced 1.1.0}
+  CRYPTO_secure_actual_size_procname = 'CRYPTO_secure_actual_size'; {introduced 1.1.0}
+  CRYPTO_secure_used_procname = 'CRYPTO_secure_used'; {introduced 1.1.0}
+
+  OPENSSL_cleanse_procname = 'OPENSSL_cleanse';
+
+  (* debug libraries only  *)
+//  function CRYPTO_mem_debug_push(const info: PIdAnsiChar; const file_: PIdAnsiChar; line: TIdC_INT): TIdC_INT;
+//  function CRYPTO_mem_debug_pop: TIdC_INT;
+//  procedure CRYPTO_get_alloc_counts(mcount: PIdC_INT; rcount: PIdC_INT; fcount: PIdC_INT);
+
+  (*
+   * Debugging functions (enabled by CRYPTO_set_mem_debug(1))
+   * The flag argument has the following significance:
+   *   0:   called before the actual memory allocation has taken place
+   *   1:   called after the actual memory allocation has taken place
+   *)
+
+//  procedure CRYPTO_mem_debug_malloc(addr: Pointer; num: TIdC_SIZET; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+//  procedure CRYPTO_mem_debug_realloc(addr1: Pointer; addr2: Pointer; num: TIdC_SIZET; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+//  procedure CRYPTO_mem_debug_free(addr: Pointer; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+
+//  function CRYPTO_mem_leaks_cb(cb: CRYPTO_mem_leaks_cb_cb; u: Pointer): TIdC_INT;
+
+//  function CRYPTO_mem_leaks_fp(&FILE: Pointer): TIdC_INT;
+//  function CRYPTO_mem_leaks(BIO: PBIO): TIdC_INT;
+
+  //* die if we have to */
+  //ossl_noreturn void OPENSSL_die(const char *assertion, const char *file, int line);
+
+  //# define OPENSSL_assert(e) \
+  //    (void)((e) ? 0 : (OPENSSL_die("assertion failed: " #e, OPENSSL_FILE, OPENSSL_LINE), 1))
+
+  OPENSSL_isservice_procname = 'OPENSSL_isservice';
+
+  FIPS_mode_procname = 'FIPS_mode'; {removed 3.0.0}
+  FIPS_mode_set_procname = 'FIPS_mode_set'; {removed 3.0.0}
+
+  OPENSSL_init_procname = 'OPENSSL_init';
+
+  // struct tm *OPENSSL_gmtime(const TIdC_TIMET *timer, struct tm *result);
+
+  //function OPENSSL_gmtime_adj(struct tm *tm, int offset_day, long offset_sec): TIdC_INT;
+  //function OPENSSL_gmtime_diff(int *pday, int *psec, const struct tm *from, const struct tm *to): TIdC_INT;
+
+  (*
+   * CRYPTO_memcmp returns zero iff the |len| bytes at |a| and |b| are equal.
+   * It takes an amount of time dependent on |len|, but independent of the
+   * contents of |a| and |b|. Unlike memcmp, it cannot be used to put elements
+   * into a defined order as the return value when a != b is undefined, other
+   * than to be non-zero.
+   *)
+  CRYPTO_memcmp_procname = 'CRYPTO_memcmp';
+
+  (* Library initialisation functions *)
+  OPENSSL_cleanup_procname = 'OPENSSL_cleanup'; {introduced 1.1.0}
+  OPENSSL_init_crypto_procname = 'OPENSSL_init_crypto'; {introduced 1.1.0}
+  // int OPENSSL_atexit(void (*handler)(void));
+  OPENSSL_thread_stop_procname = 'OPENSSL_thread_stop'; {introduced 1.1.0}
+
+  (* Low-level control of initialization *)
+  OPENSSL_INIT_new_procname = 'OPENSSL_INIT_new'; {introduced 1.1.0}
+  //int OPENSSL_INIT_set_config_filename(OPENSSL_INIT_SETTINGS *settings,
+  //                                     const char *config_filename);
+  //void OPENSSL_INIT_set_config_file_flags(OPENSSL_INIT_SETTINGS *settings,
+  //                                        unsigned long flags);
+  //int OPENSSL_INIT_set_config_appname(OPENSSL_INIT_SETTINGS *settings,
+  //                                    const char *config_appname);
+  OPENSSL_INIT_free_procname = 'OPENSSL_INIT_free'; {introduced 1.1.0}
+
+  CRYPTO_THREAD_run_once_procname = 'CRYPTO_THREAD_run_once'; {introduced 1.1.0}
+
+  //type
+  //  CRYPTO_THREAD_init_local_cleanup = procedure(v1: Pointer);
+  //
+  //function CRYPTO_THREAD_init_local(key: PCRYPTO_THREAD_LOCAL; cleanup: CRYPTO_THREAD_init_local_cleanup): TIdC_INT;
+  CRYPTO_THREAD_get_local_procname = 'CRYPTO_THREAD_get_local'; {introduced 1.1.0}
+  CRYPTO_THREAD_set_local_procname = 'CRYPTO_THREAD_set_local'; {introduced 1.1.0}
+  CRYPTO_THREAD_cleanup_local_procname = 'CRYPTO_THREAD_cleanup_local'; {introduced 1.1.0}
+
+  CRYPTO_THREAD_get_current_id_procname = 'CRYPTO_THREAD_get_current_id'; {introduced 1.1.0}
+  CRYPTO_THREAD_compare_id_procname = 'CRYPTO_THREAD_compare_id'; {introduced 1.1.0}
+
+  SSLeay_version_procname = 'SSLeay_version'; {removed 1.1.0}
+  SSLeay_procname = 'SSLeay'; {removed 1.1.0}
+
 
 // OPENSSL_FILE = __FILE__ = C preprocessor macro
 // OPENSSL_LINE = __LINE__ = C preprocessor macro
@@ -940,2241 +1149,3819 @@ end;
 {$WARN  NO_RETVAL OFF}
 function  ERR_OPENSSL_malloc(num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_malloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_malloc_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_zalloc(num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_zalloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_zalloc_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_realloc(addr: Pointer; num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_realloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_realloc_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_clear_realloc(addr: Pointer; old_num: TIdC_SIZET; num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_clear_realloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_clear_realloc_procname);
 end;
 
-
+ 
 procedure  ERR_OPENSSL_clear_free(addr: Pointer; num: TIdC_SIZET); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_clear_free');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_clear_free_procname);
 end;
 
-
+ 
 procedure  ERR_OPENSSL_free(addr: Pointer); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_free');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_free_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_memdup(const str: Pointer; s: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_memdup');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_memdup_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_strdup(const str: PIdAnsiChar): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_strdup');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_strdup_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_strndup(const str: PIdAnsiChar; n: TIdC_SIZET): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_strndup');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_strndup_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_secure_malloc(num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_secure_malloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_secure_malloc_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_secure_zalloc(num: TIdC_SIZET): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_secure_zalloc');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_secure_zalloc_procname);
 end;
 
-
+ 
 procedure  ERR_OPENSSL_secure_free(addr: Pointer); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_secure_free');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_secure_free_procname);
 end;
 
-
+ 
 procedure  ERR_OPENSSL_secure_clear_free(addr: Pointer; num: TIdC_SIZET); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_secure_clear_free');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_secure_clear_free_procname);
 end;
 
-
+ 
 function  ERR_OPENSSL_secure_actual_size(ptr: Pointer): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_secure_actual_size');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_secure_actual_size_procname);
 end;
 
+ 
 
 function  ERR_CRYPTO_THREAD_lock_new: PCRYPTO_RWLOCK; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_lock_new');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_lock_new_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_read_lock(lock: PCRYPTO_RWLOCK): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_read_lock');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_read_lock_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_write_lock(lock: PCRYPTO_RWLOCK): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_write_lock');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_write_lock_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_unlock(lock: PCRYPTO_RWLOCK): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_unlock');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_unlock_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_CRYPTO_THREAD_lock_free(lock: PCRYPTO_RWLOCK); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_lock_free');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_lock_free_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_CRYPTO_atomic_add(val: PIdC_INT; amount: TIdC_INT; ret: PIdC_INT; lock: PCRYPTO_RWLOCK): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_atomic_add');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_atomic_add_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_CRYPTO_mem_ctrl(mode: TIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_mem_ctrl');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_mem_ctrl_procname);
 end;
 
+ 
 
 function  ERR_OPENSSL_strlcpy(dst: PIdAnsiChar; const src: PIdAnsiChar; siz: TIdC_SIZET): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_strlcpy');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_strlcpy_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_strlcat(dst: PIdAnsiChar; const src: PIdAnsiChar; siz: TIdC_SIZET): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_strlcat');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_strlcat_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_strnlen(const str: PIdAnsiChar; maxlen: TIdC_SIZET): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_strnlen');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_strnlen_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_buf2hexstr(const buffer: PByte; len: TIdC_LONG): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_buf2hexstr');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_buf2hexstr_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_hexstr2buf(const str: PIdAnsiChar; len: PIdC_LONG): PByte; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_hexstr2buf');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_hexstr2buf_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_hexchar2int(c: Byte): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_hexchar2int');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_hexchar2int_procname);
 end;
 
+ {introduced 1.1.0}
+
+  // # define OPENSSL_MALLOC_MAX_NELEMS(type)  (((1U<<(sizeof(int)*8-1))-1)/sizeof(type))
 
 function  ERR_OpenSSL_version_num: TIdC_ULONG; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OpenSSL_version_num');
+  EIdAPIFunctionNotPresent.RaiseException(OpenSSL_version_num_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OpenSSL_version(type_: TIdC_INT): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OpenSSL_version');
+  EIdAPIFunctionNotPresent.RaiseException(OpenSSL_version_procname);
+end;
+
+ {introduced 1.1.0}
+
+function  ERR_OPENSSL_issetugid: TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_issetugid_procname);
 end;
 
 
+
+  (* No longer use an index. *)
+  //function CRYPTO_free_ex_index(class_index: TIdC_INT; idx: TIdC_INT): TIdC_INT;
+
+  (*
+   * Initialise/duplicate/free CRYPTO_EX_DATA variables corresponding to a
+   * given class (invokes whatever per-class callbacks are applicable)
+   *)
+function  ERR_CRYPTO_new_ex_data(class_index: TIdC_INT; obj: Pointer; ad: PCRYPTO_EX_DATA): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_new_ex_data_procname);
+end;
+
+
+function  ERR_CRYPTO_dup_ex_data(class_index: TIdC_INT; to_: PCRYPTO_EX_DATA; const from: PCRYPTO_EX_DATA): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_dup_ex_data_procname);
+end;
+
+
+
+procedure  ERR_CRYPTO_free_ex_data(class_index: TIdC_INT; obj: Pointer; ad: PCRYPTO_EX_DATA); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_free_ex_data_procname);
+end;
+
+
+
+  (*
+   * Get/set data in a CRYPTO_EX_DATA variable corresponding to a particular
+   * index (relative to the class type involved)
+   *)
+function  ERR_CRYPTO_set_ex_data(ad: PCRYPTO_EX_DATA; idx: TIdC_INT; val: Pointer): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_set_ex_data_procname);
+end;
+
+
+function  ERR_CRYPTO_get_ex_data(const ad: PCRYPTO_EX_DATA; idx: TIdC_INT): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_get_ex_data_procname);
+end;
+
+
+
+  ///*
+  // * The old locking functions have been removed completely without compatibility
+  // * macros. This is because the old functions either could not properly report
+  // * errors, or the returned error values were not clearly documented.
+  // * Replacing the locking functions with no-ops would cause race condition
+  // * issues in the affected applications. It is far better for them to fail at
+  // * compile time.
+  // * On the other hand, the locking callbacks are no longer used.  Consequently,
+  // * the callback management functions can be safely replaced with no-op macros.
+  // */
+  //#  define CRYPTO_num_locks()            (1)
 function  ERR_CRYPTO_num_locks: TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_num_locks');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_num_locks_procname);
 end;
 
-
+ 
+  //#  define CRYPTO_set_locking_callback(func)
+  //#  define CRYPTO_get_locking_callback()         (NULL)
+  //#  define CRYPTO_set_add_lock_callback(func)
+  //#  define CRYPTO_get_add_lock_callback()        (NULL)
 procedure  ERR_CRYPTO_set_locking_callback(func: TIdSslLockingCallback); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_set_locking_callback');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_set_locking_callback_procname);
 end;
 
+ 
 
+  ///* Only use CRYPTO_THREADID_set_[numeric|pointer]() within callbacks */
+  //#  define CRYPTO_THREADID_set_numeric(id, val)
 procedure  ERR_CRYPTO_THREADID_set_numeric(id : PCRYPTO_THREADID; val: TIdC_ULONG); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREADID_set_numeric');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREADID_set_numeric_procname);
 end;
 
-
+ 
+  //#  define CRYPTO_THREADID_set_pointer(id, ptr)
+  //#  define CRYPTO_THREADID_set_callback(threadid_func)   (0)
 procedure  ERR_CRYPTO_THREADID_set_callback(threadid_func: Tthreadid_func); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREADID_set_callback');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREADID_set_callback_procname);
 end;
 
+ 
+  //#  define CRYPTO_THREADID_get_callback()                (NULL)
+  //#  define CRYPTO_THREADID_current(id)
+  //#  define CRYPTO_THREADID_cmp(a, b)                     (-1)
+  //#  define CRYPTO_THREADID_cpy(dest, src)
+  //#  define CRYPTO_THREADID_hash(id)                      (0UL)
 
 procedure  ERR_CRYPTO_set_id_callback(func: TIdSslIdCallback); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_set_id_callback');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_set_id_callback_procname);
+end;
+
+ 
+  //
+  //#  define CRYPTO_set_dynlock_create_callback(dyn_create_function)
+  //#  define CRYPTO_set_dynlock_lock_callback(dyn_lock_function)
+  //#  define CRYPTO_set_dynlock_destroy_callback(dyn_destroy_function)
+  //#  define CRYPTO_get_dynlock_create_callback()          (NULL)
+  //#  define CRYPTO_get_dynlock_lock_callback()            (NULL)
+  //#  define CRYPTO_get_dynlock_destroy_callback()         (NULL)
+  //# endif /* OPENSSL_API_COMPAT < 0x10100000L */
+
+function  ERR_CRYPTO_set_mem_functions(m: CRYPTO_set_mem_functions_m; r: CRYPTO_set_mem_functions_r; f: CRYPTO_set_mem_functions_f): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_set_mem_functions_procname);
 end;
 
 
 function  ERR_CRYPTO_set_mem_debug(flag: TIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_set_mem_debug');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_set_mem_debug_procname);
+end;
+
+ 
+    //void CRYPTO_get_mem_functions(
+  //        void *(**m) (TIdC_SIZET, const char *, int),
+  //        void *(**r) (void *, TIdC_SIZET, const char *, int),
+  //        void (**f) (void *, const char *, int));
+
+function  ERR_CRYPTO_malloc(num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_malloc_procname);
 end;
 
 
 function  ERR_CRYPTO_zalloc(num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_zalloc');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_zalloc_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_memdup(const str: Pointer; siz: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_memdup');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_memdup_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_CRYPTO_strdup(const str: PIdAnsiChar; const file_: PIdAnsiChar; line: TIdC_INT): PIdAnsiChar; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_strdup_procname);
 end;
 
 
 function  ERR_CRYPTO_strndup(const str: PIdAnsiChar; s: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_strndup');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_strndup_procname);
+end;
+
+ {introduced 1.1.0}
+procedure  ERR_CRYPTO_free(ptr: Pointer; const file_: PIdAnsiChar; line: TIdC_INT); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_free_procname);
 end;
 
 
 procedure  ERR_CRYPTO_clear_free(ptr: Pointer; num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_clear_free');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_clear_free_procname);
+end;
+
+ {introduced 1.1.0}
+function  ERR_CRYPTO_realloc(addr: Pointer; num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_realloc_procname);
 end;
 
 
 function  ERR_CRYPTO_clear_realloc(addr: Pointer; old_num: TIdC_SIZET; num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_clear_realloc');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_clear_realloc_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_CRYPTO_secure_malloc_init(sz: TIdC_SIZET; minsize: TIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_malloc_init');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_malloc_init_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_malloc_done: TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_malloc_done');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_malloc_done_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_malloc(num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_malloc');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_malloc_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_zalloc(num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_zalloc');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_zalloc_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_CRYPTO_secure_free(ptr: Pointer; const file_: PIdAnsiChar; line: TIdC_INT); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_free');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_free_procname);
 end;
 
-
+ {introduced 1.1.0}
 procedure  ERR_CRYPTO_secure_clear_free(ptr: Pointer; num: TIdC_SIZET; const file_: PIdAnsiChar; line: TIdC_INT); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_clear_free');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_clear_free_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_allocated(const ptr: Pointer): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_allocated');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_allocated_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_malloc_initialized: TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_malloc_initialized');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_malloc_initialized_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_actual_size(ptr: Pointer): TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_actual_size');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_actual_size_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_secure_used: TIdC_SIZET; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_secure_used');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_secure_used_procname);
 end;
+
+ {introduced 1.1.0}
+
+procedure  ERR_OPENSSL_cleanse(ptr: Pointer; len: TIdC_SIZET); 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_cleanse_procname);
+end;
+
+
+
+  (* debug libraries only  *)
+//  function CRYPTO_mem_debug_push(const info: PIdAnsiChar; const file_: PIdAnsiChar; line: TIdC_INT): TIdC_INT;
+//  function CRYPTO_mem_debug_pop: TIdC_INT;
+//  procedure CRYPTO_get_alloc_counts(mcount: PIdC_INT; rcount: PIdC_INT; fcount: PIdC_INT);
+
+  (*
+   * Debugging functions (enabled by CRYPTO_set_mem_debug(1))
+   * The flag argument has the following significance:
+   *   0:   called before the actual memory allocation has taken place
+   *   1:   called after the actual memory allocation has taken place
+   *)
+
+//  procedure CRYPTO_mem_debug_malloc(addr: Pointer; num: TIdC_SIZET; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+//  procedure CRYPTO_mem_debug_realloc(addr1: Pointer; addr2: Pointer; num: TIdC_SIZET; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+//  procedure CRYPTO_mem_debug_free(addr: Pointer; flag: TIdC_INT; const file_: PIdAnsiChar; line: TIdC_INT);
+
+//  function CRYPTO_mem_leaks_cb(cb: CRYPTO_mem_leaks_cb_cb; u: Pointer): TIdC_INT;
+
+//  function CRYPTO_mem_leaks_fp(&FILE: Pointer): TIdC_INT;
+//  function CRYPTO_mem_leaks(BIO: PBIO): TIdC_INT;
+
+  //* die if we have to */
+  //ossl_noreturn void OPENSSL_die(const char *assertion, const char *file, int line);
+
+  //# define OPENSSL_assert(e) \
+  //    (void)((e) ? 0 : (OPENSSL_die("assertion failed: " #e, OPENSSL_FILE, OPENSSL_LINE), 1))
+
+function  ERR_OPENSSL_isservice: TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_isservice_procname);
+end;
+
 
 
 function  ERR_FIPS_mode: TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('FIPS_mode');
+  EIdAPIFunctionNotPresent.RaiseException(FIPS_mode_procname);
 end;
 
-
+ 
 function  ERR_FIPS_mode_set(r: TIdC_INT): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('FIPS_mode_set');
+  EIdAPIFunctionNotPresent.RaiseException(FIPS_mode_set_procname);
+end;
+
+ 
+
+procedure  ERR_OPENSSL_init; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_init_procname);
 end;
 
 
+
+  // struct tm *OPENSSL_gmtime(const TIdC_TIMET *timer, struct tm *result);
+
+  //function OPENSSL_gmtime_adj(struct tm *tm, int offset_day, long offset_sec): TIdC_INT;
+  //function OPENSSL_gmtime_diff(int *pday, int *psec, const struct tm *from, const struct tm *to): TIdC_INT;
+
+  (*
+   * CRYPTO_memcmp returns zero iff the |len| bytes at |a| and |b| are equal.
+   * It takes an amount of time dependent on |len|, but independent of the
+   * contents of |a| and |b|. Unlike memcmp, it cannot be used to put elements
+   * into a defined order as the return value when a != b is undefined, other
+   * than to be non-zero.
+   *)
+function  ERR_CRYPTO_memcmp(const in_a: Pointer; const in_b: Pointer; len: TIdC_SIZET): TIdC_INT; 
+begin
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_memcmp_procname);
+end;
+
+
+
+  (* Library initialisation functions *)
 procedure  ERR_OPENSSL_cleanup; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_cleanup');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_cleanup_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_OPENSSL_init_crypto(opts: TIdC_UINT64; const settings: POPENSSL_INIT_SETTINGS): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_init_crypto');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_init_crypto_procname);
 end;
 
-
+ {introduced 1.1.0}
+  // int OPENSSL_atexit(void (*handler)(void));
 procedure  ERR_OPENSSL_thread_stop; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_thread_stop');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_thread_stop_procname);
 end;
 
+ {introduced 1.1.0}
 
+  (* Low-level control of initialization *)
 function  ERR_OPENSSL_INIT_new: POPENSSL_INIT_SETTINGS; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_INIT_new');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_INIT_new_procname);
 end;
 
-
+ {introduced 1.1.0}
+  //int OPENSSL_INIT_set_config_filename(OPENSSL_INIT_SETTINGS *settings,
+  //                                     const char *config_filename);
+  //void OPENSSL_INIT_set_config_file_flags(OPENSSL_INIT_SETTINGS *settings,
+  //                                        unsigned long flags);
+  //int OPENSSL_INIT_set_config_appname(OPENSSL_INIT_SETTINGS *settings,
+  //                                    const char *config_appname);
 procedure  ERR_OPENSSL_INIT_free(settings: POPENSSL_INIT_SETTINGS); 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('OPENSSL_INIT_free');
+  EIdAPIFunctionNotPresent.RaiseException(OPENSSL_INIT_free_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_CRYPTO_THREAD_run_once(once: PCRYPTO_ONCE; init: CRYPTO_THREAD_run_once_init): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_run_once');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_run_once_procname);
 end;
 
+ {introduced 1.1.0}
 
+  //type
+  //  CRYPTO_THREAD_init_local_cleanup = procedure(v1: Pointer);
+  //
+  //function CRYPTO_THREAD_init_local(key: PCRYPTO_THREAD_LOCAL; cleanup: CRYPTO_THREAD_init_local_cleanup): TIdC_INT;
 function  ERR_CRYPTO_THREAD_get_local(key: PCRYPTO_THREAD_LOCAL): Pointer; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_get_local');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_get_local_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_set_local(key: PCRYPTO_THREAD_LOCAL; val: Pointer): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_set_local');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_set_local_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_cleanup_local(key: PCRYPTO_THREAD_LOCAL): TidC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_cleanup_local');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_cleanup_local_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_CRYPTO_THREAD_get_current_id: CRYPTO_THREAD_ID; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_get_current_id');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_get_current_id_procname);
 end;
 
-
+ {introduced 1.1.0}
 function  ERR_CRYPTO_THREAD_compare_id(a: CRYPTO_THREAD_ID; b: CRYPTO_THREAD_ID): TIdC_INT; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('CRYPTO_THREAD_compare_id');
+  EIdAPIFunctionNotPresent.RaiseException(CRYPTO_THREAD_compare_id_procname);
 end;
 
+ {introduced 1.1.0}
 
 function  ERR_SSLeay_version(type_ : TIdC_INT) : PIdAnsiChar; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSLeay_version');
+  EIdAPIFunctionNotPresent.RaiseException(SSLeay_version_procname);
 end;
 
-
+ 
 function  ERR_SSLeay: TIdC_ULONG; 
 begin
-  EIdAPIFunctionNotPresent.RaiseException('SSLeay');
+  EIdAPIFunctionNotPresent.RaiseException(SSLeay_procname);
 end;
 
+ 
 
 {$WARN  NO_RETVAL ON}
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-  function LoadFunction(const AMethodName: string; const AFailed: TStringList): Pointer;
-  begin
-    Result := LoadLibFunction(ADllHandle, AMethodName);
-    if not Assigned(Result) and Assigned(AFailed) then
-      AFailed.Add(AMethodName);
-  end;
+var FuncLoaded: boolean;
 
 begin
-  OPENSSL_issetugid := LoadFunction('OPENSSL_issetugid',AFailed);
-  CRYPTO_new_ex_data := LoadFunction('CRYPTO_new_ex_data',AFailed);
-  CRYPTO_dup_ex_data := LoadFunction('CRYPTO_dup_ex_data',AFailed);
-  CRYPTO_free_ex_data := LoadFunction('CRYPTO_free_ex_data',AFailed);
-  CRYPTO_set_ex_data := LoadFunction('CRYPTO_set_ex_data',AFailed);
-  CRYPTO_get_ex_data := LoadFunction('CRYPTO_get_ex_data',AFailed);
-  CRYPTO_set_mem_functions := LoadFunction('CRYPTO_set_mem_functions',AFailed);
-  CRYPTO_malloc := LoadFunction('CRYPTO_malloc',AFailed);
-  CRYPTO_strdup := LoadFunction('CRYPTO_strdup',AFailed);
-  CRYPTO_free := LoadFunction('CRYPTO_free',AFailed);
-  CRYPTO_realloc := LoadFunction('CRYPTO_realloc',AFailed);
-  OPENSSL_cleanse := LoadFunction('OPENSSL_cleanse',AFailed);
-  OPENSSL_isservice := LoadFunction('OPENSSL_isservice',AFailed);
-  OPENSSL_init := LoadFunction('OPENSSL_init',AFailed);
-  CRYPTO_memcmp := LoadFunction('CRYPTO_memcmp',AFailed);
-  OPENSSL_malloc := LoadFunction('OPENSSL_malloc',nil); {removed 1.0.0}
-  OPENSSL_zalloc := LoadFunction('OPENSSL_zalloc',nil); {removed 1.0.0}
-  OPENSSL_realloc := LoadFunction('OPENSSL_realloc',nil); {removed 1.0.0}
-  OPENSSL_clear_realloc := LoadFunction('OPENSSL_clear_realloc',nil); {removed 1.0.0}
-  OPENSSL_clear_free := LoadFunction('OPENSSL_clear_free',nil); {removed 1.0.0}
-  OPENSSL_free := LoadFunction('OPENSSL_free',nil); {removed 1.0.0}
-  OPENSSL_memdup := LoadFunction('OPENSSL_memdup',nil); {removed 1.0.0}
-  OPENSSL_strdup := LoadFunction('OPENSSL_strdup',nil); {removed 1.0.0}
-  OPENSSL_strndup := LoadFunction('OPENSSL_strndup',nil); {removed 1.0.0}
-  OPENSSL_secure_malloc := LoadFunction('OPENSSL_secure_malloc',nil); {removed 1.0.0}
-  OPENSSL_secure_zalloc := LoadFunction('OPENSSL_secure_zalloc',nil); {removed 1.0.0}
-  OPENSSL_secure_free := LoadFunction('OPENSSL_secure_free',nil); {removed 1.0.0}
-  OPENSSL_secure_clear_free := LoadFunction('OPENSSL_secure_clear_free',nil); {removed 1.0.0}
-  OPENSSL_secure_actual_size := LoadFunction('OPENSSL_secure_actual_size',nil); {removed 1.0.0}
-  CRYPTO_THREAD_lock_new := LoadFunction('CRYPTO_THREAD_lock_new',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_read_lock := LoadFunction('CRYPTO_THREAD_read_lock',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_write_lock := LoadFunction('CRYPTO_THREAD_write_lock',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_unlock := LoadFunction('CRYPTO_THREAD_unlock',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_lock_free := LoadFunction('CRYPTO_THREAD_lock_free',nil); {introduced 1.1.0}
-  CRYPTO_atomic_add := LoadFunction('CRYPTO_atomic_add',nil); {introduced 1.1.0}
-  CRYPTO_mem_ctrl := LoadFunction('CRYPTO_mem_ctrl',nil); {removed 3.0.0}
-  OPENSSL_strlcpy := LoadFunction('OPENSSL_strlcpy',nil); {introduced 1.1.0}
-  OPENSSL_strlcat := LoadFunction('OPENSSL_strlcat',nil); {introduced 1.1.0}
-  OPENSSL_strnlen := LoadFunction('OPENSSL_strnlen',nil); {introduced 1.1.0}
-  OPENSSL_buf2hexstr := LoadFunction('OPENSSL_buf2hexstr',nil); {introduced 1.1.0}
-  OPENSSL_hexstr2buf := LoadFunction('OPENSSL_hexstr2buf',nil); {introduced 1.1.0}
-  OPENSSL_hexchar2int := LoadFunction('OPENSSL_hexchar2int',nil); {introduced 1.1.0}
-  OpenSSL_version_num := LoadFunction('OpenSSL_version_num',nil); {introduced 1.1.0}
-  OpenSSL_version := LoadFunction('OpenSSL_version',nil); {introduced 1.1.0}
-  CRYPTO_num_locks := LoadFunction('CRYPTO_num_locks',nil); {removed 1.1.0}
-  CRYPTO_set_locking_callback := LoadFunction('CRYPTO_set_locking_callback',nil); {removed 1.1.0}
-  CRYPTO_THREADID_set_numeric := LoadFunction('CRYPTO_THREADID_set_numeric',nil); {removed 1.1.0}
-  CRYPTO_THREADID_set_callback := LoadFunction('CRYPTO_THREADID_set_callback',nil); {removed 1.1.0}
-  CRYPTO_set_id_callback := LoadFunction('CRYPTO_set_id_callback',nil); {removed 1.1.0}
-  CRYPTO_set_mem_debug := LoadFunction('CRYPTO_set_mem_debug',nil); {introduced 1.1.0 removed 3.0.0}
-  CRYPTO_zalloc := LoadFunction('CRYPTO_zalloc',nil); {introduced 1.1.0}
-  CRYPTO_memdup := LoadFunction('CRYPTO_memdup',nil); {introduced 1.1.0}
-  CRYPTO_strndup := LoadFunction('CRYPTO_strndup',nil); {introduced 1.1.0}
-  CRYPTO_clear_free := LoadFunction('CRYPTO_clear_free',nil); {introduced 1.1.0}
-  CRYPTO_clear_realloc := LoadFunction('CRYPTO_clear_realloc',nil); {introduced 1.1.0}
-  CRYPTO_secure_malloc_init := LoadFunction('CRYPTO_secure_malloc_init',nil); {introduced 1.1.0}
-  CRYPTO_secure_malloc_done := LoadFunction('CRYPTO_secure_malloc_done',nil); {introduced 1.1.0}
-  CRYPTO_secure_malloc := LoadFunction('CRYPTO_secure_malloc',nil); {introduced 1.1.0}
-  CRYPTO_secure_zalloc := LoadFunction('CRYPTO_secure_zalloc',nil); {introduced 1.1.0}
-  CRYPTO_secure_free := LoadFunction('CRYPTO_secure_free',nil); {introduced 1.1.0}
-  CRYPTO_secure_clear_free := LoadFunction('CRYPTO_secure_clear_free',nil); {introduced 1.1.0}
-  CRYPTO_secure_allocated := LoadFunction('CRYPTO_secure_allocated',nil); {introduced 1.1.0}
-  CRYPTO_secure_malloc_initialized := LoadFunction('CRYPTO_secure_malloc_initialized',nil); {introduced 1.1.0}
-  CRYPTO_secure_actual_size := LoadFunction('CRYPTO_secure_actual_size',nil); {introduced 1.1.0}
-  CRYPTO_secure_used := LoadFunction('CRYPTO_secure_used',nil); {introduced 1.1.0}
-  FIPS_mode := LoadFunction('FIPS_mode',nil); {removed 3.0.0}
-  FIPS_mode_set := LoadFunction('FIPS_mode_set',nil); {removed 3.0.0}
-  OPENSSL_cleanup := LoadFunction('OPENSSL_cleanup',nil); {introduced 1.1.0}
-  OPENSSL_init_crypto := LoadFunction('OPENSSL_init_crypto',nil); {introduced 1.1.0}
-  OPENSSL_thread_stop := LoadFunction('OPENSSL_thread_stop',nil); {introduced 1.1.0}
-  OPENSSL_INIT_new := LoadFunction('OPENSSL_INIT_new',nil); {introduced 1.1.0}
-  OPENSSL_INIT_free := LoadFunction('OPENSSL_INIT_free',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_run_once := LoadFunction('CRYPTO_THREAD_run_once',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_get_local := LoadFunction('CRYPTO_THREAD_get_local',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_set_local := LoadFunction('CRYPTO_THREAD_set_local',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_cleanup_local := LoadFunction('CRYPTO_THREAD_cleanup_local',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_get_current_id := LoadFunction('CRYPTO_THREAD_get_current_id',nil); {introduced 1.1.0}
-  CRYPTO_THREAD_compare_id := LoadFunction('CRYPTO_THREAD_compare_id',nil); {introduced 1.1.0}
-  SSLeay_version := LoadFunction('SSLeay_version',nil); {removed 1.1.0}
-  SSLeay := LoadFunction('SSLeay',nil); {removed 1.1.0}
-  if not assigned(OPENSSL_malloc) then 
+  OPENSSL_malloc := LoadLibFunction(ADllHandle, OPENSSL_malloc_procname);
+  FuncLoaded := assigned(OPENSSL_malloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_malloc_introduced)}
     if LibVersion < OPENSSL_malloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_malloc)}
-      OPENSSL_malloc := @FC_OPENSSL_malloc
+      OPENSSL_malloc := @FC_OPENSSL_malloc;
       {$else}
-      OPENSSL_malloc := @ERR_OPENSSL_malloc
+      {$if not defined(OPENSSL_malloc_allownil)}
+      OPENSSL_malloc := @ERR_OPENSSL_malloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_malloc_removed)}
-   if OPENSSL_malloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_malloc)}
-     OPENSSL_malloc := @_OPENSSL_malloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_malloc)}
-       OPENSSL_malloc := @ERR_OPENSSL_malloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_malloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_malloc');
+    {$if declared(OPENSSL_malloc_removed)}
+    if OPENSSL_malloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_malloc)}
+      OPENSSL_malloc := @_OPENSSL_malloc;
+      {$else}
+      {$if not defined(OPENSSL_malloc_allownil)}
+      OPENSSL_malloc := @ERR_OPENSSL_malloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_malloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_malloc := @ERR_OPENSSL_malloc;
+      AFailed.Add('OPENSSL_malloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_zalloc) then 
+ 
+  OPENSSL_zalloc := LoadLibFunction(ADllHandle, OPENSSL_zalloc_procname);
+  FuncLoaded := assigned(OPENSSL_zalloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_zalloc_introduced)}
     if LibVersion < OPENSSL_zalloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_zalloc)}
-      OPENSSL_zalloc := @FC_OPENSSL_zalloc
+      OPENSSL_zalloc := @FC_OPENSSL_zalloc;
       {$else}
-      OPENSSL_zalloc := @ERR_OPENSSL_zalloc
+      {$if not defined(OPENSSL_zalloc_allownil)}
+      OPENSSL_zalloc := @ERR_OPENSSL_zalloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_zalloc_removed)}
-   if OPENSSL_zalloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_zalloc)}
-     OPENSSL_zalloc := @_OPENSSL_zalloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_zalloc)}
-       OPENSSL_zalloc := @ERR_OPENSSL_zalloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_zalloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_zalloc');
+    {$if declared(OPENSSL_zalloc_removed)}
+    if OPENSSL_zalloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_zalloc)}
+      OPENSSL_zalloc := @_OPENSSL_zalloc;
+      {$else}
+      {$if not defined(OPENSSL_zalloc_allownil)}
+      OPENSSL_zalloc := @ERR_OPENSSL_zalloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_zalloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_zalloc := @ERR_OPENSSL_zalloc;
+      AFailed.Add('OPENSSL_zalloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_realloc) then 
+ 
+  OPENSSL_realloc := LoadLibFunction(ADllHandle, OPENSSL_realloc_procname);
+  FuncLoaded := assigned(OPENSSL_realloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_realloc_introduced)}
     if LibVersion < OPENSSL_realloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_realloc)}
-      OPENSSL_realloc := @FC_OPENSSL_realloc
+      OPENSSL_realloc := @FC_OPENSSL_realloc;
       {$else}
-      OPENSSL_realloc := @ERR_OPENSSL_realloc
+      {$if not defined(OPENSSL_realloc_allownil)}
+      OPENSSL_realloc := @ERR_OPENSSL_realloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_realloc_removed)}
-   if OPENSSL_realloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_realloc)}
-     OPENSSL_realloc := @_OPENSSL_realloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_realloc)}
-       OPENSSL_realloc := @ERR_OPENSSL_realloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_realloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_realloc');
+    {$if declared(OPENSSL_realloc_removed)}
+    if OPENSSL_realloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_realloc)}
+      OPENSSL_realloc := @_OPENSSL_realloc;
+      {$else}
+      {$if not defined(OPENSSL_realloc_allownil)}
+      OPENSSL_realloc := @ERR_OPENSSL_realloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_realloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_realloc := @ERR_OPENSSL_realloc;
+      AFailed.Add('OPENSSL_realloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_clear_realloc) then 
+ 
+  OPENSSL_clear_realloc := LoadLibFunction(ADllHandle, OPENSSL_clear_realloc_procname);
+  FuncLoaded := assigned(OPENSSL_clear_realloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_clear_realloc_introduced)}
     if LibVersion < OPENSSL_clear_realloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_clear_realloc)}
-      OPENSSL_clear_realloc := @FC_OPENSSL_clear_realloc
+      OPENSSL_clear_realloc := @FC_OPENSSL_clear_realloc;
       {$else}
-      OPENSSL_clear_realloc := @ERR_OPENSSL_clear_realloc
+      {$if not defined(OPENSSL_clear_realloc_allownil)}
+      OPENSSL_clear_realloc := @ERR_OPENSSL_clear_realloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_clear_realloc_removed)}
-   if OPENSSL_clear_realloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_clear_realloc)}
-     OPENSSL_clear_realloc := @_OPENSSL_clear_realloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_clear_realloc)}
-       OPENSSL_clear_realloc := @ERR_OPENSSL_clear_realloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_clear_realloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_clear_realloc');
+    {$if declared(OPENSSL_clear_realloc_removed)}
+    if OPENSSL_clear_realloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_clear_realloc)}
+      OPENSSL_clear_realloc := @_OPENSSL_clear_realloc;
+      {$else}
+      {$if not defined(OPENSSL_clear_realloc_allownil)}
+      OPENSSL_clear_realloc := @ERR_OPENSSL_clear_realloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_clear_realloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_clear_realloc := @ERR_OPENSSL_clear_realloc;
+      AFailed.Add('OPENSSL_clear_realloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_clear_free) then 
+ 
+  OPENSSL_clear_free := LoadLibFunction(ADllHandle, OPENSSL_clear_free_procname);
+  FuncLoaded := assigned(OPENSSL_clear_free);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_clear_free_introduced)}
     if LibVersion < OPENSSL_clear_free_introduced then
+    begin
       {$if declared(FC_OPENSSL_clear_free)}
-      OPENSSL_clear_free := @FC_OPENSSL_clear_free
+      OPENSSL_clear_free := @FC_OPENSSL_clear_free;
       {$else}
-      OPENSSL_clear_free := @ERR_OPENSSL_clear_free
+      {$if not defined(OPENSSL_clear_free_allownil)}
+      OPENSSL_clear_free := @ERR_OPENSSL_clear_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_clear_free_removed)}
-   if OPENSSL_clear_free_removed <= LibVersion then
-     {$if declared(_OPENSSL_clear_free)}
-     OPENSSL_clear_free := @_OPENSSL_clear_free
-     {$else}
-       {$IF declared(ERR_OPENSSL_clear_free)}
-       OPENSSL_clear_free := @ERR_OPENSSL_clear_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_clear_free) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_clear_free');
+    {$if declared(OPENSSL_clear_free_removed)}
+    if OPENSSL_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_clear_free)}
+      OPENSSL_clear_free := @_OPENSSL_clear_free;
+      {$else}
+      {$if not defined(OPENSSL_clear_free_allownil)}
+      OPENSSL_clear_free := @ERR_OPENSSL_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_clear_free := @ERR_OPENSSL_clear_free;
+      AFailed.Add('OPENSSL_clear_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_free) then 
+ 
+  OPENSSL_free := LoadLibFunction(ADllHandle, OPENSSL_free_procname);
+  FuncLoaded := assigned(OPENSSL_free);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_free_introduced)}
     if LibVersion < OPENSSL_free_introduced then
+    begin
       {$if declared(FC_OPENSSL_free)}
-      OPENSSL_free := @FC_OPENSSL_free
+      OPENSSL_free := @FC_OPENSSL_free;
       {$else}
-      OPENSSL_free := @ERR_OPENSSL_free
+      {$if not defined(OPENSSL_free_allownil)}
+      OPENSSL_free := @ERR_OPENSSL_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_free_removed)}
-   if OPENSSL_free_removed <= LibVersion then
-     {$if declared(_OPENSSL_free)}
-     OPENSSL_free := @_OPENSSL_free
-     {$else}
-       {$IF declared(ERR_OPENSSL_free)}
-       OPENSSL_free := @ERR_OPENSSL_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_free) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_free');
+    {$if declared(OPENSSL_free_removed)}
+    if OPENSSL_free_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_free)}
+      OPENSSL_free := @_OPENSSL_free;
+      {$else}
+      {$if not defined(OPENSSL_free_allownil)}
+      OPENSSL_free := @ERR_OPENSSL_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_free_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_free := @ERR_OPENSSL_free;
+      AFailed.Add('OPENSSL_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_memdup) then 
+ 
+  OPENSSL_memdup := LoadLibFunction(ADllHandle, OPENSSL_memdup_procname);
+  FuncLoaded := assigned(OPENSSL_memdup);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_memdup_introduced)}
     if LibVersion < OPENSSL_memdup_introduced then
+    begin
       {$if declared(FC_OPENSSL_memdup)}
-      OPENSSL_memdup := @FC_OPENSSL_memdup
+      OPENSSL_memdup := @FC_OPENSSL_memdup;
       {$else}
-      OPENSSL_memdup := @ERR_OPENSSL_memdup
+      {$if not defined(OPENSSL_memdup_allownil)}
+      OPENSSL_memdup := @ERR_OPENSSL_memdup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_memdup_removed)}
-   if OPENSSL_memdup_removed <= LibVersion then
-     {$if declared(_OPENSSL_memdup)}
-     OPENSSL_memdup := @_OPENSSL_memdup
-     {$else}
-       {$IF declared(ERR_OPENSSL_memdup)}
-       OPENSSL_memdup := @ERR_OPENSSL_memdup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_memdup) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_memdup');
+    {$if declared(OPENSSL_memdup_removed)}
+    if OPENSSL_memdup_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_memdup)}
+      OPENSSL_memdup := @_OPENSSL_memdup;
+      {$else}
+      {$if not defined(OPENSSL_memdup_allownil)}
+      OPENSSL_memdup := @ERR_OPENSSL_memdup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_memdup_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_memdup := @ERR_OPENSSL_memdup;
+      AFailed.Add('OPENSSL_memdup');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_strdup) then 
+ 
+  OPENSSL_strdup := LoadLibFunction(ADllHandle, OPENSSL_strdup_procname);
+  FuncLoaded := assigned(OPENSSL_strdup);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_strdup_introduced)}
     if LibVersion < OPENSSL_strdup_introduced then
+    begin
       {$if declared(FC_OPENSSL_strdup)}
-      OPENSSL_strdup := @FC_OPENSSL_strdup
+      OPENSSL_strdup := @FC_OPENSSL_strdup;
       {$else}
-      OPENSSL_strdup := @ERR_OPENSSL_strdup
+      {$if not defined(OPENSSL_strdup_allownil)}
+      OPENSSL_strdup := @ERR_OPENSSL_strdup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_strdup_removed)}
-   if OPENSSL_strdup_removed <= LibVersion then
-     {$if declared(_OPENSSL_strdup)}
-     OPENSSL_strdup := @_OPENSSL_strdup
-     {$else}
-       {$IF declared(ERR_OPENSSL_strdup)}
-       OPENSSL_strdup := @ERR_OPENSSL_strdup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_strdup) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_strdup');
+    {$if declared(OPENSSL_strdup_removed)}
+    if OPENSSL_strdup_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_strdup)}
+      OPENSSL_strdup := @_OPENSSL_strdup;
+      {$else}
+      {$if not defined(OPENSSL_strdup_allownil)}
+      OPENSSL_strdup := @ERR_OPENSSL_strdup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_strdup_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_strdup := @ERR_OPENSSL_strdup;
+      AFailed.Add('OPENSSL_strdup');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_strndup) then 
+ 
+  OPENSSL_strndup := LoadLibFunction(ADllHandle, OPENSSL_strndup_procname);
+  FuncLoaded := assigned(OPENSSL_strndup);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_strndup_introduced)}
     if LibVersion < OPENSSL_strndup_introduced then
+    begin
       {$if declared(FC_OPENSSL_strndup)}
-      OPENSSL_strndup := @FC_OPENSSL_strndup
+      OPENSSL_strndup := @FC_OPENSSL_strndup;
       {$else}
-      OPENSSL_strndup := @ERR_OPENSSL_strndup
+      {$if not defined(OPENSSL_strndup_allownil)}
+      OPENSSL_strndup := @ERR_OPENSSL_strndup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_strndup_removed)}
-   if OPENSSL_strndup_removed <= LibVersion then
-     {$if declared(_OPENSSL_strndup)}
-     OPENSSL_strndup := @_OPENSSL_strndup
-     {$else}
-       {$IF declared(ERR_OPENSSL_strndup)}
-       OPENSSL_strndup := @ERR_OPENSSL_strndup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_strndup) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_strndup');
+    {$if declared(OPENSSL_strndup_removed)}
+    if OPENSSL_strndup_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_strndup)}
+      OPENSSL_strndup := @_OPENSSL_strndup;
+      {$else}
+      {$if not defined(OPENSSL_strndup_allownil)}
+      OPENSSL_strndup := @ERR_OPENSSL_strndup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_strndup_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_strndup := @ERR_OPENSSL_strndup;
+      AFailed.Add('OPENSSL_strndup');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_secure_malloc) then 
+ 
+  OPENSSL_secure_malloc := LoadLibFunction(ADllHandle, OPENSSL_secure_malloc_procname);
+  FuncLoaded := assigned(OPENSSL_secure_malloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_secure_malloc_introduced)}
     if LibVersion < OPENSSL_secure_malloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_secure_malloc)}
-      OPENSSL_secure_malloc := @FC_OPENSSL_secure_malloc
+      OPENSSL_secure_malloc := @FC_OPENSSL_secure_malloc;
       {$else}
-      OPENSSL_secure_malloc := @ERR_OPENSSL_secure_malloc
+      {$if not defined(OPENSSL_secure_malloc_allownil)}
+      OPENSSL_secure_malloc := @ERR_OPENSSL_secure_malloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_secure_malloc_removed)}
-   if OPENSSL_secure_malloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_secure_malloc)}
-     OPENSSL_secure_malloc := @_OPENSSL_secure_malloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_secure_malloc)}
-       OPENSSL_secure_malloc := @ERR_OPENSSL_secure_malloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_secure_malloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_secure_malloc');
+    {$if declared(OPENSSL_secure_malloc_removed)}
+    if OPENSSL_secure_malloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_secure_malloc)}
+      OPENSSL_secure_malloc := @_OPENSSL_secure_malloc;
+      {$else}
+      {$if not defined(OPENSSL_secure_malloc_allownil)}
+      OPENSSL_secure_malloc := @ERR_OPENSSL_secure_malloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_secure_malloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_secure_malloc := @ERR_OPENSSL_secure_malloc;
+      AFailed.Add('OPENSSL_secure_malloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_secure_zalloc) then 
+ 
+  OPENSSL_secure_zalloc := LoadLibFunction(ADllHandle, OPENSSL_secure_zalloc_procname);
+  FuncLoaded := assigned(OPENSSL_secure_zalloc);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_secure_zalloc_introduced)}
     if LibVersion < OPENSSL_secure_zalloc_introduced then
+    begin
       {$if declared(FC_OPENSSL_secure_zalloc)}
-      OPENSSL_secure_zalloc := @FC_OPENSSL_secure_zalloc
+      OPENSSL_secure_zalloc := @FC_OPENSSL_secure_zalloc;
       {$else}
-      OPENSSL_secure_zalloc := @ERR_OPENSSL_secure_zalloc
+      {$if not defined(OPENSSL_secure_zalloc_allownil)}
+      OPENSSL_secure_zalloc := @ERR_OPENSSL_secure_zalloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_secure_zalloc_removed)}
-   if OPENSSL_secure_zalloc_removed <= LibVersion then
-     {$if declared(_OPENSSL_secure_zalloc)}
-     OPENSSL_secure_zalloc := @_OPENSSL_secure_zalloc
-     {$else}
-       {$IF declared(ERR_OPENSSL_secure_zalloc)}
-       OPENSSL_secure_zalloc := @ERR_OPENSSL_secure_zalloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_secure_zalloc) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_secure_zalloc');
+    {$if declared(OPENSSL_secure_zalloc_removed)}
+    if OPENSSL_secure_zalloc_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_secure_zalloc)}
+      OPENSSL_secure_zalloc := @_OPENSSL_secure_zalloc;
+      {$else}
+      {$if not defined(OPENSSL_secure_zalloc_allownil)}
+      OPENSSL_secure_zalloc := @ERR_OPENSSL_secure_zalloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_secure_zalloc_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_secure_zalloc := @ERR_OPENSSL_secure_zalloc;
+      AFailed.Add('OPENSSL_secure_zalloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_secure_free) then 
+ 
+  OPENSSL_secure_free := LoadLibFunction(ADllHandle, OPENSSL_secure_free_procname);
+  FuncLoaded := assigned(OPENSSL_secure_free);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_secure_free_introduced)}
     if LibVersion < OPENSSL_secure_free_introduced then
+    begin
       {$if declared(FC_OPENSSL_secure_free)}
-      OPENSSL_secure_free := @FC_OPENSSL_secure_free
+      OPENSSL_secure_free := @FC_OPENSSL_secure_free;
       {$else}
-      OPENSSL_secure_free := @ERR_OPENSSL_secure_free
+      {$if not defined(OPENSSL_secure_free_allownil)}
+      OPENSSL_secure_free := @ERR_OPENSSL_secure_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_secure_free_removed)}
-   if OPENSSL_secure_free_removed <= LibVersion then
-     {$if declared(_OPENSSL_secure_free)}
-     OPENSSL_secure_free := @_OPENSSL_secure_free
-     {$else}
-       {$IF declared(ERR_OPENSSL_secure_free)}
-       OPENSSL_secure_free := @ERR_OPENSSL_secure_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_secure_free) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_secure_free');
+    {$if declared(OPENSSL_secure_free_removed)}
+    if OPENSSL_secure_free_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_secure_free)}
+      OPENSSL_secure_free := @_OPENSSL_secure_free;
+      {$else}
+      {$if not defined(OPENSSL_secure_free_allownil)}
+      OPENSSL_secure_free := @ERR_OPENSSL_secure_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_secure_free_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_secure_free := @ERR_OPENSSL_secure_free;
+      AFailed.Add('OPENSSL_secure_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_secure_clear_free) then 
+ 
+  OPENSSL_secure_clear_free := LoadLibFunction(ADllHandle, OPENSSL_secure_clear_free_procname);
+  FuncLoaded := assigned(OPENSSL_secure_clear_free);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_secure_clear_free_introduced)}
     if LibVersion < OPENSSL_secure_clear_free_introduced then
+    begin
       {$if declared(FC_OPENSSL_secure_clear_free)}
-      OPENSSL_secure_clear_free := @FC_OPENSSL_secure_clear_free
+      OPENSSL_secure_clear_free := @FC_OPENSSL_secure_clear_free;
       {$else}
-      OPENSSL_secure_clear_free := @ERR_OPENSSL_secure_clear_free
+      {$if not defined(OPENSSL_secure_clear_free_allownil)}
+      OPENSSL_secure_clear_free := @ERR_OPENSSL_secure_clear_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_secure_clear_free_removed)}
-   if OPENSSL_secure_clear_free_removed <= LibVersion then
-     {$if declared(_OPENSSL_secure_clear_free)}
-     OPENSSL_secure_clear_free := @_OPENSSL_secure_clear_free
-     {$else}
-       {$IF declared(ERR_OPENSSL_secure_clear_free)}
-       OPENSSL_secure_clear_free := @ERR_OPENSSL_secure_clear_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_secure_clear_free) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_secure_clear_free');
+    {$if declared(OPENSSL_secure_clear_free_removed)}
+    if OPENSSL_secure_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_secure_clear_free)}
+      OPENSSL_secure_clear_free := @_OPENSSL_secure_clear_free;
+      {$else}
+      {$if not defined(OPENSSL_secure_clear_free_allownil)}
+      OPENSSL_secure_clear_free := @ERR_OPENSSL_secure_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_secure_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_secure_clear_free := @ERR_OPENSSL_secure_clear_free;
+      AFailed.Add('OPENSSL_secure_clear_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_secure_actual_size) then 
+ 
+  OPENSSL_secure_actual_size := LoadLibFunction(ADllHandle, OPENSSL_secure_actual_size_procname);
+  FuncLoaded := assigned(OPENSSL_secure_actual_size);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_secure_actual_size_introduced)}
     if LibVersion < OPENSSL_secure_actual_size_introduced then
+    begin
       {$if declared(FC_OPENSSL_secure_actual_size)}
-      OPENSSL_secure_actual_size := @FC_OPENSSL_secure_actual_size
+      OPENSSL_secure_actual_size := @FC_OPENSSL_secure_actual_size;
       {$else}
-      OPENSSL_secure_actual_size := @ERR_OPENSSL_secure_actual_size
+      {$if not defined(OPENSSL_secure_actual_size_allownil)}
+      OPENSSL_secure_actual_size := @ERR_OPENSSL_secure_actual_size;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_secure_actual_size_removed)}
-   if OPENSSL_secure_actual_size_removed <= LibVersion then
-     {$if declared(_OPENSSL_secure_actual_size)}
-     OPENSSL_secure_actual_size := @_OPENSSL_secure_actual_size
-     {$else}
-       {$IF declared(ERR_OPENSSL_secure_actual_size)}
-       OPENSSL_secure_actual_size := @ERR_OPENSSL_secure_actual_size
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_secure_actual_size) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_secure_actual_size');
+    {$if declared(OPENSSL_secure_actual_size_removed)}
+    if OPENSSL_secure_actual_size_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_secure_actual_size)}
+      OPENSSL_secure_actual_size := @_OPENSSL_secure_actual_size;
+      {$else}
+      {$if not defined(OPENSSL_secure_actual_size_allownil)}
+      OPENSSL_secure_actual_size := @ERR_OPENSSL_secure_actual_size;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_secure_actual_size_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_secure_actual_size := @ERR_OPENSSL_secure_actual_size;
+      AFailed.Add('OPENSSL_secure_actual_size');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_lock_new) then 
+ 
+  CRYPTO_THREAD_lock_new := LoadLibFunction(ADllHandle, CRYPTO_THREAD_lock_new_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_lock_new);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_lock_new_introduced)}
     if LibVersion < CRYPTO_THREAD_lock_new_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_lock_new)}
-      CRYPTO_THREAD_lock_new := @FC_CRYPTO_THREAD_lock_new
+      CRYPTO_THREAD_lock_new := @FC_CRYPTO_THREAD_lock_new;
       {$else}
-      CRYPTO_THREAD_lock_new := @ERR_CRYPTO_THREAD_lock_new
+      {$if not defined(CRYPTO_THREAD_lock_new_allownil)}
+      CRYPTO_THREAD_lock_new := @ERR_CRYPTO_THREAD_lock_new;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_lock_new_removed)}
-   if CRYPTO_THREAD_lock_new_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_lock_new)}
-     CRYPTO_THREAD_lock_new := @_CRYPTO_THREAD_lock_new
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_lock_new)}
-       CRYPTO_THREAD_lock_new := @ERR_CRYPTO_THREAD_lock_new
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_lock_new) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_lock_new');
+    {$if declared(CRYPTO_THREAD_lock_new_removed)}
+    if CRYPTO_THREAD_lock_new_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_lock_new)}
+      CRYPTO_THREAD_lock_new := @_CRYPTO_THREAD_lock_new;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_lock_new_allownil)}
+      CRYPTO_THREAD_lock_new := @ERR_CRYPTO_THREAD_lock_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_lock_new_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_lock_new := @ERR_CRYPTO_THREAD_lock_new;
+      AFailed.Add('CRYPTO_THREAD_lock_new');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_read_lock) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_read_lock := LoadLibFunction(ADllHandle, CRYPTO_THREAD_read_lock_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_read_lock);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_read_lock_introduced)}
     if LibVersion < CRYPTO_THREAD_read_lock_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_read_lock)}
-      CRYPTO_THREAD_read_lock := @FC_CRYPTO_THREAD_read_lock
+      CRYPTO_THREAD_read_lock := @FC_CRYPTO_THREAD_read_lock;
       {$else}
-      CRYPTO_THREAD_read_lock := @ERR_CRYPTO_THREAD_read_lock
+      {$if not defined(CRYPTO_THREAD_read_lock_allownil)}
+      CRYPTO_THREAD_read_lock := @ERR_CRYPTO_THREAD_read_lock;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_read_lock_removed)}
-   if CRYPTO_THREAD_read_lock_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_read_lock)}
-     CRYPTO_THREAD_read_lock := @_CRYPTO_THREAD_read_lock
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_read_lock)}
-       CRYPTO_THREAD_read_lock := @ERR_CRYPTO_THREAD_read_lock
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_read_lock) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_read_lock');
+    {$if declared(CRYPTO_THREAD_read_lock_removed)}
+    if CRYPTO_THREAD_read_lock_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_read_lock)}
+      CRYPTO_THREAD_read_lock := @_CRYPTO_THREAD_read_lock;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_read_lock_allownil)}
+      CRYPTO_THREAD_read_lock := @ERR_CRYPTO_THREAD_read_lock;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_read_lock_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_read_lock := @ERR_CRYPTO_THREAD_read_lock;
+      AFailed.Add('CRYPTO_THREAD_read_lock');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_write_lock) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_write_lock := LoadLibFunction(ADllHandle, CRYPTO_THREAD_write_lock_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_write_lock);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_write_lock_introduced)}
     if LibVersion < CRYPTO_THREAD_write_lock_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_write_lock)}
-      CRYPTO_THREAD_write_lock := @FC_CRYPTO_THREAD_write_lock
+      CRYPTO_THREAD_write_lock := @FC_CRYPTO_THREAD_write_lock;
       {$else}
-      CRYPTO_THREAD_write_lock := @ERR_CRYPTO_THREAD_write_lock
+      {$if not defined(CRYPTO_THREAD_write_lock_allownil)}
+      CRYPTO_THREAD_write_lock := @ERR_CRYPTO_THREAD_write_lock;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_write_lock_removed)}
-   if CRYPTO_THREAD_write_lock_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_write_lock)}
-     CRYPTO_THREAD_write_lock := @_CRYPTO_THREAD_write_lock
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_write_lock)}
-       CRYPTO_THREAD_write_lock := @ERR_CRYPTO_THREAD_write_lock
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_write_lock) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_write_lock');
+    {$if declared(CRYPTO_THREAD_write_lock_removed)}
+    if CRYPTO_THREAD_write_lock_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_write_lock)}
+      CRYPTO_THREAD_write_lock := @_CRYPTO_THREAD_write_lock;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_write_lock_allownil)}
+      CRYPTO_THREAD_write_lock := @ERR_CRYPTO_THREAD_write_lock;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_write_lock_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_write_lock := @ERR_CRYPTO_THREAD_write_lock;
+      AFailed.Add('CRYPTO_THREAD_write_lock');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_unlock) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_unlock := LoadLibFunction(ADllHandle, CRYPTO_THREAD_unlock_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_unlock);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_unlock_introduced)}
     if LibVersion < CRYPTO_THREAD_unlock_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_unlock)}
-      CRYPTO_THREAD_unlock := @FC_CRYPTO_THREAD_unlock
+      CRYPTO_THREAD_unlock := @FC_CRYPTO_THREAD_unlock;
       {$else}
-      CRYPTO_THREAD_unlock := @ERR_CRYPTO_THREAD_unlock
+      {$if not defined(CRYPTO_THREAD_unlock_allownil)}
+      CRYPTO_THREAD_unlock := @ERR_CRYPTO_THREAD_unlock;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_unlock_removed)}
-   if CRYPTO_THREAD_unlock_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_unlock)}
-     CRYPTO_THREAD_unlock := @_CRYPTO_THREAD_unlock
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_unlock)}
-       CRYPTO_THREAD_unlock := @ERR_CRYPTO_THREAD_unlock
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_unlock) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_unlock');
+    {$if declared(CRYPTO_THREAD_unlock_removed)}
+    if CRYPTO_THREAD_unlock_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_unlock)}
+      CRYPTO_THREAD_unlock := @_CRYPTO_THREAD_unlock;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_unlock_allownil)}
+      CRYPTO_THREAD_unlock := @ERR_CRYPTO_THREAD_unlock;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_unlock_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_unlock := @ERR_CRYPTO_THREAD_unlock;
+      AFailed.Add('CRYPTO_THREAD_unlock');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_lock_free) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_lock_free := LoadLibFunction(ADllHandle, CRYPTO_THREAD_lock_free_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_lock_free);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_lock_free_introduced)}
     if LibVersion < CRYPTO_THREAD_lock_free_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_lock_free)}
-      CRYPTO_THREAD_lock_free := @FC_CRYPTO_THREAD_lock_free
+      CRYPTO_THREAD_lock_free := @FC_CRYPTO_THREAD_lock_free;
       {$else}
-      CRYPTO_THREAD_lock_free := @ERR_CRYPTO_THREAD_lock_free
+      {$if not defined(CRYPTO_THREAD_lock_free_allownil)}
+      CRYPTO_THREAD_lock_free := @ERR_CRYPTO_THREAD_lock_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_lock_free_removed)}
-   if CRYPTO_THREAD_lock_free_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_lock_free)}
-     CRYPTO_THREAD_lock_free := @_CRYPTO_THREAD_lock_free
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_lock_free)}
-       CRYPTO_THREAD_lock_free := @ERR_CRYPTO_THREAD_lock_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_lock_free) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_lock_free');
+    {$if declared(CRYPTO_THREAD_lock_free_removed)}
+    if CRYPTO_THREAD_lock_free_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_lock_free)}
+      CRYPTO_THREAD_lock_free := @_CRYPTO_THREAD_lock_free;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_lock_free_allownil)}
+      CRYPTO_THREAD_lock_free := @ERR_CRYPTO_THREAD_lock_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_lock_free_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_lock_free := @ERR_CRYPTO_THREAD_lock_free;
+      AFailed.Add('CRYPTO_THREAD_lock_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_atomic_add) then 
+ {introduced 1.1.0}
+  CRYPTO_atomic_add := LoadLibFunction(ADllHandle, CRYPTO_atomic_add_procname);
+  FuncLoaded := assigned(CRYPTO_atomic_add);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_atomic_add_introduced)}
     if LibVersion < CRYPTO_atomic_add_introduced then
+    begin
       {$if declared(FC_CRYPTO_atomic_add)}
-      CRYPTO_atomic_add := @FC_CRYPTO_atomic_add
+      CRYPTO_atomic_add := @FC_CRYPTO_atomic_add;
       {$else}
-      CRYPTO_atomic_add := @ERR_CRYPTO_atomic_add
+      {$if not defined(CRYPTO_atomic_add_allownil)}
+      CRYPTO_atomic_add := @ERR_CRYPTO_atomic_add;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_atomic_add_removed)}
-   if CRYPTO_atomic_add_removed <= LibVersion then
-     {$if declared(_CRYPTO_atomic_add)}
-     CRYPTO_atomic_add := @_CRYPTO_atomic_add
-     {$else}
-       {$IF declared(ERR_CRYPTO_atomic_add)}
-       CRYPTO_atomic_add := @ERR_CRYPTO_atomic_add
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_atomic_add) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_atomic_add');
+    {$if declared(CRYPTO_atomic_add_removed)}
+    if CRYPTO_atomic_add_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_atomic_add)}
+      CRYPTO_atomic_add := @_CRYPTO_atomic_add;
+      {$else}
+      {$if not defined(CRYPTO_atomic_add_allownil)}
+      CRYPTO_atomic_add := @ERR_CRYPTO_atomic_add;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_atomic_add_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_atomic_add := @ERR_CRYPTO_atomic_add;
+      AFailed.Add('CRYPTO_atomic_add');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_mem_ctrl) then 
+ {introduced 1.1.0}
+  CRYPTO_mem_ctrl := LoadLibFunction(ADllHandle, CRYPTO_mem_ctrl_procname);
+  FuncLoaded := assigned(CRYPTO_mem_ctrl);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_mem_ctrl_introduced)}
     if LibVersion < CRYPTO_mem_ctrl_introduced then
+    begin
       {$if declared(FC_CRYPTO_mem_ctrl)}
-      CRYPTO_mem_ctrl := @FC_CRYPTO_mem_ctrl
+      CRYPTO_mem_ctrl := @FC_CRYPTO_mem_ctrl;
       {$else}
-      CRYPTO_mem_ctrl := @ERR_CRYPTO_mem_ctrl
+      {$if not defined(CRYPTO_mem_ctrl_allownil)}
+      CRYPTO_mem_ctrl := @ERR_CRYPTO_mem_ctrl;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_mem_ctrl_removed)}
-   if CRYPTO_mem_ctrl_removed <= LibVersion then
-     {$if declared(_CRYPTO_mem_ctrl)}
-     CRYPTO_mem_ctrl := @_CRYPTO_mem_ctrl
-     {$else}
-       {$IF declared(ERR_CRYPTO_mem_ctrl)}
-       CRYPTO_mem_ctrl := @ERR_CRYPTO_mem_ctrl
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_mem_ctrl) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_mem_ctrl');
+    {$if declared(CRYPTO_mem_ctrl_removed)}
+    if CRYPTO_mem_ctrl_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_mem_ctrl)}
+      CRYPTO_mem_ctrl := @_CRYPTO_mem_ctrl;
+      {$else}
+      {$if not defined(CRYPTO_mem_ctrl_allownil)}
+      CRYPTO_mem_ctrl := @ERR_CRYPTO_mem_ctrl;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_mem_ctrl_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_mem_ctrl := @ERR_CRYPTO_mem_ctrl;
+      AFailed.Add('CRYPTO_mem_ctrl');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_strlcpy) then 
+ 
+  OPENSSL_strlcpy := LoadLibFunction(ADllHandle, OPENSSL_strlcpy_procname);
+  FuncLoaded := assigned(OPENSSL_strlcpy);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_strlcpy_introduced)}
     if LibVersion < OPENSSL_strlcpy_introduced then
+    begin
       {$if declared(FC_OPENSSL_strlcpy)}
-      OPENSSL_strlcpy := @FC_OPENSSL_strlcpy
+      OPENSSL_strlcpy := @FC_OPENSSL_strlcpy;
       {$else}
-      OPENSSL_strlcpy := @ERR_OPENSSL_strlcpy
+      {$if not defined(OPENSSL_strlcpy_allownil)}
+      OPENSSL_strlcpy := @ERR_OPENSSL_strlcpy;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_strlcpy_removed)}
-   if OPENSSL_strlcpy_removed <= LibVersion then
-     {$if declared(_OPENSSL_strlcpy)}
-     OPENSSL_strlcpy := @_OPENSSL_strlcpy
-     {$else}
-       {$IF declared(ERR_OPENSSL_strlcpy)}
-       OPENSSL_strlcpy := @ERR_OPENSSL_strlcpy
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_strlcpy) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_strlcpy');
+    {$if declared(OPENSSL_strlcpy_removed)}
+    if OPENSSL_strlcpy_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_strlcpy)}
+      OPENSSL_strlcpy := @_OPENSSL_strlcpy;
+      {$else}
+      {$if not defined(OPENSSL_strlcpy_allownil)}
+      OPENSSL_strlcpy := @ERR_OPENSSL_strlcpy;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_strlcpy_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_strlcpy := @ERR_OPENSSL_strlcpy;
+      AFailed.Add('OPENSSL_strlcpy');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_strlcat) then 
+ {introduced 1.1.0}
+  OPENSSL_strlcat := LoadLibFunction(ADllHandle, OPENSSL_strlcat_procname);
+  FuncLoaded := assigned(OPENSSL_strlcat);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_strlcat_introduced)}
     if LibVersion < OPENSSL_strlcat_introduced then
+    begin
       {$if declared(FC_OPENSSL_strlcat)}
-      OPENSSL_strlcat := @FC_OPENSSL_strlcat
+      OPENSSL_strlcat := @FC_OPENSSL_strlcat;
       {$else}
-      OPENSSL_strlcat := @ERR_OPENSSL_strlcat
+      {$if not defined(OPENSSL_strlcat_allownil)}
+      OPENSSL_strlcat := @ERR_OPENSSL_strlcat;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_strlcat_removed)}
-   if OPENSSL_strlcat_removed <= LibVersion then
-     {$if declared(_OPENSSL_strlcat)}
-     OPENSSL_strlcat := @_OPENSSL_strlcat
-     {$else}
-       {$IF declared(ERR_OPENSSL_strlcat)}
-       OPENSSL_strlcat := @ERR_OPENSSL_strlcat
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_strlcat) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_strlcat');
+    {$if declared(OPENSSL_strlcat_removed)}
+    if OPENSSL_strlcat_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_strlcat)}
+      OPENSSL_strlcat := @_OPENSSL_strlcat;
+      {$else}
+      {$if not defined(OPENSSL_strlcat_allownil)}
+      OPENSSL_strlcat := @ERR_OPENSSL_strlcat;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_strlcat_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_strlcat := @ERR_OPENSSL_strlcat;
+      AFailed.Add('OPENSSL_strlcat');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_strnlen) then 
+ {introduced 1.1.0}
+  OPENSSL_strnlen := LoadLibFunction(ADllHandle, OPENSSL_strnlen_procname);
+  FuncLoaded := assigned(OPENSSL_strnlen);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_strnlen_introduced)}
     if LibVersion < OPENSSL_strnlen_introduced then
+    begin
       {$if declared(FC_OPENSSL_strnlen)}
-      OPENSSL_strnlen := @FC_OPENSSL_strnlen
+      OPENSSL_strnlen := @FC_OPENSSL_strnlen;
       {$else}
-      OPENSSL_strnlen := @ERR_OPENSSL_strnlen
+      {$if not defined(OPENSSL_strnlen_allownil)}
+      OPENSSL_strnlen := @ERR_OPENSSL_strnlen;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_strnlen_removed)}
-   if OPENSSL_strnlen_removed <= LibVersion then
-     {$if declared(_OPENSSL_strnlen)}
-     OPENSSL_strnlen := @_OPENSSL_strnlen
-     {$else}
-       {$IF declared(ERR_OPENSSL_strnlen)}
-       OPENSSL_strnlen := @ERR_OPENSSL_strnlen
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_strnlen) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_strnlen');
+    {$if declared(OPENSSL_strnlen_removed)}
+    if OPENSSL_strnlen_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_strnlen)}
+      OPENSSL_strnlen := @_OPENSSL_strnlen;
+      {$else}
+      {$if not defined(OPENSSL_strnlen_allownil)}
+      OPENSSL_strnlen := @ERR_OPENSSL_strnlen;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_strnlen_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_strnlen := @ERR_OPENSSL_strnlen;
+      AFailed.Add('OPENSSL_strnlen');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_buf2hexstr) then 
+ {introduced 1.1.0}
+  OPENSSL_buf2hexstr := LoadLibFunction(ADllHandle, OPENSSL_buf2hexstr_procname);
+  FuncLoaded := assigned(OPENSSL_buf2hexstr);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_buf2hexstr_introduced)}
     if LibVersion < OPENSSL_buf2hexstr_introduced then
+    begin
       {$if declared(FC_OPENSSL_buf2hexstr)}
-      OPENSSL_buf2hexstr := @FC_OPENSSL_buf2hexstr
+      OPENSSL_buf2hexstr := @FC_OPENSSL_buf2hexstr;
       {$else}
-      OPENSSL_buf2hexstr := @ERR_OPENSSL_buf2hexstr
+      {$if not defined(OPENSSL_buf2hexstr_allownil)}
+      OPENSSL_buf2hexstr := @ERR_OPENSSL_buf2hexstr;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_buf2hexstr_removed)}
-   if OPENSSL_buf2hexstr_removed <= LibVersion then
-     {$if declared(_OPENSSL_buf2hexstr)}
-     OPENSSL_buf2hexstr := @_OPENSSL_buf2hexstr
-     {$else}
-       {$IF declared(ERR_OPENSSL_buf2hexstr)}
-       OPENSSL_buf2hexstr := @ERR_OPENSSL_buf2hexstr
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_buf2hexstr) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_buf2hexstr');
+    {$if declared(OPENSSL_buf2hexstr_removed)}
+    if OPENSSL_buf2hexstr_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_buf2hexstr)}
+      OPENSSL_buf2hexstr := @_OPENSSL_buf2hexstr;
+      {$else}
+      {$if not defined(OPENSSL_buf2hexstr_allownil)}
+      OPENSSL_buf2hexstr := @ERR_OPENSSL_buf2hexstr;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_buf2hexstr_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_buf2hexstr := @ERR_OPENSSL_buf2hexstr;
+      AFailed.Add('OPENSSL_buf2hexstr');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_hexstr2buf) then 
+ {introduced 1.1.0}
+  OPENSSL_hexstr2buf := LoadLibFunction(ADllHandle, OPENSSL_hexstr2buf_procname);
+  FuncLoaded := assigned(OPENSSL_hexstr2buf);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_hexstr2buf_introduced)}
     if LibVersion < OPENSSL_hexstr2buf_introduced then
+    begin
       {$if declared(FC_OPENSSL_hexstr2buf)}
-      OPENSSL_hexstr2buf := @FC_OPENSSL_hexstr2buf
+      OPENSSL_hexstr2buf := @FC_OPENSSL_hexstr2buf;
       {$else}
-      OPENSSL_hexstr2buf := @ERR_OPENSSL_hexstr2buf
+      {$if not defined(OPENSSL_hexstr2buf_allownil)}
+      OPENSSL_hexstr2buf := @ERR_OPENSSL_hexstr2buf;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_hexstr2buf_removed)}
-   if OPENSSL_hexstr2buf_removed <= LibVersion then
-     {$if declared(_OPENSSL_hexstr2buf)}
-     OPENSSL_hexstr2buf := @_OPENSSL_hexstr2buf
-     {$else}
-       {$IF declared(ERR_OPENSSL_hexstr2buf)}
-       OPENSSL_hexstr2buf := @ERR_OPENSSL_hexstr2buf
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_hexstr2buf) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_hexstr2buf');
+    {$if declared(OPENSSL_hexstr2buf_removed)}
+    if OPENSSL_hexstr2buf_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_hexstr2buf)}
+      OPENSSL_hexstr2buf := @_OPENSSL_hexstr2buf;
+      {$else}
+      {$if not defined(OPENSSL_hexstr2buf_allownil)}
+      OPENSSL_hexstr2buf := @ERR_OPENSSL_hexstr2buf;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_hexstr2buf_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_hexstr2buf := @ERR_OPENSSL_hexstr2buf;
+      AFailed.Add('OPENSSL_hexstr2buf');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_hexchar2int) then 
+ {introduced 1.1.0}
+  OPENSSL_hexchar2int := LoadLibFunction(ADllHandle, OPENSSL_hexchar2int_procname);
+  FuncLoaded := assigned(OPENSSL_hexchar2int);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_hexchar2int_introduced)}
     if LibVersion < OPENSSL_hexchar2int_introduced then
+    begin
       {$if declared(FC_OPENSSL_hexchar2int)}
-      OPENSSL_hexchar2int := @FC_OPENSSL_hexchar2int
+      OPENSSL_hexchar2int := @FC_OPENSSL_hexchar2int;
       {$else}
-      OPENSSL_hexchar2int := @ERR_OPENSSL_hexchar2int
+      {$if not defined(OPENSSL_hexchar2int_allownil)}
+      OPENSSL_hexchar2int := @ERR_OPENSSL_hexchar2int;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_hexchar2int_removed)}
-   if OPENSSL_hexchar2int_removed <= LibVersion then
-     {$if declared(_OPENSSL_hexchar2int)}
-     OPENSSL_hexchar2int := @_OPENSSL_hexchar2int
-     {$else}
-       {$IF declared(ERR_OPENSSL_hexchar2int)}
-       OPENSSL_hexchar2int := @ERR_OPENSSL_hexchar2int
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_hexchar2int) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_hexchar2int');
+    {$if declared(OPENSSL_hexchar2int_removed)}
+    if OPENSSL_hexchar2int_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_hexchar2int)}
+      OPENSSL_hexchar2int := @_OPENSSL_hexchar2int;
+      {$else}
+      {$if not defined(OPENSSL_hexchar2int_allownil)}
+      OPENSSL_hexchar2int := @ERR_OPENSSL_hexchar2int;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_hexchar2int_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_hexchar2int := @ERR_OPENSSL_hexchar2int;
+      AFailed.Add('OPENSSL_hexchar2int');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OpenSSL_version_num) then 
+ {introduced 1.1.0}
+  OpenSSL_version_num := LoadLibFunction(ADllHandle, OpenSSL_version_num_procname);
+  FuncLoaded := assigned(OpenSSL_version_num);
+  if not FuncLoaded then
   begin
     {$if declared(OpenSSL_version_num_introduced)}
     if LibVersion < OpenSSL_version_num_introduced then
+    begin
       {$if declared(FC_OpenSSL_version_num)}
-      OpenSSL_version_num := @FC_OpenSSL_version_num
+      OpenSSL_version_num := @FC_OpenSSL_version_num;
       {$else}
-      OpenSSL_version_num := @ERR_OpenSSL_version_num
+      {$if not defined(OpenSSL_version_num_allownil)}
+      OpenSSL_version_num := @ERR_OpenSSL_version_num;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OpenSSL_version_num_removed)}
-   if OpenSSL_version_num_removed <= LibVersion then
-     {$if declared(_OpenSSL_version_num)}
-     OpenSSL_version_num := @_OpenSSL_version_num
-     {$else}
-       {$IF declared(ERR_OpenSSL_version_num)}
-       OpenSSL_version_num := @ERR_OpenSSL_version_num
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OpenSSL_version_num) and Assigned(AFailed) then 
-     AFailed.Add('OpenSSL_version_num');
+    {$if declared(OpenSSL_version_num_removed)}
+    if OpenSSL_version_num_removed <= LibVersion then
+    begin
+      {$if declared(_OpenSSL_version_num)}
+      OpenSSL_version_num := @_OpenSSL_version_num;
+      {$else}
+      {$if not defined(OpenSSL_version_num_allownil)}
+      OpenSSL_version_num := @ERR_OpenSSL_version_num;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OpenSSL_version_num_allownil)}
+    if not FuncLoaded then
+    begin
+      OpenSSL_version_num := @ERR_OpenSSL_version_num;
+      AFailed.Add('OpenSSL_version_num');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OpenSSL_version) then 
+ {introduced 1.1.0}
+  OpenSSL_version := LoadLibFunction(ADllHandle, OpenSSL_version_procname);
+  FuncLoaded := assigned(OpenSSL_version);
+  if not FuncLoaded then
   begin
     {$if declared(OpenSSL_version_introduced)}
     if LibVersion < OpenSSL_version_introduced then
+    begin
       {$if declared(FC_OpenSSL_version)}
-      OpenSSL_version := @FC_OpenSSL_version
+      OpenSSL_version := @FC_OpenSSL_version;
       {$else}
-      OpenSSL_version := @ERR_OpenSSL_version
+      {$if not defined(OpenSSL_version_allownil)}
+      OpenSSL_version := @ERR_OpenSSL_version;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OpenSSL_version_removed)}
-   if OpenSSL_version_removed <= LibVersion then
-     {$if declared(_OpenSSL_version)}
-     OpenSSL_version := @_OpenSSL_version
-     {$else}
-       {$IF declared(ERR_OpenSSL_version)}
-       OpenSSL_version := @ERR_OpenSSL_version
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OpenSSL_version) and Assigned(AFailed) then 
-     AFailed.Add('OpenSSL_version');
+    {$if declared(OpenSSL_version_removed)}
+    if OpenSSL_version_removed <= LibVersion then
+    begin
+      {$if declared(_OpenSSL_version)}
+      OpenSSL_version := @_OpenSSL_version;
+      {$else}
+      {$if not defined(OpenSSL_version_allownil)}
+      OpenSSL_version := @ERR_OpenSSL_version;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OpenSSL_version_allownil)}
+    if not FuncLoaded then
+    begin
+      OpenSSL_version := @ERR_OpenSSL_version;
+      AFailed.Add('OpenSSL_version');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  OPENSSL_issetugid := LoadLibFunction(ADllHandle, OPENSSL_issetugid_procname);
+  FuncLoaded := assigned(OPENSSL_issetugid);
+  if not FuncLoaded then
+  begin
+    {$if declared(OPENSSL_issetugid_introduced)}
+    if LibVersion < OPENSSL_issetugid_introduced then
+    begin
+      {$if declared(FC_OPENSSL_issetugid)}
+      OPENSSL_issetugid := @FC_OPENSSL_issetugid;
+      {$else}
+      {$if not defined(OPENSSL_issetugid_allownil)}
+      OPENSSL_issetugid := @ERR_OPENSSL_issetugid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(OPENSSL_issetugid_removed)}
+    if OPENSSL_issetugid_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_issetugid)}
+      OPENSSL_issetugid := @_OPENSSL_issetugid;
+      {$else}
+      {$if not defined(OPENSSL_issetugid_allownil)}
+      OPENSSL_issetugid := @ERR_OPENSSL_issetugid;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_issetugid_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_issetugid := @ERR_OPENSSL_issetugid;
+      AFailed.Add('OPENSSL_issetugid');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_num_locks) then 
+  CRYPTO_new_ex_data := LoadLibFunction(ADllHandle, CRYPTO_new_ex_data_procname);
+  FuncLoaded := assigned(CRYPTO_new_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_new_ex_data_introduced)}
+    if LibVersion < CRYPTO_new_ex_data_introduced then
+    begin
+      {$if declared(FC_CRYPTO_new_ex_data)}
+      CRYPTO_new_ex_data := @FC_CRYPTO_new_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_new_ex_data_allownil)}
+      CRYPTO_new_ex_data := @ERR_CRYPTO_new_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_new_ex_data_removed)}
+    if CRYPTO_new_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_new_ex_data)}
+      CRYPTO_new_ex_data := @_CRYPTO_new_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_new_ex_data_allownil)}
+      CRYPTO_new_ex_data := @ERR_CRYPTO_new_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_new_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_new_ex_data := @ERR_CRYPTO_new_ex_data;
+      AFailed.Add('CRYPTO_new_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  CRYPTO_dup_ex_data := LoadLibFunction(ADllHandle, CRYPTO_dup_ex_data_procname);
+  FuncLoaded := assigned(CRYPTO_dup_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_dup_ex_data_introduced)}
+    if LibVersion < CRYPTO_dup_ex_data_introduced then
+    begin
+      {$if declared(FC_CRYPTO_dup_ex_data)}
+      CRYPTO_dup_ex_data := @FC_CRYPTO_dup_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_dup_ex_data_allownil)}
+      CRYPTO_dup_ex_data := @ERR_CRYPTO_dup_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_dup_ex_data_removed)}
+    if CRYPTO_dup_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_dup_ex_data)}
+      CRYPTO_dup_ex_data := @_CRYPTO_dup_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_dup_ex_data_allownil)}
+      CRYPTO_dup_ex_data := @ERR_CRYPTO_dup_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_dup_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_dup_ex_data := @ERR_CRYPTO_dup_ex_data;
+      AFailed.Add('CRYPTO_dup_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  CRYPTO_free_ex_data := LoadLibFunction(ADllHandle, CRYPTO_free_ex_data_procname);
+  FuncLoaded := assigned(CRYPTO_free_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_free_ex_data_introduced)}
+    if LibVersion < CRYPTO_free_ex_data_introduced then
+    begin
+      {$if declared(FC_CRYPTO_free_ex_data)}
+      CRYPTO_free_ex_data := @FC_CRYPTO_free_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_free_ex_data_allownil)}
+      CRYPTO_free_ex_data := @ERR_CRYPTO_free_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_free_ex_data_removed)}
+    if CRYPTO_free_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_free_ex_data)}
+      CRYPTO_free_ex_data := @_CRYPTO_free_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_free_ex_data_allownil)}
+      CRYPTO_free_ex_data := @ERR_CRYPTO_free_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_free_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_free_ex_data := @ERR_CRYPTO_free_ex_data;
+      AFailed.Add('CRYPTO_free_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  CRYPTO_set_ex_data := LoadLibFunction(ADllHandle, CRYPTO_set_ex_data_procname);
+  FuncLoaded := assigned(CRYPTO_set_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_set_ex_data_introduced)}
+    if LibVersion < CRYPTO_set_ex_data_introduced then
+    begin
+      {$if declared(FC_CRYPTO_set_ex_data)}
+      CRYPTO_set_ex_data := @FC_CRYPTO_set_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_set_ex_data_allownil)}
+      CRYPTO_set_ex_data := @ERR_CRYPTO_set_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_set_ex_data_removed)}
+    if CRYPTO_set_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_set_ex_data)}
+      CRYPTO_set_ex_data := @_CRYPTO_set_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_set_ex_data_allownil)}
+      CRYPTO_set_ex_data := @ERR_CRYPTO_set_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_set_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_set_ex_data := @ERR_CRYPTO_set_ex_data;
+      AFailed.Add('CRYPTO_set_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  CRYPTO_get_ex_data := LoadLibFunction(ADllHandle, CRYPTO_get_ex_data_procname);
+  FuncLoaded := assigned(CRYPTO_get_ex_data);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_get_ex_data_introduced)}
+    if LibVersion < CRYPTO_get_ex_data_introduced then
+    begin
+      {$if declared(FC_CRYPTO_get_ex_data)}
+      CRYPTO_get_ex_data := @FC_CRYPTO_get_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_get_ex_data_allownil)}
+      CRYPTO_get_ex_data := @ERR_CRYPTO_get_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_get_ex_data_removed)}
+    if CRYPTO_get_ex_data_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_get_ex_data)}
+      CRYPTO_get_ex_data := @_CRYPTO_get_ex_data;
+      {$else}
+      {$if not defined(CRYPTO_get_ex_data_allownil)}
+      CRYPTO_get_ex_data := @ERR_CRYPTO_get_ex_data;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_get_ex_data_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_get_ex_data := @ERR_CRYPTO_get_ex_data;
+      AFailed.Add('CRYPTO_get_ex_data');
+    end;
+    {$ifend}
+  end;
+
+
+  CRYPTO_num_locks := LoadLibFunction(ADllHandle, CRYPTO_num_locks_procname);
+  FuncLoaded := assigned(CRYPTO_num_locks);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_num_locks_introduced)}
     if LibVersion < CRYPTO_num_locks_introduced then
+    begin
       {$if declared(FC_CRYPTO_num_locks)}
-      CRYPTO_num_locks := @FC_CRYPTO_num_locks
+      CRYPTO_num_locks := @FC_CRYPTO_num_locks;
       {$else}
-      CRYPTO_num_locks := @ERR_CRYPTO_num_locks
+      {$if not defined(CRYPTO_num_locks_allownil)}
+      CRYPTO_num_locks := @ERR_CRYPTO_num_locks;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_num_locks_removed)}
-   if CRYPTO_num_locks_removed <= LibVersion then
-     {$if declared(_CRYPTO_num_locks)}
-     CRYPTO_num_locks := @_CRYPTO_num_locks
-     {$else}
-       {$IF declared(ERR_CRYPTO_num_locks)}
-       CRYPTO_num_locks := @ERR_CRYPTO_num_locks
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_num_locks) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_num_locks');
+    {$if declared(CRYPTO_num_locks_removed)}
+    if CRYPTO_num_locks_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_num_locks)}
+      CRYPTO_num_locks := @_CRYPTO_num_locks;
+      {$else}
+      {$if not defined(CRYPTO_num_locks_allownil)}
+      CRYPTO_num_locks := @ERR_CRYPTO_num_locks;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_num_locks_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_num_locks := @ERR_CRYPTO_num_locks;
+      AFailed.Add('CRYPTO_num_locks');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_set_locking_callback) then 
+ 
+  CRYPTO_set_locking_callback := LoadLibFunction(ADllHandle, CRYPTO_set_locking_callback_procname);
+  FuncLoaded := assigned(CRYPTO_set_locking_callback);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_set_locking_callback_introduced)}
     if LibVersion < CRYPTO_set_locking_callback_introduced then
+    begin
       {$if declared(FC_CRYPTO_set_locking_callback)}
-      CRYPTO_set_locking_callback := @FC_CRYPTO_set_locking_callback
+      CRYPTO_set_locking_callback := @FC_CRYPTO_set_locking_callback;
       {$else}
-      CRYPTO_set_locking_callback := @ERR_CRYPTO_set_locking_callback
+      {$if not defined(CRYPTO_set_locking_callback_allownil)}
+      CRYPTO_set_locking_callback := @ERR_CRYPTO_set_locking_callback;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_set_locking_callback_removed)}
-   if CRYPTO_set_locking_callback_removed <= LibVersion then
-     {$if declared(_CRYPTO_set_locking_callback)}
-     CRYPTO_set_locking_callback := @_CRYPTO_set_locking_callback
-     {$else}
-       {$IF declared(ERR_CRYPTO_set_locking_callback)}
-       CRYPTO_set_locking_callback := @ERR_CRYPTO_set_locking_callback
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_set_locking_callback) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_set_locking_callback');
+    {$if declared(CRYPTO_set_locking_callback_removed)}
+    if CRYPTO_set_locking_callback_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_set_locking_callback)}
+      CRYPTO_set_locking_callback := @_CRYPTO_set_locking_callback;
+      {$else}
+      {$if not defined(CRYPTO_set_locking_callback_allownil)}
+      CRYPTO_set_locking_callback := @ERR_CRYPTO_set_locking_callback;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_set_locking_callback_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_set_locking_callback := @ERR_CRYPTO_set_locking_callback;
+      AFailed.Add('CRYPTO_set_locking_callback');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREADID_set_numeric) then 
+ 
+  CRYPTO_THREADID_set_numeric := LoadLibFunction(ADllHandle, CRYPTO_THREADID_set_numeric_procname);
+  FuncLoaded := assigned(CRYPTO_THREADID_set_numeric);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREADID_set_numeric_introduced)}
     if LibVersion < CRYPTO_THREADID_set_numeric_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREADID_set_numeric)}
-      CRYPTO_THREADID_set_numeric := @FC_CRYPTO_THREADID_set_numeric
+      CRYPTO_THREADID_set_numeric := @FC_CRYPTO_THREADID_set_numeric;
       {$else}
-      CRYPTO_THREADID_set_numeric := @ERR_CRYPTO_THREADID_set_numeric
+      {$if not defined(CRYPTO_THREADID_set_numeric_allownil)}
+      CRYPTO_THREADID_set_numeric := @ERR_CRYPTO_THREADID_set_numeric;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREADID_set_numeric_removed)}
-   if CRYPTO_THREADID_set_numeric_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREADID_set_numeric)}
-     CRYPTO_THREADID_set_numeric := @_CRYPTO_THREADID_set_numeric
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREADID_set_numeric)}
-       CRYPTO_THREADID_set_numeric := @ERR_CRYPTO_THREADID_set_numeric
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREADID_set_numeric) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREADID_set_numeric');
+    {$if declared(CRYPTO_THREADID_set_numeric_removed)}
+    if CRYPTO_THREADID_set_numeric_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREADID_set_numeric)}
+      CRYPTO_THREADID_set_numeric := @_CRYPTO_THREADID_set_numeric;
+      {$else}
+      {$if not defined(CRYPTO_THREADID_set_numeric_allownil)}
+      CRYPTO_THREADID_set_numeric := @ERR_CRYPTO_THREADID_set_numeric;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREADID_set_numeric_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREADID_set_numeric := @ERR_CRYPTO_THREADID_set_numeric;
+      AFailed.Add('CRYPTO_THREADID_set_numeric');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREADID_set_callback) then 
+ 
+  CRYPTO_THREADID_set_callback := LoadLibFunction(ADllHandle, CRYPTO_THREADID_set_callback_procname);
+  FuncLoaded := assigned(CRYPTO_THREADID_set_callback);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREADID_set_callback_introduced)}
     if LibVersion < CRYPTO_THREADID_set_callback_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREADID_set_callback)}
-      CRYPTO_THREADID_set_callback := @FC_CRYPTO_THREADID_set_callback
+      CRYPTO_THREADID_set_callback := @FC_CRYPTO_THREADID_set_callback;
       {$else}
-      CRYPTO_THREADID_set_callback := @ERR_CRYPTO_THREADID_set_callback
+      {$if not defined(CRYPTO_THREADID_set_callback_allownil)}
+      CRYPTO_THREADID_set_callback := @ERR_CRYPTO_THREADID_set_callback;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREADID_set_callback_removed)}
-   if CRYPTO_THREADID_set_callback_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREADID_set_callback)}
-     CRYPTO_THREADID_set_callback := @_CRYPTO_THREADID_set_callback
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREADID_set_callback)}
-       CRYPTO_THREADID_set_callback := @ERR_CRYPTO_THREADID_set_callback
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREADID_set_callback) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREADID_set_callback');
+    {$if declared(CRYPTO_THREADID_set_callback_removed)}
+    if CRYPTO_THREADID_set_callback_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREADID_set_callback)}
+      CRYPTO_THREADID_set_callback := @_CRYPTO_THREADID_set_callback;
+      {$else}
+      {$if not defined(CRYPTO_THREADID_set_callback_allownil)}
+      CRYPTO_THREADID_set_callback := @ERR_CRYPTO_THREADID_set_callback;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREADID_set_callback_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREADID_set_callback := @ERR_CRYPTO_THREADID_set_callback;
+      AFailed.Add('CRYPTO_THREADID_set_callback');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_set_id_callback) then 
+ 
+  CRYPTO_set_id_callback := LoadLibFunction(ADllHandle, CRYPTO_set_id_callback_procname);
+  FuncLoaded := assigned(CRYPTO_set_id_callback);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_set_id_callback_introduced)}
     if LibVersion < CRYPTO_set_id_callback_introduced then
+    begin
       {$if declared(FC_CRYPTO_set_id_callback)}
-      CRYPTO_set_id_callback := @FC_CRYPTO_set_id_callback
+      CRYPTO_set_id_callback := @FC_CRYPTO_set_id_callback;
       {$else}
-      CRYPTO_set_id_callback := @ERR_CRYPTO_set_id_callback
+      {$if not defined(CRYPTO_set_id_callback_allownil)}
+      CRYPTO_set_id_callback := @ERR_CRYPTO_set_id_callback;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_set_id_callback_removed)}
-   if CRYPTO_set_id_callback_removed <= LibVersion then
-     {$if declared(_CRYPTO_set_id_callback)}
-     CRYPTO_set_id_callback := @_CRYPTO_set_id_callback
-     {$else}
-       {$IF declared(ERR_CRYPTO_set_id_callback)}
-       CRYPTO_set_id_callback := @ERR_CRYPTO_set_id_callback
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_set_id_callback) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_set_id_callback');
+    {$if declared(CRYPTO_set_id_callback_removed)}
+    if CRYPTO_set_id_callback_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_set_id_callback)}
+      CRYPTO_set_id_callback := @_CRYPTO_set_id_callback;
+      {$else}
+      {$if not defined(CRYPTO_set_id_callback_allownil)}
+      CRYPTO_set_id_callback := @ERR_CRYPTO_set_id_callback;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_set_id_callback_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_set_id_callback := @ERR_CRYPTO_set_id_callback;
+      AFailed.Add('CRYPTO_set_id_callback');
+    end;
+    {$ifend}
+  end;
+
+ 
+  CRYPTO_set_mem_functions := LoadLibFunction(ADllHandle, CRYPTO_set_mem_functions_procname);
+  FuncLoaded := assigned(CRYPTO_set_mem_functions);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_set_mem_functions_introduced)}
+    if LibVersion < CRYPTO_set_mem_functions_introduced then
+    begin
+      {$if declared(FC_CRYPTO_set_mem_functions)}
+      CRYPTO_set_mem_functions := @FC_CRYPTO_set_mem_functions;
+      {$else}
+      {$if not defined(CRYPTO_set_mem_functions_allownil)}
+      CRYPTO_set_mem_functions := @ERR_CRYPTO_set_mem_functions;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_set_mem_functions_removed)}
+    if CRYPTO_set_mem_functions_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_set_mem_functions)}
+      CRYPTO_set_mem_functions := @_CRYPTO_set_mem_functions;
+      {$else}
+      {$if not defined(CRYPTO_set_mem_functions_allownil)}
+      CRYPTO_set_mem_functions := @ERR_CRYPTO_set_mem_functions;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_set_mem_functions_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_set_mem_functions := @ERR_CRYPTO_set_mem_functions;
+      AFailed.Add('CRYPTO_set_mem_functions');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_set_mem_debug) then 
+  CRYPTO_set_mem_debug := LoadLibFunction(ADllHandle, CRYPTO_set_mem_debug_procname);
+  FuncLoaded := assigned(CRYPTO_set_mem_debug);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_set_mem_debug_introduced)}
     if LibVersion < CRYPTO_set_mem_debug_introduced then
+    begin
       {$if declared(FC_CRYPTO_set_mem_debug)}
-      CRYPTO_set_mem_debug := @FC_CRYPTO_set_mem_debug
+      CRYPTO_set_mem_debug := @FC_CRYPTO_set_mem_debug;
       {$else}
-      CRYPTO_set_mem_debug := @ERR_CRYPTO_set_mem_debug
+      {$if not defined(CRYPTO_set_mem_debug_allownil)}
+      CRYPTO_set_mem_debug := @ERR_CRYPTO_set_mem_debug;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_set_mem_debug_removed)}
-   if CRYPTO_set_mem_debug_removed <= LibVersion then
-     {$if declared(_CRYPTO_set_mem_debug)}
-     CRYPTO_set_mem_debug := @_CRYPTO_set_mem_debug
-     {$else}
-       {$IF declared(ERR_CRYPTO_set_mem_debug)}
-       CRYPTO_set_mem_debug := @ERR_CRYPTO_set_mem_debug
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_set_mem_debug) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_set_mem_debug');
+    {$if declared(CRYPTO_set_mem_debug_removed)}
+    if CRYPTO_set_mem_debug_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_set_mem_debug)}
+      CRYPTO_set_mem_debug := @_CRYPTO_set_mem_debug;
+      {$else}
+      {$if not defined(CRYPTO_set_mem_debug_allownil)}
+      CRYPTO_set_mem_debug := @ERR_CRYPTO_set_mem_debug;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_set_mem_debug_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_set_mem_debug := @ERR_CRYPTO_set_mem_debug;
+      AFailed.Add('CRYPTO_set_mem_debug');
+    end;
+    {$ifend}
+  end;
+
+ 
+  CRYPTO_malloc := LoadLibFunction(ADllHandle, CRYPTO_malloc_procname);
+  FuncLoaded := assigned(CRYPTO_malloc);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_malloc_introduced)}
+    if LibVersion < CRYPTO_malloc_introduced then
+    begin
+      {$if declared(FC_CRYPTO_malloc)}
+      CRYPTO_malloc := @FC_CRYPTO_malloc;
+      {$else}
+      {$if not defined(CRYPTO_malloc_allownil)}
+      CRYPTO_malloc := @ERR_CRYPTO_malloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_malloc_removed)}
+    if CRYPTO_malloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_malloc)}
+      CRYPTO_malloc := @_CRYPTO_malloc;
+      {$else}
+      {$if not defined(CRYPTO_malloc_allownil)}
+      CRYPTO_malloc := @ERR_CRYPTO_malloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_malloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_malloc := @ERR_CRYPTO_malloc;
+      AFailed.Add('CRYPTO_malloc');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_zalloc) then 
+  CRYPTO_zalloc := LoadLibFunction(ADllHandle, CRYPTO_zalloc_procname);
+  FuncLoaded := assigned(CRYPTO_zalloc);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_zalloc_introduced)}
     if LibVersion < CRYPTO_zalloc_introduced then
+    begin
       {$if declared(FC_CRYPTO_zalloc)}
-      CRYPTO_zalloc := @FC_CRYPTO_zalloc
+      CRYPTO_zalloc := @FC_CRYPTO_zalloc;
       {$else}
-      CRYPTO_zalloc := @ERR_CRYPTO_zalloc
+      {$if not defined(CRYPTO_zalloc_allownil)}
+      CRYPTO_zalloc := @ERR_CRYPTO_zalloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_zalloc_removed)}
-   if CRYPTO_zalloc_removed <= LibVersion then
-     {$if declared(_CRYPTO_zalloc)}
-     CRYPTO_zalloc := @_CRYPTO_zalloc
-     {$else}
-       {$IF declared(ERR_CRYPTO_zalloc)}
-       CRYPTO_zalloc := @ERR_CRYPTO_zalloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_zalloc) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_zalloc');
+    {$if declared(CRYPTO_zalloc_removed)}
+    if CRYPTO_zalloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_zalloc)}
+      CRYPTO_zalloc := @_CRYPTO_zalloc;
+      {$else}
+      {$if not defined(CRYPTO_zalloc_allownil)}
+      CRYPTO_zalloc := @ERR_CRYPTO_zalloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_zalloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_zalloc := @ERR_CRYPTO_zalloc;
+      AFailed.Add('CRYPTO_zalloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_memdup) then 
+ {introduced 1.1.0}
+  CRYPTO_memdup := LoadLibFunction(ADllHandle, CRYPTO_memdup_procname);
+  FuncLoaded := assigned(CRYPTO_memdup);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_memdup_introduced)}
     if LibVersion < CRYPTO_memdup_introduced then
+    begin
       {$if declared(FC_CRYPTO_memdup)}
-      CRYPTO_memdup := @FC_CRYPTO_memdup
+      CRYPTO_memdup := @FC_CRYPTO_memdup;
       {$else}
-      CRYPTO_memdup := @ERR_CRYPTO_memdup
+      {$if not defined(CRYPTO_memdup_allownil)}
+      CRYPTO_memdup := @ERR_CRYPTO_memdup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_memdup_removed)}
-   if CRYPTO_memdup_removed <= LibVersion then
-     {$if declared(_CRYPTO_memdup)}
-     CRYPTO_memdup := @_CRYPTO_memdup
-     {$else}
-       {$IF declared(ERR_CRYPTO_memdup)}
-       CRYPTO_memdup := @ERR_CRYPTO_memdup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_memdup) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_memdup');
+    {$if declared(CRYPTO_memdup_removed)}
+    if CRYPTO_memdup_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_memdup)}
+      CRYPTO_memdup := @_CRYPTO_memdup;
+      {$else}
+      {$if not defined(CRYPTO_memdup_allownil)}
+      CRYPTO_memdup := @ERR_CRYPTO_memdup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_memdup_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_memdup := @ERR_CRYPTO_memdup;
+      AFailed.Add('CRYPTO_memdup');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  CRYPTO_strdup := LoadLibFunction(ADllHandle, CRYPTO_strdup_procname);
+  FuncLoaded := assigned(CRYPTO_strdup);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_strdup_introduced)}
+    if LibVersion < CRYPTO_strdup_introduced then
+    begin
+      {$if declared(FC_CRYPTO_strdup)}
+      CRYPTO_strdup := @FC_CRYPTO_strdup;
+      {$else}
+      {$if not defined(CRYPTO_strdup_allownil)}
+      CRYPTO_strdup := @ERR_CRYPTO_strdup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_strdup_removed)}
+    if CRYPTO_strdup_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_strdup)}
+      CRYPTO_strdup := @_CRYPTO_strdup;
+      {$else}
+      {$if not defined(CRYPTO_strdup_allownil)}
+      CRYPTO_strdup := @ERR_CRYPTO_strdup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_strdup_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_strdup := @ERR_CRYPTO_strdup;
+      AFailed.Add('CRYPTO_strdup');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_strndup) then 
+  CRYPTO_strndup := LoadLibFunction(ADllHandle, CRYPTO_strndup_procname);
+  FuncLoaded := assigned(CRYPTO_strndup);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_strndup_introduced)}
     if LibVersion < CRYPTO_strndup_introduced then
+    begin
       {$if declared(FC_CRYPTO_strndup)}
-      CRYPTO_strndup := @FC_CRYPTO_strndup
+      CRYPTO_strndup := @FC_CRYPTO_strndup;
       {$else}
-      CRYPTO_strndup := @ERR_CRYPTO_strndup
+      {$if not defined(CRYPTO_strndup_allownil)}
+      CRYPTO_strndup := @ERR_CRYPTO_strndup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_strndup_removed)}
-   if CRYPTO_strndup_removed <= LibVersion then
-     {$if declared(_CRYPTO_strndup)}
-     CRYPTO_strndup := @_CRYPTO_strndup
-     {$else}
-       {$IF declared(ERR_CRYPTO_strndup)}
-       CRYPTO_strndup := @ERR_CRYPTO_strndup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_strndup) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_strndup');
+    {$if declared(CRYPTO_strndup_removed)}
+    if CRYPTO_strndup_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_strndup)}
+      CRYPTO_strndup := @_CRYPTO_strndup;
+      {$else}
+      {$if not defined(CRYPTO_strndup_allownil)}
+      CRYPTO_strndup := @ERR_CRYPTO_strndup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_strndup_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_strndup := @ERR_CRYPTO_strndup;
+      AFailed.Add('CRYPTO_strndup');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  CRYPTO_free := LoadLibFunction(ADllHandle, CRYPTO_free_procname);
+  FuncLoaded := assigned(CRYPTO_free);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_free_introduced)}
+    if LibVersion < CRYPTO_free_introduced then
+    begin
+      {$if declared(FC_CRYPTO_free)}
+      CRYPTO_free := @FC_CRYPTO_free;
+      {$else}
+      {$if not defined(CRYPTO_free_allownil)}
+      CRYPTO_free := @ERR_CRYPTO_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_free_removed)}
+    if CRYPTO_free_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_free)}
+      CRYPTO_free := @_CRYPTO_free;
+      {$else}
+      {$if not defined(CRYPTO_free_allownil)}
+      CRYPTO_free := @ERR_CRYPTO_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_free_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_free := @ERR_CRYPTO_free;
+      AFailed.Add('CRYPTO_free');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_clear_free) then 
+  CRYPTO_clear_free := LoadLibFunction(ADllHandle, CRYPTO_clear_free_procname);
+  FuncLoaded := assigned(CRYPTO_clear_free);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_clear_free_introduced)}
     if LibVersion < CRYPTO_clear_free_introduced then
+    begin
       {$if declared(FC_CRYPTO_clear_free)}
-      CRYPTO_clear_free := @FC_CRYPTO_clear_free
+      CRYPTO_clear_free := @FC_CRYPTO_clear_free;
       {$else}
-      CRYPTO_clear_free := @ERR_CRYPTO_clear_free
+      {$if not defined(CRYPTO_clear_free_allownil)}
+      CRYPTO_clear_free := @ERR_CRYPTO_clear_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_clear_free_removed)}
-   if CRYPTO_clear_free_removed <= LibVersion then
-     {$if declared(_CRYPTO_clear_free)}
-     CRYPTO_clear_free := @_CRYPTO_clear_free
-     {$else}
-       {$IF declared(ERR_CRYPTO_clear_free)}
-       CRYPTO_clear_free := @ERR_CRYPTO_clear_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_clear_free) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_clear_free');
+    {$if declared(CRYPTO_clear_free_removed)}
+    if CRYPTO_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_clear_free)}
+      CRYPTO_clear_free := @_CRYPTO_clear_free;
+      {$else}
+      {$if not defined(CRYPTO_clear_free_allownil)}
+      CRYPTO_clear_free := @ERR_CRYPTO_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_clear_free := @ERR_CRYPTO_clear_free;
+      AFailed.Add('CRYPTO_clear_free');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  CRYPTO_realloc := LoadLibFunction(ADllHandle, CRYPTO_realloc_procname);
+  FuncLoaded := assigned(CRYPTO_realloc);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_realloc_introduced)}
+    if LibVersion < CRYPTO_realloc_introduced then
+    begin
+      {$if declared(FC_CRYPTO_realloc)}
+      CRYPTO_realloc := @FC_CRYPTO_realloc;
+      {$else}
+      {$if not defined(CRYPTO_realloc_allownil)}
+      CRYPTO_realloc := @ERR_CRYPTO_realloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_realloc_removed)}
+    if CRYPTO_realloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_realloc)}
+      CRYPTO_realloc := @_CRYPTO_realloc;
+      {$else}
+      {$if not defined(CRYPTO_realloc_allownil)}
+      CRYPTO_realloc := @ERR_CRYPTO_realloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_realloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_realloc := @ERR_CRYPTO_realloc;
+      AFailed.Add('CRYPTO_realloc');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(CRYPTO_clear_realloc) then 
+  CRYPTO_clear_realloc := LoadLibFunction(ADllHandle, CRYPTO_clear_realloc_procname);
+  FuncLoaded := assigned(CRYPTO_clear_realloc);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_clear_realloc_introduced)}
     if LibVersion < CRYPTO_clear_realloc_introduced then
+    begin
       {$if declared(FC_CRYPTO_clear_realloc)}
-      CRYPTO_clear_realloc := @FC_CRYPTO_clear_realloc
+      CRYPTO_clear_realloc := @FC_CRYPTO_clear_realloc;
       {$else}
-      CRYPTO_clear_realloc := @ERR_CRYPTO_clear_realloc
+      {$if not defined(CRYPTO_clear_realloc_allownil)}
+      CRYPTO_clear_realloc := @ERR_CRYPTO_clear_realloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_clear_realloc_removed)}
-   if CRYPTO_clear_realloc_removed <= LibVersion then
-     {$if declared(_CRYPTO_clear_realloc)}
-     CRYPTO_clear_realloc := @_CRYPTO_clear_realloc
-     {$else}
-       {$IF declared(ERR_CRYPTO_clear_realloc)}
-       CRYPTO_clear_realloc := @ERR_CRYPTO_clear_realloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_clear_realloc) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_clear_realloc');
+    {$if declared(CRYPTO_clear_realloc_removed)}
+    if CRYPTO_clear_realloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_clear_realloc)}
+      CRYPTO_clear_realloc := @_CRYPTO_clear_realloc;
+      {$else}
+      {$if not defined(CRYPTO_clear_realloc_allownil)}
+      CRYPTO_clear_realloc := @ERR_CRYPTO_clear_realloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_clear_realloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_clear_realloc := @ERR_CRYPTO_clear_realloc;
+      AFailed.Add('CRYPTO_clear_realloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_malloc_init) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_malloc_init := LoadLibFunction(ADllHandle, CRYPTO_secure_malloc_init_procname);
+  FuncLoaded := assigned(CRYPTO_secure_malloc_init);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_malloc_init_introduced)}
     if LibVersion < CRYPTO_secure_malloc_init_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_malloc_init)}
-      CRYPTO_secure_malloc_init := @FC_CRYPTO_secure_malloc_init
+      CRYPTO_secure_malloc_init := @FC_CRYPTO_secure_malloc_init;
       {$else}
-      CRYPTO_secure_malloc_init := @ERR_CRYPTO_secure_malloc_init
+      {$if not defined(CRYPTO_secure_malloc_init_allownil)}
+      CRYPTO_secure_malloc_init := @ERR_CRYPTO_secure_malloc_init;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_malloc_init_removed)}
-   if CRYPTO_secure_malloc_init_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_malloc_init)}
-     CRYPTO_secure_malloc_init := @_CRYPTO_secure_malloc_init
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_malloc_init)}
-       CRYPTO_secure_malloc_init := @ERR_CRYPTO_secure_malloc_init
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_malloc_init) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_malloc_init');
+    {$if declared(CRYPTO_secure_malloc_init_removed)}
+    if CRYPTO_secure_malloc_init_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_malloc_init)}
+      CRYPTO_secure_malloc_init := @_CRYPTO_secure_malloc_init;
+      {$else}
+      {$if not defined(CRYPTO_secure_malloc_init_allownil)}
+      CRYPTO_secure_malloc_init := @ERR_CRYPTO_secure_malloc_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_malloc_init_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_malloc_init := @ERR_CRYPTO_secure_malloc_init;
+      AFailed.Add('CRYPTO_secure_malloc_init');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_malloc_done) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_malloc_done := LoadLibFunction(ADllHandle, CRYPTO_secure_malloc_done_procname);
+  FuncLoaded := assigned(CRYPTO_secure_malloc_done);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_malloc_done_introduced)}
     if LibVersion < CRYPTO_secure_malloc_done_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_malloc_done)}
-      CRYPTO_secure_malloc_done := @FC_CRYPTO_secure_malloc_done
+      CRYPTO_secure_malloc_done := @FC_CRYPTO_secure_malloc_done;
       {$else}
-      CRYPTO_secure_malloc_done := @ERR_CRYPTO_secure_malloc_done
+      {$if not defined(CRYPTO_secure_malloc_done_allownil)}
+      CRYPTO_secure_malloc_done := @ERR_CRYPTO_secure_malloc_done;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_malloc_done_removed)}
-   if CRYPTO_secure_malloc_done_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_malloc_done)}
-     CRYPTO_secure_malloc_done := @_CRYPTO_secure_malloc_done
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_malloc_done)}
-       CRYPTO_secure_malloc_done := @ERR_CRYPTO_secure_malloc_done
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_malloc_done) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_malloc_done');
+    {$if declared(CRYPTO_secure_malloc_done_removed)}
+    if CRYPTO_secure_malloc_done_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_malloc_done)}
+      CRYPTO_secure_malloc_done := @_CRYPTO_secure_malloc_done;
+      {$else}
+      {$if not defined(CRYPTO_secure_malloc_done_allownil)}
+      CRYPTO_secure_malloc_done := @ERR_CRYPTO_secure_malloc_done;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_malloc_done_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_malloc_done := @ERR_CRYPTO_secure_malloc_done;
+      AFailed.Add('CRYPTO_secure_malloc_done');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_malloc) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_malloc := LoadLibFunction(ADllHandle, CRYPTO_secure_malloc_procname);
+  FuncLoaded := assigned(CRYPTO_secure_malloc);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_malloc_introduced)}
     if LibVersion < CRYPTO_secure_malloc_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_malloc)}
-      CRYPTO_secure_malloc := @FC_CRYPTO_secure_malloc
+      CRYPTO_secure_malloc := @FC_CRYPTO_secure_malloc;
       {$else}
-      CRYPTO_secure_malloc := @ERR_CRYPTO_secure_malloc
+      {$if not defined(CRYPTO_secure_malloc_allownil)}
+      CRYPTO_secure_malloc := @ERR_CRYPTO_secure_malloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_malloc_removed)}
-   if CRYPTO_secure_malloc_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_malloc)}
-     CRYPTO_secure_malloc := @_CRYPTO_secure_malloc
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_malloc)}
-       CRYPTO_secure_malloc := @ERR_CRYPTO_secure_malloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_malloc) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_malloc');
+    {$if declared(CRYPTO_secure_malloc_removed)}
+    if CRYPTO_secure_malloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_malloc)}
+      CRYPTO_secure_malloc := @_CRYPTO_secure_malloc;
+      {$else}
+      {$if not defined(CRYPTO_secure_malloc_allownil)}
+      CRYPTO_secure_malloc := @ERR_CRYPTO_secure_malloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_malloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_malloc := @ERR_CRYPTO_secure_malloc;
+      AFailed.Add('CRYPTO_secure_malloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_zalloc) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_zalloc := LoadLibFunction(ADllHandle, CRYPTO_secure_zalloc_procname);
+  FuncLoaded := assigned(CRYPTO_secure_zalloc);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_zalloc_introduced)}
     if LibVersion < CRYPTO_secure_zalloc_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_zalloc)}
-      CRYPTO_secure_zalloc := @FC_CRYPTO_secure_zalloc
+      CRYPTO_secure_zalloc := @FC_CRYPTO_secure_zalloc;
       {$else}
-      CRYPTO_secure_zalloc := @ERR_CRYPTO_secure_zalloc
+      {$if not defined(CRYPTO_secure_zalloc_allownil)}
+      CRYPTO_secure_zalloc := @ERR_CRYPTO_secure_zalloc;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_zalloc_removed)}
-   if CRYPTO_secure_zalloc_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_zalloc)}
-     CRYPTO_secure_zalloc := @_CRYPTO_secure_zalloc
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_zalloc)}
-       CRYPTO_secure_zalloc := @ERR_CRYPTO_secure_zalloc
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_zalloc) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_zalloc');
+    {$if declared(CRYPTO_secure_zalloc_removed)}
+    if CRYPTO_secure_zalloc_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_zalloc)}
+      CRYPTO_secure_zalloc := @_CRYPTO_secure_zalloc;
+      {$else}
+      {$if not defined(CRYPTO_secure_zalloc_allownil)}
+      CRYPTO_secure_zalloc := @ERR_CRYPTO_secure_zalloc;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_zalloc_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_zalloc := @ERR_CRYPTO_secure_zalloc;
+      AFailed.Add('CRYPTO_secure_zalloc');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_free) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_free := LoadLibFunction(ADllHandle, CRYPTO_secure_free_procname);
+  FuncLoaded := assigned(CRYPTO_secure_free);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_free_introduced)}
     if LibVersion < CRYPTO_secure_free_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_free)}
-      CRYPTO_secure_free := @FC_CRYPTO_secure_free
+      CRYPTO_secure_free := @FC_CRYPTO_secure_free;
       {$else}
-      CRYPTO_secure_free := @ERR_CRYPTO_secure_free
+      {$if not defined(CRYPTO_secure_free_allownil)}
+      CRYPTO_secure_free := @ERR_CRYPTO_secure_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_free_removed)}
-   if CRYPTO_secure_free_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_free)}
-     CRYPTO_secure_free := @_CRYPTO_secure_free
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_free)}
-       CRYPTO_secure_free := @ERR_CRYPTO_secure_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_free) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_free');
+    {$if declared(CRYPTO_secure_free_removed)}
+    if CRYPTO_secure_free_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_free)}
+      CRYPTO_secure_free := @_CRYPTO_secure_free;
+      {$else}
+      {$if not defined(CRYPTO_secure_free_allownil)}
+      CRYPTO_secure_free := @ERR_CRYPTO_secure_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_free_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_free := @ERR_CRYPTO_secure_free;
+      AFailed.Add('CRYPTO_secure_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_clear_free) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_clear_free := LoadLibFunction(ADllHandle, CRYPTO_secure_clear_free_procname);
+  FuncLoaded := assigned(CRYPTO_secure_clear_free);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_clear_free_introduced)}
     if LibVersion < CRYPTO_secure_clear_free_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_clear_free)}
-      CRYPTO_secure_clear_free := @FC_CRYPTO_secure_clear_free
+      CRYPTO_secure_clear_free := @FC_CRYPTO_secure_clear_free;
       {$else}
-      CRYPTO_secure_clear_free := @ERR_CRYPTO_secure_clear_free
+      {$if not defined(CRYPTO_secure_clear_free_allownil)}
+      CRYPTO_secure_clear_free := @ERR_CRYPTO_secure_clear_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_clear_free_removed)}
-   if CRYPTO_secure_clear_free_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_clear_free)}
-     CRYPTO_secure_clear_free := @_CRYPTO_secure_clear_free
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_clear_free)}
-       CRYPTO_secure_clear_free := @ERR_CRYPTO_secure_clear_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_clear_free) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_clear_free');
+    {$if declared(CRYPTO_secure_clear_free_removed)}
+    if CRYPTO_secure_clear_free_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_clear_free)}
+      CRYPTO_secure_clear_free := @_CRYPTO_secure_clear_free;
+      {$else}
+      {$if not defined(CRYPTO_secure_clear_free_allownil)}
+      CRYPTO_secure_clear_free := @ERR_CRYPTO_secure_clear_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_clear_free_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_clear_free := @ERR_CRYPTO_secure_clear_free;
+      AFailed.Add('CRYPTO_secure_clear_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_allocated) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_allocated := LoadLibFunction(ADllHandle, CRYPTO_secure_allocated_procname);
+  FuncLoaded := assigned(CRYPTO_secure_allocated);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_allocated_introduced)}
     if LibVersion < CRYPTO_secure_allocated_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_allocated)}
-      CRYPTO_secure_allocated := @FC_CRYPTO_secure_allocated
+      CRYPTO_secure_allocated := @FC_CRYPTO_secure_allocated;
       {$else}
-      CRYPTO_secure_allocated := @ERR_CRYPTO_secure_allocated
+      {$if not defined(CRYPTO_secure_allocated_allownil)}
+      CRYPTO_secure_allocated := @ERR_CRYPTO_secure_allocated;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_allocated_removed)}
-   if CRYPTO_secure_allocated_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_allocated)}
-     CRYPTO_secure_allocated := @_CRYPTO_secure_allocated
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_allocated)}
-       CRYPTO_secure_allocated := @ERR_CRYPTO_secure_allocated
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_allocated) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_allocated');
+    {$if declared(CRYPTO_secure_allocated_removed)}
+    if CRYPTO_secure_allocated_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_allocated)}
+      CRYPTO_secure_allocated := @_CRYPTO_secure_allocated;
+      {$else}
+      {$if not defined(CRYPTO_secure_allocated_allownil)}
+      CRYPTO_secure_allocated := @ERR_CRYPTO_secure_allocated;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_allocated_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_allocated := @ERR_CRYPTO_secure_allocated;
+      AFailed.Add('CRYPTO_secure_allocated');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_malloc_initialized) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_malloc_initialized := LoadLibFunction(ADllHandle, CRYPTO_secure_malloc_initialized_procname);
+  FuncLoaded := assigned(CRYPTO_secure_malloc_initialized);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_malloc_initialized_introduced)}
     if LibVersion < CRYPTO_secure_malloc_initialized_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_malloc_initialized)}
-      CRYPTO_secure_malloc_initialized := @FC_CRYPTO_secure_malloc_initialized
+      CRYPTO_secure_malloc_initialized := @FC_CRYPTO_secure_malloc_initialized;
       {$else}
-      CRYPTO_secure_malloc_initialized := @ERR_CRYPTO_secure_malloc_initialized
+      {$if not defined(CRYPTO_secure_malloc_initialized_allownil)}
+      CRYPTO_secure_malloc_initialized := @ERR_CRYPTO_secure_malloc_initialized;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_malloc_initialized_removed)}
-   if CRYPTO_secure_malloc_initialized_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_malloc_initialized)}
-     CRYPTO_secure_malloc_initialized := @_CRYPTO_secure_malloc_initialized
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_malloc_initialized)}
-       CRYPTO_secure_malloc_initialized := @ERR_CRYPTO_secure_malloc_initialized
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_malloc_initialized) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_malloc_initialized');
+    {$if declared(CRYPTO_secure_malloc_initialized_removed)}
+    if CRYPTO_secure_malloc_initialized_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_malloc_initialized)}
+      CRYPTO_secure_malloc_initialized := @_CRYPTO_secure_malloc_initialized;
+      {$else}
+      {$if not defined(CRYPTO_secure_malloc_initialized_allownil)}
+      CRYPTO_secure_malloc_initialized := @ERR_CRYPTO_secure_malloc_initialized;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_malloc_initialized_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_malloc_initialized := @ERR_CRYPTO_secure_malloc_initialized;
+      AFailed.Add('CRYPTO_secure_malloc_initialized');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_actual_size) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_actual_size := LoadLibFunction(ADllHandle, CRYPTO_secure_actual_size_procname);
+  FuncLoaded := assigned(CRYPTO_secure_actual_size);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_actual_size_introduced)}
     if LibVersion < CRYPTO_secure_actual_size_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_actual_size)}
-      CRYPTO_secure_actual_size := @FC_CRYPTO_secure_actual_size
+      CRYPTO_secure_actual_size := @FC_CRYPTO_secure_actual_size;
       {$else}
-      CRYPTO_secure_actual_size := @ERR_CRYPTO_secure_actual_size
+      {$if not defined(CRYPTO_secure_actual_size_allownil)}
+      CRYPTO_secure_actual_size := @ERR_CRYPTO_secure_actual_size;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_actual_size_removed)}
-   if CRYPTO_secure_actual_size_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_actual_size)}
-     CRYPTO_secure_actual_size := @_CRYPTO_secure_actual_size
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_actual_size)}
-       CRYPTO_secure_actual_size := @ERR_CRYPTO_secure_actual_size
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_actual_size) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_actual_size');
+    {$if declared(CRYPTO_secure_actual_size_removed)}
+    if CRYPTO_secure_actual_size_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_actual_size)}
+      CRYPTO_secure_actual_size := @_CRYPTO_secure_actual_size;
+      {$else}
+      {$if not defined(CRYPTO_secure_actual_size_allownil)}
+      CRYPTO_secure_actual_size := @ERR_CRYPTO_secure_actual_size;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_actual_size_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_actual_size := @ERR_CRYPTO_secure_actual_size;
+      AFailed.Add('CRYPTO_secure_actual_size');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_secure_used) then 
+ {introduced 1.1.0}
+  CRYPTO_secure_used := LoadLibFunction(ADllHandle, CRYPTO_secure_used_procname);
+  FuncLoaded := assigned(CRYPTO_secure_used);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_secure_used_introduced)}
     if LibVersion < CRYPTO_secure_used_introduced then
+    begin
       {$if declared(FC_CRYPTO_secure_used)}
-      CRYPTO_secure_used := @FC_CRYPTO_secure_used
+      CRYPTO_secure_used := @FC_CRYPTO_secure_used;
       {$else}
-      CRYPTO_secure_used := @ERR_CRYPTO_secure_used
+      {$if not defined(CRYPTO_secure_used_allownil)}
+      CRYPTO_secure_used := @ERR_CRYPTO_secure_used;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_secure_used_removed)}
-   if CRYPTO_secure_used_removed <= LibVersion then
-     {$if declared(_CRYPTO_secure_used)}
-     CRYPTO_secure_used := @_CRYPTO_secure_used
-     {$else}
-       {$IF declared(ERR_CRYPTO_secure_used)}
-       CRYPTO_secure_used := @ERR_CRYPTO_secure_used
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_secure_used) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_secure_used');
+    {$if declared(CRYPTO_secure_used_removed)}
+    if CRYPTO_secure_used_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_secure_used)}
+      CRYPTO_secure_used := @_CRYPTO_secure_used;
+      {$else}
+      {$if not defined(CRYPTO_secure_used_allownil)}
+      CRYPTO_secure_used := @ERR_CRYPTO_secure_used;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_secure_used_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_secure_used := @ERR_CRYPTO_secure_used;
+      AFailed.Add('CRYPTO_secure_used');
+    end;
+    {$ifend}
+  end;
+
+ {introduced 1.1.0}
+  OPENSSL_cleanse := LoadLibFunction(ADllHandle, OPENSSL_cleanse_procname);
+  FuncLoaded := assigned(OPENSSL_cleanse);
+  if not FuncLoaded then
+  begin
+    {$if declared(OPENSSL_cleanse_introduced)}
+    if LibVersion < OPENSSL_cleanse_introduced then
+    begin
+      {$if declared(FC_OPENSSL_cleanse)}
+      OPENSSL_cleanse := @FC_OPENSSL_cleanse;
+      {$else}
+      {$if not defined(OPENSSL_cleanse_allownil)}
+      OPENSSL_cleanse := @ERR_OPENSSL_cleanse;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(OPENSSL_cleanse_removed)}
+    if OPENSSL_cleanse_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_cleanse)}
+      OPENSSL_cleanse := @_OPENSSL_cleanse;
+      {$else}
+      {$if not defined(OPENSSL_cleanse_allownil)}
+      OPENSSL_cleanse := @ERR_OPENSSL_cleanse;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_cleanse_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_cleanse := @ERR_OPENSSL_cleanse;
+      AFailed.Add('OPENSSL_cleanse');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(FIPS_mode) then 
+  OPENSSL_isservice := LoadLibFunction(ADllHandle, OPENSSL_isservice_procname);
+  FuncLoaded := assigned(OPENSSL_isservice);
+  if not FuncLoaded then
+  begin
+    {$if declared(OPENSSL_isservice_introduced)}
+    if LibVersion < OPENSSL_isservice_introduced then
+    begin
+      {$if declared(FC_OPENSSL_isservice)}
+      OPENSSL_isservice := @FC_OPENSSL_isservice;
+      {$else}
+      {$if not defined(OPENSSL_isservice_allownil)}
+      OPENSSL_isservice := @ERR_OPENSSL_isservice;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(OPENSSL_isservice_removed)}
+    if OPENSSL_isservice_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_isservice)}
+      OPENSSL_isservice := @_OPENSSL_isservice;
+      {$else}
+      {$if not defined(OPENSSL_isservice_allownil)}
+      OPENSSL_isservice := @ERR_OPENSSL_isservice;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_isservice_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_isservice := @ERR_OPENSSL_isservice;
+      AFailed.Add('OPENSSL_isservice');
+    end;
+    {$ifend}
+  end;
+
+
+  FIPS_mode := LoadLibFunction(ADllHandle, FIPS_mode_procname);
+  FuncLoaded := assigned(FIPS_mode);
+  if not FuncLoaded then
   begin
     {$if declared(FIPS_mode_introduced)}
     if LibVersion < FIPS_mode_introduced then
+    begin
       {$if declared(FC_FIPS_mode)}
-      FIPS_mode := @FC_FIPS_mode
+      FIPS_mode := @FC_FIPS_mode;
       {$else}
-      FIPS_mode := @ERR_FIPS_mode
+      {$if not defined(FIPS_mode_allownil)}
+      FIPS_mode := @ERR_FIPS_mode;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(FIPS_mode_removed)}
-   if FIPS_mode_removed <= LibVersion then
-     {$if declared(_FIPS_mode)}
-     FIPS_mode := @_FIPS_mode
-     {$else}
-       {$IF declared(ERR_FIPS_mode)}
-       FIPS_mode := @ERR_FIPS_mode
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(FIPS_mode) and Assigned(AFailed) then 
-     AFailed.Add('FIPS_mode');
+    {$if declared(FIPS_mode_removed)}
+    if FIPS_mode_removed <= LibVersion then
+    begin
+      {$if declared(_FIPS_mode)}
+      FIPS_mode := @_FIPS_mode;
+      {$else}
+      {$if not defined(FIPS_mode_allownil)}
+      FIPS_mode := @ERR_FIPS_mode;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(FIPS_mode_allownil)}
+    if not FuncLoaded then
+    begin
+      FIPS_mode := @ERR_FIPS_mode;
+      AFailed.Add('FIPS_mode');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(FIPS_mode_set) then 
+ 
+  FIPS_mode_set := LoadLibFunction(ADllHandle, FIPS_mode_set_procname);
+  FuncLoaded := assigned(FIPS_mode_set);
+  if not FuncLoaded then
   begin
     {$if declared(FIPS_mode_set_introduced)}
     if LibVersion < FIPS_mode_set_introduced then
+    begin
       {$if declared(FC_FIPS_mode_set)}
-      FIPS_mode_set := @FC_FIPS_mode_set
+      FIPS_mode_set := @FC_FIPS_mode_set;
       {$else}
-      FIPS_mode_set := @ERR_FIPS_mode_set
+      {$if not defined(FIPS_mode_set_allownil)}
+      FIPS_mode_set := @ERR_FIPS_mode_set;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(FIPS_mode_set_removed)}
-   if FIPS_mode_set_removed <= LibVersion then
-     {$if declared(_FIPS_mode_set)}
-     FIPS_mode_set := @_FIPS_mode_set
-     {$else}
-       {$IF declared(ERR_FIPS_mode_set)}
-       FIPS_mode_set := @ERR_FIPS_mode_set
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(FIPS_mode_set) and Assigned(AFailed) then 
-     AFailed.Add('FIPS_mode_set');
+    {$if declared(FIPS_mode_set_removed)}
+    if FIPS_mode_set_removed <= LibVersion then
+    begin
+      {$if declared(_FIPS_mode_set)}
+      FIPS_mode_set := @_FIPS_mode_set;
+      {$else}
+      {$if not defined(FIPS_mode_set_allownil)}
+      FIPS_mode_set := @ERR_FIPS_mode_set;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(FIPS_mode_set_allownil)}
+    if not FuncLoaded then
+    begin
+      FIPS_mode_set := @ERR_FIPS_mode_set;
+      AFailed.Add('FIPS_mode_set');
+    end;
+    {$ifend}
+  end;
+
+ 
+  OPENSSL_init := LoadLibFunction(ADllHandle, OPENSSL_init_procname);
+  FuncLoaded := assigned(OPENSSL_init);
+  if not FuncLoaded then
+  begin
+    {$if declared(OPENSSL_init_introduced)}
+    if LibVersion < OPENSSL_init_introduced then
+    begin
+      {$if declared(FC_OPENSSL_init)}
+      OPENSSL_init := @FC_OPENSSL_init;
+      {$else}
+      {$if not defined(OPENSSL_init_allownil)}
+      OPENSSL_init := @ERR_OPENSSL_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(OPENSSL_init_removed)}
+    if OPENSSL_init_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_init)}
+      OPENSSL_init := @_OPENSSL_init;
+      {$else}
+      {$if not defined(OPENSSL_init_allownil)}
+      OPENSSL_init := @ERR_OPENSSL_init;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_init_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_init := @ERR_OPENSSL_init;
+      AFailed.Add('OPENSSL_init');
+    end;
+    {$ifend}
   end;
 
 
-  if not assigned(OPENSSL_cleanup) then 
+  CRYPTO_memcmp := LoadLibFunction(ADllHandle, CRYPTO_memcmp_procname);
+  FuncLoaded := assigned(CRYPTO_memcmp);
+  if not FuncLoaded then
+  begin
+    {$if declared(CRYPTO_memcmp_introduced)}
+    if LibVersion < CRYPTO_memcmp_introduced then
+    begin
+      {$if declared(FC_CRYPTO_memcmp)}
+      CRYPTO_memcmp := @FC_CRYPTO_memcmp;
+      {$else}
+      {$if not defined(CRYPTO_memcmp_allownil)}
+      CRYPTO_memcmp := @ERR_CRYPTO_memcmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if declared(CRYPTO_memcmp_removed)}
+    if CRYPTO_memcmp_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_memcmp)}
+      CRYPTO_memcmp := @_CRYPTO_memcmp;
+      {$else}
+      {$if not defined(CRYPTO_memcmp_allownil)}
+      CRYPTO_memcmp := @ERR_CRYPTO_memcmp;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_memcmp_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_memcmp := @ERR_CRYPTO_memcmp;
+      AFailed.Add('CRYPTO_memcmp');
+    end;
+    {$ifend}
+  end;
+
+
+  OPENSSL_cleanup := LoadLibFunction(ADllHandle, OPENSSL_cleanup_procname);
+  FuncLoaded := assigned(OPENSSL_cleanup);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_cleanup_introduced)}
     if LibVersion < OPENSSL_cleanup_introduced then
+    begin
       {$if declared(FC_OPENSSL_cleanup)}
-      OPENSSL_cleanup := @FC_OPENSSL_cleanup
+      OPENSSL_cleanup := @FC_OPENSSL_cleanup;
       {$else}
-      OPENSSL_cleanup := @ERR_OPENSSL_cleanup
+      {$if not defined(OPENSSL_cleanup_allownil)}
+      OPENSSL_cleanup := @ERR_OPENSSL_cleanup;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_cleanup_removed)}
-   if OPENSSL_cleanup_removed <= LibVersion then
-     {$if declared(_OPENSSL_cleanup)}
-     OPENSSL_cleanup := @_OPENSSL_cleanup
-     {$else}
-       {$IF declared(ERR_OPENSSL_cleanup)}
-       OPENSSL_cleanup := @ERR_OPENSSL_cleanup
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_cleanup) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_cleanup');
+    {$if declared(OPENSSL_cleanup_removed)}
+    if OPENSSL_cleanup_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_cleanup)}
+      OPENSSL_cleanup := @_OPENSSL_cleanup;
+      {$else}
+      {$if not defined(OPENSSL_cleanup_allownil)}
+      OPENSSL_cleanup := @ERR_OPENSSL_cleanup;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_cleanup_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_cleanup := @ERR_OPENSSL_cleanup;
+      AFailed.Add('OPENSSL_cleanup');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_init_crypto) then 
+ {introduced 1.1.0}
+  OPENSSL_init_crypto := LoadLibFunction(ADllHandle, OPENSSL_init_crypto_procname);
+  FuncLoaded := assigned(OPENSSL_init_crypto);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_init_crypto_introduced)}
     if LibVersion < OPENSSL_init_crypto_introduced then
+    begin
       {$if declared(FC_OPENSSL_init_crypto)}
-      OPENSSL_init_crypto := @FC_OPENSSL_init_crypto
+      OPENSSL_init_crypto := @FC_OPENSSL_init_crypto;
       {$else}
-      OPENSSL_init_crypto := @ERR_OPENSSL_init_crypto
+      {$if not defined(OPENSSL_init_crypto_allownil)}
+      OPENSSL_init_crypto := @ERR_OPENSSL_init_crypto;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_init_crypto_removed)}
-   if OPENSSL_init_crypto_removed <= LibVersion then
-     {$if declared(_OPENSSL_init_crypto)}
-     OPENSSL_init_crypto := @_OPENSSL_init_crypto
-     {$else}
-       {$IF declared(ERR_OPENSSL_init_crypto)}
-       OPENSSL_init_crypto := @ERR_OPENSSL_init_crypto
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_init_crypto) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_init_crypto');
+    {$if declared(OPENSSL_init_crypto_removed)}
+    if OPENSSL_init_crypto_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_init_crypto)}
+      OPENSSL_init_crypto := @_OPENSSL_init_crypto;
+      {$else}
+      {$if not defined(OPENSSL_init_crypto_allownil)}
+      OPENSSL_init_crypto := @ERR_OPENSSL_init_crypto;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_init_crypto_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_init_crypto := @ERR_OPENSSL_init_crypto;
+      AFailed.Add('OPENSSL_init_crypto');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_thread_stop) then 
+ {introduced 1.1.0}
+  OPENSSL_thread_stop := LoadLibFunction(ADllHandle, OPENSSL_thread_stop_procname);
+  FuncLoaded := assigned(OPENSSL_thread_stop);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_thread_stop_introduced)}
     if LibVersion < OPENSSL_thread_stop_introduced then
+    begin
       {$if declared(FC_OPENSSL_thread_stop)}
-      OPENSSL_thread_stop := @FC_OPENSSL_thread_stop
+      OPENSSL_thread_stop := @FC_OPENSSL_thread_stop;
       {$else}
-      OPENSSL_thread_stop := @ERR_OPENSSL_thread_stop
+      {$if not defined(OPENSSL_thread_stop_allownil)}
+      OPENSSL_thread_stop := @ERR_OPENSSL_thread_stop;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_thread_stop_removed)}
-   if OPENSSL_thread_stop_removed <= LibVersion then
-     {$if declared(_OPENSSL_thread_stop)}
-     OPENSSL_thread_stop := @_OPENSSL_thread_stop
-     {$else}
-       {$IF declared(ERR_OPENSSL_thread_stop)}
-       OPENSSL_thread_stop := @ERR_OPENSSL_thread_stop
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_thread_stop) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_thread_stop');
+    {$if declared(OPENSSL_thread_stop_removed)}
+    if OPENSSL_thread_stop_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_thread_stop)}
+      OPENSSL_thread_stop := @_OPENSSL_thread_stop;
+      {$else}
+      {$if not defined(OPENSSL_thread_stop_allownil)}
+      OPENSSL_thread_stop := @ERR_OPENSSL_thread_stop;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_thread_stop_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_thread_stop := @ERR_OPENSSL_thread_stop;
+      AFailed.Add('OPENSSL_thread_stop');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_INIT_new) then 
+ {introduced 1.1.0}
+  OPENSSL_INIT_new := LoadLibFunction(ADllHandle, OPENSSL_INIT_new_procname);
+  FuncLoaded := assigned(OPENSSL_INIT_new);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_INIT_new_introduced)}
     if LibVersion < OPENSSL_INIT_new_introduced then
+    begin
       {$if declared(FC_OPENSSL_INIT_new)}
-      OPENSSL_INIT_new := @FC_OPENSSL_INIT_new
+      OPENSSL_INIT_new := @FC_OPENSSL_INIT_new;
       {$else}
-      OPENSSL_INIT_new := @ERR_OPENSSL_INIT_new
+      {$if not defined(OPENSSL_INIT_new_allownil)}
+      OPENSSL_INIT_new := @ERR_OPENSSL_INIT_new;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_INIT_new_removed)}
-   if OPENSSL_INIT_new_removed <= LibVersion then
-     {$if declared(_OPENSSL_INIT_new)}
-     OPENSSL_INIT_new := @_OPENSSL_INIT_new
-     {$else}
-       {$IF declared(ERR_OPENSSL_INIT_new)}
-       OPENSSL_INIT_new := @ERR_OPENSSL_INIT_new
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_INIT_new) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_INIT_new');
+    {$if declared(OPENSSL_INIT_new_removed)}
+    if OPENSSL_INIT_new_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_INIT_new)}
+      OPENSSL_INIT_new := @_OPENSSL_INIT_new;
+      {$else}
+      {$if not defined(OPENSSL_INIT_new_allownil)}
+      OPENSSL_INIT_new := @ERR_OPENSSL_INIT_new;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_INIT_new_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_INIT_new := @ERR_OPENSSL_INIT_new;
+      AFailed.Add('OPENSSL_INIT_new');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(OPENSSL_INIT_free) then 
+ {introduced 1.1.0}
+  OPENSSL_INIT_free := LoadLibFunction(ADllHandle, OPENSSL_INIT_free_procname);
+  FuncLoaded := assigned(OPENSSL_INIT_free);
+  if not FuncLoaded then
   begin
     {$if declared(OPENSSL_INIT_free_introduced)}
     if LibVersion < OPENSSL_INIT_free_introduced then
+    begin
       {$if declared(FC_OPENSSL_INIT_free)}
-      OPENSSL_INIT_free := @FC_OPENSSL_INIT_free
+      OPENSSL_INIT_free := @FC_OPENSSL_INIT_free;
       {$else}
-      OPENSSL_INIT_free := @ERR_OPENSSL_INIT_free
+      {$if not defined(OPENSSL_INIT_free_allownil)}
+      OPENSSL_INIT_free := @ERR_OPENSSL_INIT_free;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(OPENSSL_INIT_free_removed)}
-   if OPENSSL_INIT_free_removed <= LibVersion then
-     {$if declared(_OPENSSL_INIT_free)}
-     OPENSSL_INIT_free := @_OPENSSL_INIT_free
-     {$else}
-       {$IF declared(ERR_OPENSSL_INIT_free)}
-       OPENSSL_INIT_free := @ERR_OPENSSL_INIT_free
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(OPENSSL_INIT_free) and Assigned(AFailed) then 
-     AFailed.Add('OPENSSL_INIT_free');
+    {$if declared(OPENSSL_INIT_free_removed)}
+    if OPENSSL_INIT_free_removed <= LibVersion then
+    begin
+      {$if declared(_OPENSSL_INIT_free)}
+      OPENSSL_INIT_free := @_OPENSSL_INIT_free;
+      {$else}
+      {$if not defined(OPENSSL_INIT_free_allownil)}
+      OPENSSL_INIT_free := @ERR_OPENSSL_INIT_free;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(OPENSSL_INIT_free_allownil)}
+    if not FuncLoaded then
+    begin
+      OPENSSL_INIT_free := @ERR_OPENSSL_INIT_free;
+      AFailed.Add('OPENSSL_INIT_free');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_run_once) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_run_once := LoadLibFunction(ADllHandle, CRYPTO_THREAD_run_once_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_run_once);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_run_once_introduced)}
     if LibVersion < CRYPTO_THREAD_run_once_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_run_once)}
-      CRYPTO_THREAD_run_once := @FC_CRYPTO_THREAD_run_once
+      CRYPTO_THREAD_run_once := @FC_CRYPTO_THREAD_run_once;
       {$else}
-      CRYPTO_THREAD_run_once := @ERR_CRYPTO_THREAD_run_once
+      {$if not defined(CRYPTO_THREAD_run_once_allownil)}
+      CRYPTO_THREAD_run_once := @ERR_CRYPTO_THREAD_run_once;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_run_once_removed)}
-   if CRYPTO_THREAD_run_once_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_run_once)}
-     CRYPTO_THREAD_run_once := @_CRYPTO_THREAD_run_once
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_run_once)}
-       CRYPTO_THREAD_run_once := @ERR_CRYPTO_THREAD_run_once
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_run_once) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_run_once');
+    {$if declared(CRYPTO_THREAD_run_once_removed)}
+    if CRYPTO_THREAD_run_once_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_run_once)}
+      CRYPTO_THREAD_run_once := @_CRYPTO_THREAD_run_once;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_run_once_allownil)}
+      CRYPTO_THREAD_run_once := @ERR_CRYPTO_THREAD_run_once;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_run_once_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_run_once := @ERR_CRYPTO_THREAD_run_once;
+      AFailed.Add('CRYPTO_THREAD_run_once');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_get_local) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_get_local := LoadLibFunction(ADllHandle, CRYPTO_THREAD_get_local_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_get_local);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_get_local_introduced)}
     if LibVersion < CRYPTO_THREAD_get_local_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_get_local)}
-      CRYPTO_THREAD_get_local := @FC_CRYPTO_THREAD_get_local
+      CRYPTO_THREAD_get_local := @FC_CRYPTO_THREAD_get_local;
       {$else}
-      CRYPTO_THREAD_get_local := @ERR_CRYPTO_THREAD_get_local
+      {$if not defined(CRYPTO_THREAD_get_local_allownil)}
+      CRYPTO_THREAD_get_local := @ERR_CRYPTO_THREAD_get_local;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_get_local_removed)}
-   if CRYPTO_THREAD_get_local_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_get_local)}
-     CRYPTO_THREAD_get_local := @_CRYPTO_THREAD_get_local
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_get_local)}
-       CRYPTO_THREAD_get_local := @ERR_CRYPTO_THREAD_get_local
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_get_local) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_get_local');
+    {$if declared(CRYPTO_THREAD_get_local_removed)}
+    if CRYPTO_THREAD_get_local_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_get_local)}
+      CRYPTO_THREAD_get_local := @_CRYPTO_THREAD_get_local;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_get_local_allownil)}
+      CRYPTO_THREAD_get_local := @ERR_CRYPTO_THREAD_get_local;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_get_local_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_get_local := @ERR_CRYPTO_THREAD_get_local;
+      AFailed.Add('CRYPTO_THREAD_get_local');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_set_local) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_set_local := LoadLibFunction(ADllHandle, CRYPTO_THREAD_set_local_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_set_local);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_set_local_introduced)}
     if LibVersion < CRYPTO_THREAD_set_local_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_set_local)}
-      CRYPTO_THREAD_set_local := @FC_CRYPTO_THREAD_set_local
+      CRYPTO_THREAD_set_local := @FC_CRYPTO_THREAD_set_local;
       {$else}
-      CRYPTO_THREAD_set_local := @ERR_CRYPTO_THREAD_set_local
+      {$if not defined(CRYPTO_THREAD_set_local_allownil)}
+      CRYPTO_THREAD_set_local := @ERR_CRYPTO_THREAD_set_local;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_set_local_removed)}
-   if CRYPTO_THREAD_set_local_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_set_local)}
-     CRYPTO_THREAD_set_local := @_CRYPTO_THREAD_set_local
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_set_local)}
-       CRYPTO_THREAD_set_local := @ERR_CRYPTO_THREAD_set_local
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_set_local) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_set_local');
+    {$if declared(CRYPTO_THREAD_set_local_removed)}
+    if CRYPTO_THREAD_set_local_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_set_local)}
+      CRYPTO_THREAD_set_local := @_CRYPTO_THREAD_set_local;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_set_local_allownil)}
+      CRYPTO_THREAD_set_local := @ERR_CRYPTO_THREAD_set_local;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_set_local_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_set_local := @ERR_CRYPTO_THREAD_set_local;
+      AFailed.Add('CRYPTO_THREAD_set_local');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_cleanup_local) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_cleanup_local := LoadLibFunction(ADllHandle, CRYPTO_THREAD_cleanup_local_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_cleanup_local);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_cleanup_local_introduced)}
     if LibVersion < CRYPTO_THREAD_cleanup_local_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_cleanup_local)}
-      CRYPTO_THREAD_cleanup_local := @FC_CRYPTO_THREAD_cleanup_local
+      CRYPTO_THREAD_cleanup_local := @FC_CRYPTO_THREAD_cleanup_local;
       {$else}
-      CRYPTO_THREAD_cleanup_local := @ERR_CRYPTO_THREAD_cleanup_local
+      {$if not defined(CRYPTO_THREAD_cleanup_local_allownil)}
+      CRYPTO_THREAD_cleanup_local := @ERR_CRYPTO_THREAD_cleanup_local;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_cleanup_local_removed)}
-   if CRYPTO_THREAD_cleanup_local_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_cleanup_local)}
-     CRYPTO_THREAD_cleanup_local := @_CRYPTO_THREAD_cleanup_local
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_cleanup_local)}
-       CRYPTO_THREAD_cleanup_local := @ERR_CRYPTO_THREAD_cleanup_local
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_cleanup_local) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_cleanup_local');
+    {$if declared(CRYPTO_THREAD_cleanup_local_removed)}
+    if CRYPTO_THREAD_cleanup_local_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_cleanup_local)}
+      CRYPTO_THREAD_cleanup_local := @_CRYPTO_THREAD_cleanup_local;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_cleanup_local_allownil)}
+      CRYPTO_THREAD_cleanup_local := @ERR_CRYPTO_THREAD_cleanup_local;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_cleanup_local_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_cleanup_local := @ERR_CRYPTO_THREAD_cleanup_local;
+      AFailed.Add('CRYPTO_THREAD_cleanup_local');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_get_current_id) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_get_current_id := LoadLibFunction(ADllHandle, CRYPTO_THREAD_get_current_id_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_get_current_id);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_get_current_id_introduced)}
     if LibVersion < CRYPTO_THREAD_get_current_id_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_get_current_id)}
-      CRYPTO_THREAD_get_current_id := @FC_CRYPTO_THREAD_get_current_id
+      CRYPTO_THREAD_get_current_id := @FC_CRYPTO_THREAD_get_current_id;
       {$else}
-      CRYPTO_THREAD_get_current_id := @ERR_CRYPTO_THREAD_get_current_id
+      {$if not defined(CRYPTO_THREAD_get_current_id_allownil)}
+      CRYPTO_THREAD_get_current_id := @ERR_CRYPTO_THREAD_get_current_id;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_get_current_id_removed)}
-   if CRYPTO_THREAD_get_current_id_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_get_current_id)}
-     CRYPTO_THREAD_get_current_id := @_CRYPTO_THREAD_get_current_id
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_get_current_id)}
-       CRYPTO_THREAD_get_current_id := @ERR_CRYPTO_THREAD_get_current_id
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_get_current_id) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_get_current_id');
+    {$if declared(CRYPTO_THREAD_get_current_id_removed)}
+    if CRYPTO_THREAD_get_current_id_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_get_current_id)}
+      CRYPTO_THREAD_get_current_id := @_CRYPTO_THREAD_get_current_id;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_get_current_id_allownil)}
+      CRYPTO_THREAD_get_current_id := @ERR_CRYPTO_THREAD_get_current_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_get_current_id_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_get_current_id := @ERR_CRYPTO_THREAD_get_current_id;
+      AFailed.Add('CRYPTO_THREAD_get_current_id');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(CRYPTO_THREAD_compare_id) then 
+ {introduced 1.1.0}
+  CRYPTO_THREAD_compare_id := LoadLibFunction(ADllHandle, CRYPTO_THREAD_compare_id_procname);
+  FuncLoaded := assigned(CRYPTO_THREAD_compare_id);
+  if not FuncLoaded then
   begin
     {$if declared(CRYPTO_THREAD_compare_id_introduced)}
     if LibVersion < CRYPTO_THREAD_compare_id_introduced then
+    begin
       {$if declared(FC_CRYPTO_THREAD_compare_id)}
-      CRYPTO_THREAD_compare_id := @FC_CRYPTO_THREAD_compare_id
+      CRYPTO_THREAD_compare_id := @FC_CRYPTO_THREAD_compare_id;
       {$else}
-      CRYPTO_THREAD_compare_id := @ERR_CRYPTO_THREAD_compare_id
+      {$if not defined(CRYPTO_THREAD_compare_id_allownil)}
+      CRYPTO_THREAD_compare_id := @ERR_CRYPTO_THREAD_compare_id;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(CRYPTO_THREAD_compare_id_removed)}
-   if CRYPTO_THREAD_compare_id_removed <= LibVersion then
-     {$if declared(_CRYPTO_THREAD_compare_id)}
-     CRYPTO_THREAD_compare_id := @_CRYPTO_THREAD_compare_id
-     {$else}
-       {$IF declared(ERR_CRYPTO_THREAD_compare_id)}
-       CRYPTO_THREAD_compare_id := @ERR_CRYPTO_THREAD_compare_id
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(CRYPTO_THREAD_compare_id) and Assigned(AFailed) then 
-     AFailed.Add('CRYPTO_THREAD_compare_id');
+    {$if declared(CRYPTO_THREAD_compare_id_removed)}
+    if CRYPTO_THREAD_compare_id_removed <= LibVersion then
+    begin
+      {$if declared(_CRYPTO_THREAD_compare_id)}
+      CRYPTO_THREAD_compare_id := @_CRYPTO_THREAD_compare_id;
+      {$else}
+      {$if not defined(CRYPTO_THREAD_compare_id_allownil)}
+      CRYPTO_THREAD_compare_id := @ERR_CRYPTO_THREAD_compare_id;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(CRYPTO_THREAD_compare_id_allownil)}
+    if not FuncLoaded then
+    begin
+      CRYPTO_THREAD_compare_id := @ERR_CRYPTO_THREAD_compare_id;
+      AFailed.Add('CRYPTO_THREAD_compare_id');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSLeay_version) then 
+ {introduced 1.1.0}
+  SSLeay_version := LoadLibFunction(ADllHandle, SSLeay_version_procname);
+  FuncLoaded := assigned(SSLeay_version);
+  if not FuncLoaded then
   begin
     {$if declared(SSLeay_version_introduced)}
     if LibVersion < SSLeay_version_introduced then
+    begin
       {$if declared(FC_SSLeay_version)}
-      SSLeay_version := @FC_SSLeay_version
+      SSLeay_version := @FC_SSLeay_version;
       {$else}
-      SSLeay_version := @ERR_SSLeay_version
+      {$if not defined(SSLeay_version_allownil)}
+      SSLeay_version := @ERR_SSLeay_version;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSLeay_version_removed)}
-   if SSLeay_version_removed <= LibVersion then
-     {$if declared(_SSLeay_version)}
-     SSLeay_version := @_SSLeay_version
-     {$else}
-       {$IF declared(ERR_SSLeay_version)}
-       SSLeay_version := @ERR_SSLeay_version
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSLeay_version) and Assigned(AFailed) then 
-     AFailed.Add('SSLeay_version');
+    {$if declared(SSLeay_version_removed)}
+    if SSLeay_version_removed <= LibVersion then
+    begin
+      {$if declared(_SSLeay_version)}
+      SSLeay_version := @_SSLeay_version;
+      {$else}
+      {$if not defined(SSLeay_version_allownil)}
+      SSLeay_version := @ERR_SSLeay_version;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSLeay_version_allownil)}
+    if not FuncLoaded then
+    begin
+      SSLeay_version := @ERR_SSLeay_version;
+      AFailed.Add('SSLeay_version');
+    end;
+    {$ifend}
   end;
 
-
-  if not assigned(SSLeay) then 
+ 
+  SSLeay := LoadLibFunction(ADllHandle, SSLeay_procname);
+  FuncLoaded := assigned(SSLeay);
+  if not FuncLoaded then
   begin
     {$if declared(SSLeay_introduced)}
     if LibVersion < SSLeay_introduced then
+    begin
       {$if declared(FC_SSLeay)}
-      SSLeay := @FC_SSLeay
+      SSLeay := @FC_SSLeay;
       {$else}
-      SSLeay := @ERR_SSLeay
+      {$if not defined(SSLeay_allownil)}
+      SSLeay := @ERR_SSLeay;
       {$ifend}
-    else
+      {$ifend}
+      FuncLoaded := true;
+    end;
     {$ifend}
-   {$if declared(SSLeay_removed)}
-   if SSLeay_removed <= LibVersion then
-     {$if declared(_SSLeay)}
-     SSLeay := @_SSLeay
-     {$else}
-       {$IF declared(ERR_SSLeay)}
-       SSLeay := @ERR_SSLeay
-       {$ifend}
-     {$ifend}
-    else
-   {$ifend}
-   if not assigned(SSLeay) and Assigned(AFailed) then 
-     AFailed.Add('SSLeay');
+    {$if declared(SSLeay_removed)}
+    if SSLeay_removed <= LibVersion then
+    begin
+      {$if declared(_SSLeay)}
+      SSLeay := @_SSLeay;
+      {$else}
+      {$if not defined(SSLeay_allownil)}
+      SSLeay := @ERR_SSLeay;
+      {$ifend}
+      {$ifend}
+      FuncLoaded := true;
+    end;
+    {$ifend}
+    {$if not defined(SSLeay_allownil)}
+    if not FuncLoaded then
+    begin
+      SSLeay := @ERR_SSLeay;
+      AFailed.Add('SSLeay');
+    end;
+    {$ifend}
   end;
 
-
+ 
 end;
 
 procedure Unload;
