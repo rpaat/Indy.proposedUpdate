@@ -272,24 +272,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   AES_options := LoadLibFunction(ADllHandle, AES_options_procname);
-  FuncLoaded := assigned(AES_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_options);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_options_allownil)}
+    AES_options := @ERR_AES_options;
+    {$ifend}
     {$if declared(AES_options_introduced)}
     if LibVersion < AES_options_introduced then
     begin
       {$if declared(FC_AES_options)}
       AES_options := @FC_AES_options;
-      {$else}
-      {$if not defined(AES_options_allownil)}
-      AES_options := @ERR_AES_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_options_removed)}
@@ -297,39 +296,31 @@ begin
     begin
       {$if declared(_AES_options)}
       AES_options := @_AES_options;
-      {$else}
-      {$if not defined(AES_options_allownil)}
-      AES_options := @ERR_AES_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_options_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_options := @ERR_AES_options;
+    if FuncLoadError then
       AFailed.Add('AES_options');
-    end;
     {$ifend}
   end;
 
 
   AES_set_encrypt_key := LoadLibFunction(ADllHandle, AES_set_encrypt_key_procname);
-  FuncLoaded := assigned(AES_set_encrypt_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_set_encrypt_key);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_set_encrypt_key_allownil)}
+    AES_set_encrypt_key := @ERR_AES_set_encrypt_key;
+    {$ifend}
     {$if declared(AES_set_encrypt_key_introduced)}
     if LibVersion < AES_set_encrypt_key_introduced then
     begin
       {$if declared(FC_AES_set_encrypt_key)}
       AES_set_encrypt_key := @FC_AES_set_encrypt_key;
-      {$else}
-      {$if not defined(AES_set_encrypt_key_allownil)}
-      AES_set_encrypt_key := @ERR_AES_set_encrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_set_encrypt_key_removed)}
@@ -337,39 +328,31 @@ begin
     begin
       {$if declared(_AES_set_encrypt_key)}
       AES_set_encrypt_key := @_AES_set_encrypt_key;
-      {$else}
-      {$if not defined(AES_set_encrypt_key_allownil)}
-      AES_set_encrypt_key := @ERR_AES_set_encrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_set_encrypt_key_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_set_encrypt_key := @ERR_AES_set_encrypt_key;
+    if FuncLoadError then
       AFailed.Add('AES_set_encrypt_key');
-    end;
     {$ifend}
   end;
 
 
   AES_set_decrypt_key := LoadLibFunction(ADllHandle, AES_set_decrypt_key_procname);
-  FuncLoaded := assigned(AES_set_decrypt_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_set_decrypt_key);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_set_decrypt_key_allownil)}
+    AES_set_decrypt_key := @ERR_AES_set_decrypt_key;
+    {$ifend}
     {$if declared(AES_set_decrypt_key_introduced)}
     if LibVersion < AES_set_decrypt_key_introduced then
     begin
       {$if declared(FC_AES_set_decrypt_key)}
       AES_set_decrypt_key := @FC_AES_set_decrypt_key;
-      {$else}
-      {$if not defined(AES_set_decrypt_key_allownil)}
-      AES_set_decrypt_key := @ERR_AES_set_decrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_set_decrypt_key_removed)}
@@ -377,39 +360,31 @@ begin
     begin
       {$if declared(_AES_set_decrypt_key)}
       AES_set_decrypt_key := @_AES_set_decrypt_key;
-      {$else}
-      {$if not defined(AES_set_decrypt_key_allownil)}
-      AES_set_decrypt_key := @ERR_AES_set_decrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_set_decrypt_key_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_set_decrypt_key := @ERR_AES_set_decrypt_key;
+    if FuncLoadError then
       AFailed.Add('AES_set_decrypt_key');
-    end;
     {$ifend}
   end;
 
 
   AES_encrypt := LoadLibFunction(ADllHandle, AES_encrypt_procname);
-  FuncLoaded := assigned(AES_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_encrypt_allownil)}
+    AES_encrypt := @ERR_AES_encrypt;
+    {$ifend}
     {$if declared(AES_encrypt_introduced)}
     if LibVersion < AES_encrypt_introduced then
     begin
       {$if declared(FC_AES_encrypt)}
       AES_encrypt := @FC_AES_encrypt;
-      {$else}
-      {$if not defined(AES_encrypt_allownil)}
-      AES_encrypt := @ERR_AES_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_encrypt_removed)}
@@ -417,39 +392,31 @@ begin
     begin
       {$if declared(_AES_encrypt)}
       AES_encrypt := @_AES_encrypt;
-      {$else}
-      {$if not defined(AES_encrypt_allownil)}
-      AES_encrypt := @ERR_AES_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_encrypt := @ERR_AES_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_decrypt := LoadLibFunction(ADllHandle, AES_decrypt_procname);
-  FuncLoaded := assigned(AES_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_decrypt_allownil)}
+    AES_decrypt := @ERR_AES_decrypt;
+    {$ifend}
     {$if declared(AES_decrypt_introduced)}
     if LibVersion < AES_decrypt_introduced then
     begin
       {$if declared(FC_AES_decrypt)}
       AES_decrypt := @FC_AES_decrypt;
-      {$else}
-      {$if not defined(AES_decrypt_allownil)}
-      AES_decrypt := @ERR_AES_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_decrypt_removed)}
@@ -457,39 +424,31 @@ begin
     begin
       {$if declared(_AES_decrypt)}
       AES_decrypt := @_AES_decrypt;
-      {$else}
-      {$if not defined(AES_decrypt_allownil)}
-      AES_decrypt := @ERR_AES_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_decrypt := @ERR_AES_decrypt;
+    if FuncLoadError then
       AFailed.Add('AES_decrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_ecb_encrypt := LoadLibFunction(ADllHandle, AES_ecb_encrypt_procname);
-  FuncLoaded := assigned(AES_ecb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_ecb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_ecb_encrypt_allownil)}
+    AES_ecb_encrypt := @ERR_AES_ecb_encrypt;
+    {$ifend}
     {$if declared(AES_ecb_encrypt_introduced)}
     if LibVersion < AES_ecb_encrypt_introduced then
     begin
       {$if declared(FC_AES_ecb_encrypt)}
       AES_ecb_encrypt := @FC_AES_ecb_encrypt;
-      {$else}
-      {$if not defined(AES_ecb_encrypt_allownil)}
-      AES_ecb_encrypt := @ERR_AES_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_ecb_encrypt_removed)}
@@ -497,39 +456,31 @@ begin
     begin
       {$if declared(_AES_ecb_encrypt)}
       AES_ecb_encrypt := @_AES_ecb_encrypt;
-      {$else}
-      {$if not defined(AES_ecb_encrypt_allownil)}
-      AES_ecb_encrypt := @ERR_AES_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_ecb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_ecb_encrypt := @ERR_AES_ecb_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_ecb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_cbc_encrypt := LoadLibFunction(ADllHandle, AES_cbc_encrypt_procname);
-  FuncLoaded := assigned(AES_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_cbc_encrypt_allownil)}
+    AES_cbc_encrypt := @ERR_AES_cbc_encrypt;
+    {$ifend}
     {$if declared(AES_cbc_encrypt_introduced)}
     if LibVersion < AES_cbc_encrypt_introduced then
     begin
       {$if declared(FC_AES_cbc_encrypt)}
       AES_cbc_encrypt := @FC_AES_cbc_encrypt;
-      {$else}
-      {$if not defined(AES_cbc_encrypt_allownil)}
-      AES_cbc_encrypt := @ERR_AES_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_cbc_encrypt_removed)}
@@ -537,39 +488,31 @@ begin
     begin
       {$if declared(_AES_cbc_encrypt)}
       AES_cbc_encrypt := @_AES_cbc_encrypt;
-      {$else}
-      {$if not defined(AES_cbc_encrypt_allownil)}
-      AES_cbc_encrypt := @ERR_AES_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_cbc_encrypt := @ERR_AES_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_cfb128_encrypt := LoadLibFunction(ADllHandle, AES_cfb128_encrypt_procname);
-  FuncLoaded := assigned(AES_cfb128_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_cfb128_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_cfb128_encrypt_allownil)}
+    AES_cfb128_encrypt := @ERR_AES_cfb128_encrypt;
+    {$ifend}
     {$if declared(AES_cfb128_encrypt_introduced)}
     if LibVersion < AES_cfb128_encrypt_introduced then
     begin
       {$if declared(FC_AES_cfb128_encrypt)}
       AES_cfb128_encrypt := @FC_AES_cfb128_encrypt;
-      {$else}
-      {$if not defined(AES_cfb128_encrypt_allownil)}
-      AES_cfb128_encrypt := @ERR_AES_cfb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_cfb128_encrypt_removed)}
@@ -577,39 +520,31 @@ begin
     begin
       {$if declared(_AES_cfb128_encrypt)}
       AES_cfb128_encrypt := @_AES_cfb128_encrypt;
-      {$else}
-      {$if not defined(AES_cfb128_encrypt_allownil)}
-      AES_cfb128_encrypt := @ERR_AES_cfb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_cfb128_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_cfb128_encrypt := @ERR_AES_cfb128_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_cfb128_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_cfb1_encrypt := LoadLibFunction(ADllHandle, AES_cfb1_encrypt_procname);
-  FuncLoaded := assigned(AES_cfb1_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_cfb1_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_cfb1_encrypt_allownil)}
+    AES_cfb1_encrypt := @ERR_AES_cfb1_encrypt;
+    {$ifend}
     {$if declared(AES_cfb1_encrypt_introduced)}
     if LibVersion < AES_cfb1_encrypt_introduced then
     begin
       {$if declared(FC_AES_cfb1_encrypt)}
       AES_cfb1_encrypt := @FC_AES_cfb1_encrypt;
-      {$else}
-      {$if not defined(AES_cfb1_encrypt_allownil)}
-      AES_cfb1_encrypt := @ERR_AES_cfb1_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_cfb1_encrypt_removed)}
@@ -617,39 +552,31 @@ begin
     begin
       {$if declared(_AES_cfb1_encrypt)}
       AES_cfb1_encrypt := @_AES_cfb1_encrypt;
-      {$else}
-      {$if not defined(AES_cfb1_encrypt_allownil)}
-      AES_cfb1_encrypt := @ERR_AES_cfb1_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_cfb1_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_cfb1_encrypt := @ERR_AES_cfb1_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_cfb1_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_cfb8_encrypt := LoadLibFunction(ADllHandle, AES_cfb8_encrypt_procname);
-  FuncLoaded := assigned(AES_cfb8_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_cfb8_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_cfb8_encrypt_allownil)}
+    AES_cfb8_encrypt := @ERR_AES_cfb8_encrypt;
+    {$ifend}
     {$if declared(AES_cfb8_encrypt_introduced)}
     if LibVersion < AES_cfb8_encrypt_introduced then
     begin
       {$if declared(FC_AES_cfb8_encrypt)}
       AES_cfb8_encrypt := @FC_AES_cfb8_encrypt;
-      {$else}
-      {$if not defined(AES_cfb8_encrypt_allownil)}
-      AES_cfb8_encrypt := @ERR_AES_cfb8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_cfb8_encrypt_removed)}
@@ -657,39 +584,31 @@ begin
     begin
       {$if declared(_AES_cfb8_encrypt)}
       AES_cfb8_encrypt := @_AES_cfb8_encrypt;
-      {$else}
-      {$if not defined(AES_cfb8_encrypt_allownil)}
-      AES_cfb8_encrypt := @ERR_AES_cfb8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_cfb8_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_cfb8_encrypt := @ERR_AES_cfb8_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_cfb8_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_ofb128_encrypt := LoadLibFunction(ADllHandle, AES_ofb128_encrypt_procname);
-  FuncLoaded := assigned(AES_ofb128_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_ofb128_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_ofb128_encrypt_allownil)}
+    AES_ofb128_encrypt := @ERR_AES_ofb128_encrypt;
+    {$ifend}
     {$if declared(AES_ofb128_encrypt_introduced)}
     if LibVersion < AES_ofb128_encrypt_introduced then
     begin
       {$if declared(FC_AES_ofb128_encrypt)}
       AES_ofb128_encrypt := @FC_AES_ofb128_encrypt;
-      {$else}
-      {$if not defined(AES_ofb128_encrypt_allownil)}
-      AES_ofb128_encrypt := @ERR_AES_ofb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_ofb128_encrypt_removed)}
@@ -697,39 +616,31 @@ begin
     begin
       {$if declared(_AES_ofb128_encrypt)}
       AES_ofb128_encrypt := @_AES_ofb128_encrypt;
-      {$else}
-      {$if not defined(AES_ofb128_encrypt_allownil)}
-      AES_ofb128_encrypt := @ERR_AES_ofb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_ofb128_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_ofb128_encrypt := @ERR_AES_ofb128_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_ofb128_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_ige_encrypt := LoadLibFunction(ADllHandle, AES_ige_encrypt_procname);
-  FuncLoaded := assigned(AES_ige_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_ige_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_ige_encrypt_allownil)}
+    AES_ige_encrypt := @ERR_AES_ige_encrypt;
+    {$ifend}
     {$if declared(AES_ige_encrypt_introduced)}
     if LibVersion < AES_ige_encrypt_introduced then
     begin
       {$if declared(FC_AES_ige_encrypt)}
       AES_ige_encrypt := @FC_AES_ige_encrypt;
-      {$else}
-      {$if not defined(AES_ige_encrypt_allownil)}
-      AES_ige_encrypt := @ERR_AES_ige_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_ige_encrypt_removed)}
@@ -737,39 +648,31 @@ begin
     begin
       {$if declared(_AES_ige_encrypt)}
       AES_ige_encrypt := @_AES_ige_encrypt;
-      {$else}
-      {$if not defined(AES_ige_encrypt_allownil)}
-      AES_ige_encrypt := @ERR_AES_ige_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_ige_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_ige_encrypt := @ERR_AES_ige_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_ige_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_bi_ige_encrypt := LoadLibFunction(ADllHandle, AES_bi_ige_encrypt_procname);
-  FuncLoaded := assigned(AES_bi_ige_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_bi_ige_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_bi_ige_encrypt_allownil)}
+    AES_bi_ige_encrypt := @ERR_AES_bi_ige_encrypt;
+    {$ifend}
     {$if declared(AES_bi_ige_encrypt_introduced)}
     if LibVersion < AES_bi_ige_encrypt_introduced then
     begin
       {$if declared(FC_AES_bi_ige_encrypt)}
       AES_bi_ige_encrypt := @FC_AES_bi_ige_encrypt;
-      {$else}
-      {$if not defined(AES_bi_ige_encrypt_allownil)}
-      AES_bi_ige_encrypt := @ERR_AES_bi_ige_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_bi_ige_encrypt_removed)}
@@ -777,39 +680,31 @@ begin
     begin
       {$if declared(_AES_bi_ige_encrypt)}
       AES_bi_ige_encrypt := @_AES_bi_ige_encrypt;
-      {$else}
-      {$if not defined(AES_bi_ige_encrypt_allownil)}
-      AES_bi_ige_encrypt := @ERR_AES_bi_ige_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_bi_ige_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_bi_ige_encrypt := @ERR_AES_bi_ige_encrypt;
+    if FuncLoadError then
       AFailed.Add('AES_bi_ige_encrypt');
-    end;
     {$ifend}
   end;
 
 
   AES_wrap_key := LoadLibFunction(ADllHandle, AES_wrap_key_procname);
-  FuncLoaded := assigned(AES_wrap_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_wrap_key);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_wrap_key_allownil)}
+    AES_wrap_key := @ERR_AES_wrap_key;
+    {$ifend}
     {$if declared(AES_wrap_key_introduced)}
     if LibVersion < AES_wrap_key_introduced then
     begin
       {$if declared(FC_AES_wrap_key)}
       AES_wrap_key := @FC_AES_wrap_key;
-      {$else}
-      {$if not defined(AES_wrap_key_allownil)}
-      AES_wrap_key := @ERR_AES_wrap_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_wrap_key_removed)}
@@ -817,39 +712,31 @@ begin
     begin
       {$if declared(_AES_wrap_key)}
       AES_wrap_key := @_AES_wrap_key;
-      {$else}
-      {$if not defined(AES_wrap_key_allownil)}
-      AES_wrap_key := @ERR_AES_wrap_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_wrap_key_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_wrap_key := @ERR_AES_wrap_key;
+    if FuncLoadError then
       AFailed.Add('AES_wrap_key');
-    end;
     {$ifend}
   end;
 
 
   AES_unwrap_key := LoadLibFunction(ADllHandle, AES_unwrap_key_procname);
-  FuncLoaded := assigned(AES_unwrap_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(AES_unwrap_key);
+  if FuncLoadError then
   begin
+    {$if not defined(AES_unwrap_key_allownil)}
+    AES_unwrap_key := @ERR_AES_unwrap_key;
+    {$ifend}
     {$if declared(AES_unwrap_key_introduced)}
     if LibVersion < AES_unwrap_key_introduced then
     begin
       {$if declared(FC_AES_unwrap_key)}
       AES_unwrap_key := @FC_AES_unwrap_key;
-      {$else}
-      {$if not defined(AES_unwrap_key_allownil)}
-      AES_unwrap_key := @ERR_AES_unwrap_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(AES_unwrap_key_removed)}
@@ -857,20 +744,13 @@ begin
     begin
       {$if declared(_AES_unwrap_key)}
       AES_unwrap_key := @_AES_unwrap_key;
-      {$else}
-      {$if not defined(AES_unwrap_key_allownil)}
-      AES_unwrap_key := @ERR_AES_unwrap_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(AES_unwrap_key_allownil)}
-    if not FuncLoaded then
-    begin
-      AES_unwrap_key := @ERR_AES_unwrap_key;
+    if FuncLoadError then
       AFailed.Add('AES_unwrap_key');
-    end;
     {$ifend}
   end;
 

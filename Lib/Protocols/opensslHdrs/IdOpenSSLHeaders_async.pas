@@ -293,24 +293,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ASYNC_init_thread := LoadLibFunction(ADllHandle, ASYNC_init_thread_procname);
-  FuncLoaded := assigned(ASYNC_init_thread);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_init_thread);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_init_thread_allownil)}
+    ASYNC_init_thread := @ERR_ASYNC_init_thread;
+    {$ifend}
     {$if declared(ASYNC_init_thread_introduced)}
     if LibVersion < ASYNC_init_thread_introduced then
     begin
       {$if declared(FC_ASYNC_init_thread)}
       ASYNC_init_thread := @FC_ASYNC_init_thread;
-      {$else}
-      {$if not defined(ASYNC_init_thread_allownil)}
-      ASYNC_init_thread := @ERR_ASYNC_init_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_init_thread_removed)}
@@ -318,39 +317,31 @@ begin
     begin
       {$if declared(_ASYNC_init_thread)}
       ASYNC_init_thread := @_ASYNC_init_thread;
-      {$else}
-      {$if not defined(ASYNC_init_thread_allownil)}
-      ASYNC_init_thread := @ERR_ASYNC_init_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_init_thread_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_init_thread := @ERR_ASYNC_init_thread;
+    if FuncLoadError then
       AFailed.Add('ASYNC_init_thread');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_cleanup_thread := LoadLibFunction(ADllHandle, ASYNC_cleanup_thread_procname);
-  FuncLoaded := assigned(ASYNC_cleanup_thread);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_cleanup_thread);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_cleanup_thread_allownil)}
+    ASYNC_cleanup_thread := @ERR_ASYNC_cleanup_thread;
+    {$ifend}
     {$if declared(ASYNC_cleanup_thread_introduced)}
     if LibVersion < ASYNC_cleanup_thread_introduced then
     begin
       {$if declared(FC_ASYNC_cleanup_thread)}
       ASYNC_cleanup_thread := @FC_ASYNC_cleanup_thread;
-      {$else}
-      {$if not defined(ASYNC_cleanup_thread_allownil)}
-      ASYNC_cleanup_thread := @ERR_ASYNC_cleanup_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_cleanup_thread_removed)}
@@ -358,39 +349,31 @@ begin
     begin
       {$if declared(_ASYNC_cleanup_thread)}
       ASYNC_cleanup_thread := @_ASYNC_cleanup_thread;
-      {$else}
-      {$if not defined(ASYNC_cleanup_thread_allownil)}
-      ASYNC_cleanup_thread := @ERR_ASYNC_cleanup_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_cleanup_thread_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_cleanup_thread := @ERR_ASYNC_cleanup_thread;
+    if FuncLoadError then
       AFailed.Add('ASYNC_cleanup_thread');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_new := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_new_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_new_allownil)}
+    ASYNC_WAIT_CTX_new := @ERR_ASYNC_WAIT_CTX_new;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_new_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_new_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_new)}
       ASYNC_WAIT_CTX_new := @FC_ASYNC_WAIT_CTX_new;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_new_allownil)}
-      ASYNC_WAIT_CTX_new := @ERR_ASYNC_WAIT_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_new_removed)}
@@ -398,39 +381,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_new)}
       ASYNC_WAIT_CTX_new := @_ASYNC_WAIT_CTX_new;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_new_allownil)}
-      ASYNC_WAIT_CTX_new := @ERR_ASYNC_WAIT_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_new := @ERR_ASYNC_WAIT_CTX_new;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_free := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_free_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_free_allownil)}
+    ASYNC_WAIT_CTX_free := @ERR_ASYNC_WAIT_CTX_free;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_free_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_free_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_free)}
       ASYNC_WAIT_CTX_free := @FC_ASYNC_WAIT_CTX_free;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_free_allownil)}
-      ASYNC_WAIT_CTX_free := @ERR_ASYNC_WAIT_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_free_removed)}
@@ -438,39 +413,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_free)}
       ASYNC_WAIT_CTX_free := @_ASYNC_WAIT_CTX_free;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_free_allownil)}
-      ASYNC_WAIT_CTX_free := @ERR_ASYNC_WAIT_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_free := @ERR_ASYNC_WAIT_CTX_free;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_set_wait_fd := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_set_wait_fd_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_set_wait_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_set_wait_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_set_wait_fd_allownil)}
+    ASYNC_WAIT_CTX_set_wait_fd := @ERR_ASYNC_WAIT_CTX_set_wait_fd;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_set_wait_fd_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_set_wait_fd_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_set_wait_fd)}
       ASYNC_WAIT_CTX_set_wait_fd := @FC_ASYNC_WAIT_CTX_set_wait_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_set_wait_fd_allownil)}
-      ASYNC_WAIT_CTX_set_wait_fd := @ERR_ASYNC_WAIT_CTX_set_wait_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_set_wait_fd_removed)}
@@ -478,39 +445,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_set_wait_fd)}
       ASYNC_WAIT_CTX_set_wait_fd := @_ASYNC_WAIT_CTX_set_wait_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_set_wait_fd_allownil)}
-      ASYNC_WAIT_CTX_set_wait_fd := @ERR_ASYNC_WAIT_CTX_set_wait_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_set_wait_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_set_wait_fd := @ERR_ASYNC_WAIT_CTX_set_wait_fd;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_set_wait_fd');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_get_fd := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_get_fd_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_get_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_get_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_get_fd_allownil)}
+    ASYNC_WAIT_CTX_get_fd := @ERR_ASYNC_WAIT_CTX_get_fd;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_fd_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_get_fd_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_get_fd)}
       ASYNC_WAIT_CTX_get_fd := @FC_ASYNC_WAIT_CTX_get_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_fd_allownil)}
-      ASYNC_WAIT_CTX_get_fd := @ERR_ASYNC_WAIT_CTX_get_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_fd_removed)}
@@ -518,39 +477,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_get_fd)}
       ASYNC_WAIT_CTX_get_fd := @_ASYNC_WAIT_CTX_get_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_fd_allownil)}
-      ASYNC_WAIT_CTX_get_fd := @ERR_ASYNC_WAIT_CTX_get_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_get_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_get_fd := @ERR_ASYNC_WAIT_CTX_get_fd;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_get_fd');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_get_all_fds := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_get_all_fds_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_get_all_fds);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_get_all_fds);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_get_all_fds_allownil)}
+    ASYNC_WAIT_CTX_get_all_fds := @ERR_ASYNC_WAIT_CTX_get_all_fds;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_all_fds_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_get_all_fds_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_get_all_fds)}
       ASYNC_WAIT_CTX_get_all_fds := @FC_ASYNC_WAIT_CTX_get_all_fds;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_all_fds_allownil)}
-      ASYNC_WAIT_CTX_get_all_fds := @ERR_ASYNC_WAIT_CTX_get_all_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_all_fds_removed)}
@@ -558,39 +509,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_get_all_fds)}
       ASYNC_WAIT_CTX_get_all_fds := @_ASYNC_WAIT_CTX_get_all_fds;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_all_fds_allownil)}
-      ASYNC_WAIT_CTX_get_all_fds := @ERR_ASYNC_WAIT_CTX_get_all_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_get_all_fds_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_get_all_fds := @ERR_ASYNC_WAIT_CTX_get_all_fds;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_get_all_fds');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_get_changed_fds := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_get_changed_fds_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_get_changed_fds);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_get_changed_fds);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_get_changed_fds_allownil)}
+    ASYNC_WAIT_CTX_get_changed_fds := @ERR_ASYNC_WAIT_CTX_get_changed_fds;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_changed_fds_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_get_changed_fds_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_get_changed_fds)}
       ASYNC_WAIT_CTX_get_changed_fds := @FC_ASYNC_WAIT_CTX_get_changed_fds;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_changed_fds_allownil)}
-      ASYNC_WAIT_CTX_get_changed_fds := @ERR_ASYNC_WAIT_CTX_get_changed_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_get_changed_fds_removed)}
@@ -598,39 +541,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_get_changed_fds)}
       ASYNC_WAIT_CTX_get_changed_fds := @_ASYNC_WAIT_CTX_get_changed_fds;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_get_changed_fds_allownil)}
-      ASYNC_WAIT_CTX_get_changed_fds := @ERR_ASYNC_WAIT_CTX_get_changed_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_get_changed_fds_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_get_changed_fds := @ERR_ASYNC_WAIT_CTX_get_changed_fds;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_get_changed_fds');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_WAIT_CTX_clear_fd := LoadLibFunction(ADllHandle, ASYNC_WAIT_CTX_clear_fd_procname);
-  FuncLoaded := assigned(ASYNC_WAIT_CTX_clear_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_WAIT_CTX_clear_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_WAIT_CTX_clear_fd_allownil)}
+    ASYNC_WAIT_CTX_clear_fd := @ERR_ASYNC_WAIT_CTX_clear_fd;
+    {$ifend}
     {$if declared(ASYNC_WAIT_CTX_clear_fd_introduced)}
     if LibVersion < ASYNC_WAIT_CTX_clear_fd_introduced then
     begin
       {$if declared(FC_ASYNC_WAIT_CTX_clear_fd)}
       ASYNC_WAIT_CTX_clear_fd := @FC_ASYNC_WAIT_CTX_clear_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_clear_fd_allownil)}
-      ASYNC_WAIT_CTX_clear_fd := @ERR_ASYNC_WAIT_CTX_clear_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_WAIT_CTX_clear_fd_removed)}
@@ -638,39 +573,31 @@ begin
     begin
       {$if declared(_ASYNC_WAIT_CTX_clear_fd)}
       ASYNC_WAIT_CTX_clear_fd := @_ASYNC_WAIT_CTX_clear_fd;
-      {$else}
-      {$if not defined(ASYNC_WAIT_CTX_clear_fd_allownil)}
-      ASYNC_WAIT_CTX_clear_fd := @ERR_ASYNC_WAIT_CTX_clear_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_WAIT_CTX_clear_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_WAIT_CTX_clear_fd := @ERR_ASYNC_WAIT_CTX_clear_fd;
+    if FuncLoadError then
       AFailed.Add('ASYNC_WAIT_CTX_clear_fd');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_is_capable := LoadLibFunction(ADllHandle, ASYNC_is_capable_procname);
-  FuncLoaded := assigned(ASYNC_is_capable);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_is_capable);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_is_capable_allownil)}
+    ASYNC_is_capable := @ERR_ASYNC_is_capable;
+    {$ifend}
     {$if declared(ASYNC_is_capable_introduced)}
     if LibVersion < ASYNC_is_capable_introduced then
     begin
       {$if declared(FC_ASYNC_is_capable)}
       ASYNC_is_capable := @FC_ASYNC_is_capable;
-      {$else}
-      {$if not defined(ASYNC_is_capable_allownil)}
-      ASYNC_is_capable := @ERR_ASYNC_is_capable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_is_capable_removed)}
@@ -678,39 +605,31 @@ begin
     begin
       {$if declared(_ASYNC_is_capable)}
       ASYNC_is_capable := @_ASYNC_is_capable;
-      {$else}
-      {$if not defined(ASYNC_is_capable_allownil)}
-      ASYNC_is_capable := @ERR_ASYNC_is_capable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_is_capable_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_is_capable := @ERR_ASYNC_is_capable;
+    if FuncLoadError then
       AFailed.Add('ASYNC_is_capable');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_start_job := LoadLibFunction(ADllHandle, ASYNC_start_job_procname);
-  FuncLoaded := assigned(ASYNC_start_job);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_start_job);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_start_job_allownil)}
+    ASYNC_start_job := @ERR_ASYNC_start_job;
+    {$ifend}
     {$if declared(ASYNC_start_job_introduced)}
     if LibVersion < ASYNC_start_job_introduced then
     begin
       {$if declared(FC_ASYNC_start_job)}
       ASYNC_start_job := @FC_ASYNC_start_job;
-      {$else}
-      {$if not defined(ASYNC_start_job_allownil)}
-      ASYNC_start_job := @ERR_ASYNC_start_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_start_job_removed)}
@@ -718,39 +637,31 @@ begin
     begin
       {$if declared(_ASYNC_start_job)}
       ASYNC_start_job := @_ASYNC_start_job;
-      {$else}
-      {$if not defined(ASYNC_start_job_allownil)}
-      ASYNC_start_job := @ERR_ASYNC_start_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_start_job_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_start_job := @ERR_ASYNC_start_job;
+    if FuncLoadError then
       AFailed.Add('ASYNC_start_job');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_pause_job := LoadLibFunction(ADllHandle, ASYNC_pause_job_procname);
-  FuncLoaded := assigned(ASYNC_pause_job);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_pause_job);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_pause_job_allownil)}
+    ASYNC_pause_job := @ERR_ASYNC_pause_job;
+    {$ifend}
     {$if declared(ASYNC_pause_job_introduced)}
     if LibVersion < ASYNC_pause_job_introduced then
     begin
       {$if declared(FC_ASYNC_pause_job)}
       ASYNC_pause_job := @FC_ASYNC_pause_job;
-      {$else}
-      {$if not defined(ASYNC_pause_job_allownil)}
-      ASYNC_pause_job := @ERR_ASYNC_pause_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_pause_job_removed)}
@@ -758,39 +669,31 @@ begin
     begin
       {$if declared(_ASYNC_pause_job)}
       ASYNC_pause_job := @_ASYNC_pause_job;
-      {$else}
-      {$if not defined(ASYNC_pause_job_allownil)}
-      ASYNC_pause_job := @ERR_ASYNC_pause_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_pause_job_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_pause_job := @ERR_ASYNC_pause_job;
+    if FuncLoadError then
       AFailed.Add('ASYNC_pause_job');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_get_current_job := LoadLibFunction(ADllHandle, ASYNC_get_current_job_procname);
-  FuncLoaded := assigned(ASYNC_get_current_job);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_get_current_job);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_get_current_job_allownil)}
+    ASYNC_get_current_job := @ERR_ASYNC_get_current_job;
+    {$ifend}
     {$if declared(ASYNC_get_current_job_introduced)}
     if LibVersion < ASYNC_get_current_job_introduced then
     begin
       {$if declared(FC_ASYNC_get_current_job)}
       ASYNC_get_current_job := @FC_ASYNC_get_current_job;
-      {$else}
-      {$if not defined(ASYNC_get_current_job_allownil)}
-      ASYNC_get_current_job := @ERR_ASYNC_get_current_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_get_current_job_removed)}
@@ -798,39 +701,31 @@ begin
     begin
       {$if declared(_ASYNC_get_current_job)}
       ASYNC_get_current_job := @_ASYNC_get_current_job;
-      {$else}
-      {$if not defined(ASYNC_get_current_job_allownil)}
-      ASYNC_get_current_job := @ERR_ASYNC_get_current_job;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_get_current_job_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_get_current_job := @ERR_ASYNC_get_current_job;
+    if FuncLoadError then
       AFailed.Add('ASYNC_get_current_job');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_get_wait_ctx := LoadLibFunction(ADllHandle, ASYNC_get_wait_ctx_procname);
-  FuncLoaded := assigned(ASYNC_get_wait_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_get_wait_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_get_wait_ctx_allownil)}
+    ASYNC_get_wait_ctx := @ERR_ASYNC_get_wait_ctx;
+    {$ifend}
     {$if declared(ASYNC_get_wait_ctx_introduced)}
     if LibVersion < ASYNC_get_wait_ctx_introduced then
     begin
       {$if declared(FC_ASYNC_get_wait_ctx)}
       ASYNC_get_wait_ctx := @FC_ASYNC_get_wait_ctx;
-      {$else}
-      {$if not defined(ASYNC_get_wait_ctx_allownil)}
-      ASYNC_get_wait_ctx := @ERR_ASYNC_get_wait_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_get_wait_ctx_removed)}
@@ -838,39 +733,31 @@ begin
     begin
       {$if declared(_ASYNC_get_wait_ctx)}
       ASYNC_get_wait_ctx := @_ASYNC_get_wait_ctx;
-      {$else}
-      {$if not defined(ASYNC_get_wait_ctx_allownil)}
-      ASYNC_get_wait_ctx := @ERR_ASYNC_get_wait_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_get_wait_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_get_wait_ctx := @ERR_ASYNC_get_wait_ctx;
+    if FuncLoadError then
       AFailed.Add('ASYNC_get_wait_ctx');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_block_pause := LoadLibFunction(ADllHandle, ASYNC_block_pause_procname);
-  FuncLoaded := assigned(ASYNC_block_pause);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_block_pause);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_block_pause_allownil)}
+    ASYNC_block_pause := @ERR_ASYNC_block_pause;
+    {$ifend}
     {$if declared(ASYNC_block_pause_introduced)}
     if LibVersion < ASYNC_block_pause_introduced then
     begin
       {$if declared(FC_ASYNC_block_pause)}
       ASYNC_block_pause := @FC_ASYNC_block_pause;
-      {$else}
-      {$if not defined(ASYNC_block_pause_allownil)}
-      ASYNC_block_pause := @ERR_ASYNC_block_pause;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_block_pause_removed)}
@@ -878,39 +765,31 @@ begin
     begin
       {$if declared(_ASYNC_block_pause)}
       ASYNC_block_pause := @_ASYNC_block_pause;
-      {$else}
-      {$if not defined(ASYNC_block_pause_allownil)}
-      ASYNC_block_pause := @ERR_ASYNC_block_pause;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_block_pause_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_block_pause := @ERR_ASYNC_block_pause;
+    if FuncLoadError then
       AFailed.Add('ASYNC_block_pause');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASYNC_unblock_pause := LoadLibFunction(ADllHandle, ASYNC_unblock_pause_procname);
-  FuncLoaded := assigned(ASYNC_unblock_pause);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASYNC_unblock_pause);
+  if FuncLoadError then
   begin
+    {$if not defined(ASYNC_unblock_pause_allownil)}
+    ASYNC_unblock_pause := @ERR_ASYNC_unblock_pause;
+    {$ifend}
     {$if declared(ASYNC_unblock_pause_introduced)}
     if LibVersion < ASYNC_unblock_pause_introduced then
     begin
       {$if declared(FC_ASYNC_unblock_pause)}
       ASYNC_unblock_pause := @FC_ASYNC_unblock_pause;
-      {$else}
-      {$if not defined(ASYNC_unblock_pause_allownil)}
-      ASYNC_unblock_pause := @ERR_ASYNC_unblock_pause;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASYNC_unblock_pause_removed)}
@@ -918,20 +797,13 @@ begin
     begin
       {$if declared(_ASYNC_unblock_pause)}
       ASYNC_unblock_pause := @_ASYNC_unblock_pause;
-      {$else}
-      {$if not defined(ASYNC_unblock_pause_allownil)}
-      ASYNC_unblock_pause := @ERR_ASYNC_unblock_pause;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASYNC_unblock_pause_allownil)}
-    if not FuncLoaded then
-    begin
-      ASYNC_unblock_pause := @ERR_ASYNC_unblock_pause;
+    if FuncLoadError then
       AFailed.Add('ASYNC_unblock_pause');
-    end;
     {$ifend}
   end;
 

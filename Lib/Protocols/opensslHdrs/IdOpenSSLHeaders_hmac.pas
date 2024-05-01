@@ -272,24 +272,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   HMAC_CTX_init := LoadLibFunction(ADllHandle, HMAC_CTX_init_procname);
-  FuncLoaded := assigned(HMAC_CTX_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_init);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_init_allownil)}
+    HMAC_CTX_init := @ERR_HMAC_CTX_init;
+    {$ifend}
     {$if declared(HMAC_CTX_init_introduced)}
     if LibVersion < HMAC_CTX_init_introduced then
     begin
       {$if declared(FC_HMAC_CTX_init)}
       HMAC_CTX_init := @FC_HMAC_CTX_init;
-      {$else}
-      {$if not defined(HMAC_CTX_init_allownil)}
-      HMAC_CTX_init := @ERR_HMAC_CTX_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_init_removed)}
@@ -297,39 +296,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_init)}
       HMAC_CTX_init := @_HMAC_CTX_init;
-      {$else}
-      {$if not defined(HMAC_CTX_init_allownil)}
-      HMAC_CTX_init := @ERR_HMAC_CTX_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_init_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_init := @ERR_HMAC_CTX_init;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_init');
-    end;
     {$ifend}
   end;
 
  
   HMAC_size := LoadLibFunction(ADllHandle, HMAC_size_procname);
-  FuncLoaded := assigned(HMAC_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_size);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_size_allownil)}
+    HMAC_size := @ERR_HMAC_size;
+    {$ifend}
     {$if declared(HMAC_size_introduced)}
     if LibVersion < HMAC_size_introduced then
     begin
       {$if declared(FC_HMAC_size)}
       HMAC_size := @FC_HMAC_size;
-      {$else}
-      {$if not defined(HMAC_size_allownil)}
-      HMAC_size := @ERR_HMAC_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_size_removed)}
@@ -337,39 +328,31 @@ begin
     begin
       {$if declared(_HMAC_size)}
       HMAC_size := @_HMAC_size;
-      {$else}
-      {$if not defined(HMAC_size_allownil)}
-      HMAC_size := @ERR_HMAC_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_size_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_size := @ERR_HMAC_size;
+    if FuncLoadError then
       AFailed.Add('HMAC_size');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   HMAC_CTX_new := LoadLibFunction(ADllHandle, HMAC_CTX_new_procname);
-  FuncLoaded := assigned(HMAC_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_new_allownil)}
+    HMAC_CTX_new := @ERR_HMAC_CTX_new;
+    {$ifend}
     {$if declared(HMAC_CTX_new_introduced)}
     if LibVersion < HMAC_CTX_new_introduced then
     begin
       {$if declared(FC_HMAC_CTX_new)}
       HMAC_CTX_new := @FC_HMAC_CTX_new;
-      {$else}
-      {$if not defined(HMAC_CTX_new_allownil)}
-      HMAC_CTX_new := @ERR_HMAC_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_new_removed)}
@@ -377,39 +360,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_new)}
       HMAC_CTX_new := @_HMAC_CTX_new;
-      {$else}
-      {$if not defined(HMAC_CTX_new_allownil)}
-      HMAC_CTX_new := @ERR_HMAC_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_new := @ERR_HMAC_CTX_new;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   HMAC_CTX_reset := LoadLibFunction(ADllHandle, HMAC_CTX_reset_procname);
-  FuncLoaded := assigned(HMAC_CTX_reset);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_reset);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_reset_allownil)}
+    HMAC_CTX_reset := @ERR_HMAC_CTX_reset;
+    {$ifend}
     {$if declared(HMAC_CTX_reset_introduced)}
     if LibVersion < HMAC_CTX_reset_introduced then
     begin
       {$if declared(FC_HMAC_CTX_reset)}
       HMAC_CTX_reset := @FC_HMAC_CTX_reset;
-      {$else}
-      {$if not defined(HMAC_CTX_reset_allownil)}
-      HMAC_CTX_reset := @ERR_HMAC_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_reset_removed)}
@@ -417,39 +392,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_reset)}
       HMAC_CTX_reset := @_HMAC_CTX_reset;
-      {$else}
-      {$if not defined(HMAC_CTX_reset_allownil)}
-      HMAC_CTX_reset := @ERR_HMAC_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_reset_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_reset := @ERR_HMAC_CTX_reset;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_reset');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   HMAC_CTX_cleanup := LoadLibFunction(ADllHandle, HMAC_CTX_cleanup_procname);
-  FuncLoaded := assigned(HMAC_CTX_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_cleanup_allownil)}
+    HMAC_CTX_cleanup := @ERR_HMAC_CTX_cleanup;
+    {$ifend}
     {$if declared(HMAC_CTX_cleanup_introduced)}
     if LibVersion < HMAC_CTX_cleanup_introduced then
     begin
       {$if declared(FC_HMAC_CTX_cleanup)}
       HMAC_CTX_cleanup := @FC_HMAC_CTX_cleanup;
-      {$else}
-      {$if not defined(HMAC_CTX_cleanup_allownil)}
-      HMAC_CTX_cleanup := @ERR_HMAC_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_cleanup_removed)}
@@ -457,39 +424,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_cleanup)}
       HMAC_CTX_cleanup := @_HMAC_CTX_cleanup;
-      {$else}
-      {$if not defined(HMAC_CTX_cleanup_allownil)}
-      HMAC_CTX_cleanup := @ERR_HMAC_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_cleanup := @ERR_HMAC_CTX_cleanup;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_cleanup');
-    end;
     {$ifend}
   end;
 
  
   HMAC_CTX_free := LoadLibFunction(ADllHandle, HMAC_CTX_free_procname);
-  FuncLoaded := assigned(HMAC_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_free_allownil)}
+    HMAC_CTX_free := @ERR_HMAC_CTX_free;
+    {$ifend}
     {$if declared(HMAC_CTX_free_introduced)}
     if LibVersion < HMAC_CTX_free_introduced then
     begin
       {$if declared(FC_HMAC_CTX_free)}
       HMAC_CTX_free := @FC_HMAC_CTX_free;
-      {$else}
-      {$if not defined(HMAC_CTX_free_allownil)}
-      HMAC_CTX_free := @ERR_HMAC_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_free_removed)}
@@ -497,39 +456,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_free)}
       HMAC_CTX_free := @_HMAC_CTX_free;
-      {$else}
-      {$if not defined(HMAC_CTX_free_allownil)}
-      HMAC_CTX_free := @ERR_HMAC_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_free := @ERR_HMAC_CTX_free;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   HMAC_Init_ex := LoadLibFunction(ADllHandle, HMAC_Init_ex_procname);
-  FuncLoaded := assigned(HMAC_Init_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_Init_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_Init_ex_allownil)}
+    HMAC_Init_ex := @ERR_HMAC_Init_ex;
+    {$ifend}
     {$if declared(HMAC_Init_ex_introduced)}
     if LibVersion < HMAC_Init_ex_introduced then
     begin
       {$if declared(FC_HMAC_Init_ex)}
       HMAC_Init_ex := @FC_HMAC_Init_ex;
-      {$else}
-      {$if not defined(HMAC_Init_ex_allownil)}
-      HMAC_Init_ex := @ERR_HMAC_Init_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_Init_ex_removed)}
@@ -537,39 +488,31 @@ begin
     begin
       {$if declared(_HMAC_Init_ex)}
       HMAC_Init_ex := @_HMAC_Init_ex;
-      {$else}
-      {$if not defined(HMAC_Init_ex_allownil)}
-      HMAC_Init_ex := @ERR_HMAC_Init_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_Init_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_Init_ex := @ERR_HMAC_Init_ex;
+    if FuncLoadError then
       AFailed.Add('HMAC_Init_ex');
-    end;
     {$ifend}
   end;
 
 
   HMAC_Update := LoadLibFunction(ADllHandle, HMAC_Update_procname);
-  FuncLoaded := assigned(HMAC_Update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_Update);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_Update_allownil)}
+    HMAC_Update := @ERR_HMAC_Update;
+    {$ifend}
     {$if declared(HMAC_Update_introduced)}
     if LibVersion < HMAC_Update_introduced then
     begin
       {$if declared(FC_HMAC_Update)}
       HMAC_Update := @FC_HMAC_Update;
-      {$else}
-      {$if not defined(HMAC_Update_allownil)}
-      HMAC_Update := @ERR_HMAC_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_Update_removed)}
@@ -577,39 +520,31 @@ begin
     begin
       {$if declared(_HMAC_Update)}
       HMAC_Update := @_HMAC_Update;
-      {$else}
-      {$if not defined(HMAC_Update_allownil)}
-      HMAC_Update := @ERR_HMAC_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_Update_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_Update := @ERR_HMAC_Update;
+    if FuncLoadError then
       AFailed.Add('HMAC_Update');
-    end;
     {$ifend}
   end;
 
 
   HMAC_Final := LoadLibFunction(ADllHandle, HMAC_Final_procname);
-  FuncLoaded := assigned(HMAC_Final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_Final);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_Final_allownil)}
+    HMAC_Final := @ERR_HMAC_Final;
+    {$ifend}
     {$if declared(HMAC_Final_introduced)}
     if LibVersion < HMAC_Final_introduced then
     begin
       {$if declared(FC_HMAC_Final)}
       HMAC_Final := @FC_HMAC_Final;
-      {$else}
-      {$if not defined(HMAC_Final_allownil)}
-      HMAC_Final := @ERR_HMAC_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_Final_removed)}
@@ -617,39 +552,31 @@ begin
     begin
       {$if declared(_HMAC_Final)}
       HMAC_Final := @_HMAC_Final;
-      {$else}
-      {$if not defined(HMAC_Final_allownil)}
-      HMAC_Final := @ERR_HMAC_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_Final_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_Final := @ERR_HMAC_Final;
+    if FuncLoadError then
       AFailed.Add('HMAC_Final');
-    end;
     {$ifend}
   end;
 
 
   HMAC := LoadLibFunction(ADllHandle, HMAC_procname);
-  FuncLoaded := assigned(HMAC);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_allownil)}
+    HMAC := @ERR_HMAC;
+    {$ifend}
     {$if declared(HMAC_introduced)}
     if LibVersion < HMAC_introduced then
     begin
       {$if declared(FC_HMAC)}
       HMAC := @FC_HMAC;
-      {$else}
-      {$if not defined(HMAC_allownil)}
-      HMAC := @ERR_HMAC;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_removed)}
@@ -657,39 +584,31 @@ begin
     begin
       {$if declared(_HMAC)}
       HMAC := @_HMAC;
-      {$else}
-      {$if not defined(HMAC_allownil)}
-      HMAC := @ERR_HMAC;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC := @ERR_HMAC;
+    if FuncLoadError then
       AFailed.Add('HMAC');
-    end;
     {$ifend}
   end;
 
 
   HMAC_CTX_copy := LoadLibFunction(ADllHandle, HMAC_CTX_copy_procname);
-  FuncLoaded := assigned(HMAC_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_copy_allownil)}
+    HMAC_CTX_copy := @ERR_HMAC_CTX_copy;
+    {$ifend}
     {$if declared(HMAC_CTX_copy_introduced)}
     if LibVersion < HMAC_CTX_copy_introduced then
     begin
       {$if declared(FC_HMAC_CTX_copy)}
       HMAC_CTX_copy := @FC_HMAC_CTX_copy;
-      {$else}
-      {$if not defined(HMAC_CTX_copy_allownil)}
-      HMAC_CTX_copy := @ERR_HMAC_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_copy_removed)}
@@ -697,39 +616,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_copy)}
       HMAC_CTX_copy := @_HMAC_CTX_copy;
-      {$else}
-      {$if not defined(HMAC_CTX_copy_allownil)}
-      HMAC_CTX_copy := @ERR_HMAC_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_copy := @ERR_HMAC_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_copy');
-    end;
     {$ifend}
   end;
 
 
   HMAC_CTX_set_flags := LoadLibFunction(ADllHandle, HMAC_CTX_set_flags_procname);
-  FuncLoaded := assigned(HMAC_CTX_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_set_flags_allownil)}
+    HMAC_CTX_set_flags := @ERR_HMAC_CTX_set_flags;
+    {$ifend}
     {$if declared(HMAC_CTX_set_flags_introduced)}
     if LibVersion < HMAC_CTX_set_flags_introduced then
     begin
       {$if declared(FC_HMAC_CTX_set_flags)}
       HMAC_CTX_set_flags := @FC_HMAC_CTX_set_flags;
-      {$else}
-      {$if not defined(HMAC_CTX_set_flags_allownil)}
-      HMAC_CTX_set_flags := @ERR_HMAC_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_set_flags_removed)}
@@ -737,39 +648,31 @@ begin
     begin
       {$if declared(_HMAC_CTX_set_flags)}
       HMAC_CTX_set_flags := @_HMAC_CTX_set_flags;
-      {$else}
-      {$if not defined(HMAC_CTX_set_flags_allownil)}
-      HMAC_CTX_set_flags := @ERR_HMAC_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_set_flags := @ERR_HMAC_CTX_set_flags;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_set_flags');
-    end;
     {$ifend}
   end;
 
 
   HMAC_CTX_get_md := LoadLibFunction(ADllHandle, HMAC_CTX_get_md_procname);
-  FuncLoaded := assigned(HMAC_CTX_get_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(HMAC_CTX_get_md);
+  if FuncLoadError then
   begin
+    {$if not defined(HMAC_CTX_get_md_allownil)}
+    HMAC_CTX_get_md := @ERR_HMAC_CTX_get_md;
+    {$ifend}
     {$if declared(HMAC_CTX_get_md_introduced)}
     if LibVersion < HMAC_CTX_get_md_introduced then
     begin
       {$if declared(FC_HMAC_CTX_get_md)}
       HMAC_CTX_get_md := @FC_HMAC_CTX_get_md;
-      {$else}
-      {$if not defined(HMAC_CTX_get_md_allownil)}
-      HMAC_CTX_get_md := @ERR_HMAC_CTX_get_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(HMAC_CTX_get_md_removed)}
@@ -777,20 +680,13 @@ begin
     begin
       {$if declared(_HMAC_CTX_get_md)}
       HMAC_CTX_get_md := @_HMAC_CTX_get_md;
-      {$else}
-      {$if not defined(HMAC_CTX_get_md_allownil)}
-      HMAC_CTX_get_md := @ERR_HMAC_CTX_get_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(HMAC_CTX_get_md_allownil)}
-    if not FuncLoaded then
-    begin
-      HMAC_CTX_get_md := @ERR_HMAC_CTX_get_md;
+    if FuncLoadError then
       AFailed.Add('HMAC_CTX_get_md');
-    end;
     {$ifend}
   end;
 

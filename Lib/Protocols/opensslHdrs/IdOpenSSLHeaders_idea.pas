@@ -175,24 +175,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   IDEA_options := LoadLibFunction(ADllHandle, IDEA_options_procname);
-  FuncLoaded := assigned(IDEA_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_options);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_options_allownil)}
+    IDEA_options := @ERR_IDEA_options;
+    {$ifend}
     {$if declared(IDEA_options_introduced)}
     if LibVersion < IDEA_options_introduced then
     begin
       {$if declared(FC_IDEA_options)}
       IDEA_options := @FC_IDEA_options;
-      {$else}
-      {$if not defined(IDEA_options_allownil)}
-      IDEA_options := @ERR_IDEA_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_options_removed)}
@@ -200,39 +199,31 @@ begin
     begin
       {$if declared(_IDEA_options)}
       IDEA_options := @_IDEA_options;
-      {$else}
-      {$if not defined(IDEA_options_allownil)}
-      IDEA_options := @ERR_IDEA_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_options_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_options := @ERR_IDEA_options;
+    if FuncLoadError then
       AFailed.Add('IDEA_options');
-    end;
     {$ifend}
   end;
 
 
   IDEA_ecb_encrypt := LoadLibFunction(ADllHandle, IDEA_ecb_encrypt_procname);
-  FuncLoaded := assigned(IDEA_ecb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_ecb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_ecb_encrypt_allownil)}
+    IDEA_ecb_encrypt := @ERR_IDEA_ecb_encrypt;
+    {$ifend}
     {$if declared(IDEA_ecb_encrypt_introduced)}
     if LibVersion < IDEA_ecb_encrypt_introduced then
     begin
       {$if declared(FC_IDEA_ecb_encrypt)}
       IDEA_ecb_encrypt := @FC_IDEA_ecb_encrypt;
-      {$else}
-      {$if not defined(IDEA_ecb_encrypt_allownil)}
-      IDEA_ecb_encrypt := @ERR_IDEA_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_ecb_encrypt_removed)}
@@ -240,39 +231,31 @@ begin
     begin
       {$if declared(_IDEA_ecb_encrypt)}
       IDEA_ecb_encrypt := @_IDEA_ecb_encrypt;
-      {$else}
-      {$if not defined(IDEA_ecb_encrypt_allownil)}
-      IDEA_ecb_encrypt := @ERR_IDEA_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_ecb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_ecb_encrypt := @ERR_IDEA_ecb_encrypt;
+    if FuncLoadError then
       AFailed.Add('IDEA_ecb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   IDEA_set_encrypt_key := LoadLibFunction(ADllHandle, IDEA_set_encrypt_key_procname);
-  FuncLoaded := assigned(IDEA_set_encrypt_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_set_encrypt_key);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_set_encrypt_key_allownil)}
+    IDEA_set_encrypt_key := @ERR_IDEA_set_encrypt_key;
+    {$ifend}
     {$if declared(IDEA_set_encrypt_key_introduced)}
     if LibVersion < IDEA_set_encrypt_key_introduced then
     begin
       {$if declared(FC_IDEA_set_encrypt_key)}
       IDEA_set_encrypt_key := @FC_IDEA_set_encrypt_key;
-      {$else}
-      {$if not defined(IDEA_set_encrypt_key_allownil)}
-      IDEA_set_encrypt_key := @ERR_IDEA_set_encrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_set_encrypt_key_removed)}
@@ -280,39 +263,31 @@ begin
     begin
       {$if declared(_IDEA_set_encrypt_key)}
       IDEA_set_encrypt_key := @_IDEA_set_encrypt_key;
-      {$else}
-      {$if not defined(IDEA_set_encrypt_key_allownil)}
-      IDEA_set_encrypt_key := @ERR_IDEA_set_encrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_set_encrypt_key_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_set_encrypt_key := @ERR_IDEA_set_encrypt_key;
+    if FuncLoadError then
       AFailed.Add('IDEA_set_encrypt_key');
-    end;
     {$ifend}
   end;
 
 
   IDEA_set_decrypt_key := LoadLibFunction(ADllHandle, IDEA_set_decrypt_key_procname);
-  FuncLoaded := assigned(IDEA_set_decrypt_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_set_decrypt_key);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_set_decrypt_key_allownil)}
+    IDEA_set_decrypt_key := @ERR_IDEA_set_decrypt_key;
+    {$ifend}
     {$if declared(IDEA_set_decrypt_key_introduced)}
     if LibVersion < IDEA_set_decrypt_key_introduced then
     begin
       {$if declared(FC_IDEA_set_decrypt_key)}
       IDEA_set_decrypt_key := @FC_IDEA_set_decrypt_key;
-      {$else}
-      {$if not defined(IDEA_set_decrypt_key_allownil)}
-      IDEA_set_decrypt_key := @ERR_IDEA_set_decrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_set_decrypt_key_removed)}
@@ -320,39 +295,31 @@ begin
     begin
       {$if declared(_IDEA_set_decrypt_key)}
       IDEA_set_decrypt_key := @_IDEA_set_decrypt_key;
-      {$else}
-      {$if not defined(IDEA_set_decrypt_key_allownil)}
-      IDEA_set_decrypt_key := @ERR_IDEA_set_decrypt_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_set_decrypt_key_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_set_decrypt_key := @ERR_IDEA_set_decrypt_key;
+    if FuncLoadError then
       AFailed.Add('IDEA_set_decrypt_key');
-    end;
     {$ifend}
   end;
 
 
   IDEA_cbc_encrypt := LoadLibFunction(ADllHandle, IDEA_cbc_encrypt_procname);
-  FuncLoaded := assigned(IDEA_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_cbc_encrypt_allownil)}
+    IDEA_cbc_encrypt := @ERR_IDEA_cbc_encrypt;
+    {$ifend}
     {$if declared(IDEA_cbc_encrypt_introduced)}
     if LibVersion < IDEA_cbc_encrypt_introduced then
     begin
       {$if declared(FC_IDEA_cbc_encrypt)}
       IDEA_cbc_encrypt := @FC_IDEA_cbc_encrypt;
-      {$else}
-      {$if not defined(IDEA_cbc_encrypt_allownil)}
-      IDEA_cbc_encrypt := @ERR_IDEA_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_cbc_encrypt_removed)}
@@ -360,39 +327,31 @@ begin
     begin
       {$if declared(_IDEA_cbc_encrypt)}
       IDEA_cbc_encrypt := @_IDEA_cbc_encrypt;
-      {$else}
-      {$if not defined(IDEA_cbc_encrypt_allownil)}
-      IDEA_cbc_encrypt := @ERR_IDEA_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_cbc_encrypt := @ERR_IDEA_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('IDEA_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   IDEA_cfb64_encrypt := LoadLibFunction(ADllHandle, IDEA_cfb64_encrypt_procname);
-  FuncLoaded := assigned(IDEA_cfb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_cfb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_cfb64_encrypt_allownil)}
+    IDEA_cfb64_encrypt := @ERR_IDEA_cfb64_encrypt;
+    {$ifend}
     {$if declared(IDEA_cfb64_encrypt_introduced)}
     if LibVersion < IDEA_cfb64_encrypt_introduced then
     begin
       {$if declared(FC_IDEA_cfb64_encrypt)}
       IDEA_cfb64_encrypt := @FC_IDEA_cfb64_encrypt;
-      {$else}
-      {$if not defined(IDEA_cfb64_encrypt_allownil)}
-      IDEA_cfb64_encrypt := @ERR_IDEA_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_cfb64_encrypt_removed)}
@@ -400,39 +359,31 @@ begin
     begin
       {$if declared(_IDEA_cfb64_encrypt)}
       IDEA_cfb64_encrypt := @_IDEA_cfb64_encrypt;
-      {$else}
-      {$if not defined(IDEA_cfb64_encrypt_allownil)}
-      IDEA_cfb64_encrypt := @ERR_IDEA_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_cfb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_cfb64_encrypt := @ERR_IDEA_cfb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('IDEA_cfb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   IDEA_ofb64_encrypt := LoadLibFunction(ADllHandle, IDEA_ofb64_encrypt_procname);
-  FuncLoaded := assigned(IDEA_ofb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_ofb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_ofb64_encrypt_allownil)}
+    IDEA_ofb64_encrypt := @ERR_IDEA_ofb64_encrypt;
+    {$ifend}
     {$if declared(IDEA_ofb64_encrypt_introduced)}
     if LibVersion < IDEA_ofb64_encrypt_introduced then
     begin
       {$if declared(FC_IDEA_ofb64_encrypt)}
       IDEA_ofb64_encrypt := @FC_IDEA_ofb64_encrypt;
-      {$else}
-      {$if not defined(IDEA_ofb64_encrypt_allownil)}
-      IDEA_ofb64_encrypt := @ERR_IDEA_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_ofb64_encrypt_removed)}
@@ -440,39 +391,31 @@ begin
     begin
       {$if declared(_IDEA_ofb64_encrypt)}
       IDEA_ofb64_encrypt := @_IDEA_ofb64_encrypt;
-      {$else}
-      {$if not defined(IDEA_ofb64_encrypt_allownil)}
-      IDEA_ofb64_encrypt := @ERR_IDEA_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_ofb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_ofb64_encrypt := @ERR_IDEA_ofb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('IDEA_ofb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   IDEA_encrypt := LoadLibFunction(ADllHandle, IDEA_encrypt_procname);
-  FuncLoaded := assigned(IDEA_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(IDEA_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(IDEA_encrypt_allownil)}
+    IDEA_encrypt := @ERR_IDEA_encrypt;
+    {$ifend}
     {$if declared(IDEA_encrypt_introduced)}
     if LibVersion < IDEA_encrypt_introduced then
     begin
       {$if declared(FC_IDEA_encrypt)}
       IDEA_encrypt := @FC_IDEA_encrypt;
-      {$else}
-      {$if not defined(IDEA_encrypt_allownil)}
-      IDEA_encrypt := @ERR_IDEA_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(IDEA_encrypt_removed)}
@@ -480,20 +423,13 @@ begin
     begin
       {$if declared(_IDEA_encrypt)}
       IDEA_encrypt := @_IDEA_encrypt;
-      {$else}
-      {$if not defined(IDEA_encrypt_allownil)}
-      IDEA_encrypt := @ERR_IDEA_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(IDEA_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      IDEA_encrypt := @ERR_IDEA_encrypt;
+    if FuncLoadError then
       AFailed.Add('IDEA_encrypt');
-    end;
     {$ifend}
   end;
 

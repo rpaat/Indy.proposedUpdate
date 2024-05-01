@@ -1065,24 +1065,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ASN1_item_ex_new := LoadLibFunction(ADllHandle, ASN1_item_ex_new_procname);
-  FuncLoaded := assigned(ASN1_item_ex_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_ex_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_ex_new_allownil)}
+    ASN1_item_ex_new := @ERR_ASN1_item_ex_new;
+    {$ifend}
     {$if declared(ASN1_item_ex_new_introduced)}
     if LibVersion < ASN1_item_ex_new_introduced then
     begin
       {$if declared(FC_ASN1_item_ex_new)}
       ASN1_item_ex_new := @FC_ASN1_item_ex_new;
-      {$else}
-      {$if not defined(ASN1_item_ex_new_allownil)}
-      ASN1_item_ex_new := @ERR_ASN1_item_ex_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_ex_new_removed)}
@@ -1090,39 +1089,31 @@ begin
     begin
       {$if declared(_ASN1_item_ex_new)}
       ASN1_item_ex_new := @_ASN1_item_ex_new;
-      {$else}
-      {$if not defined(ASN1_item_ex_new_allownil)}
-      ASN1_item_ex_new := @ERR_ASN1_item_ex_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_ex_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_ex_new := @ERR_ASN1_item_ex_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_ex_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_ex_free := LoadLibFunction(ADllHandle, ASN1_item_ex_free_procname);
-  FuncLoaded := assigned(ASN1_item_ex_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_ex_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_ex_free_allownil)}
+    ASN1_item_ex_free := @ERR_ASN1_item_ex_free;
+    {$ifend}
     {$if declared(ASN1_item_ex_free_introduced)}
     if LibVersion < ASN1_item_ex_free_introduced then
     begin
       {$if declared(FC_ASN1_item_ex_free)}
       ASN1_item_ex_free := @FC_ASN1_item_ex_free;
-      {$else}
-      {$if not defined(ASN1_item_ex_free_allownil)}
-      ASN1_item_ex_free := @ERR_ASN1_item_ex_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_ex_free_removed)}
@@ -1130,39 +1121,31 @@ begin
     begin
       {$if declared(_ASN1_item_ex_free)}
       ASN1_item_ex_free := @_ASN1_item_ex_free;
-      {$else}
-      {$if not defined(ASN1_item_ex_free_allownil)}
-      ASN1_item_ex_free := @ERR_ASN1_item_ex_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_ex_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_ex_free := @ERR_ASN1_item_ex_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_ex_free');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_ex_d2i := LoadLibFunction(ADllHandle, ASN1_item_ex_d2i_procname);
-  FuncLoaded := assigned(ASN1_item_ex_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_ex_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_ex_d2i_allownil)}
+    ASN1_item_ex_d2i := @ERR_ASN1_item_ex_d2i;
+    {$ifend}
     {$if declared(ASN1_item_ex_d2i_introduced)}
     if LibVersion < ASN1_item_ex_d2i_introduced then
     begin
       {$if declared(FC_ASN1_item_ex_d2i)}
       ASN1_item_ex_d2i := @FC_ASN1_item_ex_d2i;
-      {$else}
-      {$if not defined(ASN1_item_ex_d2i_allownil)}
-      ASN1_item_ex_d2i := @ERR_ASN1_item_ex_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_ex_d2i_removed)}
@@ -1170,39 +1153,31 @@ begin
     begin
       {$if declared(_ASN1_item_ex_d2i)}
       ASN1_item_ex_d2i := @_ASN1_item_ex_d2i;
-      {$else}
-      {$if not defined(ASN1_item_ex_d2i_allownil)}
-      ASN1_item_ex_d2i := @ERR_ASN1_item_ex_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_ex_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_ex_d2i := @ERR_ASN1_item_ex_d2i;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_ex_d2i');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_ex_i2d := LoadLibFunction(ADllHandle, ASN1_item_ex_i2d_procname);
-  FuncLoaded := assigned(ASN1_item_ex_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_ex_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_ex_i2d_allownil)}
+    ASN1_item_ex_i2d := @ERR_ASN1_item_ex_i2d;
+    {$ifend}
     {$if declared(ASN1_item_ex_i2d_introduced)}
     if LibVersion < ASN1_item_ex_i2d_introduced then
     begin
       {$if declared(FC_ASN1_item_ex_i2d)}
       ASN1_item_ex_i2d := @FC_ASN1_item_ex_i2d;
-      {$else}
-      {$if not defined(ASN1_item_ex_i2d_allownil)}
-      ASN1_item_ex_i2d := @ERR_ASN1_item_ex_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_ex_i2d_removed)}
@@ -1210,20 +1185,13 @@ begin
     begin
       {$if declared(_ASN1_item_ex_i2d)}
       ASN1_item_ex_i2d := @_ASN1_item_ex_i2d;
-      {$else}
-      {$if not defined(ASN1_item_ex_i2d_allownil)}
-      ASN1_item_ex_i2d := @ERR_ASN1_item_ex_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_ex_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_ex_i2d := @ERR_ASN1_item_ex_i2d;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_ex_i2d');
-    end;
     {$ifend}
   end;
 

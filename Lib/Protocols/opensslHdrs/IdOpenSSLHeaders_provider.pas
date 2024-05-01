@@ -329,24 +329,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   OSSL_PROVIDER_set_default_search_path := LoadLibFunction(ADllHandle, OSSL_PROVIDER_set_default_search_path_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_set_default_search_path);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_set_default_search_path);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_set_default_search_path_allownil)}
+    OSSL_PROVIDER_set_default_search_path := @ERR_OSSL_PROVIDER_set_default_search_path;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_set_default_search_path_introduced)}
     if LibVersion < OSSL_PROVIDER_set_default_search_path_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_set_default_search_path)}
       OSSL_PROVIDER_set_default_search_path := @FC_OSSL_PROVIDER_set_default_search_path;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_set_default_search_path_allownil)}
-      OSSL_PROVIDER_set_default_search_path := @ERR_OSSL_PROVIDER_set_default_search_path;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_set_default_search_path_removed)}
@@ -354,39 +353,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_set_default_search_path)}
       OSSL_PROVIDER_set_default_search_path := @_OSSL_PROVIDER_set_default_search_path;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_set_default_search_path_allownil)}
-      OSSL_PROVIDER_set_default_search_path := @ERR_OSSL_PROVIDER_set_default_search_path;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_set_default_search_path_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_set_default_search_path := @ERR_OSSL_PROVIDER_set_default_search_path;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_set_default_search_path');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_load := LoadLibFunction(ADllHandle, OSSL_PROVIDER_load_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_load);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_load);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_load_allownil)}
+    OSSL_PROVIDER_load := @ERR_OSSL_PROVIDER_load;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_load_introduced)}
     if LibVersion < OSSL_PROVIDER_load_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_load)}
       OSSL_PROVIDER_load := @FC_OSSL_PROVIDER_load;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_load_allownil)}
-      OSSL_PROVIDER_load := @ERR_OSSL_PROVIDER_load;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_load_removed)}
@@ -394,39 +385,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_load)}
       OSSL_PROVIDER_load := @_OSSL_PROVIDER_load;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_load_allownil)}
-      OSSL_PROVIDER_load := @ERR_OSSL_PROVIDER_load;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_load_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_load := @ERR_OSSL_PROVIDER_load;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_load');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_try_load := LoadLibFunction(ADllHandle, OSSL_PROVIDER_try_load_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_try_load);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_try_load);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_try_load_allownil)}
+    OSSL_PROVIDER_try_load := @ERR_OSSL_PROVIDER_try_load;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_try_load_introduced)}
     if LibVersion < OSSL_PROVIDER_try_load_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_try_load)}
       OSSL_PROVIDER_try_load := @FC_OSSL_PROVIDER_try_load;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_try_load_allownil)}
-      OSSL_PROVIDER_try_load := @ERR_OSSL_PROVIDER_try_load;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_try_load_removed)}
@@ -434,39 +417,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_try_load)}
       OSSL_PROVIDER_try_load := @_OSSL_PROVIDER_try_load;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_try_load_allownil)}
-      OSSL_PROVIDER_try_load := @ERR_OSSL_PROVIDER_try_load;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_try_load_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_try_load := @ERR_OSSL_PROVIDER_try_load;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_try_load');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_unload := LoadLibFunction(ADllHandle, OSSL_PROVIDER_unload_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_unload);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_unload);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_unload_allownil)}
+    OSSL_PROVIDER_unload := @ERR_OSSL_PROVIDER_unload;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_unload_introduced)}
     if LibVersion < OSSL_PROVIDER_unload_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_unload)}
       OSSL_PROVIDER_unload := @FC_OSSL_PROVIDER_unload;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_unload_allownil)}
-      OSSL_PROVIDER_unload := @ERR_OSSL_PROVIDER_unload;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_unload_removed)}
@@ -474,39 +449,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_unload)}
       OSSL_PROVIDER_unload := @_OSSL_PROVIDER_unload;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_unload_allownil)}
-      OSSL_PROVIDER_unload := @ERR_OSSL_PROVIDER_unload;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_unload_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_unload := @ERR_OSSL_PROVIDER_unload;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_unload');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_available := LoadLibFunction(ADllHandle, OSSL_PROVIDER_available_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_available);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_available);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_available_allownil)}
+    OSSL_PROVIDER_available := @ERR_OSSL_PROVIDER_available;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_available_introduced)}
     if LibVersion < OSSL_PROVIDER_available_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_available)}
       OSSL_PROVIDER_available := @FC_OSSL_PROVIDER_available;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_available_allownil)}
-      OSSL_PROVIDER_available := @ERR_OSSL_PROVIDER_available;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_available_removed)}
@@ -514,39 +481,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_available)}
       OSSL_PROVIDER_available := @_OSSL_PROVIDER_available;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_available_allownil)}
-      OSSL_PROVIDER_available := @ERR_OSSL_PROVIDER_available;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_available_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_available := @ERR_OSSL_PROVIDER_available;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_available');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_do_all := LoadLibFunction(ADllHandle, OSSL_PROVIDER_do_all_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_do_all);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_do_all);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_do_all_allownil)}
+    OSSL_PROVIDER_do_all := @ERR_OSSL_PROVIDER_do_all;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_do_all_introduced)}
     if LibVersion < OSSL_PROVIDER_do_all_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_do_all)}
       OSSL_PROVIDER_do_all := @FC_OSSL_PROVIDER_do_all;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_do_all_allownil)}
-      OSSL_PROVIDER_do_all := @ERR_OSSL_PROVIDER_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_do_all_removed)}
@@ -554,39 +513,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_do_all)}
       OSSL_PROVIDER_do_all := @_OSSL_PROVIDER_do_all;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_do_all_allownil)}
-      OSSL_PROVIDER_do_all := @ERR_OSSL_PROVIDER_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_do_all_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_do_all := @ERR_OSSL_PROVIDER_do_all;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_do_all');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_gettable_params := LoadLibFunction(ADllHandle, OSSL_PROVIDER_gettable_params_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_gettable_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_gettable_params);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_gettable_params_allownil)}
+    OSSL_PROVIDER_gettable_params := @ERR_OSSL_PROVIDER_gettable_params;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_gettable_params_introduced)}
     if LibVersion < OSSL_PROVIDER_gettable_params_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_gettable_params)}
       OSSL_PROVIDER_gettable_params := @FC_OSSL_PROVIDER_gettable_params;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_gettable_params_allownil)}
-      OSSL_PROVIDER_gettable_params := @ERR_OSSL_PROVIDER_gettable_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_gettable_params_removed)}
@@ -594,39 +545,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_gettable_params)}
       OSSL_PROVIDER_gettable_params := @_OSSL_PROVIDER_gettable_params;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_gettable_params_allownil)}
-      OSSL_PROVIDER_gettable_params := @ERR_OSSL_PROVIDER_gettable_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_gettable_params_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_gettable_params := @ERR_OSSL_PROVIDER_gettable_params;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_gettable_params');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_get_params := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get_params_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get_params);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get_params_allownil)}
+    OSSL_PROVIDER_get_params := @ERR_OSSL_PROVIDER_get_params;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get_params_introduced)}
     if LibVersion < OSSL_PROVIDER_get_params_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get_params)}
       OSSL_PROVIDER_get_params := @FC_OSSL_PROVIDER_get_params;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get_params_allownil)}
-      OSSL_PROVIDER_get_params := @ERR_OSSL_PROVIDER_get_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get_params_removed)}
@@ -634,39 +577,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get_params)}
       OSSL_PROVIDER_get_params := @_OSSL_PROVIDER_get_params;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get_params_allownil)}
-      OSSL_PROVIDER_get_params := @ERR_OSSL_PROVIDER_get_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get_params_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get_params := @ERR_OSSL_PROVIDER_get_params;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get_params');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_self_test := LoadLibFunction(ADllHandle, OSSL_PROVIDER_self_test_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_self_test);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_self_test);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_self_test_allownil)}
+    OSSL_PROVIDER_self_test := @ERR_OSSL_PROVIDER_self_test;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_self_test_introduced)}
     if LibVersion < OSSL_PROVIDER_self_test_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_self_test)}
       OSSL_PROVIDER_self_test := @FC_OSSL_PROVIDER_self_test;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_self_test_allownil)}
-      OSSL_PROVIDER_self_test := @ERR_OSSL_PROVIDER_self_test;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_self_test_removed)}
@@ -674,39 +609,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_self_test)}
       OSSL_PROVIDER_self_test := @_OSSL_PROVIDER_self_test;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_self_test_allownil)}
-      OSSL_PROVIDER_self_test := @ERR_OSSL_PROVIDER_self_test;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_self_test_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_self_test := @ERR_OSSL_PROVIDER_self_test;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_self_test');
-    end;
     {$ifend}
   end;
 
 {introduced 3.0.0}
   OSSL_PROVIDER_get_capabilities := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get_capabilities_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get_capabilities);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get_capabilities);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get_capabilities_allownil)}
+    OSSL_PROVIDER_get_capabilities := @ERR_OSSL_PROVIDER_get_capabilities;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get_capabilities_introduced)}
     if LibVersion < OSSL_PROVIDER_get_capabilities_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get_capabilities)}
       OSSL_PROVIDER_get_capabilities := @FC_OSSL_PROVIDER_get_capabilities;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get_capabilities_allownil)}
-      OSSL_PROVIDER_get_capabilities := @ERR_OSSL_PROVIDER_get_capabilities;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get_capabilities_removed)}
@@ -714,39 +641,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get_capabilities)}
       OSSL_PROVIDER_get_capabilities := @_OSSL_PROVIDER_get_capabilities;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get_capabilities_allownil)}
-      OSSL_PROVIDER_get_capabilities := @ERR_OSSL_PROVIDER_get_capabilities;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get_capabilities_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get_capabilities := @ERR_OSSL_PROVIDER_get_capabilities;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get_capabilities');
-    end;
     {$ifend}
   end;
 
 {introduced 3.0.0}
   OSSL_PROVIDER_query_operation := LoadLibFunction(ADllHandle, OSSL_PROVIDER_query_operation_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_query_operation);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_query_operation);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_query_operation_allownil)}
+    OSSL_PROVIDER_query_operation := @ERR_OSSL_PROVIDER_query_operation;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_query_operation_introduced)}
     if LibVersion < OSSL_PROVIDER_query_operation_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_query_operation)}
       OSSL_PROVIDER_query_operation := @FC_OSSL_PROVIDER_query_operation;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_query_operation_allownil)}
-      OSSL_PROVIDER_query_operation := @ERR_OSSL_PROVIDER_query_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_query_operation_removed)}
@@ -754,39 +673,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_query_operation)}
       OSSL_PROVIDER_query_operation := @_OSSL_PROVIDER_query_operation;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_query_operation_allownil)}
-      OSSL_PROVIDER_query_operation := @ERR_OSSL_PROVIDER_query_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_query_operation_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_query_operation := @ERR_OSSL_PROVIDER_query_operation;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_query_operation');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_unquery_operation := LoadLibFunction(ADllHandle, OSSL_PROVIDER_unquery_operation_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_unquery_operation);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_unquery_operation);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_unquery_operation_allownil)}
+    OSSL_PROVIDER_unquery_operation := @ERR_OSSL_PROVIDER_unquery_operation;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_unquery_operation_introduced)}
     if LibVersion < OSSL_PROVIDER_unquery_operation_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_unquery_operation)}
       OSSL_PROVIDER_unquery_operation := @FC_OSSL_PROVIDER_unquery_operation;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_unquery_operation_allownil)}
-      OSSL_PROVIDER_unquery_operation := @ERR_OSSL_PROVIDER_unquery_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_unquery_operation_removed)}
@@ -794,39 +705,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_unquery_operation)}
       OSSL_PROVIDER_unquery_operation := @_OSSL_PROVIDER_unquery_operation;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_unquery_operation_allownil)}
-      OSSL_PROVIDER_unquery_operation := @ERR_OSSL_PROVIDER_unquery_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_unquery_operation_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_unquery_operation := @ERR_OSSL_PROVIDER_unquery_operation;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_unquery_operation');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_get0_provider_ctx := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get0_provider_ctx_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get0_provider_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get0_provider_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get0_provider_ctx_allownil)}
+    OSSL_PROVIDER_get0_provider_ctx := @ERR_OSSL_PROVIDER_get0_provider_ctx;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get0_provider_ctx_introduced)}
     if LibVersion < OSSL_PROVIDER_get0_provider_ctx_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get0_provider_ctx)}
       OSSL_PROVIDER_get0_provider_ctx := @FC_OSSL_PROVIDER_get0_provider_ctx;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_provider_ctx_allownil)}
-      OSSL_PROVIDER_get0_provider_ctx := @ERR_OSSL_PROVIDER_get0_provider_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get0_provider_ctx_removed)}
@@ -834,39 +737,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get0_provider_ctx)}
       OSSL_PROVIDER_get0_provider_ctx := @_OSSL_PROVIDER_get0_provider_ctx;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_provider_ctx_allownil)}
-      OSSL_PROVIDER_get0_provider_ctx := @ERR_OSSL_PROVIDER_get0_provider_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get0_provider_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get0_provider_ctx := @ERR_OSSL_PROVIDER_get0_provider_ctx;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get0_provider_ctx');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_get0_dispatch := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get0_dispatch_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get0_dispatch);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get0_dispatch);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get0_dispatch_allownil)}
+    OSSL_PROVIDER_get0_dispatch := @ERR_OSSL_PROVIDER_get0_dispatch;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get0_dispatch_introduced)}
     if LibVersion < OSSL_PROVIDER_get0_dispatch_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get0_dispatch)}
       OSSL_PROVIDER_get0_dispatch := @FC_OSSL_PROVIDER_get0_dispatch;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_dispatch_allownil)}
-      OSSL_PROVIDER_get0_dispatch := @ERR_OSSL_PROVIDER_get0_dispatch;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get0_dispatch_removed)}
@@ -874,39 +769,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get0_dispatch)}
       OSSL_PROVIDER_get0_dispatch := @_OSSL_PROVIDER_get0_dispatch;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_dispatch_allownil)}
-      OSSL_PROVIDER_get0_dispatch := @ERR_OSSL_PROVIDER_get0_dispatch;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get0_dispatch_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get0_dispatch := @ERR_OSSL_PROVIDER_get0_dispatch;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get0_dispatch');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_add_builtin := LoadLibFunction(ADllHandle, OSSL_PROVIDER_add_builtin_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_add_builtin);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_add_builtin);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_add_builtin_allownil)}
+    OSSL_PROVIDER_add_builtin := @ERR_OSSL_PROVIDER_add_builtin;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_add_builtin_introduced)}
     if LibVersion < OSSL_PROVIDER_add_builtin_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_add_builtin)}
       OSSL_PROVIDER_add_builtin := @FC_OSSL_PROVIDER_add_builtin;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_add_builtin_allownil)}
-      OSSL_PROVIDER_add_builtin := @ERR_OSSL_PROVIDER_add_builtin;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_add_builtin_removed)}
@@ -914,39 +801,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_add_builtin)}
       OSSL_PROVIDER_add_builtin := @_OSSL_PROVIDER_add_builtin;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_add_builtin_allownil)}
-      OSSL_PROVIDER_add_builtin := @ERR_OSSL_PROVIDER_add_builtin;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_add_builtin_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_add_builtin := @ERR_OSSL_PROVIDER_add_builtin;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_add_builtin');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_get0_name := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get0_name_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get0_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get0_name);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get0_name_allownil)}
+    OSSL_PROVIDER_get0_name := @ERR_OSSL_PROVIDER_get0_name;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get0_name_introduced)}
     if LibVersion < OSSL_PROVIDER_get0_name_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get0_name)}
       OSSL_PROVIDER_get0_name := @FC_OSSL_PROVIDER_get0_name;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_name_allownil)}
-      OSSL_PROVIDER_get0_name := @ERR_OSSL_PROVIDER_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get0_name_removed)}
@@ -954,39 +833,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get0_name)}
       OSSL_PROVIDER_get0_name := @_OSSL_PROVIDER_get0_name;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_name_allownil)}
-      OSSL_PROVIDER_get0_name := @ERR_OSSL_PROVIDER_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get0_name_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get0_name := @ERR_OSSL_PROVIDER_get0_name;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get0_name');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   OSSL_PROVIDER_get0_default_search_path := LoadLibFunction(ADllHandle, OSSL_PROVIDER_get0_default_search_path_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_get0_default_search_path);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_get0_default_search_path);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_get0_default_search_path_allownil)}
+    OSSL_PROVIDER_get0_default_search_path := @ERR_OSSL_PROVIDER_get0_default_search_path;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_get0_default_search_path_introduced)}
     if LibVersion < OSSL_PROVIDER_get0_default_search_path_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_get0_default_search_path)}
       OSSL_PROVIDER_get0_default_search_path := @FC_OSSL_PROVIDER_get0_default_search_path;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_default_search_path_allownil)}
-      OSSL_PROVIDER_get0_default_search_path := @ERR_OSSL_PROVIDER_get0_default_search_path;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_get0_default_search_path_removed)}
@@ -994,39 +865,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_get0_default_search_path)}
       OSSL_PROVIDER_get0_default_search_path := @_OSSL_PROVIDER_get0_default_search_path;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_get0_default_search_path_allownil)}
-      OSSL_PROVIDER_get0_default_search_path := @ERR_OSSL_PROVIDER_get0_default_search_path;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_get0_default_search_path_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_get0_default_search_path := @ERR_OSSL_PROVIDER_get0_default_search_path;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_get0_default_search_path');
-    end;
     {$ifend}
   end;
 
  {introduced 3.2.0}
   OSSL_PROVIDER_try_load_ex := LoadLibFunction(ADllHandle, OSSL_PROVIDER_try_load_ex_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_try_load_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_try_load_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_try_load_ex_allownil)}
+    OSSL_PROVIDER_try_load_ex := @ERR_OSSL_PROVIDER_try_load_ex;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_try_load_ex_introduced)}
     if LibVersion < OSSL_PROVIDER_try_load_ex_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_try_load_ex)}
       OSSL_PROVIDER_try_load_ex := @FC_OSSL_PROVIDER_try_load_ex;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_try_load_ex_allownil)}
-      OSSL_PROVIDER_try_load_ex := @ERR_OSSL_PROVIDER_try_load_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_try_load_ex_removed)}
@@ -1034,39 +897,31 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_try_load_ex)}
       OSSL_PROVIDER_try_load_ex := @_OSSL_PROVIDER_try_load_ex;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_try_load_ex_allownil)}
-      OSSL_PROVIDER_try_load_ex := @ERR_OSSL_PROVIDER_try_load_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_try_load_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_try_load_ex := @ERR_OSSL_PROVIDER_try_load_ex;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_try_load_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 3.2.0}
   OSSL_PROVIDER_load_ex := LoadLibFunction(ADllHandle, OSSL_PROVIDER_load_ex_procname);
-  FuncLoaded := assigned(OSSL_PROVIDER_load_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OSSL_PROVIDER_load_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(OSSL_PROVIDER_load_ex_allownil)}
+    OSSL_PROVIDER_load_ex := @ERR_OSSL_PROVIDER_load_ex;
+    {$ifend}
     {$if declared(OSSL_PROVIDER_load_ex_introduced)}
     if LibVersion < OSSL_PROVIDER_load_ex_introduced then
     begin
       {$if declared(FC_OSSL_PROVIDER_load_ex)}
       OSSL_PROVIDER_load_ex := @FC_OSSL_PROVIDER_load_ex;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_load_ex_allownil)}
-      OSSL_PROVIDER_load_ex := @ERR_OSSL_PROVIDER_load_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OSSL_PROVIDER_load_ex_removed)}
@@ -1074,20 +929,13 @@ begin
     begin
       {$if declared(_OSSL_PROVIDER_load_ex)}
       OSSL_PROVIDER_load_ex := @_OSSL_PROVIDER_load_ex;
-      {$else}
-      {$if not defined(OSSL_PROVIDER_load_ex_allownil)}
-      OSSL_PROVIDER_load_ex := @ERR_OSSL_PROVIDER_load_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OSSL_PROVIDER_load_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      OSSL_PROVIDER_load_ex := @ERR_OSSL_PROVIDER_load_ex;
+    if FuncLoadError then
       AFailed.Add('OSSL_PROVIDER_load_ex');
-    end;
     {$ifend}
   end;
 

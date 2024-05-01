@@ -5489,24 +5489,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   X509_CRL_set_default_method := LoadLibFunction(ADllHandle, X509_CRL_set_default_method_procname);
-  FuncLoaded := assigned(X509_CRL_set_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set_default_method_allownil)}
+    X509_CRL_set_default_method := @ERR_X509_CRL_set_default_method;
+    {$ifend}
     {$if declared(X509_CRL_set_default_method_introduced)}
     if LibVersion < X509_CRL_set_default_method_introduced then
     begin
       {$if declared(FC_X509_CRL_set_default_method)}
       X509_CRL_set_default_method := @FC_X509_CRL_set_default_method;
-      {$else}
-      {$if not defined(X509_CRL_set_default_method_allownil)}
-      X509_CRL_set_default_method := @ERR_X509_CRL_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set_default_method_removed)}
@@ -5514,39 +5513,31 @@ begin
     begin
       {$if declared(_X509_CRL_set_default_method)}
       X509_CRL_set_default_method := @_X509_CRL_set_default_method;
-      {$else}
-      {$if not defined(X509_CRL_set_default_method_allownil)}
-      X509_CRL_set_default_method := @ERR_X509_CRL_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set_default_method := @ERR_X509_CRL_set_default_method;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set_default_method');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_METHOD_free := LoadLibFunction(ADllHandle, X509_CRL_METHOD_free_procname);
-  FuncLoaded := assigned(X509_CRL_METHOD_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_METHOD_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_METHOD_free_allownil)}
+    X509_CRL_METHOD_free := @ERR_X509_CRL_METHOD_free;
+    {$ifend}
     {$if declared(X509_CRL_METHOD_free_introduced)}
     if LibVersion < X509_CRL_METHOD_free_introduced then
     begin
       {$if declared(FC_X509_CRL_METHOD_free)}
       X509_CRL_METHOD_free := @FC_X509_CRL_METHOD_free;
-      {$else}
-      {$if not defined(X509_CRL_METHOD_free_allownil)}
-      X509_CRL_METHOD_free := @ERR_X509_CRL_METHOD_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_METHOD_free_removed)}
@@ -5554,39 +5545,31 @@ begin
     begin
       {$if declared(_X509_CRL_METHOD_free)}
       X509_CRL_METHOD_free := @_X509_CRL_METHOD_free;
-      {$else}
-      {$if not defined(X509_CRL_METHOD_free_allownil)}
-      X509_CRL_METHOD_free := @ERR_X509_CRL_METHOD_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_METHOD_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_METHOD_free := @ERR_X509_CRL_METHOD_free;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_METHOD_free');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_set_meth_data := LoadLibFunction(ADllHandle, X509_CRL_set_meth_data_procname);
-  FuncLoaded := assigned(X509_CRL_set_meth_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set_meth_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set_meth_data_allownil)}
+    X509_CRL_set_meth_data := @ERR_X509_CRL_set_meth_data;
+    {$ifend}
     {$if declared(X509_CRL_set_meth_data_introduced)}
     if LibVersion < X509_CRL_set_meth_data_introduced then
     begin
       {$if declared(FC_X509_CRL_set_meth_data)}
       X509_CRL_set_meth_data := @FC_X509_CRL_set_meth_data;
-      {$else}
-      {$if not defined(X509_CRL_set_meth_data_allownil)}
-      X509_CRL_set_meth_data := @ERR_X509_CRL_set_meth_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set_meth_data_removed)}
@@ -5594,39 +5577,31 @@ begin
     begin
       {$if declared(_X509_CRL_set_meth_data)}
       X509_CRL_set_meth_data := @_X509_CRL_set_meth_data;
-      {$else}
-      {$if not defined(X509_CRL_set_meth_data_allownil)}
-      X509_CRL_set_meth_data := @ERR_X509_CRL_set_meth_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set_meth_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set_meth_data := @ERR_X509_CRL_set_meth_data;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set_meth_data');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_meth_data := LoadLibFunction(ADllHandle, X509_CRL_get_meth_data_procname);
-  FuncLoaded := assigned(X509_CRL_get_meth_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_meth_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_meth_data_allownil)}
+    X509_CRL_get_meth_data := @ERR_X509_CRL_get_meth_data;
+    {$ifend}
     {$if declared(X509_CRL_get_meth_data_introduced)}
     if LibVersion < X509_CRL_get_meth_data_introduced then
     begin
       {$if declared(FC_X509_CRL_get_meth_data)}
       X509_CRL_get_meth_data := @FC_X509_CRL_get_meth_data;
-      {$else}
-      {$if not defined(X509_CRL_get_meth_data_allownil)}
-      X509_CRL_get_meth_data := @ERR_X509_CRL_get_meth_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_meth_data_removed)}
@@ -5634,39 +5609,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_meth_data)}
       X509_CRL_get_meth_data := @_X509_CRL_get_meth_data;
-      {$else}
-      {$if not defined(X509_CRL_get_meth_data_allownil)}
-      X509_CRL_get_meth_data := @ERR_X509_CRL_get_meth_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_meth_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_meth_data := @ERR_X509_CRL_get_meth_data;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_meth_data');
-    end;
     {$ifend}
   end;
 
 
   X509_verify_cert_error_string := LoadLibFunction(ADllHandle, X509_verify_cert_error_string_procname);
-  FuncLoaded := assigned(X509_verify_cert_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_verify_cert_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_verify_cert_error_string_allownil)}
+    X509_verify_cert_error_string := @ERR_X509_verify_cert_error_string;
+    {$ifend}
     {$if declared(X509_verify_cert_error_string_introduced)}
     if LibVersion < X509_verify_cert_error_string_introduced then
     begin
       {$if declared(FC_X509_verify_cert_error_string)}
       X509_verify_cert_error_string := @FC_X509_verify_cert_error_string;
-      {$else}
-      {$if not defined(X509_verify_cert_error_string_allownil)}
-      X509_verify_cert_error_string := @ERR_X509_verify_cert_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_verify_cert_error_string_removed)}
@@ -5674,39 +5641,31 @@ begin
     begin
       {$if declared(_X509_verify_cert_error_string)}
       X509_verify_cert_error_string := @_X509_verify_cert_error_string;
-      {$else}
-      {$if not defined(X509_verify_cert_error_string_allownil)}
-      X509_verify_cert_error_string := @ERR_X509_verify_cert_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_verify_cert_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_verify_cert_error_string := @ERR_X509_verify_cert_error_string;
+    if FuncLoadError then
       AFailed.Add('X509_verify_cert_error_string');
-    end;
     {$ifend}
   end;
 
 
   X509_verify := LoadLibFunction(ADllHandle, X509_verify_procname);
-  FuncLoaded := assigned(X509_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_verify_allownil)}
+    X509_verify := @ERR_X509_verify;
+    {$ifend}
     {$if declared(X509_verify_introduced)}
     if LibVersion < X509_verify_introduced then
     begin
       {$if declared(FC_X509_verify)}
       X509_verify := @FC_X509_verify;
-      {$else}
-      {$if not defined(X509_verify_allownil)}
-      X509_verify := @ERR_X509_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_verify_removed)}
@@ -5714,39 +5673,31 @@ begin
     begin
       {$if declared(_X509_verify)}
       X509_verify := @_X509_verify;
-      {$else}
-      {$if not defined(X509_verify_allownil)}
-      X509_verify := @ERR_X509_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_verify := @ERR_X509_verify;
+    if FuncLoadError then
       AFailed.Add('X509_verify');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_verify := LoadLibFunction(ADllHandle, X509_REQ_verify_procname);
-  FuncLoaded := assigned(X509_REQ_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_verify_allownil)}
+    X509_REQ_verify := @ERR_X509_REQ_verify;
+    {$ifend}
     {$if declared(X509_REQ_verify_introduced)}
     if LibVersion < X509_REQ_verify_introduced then
     begin
       {$if declared(FC_X509_REQ_verify)}
       X509_REQ_verify := @FC_X509_REQ_verify;
-      {$else}
-      {$if not defined(X509_REQ_verify_allownil)}
-      X509_REQ_verify := @ERR_X509_REQ_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_verify_removed)}
@@ -5754,39 +5705,31 @@ begin
     begin
       {$if declared(_X509_REQ_verify)}
       X509_REQ_verify := @_X509_REQ_verify;
-      {$else}
-      {$if not defined(X509_REQ_verify_allownil)}
-      X509_REQ_verify := @ERR_X509_REQ_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_verify := @ERR_X509_REQ_verify;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_verify');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_verify := LoadLibFunction(ADllHandle, X509_CRL_verify_procname);
-  FuncLoaded := assigned(X509_CRL_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_verify_allownil)}
+    X509_CRL_verify := @ERR_X509_CRL_verify;
+    {$ifend}
     {$if declared(X509_CRL_verify_introduced)}
     if LibVersion < X509_CRL_verify_introduced then
     begin
       {$if declared(FC_X509_CRL_verify)}
       X509_CRL_verify := @FC_X509_CRL_verify;
-      {$else}
-      {$if not defined(X509_CRL_verify_allownil)}
-      X509_CRL_verify := @ERR_X509_CRL_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_verify_removed)}
@@ -5794,39 +5737,31 @@ begin
     begin
       {$if declared(_X509_CRL_verify)}
       X509_CRL_verify := @_X509_CRL_verify;
-      {$else}
-      {$if not defined(X509_CRL_verify_allownil)}
-      X509_CRL_verify := @ERR_X509_CRL_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_verify := @ERR_X509_CRL_verify;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_verify');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_verify := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_verify_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_verify_allownil)}
+    NETSCAPE_SPKI_verify := @ERR_NETSCAPE_SPKI_verify;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_verify_introduced)}
     if LibVersion < NETSCAPE_SPKI_verify_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_verify)}
       NETSCAPE_SPKI_verify := @FC_NETSCAPE_SPKI_verify;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_verify_allownil)}
-      NETSCAPE_SPKI_verify := @ERR_NETSCAPE_SPKI_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_verify_removed)}
@@ -5834,39 +5769,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_verify)}
       NETSCAPE_SPKI_verify := @_NETSCAPE_SPKI_verify;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_verify_allownil)}
-      NETSCAPE_SPKI_verify := @ERR_NETSCAPE_SPKI_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_verify := @ERR_NETSCAPE_SPKI_verify;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_verify');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_b64_decode := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_b64_decode_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_b64_decode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_b64_decode);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_b64_decode_allownil)}
+    NETSCAPE_SPKI_b64_decode := @ERR_NETSCAPE_SPKI_b64_decode;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_b64_decode_introduced)}
     if LibVersion < NETSCAPE_SPKI_b64_decode_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_b64_decode)}
       NETSCAPE_SPKI_b64_decode := @FC_NETSCAPE_SPKI_b64_decode;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_b64_decode_allownil)}
-      NETSCAPE_SPKI_b64_decode := @ERR_NETSCAPE_SPKI_b64_decode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_b64_decode_removed)}
@@ -5874,39 +5801,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_b64_decode)}
       NETSCAPE_SPKI_b64_decode := @_NETSCAPE_SPKI_b64_decode;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_b64_decode_allownil)}
-      NETSCAPE_SPKI_b64_decode := @ERR_NETSCAPE_SPKI_b64_decode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_b64_decode_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_b64_decode := @ERR_NETSCAPE_SPKI_b64_decode;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_b64_decode');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_b64_encode := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_b64_encode_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_b64_encode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_b64_encode);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_b64_encode_allownil)}
+    NETSCAPE_SPKI_b64_encode := @ERR_NETSCAPE_SPKI_b64_encode;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_b64_encode_introduced)}
     if LibVersion < NETSCAPE_SPKI_b64_encode_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_b64_encode)}
       NETSCAPE_SPKI_b64_encode := @FC_NETSCAPE_SPKI_b64_encode;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_b64_encode_allownil)}
-      NETSCAPE_SPKI_b64_encode := @ERR_NETSCAPE_SPKI_b64_encode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_b64_encode_removed)}
@@ -5914,39 +5833,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_b64_encode)}
       NETSCAPE_SPKI_b64_encode := @_NETSCAPE_SPKI_b64_encode;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_b64_encode_allownil)}
-      NETSCAPE_SPKI_b64_encode := @ERR_NETSCAPE_SPKI_b64_encode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_b64_encode_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_b64_encode := @ERR_NETSCAPE_SPKI_b64_encode;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_b64_encode');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_get_pubkey := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_get_pubkey_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_get_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_get_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_get_pubkey_allownil)}
+    NETSCAPE_SPKI_get_pubkey := @ERR_NETSCAPE_SPKI_get_pubkey;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_get_pubkey_introduced)}
     if LibVersion < NETSCAPE_SPKI_get_pubkey_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_get_pubkey)}
       NETSCAPE_SPKI_get_pubkey := @FC_NETSCAPE_SPKI_get_pubkey;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_get_pubkey_allownil)}
-      NETSCAPE_SPKI_get_pubkey := @ERR_NETSCAPE_SPKI_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_get_pubkey_removed)}
@@ -5954,39 +5865,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_get_pubkey)}
       NETSCAPE_SPKI_get_pubkey := @_NETSCAPE_SPKI_get_pubkey;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_get_pubkey_allownil)}
-      NETSCAPE_SPKI_get_pubkey := @ERR_NETSCAPE_SPKI_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_get_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_get_pubkey := @ERR_NETSCAPE_SPKI_get_pubkey;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_get_pubkey');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_set_pubkey := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_set_pubkey_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_set_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_set_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_set_pubkey_allownil)}
+    NETSCAPE_SPKI_set_pubkey := @ERR_NETSCAPE_SPKI_set_pubkey;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_set_pubkey_introduced)}
     if LibVersion < NETSCAPE_SPKI_set_pubkey_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_set_pubkey)}
       NETSCAPE_SPKI_set_pubkey := @FC_NETSCAPE_SPKI_set_pubkey;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_set_pubkey_allownil)}
-      NETSCAPE_SPKI_set_pubkey := @ERR_NETSCAPE_SPKI_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_set_pubkey_removed)}
@@ -5994,39 +5897,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_set_pubkey)}
       NETSCAPE_SPKI_set_pubkey := @_NETSCAPE_SPKI_set_pubkey;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_set_pubkey_allownil)}
-      NETSCAPE_SPKI_set_pubkey := @ERR_NETSCAPE_SPKI_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_set_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_set_pubkey := @ERR_NETSCAPE_SPKI_set_pubkey;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_set_pubkey');
-    end;
     {$ifend}
   end;
 
 
   NETSCAPE_SPKI_print := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_print_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_print);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_print_allownil)}
+    NETSCAPE_SPKI_print := @ERR_NETSCAPE_SPKI_print;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_print_introduced)}
     if LibVersion < NETSCAPE_SPKI_print_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_print)}
       NETSCAPE_SPKI_print := @FC_NETSCAPE_SPKI_print;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_print_allownil)}
-      NETSCAPE_SPKI_print := @ERR_NETSCAPE_SPKI_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_print_removed)}
@@ -6034,39 +5929,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_print)}
       NETSCAPE_SPKI_print := @_NETSCAPE_SPKI_print;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_print_allownil)}
-      NETSCAPE_SPKI_print := @ERR_NETSCAPE_SPKI_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_print_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_print := @ERR_NETSCAPE_SPKI_print;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_print');
-    end;
     {$ifend}
   end;
 
 
   X509_signature_dump := LoadLibFunction(ADllHandle, X509_signature_dump_procname);
-  FuncLoaded := assigned(X509_signature_dump);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_signature_dump);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_signature_dump_allownil)}
+    X509_signature_dump := @ERR_X509_signature_dump;
+    {$ifend}
     {$if declared(X509_signature_dump_introduced)}
     if LibVersion < X509_signature_dump_introduced then
     begin
       {$if declared(FC_X509_signature_dump)}
       X509_signature_dump := @FC_X509_signature_dump;
-      {$else}
-      {$if not defined(X509_signature_dump_allownil)}
-      X509_signature_dump := @ERR_X509_signature_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_signature_dump_removed)}
@@ -6074,39 +5961,31 @@ begin
     begin
       {$if declared(_X509_signature_dump)}
       X509_signature_dump := @_X509_signature_dump;
-      {$else}
-      {$if not defined(X509_signature_dump_allownil)}
-      X509_signature_dump := @ERR_X509_signature_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_signature_dump_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_signature_dump := @ERR_X509_signature_dump;
+    if FuncLoadError then
       AFailed.Add('X509_signature_dump');
-    end;
     {$ifend}
   end;
 
 
   X509_signature_print := LoadLibFunction(ADllHandle, X509_signature_print_procname);
-  FuncLoaded := assigned(X509_signature_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_signature_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_signature_print_allownil)}
+    X509_signature_print := @ERR_X509_signature_print;
+    {$ifend}
     {$if declared(X509_signature_print_introduced)}
     if LibVersion < X509_signature_print_introduced then
     begin
       {$if declared(FC_X509_signature_print)}
       X509_signature_print := @FC_X509_signature_print;
-      {$else}
-      {$if not defined(X509_signature_print_allownil)}
-      X509_signature_print := @ERR_X509_signature_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_signature_print_removed)}
@@ -6114,39 +5993,31 @@ begin
     begin
       {$if declared(_X509_signature_print)}
       X509_signature_print := @_X509_signature_print;
-      {$else}
-      {$if not defined(X509_signature_print_allownil)}
-      X509_signature_print := @ERR_X509_signature_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_signature_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_signature_print := @ERR_X509_signature_print;
+    if FuncLoadError then
       AFailed.Add('X509_signature_print');
-    end;
     {$ifend}
   end;
 
 
   X509_sign := LoadLibFunction(ADllHandle, X509_sign_procname);
-  FuncLoaded := assigned(X509_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_sign_allownil)}
+    X509_sign := @ERR_X509_sign;
+    {$ifend}
     {$if declared(X509_sign_introduced)}
     if LibVersion < X509_sign_introduced then
     begin
       {$if declared(FC_X509_sign)}
       X509_sign := @FC_X509_sign;
-      {$else}
-      {$if not defined(X509_sign_allownil)}
-      X509_sign := @ERR_X509_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_sign_removed)}
@@ -6154,39 +6025,31 @@ begin
     begin
       {$if declared(_X509_sign)}
       X509_sign := @_X509_sign;
-      {$else}
-      {$if not defined(X509_sign_allownil)}
-      X509_sign := @ERR_X509_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_sign := @ERR_X509_sign;
+    if FuncLoadError then
       AFailed.Add('X509_sign');
-    end;
     {$ifend}
   end;
 
 
   X509_sign_ctx := LoadLibFunction(ADllHandle, X509_sign_ctx_procname);
-  FuncLoaded := assigned(X509_sign_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_sign_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_sign_ctx_allownil)}
+    X509_sign_ctx := @ERR_X509_sign_ctx;
+    {$ifend}
     {$if declared(X509_sign_ctx_introduced)}
     if LibVersion < X509_sign_ctx_introduced then
     begin
       {$if declared(FC_X509_sign_ctx)}
       X509_sign_ctx := @FC_X509_sign_ctx;
-      {$else}
-      {$if not defined(X509_sign_ctx_allownil)}
-      X509_sign_ctx := @ERR_X509_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_sign_ctx_removed)}
@@ -6194,39 +6057,31 @@ begin
     begin
       {$if declared(_X509_sign_ctx)}
       X509_sign_ctx := @_X509_sign_ctx;
-      {$else}
-      {$if not defined(X509_sign_ctx_allownil)}
-      X509_sign_ctx := @ERR_X509_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_sign_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_sign_ctx := @ERR_X509_sign_ctx;
+    if FuncLoadError then
       AFailed.Add('X509_sign_ctx');
-    end;
     {$ifend}
   end;
 
 
   X509_http_nbio := LoadLibFunction(ADllHandle, X509_http_nbio_procname);
-  FuncLoaded := assigned(X509_http_nbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_http_nbio);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_http_nbio_allownil)}
+    X509_http_nbio := @ERR_X509_http_nbio;
+    {$ifend}
     {$if declared(X509_http_nbio_introduced)}
     if LibVersion < X509_http_nbio_introduced then
     begin
       {$if declared(FC_X509_http_nbio)}
       X509_http_nbio := @FC_X509_http_nbio;
-      {$else}
-      {$if not defined(X509_http_nbio_allownil)}
-      X509_http_nbio := @ERR_X509_http_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_http_nbio_removed)}
@@ -6234,39 +6089,31 @@ begin
     begin
       {$if declared(_X509_http_nbio)}
       X509_http_nbio := @_X509_http_nbio;
-      {$else}
-      {$if not defined(X509_http_nbio_allownil)}
-      X509_http_nbio := @ERR_X509_http_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_http_nbio_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_http_nbio := @ERR_X509_http_nbio;
+    if FuncLoadError then
       AFailed.Add('X509_http_nbio');
-    end;
     {$ifend}
   end;
 
  
   X509_REQ_sign := LoadLibFunction(ADllHandle, X509_REQ_sign_procname);
-  FuncLoaded := assigned(X509_REQ_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_sign_allownil)}
+    X509_REQ_sign := @ERR_X509_REQ_sign;
+    {$ifend}
     {$if declared(X509_REQ_sign_introduced)}
     if LibVersion < X509_REQ_sign_introduced then
     begin
       {$if declared(FC_X509_REQ_sign)}
       X509_REQ_sign := @FC_X509_REQ_sign;
-      {$else}
-      {$if not defined(X509_REQ_sign_allownil)}
-      X509_REQ_sign := @ERR_X509_REQ_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_sign_removed)}
@@ -6274,39 +6121,31 @@ begin
     begin
       {$if declared(_X509_REQ_sign)}
       X509_REQ_sign := @_X509_REQ_sign;
-      {$else}
-      {$if not defined(X509_REQ_sign_allownil)}
-      X509_REQ_sign := @ERR_X509_REQ_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_sign := @ERR_X509_REQ_sign;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_sign');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_sign_ctx := LoadLibFunction(ADllHandle, X509_REQ_sign_ctx_procname);
-  FuncLoaded := assigned(X509_REQ_sign_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_sign_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_sign_ctx_allownil)}
+    X509_REQ_sign_ctx := @ERR_X509_REQ_sign_ctx;
+    {$ifend}
     {$if declared(X509_REQ_sign_ctx_introduced)}
     if LibVersion < X509_REQ_sign_ctx_introduced then
     begin
       {$if declared(FC_X509_REQ_sign_ctx)}
       X509_REQ_sign_ctx := @FC_X509_REQ_sign_ctx;
-      {$else}
-      {$if not defined(X509_REQ_sign_ctx_allownil)}
-      X509_REQ_sign_ctx := @ERR_X509_REQ_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_sign_ctx_removed)}
@@ -6314,39 +6153,31 @@ begin
     begin
       {$if declared(_X509_REQ_sign_ctx)}
       X509_REQ_sign_ctx := @_X509_REQ_sign_ctx;
-      {$else}
-      {$if not defined(X509_REQ_sign_ctx_allownil)}
-      X509_REQ_sign_ctx := @ERR_X509_REQ_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_sign_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_sign_ctx := @ERR_X509_REQ_sign_ctx;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_sign_ctx');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_sign := LoadLibFunction(ADllHandle, X509_CRL_sign_procname);
-  FuncLoaded := assigned(X509_CRL_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_sign_allownil)}
+    X509_CRL_sign := @ERR_X509_CRL_sign;
+    {$ifend}
     {$if declared(X509_CRL_sign_introduced)}
     if LibVersion < X509_CRL_sign_introduced then
     begin
       {$if declared(FC_X509_CRL_sign)}
       X509_CRL_sign := @FC_X509_CRL_sign;
-      {$else}
-      {$if not defined(X509_CRL_sign_allownil)}
-      X509_CRL_sign := @ERR_X509_CRL_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_sign_removed)}
@@ -6354,39 +6185,31 @@ begin
     begin
       {$if declared(_X509_CRL_sign)}
       X509_CRL_sign := @_X509_CRL_sign;
-      {$else}
-      {$if not defined(X509_CRL_sign_allownil)}
-      X509_CRL_sign := @ERR_X509_CRL_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_sign := @ERR_X509_CRL_sign;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_sign');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_sign_ctx := LoadLibFunction(ADllHandle, X509_CRL_sign_ctx_procname);
-  FuncLoaded := assigned(X509_CRL_sign_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_sign_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_sign_ctx_allownil)}
+    X509_CRL_sign_ctx := @ERR_X509_CRL_sign_ctx;
+    {$ifend}
     {$if declared(X509_CRL_sign_ctx_introduced)}
     if LibVersion < X509_CRL_sign_ctx_introduced then
     begin
       {$if declared(FC_X509_CRL_sign_ctx)}
       X509_CRL_sign_ctx := @FC_X509_CRL_sign_ctx;
-      {$else}
-      {$if not defined(X509_CRL_sign_ctx_allownil)}
-      X509_CRL_sign_ctx := @ERR_X509_CRL_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_sign_ctx_removed)}
@@ -6394,39 +6217,31 @@ begin
     begin
       {$if declared(_X509_CRL_sign_ctx)}
       X509_CRL_sign_ctx := @_X509_CRL_sign_ctx;
-      {$else}
-      {$if not defined(X509_CRL_sign_ctx_allownil)}
-      X509_CRL_sign_ctx := @ERR_X509_CRL_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_sign_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_sign_ctx := @ERR_X509_CRL_sign_ctx;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_sign_ctx');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_http_nbio := LoadLibFunction(ADllHandle, X509_CRL_http_nbio_procname);
-  FuncLoaded := assigned(X509_CRL_http_nbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_http_nbio);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_http_nbio_allownil)}
+    X509_CRL_http_nbio := @ERR_X509_CRL_http_nbio;
+    {$ifend}
     {$if declared(X509_CRL_http_nbio_introduced)}
     if LibVersion < X509_CRL_http_nbio_introduced then
     begin
       {$if declared(FC_X509_CRL_http_nbio)}
       X509_CRL_http_nbio := @FC_X509_CRL_http_nbio;
-      {$else}
-      {$if not defined(X509_CRL_http_nbio_allownil)}
-      X509_CRL_http_nbio := @ERR_X509_CRL_http_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_http_nbio_removed)}
@@ -6434,39 +6249,31 @@ begin
     begin
       {$if declared(_X509_CRL_http_nbio)}
       X509_CRL_http_nbio := @_X509_CRL_http_nbio;
-      {$else}
-      {$if not defined(X509_CRL_http_nbio_allownil)}
-      X509_CRL_http_nbio := @ERR_X509_CRL_http_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_http_nbio_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_http_nbio := @ERR_X509_CRL_http_nbio;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_http_nbio');
-    end;
     {$ifend}
   end;
 
  
   NETSCAPE_SPKI_sign := LoadLibFunction(ADllHandle, NETSCAPE_SPKI_sign_procname);
-  FuncLoaded := assigned(NETSCAPE_SPKI_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(NETSCAPE_SPKI_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(NETSCAPE_SPKI_sign_allownil)}
+    NETSCAPE_SPKI_sign := @ERR_NETSCAPE_SPKI_sign;
+    {$ifend}
     {$if declared(NETSCAPE_SPKI_sign_introduced)}
     if LibVersion < NETSCAPE_SPKI_sign_introduced then
     begin
       {$if declared(FC_NETSCAPE_SPKI_sign)}
       NETSCAPE_SPKI_sign := @FC_NETSCAPE_SPKI_sign;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_sign_allownil)}
-      NETSCAPE_SPKI_sign := @ERR_NETSCAPE_SPKI_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(NETSCAPE_SPKI_sign_removed)}
@@ -6474,39 +6281,31 @@ begin
     begin
       {$if declared(_NETSCAPE_SPKI_sign)}
       NETSCAPE_SPKI_sign := @_NETSCAPE_SPKI_sign;
-      {$else}
-      {$if not defined(NETSCAPE_SPKI_sign_allownil)}
-      NETSCAPE_SPKI_sign := @ERR_NETSCAPE_SPKI_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(NETSCAPE_SPKI_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      NETSCAPE_SPKI_sign := @ERR_NETSCAPE_SPKI_sign;
+    if FuncLoadError then
       AFailed.Add('NETSCAPE_SPKI_sign');
-    end;
     {$ifend}
   end;
 
 
   X509_pubkey_digest := LoadLibFunction(ADllHandle, X509_pubkey_digest_procname);
-  FuncLoaded := assigned(X509_pubkey_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_pubkey_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_pubkey_digest_allownil)}
+    X509_pubkey_digest := @ERR_X509_pubkey_digest;
+    {$ifend}
     {$if declared(X509_pubkey_digest_introduced)}
     if LibVersion < X509_pubkey_digest_introduced then
     begin
       {$if declared(FC_X509_pubkey_digest)}
       X509_pubkey_digest := @FC_X509_pubkey_digest;
-      {$else}
-      {$if not defined(X509_pubkey_digest_allownil)}
-      X509_pubkey_digest := @ERR_X509_pubkey_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_pubkey_digest_removed)}
@@ -6514,39 +6313,31 @@ begin
     begin
       {$if declared(_X509_pubkey_digest)}
       X509_pubkey_digest := @_X509_pubkey_digest;
-      {$else}
-      {$if not defined(X509_pubkey_digest_allownil)}
-      X509_pubkey_digest := @ERR_X509_pubkey_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_pubkey_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_pubkey_digest := @ERR_X509_pubkey_digest;
+    if FuncLoadError then
       AFailed.Add('X509_pubkey_digest');
-    end;
     {$ifend}
   end;
 
 
   X509_digest := LoadLibFunction(ADllHandle, X509_digest_procname);
-  FuncLoaded := assigned(X509_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_digest_allownil)}
+    X509_digest := @ERR_X509_digest;
+    {$ifend}
     {$if declared(X509_digest_introduced)}
     if LibVersion < X509_digest_introduced then
     begin
       {$if declared(FC_X509_digest)}
       X509_digest := @FC_X509_digest;
-      {$else}
-      {$if not defined(X509_digest_allownil)}
-      X509_digest := @ERR_X509_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_digest_removed)}
@@ -6554,39 +6345,31 @@ begin
     begin
       {$if declared(_X509_digest)}
       X509_digest := @_X509_digest;
-      {$else}
-      {$if not defined(X509_digest_allownil)}
-      X509_digest := @ERR_X509_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_digest := @ERR_X509_digest;
+    if FuncLoadError then
       AFailed.Add('X509_digest');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_digest := LoadLibFunction(ADllHandle, X509_CRL_digest_procname);
-  FuncLoaded := assigned(X509_CRL_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_digest_allownil)}
+    X509_CRL_digest := @ERR_X509_CRL_digest;
+    {$ifend}
     {$if declared(X509_CRL_digest_introduced)}
     if LibVersion < X509_CRL_digest_introduced then
     begin
       {$if declared(FC_X509_CRL_digest)}
       X509_CRL_digest := @FC_X509_CRL_digest;
-      {$else}
-      {$if not defined(X509_CRL_digest_allownil)}
-      X509_CRL_digest := @ERR_X509_CRL_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_digest_removed)}
@@ -6594,39 +6377,31 @@ begin
     begin
       {$if declared(_X509_CRL_digest)}
       X509_CRL_digest := @_X509_CRL_digest;
-      {$else}
-      {$if not defined(X509_CRL_digest_allownil)}
-      X509_CRL_digest := @ERR_X509_CRL_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_digest := @ERR_X509_CRL_digest;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_digest');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_digest := LoadLibFunction(ADllHandle, X509_REQ_digest_procname);
-  FuncLoaded := assigned(X509_REQ_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_digest_allownil)}
+    X509_REQ_digest := @ERR_X509_REQ_digest;
+    {$ifend}
     {$if declared(X509_REQ_digest_introduced)}
     if LibVersion < X509_REQ_digest_introduced then
     begin
       {$if declared(FC_X509_REQ_digest)}
       X509_REQ_digest := @FC_X509_REQ_digest;
-      {$else}
-      {$if not defined(X509_REQ_digest_allownil)}
-      X509_REQ_digest := @ERR_X509_REQ_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_digest_removed)}
@@ -6634,39 +6409,31 @@ begin
     begin
       {$if declared(_X509_REQ_digest)}
       X509_REQ_digest := @_X509_REQ_digest;
-      {$else}
-      {$if not defined(X509_REQ_digest_allownil)}
-      X509_REQ_digest := @ERR_X509_REQ_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_digest := @ERR_X509_REQ_digest;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_digest');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_digest := LoadLibFunction(ADllHandle, X509_NAME_digest_procname);
-  FuncLoaded := assigned(X509_NAME_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_digest_allownil)}
+    X509_NAME_digest := @ERR_X509_NAME_digest;
+    {$ifend}
     {$if declared(X509_NAME_digest_introduced)}
     if LibVersion < X509_NAME_digest_introduced then
     begin
       {$if declared(FC_X509_NAME_digest)}
       X509_NAME_digest := @FC_X509_NAME_digest;
-      {$else}
-      {$if not defined(X509_NAME_digest_allownil)}
-      X509_NAME_digest := @ERR_X509_NAME_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_digest_removed)}
@@ -6674,39 +6441,31 @@ begin
     begin
       {$if declared(_X509_NAME_digest)}
       X509_NAME_digest := @_X509_NAME_digest;
-      {$else}
-      {$if not defined(X509_NAME_digest_allownil)}
-      X509_NAME_digest := @ERR_X509_NAME_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_digest := @ERR_X509_NAME_digest;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_digest');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_bio := LoadLibFunction(ADllHandle, d2i_X509_bio_procname);
-  FuncLoaded := assigned(d2i_X509_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_bio_allownil)}
+    d2i_X509_bio := @ERR_d2i_X509_bio;
+    {$ifend}
     {$if declared(d2i_X509_bio_introduced)}
     if LibVersion < d2i_X509_bio_introduced then
     begin
       {$if declared(FC_d2i_X509_bio)}
       d2i_X509_bio := @FC_d2i_X509_bio;
-      {$else}
-      {$if not defined(d2i_X509_bio_allownil)}
-      d2i_X509_bio := @ERR_d2i_X509_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_bio_removed)}
@@ -6714,39 +6473,31 @@ begin
     begin
       {$if declared(_d2i_X509_bio)}
       d2i_X509_bio := @_d2i_X509_bio;
-      {$else}
-      {$if not defined(d2i_X509_bio_allownil)}
-      d2i_X509_bio := @ERR_d2i_X509_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_bio := @ERR_d2i_X509_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_bio := LoadLibFunction(ADllHandle, i2d_X509_bio_procname);
-  FuncLoaded := assigned(i2d_X509_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_bio_allownil)}
+    i2d_X509_bio := @ERR_i2d_X509_bio;
+    {$ifend}
     {$if declared(i2d_X509_bio_introduced)}
     if LibVersion < i2d_X509_bio_introduced then
     begin
       {$if declared(FC_i2d_X509_bio)}
       i2d_X509_bio := @FC_i2d_X509_bio;
-      {$else}
-      {$if not defined(i2d_X509_bio_allownil)}
-      i2d_X509_bio := @ERR_i2d_X509_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_bio_removed)}
@@ -6754,39 +6505,31 @@ begin
     begin
       {$if declared(_i2d_X509_bio)}
       i2d_X509_bio := @_i2d_X509_bio;
-      {$else}
-      {$if not defined(i2d_X509_bio_allownil)}
-      i2d_X509_bio := @ERR_i2d_X509_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_bio := @ERR_i2d_X509_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_CRL_bio := LoadLibFunction(ADllHandle, d2i_X509_CRL_bio_procname);
-  FuncLoaded := assigned(d2i_X509_CRL_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_CRL_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_CRL_bio_allownil)}
+    d2i_X509_CRL_bio := @ERR_d2i_X509_CRL_bio;
+    {$ifend}
     {$if declared(d2i_X509_CRL_bio_introduced)}
     if LibVersion < d2i_X509_CRL_bio_introduced then
     begin
       {$if declared(FC_d2i_X509_CRL_bio)}
       d2i_X509_CRL_bio := @FC_d2i_X509_CRL_bio;
-      {$else}
-      {$if not defined(d2i_X509_CRL_bio_allownil)}
-      d2i_X509_CRL_bio := @ERR_d2i_X509_CRL_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_CRL_bio_removed)}
@@ -6794,39 +6537,31 @@ begin
     begin
       {$if declared(_d2i_X509_CRL_bio)}
       d2i_X509_CRL_bio := @_d2i_X509_CRL_bio;
-      {$else}
-      {$if not defined(d2i_X509_CRL_bio_allownil)}
-      d2i_X509_CRL_bio := @ERR_d2i_X509_CRL_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_CRL_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_CRL_bio := @ERR_d2i_X509_CRL_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_CRL_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_CRL_bio := LoadLibFunction(ADllHandle, i2d_X509_CRL_bio_procname);
-  FuncLoaded := assigned(i2d_X509_CRL_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_CRL_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_CRL_bio_allownil)}
+    i2d_X509_CRL_bio := @ERR_i2d_X509_CRL_bio;
+    {$ifend}
     {$if declared(i2d_X509_CRL_bio_introduced)}
     if LibVersion < i2d_X509_CRL_bio_introduced then
     begin
       {$if declared(FC_i2d_X509_CRL_bio)}
       i2d_X509_CRL_bio := @FC_i2d_X509_CRL_bio;
-      {$else}
-      {$if not defined(i2d_X509_CRL_bio_allownil)}
-      i2d_X509_CRL_bio := @ERR_i2d_X509_CRL_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_CRL_bio_removed)}
@@ -6834,39 +6569,31 @@ begin
     begin
       {$if declared(_i2d_X509_CRL_bio)}
       i2d_X509_CRL_bio := @_i2d_X509_CRL_bio;
-      {$else}
-      {$if not defined(i2d_X509_CRL_bio_allownil)}
-      i2d_X509_CRL_bio := @ERR_i2d_X509_CRL_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_CRL_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_CRL_bio := @ERR_i2d_X509_CRL_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_CRL_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_REQ_bio := LoadLibFunction(ADllHandle, d2i_X509_REQ_bio_procname);
-  FuncLoaded := assigned(d2i_X509_REQ_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_REQ_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_REQ_bio_allownil)}
+    d2i_X509_REQ_bio := @ERR_d2i_X509_REQ_bio;
+    {$ifend}
     {$if declared(d2i_X509_REQ_bio_introduced)}
     if LibVersion < d2i_X509_REQ_bio_introduced then
     begin
       {$if declared(FC_d2i_X509_REQ_bio)}
       d2i_X509_REQ_bio := @FC_d2i_X509_REQ_bio;
-      {$else}
-      {$if not defined(d2i_X509_REQ_bio_allownil)}
-      d2i_X509_REQ_bio := @ERR_d2i_X509_REQ_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_REQ_bio_removed)}
@@ -6874,39 +6601,31 @@ begin
     begin
       {$if declared(_d2i_X509_REQ_bio)}
       d2i_X509_REQ_bio := @_d2i_X509_REQ_bio;
-      {$else}
-      {$if not defined(d2i_X509_REQ_bio_allownil)}
-      d2i_X509_REQ_bio := @ERR_d2i_X509_REQ_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_REQ_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_REQ_bio := @ERR_d2i_X509_REQ_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_REQ_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_REQ_bio := LoadLibFunction(ADllHandle, i2d_X509_REQ_bio_procname);
-  FuncLoaded := assigned(i2d_X509_REQ_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_REQ_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_REQ_bio_allownil)}
+    i2d_X509_REQ_bio := @ERR_i2d_X509_REQ_bio;
+    {$ifend}
     {$if declared(i2d_X509_REQ_bio_introduced)}
     if LibVersion < i2d_X509_REQ_bio_introduced then
     begin
       {$if declared(FC_i2d_X509_REQ_bio)}
       i2d_X509_REQ_bio := @FC_i2d_X509_REQ_bio;
-      {$else}
-      {$if not defined(i2d_X509_REQ_bio_allownil)}
-      i2d_X509_REQ_bio := @ERR_i2d_X509_REQ_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_REQ_bio_removed)}
@@ -6914,39 +6633,31 @@ begin
     begin
       {$if declared(_i2d_X509_REQ_bio)}
       i2d_X509_REQ_bio := @_i2d_X509_REQ_bio;
-      {$else}
-      {$if not defined(i2d_X509_REQ_bio_allownil)}
-      i2d_X509_REQ_bio := @ERR_i2d_X509_REQ_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_REQ_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_REQ_bio := @ERR_i2d_X509_REQ_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_REQ_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_RSAPrivateKey_bio := LoadLibFunction(ADllHandle, d2i_RSAPrivateKey_bio_procname);
-  FuncLoaded := assigned(d2i_RSAPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_RSAPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_RSAPrivateKey_bio_allownil)}
+    d2i_RSAPrivateKey_bio := @ERR_d2i_RSAPrivateKey_bio;
+    {$ifend}
     {$if declared(d2i_RSAPrivateKey_bio_introduced)}
     if LibVersion < d2i_RSAPrivateKey_bio_introduced then
     begin
       {$if declared(FC_d2i_RSAPrivateKey_bio)}
       d2i_RSAPrivateKey_bio := @FC_d2i_RSAPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_RSAPrivateKey_bio_allownil)}
-      d2i_RSAPrivateKey_bio := @ERR_d2i_RSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_RSAPrivateKey_bio_removed)}
@@ -6954,39 +6665,31 @@ begin
     begin
       {$if declared(_d2i_RSAPrivateKey_bio)}
       d2i_RSAPrivateKey_bio := @_d2i_RSAPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_RSAPrivateKey_bio_allownil)}
-      d2i_RSAPrivateKey_bio := @ERR_d2i_RSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_RSAPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_RSAPrivateKey_bio := @ERR_d2i_RSAPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_RSAPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_RSAPrivateKey_bio := LoadLibFunction(ADllHandle, i2d_RSAPrivateKey_bio_procname);
-  FuncLoaded := assigned(i2d_RSAPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_RSAPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_RSAPrivateKey_bio_allownil)}
+    i2d_RSAPrivateKey_bio := @ERR_i2d_RSAPrivateKey_bio;
+    {$ifend}
     {$if declared(i2d_RSAPrivateKey_bio_introduced)}
     if LibVersion < i2d_RSAPrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2d_RSAPrivateKey_bio)}
       i2d_RSAPrivateKey_bio := @FC_i2d_RSAPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_RSAPrivateKey_bio_allownil)}
-      i2d_RSAPrivateKey_bio := @ERR_i2d_RSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_RSAPrivateKey_bio_removed)}
@@ -6994,39 +6697,31 @@ begin
     begin
       {$if declared(_i2d_RSAPrivateKey_bio)}
       i2d_RSAPrivateKey_bio := @_i2d_RSAPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_RSAPrivateKey_bio_allownil)}
-      i2d_RSAPrivateKey_bio := @ERR_i2d_RSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_RSAPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_RSAPrivateKey_bio := @ERR_i2d_RSAPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_RSAPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_RSAPublicKey_bio := LoadLibFunction(ADllHandle, d2i_RSAPublicKey_bio_procname);
-  FuncLoaded := assigned(d2i_RSAPublicKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_RSAPublicKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_RSAPublicKey_bio_allownil)}
+    d2i_RSAPublicKey_bio := @ERR_d2i_RSAPublicKey_bio;
+    {$ifend}
     {$if declared(d2i_RSAPublicKey_bio_introduced)}
     if LibVersion < d2i_RSAPublicKey_bio_introduced then
     begin
       {$if declared(FC_d2i_RSAPublicKey_bio)}
       d2i_RSAPublicKey_bio := @FC_d2i_RSAPublicKey_bio;
-      {$else}
-      {$if not defined(d2i_RSAPublicKey_bio_allownil)}
-      d2i_RSAPublicKey_bio := @ERR_d2i_RSAPublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_RSAPublicKey_bio_removed)}
@@ -7034,39 +6729,31 @@ begin
     begin
       {$if declared(_d2i_RSAPublicKey_bio)}
       d2i_RSAPublicKey_bio := @_d2i_RSAPublicKey_bio;
-      {$else}
-      {$if not defined(d2i_RSAPublicKey_bio_allownil)}
-      d2i_RSAPublicKey_bio := @ERR_d2i_RSAPublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_RSAPublicKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_RSAPublicKey_bio := @ERR_d2i_RSAPublicKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_RSAPublicKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_RSAPublicKey_bio := LoadLibFunction(ADllHandle, i2d_RSAPublicKey_bio_procname);
-  FuncLoaded := assigned(i2d_RSAPublicKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_RSAPublicKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_RSAPublicKey_bio_allownil)}
+    i2d_RSAPublicKey_bio := @ERR_i2d_RSAPublicKey_bio;
+    {$ifend}
     {$if declared(i2d_RSAPublicKey_bio_introduced)}
     if LibVersion < i2d_RSAPublicKey_bio_introduced then
     begin
       {$if declared(FC_i2d_RSAPublicKey_bio)}
       i2d_RSAPublicKey_bio := @FC_i2d_RSAPublicKey_bio;
-      {$else}
-      {$if not defined(i2d_RSAPublicKey_bio_allownil)}
-      i2d_RSAPublicKey_bio := @ERR_i2d_RSAPublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_RSAPublicKey_bio_removed)}
@@ -7074,39 +6761,31 @@ begin
     begin
       {$if declared(_i2d_RSAPublicKey_bio)}
       i2d_RSAPublicKey_bio := @_i2d_RSAPublicKey_bio;
-      {$else}
-      {$if not defined(i2d_RSAPublicKey_bio_allownil)}
-      i2d_RSAPublicKey_bio := @ERR_i2d_RSAPublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_RSAPublicKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_RSAPublicKey_bio := @ERR_i2d_RSAPublicKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_RSAPublicKey_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_RSA_PUBKEY_bio := LoadLibFunction(ADllHandle, d2i_RSA_PUBKEY_bio_procname);
-  FuncLoaded := assigned(d2i_RSA_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_RSA_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_RSA_PUBKEY_bio_allownil)}
+    d2i_RSA_PUBKEY_bio := @ERR_d2i_RSA_PUBKEY_bio;
+    {$ifend}
     {$if declared(d2i_RSA_PUBKEY_bio_introduced)}
     if LibVersion < d2i_RSA_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_d2i_RSA_PUBKEY_bio)}
       d2i_RSA_PUBKEY_bio := @FC_d2i_RSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_RSA_PUBKEY_bio_allownil)}
-      d2i_RSA_PUBKEY_bio := @ERR_d2i_RSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_RSA_PUBKEY_bio_removed)}
@@ -7114,39 +6793,31 @@ begin
     begin
       {$if declared(_d2i_RSA_PUBKEY_bio)}
       d2i_RSA_PUBKEY_bio := @_d2i_RSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_RSA_PUBKEY_bio_allownil)}
-      d2i_RSA_PUBKEY_bio := @ERR_d2i_RSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_RSA_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_RSA_PUBKEY_bio := @ERR_d2i_RSA_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_RSA_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_RSA_PUBKEY_bio := LoadLibFunction(ADllHandle, i2d_RSA_PUBKEY_bio_procname);
-  FuncLoaded := assigned(i2d_RSA_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_RSA_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_RSA_PUBKEY_bio_allownil)}
+    i2d_RSA_PUBKEY_bio := @ERR_i2d_RSA_PUBKEY_bio;
+    {$ifend}
     {$if declared(i2d_RSA_PUBKEY_bio_introduced)}
     if LibVersion < i2d_RSA_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_i2d_RSA_PUBKEY_bio)}
       i2d_RSA_PUBKEY_bio := @FC_i2d_RSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_RSA_PUBKEY_bio_allownil)}
-      i2d_RSA_PUBKEY_bio := @ERR_i2d_RSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_RSA_PUBKEY_bio_removed)}
@@ -7154,39 +6825,31 @@ begin
     begin
       {$if declared(_i2d_RSA_PUBKEY_bio)}
       i2d_RSA_PUBKEY_bio := @_i2d_RSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_RSA_PUBKEY_bio_allownil)}
-      i2d_RSA_PUBKEY_bio := @ERR_i2d_RSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_RSA_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_RSA_PUBKEY_bio := @ERR_i2d_RSA_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_RSA_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSA_PUBKEY_bio := LoadLibFunction(ADllHandle, d2i_DSA_PUBKEY_bio_procname);
-  FuncLoaded := assigned(d2i_DSA_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSA_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSA_PUBKEY_bio_allownil)}
+    d2i_DSA_PUBKEY_bio := @ERR_d2i_DSA_PUBKEY_bio;
+    {$ifend}
     {$if declared(d2i_DSA_PUBKEY_bio_introduced)}
     if LibVersion < d2i_DSA_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_d2i_DSA_PUBKEY_bio)}
       d2i_DSA_PUBKEY_bio := @FC_d2i_DSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_DSA_PUBKEY_bio_allownil)}
-      d2i_DSA_PUBKEY_bio := @ERR_d2i_DSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSA_PUBKEY_bio_removed)}
@@ -7194,39 +6857,31 @@ begin
     begin
       {$if declared(_d2i_DSA_PUBKEY_bio)}
       d2i_DSA_PUBKEY_bio := @_d2i_DSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_DSA_PUBKEY_bio_allownil)}
-      d2i_DSA_PUBKEY_bio := @ERR_d2i_DSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSA_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSA_PUBKEY_bio := @ERR_d2i_DSA_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_DSA_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSA_PUBKEY_bio := LoadLibFunction(ADllHandle, i2d_DSA_PUBKEY_bio_procname);
-  FuncLoaded := assigned(i2d_DSA_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSA_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSA_PUBKEY_bio_allownil)}
+    i2d_DSA_PUBKEY_bio := @ERR_i2d_DSA_PUBKEY_bio;
+    {$ifend}
     {$if declared(i2d_DSA_PUBKEY_bio_introduced)}
     if LibVersion < i2d_DSA_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_i2d_DSA_PUBKEY_bio)}
       i2d_DSA_PUBKEY_bio := @FC_i2d_DSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_DSA_PUBKEY_bio_allownil)}
-      i2d_DSA_PUBKEY_bio := @ERR_i2d_DSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSA_PUBKEY_bio_removed)}
@@ -7234,39 +6889,31 @@ begin
     begin
       {$if declared(_i2d_DSA_PUBKEY_bio)}
       i2d_DSA_PUBKEY_bio := @_i2d_DSA_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_DSA_PUBKEY_bio_allownil)}
-      i2d_DSA_PUBKEY_bio := @ERR_i2d_DSA_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSA_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSA_PUBKEY_bio := @ERR_i2d_DSA_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_DSA_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSAPrivateKey_bio := LoadLibFunction(ADllHandle, d2i_DSAPrivateKey_bio_procname);
-  FuncLoaded := assigned(d2i_DSAPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSAPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSAPrivateKey_bio_allownil)}
+    d2i_DSAPrivateKey_bio := @ERR_d2i_DSAPrivateKey_bio;
+    {$ifend}
     {$if declared(d2i_DSAPrivateKey_bio_introduced)}
     if LibVersion < d2i_DSAPrivateKey_bio_introduced then
     begin
       {$if declared(FC_d2i_DSAPrivateKey_bio)}
       d2i_DSAPrivateKey_bio := @FC_d2i_DSAPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_DSAPrivateKey_bio_allownil)}
-      d2i_DSAPrivateKey_bio := @ERR_d2i_DSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSAPrivateKey_bio_removed)}
@@ -7274,39 +6921,31 @@ begin
     begin
       {$if declared(_d2i_DSAPrivateKey_bio)}
       d2i_DSAPrivateKey_bio := @_d2i_DSAPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_DSAPrivateKey_bio_allownil)}
-      d2i_DSAPrivateKey_bio := @ERR_d2i_DSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSAPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSAPrivateKey_bio := @ERR_d2i_DSAPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_DSAPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSAPrivateKey_bio := LoadLibFunction(ADllHandle, i2d_DSAPrivateKey_bio_procname);
-  FuncLoaded := assigned(i2d_DSAPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSAPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSAPrivateKey_bio_allownil)}
+    i2d_DSAPrivateKey_bio := @ERR_i2d_DSAPrivateKey_bio;
+    {$ifend}
     {$if declared(i2d_DSAPrivateKey_bio_introduced)}
     if LibVersion < i2d_DSAPrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2d_DSAPrivateKey_bio)}
       i2d_DSAPrivateKey_bio := @FC_i2d_DSAPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_DSAPrivateKey_bio_allownil)}
-      i2d_DSAPrivateKey_bio := @ERR_i2d_DSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSAPrivateKey_bio_removed)}
@@ -7314,39 +6953,31 @@ begin
     begin
       {$if declared(_i2d_DSAPrivateKey_bio)}
       i2d_DSAPrivateKey_bio := @_i2d_DSAPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_DSAPrivateKey_bio_allownil)}
-      i2d_DSAPrivateKey_bio := @ERR_i2d_DSAPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSAPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSAPrivateKey_bio := @ERR_i2d_DSAPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_DSAPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_EC_PUBKEY_bio := LoadLibFunction(ADllHandle, d2i_EC_PUBKEY_bio_procname);
-  FuncLoaded := assigned(d2i_EC_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_EC_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_EC_PUBKEY_bio_allownil)}
+    d2i_EC_PUBKEY_bio := @ERR_d2i_EC_PUBKEY_bio;
+    {$ifend}
     {$if declared(d2i_EC_PUBKEY_bio_introduced)}
     if LibVersion < d2i_EC_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_d2i_EC_PUBKEY_bio)}
       d2i_EC_PUBKEY_bio := @FC_d2i_EC_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_EC_PUBKEY_bio_allownil)}
-      d2i_EC_PUBKEY_bio := @ERR_d2i_EC_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_EC_PUBKEY_bio_removed)}
@@ -7354,39 +6985,31 @@ begin
     begin
       {$if declared(_d2i_EC_PUBKEY_bio)}
       d2i_EC_PUBKEY_bio := @_d2i_EC_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_EC_PUBKEY_bio_allownil)}
-      d2i_EC_PUBKEY_bio := @ERR_d2i_EC_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_EC_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_EC_PUBKEY_bio := @ERR_d2i_EC_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_EC_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_EC_PUBKEY_bio := LoadLibFunction(ADllHandle, i2d_EC_PUBKEY_bio_procname);
-  FuncLoaded := assigned(i2d_EC_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_EC_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_EC_PUBKEY_bio_allownil)}
+    i2d_EC_PUBKEY_bio := @ERR_i2d_EC_PUBKEY_bio;
+    {$ifend}
     {$if declared(i2d_EC_PUBKEY_bio_introduced)}
     if LibVersion < i2d_EC_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_i2d_EC_PUBKEY_bio)}
       i2d_EC_PUBKEY_bio := @FC_i2d_EC_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_EC_PUBKEY_bio_allownil)}
-      i2d_EC_PUBKEY_bio := @ERR_i2d_EC_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_EC_PUBKEY_bio_removed)}
@@ -7394,39 +7017,31 @@ begin
     begin
       {$if declared(_i2d_EC_PUBKEY_bio)}
       i2d_EC_PUBKEY_bio := @_i2d_EC_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_EC_PUBKEY_bio_allownil)}
-      i2d_EC_PUBKEY_bio := @ERR_i2d_EC_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_EC_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_EC_PUBKEY_bio := @ERR_i2d_EC_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_EC_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_ECPrivateKey_bio := LoadLibFunction(ADllHandle, d2i_ECPrivateKey_bio_procname);
-  FuncLoaded := assigned(d2i_ECPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ECPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ECPrivateKey_bio_allownil)}
+    d2i_ECPrivateKey_bio := @ERR_d2i_ECPrivateKey_bio;
+    {$ifend}
     {$if declared(d2i_ECPrivateKey_bio_introduced)}
     if LibVersion < d2i_ECPrivateKey_bio_introduced then
     begin
       {$if declared(FC_d2i_ECPrivateKey_bio)}
       d2i_ECPrivateKey_bio := @FC_d2i_ECPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_ECPrivateKey_bio_allownil)}
-      d2i_ECPrivateKey_bio := @ERR_d2i_ECPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ECPrivateKey_bio_removed)}
@@ -7434,39 +7049,31 @@ begin
     begin
       {$if declared(_d2i_ECPrivateKey_bio)}
       d2i_ECPrivateKey_bio := @_d2i_ECPrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_ECPrivateKey_bio_allownil)}
-      d2i_ECPrivateKey_bio := @ERR_d2i_ECPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ECPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ECPrivateKey_bio := @ERR_d2i_ECPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_ECPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_ECPrivateKey_bio := LoadLibFunction(ADllHandle, i2d_ECPrivateKey_bio_procname);
-  FuncLoaded := assigned(i2d_ECPrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ECPrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ECPrivateKey_bio_allownil)}
+    i2d_ECPrivateKey_bio := @ERR_i2d_ECPrivateKey_bio;
+    {$ifend}
     {$if declared(i2d_ECPrivateKey_bio_introduced)}
     if LibVersion < i2d_ECPrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2d_ECPrivateKey_bio)}
       i2d_ECPrivateKey_bio := @FC_i2d_ECPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_ECPrivateKey_bio_allownil)}
-      i2d_ECPrivateKey_bio := @ERR_i2d_ECPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ECPrivateKey_bio_removed)}
@@ -7474,39 +7081,31 @@ begin
     begin
       {$if declared(_i2d_ECPrivateKey_bio)}
       i2d_ECPrivateKey_bio := @_i2d_ECPrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_ECPrivateKey_bio_allownil)}
-      i2d_ECPrivateKey_bio := @ERR_i2d_ECPrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ECPrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ECPrivateKey_bio := @ERR_i2d_ECPrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_ECPrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS8_bio := LoadLibFunction(ADllHandle, d2i_PKCS8_bio_procname);
-  FuncLoaded := assigned(d2i_PKCS8_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS8_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS8_bio_allownil)}
+    d2i_PKCS8_bio := @ERR_d2i_PKCS8_bio;
+    {$ifend}
     {$if declared(d2i_PKCS8_bio_introduced)}
     if LibVersion < d2i_PKCS8_bio_introduced then
     begin
       {$if declared(FC_d2i_PKCS8_bio)}
       d2i_PKCS8_bio := @FC_d2i_PKCS8_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8_bio_allownil)}
-      d2i_PKCS8_bio := @ERR_d2i_PKCS8_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS8_bio_removed)}
@@ -7514,39 +7113,31 @@ begin
     begin
       {$if declared(_d2i_PKCS8_bio)}
       d2i_PKCS8_bio := @_d2i_PKCS8_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8_bio_allownil)}
-      d2i_PKCS8_bio := @ERR_d2i_PKCS8_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS8_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS8_bio := @ERR_d2i_PKCS8_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS8_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS8_bio := LoadLibFunction(ADllHandle, i2d_PKCS8_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS8_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS8_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS8_bio_allownil)}
+    i2d_PKCS8_bio := @ERR_i2d_PKCS8_bio;
+    {$ifend}
     {$if declared(i2d_PKCS8_bio_introduced)}
     if LibVersion < i2d_PKCS8_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS8_bio)}
       i2d_PKCS8_bio := @FC_i2d_PKCS8_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8_bio_allownil)}
-      i2d_PKCS8_bio := @ERR_i2d_PKCS8_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS8_bio_removed)}
@@ -7554,39 +7145,31 @@ begin
     begin
       {$if declared(_i2d_PKCS8_bio)}
       i2d_PKCS8_bio := @_i2d_PKCS8_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8_bio_allownil)}
-      i2d_PKCS8_bio := @ERR_i2d_PKCS8_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS8_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS8_bio := @ERR_i2d_PKCS8_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS8_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS8_PRIV_KEY_INFO_bio := LoadLibFunction(ADllHandle, d2i_PKCS8_PRIV_KEY_INFO_bio_procname);
-  FuncLoaded := assigned(d2i_PKCS8_PRIV_KEY_INFO_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS8_PRIV_KEY_INFO_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS8_PRIV_KEY_INFO_bio_allownil)}
+    d2i_PKCS8_PRIV_KEY_INFO_bio := @ERR_d2i_PKCS8_PRIV_KEY_INFO_bio;
+    {$ifend}
     {$if declared(d2i_PKCS8_PRIV_KEY_INFO_bio_introduced)}
     if LibVersion < d2i_PKCS8_PRIV_KEY_INFO_bio_introduced then
     begin
       {$if declared(FC_d2i_PKCS8_PRIV_KEY_INFO_bio)}
       d2i_PKCS8_PRIV_KEY_INFO_bio := @FC_d2i_PKCS8_PRIV_KEY_INFO_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-      d2i_PKCS8_PRIV_KEY_INFO_bio := @ERR_d2i_PKCS8_PRIV_KEY_INFO_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS8_PRIV_KEY_INFO_bio_removed)}
@@ -7594,39 +7177,31 @@ begin
     begin
       {$if declared(_d2i_PKCS8_PRIV_KEY_INFO_bio)}
       d2i_PKCS8_PRIV_KEY_INFO_bio := @_d2i_PKCS8_PRIV_KEY_INFO_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-      d2i_PKCS8_PRIV_KEY_INFO_bio := @ERR_d2i_PKCS8_PRIV_KEY_INFO_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS8_PRIV_KEY_INFO_bio := @ERR_d2i_PKCS8_PRIV_KEY_INFO_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS8_PRIV_KEY_INFO_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS8_PRIV_KEY_INFO_bio := LoadLibFunction(ADllHandle, i2d_PKCS8_PRIV_KEY_INFO_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS8_PRIV_KEY_INFO_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS8_PRIV_KEY_INFO_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS8_PRIV_KEY_INFO_bio_allownil)}
+    i2d_PKCS8_PRIV_KEY_INFO_bio := @ERR_i2d_PKCS8_PRIV_KEY_INFO_bio;
+    {$ifend}
     {$if declared(i2d_PKCS8_PRIV_KEY_INFO_bio_introduced)}
     if LibVersion < i2d_PKCS8_PRIV_KEY_INFO_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS8_PRIV_KEY_INFO_bio)}
       i2d_PKCS8_PRIV_KEY_INFO_bio := @FC_i2d_PKCS8_PRIV_KEY_INFO_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-      i2d_PKCS8_PRIV_KEY_INFO_bio := @ERR_i2d_PKCS8_PRIV_KEY_INFO_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS8_PRIV_KEY_INFO_bio_removed)}
@@ -7634,39 +7209,31 @@ begin
     begin
       {$if declared(_i2d_PKCS8_PRIV_KEY_INFO_bio)}
       i2d_PKCS8_PRIV_KEY_INFO_bio := @_i2d_PKCS8_PRIV_KEY_INFO_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-      i2d_PKCS8_PRIV_KEY_INFO_bio := @ERR_i2d_PKCS8_PRIV_KEY_INFO_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS8_PRIV_KEY_INFO_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS8_PRIV_KEY_INFO_bio := @ERR_i2d_PKCS8_PRIV_KEY_INFO_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS8_PRIV_KEY_INFO_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS8PrivateKeyInfo_bio := LoadLibFunction(ADllHandle, i2d_PKCS8PrivateKeyInfo_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS8PrivateKeyInfo_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS8PrivateKeyInfo_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS8PrivateKeyInfo_bio_allownil)}
+    i2d_PKCS8PrivateKeyInfo_bio := @ERR_i2d_PKCS8PrivateKeyInfo_bio;
+    {$ifend}
     {$if declared(i2d_PKCS8PrivateKeyInfo_bio_introduced)}
     if LibVersion < i2d_PKCS8PrivateKeyInfo_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS8PrivateKeyInfo_bio)}
       i2d_PKCS8PrivateKeyInfo_bio := @FC_i2d_PKCS8PrivateKeyInfo_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKeyInfo_bio_allownil)}
-      i2d_PKCS8PrivateKeyInfo_bio := @ERR_i2d_PKCS8PrivateKeyInfo_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS8PrivateKeyInfo_bio_removed)}
@@ -7674,39 +7241,31 @@ begin
     begin
       {$if declared(_i2d_PKCS8PrivateKeyInfo_bio)}
       i2d_PKCS8PrivateKeyInfo_bio := @_i2d_PKCS8PrivateKeyInfo_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKeyInfo_bio_allownil)}
-      i2d_PKCS8PrivateKeyInfo_bio := @ERR_i2d_PKCS8PrivateKeyInfo_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS8PrivateKeyInfo_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS8PrivateKeyInfo_bio := @ERR_i2d_PKCS8PrivateKeyInfo_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS8PrivateKeyInfo_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PrivateKey_bio := LoadLibFunction(ADllHandle, i2d_PrivateKey_bio_procname);
-  FuncLoaded := assigned(i2d_PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PrivateKey_bio_allownil)}
+    i2d_PrivateKey_bio := @ERR_i2d_PrivateKey_bio;
+    {$ifend}
     {$if declared(i2d_PrivateKey_bio_introduced)}
     if LibVersion < i2d_PrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2d_PrivateKey_bio)}
       i2d_PrivateKey_bio := @FC_i2d_PrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_PrivateKey_bio_allownil)}
-      i2d_PrivateKey_bio := @ERR_i2d_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PrivateKey_bio_removed)}
@@ -7714,39 +7273,31 @@ begin
     begin
       {$if declared(_i2d_PrivateKey_bio)}
       i2d_PrivateKey_bio := @_i2d_PrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_PrivateKey_bio_allownil)}
-      i2d_PrivateKey_bio := @ERR_i2d_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PrivateKey_bio := @ERR_i2d_PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PrivateKey_bio := LoadLibFunction(ADllHandle, d2i_PrivateKey_bio_procname);
-  FuncLoaded := assigned(d2i_PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PrivateKey_bio_allownil)}
+    d2i_PrivateKey_bio := @ERR_d2i_PrivateKey_bio;
+    {$ifend}
     {$if declared(d2i_PrivateKey_bio_introduced)}
     if LibVersion < d2i_PrivateKey_bio_introduced then
     begin
       {$if declared(FC_d2i_PrivateKey_bio)}
       d2i_PrivateKey_bio := @FC_d2i_PrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_PrivateKey_bio_allownil)}
-      d2i_PrivateKey_bio := @ERR_d2i_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PrivateKey_bio_removed)}
@@ -7754,39 +7305,31 @@ begin
     begin
       {$if declared(_d2i_PrivateKey_bio)}
       d2i_PrivateKey_bio := @_d2i_PrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_PrivateKey_bio_allownil)}
-      d2i_PrivateKey_bio := @ERR_d2i_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PrivateKey_bio := @ERR_d2i_PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PUBKEY_bio := LoadLibFunction(ADllHandle, i2d_PUBKEY_bio_procname);
-  FuncLoaded := assigned(i2d_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PUBKEY_bio_allownil)}
+    i2d_PUBKEY_bio := @ERR_i2d_PUBKEY_bio;
+    {$ifend}
     {$if declared(i2d_PUBKEY_bio_introduced)}
     if LibVersion < i2d_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_i2d_PUBKEY_bio)}
       i2d_PUBKEY_bio := @FC_i2d_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_PUBKEY_bio_allownil)}
-      i2d_PUBKEY_bio := @ERR_i2d_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PUBKEY_bio_removed)}
@@ -7794,39 +7337,31 @@ begin
     begin
       {$if declared(_i2d_PUBKEY_bio)}
       i2d_PUBKEY_bio := @_i2d_PUBKEY_bio;
-      {$else}
-      {$if not defined(i2d_PUBKEY_bio_allownil)}
-      i2d_PUBKEY_bio := @ERR_i2d_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PUBKEY_bio := @ERR_i2d_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PUBKEY_bio := LoadLibFunction(ADllHandle, d2i_PUBKEY_bio_procname);
-  FuncLoaded := assigned(d2i_PUBKEY_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PUBKEY_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PUBKEY_bio_allownil)}
+    d2i_PUBKEY_bio := @ERR_d2i_PUBKEY_bio;
+    {$ifend}
     {$if declared(d2i_PUBKEY_bio_introduced)}
     if LibVersion < d2i_PUBKEY_bio_introduced then
     begin
       {$if declared(FC_d2i_PUBKEY_bio)}
       d2i_PUBKEY_bio := @FC_d2i_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_PUBKEY_bio_allownil)}
-      d2i_PUBKEY_bio := @ERR_d2i_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PUBKEY_bio_removed)}
@@ -7834,39 +7369,31 @@ begin
     begin
       {$if declared(_d2i_PUBKEY_bio)}
       d2i_PUBKEY_bio := @_d2i_PUBKEY_bio;
-      {$else}
-      {$if not defined(d2i_PUBKEY_bio_allownil)}
-      d2i_PUBKEY_bio := @ERR_d2i_PUBKEY_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PUBKEY_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PUBKEY_bio := @ERR_d2i_PUBKEY_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PUBKEY_bio');
-    end;
     {$ifend}
   end;
 
 
   X509_dup := LoadLibFunction(ADllHandle, X509_dup_procname);
-  FuncLoaded := assigned(X509_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_dup_allownil)}
+    X509_dup := @ERR_X509_dup;
+    {$ifend}
     {$if declared(X509_dup_introduced)}
     if LibVersion < X509_dup_introduced then
     begin
       {$if declared(FC_X509_dup)}
       X509_dup := @FC_X509_dup;
-      {$else}
-      {$if not defined(X509_dup_allownil)}
-      X509_dup := @ERR_X509_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_dup_removed)}
@@ -7874,39 +7401,31 @@ begin
     begin
       {$if declared(_X509_dup)}
       X509_dup := @_X509_dup;
-      {$else}
-      {$if not defined(X509_dup_allownil)}
-      X509_dup := @ERR_X509_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_dup := @ERR_X509_dup;
+    if FuncLoadError then
       AFailed.Add('X509_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_dup := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_dup_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_dup_allownil)}
+    X509_ATTRIBUTE_dup := @ERR_X509_ATTRIBUTE_dup;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_dup_introduced)}
     if LibVersion < X509_ATTRIBUTE_dup_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_dup)}
       X509_ATTRIBUTE_dup := @FC_X509_ATTRIBUTE_dup;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_dup_allownil)}
-      X509_ATTRIBUTE_dup := @ERR_X509_ATTRIBUTE_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_dup_removed)}
@@ -7914,39 +7433,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_dup)}
       X509_ATTRIBUTE_dup := @_X509_ATTRIBUTE_dup;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_dup_allownil)}
-      X509_ATTRIBUTE_dup := @ERR_X509_ATTRIBUTE_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_dup := @ERR_X509_ATTRIBUTE_dup;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_dup := LoadLibFunction(ADllHandle, X509_EXTENSION_dup_procname);
-  FuncLoaded := assigned(X509_EXTENSION_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_dup_allownil)}
+    X509_EXTENSION_dup := @ERR_X509_EXTENSION_dup;
+    {$ifend}
     {$if declared(X509_EXTENSION_dup_introduced)}
     if LibVersion < X509_EXTENSION_dup_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_dup)}
       X509_EXTENSION_dup := @FC_X509_EXTENSION_dup;
-      {$else}
-      {$if not defined(X509_EXTENSION_dup_allownil)}
-      X509_EXTENSION_dup := @ERR_X509_EXTENSION_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_dup_removed)}
@@ -7954,39 +7465,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_dup)}
       X509_EXTENSION_dup := @_X509_EXTENSION_dup;
-      {$else}
-      {$if not defined(X509_EXTENSION_dup_allownil)}
-      X509_EXTENSION_dup := @ERR_X509_EXTENSION_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_dup := @ERR_X509_EXTENSION_dup;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_dup := LoadLibFunction(ADllHandle, X509_CRL_dup_procname);
-  FuncLoaded := assigned(X509_CRL_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_dup_allownil)}
+    X509_CRL_dup := @ERR_X509_CRL_dup;
+    {$ifend}
     {$if declared(X509_CRL_dup_introduced)}
     if LibVersion < X509_CRL_dup_introduced then
     begin
       {$if declared(FC_X509_CRL_dup)}
       X509_CRL_dup := @FC_X509_CRL_dup;
-      {$else}
-      {$if not defined(X509_CRL_dup_allownil)}
-      X509_CRL_dup := @ERR_X509_CRL_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_dup_removed)}
@@ -7994,39 +7497,31 @@ begin
     begin
       {$if declared(_X509_CRL_dup)}
       X509_CRL_dup := @_X509_CRL_dup;
-      {$else}
-      {$if not defined(X509_CRL_dup_allownil)}
-      X509_CRL_dup := @ERR_X509_CRL_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_dup := @ERR_X509_CRL_dup;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_dup := LoadLibFunction(ADllHandle, X509_REVOKED_dup_procname);
-  FuncLoaded := assigned(X509_REVOKED_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_dup_allownil)}
+    X509_REVOKED_dup := @ERR_X509_REVOKED_dup;
+    {$ifend}
     {$if declared(X509_REVOKED_dup_introduced)}
     if LibVersion < X509_REVOKED_dup_introduced then
     begin
       {$if declared(FC_X509_REVOKED_dup)}
       X509_REVOKED_dup := @FC_X509_REVOKED_dup;
-      {$else}
-      {$if not defined(X509_REVOKED_dup_allownil)}
-      X509_REVOKED_dup := @ERR_X509_REVOKED_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_dup_removed)}
@@ -8034,39 +7529,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_dup)}
       X509_REVOKED_dup := @_X509_REVOKED_dup;
-      {$else}
-      {$if not defined(X509_REVOKED_dup_allownil)}
-      X509_REVOKED_dup := @ERR_X509_REVOKED_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_dup := @ERR_X509_REVOKED_dup;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_dup := LoadLibFunction(ADllHandle, X509_REQ_dup_procname);
-  FuncLoaded := assigned(X509_REQ_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_dup_allownil)}
+    X509_REQ_dup := @ERR_X509_REQ_dup;
+    {$ifend}
     {$if declared(X509_REQ_dup_introduced)}
     if LibVersion < X509_REQ_dup_introduced then
     begin
       {$if declared(FC_X509_REQ_dup)}
       X509_REQ_dup := @FC_X509_REQ_dup;
-      {$else}
-      {$if not defined(X509_REQ_dup_allownil)}
-      X509_REQ_dup := @ERR_X509_REQ_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_dup_removed)}
@@ -8074,39 +7561,31 @@ begin
     begin
       {$if declared(_X509_REQ_dup)}
       X509_REQ_dup := @_X509_REQ_dup;
-      {$else}
-      {$if not defined(X509_REQ_dup_allownil)}
-      X509_REQ_dup := @ERR_X509_REQ_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_dup := @ERR_X509_REQ_dup;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_dup := LoadLibFunction(ADllHandle, X509_ALGOR_dup_procname);
-  FuncLoaded := assigned(X509_ALGOR_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_dup_allownil)}
+    X509_ALGOR_dup := @ERR_X509_ALGOR_dup;
+    {$ifend}
     {$if declared(X509_ALGOR_dup_introduced)}
     if LibVersion < X509_ALGOR_dup_introduced then
     begin
       {$if declared(FC_X509_ALGOR_dup)}
       X509_ALGOR_dup := @FC_X509_ALGOR_dup;
-      {$else}
-      {$if not defined(X509_ALGOR_dup_allownil)}
-      X509_ALGOR_dup := @ERR_X509_ALGOR_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_dup_removed)}
@@ -8114,39 +7593,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_dup)}
       X509_ALGOR_dup := @_X509_ALGOR_dup;
-      {$else}
-      {$if not defined(X509_ALGOR_dup_allownil)}
-      X509_ALGOR_dup := @ERR_X509_ALGOR_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_dup := @ERR_X509_ALGOR_dup;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_set0 := LoadLibFunction(ADllHandle, X509_ALGOR_set0_procname);
-  FuncLoaded := assigned(X509_ALGOR_set0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_set0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_set0_allownil)}
+    X509_ALGOR_set0 := @ERR_X509_ALGOR_set0;
+    {$ifend}
     {$if declared(X509_ALGOR_set0_introduced)}
     if LibVersion < X509_ALGOR_set0_introduced then
     begin
       {$if declared(FC_X509_ALGOR_set0)}
       X509_ALGOR_set0 := @FC_X509_ALGOR_set0;
-      {$else}
-      {$if not defined(X509_ALGOR_set0_allownil)}
-      X509_ALGOR_set0 := @ERR_X509_ALGOR_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_set0_removed)}
@@ -8154,39 +7625,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_set0)}
       X509_ALGOR_set0 := @_X509_ALGOR_set0;
-      {$else}
-      {$if not defined(X509_ALGOR_set0_allownil)}
-      X509_ALGOR_set0 := @ERR_X509_ALGOR_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_set0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_set0 := @ERR_X509_ALGOR_set0;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_set0');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_get0 := LoadLibFunction(ADllHandle, X509_ALGOR_get0_procname);
-  FuncLoaded := assigned(X509_ALGOR_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_get0_allownil)}
+    X509_ALGOR_get0 := @ERR_X509_ALGOR_get0;
+    {$ifend}
     {$if declared(X509_ALGOR_get0_introduced)}
     if LibVersion < X509_ALGOR_get0_introduced then
     begin
       {$if declared(FC_X509_ALGOR_get0)}
       X509_ALGOR_get0 := @FC_X509_ALGOR_get0;
-      {$else}
-      {$if not defined(X509_ALGOR_get0_allownil)}
-      X509_ALGOR_get0 := @ERR_X509_ALGOR_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_get0_removed)}
@@ -8194,39 +7657,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_get0)}
       X509_ALGOR_get0 := @_X509_ALGOR_get0;
-      {$else}
-      {$if not defined(X509_ALGOR_get0_allownil)}
-      X509_ALGOR_get0 := @ERR_X509_ALGOR_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_get0 := @ERR_X509_ALGOR_get0;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_get0');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_set_md := LoadLibFunction(ADllHandle, X509_ALGOR_set_md_procname);
-  FuncLoaded := assigned(X509_ALGOR_set_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_set_md);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_set_md_allownil)}
+    X509_ALGOR_set_md := @ERR_X509_ALGOR_set_md;
+    {$ifend}
     {$if declared(X509_ALGOR_set_md_introduced)}
     if LibVersion < X509_ALGOR_set_md_introduced then
     begin
       {$if declared(FC_X509_ALGOR_set_md)}
       X509_ALGOR_set_md := @FC_X509_ALGOR_set_md;
-      {$else}
-      {$if not defined(X509_ALGOR_set_md_allownil)}
-      X509_ALGOR_set_md := @ERR_X509_ALGOR_set_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_set_md_removed)}
@@ -8234,39 +7689,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_set_md)}
       X509_ALGOR_set_md := @_X509_ALGOR_set_md;
-      {$else}
-      {$if not defined(X509_ALGOR_set_md_allownil)}
-      X509_ALGOR_set_md := @ERR_X509_ALGOR_set_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_set_md_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_set_md := @ERR_X509_ALGOR_set_md;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_set_md');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_cmp := LoadLibFunction(ADllHandle, X509_ALGOR_cmp_procname);
-  FuncLoaded := assigned(X509_ALGOR_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_cmp_allownil)}
+    X509_ALGOR_cmp := @ERR_X509_ALGOR_cmp;
+    {$ifend}
     {$if declared(X509_ALGOR_cmp_introduced)}
     if LibVersion < X509_ALGOR_cmp_introduced then
     begin
       {$if declared(FC_X509_ALGOR_cmp)}
       X509_ALGOR_cmp := @FC_X509_ALGOR_cmp;
-      {$else}
-      {$if not defined(X509_ALGOR_cmp_allownil)}
-      X509_ALGOR_cmp := @ERR_X509_ALGOR_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_cmp_removed)}
@@ -8274,39 +7721,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_cmp)}
       X509_ALGOR_cmp := @_X509_ALGOR_cmp;
-      {$else}
-      {$if not defined(X509_ALGOR_cmp_allownil)}
-      X509_ALGOR_cmp := @ERR_X509_ALGOR_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_cmp := @ERR_X509_ALGOR_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_dup := LoadLibFunction(ADllHandle, X509_NAME_dup_procname);
-  FuncLoaded := assigned(X509_NAME_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_dup_allownil)}
+    X509_NAME_dup := @ERR_X509_NAME_dup;
+    {$ifend}
     {$if declared(X509_NAME_dup_introduced)}
     if LibVersion < X509_NAME_dup_introduced then
     begin
       {$if declared(FC_X509_NAME_dup)}
       X509_NAME_dup := @FC_X509_NAME_dup;
-      {$else}
-      {$if not defined(X509_NAME_dup_allownil)}
-      X509_NAME_dup := @ERR_X509_NAME_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_dup_removed)}
@@ -8314,39 +7753,31 @@ begin
     begin
       {$if declared(_X509_NAME_dup)}
       X509_NAME_dup := @_X509_NAME_dup;
-      {$else}
-      {$if not defined(X509_NAME_dup_allownil)}
-      X509_NAME_dup := @ERR_X509_NAME_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_dup := @ERR_X509_NAME_dup;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_dup := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_dup_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_dup_allownil)}
+    X509_NAME_ENTRY_dup := @ERR_X509_NAME_ENTRY_dup;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_dup_introduced)}
     if LibVersion < X509_NAME_ENTRY_dup_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_dup)}
       X509_NAME_ENTRY_dup := @FC_X509_NAME_ENTRY_dup;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_dup_allownil)}
-      X509_NAME_ENTRY_dup := @ERR_X509_NAME_ENTRY_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_dup_removed)}
@@ -8354,39 +7785,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_dup)}
       X509_NAME_ENTRY_dup := @_X509_NAME_ENTRY_dup;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_dup_allownil)}
-      X509_NAME_ENTRY_dup := @ERR_X509_NAME_ENTRY_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_dup := @ERR_X509_NAME_ENTRY_dup;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_dup');
-    end;
     {$ifend}
   end;
 
 
   X509_cmp_time := LoadLibFunction(ADllHandle, X509_cmp_time_procname);
-  FuncLoaded := assigned(X509_cmp_time);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_cmp_time);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_cmp_time_allownil)}
+    X509_cmp_time := @ERR_X509_cmp_time;
+    {$ifend}
     {$if declared(X509_cmp_time_introduced)}
     if LibVersion < X509_cmp_time_introduced then
     begin
       {$if declared(FC_X509_cmp_time)}
       X509_cmp_time := @FC_X509_cmp_time;
-      {$else}
-      {$if not defined(X509_cmp_time_allownil)}
-      X509_cmp_time := @ERR_X509_cmp_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_cmp_time_removed)}
@@ -8394,39 +7817,31 @@ begin
     begin
       {$if declared(_X509_cmp_time)}
       X509_cmp_time := @_X509_cmp_time;
-      {$else}
-      {$if not defined(X509_cmp_time_allownil)}
-      X509_cmp_time := @ERR_X509_cmp_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_cmp_time_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_cmp_time := @ERR_X509_cmp_time;
+    if FuncLoadError then
       AFailed.Add('X509_cmp_time');
-    end;
     {$ifend}
   end;
 
 
   X509_cmp_current_time := LoadLibFunction(ADllHandle, X509_cmp_current_time_procname);
-  FuncLoaded := assigned(X509_cmp_current_time);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_cmp_current_time);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_cmp_current_time_allownil)}
+    X509_cmp_current_time := @ERR_X509_cmp_current_time;
+    {$ifend}
     {$if declared(X509_cmp_current_time_introduced)}
     if LibVersion < X509_cmp_current_time_introduced then
     begin
       {$if declared(FC_X509_cmp_current_time)}
       X509_cmp_current_time := @FC_X509_cmp_current_time;
-      {$else}
-      {$if not defined(X509_cmp_current_time_allownil)}
-      X509_cmp_current_time := @ERR_X509_cmp_current_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_cmp_current_time_removed)}
@@ -8434,39 +7849,31 @@ begin
     begin
       {$if declared(_X509_cmp_current_time)}
       X509_cmp_current_time := @_X509_cmp_current_time;
-      {$else}
-      {$if not defined(X509_cmp_current_time_allownil)}
-      X509_cmp_current_time := @ERR_X509_cmp_current_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_cmp_current_time_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_cmp_current_time := @ERR_X509_cmp_current_time;
+    if FuncLoadError then
       AFailed.Add('X509_cmp_current_time');
-    end;
     {$ifend}
   end;
 
 
   X509_time_adj := LoadLibFunction(ADllHandle, X509_time_adj_procname);
-  FuncLoaded := assigned(X509_time_adj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_time_adj);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_time_adj_allownil)}
+    X509_time_adj := @ERR_X509_time_adj;
+    {$ifend}
     {$if declared(X509_time_adj_introduced)}
     if LibVersion < X509_time_adj_introduced then
     begin
       {$if declared(FC_X509_time_adj)}
       X509_time_adj := @FC_X509_time_adj;
-      {$else}
-      {$if not defined(X509_time_adj_allownil)}
-      X509_time_adj := @ERR_X509_time_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_time_adj_removed)}
@@ -8474,39 +7881,31 @@ begin
     begin
       {$if declared(_X509_time_adj)}
       X509_time_adj := @_X509_time_adj;
-      {$else}
-      {$if not defined(X509_time_adj_allownil)}
-      X509_time_adj := @ERR_X509_time_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_time_adj_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_time_adj := @ERR_X509_time_adj;
+    if FuncLoadError then
       AFailed.Add('X509_time_adj');
-    end;
     {$ifend}
   end;
 
 
   X509_time_adj_ex := LoadLibFunction(ADllHandle, X509_time_adj_ex_procname);
-  FuncLoaded := assigned(X509_time_adj_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_time_adj_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_time_adj_ex_allownil)}
+    X509_time_adj_ex := @ERR_X509_time_adj_ex;
+    {$ifend}
     {$if declared(X509_time_adj_ex_introduced)}
     if LibVersion < X509_time_adj_ex_introduced then
     begin
       {$if declared(FC_X509_time_adj_ex)}
       X509_time_adj_ex := @FC_X509_time_adj_ex;
-      {$else}
-      {$if not defined(X509_time_adj_ex_allownil)}
-      X509_time_adj_ex := @ERR_X509_time_adj_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_time_adj_ex_removed)}
@@ -8514,39 +7913,31 @@ begin
     begin
       {$if declared(_X509_time_adj_ex)}
       X509_time_adj_ex := @_X509_time_adj_ex;
-      {$else}
-      {$if not defined(X509_time_adj_ex_allownil)}
-      X509_time_adj_ex := @ERR_X509_time_adj_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_time_adj_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_time_adj_ex := @ERR_X509_time_adj_ex;
+    if FuncLoadError then
       AFailed.Add('X509_time_adj_ex');
-    end;
     {$ifend}
   end;
 
 
   X509_gmtime_adj := LoadLibFunction(ADllHandle, X509_gmtime_adj_procname);
-  FuncLoaded := assigned(X509_gmtime_adj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_gmtime_adj);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_gmtime_adj_allownil)}
+    X509_gmtime_adj := @ERR_X509_gmtime_adj;
+    {$ifend}
     {$if declared(X509_gmtime_adj_introduced)}
     if LibVersion < X509_gmtime_adj_introduced then
     begin
       {$if declared(FC_X509_gmtime_adj)}
       X509_gmtime_adj := @FC_X509_gmtime_adj;
-      {$else}
-      {$if not defined(X509_gmtime_adj_allownil)}
-      X509_gmtime_adj := @ERR_X509_gmtime_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_gmtime_adj_removed)}
@@ -8554,39 +7945,31 @@ begin
     begin
       {$if declared(_X509_gmtime_adj)}
       X509_gmtime_adj := @_X509_gmtime_adj;
-      {$else}
-      {$if not defined(X509_gmtime_adj_allownil)}
-      X509_gmtime_adj := @ERR_X509_gmtime_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_gmtime_adj_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_gmtime_adj := @ERR_X509_gmtime_adj;
+    if FuncLoadError then
       AFailed.Add('X509_gmtime_adj');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_cert_area := LoadLibFunction(ADllHandle, X509_get_default_cert_area_procname);
-  FuncLoaded := assigned(X509_get_default_cert_area);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_cert_area);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_cert_area_allownil)}
+    X509_get_default_cert_area := @ERR_X509_get_default_cert_area;
+    {$ifend}
     {$if declared(X509_get_default_cert_area_introduced)}
     if LibVersion < X509_get_default_cert_area_introduced then
     begin
       {$if declared(FC_X509_get_default_cert_area)}
       X509_get_default_cert_area := @FC_X509_get_default_cert_area;
-      {$else}
-      {$if not defined(X509_get_default_cert_area_allownil)}
-      X509_get_default_cert_area := @ERR_X509_get_default_cert_area;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_cert_area_removed)}
@@ -8594,39 +7977,31 @@ begin
     begin
       {$if declared(_X509_get_default_cert_area)}
       X509_get_default_cert_area := @_X509_get_default_cert_area;
-      {$else}
-      {$if not defined(X509_get_default_cert_area_allownil)}
-      X509_get_default_cert_area := @ERR_X509_get_default_cert_area;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_cert_area_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_cert_area := @ERR_X509_get_default_cert_area;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_cert_area');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_cert_dir := LoadLibFunction(ADllHandle, X509_get_default_cert_dir_procname);
-  FuncLoaded := assigned(X509_get_default_cert_dir);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_cert_dir);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_cert_dir_allownil)}
+    X509_get_default_cert_dir := @ERR_X509_get_default_cert_dir;
+    {$ifend}
     {$if declared(X509_get_default_cert_dir_introduced)}
     if LibVersion < X509_get_default_cert_dir_introduced then
     begin
       {$if declared(FC_X509_get_default_cert_dir)}
       X509_get_default_cert_dir := @FC_X509_get_default_cert_dir;
-      {$else}
-      {$if not defined(X509_get_default_cert_dir_allownil)}
-      X509_get_default_cert_dir := @ERR_X509_get_default_cert_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_cert_dir_removed)}
@@ -8634,39 +8009,31 @@ begin
     begin
       {$if declared(_X509_get_default_cert_dir)}
       X509_get_default_cert_dir := @_X509_get_default_cert_dir;
-      {$else}
-      {$if not defined(X509_get_default_cert_dir_allownil)}
-      X509_get_default_cert_dir := @ERR_X509_get_default_cert_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_cert_dir_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_cert_dir := @ERR_X509_get_default_cert_dir;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_cert_dir');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_cert_file := LoadLibFunction(ADllHandle, X509_get_default_cert_file_procname);
-  FuncLoaded := assigned(X509_get_default_cert_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_cert_file);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_cert_file_allownil)}
+    X509_get_default_cert_file := @ERR_X509_get_default_cert_file;
+    {$ifend}
     {$if declared(X509_get_default_cert_file_introduced)}
     if LibVersion < X509_get_default_cert_file_introduced then
     begin
       {$if declared(FC_X509_get_default_cert_file)}
       X509_get_default_cert_file := @FC_X509_get_default_cert_file;
-      {$else}
-      {$if not defined(X509_get_default_cert_file_allownil)}
-      X509_get_default_cert_file := @ERR_X509_get_default_cert_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_cert_file_removed)}
@@ -8674,39 +8041,31 @@ begin
     begin
       {$if declared(_X509_get_default_cert_file)}
       X509_get_default_cert_file := @_X509_get_default_cert_file;
-      {$else}
-      {$if not defined(X509_get_default_cert_file_allownil)}
-      X509_get_default_cert_file := @ERR_X509_get_default_cert_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_cert_file_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_cert_file := @ERR_X509_get_default_cert_file;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_cert_file');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_cert_dir_env := LoadLibFunction(ADllHandle, X509_get_default_cert_dir_env_procname);
-  FuncLoaded := assigned(X509_get_default_cert_dir_env);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_cert_dir_env);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_cert_dir_env_allownil)}
+    X509_get_default_cert_dir_env := @ERR_X509_get_default_cert_dir_env;
+    {$ifend}
     {$if declared(X509_get_default_cert_dir_env_introduced)}
     if LibVersion < X509_get_default_cert_dir_env_introduced then
     begin
       {$if declared(FC_X509_get_default_cert_dir_env)}
       X509_get_default_cert_dir_env := @FC_X509_get_default_cert_dir_env;
-      {$else}
-      {$if not defined(X509_get_default_cert_dir_env_allownil)}
-      X509_get_default_cert_dir_env := @ERR_X509_get_default_cert_dir_env;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_cert_dir_env_removed)}
@@ -8714,39 +8073,31 @@ begin
     begin
       {$if declared(_X509_get_default_cert_dir_env)}
       X509_get_default_cert_dir_env := @_X509_get_default_cert_dir_env;
-      {$else}
-      {$if not defined(X509_get_default_cert_dir_env_allownil)}
-      X509_get_default_cert_dir_env := @ERR_X509_get_default_cert_dir_env;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_cert_dir_env_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_cert_dir_env := @ERR_X509_get_default_cert_dir_env;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_cert_dir_env');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_cert_file_env := LoadLibFunction(ADllHandle, X509_get_default_cert_file_env_procname);
-  FuncLoaded := assigned(X509_get_default_cert_file_env);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_cert_file_env);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_cert_file_env_allownil)}
+    X509_get_default_cert_file_env := @ERR_X509_get_default_cert_file_env;
+    {$ifend}
     {$if declared(X509_get_default_cert_file_env_introduced)}
     if LibVersion < X509_get_default_cert_file_env_introduced then
     begin
       {$if declared(FC_X509_get_default_cert_file_env)}
       X509_get_default_cert_file_env := @FC_X509_get_default_cert_file_env;
-      {$else}
-      {$if not defined(X509_get_default_cert_file_env_allownil)}
-      X509_get_default_cert_file_env := @ERR_X509_get_default_cert_file_env;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_cert_file_env_removed)}
@@ -8754,39 +8105,31 @@ begin
     begin
       {$if declared(_X509_get_default_cert_file_env)}
       X509_get_default_cert_file_env := @_X509_get_default_cert_file_env;
-      {$else}
-      {$if not defined(X509_get_default_cert_file_env_allownil)}
-      X509_get_default_cert_file_env := @ERR_X509_get_default_cert_file_env;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_cert_file_env_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_cert_file_env := @ERR_X509_get_default_cert_file_env;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_cert_file_env');
-    end;
     {$ifend}
   end;
 
 
   X509_get_default_private_dir := LoadLibFunction(ADllHandle, X509_get_default_private_dir_procname);
-  FuncLoaded := assigned(X509_get_default_private_dir);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_default_private_dir);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_default_private_dir_allownil)}
+    X509_get_default_private_dir := @ERR_X509_get_default_private_dir;
+    {$ifend}
     {$if declared(X509_get_default_private_dir_introduced)}
     if LibVersion < X509_get_default_private_dir_introduced then
     begin
       {$if declared(FC_X509_get_default_private_dir)}
       X509_get_default_private_dir := @FC_X509_get_default_private_dir;
-      {$else}
-      {$if not defined(X509_get_default_private_dir_allownil)}
-      X509_get_default_private_dir := @ERR_X509_get_default_private_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_default_private_dir_removed)}
@@ -8794,39 +8137,31 @@ begin
     begin
       {$if declared(_X509_get_default_private_dir)}
       X509_get_default_private_dir := @_X509_get_default_private_dir;
-      {$else}
-      {$if not defined(X509_get_default_private_dir_allownil)}
-      X509_get_default_private_dir := @ERR_X509_get_default_private_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_default_private_dir_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_default_private_dir := @ERR_X509_get_default_private_dir;
+    if FuncLoadError then
       AFailed.Add('X509_get_default_private_dir');
-    end;
     {$ifend}
   end;
 
 
   X509_to_X509_REQ := LoadLibFunction(ADllHandle, X509_to_X509_REQ_procname);
-  FuncLoaded := assigned(X509_to_X509_REQ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_to_X509_REQ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_to_X509_REQ_allownil)}
+    X509_to_X509_REQ := @ERR_X509_to_X509_REQ;
+    {$ifend}
     {$if declared(X509_to_X509_REQ_introduced)}
     if LibVersion < X509_to_X509_REQ_introduced then
     begin
       {$if declared(FC_X509_to_X509_REQ)}
       X509_to_X509_REQ := @FC_X509_to_X509_REQ;
-      {$else}
-      {$if not defined(X509_to_X509_REQ_allownil)}
-      X509_to_X509_REQ := @ERR_X509_to_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_to_X509_REQ_removed)}
@@ -8834,39 +8169,31 @@ begin
     begin
       {$if declared(_X509_to_X509_REQ)}
       X509_to_X509_REQ := @_X509_to_X509_REQ;
-      {$else}
-      {$if not defined(X509_to_X509_REQ_allownil)}
-      X509_to_X509_REQ := @ERR_X509_to_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_to_X509_REQ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_to_X509_REQ := @ERR_X509_to_X509_REQ;
+    if FuncLoadError then
       AFailed.Add('X509_to_X509_REQ');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_to_X509 := LoadLibFunction(ADllHandle, X509_REQ_to_X509_procname);
-  FuncLoaded := assigned(X509_REQ_to_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_to_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_to_X509_allownil)}
+    X509_REQ_to_X509 := @ERR_X509_REQ_to_X509;
+    {$ifend}
     {$if declared(X509_REQ_to_X509_introduced)}
     if LibVersion < X509_REQ_to_X509_introduced then
     begin
       {$if declared(FC_X509_REQ_to_X509)}
       X509_REQ_to_X509 := @FC_X509_REQ_to_X509;
-      {$else}
-      {$if not defined(X509_REQ_to_X509_allownil)}
-      X509_REQ_to_X509 := @ERR_X509_REQ_to_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_to_X509_removed)}
@@ -8874,39 +8201,31 @@ begin
     begin
       {$if declared(_X509_REQ_to_X509)}
       X509_REQ_to_X509 := @_X509_REQ_to_X509;
-      {$else}
-      {$if not defined(X509_REQ_to_X509_allownil)}
-      X509_REQ_to_X509 := @ERR_X509_REQ_to_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_to_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_to_X509 := @ERR_X509_REQ_to_X509;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_to_X509');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_new := LoadLibFunction(ADllHandle, X509_ALGOR_new_procname);
-  FuncLoaded := assigned(X509_ALGOR_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_new_allownil)}
+    X509_ALGOR_new := @ERR_X509_ALGOR_new;
+    {$ifend}
     {$if declared(X509_ALGOR_new_introduced)}
     if LibVersion < X509_ALGOR_new_introduced then
     begin
       {$if declared(FC_X509_ALGOR_new)}
       X509_ALGOR_new := @FC_X509_ALGOR_new;
-      {$else}
-      {$if not defined(X509_ALGOR_new_allownil)}
-      X509_ALGOR_new := @ERR_X509_ALGOR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_new_removed)}
@@ -8914,39 +8233,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_new)}
       X509_ALGOR_new := @_X509_ALGOR_new;
-      {$else}
-      {$if not defined(X509_ALGOR_new_allownil)}
-      X509_ALGOR_new := @ERR_X509_ALGOR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_new := @ERR_X509_ALGOR_new;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_new');
-    end;
     {$ifend}
   end;
 
 
   X509_ALGOR_free := LoadLibFunction(ADllHandle, X509_ALGOR_free_procname);
-  FuncLoaded := assigned(X509_ALGOR_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ALGOR_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ALGOR_free_allownil)}
+    X509_ALGOR_free := @ERR_X509_ALGOR_free;
+    {$ifend}
     {$if declared(X509_ALGOR_free_introduced)}
     if LibVersion < X509_ALGOR_free_introduced then
     begin
       {$if declared(FC_X509_ALGOR_free)}
       X509_ALGOR_free := @FC_X509_ALGOR_free;
-      {$else}
-      {$if not defined(X509_ALGOR_free_allownil)}
-      X509_ALGOR_free := @ERR_X509_ALGOR_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ALGOR_free_removed)}
@@ -8954,39 +8265,31 @@ begin
     begin
       {$if declared(_X509_ALGOR_free)}
       X509_ALGOR_free := @_X509_ALGOR_free;
-      {$else}
-      {$if not defined(X509_ALGOR_free_allownil)}
-      X509_ALGOR_free := @ERR_X509_ALGOR_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ALGOR_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ALGOR_free := @ERR_X509_ALGOR_free;
+    if FuncLoadError then
       AFailed.Add('X509_ALGOR_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_ALGOR := LoadLibFunction(ADllHandle, d2i_X509_ALGOR_procname);
-  FuncLoaded := assigned(d2i_X509_ALGOR);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_ALGOR);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_ALGOR_allownil)}
+    d2i_X509_ALGOR := @ERR_d2i_X509_ALGOR;
+    {$ifend}
     {$if declared(d2i_X509_ALGOR_introduced)}
     if LibVersion < d2i_X509_ALGOR_introduced then
     begin
       {$if declared(FC_d2i_X509_ALGOR)}
       d2i_X509_ALGOR := @FC_d2i_X509_ALGOR;
-      {$else}
-      {$if not defined(d2i_X509_ALGOR_allownil)}
-      d2i_X509_ALGOR := @ERR_d2i_X509_ALGOR;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_ALGOR_removed)}
@@ -8994,39 +8297,31 @@ begin
     begin
       {$if declared(_d2i_X509_ALGOR)}
       d2i_X509_ALGOR := @_d2i_X509_ALGOR;
-      {$else}
-      {$if not defined(d2i_X509_ALGOR_allownil)}
-      d2i_X509_ALGOR := @ERR_d2i_X509_ALGOR;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_ALGOR_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_ALGOR := @ERR_d2i_X509_ALGOR;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_ALGOR');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_ALGOR := LoadLibFunction(ADllHandle, i2d_X509_ALGOR_procname);
-  FuncLoaded := assigned(i2d_X509_ALGOR);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_ALGOR);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_ALGOR_allownil)}
+    i2d_X509_ALGOR := @ERR_i2d_X509_ALGOR;
+    {$ifend}
     {$if declared(i2d_X509_ALGOR_introduced)}
     if LibVersion < i2d_X509_ALGOR_introduced then
     begin
       {$if declared(FC_i2d_X509_ALGOR)}
       i2d_X509_ALGOR := @FC_i2d_X509_ALGOR;
-      {$else}
-      {$if not defined(i2d_X509_ALGOR_allownil)}
-      i2d_X509_ALGOR := @ERR_i2d_X509_ALGOR;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_ALGOR_removed)}
@@ -9034,39 +8329,31 @@ begin
     begin
       {$if declared(_i2d_X509_ALGOR)}
       i2d_X509_ALGOR := @_i2d_X509_ALGOR;
-      {$else}
-      {$if not defined(i2d_X509_ALGOR_allownil)}
-      i2d_X509_ALGOR := @ERR_i2d_X509_ALGOR;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_ALGOR_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_ALGOR := @ERR_i2d_X509_ALGOR;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_ALGOR');
-    end;
     {$ifend}
   end;
 
 
   X509_VAL_new := LoadLibFunction(ADllHandle, X509_VAL_new_procname);
-  FuncLoaded := assigned(X509_VAL_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_VAL_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_VAL_new_allownil)}
+    X509_VAL_new := @ERR_X509_VAL_new;
+    {$ifend}
     {$if declared(X509_VAL_new_introduced)}
     if LibVersion < X509_VAL_new_introduced then
     begin
       {$if declared(FC_X509_VAL_new)}
       X509_VAL_new := @FC_X509_VAL_new;
-      {$else}
-      {$if not defined(X509_VAL_new_allownil)}
-      X509_VAL_new := @ERR_X509_VAL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_VAL_new_removed)}
@@ -9074,39 +8361,31 @@ begin
     begin
       {$if declared(_X509_VAL_new)}
       X509_VAL_new := @_X509_VAL_new;
-      {$else}
-      {$if not defined(X509_VAL_new_allownil)}
-      X509_VAL_new := @ERR_X509_VAL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_VAL_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_VAL_new := @ERR_X509_VAL_new;
+    if FuncLoadError then
       AFailed.Add('X509_VAL_new');
-    end;
     {$ifend}
   end;
 
 
   X509_VAL_free := LoadLibFunction(ADllHandle, X509_VAL_free_procname);
-  FuncLoaded := assigned(X509_VAL_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_VAL_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_VAL_free_allownil)}
+    X509_VAL_free := @ERR_X509_VAL_free;
+    {$ifend}
     {$if declared(X509_VAL_free_introduced)}
     if LibVersion < X509_VAL_free_introduced then
     begin
       {$if declared(FC_X509_VAL_free)}
       X509_VAL_free := @FC_X509_VAL_free;
-      {$else}
-      {$if not defined(X509_VAL_free_allownil)}
-      X509_VAL_free := @ERR_X509_VAL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_VAL_free_removed)}
@@ -9114,39 +8393,31 @@ begin
     begin
       {$if declared(_X509_VAL_free)}
       X509_VAL_free := @_X509_VAL_free;
-      {$else}
-      {$if not defined(X509_VAL_free_allownil)}
-      X509_VAL_free := @ERR_X509_VAL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_VAL_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_VAL_free := @ERR_X509_VAL_free;
+    if FuncLoadError then
       AFailed.Add('X509_VAL_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_VAL := LoadLibFunction(ADllHandle, d2i_X509_VAL_procname);
-  FuncLoaded := assigned(d2i_X509_VAL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_VAL);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_VAL_allownil)}
+    d2i_X509_VAL := @ERR_d2i_X509_VAL;
+    {$ifend}
     {$if declared(d2i_X509_VAL_introduced)}
     if LibVersion < d2i_X509_VAL_introduced then
     begin
       {$if declared(FC_d2i_X509_VAL)}
       d2i_X509_VAL := @FC_d2i_X509_VAL;
-      {$else}
-      {$if not defined(d2i_X509_VAL_allownil)}
-      d2i_X509_VAL := @ERR_d2i_X509_VAL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_VAL_removed)}
@@ -9154,39 +8425,31 @@ begin
     begin
       {$if declared(_d2i_X509_VAL)}
       d2i_X509_VAL := @_d2i_X509_VAL;
-      {$else}
-      {$if not defined(d2i_X509_VAL_allownil)}
-      d2i_X509_VAL := @ERR_d2i_X509_VAL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_VAL_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_VAL := @ERR_d2i_X509_VAL;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_VAL');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_VAL := LoadLibFunction(ADllHandle, i2d_X509_VAL_procname);
-  FuncLoaded := assigned(i2d_X509_VAL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_VAL);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_VAL_allownil)}
+    i2d_X509_VAL := @ERR_i2d_X509_VAL;
+    {$ifend}
     {$if declared(i2d_X509_VAL_introduced)}
     if LibVersion < i2d_X509_VAL_introduced then
     begin
       {$if declared(FC_i2d_X509_VAL)}
       i2d_X509_VAL := @FC_i2d_X509_VAL;
-      {$else}
-      {$if not defined(i2d_X509_VAL_allownil)}
-      i2d_X509_VAL := @ERR_i2d_X509_VAL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_VAL_removed)}
@@ -9194,39 +8457,31 @@ begin
     begin
       {$if declared(_i2d_X509_VAL)}
       i2d_X509_VAL := @_i2d_X509_VAL;
-      {$else}
-      {$if not defined(i2d_X509_VAL_allownil)}
-      i2d_X509_VAL := @ERR_i2d_X509_VAL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_VAL_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_VAL := @ERR_i2d_X509_VAL;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_VAL');
-    end;
     {$ifend}
   end;
 
 
   X509_PUBKEY_new := LoadLibFunction(ADllHandle, X509_PUBKEY_new_procname);
-  FuncLoaded := assigned(X509_PUBKEY_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_new_allownil)}
+    X509_PUBKEY_new := @ERR_X509_PUBKEY_new;
+    {$ifend}
     {$if declared(X509_PUBKEY_new_introduced)}
     if LibVersion < X509_PUBKEY_new_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_new)}
       X509_PUBKEY_new := @FC_X509_PUBKEY_new;
-      {$else}
-      {$if not defined(X509_PUBKEY_new_allownil)}
-      X509_PUBKEY_new := @ERR_X509_PUBKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_new_removed)}
@@ -9234,39 +8489,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_new)}
       X509_PUBKEY_new := @_X509_PUBKEY_new;
-      {$else}
-      {$if not defined(X509_PUBKEY_new_allownil)}
-      X509_PUBKEY_new := @ERR_X509_PUBKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_new := @ERR_X509_PUBKEY_new;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_new');
-    end;
     {$ifend}
   end;
 
 
   X509_PUBKEY_free := LoadLibFunction(ADllHandle, X509_PUBKEY_free_procname);
-  FuncLoaded := assigned(X509_PUBKEY_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_free_allownil)}
+    X509_PUBKEY_free := @ERR_X509_PUBKEY_free;
+    {$ifend}
     {$if declared(X509_PUBKEY_free_introduced)}
     if LibVersion < X509_PUBKEY_free_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_free)}
       X509_PUBKEY_free := @FC_X509_PUBKEY_free;
-      {$else}
-      {$if not defined(X509_PUBKEY_free_allownil)}
-      X509_PUBKEY_free := @ERR_X509_PUBKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_free_removed)}
@@ -9274,39 +8521,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_free)}
       X509_PUBKEY_free := @_X509_PUBKEY_free;
-      {$else}
-      {$if not defined(X509_PUBKEY_free_allownil)}
-      X509_PUBKEY_free := @ERR_X509_PUBKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_free := @ERR_X509_PUBKEY_free;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_PUBKEY := LoadLibFunction(ADllHandle, d2i_X509_PUBKEY_procname);
-  FuncLoaded := assigned(d2i_X509_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_PUBKEY_allownil)}
+    d2i_X509_PUBKEY := @ERR_d2i_X509_PUBKEY;
+    {$ifend}
     {$if declared(d2i_X509_PUBKEY_introduced)}
     if LibVersion < d2i_X509_PUBKEY_introduced then
     begin
       {$if declared(FC_d2i_X509_PUBKEY)}
       d2i_X509_PUBKEY := @FC_d2i_X509_PUBKEY;
-      {$else}
-      {$if not defined(d2i_X509_PUBKEY_allownil)}
-      d2i_X509_PUBKEY := @ERR_d2i_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_PUBKEY_removed)}
@@ -9314,39 +8553,31 @@ begin
     begin
       {$if declared(_d2i_X509_PUBKEY)}
       d2i_X509_PUBKEY := @_d2i_X509_PUBKEY;
-      {$else}
-      {$if not defined(d2i_X509_PUBKEY_allownil)}
-      d2i_X509_PUBKEY := @ERR_d2i_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_PUBKEY := @ERR_d2i_X509_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_PUBKEY := LoadLibFunction(ADllHandle, i2d_X509_PUBKEY_procname);
-  FuncLoaded := assigned(i2d_X509_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_PUBKEY_allownil)}
+    i2d_X509_PUBKEY := @ERR_i2d_X509_PUBKEY;
+    {$ifend}
     {$if declared(i2d_X509_PUBKEY_introduced)}
     if LibVersion < i2d_X509_PUBKEY_introduced then
     begin
       {$if declared(FC_i2d_X509_PUBKEY)}
       i2d_X509_PUBKEY := @FC_i2d_X509_PUBKEY;
-      {$else}
-      {$if not defined(i2d_X509_PUBKEY_allownil)}
-      i2d_X509_PUBKEY := @ERR_i2d_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_PUBKEY_removed)}
@@ -9354,39 +8585,31 @@ begin
     begin
       {$if declared(_i2d_X509_PUBKEY)}
       i2d_X509_PUBKEY := @_i2d_X509_PUBKEY;
-      {$else}
-      {$if not defined(i2d_X509_PUBKEY_allownil)}
-      i2d_X509_PUBKEY := @ERR_i2d_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_PUBKEY := @ERR_i2d_X509_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   X509_PUBKEY_set := LoadLibFunction(ADllHandle, X509_PUBKEY_set_procname);
-  FuncLoaded := assigned(X509_PUBKEY_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_set);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_set_allownil)}
+    X509_PUBKEY_set := @ERR_X509_PUBKEY_set;
+    {$ifend}
     {$if declared(X509_PUBKEY_set_introduced)}
     if LibVersion < X509_PUBKEY_set_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_set)}
       X509_PUBKEY_set := @FC_X509_PUBKEY_set;
-      {$else}
-      {$if not defined(X509_PUBKEY_set_allownil)}
-      X509_PUBKEY_set := @ERR_X509_PUBKEY_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_set_removed)}
@@ -9394,39 +8617,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_set)}
       X509_PUBKEY_set := @_X509_PUBKEY_set;
-      {$else}
-      {$if not defined(X509_PUBKEY_set_allownil)}
-      X509_PUBKEY_set := @ERR_X509_PUBKEY_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_set_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_set := @ERR_X509_PUBKEY_set;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_set');
-    end;
     {$ifend}
   end;
 
 
   X509_PUBKEY_get0 := LoadLibFunction(ADllHandle, X509_PUBKEY_get0_procname);
-  FuncLoaded := assigned(X509_PUBKEY_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_get0_allownil)}
+    X509_PUBKEY_get0 := @ERR_X509_PUBKEY_get0;
+    {$ifend}
     {$if declared(X509_PUBKEY_get0_introduced)}
     if LibVersion < X509_PUBKEY_get0_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_get0)}
       X509_PUBKEY_get0 := @FC_X509_PUBKEY_get0;
-      {$else}
-      {$if not defined(X509_PUBKEY_get0_allownil)}
-      X509_PUBKEY_get0 := @ERR_X509_PUBKEY_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_get0_removed)}
@@ -9434,39 +8649,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_get0)}
       X509_PUBKEY_get0 := @_X509_PUBKEY_get0;
-      {$else}
-      {$if not defined(X509_PUBKEY_get0_allownil)}
-      X509_PUBKEY_get0 := @ERR_X509_PUBKEY_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_get0 := @ERR_X509_PUBKEY_get0;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_get0');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_PUBKEY_get := LoadLibFunction(ADllHandle, X509_PUBKEY_get_procname);
-  FuncLoaded := assigned(X509_PUBKEY_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_get);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_get_allownil)}
+    X509_PUBKEY_get := @ERR_X509_PUBKEY_get;
+    {$ifend}
     {$if declared(X509_PUBKEY_get_introduced)}
     if LibVersion < X509_PUBKEY_get_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_get)}
       X509_PUBKEY_get := @FC_X509_PUBKEY_get;
-      {$else}
-      {$if not defined(X509_PUBKEY_get_allownil)}
-      X509_PUBKEY_get := @ERR_X509_PUBKEY_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_get_removed)}
@@ -9474,39 +8681,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_get)}
       X509_PUBKEY_get := @_X509_PUBKEY_get;
-      {$else}
-      {$if not defined(X509_PUBKEY_get_allownil)}
-      X509_PUBKEY_get := @ERR_X509_PUBKEY_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_get_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_get := @ERR_X509_PUBKEY_get;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_get');
-    end;
     {$ifend}
   end;
 
 
   X509_get_pathlen := LoadLibFunction(ADllHandle, X509_get_pathlen_procname);
-  FuncLoaded := assigned(X509_get_pathlen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_pathlen);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_pathlen_allownil)}
+    X509_get_pathlen := @ERR_X509_get_pathlen;
+    {$ifend}
     {$if declared(X509_get_pathlen_introduced)}
     if LibVersion < X509_get_pathlen_introduced then
     begin
       {$if declared(FC_X509_get_pathlen)}
       X509_get_pathlen := @FC_X509_get_pathlen;
-      {$else}
-      {$if not defined(X509_get_pathlen_allownil)}
-      X509_get_pathlen := @ERR_X509_get_pathlen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_pathlen_removed)}
@@ -9514,39 +8713,31 @@ begin
     begin
       {$if declared(_X509_get_pathlen)}
       X509_get_pathlen := @_X509_get_pathlen;
-      {$else}
-      {$if not defined(X509_get_pathlen_allownil)}
-      X509_get_pathlen := @ERR_X509_get_pathlen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_pathlen_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_pathlen := @ERR_X509_get_pathlen;
+    if FuncLoadError then
       AFailed.Add('X509_get_pathlen');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   i2d_PUBKEY := LoadLibFunction(ADllHandle, i2d_PUBKEY_procname);
-  FuncLoaded := assigned(i2d_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PUBKEY_allownil)}
+    i2d_PUBKEY := @ERR_i2d_PUBKEY;
+    {$ifend}
     {$if declared(i2d_PUBKEY_introduced)}
     if LibVersion < i2d_PUBKEY_introduced then
     begin
       {$if declared(FC_i2d_PUBKEY)}
       i2d_PUBKEY := @FC_i2d_PUBKEY;
-      {$else}
-      {$if not defined(i2d_PUBKEY_allownil)}
-      i2d_PUBKEY := @ERR_i2d_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PUBKEY_removed)}
@@ -9554,39 +8745,31 @@ begin
     begin
       {$if declared(_i2d_PUBKEY)}
       i2d_PUBKEY := @_i2d_PUBKEY;
-      {$else}
-      {$if not defined(i2d_PUBKEY_allownil)}
-      i2d_PUBKEY := @ERR_i2d_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PUBKEY := @ERR_i2d_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('i2d_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   d2i_PUBKEY := LoadLibFunction(ADllHandle, d2i_PUBKEY_procname);
-  FuncLoaded := assigned(d2i_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PUBKEY_allownil)}
+    d2i_PUBKEY := @ERR_d2i_PUBKEY;
+    {$ifend}
     {$if declared(d2i_PUBKEY_introduced)}
     if LibVersion < d2i_PUBKEY_introduced then
     begin
       {$if declared(FC_d2i_PUBKEY)}
       d2i_PUBKEY := @FC_d2i_PUBKEY;
-      {$else}
-      {$if not defined(d2i_PUBKEY_allownil)}
-      d2i_PUBKEY := @ERR_d2i_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PUBKEY_removed)}
@@ -9594,39 +8777,31 @@ begin
     begin
       {$if declared(_d2i_PUBKEY)}
       d2i_PUBKEY := @_d2i_PUBKEY;
-      {$else}
-      {$if not defined(d2i_PUBKEY_allownil)}
-      d2i_PUBKEY := @ERR_d2i_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PUBKEY := @ERR_d2i_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('d2i_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   i2d_RSA_PUBKEY := LoadLibFunction(ADllHandle, i2d_RSA_PUBKEY_procname);
-  FuncLoaded := assigned(i2d_RSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_RSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_RSA_PUBKEY_allownil)}
+    i2d_RSA_PUBKEY := @ERR_i2d_RSA_PUBKEY;
+    {$ifend}
     {$if declared(i2d_RSA_PUBKEY_introduced)}
     if LibVersion < i2d_RSA_PUBKEY_introduced then
     begin
       {$if declared(FC_i2d_RSA_PUBKEY)}
       i2d_RSA_PUBKEY := @FC_i2d_RSA_PUBKEY;
-      {$else}
-      {$if not defined(i2d_RSA_PUBKEY_allownil)}
-      i2d_RSA_PUBKEY := @ERR_i2d_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_RSA_PUBKEY_removed)}
@@ -9634,39 +8809,31 @@ begin
     begin
       {$if declared(_i2d_RSA_PUBKEY)}
       i2d_RSA_PUBKEY := @_i2d_RSA_PUBKEY;
-      {$else}
-      {$if not defined(i2d_RSA_PUBKEY_allownil)}
-      i2d_RSA_PUBKEY := @ERR_i2d_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_RSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_RSA_PUBKEY := @ERR_i2d_RSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('i2d_RSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   d2i_RSA_PUBKEY := LoadLibFunction(ADllHandle, d2i_RSA_PUBKEY_procname);
-  FuncLoaded := assigned(d2i_RSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_RSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_RSA_PUBKEY_allownil)}
+    d2i_RSA_PUBKEY := @ERR_d2i_RSA_PUBKEY;
+    {$ifend}
     {$if declared(d2i_RSA_PUBKEY_introduced)}
     if LibVersion < d2i_RSA_PUBKEY_introduced then
     begin
       {$if declared(FC_d2i_RSA_PUBKEY)}
       d2i_RSA_PUBKEY := @FC_d2i_RSA_PUBKEY;
-      {$else}
-      {$if not defined(d2i_RSA_PUBKEY_allownil)}
-      d2i_RSA_PUBKEY := @ERR_d2i_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_RSA_PUBKEY_removed)}
@@ -9674,39 +8841,31 @@ begin
     begin
       {$if declared(_d2i_RSA_PUBKEY)}
       d2i_RSA_PUBKEY := @_d2i_RSA_PUBKEY;
-      {$else}
-      {$if not defined(d2i_RSA_PUBKEY_allownil)}
-      d2i_RSA_PUBKEY := @ERR_d2i_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_RSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_RSA_PUBKEY := @ERR_d2i_RSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('d2i_RSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSA_PUBKEY := LoadLibFunction(ADllHandle, i2d_DSA_PUBKEY_procname);
-  FuncLoaded := assigned(i2d_DSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSA_PUBKEY_allownil)}
+    i2d_DSA_PUBKEY := @ERR_i2d_DSA_PUBKEY;
+    {$ifend}
     {$if declared(i2d_DSA_PUBKEY_introduced)}
     if LibVersion < i2d_DSA_PUBKEY_introduced then
     begin
       {$if declared(FC_i2d_DSA_PUBKEY)}
       i2d_DSA_PUBKEY := @FC_i2d_DSA_PUBKEY;
-      {$else}
-      {$if not defined(i2d_DSA_PUBKEY_allownil)}
-      i2d_DSA_PUBKEY := @ERR_i2d_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSA_PUBKEY_removed)}
@@ -9714,39 +8873,31 @@ begin
     begin
       {$if declared(_i2d_DSA_PUBKEY)}
       i2d_DSA_PUBKEY := @_i2d_DSA_PUBKEY;
-      {$else}
-      {$if not defined(i2d_DSA_PUBKEY_allownil)}
-      i2d_DSA_PUBKEY := @ERR_i2d_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSA_PUBKEY := @ERR_i2d_DSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('i2d_DSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSA_PUBKEY := LoadLibFunction(ADllHandle, d2i_DSA_PUBKEY_procname);
-  FuncLoaded := assigned(d2i_DSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSA_PUBKEY_allownil)}
+    d2i_DSA_PUBKEY := @ERR_d2i_DSA_PUBKEY;
+    {$ifend}
     {$if declared(d2i_DSA_PUBKEY_introduced)}
     if LibVersion < d2i_DSA_PUBKEY_introduced then
     begin
       {$if declared(FC_d2i_DSA_PUBKEY)}
       d2i_DSA_PUBKEY := @FC_d2i_DSA_PUBKEY;
-      {$else}
-      {$if not defined(d2i_DSA_PUBKEY_allownil)}
-      d2i_DSA_PUBKEY := @ERR_d2i_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSA_PUBKEY_removed)}
@@ -9754,39 +8905,31 @@ begin
     begin
       {$if declared(_d2i_DSA_PUBKEY)}
       d2i_DSA_PUBKEY := @_d2i_DSA_PUBKEY;
-      {$else}
-      {$if not defined(d2i_DSA_PUBKEY_allownil)}
-      d2i_DSA_PUBKEY := @ERR_d2i_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSA_PUBKEY := @ERR_d2i_DSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('d2i_DSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   i2d_EC_PUBKEY := LoadLibFunction(ADllHandle, i2d_EC_PUBKEY_procname);
-  FuncLoaded := assigned(i2d_EC_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_EC_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_EC_PUBKEY_allownil)}
+    i2d_EC_PUBKEY := @ERR_i2d_EC_PUBKEY;
+    {$ifend}
     {$if declared(i2d_EC_PUBKEY_introduced)}
     if LibVersion < i2d_EC_PUBKEY_introduced then
     begin
       {$if declared(FC_i2d_EC_PUBKEY)}
       i2d_EC_PUBKEY := @FC_i2d_EC_PUBKEY;
-      {$else}
-      {$if not defined(i2d_EC_PUBKEY_allownil)}
-      i2d_EC_PUBKEY := @ERR_i2d_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_EC_PUBKEY_removed)}
@@ -9794,39 +8937,31 @@ begin
     begin
       {$if declared(_i2d_EC_PUBKEY)}
       i2d_EC_PUBKEY := @_i2d_EC_PUBKEY;
-      {$else}
-      {$if not defined(i2d_EC_PUBKEY_allownil)}
-      i2d_EC_PUBKEY := @ERR_i2d_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_EC_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_EC_PUBKEY := @ERR_i2d_EC_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('i2d_EC_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   d2i_EC_PUBKEY := LoadLibFunction(ADllHandle, d2i_EC_PUBKEY_procname);
-  FuncLoaded := assigned(d2i_EC_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_EC_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_EC_PUBKEY_allownil)}
+    d2i_EC_PUBKEY := @ERR_d2i_EC_PUBKEY;
+    {$ifend}
     {$if declared(d2i_EC_PUBKEY_introduced)}
     if LibVersion < d2i_EC_PUBKEY_introduced then
     begin
       {$if declared(FC_d2i_EC_PUBKEY)}
       d2i_EC_PUBKEY := @FC_d2i_EC_PUBKEY;
-      {$else}
-      {$if not defined(d2i_EC_PUBKEY_allownil)}
-      d2i_EC_PUBKEY := @ERR_d2i_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_EC_PUBKEY_removed)}
@@ -9834,39 +8969,31 @@ begin
     begin
       {$if declared(_d2i_EC_PUBKEY)}
       d2i_EC_PUBKEY := @_d2i_EC_PUBKEY;
-      {$else}
-      {$if not defined(d2i_EC_PUBKEY_allownil)}
-      d2i_EC_PUBKEY := @ERR_d2i_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_EC_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_EC_PUBKEY := @ERR_d2i_EC_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('d2i_EC_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   X509_SIG_new := LoadLibFunction(ADllHandle, X509_SIG_new_procname);
-  FuncLoaded := assigned(X509_SIG_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_new_allownil)}
+    X509_SIG_new := @ERR_X509_SIG_new;
+    {$ifend}
     {$if declared(X509_SIG_new_introduced)}
     if LibVersion < X509_SIG_new_introduced then
     begin
       {$if declared(FC_X509_SIG_new)}
       X509_SIG_new := @FC_X509_SIG_new;
-      {$else}
-      {$if not defined(X509_SIG_new_allownil)}
-      X509_SIG_new := @ERR_X509_SIG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_new_removed)}
@@ -9874,39 +9001,31 @@ begin
     begin
       {$if declared(_X509_SIG_new)}
       X509_SIG_new := @_X509_SIG_new;
-      {$else}
-      {$if not defined(X509_SIG_new_allownil)}
-      X509_SIG_new := @ERR_X509_SIG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_new := @ERR_X509_SIG_new;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_new');
-    end;
     {$ifend}
   end;
 
 
   X509_SIG_free := LoadLibFunction(ADllHandle, X509_SIG_free_procname);
-  FuncLoaded := assigned(X509_SIG_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_free_allownil)}
+    X509_SIG_free := @ERR_X509_SIG_free;
+    {$ifend}
     {$if declared(X509_SIG_free_introduced)}
     if LibVersion < X509_SIG_free_introduced then
     begin
       {$if declared(FC_X509_SIG_free)}
       X509_SIG_free := @FC_X509_SIG_free;
-      {$else}
-      {$if not defined(X509_SIG_free_allownil)}
-      X509_SIG_free := @ERR_X509_SIG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_free_removed)}
@@ -9914,39 +9033,31 @@ begin
     begin
       {$if declared(_X509_SIG_free)}
       X509_SIG_free := @_X509_SIG_free;
-      {$else}
-      {$if not defined(X509_SIG_free_allownil)}
-      X509_SIG_free := @ERR_X509_SIG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_free := @ERR_X509_SIG_free;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_SIG := LoadLibFunction(ADllHandle, d2i_X509_SIG_procname);
-  FuncLoaded := assigned(d2i_X509_SIG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_SIG);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_SIG_allownil)}
+    d2i_X509_SIG := @ERR_d2i_X509_SIG;
+    {$ifend}
     {$if declared(d2i_X509_SIG_introduced)}
     if LibVersion < d2i_X509_SIG_introduced then
     begin
       {$if declared(FC_d2i_X509_SIG)}
       d2i_X509_SIG := @FC_d2i_X509_SIG;
-      {$else}
-      {$if not defined(d2i_X509_SIG_allownil)}
-      d2i_X509_SIG := @ERR_d2i_X509_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_SIG_removed)}
@@ -9954,39 +9065,31 @@ begin
     begin
       {$if declared(_d2i_X509_SIG)}
       d2i_X509_SIG := @_d2i_X509_SIG;
-      {$else}
-      {$if not defined(d2i_X509_SIG_allownil)}
-      d2i_X509_SIG := @ERR_d2i_X509_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_SIG_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_SIG := @ERR_d2i_X509_SIG;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_SIG');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_SIG := LoadLibFunction(ADllHandle, i2d_X509_SIG_procname);
-  FuncLoaded := assigned(i2d_X509_SIG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_SIG);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_SIG_allownil)}
+    i2d_X509_SIG := @ERR_i2d_X509_SIG;
+    {$ifend}
     {$if declared(i2d_X509_SIG_introduced)}
     if LibVersion < i2d_X509_SIG_introduced then
     begin
       {$if declared(FC_i2d_X509_SIG)}
       i2d_X509_SIG := @FC_i2d_X509_SIG;
-      {$else}
-      {$if not defined(i2d_X509_SIG_allownil)}
-      i2d_X509_SIG := @ERR_i2d_X509_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_SIG_removed)}
@@ -9994,39 +9097,31 @@ begin
     begin
       {$if declared(_i2d_X509_SIG)}
       i2d_X509_SIG := @_i2d_X509_SIG;
-      {$else}
-      {$if not defined(i2d_X509_SIG_allownil)}
-      i2d_X509_SIG := @ERR_i2d_X509_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_SIG_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_SIG := @ERR_i2d_X509_SIG;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_SIG');
-    end;
     {$ifend}
   end;
 
 
   X509_SIG_get0 := LoadLibFunction(ADllHandle, X509_SIG_get0_procname);
-  FuncLoaded := assigned(X509_SIG_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_get0_allownil)}
+    X509_SIG_get0 := @ERR_X509_SIG_get0;
+    {$ifend}
     {$if declared(X509_SIG_get0_introduced)}
     if LibVersion < X509_SIG_get0_introduced then
     begin
       {$if declared(FC_X509_SIG_get0)}
       X509_SIG_get0 := @FC_X509_SIG_get0;
-      {$else}
-      {$if not defined(X509_SIG_get0_allownil)}
-      X509_SIG_get0 := @ERR_X509_SIG_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_get0_removed)}
@@ -10034,39 +9129,31 @@ begin
     begin
       {$if declared(_X509_SIG_get0)}
       X509_SIG_get0 := @_X509_SIG_get0;
-      {$else}
-      {$if not defined(X509_SIG_get0_allownil)}
-      X509_SIG_get0 := @ERR_X509_SIG_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_get0 := @ERR_X509_SIG_get0;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_get0');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_SIG_getm := LoadLibFunction(ADllHandle, X509_SIG_getm_procname);
-  FuncLoaded := assigned(X509_SIG_getm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_getm);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_getm_allownil)}
+    X509_SIG_getm := @ERR_X509_SIG_getm;
+    {$ifend}
     {$if declared(X509_SIG_getm_introduced)}
     if LibVersion < X509_SIG_getm_introduced then
     begin
       {$if declared(FC_X509_SIG_getm)}
       X509_SIG_getm := @FC_X509_SIG_getm;
-      {$else}
-      {$if not defined(X509_SIG_getm_allownil)}
-      X509_SIG_getm := @ERR_X509_SIG_getm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_getm_removed)}
@@ -10074,39 +9161,31 @@ begin
     begin
       {$if declared(_X509_SIG_getm)}
       X509_SIG_getm := @_X509_SIG_getm;
-      {$else}
-      {$if not defined(X509_SIG_getm_allownil)}
-      X509_SIG_getm := @ERR_X509_SIG_getm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_getm_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_getm := @ERR_X509_SIG_getm;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_getm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_INFO_new := LoadLibFunction(ADllHandle, X509_REQ_INFO_new_procname);
-  FuncLoaded := assigned(X509_REQ_INFO_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_INFO_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_INFO_new_allownil)}
+    X509_REQ_INFO_new := @ERR_X509_REQ_INFO_new;
+    {$ifend}
     {$if declared(X509_REQ_INFO_new_introduced)}
     if LibVersion < X509_REQ_INFO_new_introduced then
     begin
       {$if declared(FC_X509_REQ_INFO_new)}
       X509_REQ_INFO_new := @FC_X509_REQ_INFO_new;
-      {$else}
-      {$if not defined(X509_REQ_INFO_new_allownil)}
-      X509_REQ_INFO_new := @ERR_X509_REQ_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_INFO_new_removed)}
@@ -10114,39 +9193,31 @@ begin
     begin
       {$if declared(_X509_REQ_INFO_new)}
       X509_REQ_INFO_new := @_X509_REQ_INFO_new;
-      {$else}
-      {$if not defined(X509_REQ_INFO_new_allownil)}
-      X509_REQ_INFO_new := @ERR_X509_REQ_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_INFO_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_INFO_new := @ERR_X509_REQ_INFO_new;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_INFO_new');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_INFO_free := LoadLibFunction(ADllHandle, X509_REQ_INFO_free_procname);
-  FuncLoaded := assigned(X509_REQ_INFO_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_INFO_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_INFO_free_allownil)}
+    X509_REQ_INFO_free := @ERR_X509_REQ_INFO_free;
+    {$ifend}
     {$if declared(X509_REQ_INFO_free_introduced)}
     if LibVersion < X509_REQ_INFO_free_introduced then
     begin
       {$if declared(FC_X509_REQ_INFO_free)}
       X509_REQ_INFO_free := @FC_X509_REQ_INFO_free;
-      {$else}
-      {$if not defined(X509_REQ_INFO_free_allownil)}
-      X509_REQ_INFO_free := @ERR_X509_REQ_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_INFO_free_removed)}
@@ -10154,39 +9225,31 @@ begin
     begin
       {$if declared(_X509_REQ_INFO_free)}
       X509_REQ_INFO_free := @_X509_REQ_INFO_free;
-      {$else}
-      {$if not defined(X509_REQ_INFO_free_allownil)}
-      X509_REQ_INFO_free := @ERR_X509_REQ_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_INFO_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_INFO_free := @ERR_X509_REQ_INFO_free;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_INFO_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_REQ_INFO := LoadLibFunction(ADllHandle, d2i_X509_REQ_INFO_procname);
-  FuncLoaded := assigned(d2i_X509_REQ_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_REQ_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_REQ_INFO_allownil)}
+    d2i_X509_REQ_INFO := @ERR_d2i_X509_REQ_INFO;
+    {$ifend}
     {$if declared(d2i_X509_REQ_INFO_introduced)}
     if LibVersion < d2i_X509_REQ_INFO_introduced then
     begin
       {$if declared(FC_d2i_X509_REQ_INFO)}
       d2i_X509_REQ_INFO := @FC_d2i_X509_REQ_INFO;
-      {$else}
-      {$if not defined(d2i_X509_REQ_INFO_allownil)}
-      d2i_X509_REQ_INFO := @ERR_d2i_X509_REQ_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_REQ_INFO_removed)}
@@ -10194,39 +9257,31 @@ begin
     begin
       {$if declared(_d2i_X509_REQ_INFO)}
       d2i_X509_REQ_INFO := @_d2i_X509_REQ_INFO;
-      {$else}
-      {$if not defined(d2i_X509_REQ_INFO_allownil)}
-      d2i_X509_REQ_INFO := @ERR_d2i_X509_REQ_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_REQ_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_REQ_INFO := @ERR_d2i_X509_REQ_INFO;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_REQ_INFO');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_REQ_INFO := LoadLibFunction(ADllHandle, i2d_X509_REQ_INFO_procname);
-  FuncLoaded := assigned(i2d_X509_REQ_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_REQ_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_REQ_INFO_allownil)}
+    i2d_X509_REQ_INFO := @ERR_i2d_X509_REQ_INFO;
+    {$ifend}
     {$if declared(i2d_X509_REQ_INFO_introduced)}
     if LibVersion < i2d_X509_REQ_INFO_introduced then
     begin
       {$if declared(FC_i2d_X509_REQ_INFO)}
       i2d_X509_REQ_INFO := @FC_i2d_X509_REQ_INFO;
-      {$else}
-      {$if not defined(i2d_X509_REQ_INFO_allownil)}
-      i2d_X509_REQ_INFO := @ERR_i2d_X509_REQ_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_REQ_INFO_removed)}
@@ -10234,39 +9289,31 @@ begin
     begin
       {$if declared(_i2d_X509_REQ_INFO)}
       i2d_X509_REQ_INFO := @_i2d_X509_REQ_INFO;
-      {$else}
-      {$if not defined(i2d_X509_REQ_INFO_allownil)}
-      i2d_X509_REQ_INFO := @ERR_i2d_X509_REQ_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_REQ_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_REQ_INFO := @ERR_i2d_X509_REQ_INFO;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_REQ_INFO');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_new := LoadLibFunction(ADllHandle, X509_REQ_new_procname);
-  FuncLoaded := assigned(X509_REQ_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_new_allownil)}
+    X509_REQ_new := @ERR_X509_REQ_new;
+    {$ifend}
     {$if declared(X509_REQ_new_introduced)}
     if LibVersion < X509_REQ_new_introduced then
     begin
       {$if declared(FC_X509_REQ_new)}
       X509_REQ_new := @FC_X509_REQ_new;
-      {$else}
-      {$if not defined(X509_REQ_new_allownil)}
-      X509_REQ_new := @ERR_X509_REQ_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_new_removed)}
@@ -10274,39 +9321,31 @@ begin
     begin
       {$if declared(_X509_REQ_new)}
       X509_REQ_new := @_X509_REQ_new;
-      {$else}
-      {$if not defined(X509_REQ_new_allownil)}
-      X509_REQ_new := @ERR_X509_REQ_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_new := @ERR_X509_REQ_new;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_new');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_free := LoadLibFunction(ADllHandle, X509_REQ_free_procname);
-  FuncLoaded := assigned(X509_REQ_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_free_allownil)}
+    X509_REQ_free := @ERR_X509_REQ_free;
+    {$ifend}
     {$if declared(X509_REQ_free_introduced)}
     if LibVersion < X509_REQ_free_introduced then
     begin
       {$if declared(FC_X509_REQ_free)}
       X509_REQ_free := @FC_X509_REQ_free;
-      {$else}
-      {$if not defined(X509_REQ_free_allownil)}
-      X509_REQ_free := @ERR_X509_REQ_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_free_removed)}
@@ -10314,39 +9353,31 @@ begin
     begin
       {$if declared(_X509_REQ_free)}
       X509_REQ_free := @_X509_REQ_free;
-      {$else}
-      {$if not defined(X509_REQ_free_allownil)}
-      X509_REQ_free := @ERR_X509_REQ_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_free := @ERR_X509_REQ_free;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_REQ := LoadLibFunction(ADllHandle, d2i_X509_REQ_procname);
-  FuncLoaded := assigned(d2i_X509_REQ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_REQ);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_REQ_allownil)}
+    d2i_X509_REQ := @ERR_d2i_X509_REQ;
+    {$ifend}
     {$if declared(d2i_X509_REQ_introduced)}
     if LibVersion < d2i_X509_REQ_introduced then
     begin
       {$if declared(FC_d2i_X509_REQ)}
       d2i_X509_REQ := @FC_d2i_X509_REQ;
-      {$else}
-      {$if not defined(d2i_X509_REQ_allownil)}
-      d2i_X509_REQ := @ERR_d2i_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_REQ_removed)}
@@ -10354,39 +9385,31 @@ begin
     begin
       {$if declared(_d2i_X509_REQ)}
       d2i_X509_REQ := @_d2i_X509_REQ;
-      {$else}
-      {$if not defined(d2i_X509_REQ_allownil)}
-      d2i_X509_REQ := @ERR_d2i_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_REQ_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_REQ := @ERR_d2i_X509_REQ;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_REQ');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_REQ := LoadLibFunction(ADllHandle, i2d_X509_REQ_procname);
-  FuncLoaded := assigned(i2d_X509_REQ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_REQ);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_REQ_allownil)}
+    i2d_X509_REQ := @ERR_i2d_X509_REQ;
+    {$ifend}
     {$if declared(i2d_X509_REQ_introduced)}
     if LibVersion < i2d_X509_REQ_introduced then
     begin
       {$if declared(FC_i2d_X509_REQ)}
       i2d_X509_REQ := @FC_i2d_X509_REQ;
-      {$else}
-      {$if not defined(i2d_X509_REQ_allownil)}
-      i2d_X509_REQ := @ERR_i2d_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_REQ_removed)}
@@ -10394,39 +9417,31 @@ begin
     begin
       {$if declared(_i2d_X509_REQ)}
       i2d_X509_REQ := @_i2d_X509_REQ;
-      {$else}
-      {$if not defined(i2d_X509_REQ_allownil)}
-      i2d_X509_REQ := @ERR_i2d_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_REQ_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_REQ := @ERR_i2d_X509_REQ;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_REQ');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_new := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_new_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_new_allownil)}
+    X509_ATTRIBUTE_new := @ERR_X509_ATTRIBUTE_new;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_new_introduced)}
     if LibVersion < X509_ATTRIBUTE_new_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_new)}
       X509_ATTRIBUTE_new := @FC_X509_ATTRIBUTE_new;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_new_allownil)}
-      X509_ATTRIBUTE_new := @ERR_X509_ATTRIBUTE_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_new_removed)}
@@ -10434,39 +9449,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_new)}
       X509_ATTRIBUTE_new := @_X509_ATTRIBUTE_new;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_new_allownil)}
-      X509_ATTRIBUTE_new := @ERR_X509_ATTRIBUTE_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_new := @ERR_X509_ATTRIBUTE_new;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_new');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_free := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_free_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_free_allownil)}
+    X509_ATTRIBUTE_free := @ERR_X509_ATTRIBUTE_free;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_free_introduced)}
     if LibVersion < X509_ATTRIBUTE_free_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_free)}
       X509_ATTRIBUTE_free := @FC_X509_ATTRIBUTE_free;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_free_allownil)}
-      X509_ATTRIBUTE_free := @ERR_X509_ATTRIBUTE_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_free_removed)}
@@ -10474,39 +9481,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_free)}
       X509_ATTRIBUTE_free := @_X509_ATTRIBUTE_free;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_free_allownil)}
-      X509_ATTRIBUTE_free := @ERR_X509_ATTRIBUTE_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_free := @ERR_X509_ATTRIBUTE_free;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_ATTRIBUTE := LoadLibFunction(ADllHandle, d2i_X509_ATTRIBUTE_procname);
-  FuncLoaded := assigned(d2i_X509_ATTRIBUTE);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_ATTRIBUTE);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_ATTRIBUTE_allownil)}
+    d2i_X509_ATTRIBUTE := @ERR_d2i_X509_ATTRIBUTE;
+    {$ifend}
     {$if declared(d2i_X509_ATTRIBUTE_introduced)}
     if LibVersion < d2i_X509_ATTRIBUTE_introduced then
     begin
       {$if declared(FC_d2i_X509_ATTRIBUTE)}
       d2i_X509_ATTRIBUTE := @FC_d2i_X509_ATTRIBUTE;
-      {$else}
-      {$if not defined(d2i_X509_ATTRIBUTE_allownil)}
-      d2i_X509_ATTRIBUTE := @ERR_d2i_X509_ATTRIBUTE;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_ATTRIBUTE_removed)}
@@ -10514,39 +9513,31 @@ begin
     begin
       {$if declared(_d2i_X509_ATTRIBUTE)}
       d2i_X509_ATTRIBUTE := @_d2i_X509_ATTRIBUTE;
-      {$else}
-      {$if not defined(d2i_X509_ATTRIBUTE_allownil)}
-      d2i_X509_ATTRIBUTE := @ERR_d2i_X509_ATTRIBUTE;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_ATTRIBUTE_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_ATTRIBUTE := @ERR_d2i_X509_ATTRIBUTE;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_ATTRIBUTE');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_ATTRIBUTE := LoadLibFunction(ADllHandle, i2d_X509_ATTRIBUTE_procname);
-  FuncLoaded := assigned(i2d_X509_ATTRIBUTE);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_ATTRIBUTE);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_ATTRIBUTE_allownil)}
+    i2d_X509_ATTRIBUTE := @ERR_i2d_X509_ATTRIBUTE;
+    {$ifend}
     {$if declared(i2d_X509_ATTRIBUTE_introduced)}
     if LibVersion < i2d_X509_ATTRIBUTE_introduced then
     begin
       {$if declared(FC_i2d_X509_ATTRIBUTE)}
       i2d_X509_ATTRIBUTE := @FC_i2d_X509_ATTRIBUTE;
-      {$else}
-      {$if not defined(i2d_X509_ATTRIBUTE_allownil)}
-      i2d_X509_ATTRIBUTE := @ERR_i2d_X509_ATTRIBUTE;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_ATTRIBUTE_removed)}
@@ -10554,39 +9545,31 @@ begin
     begin
       {$if declared(_i2d_X509_ATTRIBUTE)}
       i2d_X509_ATTRIBUTE := @_i2d_X509_ATTRIBUTE;
-      {$else}
-      {$if not defined(i2d_X509_ATTRIBUTE_allownil)}
-      i2d_X509_ATTRIBUTE := @ERR_i2d_X509_ATTRIBUTE;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_ATTRIBUTE_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_ATTRIBUTE := @ERR_i2d_X509_ATTRIBUTE;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_ATTRIBUTE');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_create := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_create_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_create);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_create);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_create_allownil)}
+    X509_ATTRIBUTE_create := @ERR_X509_ATTRIBUTE_create;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_create_introduced)}
     if LibVersion < X509_ATTRIBUTE_create_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_create)}
       X509_ATTRIBUTE_create := @FC_X509_ATTRIBUTE_create;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_allownil)}
-      X509_ATTRIBUTE_create := @ERR_X509_ATTRIBUTE_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_create_removed)}
@@ -10594,39 +9577,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_create)}
       X509_ATTRIBUTE_create := @_X509_ATTRIBUTE_create;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_allownil)}
-      X509_ATTRIBUTE_create := @ERR_X509_ATTRIBUTE_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_create_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_create := @ERR_X509_ATTRIBUTE_create;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_create');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_new := LoadLibFunction(ADllHandle, X509_EXTENSION_new_procname);
-  FuncLoaded := assigned(X509_EXTENSION_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_new_allownil)}
+    X509_EXTENSION_new := @ERR_X509_EXTENSION_new;
+    {$ifend}
     {$if declared(X509_EXTENSION_new_introduced)}
     if LibVersion < X509_EXTENSION_new_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_new)}
       X509_EXTENSION_new := @FC_X509_EXTENSION_new;
-      {$else}
-      {$if not defined(X509_EXTENSION_new_allownil)}
-      X509_EXTENSION_new := @ERR_X509_EXTENSION_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_new_removed)}
@@ -10634,39 +9609,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_new)}
       X509_EXTENSION_new := @_X509_EXTENSION_new;
-      {$else}
-      {$if not defined(X509_EXTENSION_new_allownil)}
-      X509_EXTENSION_new := @ERR_X509_EXTENSION_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_new := @ERR_X509_EXTENSION_new;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_new');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_free := LoadLibFunction(ADllHandle, X509_EXTENSION_free_procname);
-  FuncLoaded := assigned(X509_EXTENSION_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_free_allownil)}
+    X509_EXTENSION_free := @ERR_X509_EXTENSION_free;
+    {$ifend}
     {$if declared(X509_EXTENSION_free_introduced)}
     if LibVersion < X509_EXTENSION_free_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_free)}
       X509_EXTENSION_free := @FC_X509_EXTENSION_free;
-      {$else}
-      {$if not defined(X509_EXTENSION_free_allownil)}
-      X509_EXTENSION_free := @ERR_X509_EXTENSION_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_free_removed)}
@@ -10674,39 +9641,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_free)}
       X509_EXTENSION_free := @_X509_EXTENSION_free;
-      {$else}
-      {$if not defined(X509_EXTENSION_free_allownil)}
-      X509_EXTENSION_free := @ERR_X509_EXTENSION_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_free := @ERR_X509_EXTENSION_free;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_EXTENSION := LoadLibFunction(ADllHandle, d2i_X509_EXTENSION_procname);
-  FuncLoaded := assigned(d2i_X509_EXTENSION);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_EXTENSION);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_EXTENSION_allownil)}
+    d2i_X509_EXTENSION := @ERR_d2i_X509_EXTENSION;
+    {$ifend}
     {$if declared(d2i_X509_EXTENSION_introduced)}
     if LibVersion < d2i_X509_EXTENSION_introduced then
     begin
       {$if declared(FC_d2i_X509_EXTENSION)}
       d2i_X509_EXTENSION := @FC_d2i_X509_EXTENSION;
-      {$else}
-      {$if not defined(d2i_X509_EXTENSION_allownil)}
-      d2i_X509_EXTENSION := @ERR_d2i_X509_EXTENSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_EXTENSION_removed)}
@@ -10714,39 +9673,31 @@ begin
     begin
       {$if declared(_d2i_X509_EXTENSION)}
       d2i_X509_EXTENSION := @_d2i_X509_EXTENSION;
-      {$else}
-      {$if not defined(d2i_X509_EXTENSION_allownil)}
-      d2i_X509_EXTENSION := @ERR_d2i_X509_EXTENSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_EXTENSION_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_EXTENSION := @ERR_d2i_X509_EXTENSION;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_EXTENSION');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_EXTENSION := LoadLibFunction(ADllHandle, i2d_X509_EXTENSION_procname);
-  FuncLoaded := assigned(i2d_X509_EXTENSION);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_EXTENSION);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_EXTENSION_allownil)}
+    i2d_X509_EXTENSION := @ERR_i2d_X509_EXTENSION;
+    {$ifend}
     {$if declared(i2d_X509_EXTENSION_introduced)}
     if LibVersion < i2d_X509_EXTENSION_introduced then
     begin
       {$if declared(FC_i2d_X509_EXTENSION)}
       i2d_X509_EXTENSION := @FC_i2d_X509_EXTENSION;
-      {$else}
-      {$if not defined(i2d_X509_EXTENSION_allownil)}
-      i2d_X509_EXTENSION := @ERR_i2d_X509_EXTENSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_EXTENSION_removed)}
@@ -10754,39 +9705,31 @@ begin
     begin
       {$if declared(_i2d_X509_EXTENSION)}
       i2d_X509_EXTENSION := @_i2d_X509_EXTENSION;
-      {$else}
-      {$if not defined(i2d_X509_EXTENSION_allownil)}
-      i2d_X509_EXTENSION := @ERR_i2d_X509_EXTENSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_EXTENSION_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_EXTENSION := @ERR_i2d_X509_EXTENSION;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_EXTENSION');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_new := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_new_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_new_allownil)}
+    X509_NAME_ENTRY_new := @ERR_X509_NAME_ENTRY_new;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_new_introduced)}
     if LibVersion < X509_NAME_ENTRY_new_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_new)}
       X509_NAME_ENTRY_new := @FC_X509_NAME_ENTRY_new;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_new_allownil)}
-      X509_NAME_ENTRY_new := @ERR_X509_NAME_ENTRY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_new_removed)}
@@ -10794,39 +9737,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_new)}
       X509_NAME_ENTRY_new := @_X509_NAME_ENTRY_new;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_new_allownil)}
-      X509_NAME_ENTRY_new := @ERR_X509_NAME_ENTRY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_new := @ERR_X509_NAME_ENTRY_new;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_new');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_free := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_free_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_free_allownil)}
+    X509_NAME_ENTRY_free := @ERR_X509_NAME_ENTRY_free;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_free_introduced)}
     if LibVersion < X509_NAME_ENTRY_free_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_free)}
       X509_NAME_ENTRY_free := @FC_X509_NAME_ENTRY_free;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_free_allownil)}
-      X509_NAME_ENTRY_free := @ERR_X509_NAME_ENTRY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_free_removed)}
@@ -10834,39 +9769,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_free)}
       X509_NAME_ENTRY_free := @_X509_NAME_ENTRY_free;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_free_allownil)}
-      X509_NAME_ENTRY_free := @ERR_X509_NAME_ENTRY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_free := @ERR_X509_NAME_ENTRY_free;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_NAME_ENTRY := LoadLibFunction(ADllHandle, d2i_X509_NAME_ENTRY_procname);
-  FuncLoaded := assigned(d2i_X509_NAME_ENTRY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_NAME_ENTRY);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_NAME_ENTRY_allownil)}
+    d2i_X509_NAME_ENTRY := @ERR_d2i_X509_NAME_ENTRY;
+    {$ifend}
     {$if declared(d2i_X509_NAME_ENTRY_introduced)}
     if LibVersion < d2i_X509_NAME_ENTRY_introduced then
     begin
       {$if declared(FC_d2i_X509_NAME_ENTRY)}
       d2i_X509_NAME_ENTRY := @FC_d2i_X509_NAME_ENTRY;
-      {$else}
-      {$if not defined(d2i_X509_NAME_ENTRY_allownil)}
-      d2i_X509_NAME_ENTRY := @ERR_d2i_X509_NAME_ENTRY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_NAME_ENTRY_removed)}
@@ -10874,39 +9801,31 @@ begin
     begin
       {$if declared(_d2i_X509_NAME_ENTRY)}
       d2i_X509_NAME_ENTRY := @_d2i_X509_NAME_ENTRY;
-      {$else}
-      {$if not defined(d2i_X509_NAME_ENTRY_allownil)}
-      d2i_X509_NAME_ENTRY := @ERR_d2i_X509_NAME_ENTRY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_NAME_ENTRY_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_NAME_ENTRY := @ERR_d2i_X509_NAME_ENTRY;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_NAME_ENTRY');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_NAME_ENTRY := LoadLibFunction(ADllHandle, i2d_X509_NAME_ENTRY_procname);
-  FuncLoaded := assigned(i2d_X509_NAME_ENTRY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_NAME_ENTRY);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_NAME_ENTRY_allownil)}
+    i2d_X509_NAME_ENTRY := @ERR_i2d_X509_NAME_ENTRY;
+    {$ifend}
     {$if declared(i2d_X509_NAME_ENTRY_introduced)}
     if LibVersion < i2d_X509_NAME_ENTRY_introduced then
     begin
       {$if declared(FC_i2d_X509_NAME_ENTRY)}
       i2d_X509_NAME_ENTRY := @FC_i2d_X509_NAME_ENTRY;
-      {$else}
-      {$if not defined(i2d_X509_NAME_ENTRY_allownil)}
-      i2d_X509_NAME_ENTRY := @ERR_i2d_X509_NAME_ENTRY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_NAME_ENTRY_removed)}
@@ -10914,39 +9833,31 @@ begin
     begin
       {$if declared(_i2d_X509_NAME_ENTRY)}
       i2d_X509_NAME_ENTRY := @_i2d_X509_NAME_ENTRY;
-      {$else}
-      {$if not defined(i2d_X509_NAME_ENTRY_allownil)}
-      i2d_X509_NAME_ENTRY := @ERR_i2d_X509_NAME_ENTRY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_NAME_ENTRY_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_NAME_ENTRY := @ERR_i2d_X509_NAME_ENTRY;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_NAME_ENTRY');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_new := LoadLibFunction(ADllHandle, X509_NAME_new_procname);
-  FuncLoaded := assigned(X509_NAME_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_new_allownil)}
+    X509_NAME_new := @ERR_X509_NAME_new;
+    {$ifend}
     {$if declared(X509_NAME_new_introduced)}
     if LibVersion < X509_NAME_new_introduced then
     begin
       {$if declared(FC_X509_NAME_new)}
       X509_NAME_new := @FC_X509_NAME_new;
-      {$else}
-      {$if not defined(X509_NAME_new_allownil)}
-      X509_NAME_new := @ERR_X509_NAME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_new_removed)}
@@ -10954,39 +9865,31 @@ begin
     begin
       {$if declared(_X509_NAME_new)}
       X509_NAME_new := @_X509_NAME_new;
-      {$else}
-      {$if not defined(X509_NAME_new_allownil)}
-      X509_NAME_new := @ERR_X509_NAME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_new := @ERR_X509_NAME_new;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_new');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_free := LoadLibFunction(ADllHandle, X509_NAME_free_procname);
-  FuncLoaded := assigned(X509_NAME_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_free_allownil)}
+    X509_NAME_free := @ERR_X509_NAME_free;
+    {$ifend}
     {$if declared(X509_NAME_free_introduced)}
     if LibVersion < X509_NAME_free_introduced then
     begin
       {$if declared(FC_X509_NAME_free)}
       X509_NAME_free := @FC_X509_NAME_free;
-      {$else}
-      {$if not defined(X509_NAME_free_allownil)}
-      X509_NAME_free := @ERR_X509_NAME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_free_removed)}
@@ -10994,39 +9897,31 @@ begin
     begin
       {$if declared(_X509_NAME_free)}
       X509_NAME_free := @_X509_NAME_free;
-      {$else}
-      {$if not defined(X509_NAME_free_allownil)}
-      X509_NAME_free := @ERR_X509_NAME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_free := @ERR_X509_NAME_free;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_NAME := LoadLibFunction(ADllHandle, d2i_X509_NAME_procname);
-  FuncLoaded := assigned(d2i_X509_NAME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_NAME);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_NAME_allownil)}
+    d2i_X509_NAME := @ERR_d2i_X509_NAME;
+    {$ifend}
     {$if declared(d2i_X509_NAME_introduced)}
     if LibVersion < d2i_X509_NAME_introduced then
     begin
       {$if declared(FC_d2i_X509_NAME)}
       d2i_X509_NAME := @FC_d2i_X509_NAME;
-      {$else}
-      {$if not defined(d2i_X509_NAME_allownil)}
-      d2i_X509_NAME := @ERR_d2i_X509_NAME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_NAME_removed)}
@@ -11034,39 +9929,31 @@ begin
     begin
       {$if declared(_d2i_X509_NAME)}
       d2i_X509_NAME := @_d2i_X509_NAME;
-      {$else}
-      {$if not defined(d2i_X509_NAME_allownil)}
-      d2i_X509_NAME := @ERR_d2i_X509_NAME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_NAME_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_NAME := @ERR_d2i_X509_NAME;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_NAME');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_NAME := LoadLibFunction(ADllHandle, i2d_X509_NAME_procname);
-  FuncLoaded := assigned(i2d_X509_NAME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_NAME);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_NAME_allownil)}
+    i2d_X509_NAME := @ERR_i2d_X509_NAME;
+    {$ifend}
     {$if declared(i2d_X509_NAME_introduced)}
     if LibVersion < i2d_X509_NAME_introduced then
     begin
       {$if declared(FC_i2d_X509_NAME)}
       i2d_X509_NAME := @FC_i2d_X509_NAME;
-      {$else}
-      {$if not defined(i2d_X509_NAME_allownil)}
-      i2d_X509_NAME := @ERR_i2d_X509_NAME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_NAME_removed)}
@@ -11074,39 +9961,31 @@ begin
     begin
       {$if declared(_i2d_X509_NAME)}
       i2d_X509_NAME := @_i2d_X509_NAME;
-      {$else}
-      {$if not defined(i2d_X509_NAME_allownil)}
-      i2d_X509_NAME := @ERR_i2d_X509_NAME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_NAME_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_NAME := @ERR_i2d_X509_NAME;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_NAME');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_set := LoadLibFunction(ADllHandle, X509_NAME_set_procname);
-  FuncLoaded := assigned(X509_NAME_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_set);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_set_allownil)}
+    X509_NAME_set := @ERR_X509_NAME_set;
+    {$ifend}
     {$if declared(X509_NAME_set_introduced)}
     if LibVersion < X509_NAME_set_introduced then
     begin
       {$if declared(FC_X509_NAME_set)}
       X509_NAME_set := @FC_X509_NAME_set;
-      {$else}
-      {$if not defined(X509_NAME_set_allownil)}
-      X509_NAME_set := @ERR_X509_NAME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_set_removed)}
@@ -11114,39 +9993,31 @@ begin
     begin
       {$if declared(_X509_NAME_set)}
       X509_NAME_set := @_X509_NAME_set;
-      {$else}
-      {$if not defined(X509_NAME_set_allownil)}
-      X509_NAME_set := @ERR_X509_NAME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_set_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_set := @ERR_X509_NAME_set;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_set');
-    end;
     {$ifend}
   end;
 
 
   X509_new := LoadLibFunction(ADllHandle, X509_new_procname);
-  FuncLoaded := assigned(X509_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_new_allownil)}
+    X509_new := @ERR_X509_new;
+    {$ifend}
     {$if declared(X509_new_introduced)}
     if LibVersion < X509_new_introduced then
     begin
       {$if declared(FC_X509_new)}
       X509_new := @FC_X509_new;
-      {$else}
-      {$if not defined(X509_new_allownil)}
-      X509_new := @ERR_X509_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_new_removed)}
@@ -11154,39 +10025,31 @@ begin
     begin
       {$if declared(_X509_new)}
       X509_new := @_X509_new;
-      {$else}
-      {$if not defined(X509_new_allownil)}
-      X509_new := @ERR_X509_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_new := @ERR_X509_new;
+    if FuncLoadError then
       AFailed.Add('X509_new');
-    end;
     {$ifend}
   end;
 
 
   X509_free := LoadLibFunction(ADllHandle, X509_free_procname);
-  FuncLoaded := assigned(X509_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_free_allownil)}
+    X509_free := @ERR_X509_free;
+    {$ifend}
     {$if declared(X509_free_introduced)}
     if LibVersion < X509_free_introduced then
     begin
       {$if declared(FC_X509_free)}
       X509_free := @FC_X509_free;
-      {$else}
-      {$if not defined(X509_free_allownil)}
-      X509_free := @ERR_X509_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_free_removed)}
@@ -11194,39 +10057,31 @@ begin
     begin
       {$if declared(_X509_free)}
       X509_free := @_X509_free;
-      {$else}
-      {$if not defined(X509_free_allownil)}
-      X509_free := @ERR_X509_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_free := @ERR_X509_free;
+    if FuncLoadError then
       AFailed.Add('X509_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509 := LoadLibFunction(ADllHandle, d2i_X509_procname);
-  FuncLoaded := assigned(d2i_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_allownil)}
+    d2i_X509 := @ERR_d2i_X509;
+    {$ifend}
     {$if declared(d2i_X509_introduced)}
     if LibVersion < d2i_X509_introduced then
     begin
       {$if declared(FC_d2i_X509)}
       d2i_X509 := @FC_d2i_X509;
-      {$else}
-      {$if not defined(d2i_X509_allownil)}
-      d2i_X509 := @ERR_d2i_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_removed)}
@@ -11234,39 +10089,31 @@ begin
     begin
       {$if declared(_d2i_X509)}
       d2i_X509 := @_d2i_X509;
-      {$else}
-      {$if not defined(d2i_X509_allownil)}
-      d2i_X509 := @ERR_d2i_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509 := @ERR_d2i_X509;
+    if FuncLoadError then
       AFailed.Add('d2i_X509');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509 := LoadLibFunction(ADllHandle, i2d_X509_procname);
-  FuncLoaded := assigned(i2d_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_allownil)}
+    i2d_X509 := @ERR_i2d_X509;
+    {$ifend}
     {$if declared(i2d_X509_introduced)}
     if LibVersion < i2d_X509_introduced then
     begin
       {$if declared(FC_i2d_X509)}
       i2d_X509 := @FC_i2d_X509;
-      {$else}
-      {$if not defined(i2d_X509_allownil)}
-      i2d_X509 := @ERR_i2d_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_removed)}
@@ -11274,39 +10121,31 @@ begin
     begin
       {$if declared(_i2d_X509)}
       i2d_X509 := @_i2d_X509;
-      {$else}
-      {$if not defined(i2d_X509_allownil)}
-      i2d_X509 := @ERR_i2d_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509 := @ERR_i2d_X509;
+    if FuncLoadError then
       AFailed.Add('i2d_X509');
-    end;
     {$ifend}
   end;
 
 
   X509_set_ex_data := LoadLibFunction(ADllHandle, X509_set_ex_data_procname);
-  FuncLoaded := assigned(X509_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_ex_data_allownil)}
+    X509_set_ex_data := @ERR_X509_set_ex_data;
+    {$ifend}
     {$if declared(X509_set_ex_data_introduced)}
     if LibVersion < X509_set_ex_data_introduced then
     begin
       {$if declared(FC_X509_set_ex_data)}
       X509_set_ex_data := @FC_X509_set_ex_data;
-      {$else}
-      {$if not defined(X509_set_ex_data_allownil)}
-      X509_set_ex_data := @ERR_X509_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_ex_data_removed)}
@@ -11314,39 +10153,31 @@ begin
     begin
       {$if declared(_X509_set_ex_data)}
       X509_set_ex_data := @_X509_set_ex_data;
-      {$else}
-      {$if not defined(X509_set_ex_data_allownil)}
-      X509_set_ex_data := @ERR_X509_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_ex_data := @ERR_X509_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('X509_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ex_data := LoadLibFunction(ADllHandle, X509_get_ex_data_procname);
-  FuncLoaded := assigned(X509_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ex_data_allownil)}
+    X509_get_ex_data := @ERR_X509_get_ex_data;
+    {$ifend}
     {$if declared(X509_get_ex_data_introduced)}
     if LibVersion < X509_get_ex_data_introduced then
     begin
       {$if declared(FC_X509_get_ex_data)}
       X509_get_ex_data := @FC_X509_get_ex_data;
-      {$else}
-      {$if not defined(X509_get_ex_data_allownil)}
-      X509_get_ex_data := @ERR_X509_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ex_data_removed)}
@@ -11354,39 +10185,31 @@ begin
     begin
       {$if declared(_X509_get_ex_data)}
       X509_get_ex_data := @_X509_get_ex_data;
-      {$else}
-      {$if not defined(X509_get_ex_data_allownil)}
-      X509_get_ex_data := @ERR_X509_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ex_data := @ERR_X509_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('X509_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_AUX := LoadLibFunction(ADllHandle, i2d_X509_AUX_procname);
-  FuncLoaded := assigned(i2d_X509_AUX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_AUX);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_AUX_allownil)}
+    i2d_X509_AUX := @ERR_i2d_X509_AUX;
+    {$ifend}
     {$if declared(i2d_X509_AUX_introduced)}
     if LibVersion < i2d_X509_AUX_introduced then
     begin
       {$if declared(FC_i2d_X509_AUX)}
       i2d_X509_AUX := @FC_i2d_X509_AUX;
-      {$else}
-      {$if not defined(i2d_X509_AUX_allownil)}
-      i2d_X509_AUX := @ERR_i2d_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_AUX_removed)}
@@ -11394,39 +10217,31 @@ begin
     begin
       {$if declared(_i2d_X509_AUX)}
       i2d_X509_AUX := @_i2d_X509_AUX;
-      {$else}
-      {$if not defined(i2d_X509_AUX_allownil)}
-      i2d_X509_AUX := @ERR_i2d_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_AUX_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_AUX := @ERR_i2d_X509_AUX;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_AUX');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_AUX := LoadLibFunction(ADllHandle, d2i_X509_AUX_procname);
-  FuncLoaded := assigned(d2i_X509_AUX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_AUX);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_AUX_allownil)}
+    d2i_X509_AUX := @ERR_d2i_X509_AUX;
+    {$ifend}
     {$if declared(d2i_X509_AUX_introduced)}
     if LibVersion < d2i_X509_AUX_introduced then
     begin
       {$if declared(FC_d2i_X509_AUX)}
       d2i_X509_AUX := @FC_d2i_X509_AUX;
-      {$else}
-      {$if not defined(d2i_X509_AUX_allownil)}
-      d2i_X509_AUX := @ERR_d2i_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_AUX_removed)}
@@ -11434,39 +10249,31 @@ begin
     begin
       {$if declared(_d2i_X509_AUX)}
       d2i_X509_AUX := @_d2i_X509_AUX;
-      {$else}
-      {$if not defined(d2i_X509_AUX_allownil)}
-      d2i_X509_AUX := @ERR_d2i_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_AUX_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_AUX := @ERR_d2i_X509_AUX;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_AUX');
-    end;
     {$ifend}
   end;
 
 
   i2d_re_X509_tbs := LoadLibFunction(ADllHandle, i2d_re_X509_tbs_procname);
-  FuncLoaded := assigned(i2d_re_X509_tbs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_re_X509_tbs);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_re_X509_tbs_allownil)}
+    i2d_re_X509_tbs := @ERR_i2d_re_X509_tbs;
+    {$ifend}
     {$if declared(i2d_re_X509_tbs_introduced)}
     if LibVersion < i2d_re_X509_tbs_introduced then
     begin
       {$if declared(FC_i2d_re_X509_tbs)}
       i2d_re_X509_tbs := @FC_i2d_re_X509_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_tbs_allownil)}
-      i2d_re_X509_tbs := @ERR_i2d_re_X509_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_re_X509_tbs_removed)}
@@ -11474,39 +10281,31 @@ begin
     begin
       {$if declared(_i2d_re_X509_tbs)}
       i2d_re_X509_tbs := @_i2d_re_X509_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_tbs_allownil)}
-      i2d_re_X509_tbs := @ERR_i2d_re_X509_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_re_X509_tbs_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_re_X509_tbs := @ERR_i2d_re_X509_tbs;
+    if FuncLoadError then
       AFailed.Add('i2d_re_X509_tbs');
-    end;
     {$ifend}
   end;
 
 
   X509_SIG_INFO_get := LoadLibFunction(ADllHandle, X509_SIG_INFO_get_procname);
-  FuncLoaded := assigned(X509_SIG_INFO_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_INFO_get);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_INFO_get_allownil)}
+    X509_SIG_INFO_get := @ERR_X509_SIG_INFO_get;
+    {$ifend}
     {$if declared(X509_SIG_INFO_get_introduced)}
     if LibVersion < X509_SIG_INFO_get_introduced then
     begin
       {$if declared(FC_X509_SIG_INFO_get)}
       X509_SIG_INFO_get := @FC_X509_SIG_INFO_get;
-      {$else}
-      {$if not defined(X509_SIG_INFO_get_allownil)}
-      X509_SIG_INFO_get := @ERR_X509_SIG_INFO_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_INFO_get_removed)}
@@ -11514,39 +10313,31 @@ begin
     begin
       {$if declared(_X509_SIG_INFO_get)}
       X509_SIG_INFO_get := @_X509_SIG_INFO_get;
-      {$else}
-      {$if not defined(X509_SIG_INFO_get_allownil)}
-      X509_SIG_INFO_get := @ERR_X509_SIG_INFO_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_INFO_get_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_INFO_get := @ERR_X509_SIG_INFO_get;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_INFO_get');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_SIG_INFO_set := LoadLibFunction(ADllHandle, X509_SIG_INFO_set_procname);
-  FuncLoaded := assigned(X509_SIG_INFO_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_SIG_INFO_set);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_SIG_INFO_set_allownil)}
+    X509_SIG_INFO_set := @ERR_X509_SIG_INFO_set;
+    {$ifend}
     {$if declared(X509_SIG_INFO_set_introduced)}
     if LibVersion < X509_SIG_INFO_set_introduced then
     begin
       {$if declared(FC_X509_SIG_INFO_set)}
       X509_SIG_INFO_set := @FC_X509_SIG_INFO_set;
-      {$else}
-      {$if not defined(X509_SIG_INFO_set_allownil)}
-      X509_SIG_INFO_set := @ERR_X509_SIG_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_SIG_INFO_set_removed)}
@@ -11554,39 +10345,31 @@ begin
     begin
       {$if declared(_X509_SIG_INFO_set)}
       X509_SIG_INFO_set := @_X509_SIG_INFO_set;
-      {$else}
-      {$if not defined(X509_SIG_INFO_set_allownil)}
-      X509_SIG_INFO_set := @ERR_X509_SIG_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_SIG_INFO_set_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_SIG_INFO_set := @ERR_X509_SIG_INFO_set;
+    if FuncLoadError then
       AFailed.Add('X509_SIG_INFO_set');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_signature_info := LoadLibFunction(ADllHandle, X509_get_signature_info_procname);
-  FuncLoaded := assigned(X509_get_signature_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_signature_info);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_signature_info_allownil)}
+    X509_get_signature_info := @ERR_X509_get_signature_info;
+    {$ifend}
     {$if declared(X509_get_signature_info_introduced)}
     if LibVersion < X509_get_signature_info_introduced then
     begin
       {$if declared(FC_X509_get_signature_info)}
       X509_get_signature_info := @FC_X509_get_signature_info;
-      {$else}
-      {$if not defined(X509_get_signature_info_allownil)}
-      X509_get_signature_info := @ERR_X509_get_signature_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_signature_info_removed)}
@@ -11594,39 +10377,31 @@ begin
     begin
       {$if declared(_X509_get_signature_info)}
       X509_get_signature_info := @_X509_get_signature_info;
-      {$else}
-      {$if not defined(X509_get_signature_info_allownil)}
-      X509_get_signature_info := @ERR_X509_get_signature_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_signature_info_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_signature_info := @ERR_X509_get_signature_info;
+    if FuncLoadError then
       AFailed.Add('X509_get_signature_info');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get0_signature := LoadLibFunction(ADllHandle, X509_get0_signature_procname);
-  FuncLoaded := assigned(X509_get0_signature);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_signature);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_signature_allownil)}
+    X509_get0_signature := @ERR_X509_get0_signature;
+    {$ifend}
     {$if declared(X509_get0_signature_introduced)}
     if LibVersion < X509_get0_signature_introduced then
     begin
       {$if declared(FC_X509_get0_signature)}
       X509_get0_signature := @FC_X509_get0_signature;
-      {$else}
-      {$if not defined(X509_get0_signature_allownil)}
-      X509_get0_signature := @ERR_X509_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_signature_removed)}
@@ -11634,39 +10409,31 @@ begin
     begin
       {$if declared(_X509_get0_signature)}
       X509_get0_signature := @_X509_get0_signature;
-      {$else}
-      {$if not defined(X509_get0_signature_allownil)}
-      X509_get0_signature := @ERR_X509_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_signature_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_signature := @ERR_X509_get0_signature;
+    if FuncLoadError then
       AFailed.Add('X509_get0_signature');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_signature_nid := LoadLibFunction(ADllHandle, X509_get_signature_nid_procname);
-  FuncLoaded := assigned(X509_get_signature_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_signature_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_signature_nid_allownil)}
+    X509_get_signature_nid := @ERR_X509_get_signature_nid;
+    {$ifend}
     {$if declared(X509_get_signature_nid_introduced)}
     if LibVersion < X509_get_signature_nid_introduced then
     begin
       {$if declared(FC_X509_get_signature_nid)}
       X509_get_signature_nid := @FC_X509_get_signature_nid;
-      {$else}
-      {$if not defined(X509_get_signature_nid_allownil)}
-      X509_get_signature_nid := @ERR_X509_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_signature_nid_removed)}
@@ -11674,39 +10441,31 @@ begin
     begin
       {$if declared(_X509_get_signature_nid)}
       X509_get_signature_nid := @_X509_get_signature_nid;
-      {$else}
-      {$if not defined(X509_get_signature_nid_allownil)}
-      X509_get_signature_nid := @ERR_X509_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_signature_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_signature_nid := @ERR_X509_get_signature_nid;
+    if FuncLoadError then
       AFailed.Add('X509_get_signature_nid');
-    end;
     {$ifend}
   end;
 
 
   X509_trusted := LoadLibFunction(ADllHandle, X509_trusted_procname);
-  FuncLoaded := assigned(X509_trusted);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_trusted);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_trusted_allownil)}
+    X509_trusted := @ERR_X509_trusted;
+    {$ifend}
     {$if declared(X509_trusted_introduced)}
     if LibVersion < X509_trusted_introduced then
     begin
       {$if declared(FC_X509_trusted)}
       X509_trusted := @FC_X509_trusted;
-      {$else}
-      {$if not defined(X509_trusted_allownil)}
-      X509_trusted := @ERR_X509_trusted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_trusted_removed)}
@@ -11714,39 +10473,31 @@ begin
     begin
       {$if declared(_X509_trusted)}
       X509_trusted := @_X509_trusted;
-      {$else}
-      {$if not defined(X509_trusted_allownil)}
-      X509_trusted := @ERR_X509_trusted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_trusted_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_trusted := @ERR_X509_trusted;
+    if FuncLoadError then
       AFailed.Add('X509_trusted');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_alias_set1 := LoadLibFunction(ADllHandle, X509_alias_set1_procname);
-  FuncLoaded := assigned(X509_alias_set1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_alias_set1);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_alias_set1_allownil)}
+    X509_alias_set1 := @ERR_X509_alias_set1;
+    {$ifend}
     {$if declared(X509_alias_set1_introduced)}
     if LibVersion < X509_alias_set1_introduced then
     begin
       {$if declared(FC_X509_alias_set1)}
       X509_alias_set1 := @FC_X509_alias_set1;
-      {$else}
-      {$if not defined(X509_alias_set1_allownil)}
-      X509_alias_set1 := @ERR_X509_alias_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_alias_set1_removed)}
@@ -11754,39 +10505,31 @@ begin
     begin
       {$if declared(_X509_alias_set1)}
       X509_alias_set1 := @_X509_alias_set1;
-      {$else}
-      {$if not defined(X509_alias_set1_allownil)}
-      X509_alias_set1 := @ERR_X509_alias_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_alias_set1_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_alias_set1 := @ERR_X509_alias_set1;
+    if FuncLoadError then
       AFailed.Add('X509_alias_set1');
-    end;
     {$ifend}
   end;
 
 
   X509_keyid_set1 := LoadLibFunction(ADllHandle, X509_keyid_set1_procname);
-  FuncLoaded := assigned(X509_keyid_set1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_keyid_set1);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_keyid_set1_allownil)}
+    X509_keyid_set1 := @ERR_X509_keyid_set1;
+    {$ifend}
     {$if declared(X509_keyid_set1_introduced)}
     if LibVersion < X509_keyid_set1_introduced then
     begin
       {$if declared(FC_X509_keyid_set1)}
       X509_keyid_set1 := @FC_X509_keyid_set1;
-      {$else}
-      {$if not defined(X509_keyid_set1_allownil)}
-      X509_keyid_set1 := @ERR_X509_keyid_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_keyid_set1_removed)}
@@ -11794,39 +10537,31 @@ begin
     begin
       {$if declared(_X509_keyid_set1)}
       X509_keyid_set1 := @_X509_keyid_set1;
-      {$else}
-      {$if not defined(X509_keyid_set1_allownil)}
-      X509_keyid_set1 := @ERR_X509_keyid_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_keyid_set1_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_keyid_set1 := @ERR_X509_keyid_set1;
+    if FuncLoadError then
       AFailed.Add('X509_keyid_set1');
-    end;
     {$ifend}
   end;
 
 
   X509_alias_get0 := LoadLibFunction(ADllHandle, X509_alias_get0_procname);
-  FuncLoaded := assigned(X509_alias_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_alias_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_alias_get0_allownil)}
+    X509_alias_get0 := @ERR_X509_alias_get0;
+    {$ifend}
     {$if declared(X509_alias_get0_introduced)}
     if LibVersion < X509_alias_get0_introduced then
     begin
       {$if declared(FC_X509_alias_get0)}
       X509_alias_get0 := @FC_X509_alias_get0;
-      {$else}
-      {$if not defined(X509_alias_get0_allownil)}
-      X509_alias_get0 := @ERR_X509_alias_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_alias_get0_removed)}
@@ -11834,39 +10569,31 @@ begin
     begin
       {$if declared(_X509_alias_get0)}
       X509_alias_get0 := @_X509_alias_get0;
-      {$else}
-      {$if not defined(X509_alias_get0_allownil)}
-      X509_alias_get0 := @ERR_X509_alias_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_alias_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_alias_get0 := @ERR_X509_alias_get0;
+    if FuncLoadError then
       AFailed.Add('X509_alias_get0');
-    end;
     {$ifend}
   end;
 
 
   X509_keyid_get0 := LoadLibFunction(ADllHandle, X509_keyid_get0_procname);
-  FuncLoaded := assigned(X509_keyid_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_keyid_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_keyid_get0_allownil)}
+    X509_keyid_get0 := @ERR_X509_keyid_get0;
+    {$ifend}
     {$if declared(X509_keyid_get0_introduced)}
     if LibVersion < X509_keyid_get0_introduced then
     begin
       {$if declared(FC_X509_keyid_get0)}
       X509_keyid_get0 := @FC_X509_keyid_get0;
-      {$else}
-      {$if not defined(X509_keyid_get0_allownil)}
-      X509_keyid_get0 := @ERR_X509_keyid_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_keyid_get0_removed)}
@@ -11874,39 +10601,31 @@ begin
     begin
       {$if declared(_X509_keyid_get0)}
       X509_keyid_get0 := @_X509_keyid_get0;
-      {$else}
-      {$if not defined(X509_keyid_get0_allownil)}
-      X509_keyid_get0 := @ERR_X509_keyid_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_keyid_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_keyid_get0 := @ERR_X509_keyid_get0;
+    if FuncLoadError then
       AFailed.Add('X509_keyid_get0');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_set := LoadLibFunction(ADllHandle, X509_TRUST_set_procname);
-  FuncLoaded := assigned(X509_TRUST_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_set);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_set_allownil)}
+    X509_TRUST_set := @ERR_X509_TRUST_set;
+    {$ifend}
     {$if declared(X509_TRUST_set_introduced)}
     if LibVersion < X509_TRUST_set_introduced then
     begin
       {$if declared(FC_X509_TRUST_set)}
       X509_TRUST_set := @FC_X509_TRUST_set;
-      {$else}
-      {$if not defined(X509_TRUST_set_allownil)}
-      X509_TRUST_set := @ERR_X509_TRUST_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_set_removed)}
@@ -11914,39 +10633,31 @@ begin
     begin
       {$if declared(_X509_TRUST_set)}
       X509_TRUST_set := @_X509_TRUST_set;
-      {$else}
-      {$if not defined(X509_TRUST_set_allownil)}
-      X509_TRUST_set := @ERR_X509_TRUST_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_set_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_set := @ERR_X509_TRUST_set;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_set');
-    end;
     {$ifend}
   end;
 
 
   X509_add1_trust_object := LoadLibFunction(ADllHandle, X509_add1_trust_object_procname);
-  FuncLoaded := assigned(X509_add1_trust_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_add1_trust_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_add1_trust_object_allownil)}
+    X509_add1_trust_object := @ERR_X509_add1_trust_object;
+    {$ifend}
     {$if declared(X509_add1_trust_object_introduced)}
     if LibVersion < X509_add1_trust_object_introduced then
     begin
       {$if declared(FC_X509_add1_trust_object)}
       X509_add1_trust_object := @FC_X509_add1_trust_object;
-      {$else}
-      {$if not defined(X509_add1_trust_object_allownil)}
-      X509_add1_trust_object := @ERR_X509_add1_trust_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_add1_trust_object_removed)}
@@ -11954,39 +10665,31 @@ begin
     begin
       {$if declared(_X509_add1_trust_object)}
       X509_add1_trust_object := @_X509_add1_trust_object;
-      {$else}
-      {$if not defined(X509_add1_trust_object_allownil)}
-      X509_add1_trust_object := @ERR_X509_add1_trust_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_add1_trust_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_add1_trust_object := @ERR_X509_add1_trust_object;
+    if FuncLoadError then
       AFailed.Add('X509_add1_trust_object');
-    end;
     {$ifend}
   end;
 
 
   X509_add1_reject_object := LoadLibFunction(ADllHandle, X509_add1_reject_object_procname);
-  FuncLoaded := assigned(X509_add1_reject_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_add1_reject_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_add1_reject_object_allownil)}
+    X509_add1_reject_object := @ERR_X509_add1_reject_object;
+    {$ifend}
     {$if declared(X509_add1_reject_object_introduced)}
     if LibVersion < X509_add1_reject_object_introduced then
     begin
       {$if declared(FC_X509_add1_reject_object)}
       X509_add1_reject_object := @FC_X509_add1_reject_object;
-      {$else}
-      {$if not defined(X509_add1_reject_object_allownil)}
-      X509_add1_reject_object := @ERR_X509_add1_reject_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_add1_reject_object_removed)}
@@ -11994,39 +10697,31 @@ begin
     begin
       {$if declared(_X509_add1_reject_object)}
       X509_add1_reject_object := @_X509_add1_reject_object;
-      {$else}
-      {$if not defined(X509_add1_reject_object_allownil)}
-      X509_add1_reject_object := @ERR_X509_add1_reject_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_add1_reject_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_add1_reject_object := @ERR_X509_add1_reject_object;
+    if FuncLoadError then
       AFailed.Add('X509_add1_reject_object');
-    end;
     {$ifend}
   end;
 
 
   X509_trust_clear := LoadLibFunction(ADllHandle, X509_trust_clear_procname);
-  FuncLoaded := assigned(X509_trust_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_trust_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_trust_clear_allownil)}
+    X509_trust_clear := @ERR_X509_trust_clear;
+    {$ifend}
     {$if declared(X509_trust_clear_introduced)}
     if LibVersion < X509_trust_clear_introduced then
     begin
       {$if declared(FC_X509_trust_clear)}
       X509_trust_clear := @FC_X509_trust_clear;
-      {$else}
-      {$if not defined(X509_trust_clear_allownil)}
-      X509_trust_clear := @ERR_X509_trust_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_trust_clear_removed)}
@@ -12034,39 +10729,31 @@ begin
     begin
       {$if declared(_X509_trust_clear)}
       X509_trust_clear := @_X509_trust_clear;
-      {$else}
-      {$if not defined(X509_trust_clear_allownil)}
-      X509_trust_clear := @ERR_X509_trust_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_trust_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_trust_clear := @ERR_X509_trust_clear;
+    if FuncLoadError then
       AFailed.Add('X509_trust_clear');
-    end;
     {$ifend}
   end;
 
 
   X509_reject_clear := LoadLibFunction(ADllHandle, X509_reject_clear_procname);
-  FuncLoaded := assigned(X509_reject_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_reject_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_reject_clear_allownil)}
+    X509_reject_clear := @ERR_X509_reject_clear;
+    {$ifend}
     {$if declared(X509_reject_clear_introduced)}
     if LibVersion < X509_reject_clear_introduced then
     begin
       {$if declared(FC_X509_reject_clear)}
       X509_reject_clear := @FC_X509_reject_clear;
-      {$else}
-      {$if not defined(X509_reject_clear_allownil)}
-      X509_reject_clear := @ERR_X509_reject_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_reject_clear_removed)}
@@ -12074,39 +10761,31 @@ begin
     begin
       {$if declared(_X509_reject_clear)}
       X509_reject_clear := @_X509_reject_clear;
-      {$else}
-      {$if not defined(X509_reject_clear_allownil)}
-      X509_reject_clear := @ERR_X509_reject_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_reject_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_reject_clear := @ERR_X509_reject_clear;
+    if FuncLoadError then
       AFailed.Add('X509_reject_clear');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_new := LoadLibFunction(ADllHandle, X509_REVOKED_new_procname);
-  FuncLoaded := assigned(X509_REVOKED_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_new_allownil)}
+    X509_REVOKED_new := @ERR_X509_REVOKED_new;
+    {$ifend}
     {$if declared(X509_REVOKED_new_introduced)}
     if LibVersion < X509_REVOKED_new_introduced then
     begin
       {$if declared(FC_X509_REVOKED_new)}
       X509_REVOKED_new := @FC_X509_REVOKED_new;
-      {$else}
-      {$if not defined(X509_REVOKED_new_allownil)}
-      X509_REVOKED_new := @ERR_X509_REVOKED_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_new_removed)}
@@ -12114,39 +10793,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_new)}
       X509_REVOKED_new := @_X509_REVOKED_new;
-      {$else}
-      {$if not defined(X509_REVOKED_new_allownil)}
-      X509_REVOKED_new := @ERR_X509_REVOKED_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_new := @ERR_X509_REVOKED_new;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_new');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_free := LoadLibFunction(ADllHandle, X509_REVOKED_free_procname);
-  FuncLoaded := assigned(X509_REVOKED_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_free_allownil)}
+    X509_REVOKED_free := @ERR_X509_REVOKED_free;
+    {$ifend}
     {$if declared(X509_REVOKED_free_introduced)}
     if LibVersion < X509_REVOKED_free_introduced then
     begin
       {$if declared(FC_X509_REVOKED_free)}
       X509_REVOKED_free := @FC_X509_REVOKED_free;
-      {$else}
-      {$if not defined(X509_REVOKED_free_allownil)}
-      X509_REVOKED_free := @ERR_X509_REVOKED_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_free_removed)}
@@ -12154,39 +10825,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_free)}
       X509_REVOKED_free := @_X509_REVOKED_free;
-      {$else}
-      {$if not defined(X509_REVOKED_free_allownil)}
-      X509_REVOKED_free := @ERR_X509_REVOKED_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_free := @ERR_X509_REVOKED_free;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_REVOKED := LoadLibFunction(ADllHandle, d2i_X509_REVOKED_procname);
-  FuncLoaded := assigned(d2i_X509_REVOKED);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_REVOKED);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_REVOKED_allownil)}
+    d2i_X509_REVOKED := @ERR_d2i_X509_REVOKED;
+    {$ifend}
     {$if declared(d2i_X509_REVOKED_introduced)}
     if LibVersion < d2i_X509_REVOKED_introduced then
     begin
       {$if declared(FC_d2i_X509_REVOKED)}
       d2i_X509_REVOKED := @FC_d2i_X509_REVOKED;
-      {$else}
-      {$if not defined(d2i_X509_REVOKED_allownil)}
-      d2i_X509_REVOKED := @ERR_d2i_X509_REVOKED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_REVOKED_removed)}
@@ -12194,39 +10857,31 @@ begin
     begin
       {$if declared(_d2i_X509_REVOKED)}
       d2i_X509_REVOKED := @_d2i_X509_REVOKED;
-      {$else}
-      {$if not defined(d2i_X509_REVOKED_allownil)}
-      d2i_X509_REVOKED := @ERR_d2i_X509_REVOKED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_REVOKED_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_REVOKED := @ERR_d2i_X509_REVOKED;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_REVOKED');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_REVOKED := LoadLibFunction(ADllHandle, i2d_X509_REVOKED_procname);
-  FuncLoaded := assigned(i2d_X509_REVOKED);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_REVOKED);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_REVOKED_allownil)}
+    i2d_X509_REVOKED := @ERR_i2d_X509_REVOKED;
+    {$ifend}
     {$if declared(i2d_X509_REVOKED_introduced)}
     if LibVersion < i2d_X509_REVOKED_introduced then
     begin
       {$if declared(FC_i2d_X509_REVOKED)}
       i2d_X509_REVOKED := @FC_i2d_X509_REVOKED;
-      {$else}
-      {$if not defined(i2d_X509_REVOKED_allownil)}
-      i2d_X509_REVOKED := @ERR_i2d_X509_REVOKED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_REVOKED_removed)}
@@ -12234,39 +10889,31 @@ begin
     begin
       {$if declared(_i2d_X509_REVOKED)}
       i2d_X509_REVOKED := @_i2d_X509_REVOKED;
-      {$else}
-      {$if not defined(i2d_X509_REVOKED_allownil)}
-      i2d_X509_REVOKED := @ERR_i2d_X509_REVOKED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_REVOKED_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_REVOKED := @ERR_i2d_X509_REVOKED;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_REVOKED');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_INFO_new := LoadLibFunction(ADllHandle, X509_CRL_INFO_new_procname);
-  FuncLoaded := assigned(X509_CRL_INFO_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_INFO_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_INFO_new_allownil)}
+    X509_CRL_INFO_new := @ERR_X509_CRL_INFO_new;
+    {$ifend}
     {$if declared(X509_CRL_INFO_new_introduced)}
     if LibVersion < X509_CRL_INFO_new_introduced then
     begin
       {$if declared(FC_X509_CRL_INFO_new)}
       X509_CRL_INFO_new := @FC_X509_CRL_INFO_new;
-      {$else}
-      {$if not defined(X509_CRL_INFO_new_allownil)}
-      X509_CRL_INFO_new := @ERR_X509_CRL_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_INFO_new_removed)}
@@ -12274,39 +10921,31 @@ begin
     begin
       {$if declared(_X509_CRL_INFO_new)}
       X509_CRL_INFO_new := @_X509_CRL_INFO_new;
-      {$else}
-      {$if not defined(X509_CRL_INFO_new_allownil)}
-      X509_CRL_INFO_new := @ERR_X509_CRL_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_INFO_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_INFO_new := @ERR_X509_CRL_INFO_new;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_INFO_new');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_INFO_free := LoadLibFunction(ADllHandle, X509_CRL_INFO_free_procname);
-  FuncLoaded := assigned(X509_CRL_INFO_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_INFO_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_INFO_free_allownil)}
+    X509_CRL_INFO_free := @ERR_X509_CRL_INFO_free;
+    {$ifend}
     {$if declared(X509_CRL_INFO_free_introduced)}
     if LibVersion < X509_CRL_INFO_free_introduced then
     begin
       {$if declared(FC_X509_CRL_INFO_free)}
       X509_CRL_INFO_free := @FC_X509_CRL_INFO_free;
-      {$else}
-      {$if not defined(X509_CRL_INFO_free_allownil)}
-      X509_CRL_INFO_free := @ERR_X509_CRL_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_INFO_free_removed)}
@@ -12314,39 +10953,31 @@ begin
     begin
       {$if declared(_X509_CRL_INFO_free)}
       X509_CRL_INFO_free := @_X509_CRL_INFO_free;
-      {$else}
-      {$if not defined(X509_CRL_INFO_free_allownil)}
-      X509_CRL_INFO_free := @ERR_X509_CRL_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_INFO_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_INFO_free := @ERR_X509_CRL_INFO_free;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_INFO_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_CRL_INFO := LoadLibFunction(ADllHandle, d2i_X509_CRL_INFO_procname);
-  FuncLoaded := assigned(d2i_X509_CRL_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_CRL_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_CRL_INFO_allownil)}
+    d2i_X509_CRL_INFO := @ERR_d2i_X509_CRL_INFO;
+    {$ifend}
     {$if declared(d2i_X509_CRL_INFO_introduced)}
     if LibVersion < d2i_X509_CRL_INFO_introduced then
     begin
       {$if declared(FC_d2i_X509_CRL_INFO)}
       d2i_X509_CRL_INFO := @FC_d2i_X509_CRL_INFO;
-      {$else}
-      {$if not defined(d2i_X509_CRL_INFO_allownil)}
-      d2i_X509_CRL_INFO := @ERR_d2i_X509_CRL_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_CRL_INFO_removed)}
@@ -12354,39 +10985,31 @@ begin
     begin
       {$if declared(_d2i_X509_CRL_INFO)}
       d2i_X509_CRL_INFO := @_d2i_X509_CRL_INFO;
-      {$else}
-      {$if not defined(d2i_X509_CRL_INFO_allownil)}
-      d2i_X509_CRL_INFO := @ERR_d2i_X509_CRL_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_CRL_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_CRL_INFO := @ERR_d2i_X509_CRL_INFO;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_CRL_INFO');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_CRL_INFO := LoadLibFunction(ADllHandle, i2d_X509_CRL_INFO_procname);
-  FuncLoaded := assigned(i2d_X509_CRL_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_CRL_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_CRL_INFO_allownil)}
+    i2d_X509_CRL_INFO := @ERR_i2d_X509_CRL_INFO;
+    {$ifend}
     {$if declared(i2d_X509_CRL_INFO_introduced)}
     if LibVersion < i2d_X509_CRL_INFO_introduced then
     begin
       {$if declared(FC_i2d_X509_CRL_INFO)}
       i2d_X509_CRL_INFO := @FC_i2d_X509_CRL_INFO;
-      {$else}
-      {$if not defined(i2d_X509_CRL_INFO_allownil)}
-      i2d_X509_CRL_INFO := @ERR_i2d_X509_CRL_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_CRL_INFO_removed)}
@@ -12394,39 +11017,31 @@ begin
     begin
       {$if declared(_i2d_X509_CRL_INFO)}
       i2d_X509_CRL_INFO := @_i2d_X509_CRL_INFO;
-      {$else}
-      {$if not defined(i2d_X509_CRL_INFO_allownil)}
-      i2d_X509_CRL_INFO := @ERR_i2d_X509_CRL_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_CRL_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_CRL_INFO := @ERR_i2d_X509_CRL_INFO;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_CRL_INFO');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_new := LoadLibFunction(ADllHandle, X509_CRL_new_procname);
-  FuncLoaded := assigned(X509_CRL_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_new_allownil)}
+    X509_CRL_new := @ERR_X509_CRL_new;
+    {$ifend}
     {$if declared(X509_CRL_new_introduced)}
     if LibVersion < X509_CRL_new_introduced then
     begin
       {$if declared(FC_X509_CRL_new)}
       X509_CRL_new := @FC_X509_CRL_new;
-      {$else}
-      {$if not defined(X509_CRL_new_allownil)}
-      X509_CRL_new := @ERR_X509_CRL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_new_removed)}
@@ -12434,39 +11049,31 @@ begin
     begin
       {$if declared(_X509_CRL_new)}
       X509_CRL_new := @_X509_CRL_new;
-      {$else}
-      {$if not defined(X509_CRL_new_allownil)}
-      X509_CRL_new := @ERR_X509_CRL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_new := @ERR_X509_CRL_new;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_new');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_free := LoadLibFunction(ADllHandle, X509_CRL_free_procname);
-  FuncLoaded := assigned(X509_CRL_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_free_allownil)}
+    X509_CRL_free := @ERR_X509_CRL_free;
+    {$ifend}
     {$if declared(X509_CRL_free_introduced)}
     if LibVersion < X509_CRL_free_introduced then
     begin
       {$if declared(FC_X509_CRL_free)}
       X509_CRL_free := @FC_X509_CRL_free;
-      {$else}
-      {$if not defined(X509_CRL_free_allownil)}
-      X509_CRL_free := @ERR_X509_CRL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_free_removed)}
@@ -12474,39 +11081,31 @@ begin
     begin
       {$if declared(_X509_CRL_free)}
       X509_CRL_free := @_X509_CRL_free;
-      {$else}
-      {$if not defined(X509_CRL_free_allownil)}
-      X509_CRL_free := @ERR_X509_CRL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_free := @ERR_X509_CRL_free;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_X509_CRL := LoadLibFunction(ADllHandle, d2i_X509_CRL_procname);
-  FuncLoaded := assigned(d2i_X509_CRL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_X509_CRL);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_X509_CRL_allownil)}
+    d2i_X509_CRL := @ERR_d2i_X509_CRL;
+    {$ifend}
     {$if declared(d2i_X509_CRL_introduced)}
     if LibVersion < d2i_X509_CRL_introduced then
     begin
       {$if declared(FC_d2i_X509_CRL)}
       d2i_X509_CRL := @FC_d2i_X509_CRL;
-      {$else}
-      {$if not defined(d2i_X509_CRL_allownil)}
-      d2i_X509_CRL := @ERR_d2i_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_X509_CRL_removed)}
@@ -12514,39 +11113,31 @@ begin
     begin
       {$if declared(_d2i_X509_CRL)}
       d2i_X509_CRL := @_d2i_X509_CRL;
-      {$else}
-      {$if not defined(d2i_X509_CRL_allownil)}
-      d2i_X509_CRL := @ERR_d2i_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_X509_CRL_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_X509_CRL := @ERR_d2i_X509_CRL;
+    if FuncLoadError then
       AFailed.Add('d2i_X509_CRL');
-    end;
     {$ifend}
   end;
 
 
   i2d_X509_CRL := LoadLibFunction(ADllHandle, i2d_X509_CRL_procname);
-  FuncLoaded := assigned(i2d_X509_CRL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_X509_CRL);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_X509_CRL_allownil)}
+    i2d_X509_CRL := @ERR_i2d_X509_CRL;
+    {$ifend}
     {$if declared(i2d_X509_CRL_introduced)}
     if LibVersion < i2d_X509_CRL_introduced then
     begin
       {$if declared(FC_i2d_X509_CRL)}
       i2d_X509_CRL := @FC_i2d_X509_CRL;
-      {$else}
-      {$if not defined(i2d_X509_CRL_allownil)}
-      i2d_X509_CRL := @ERR_i2d_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_X509_CRL_removed)}
@@ -12554,39 +11145,31 @@ begin
     begin
       {$if declared(_i2d_X509_CRL)}
       i2d_X509_CRL := @_i2d_X509_CRL;
-      {$else}
-      {$if not defined(i2d_X509_CRL_allownil)}
-      i2d_X509_CRL := @ERR_i2d_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_X509_CRL_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_X509_CRL := @ERR_i2d_X509_CRL;
+    if FuncLoadError then
       AFailed.Add('i2d_X509_CRL');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_add0_revoked := LoadLibFunction(ADllHandle, X509_CRL_add0_revoked_procname);
-  FuncLoaded := assigned(X509_CRL_add0_revoked);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_add0_revoked);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_add0_revoked_allownil)}
+    X509_CRL_add0_revoked := @ERR_X509_CRL_add0_revoked;
+    {$ifend}
     {$if declared(X509_CRL_add0_revoked_introduced)}
     if LibVersion < X509_CRL_add0_revoked_introduced then
     begin
       {$if declared(FC_X509_CRL_add0_revoked)}
       X509_CRL_add0_revoked := @FC_X509_CRL_add0_revoked;
-      {$else}
-      {$if not defined(X509_CRL_add0_revoked_allownil)}
-      X509_CRL_add0_revoked := @ERR_X509_CRL_add0_revoked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_add0_revoked_removed)}
@@ -12594,39 +11177,31 @@ begin
     begin
       {$if declared(_X509_CRL_add0_revoked)}
       X509_CRL_add0_revoked := @_X509_CRL_add0_revoked;
-      {$else}
-      {$if not defined(X509_CRL_add0_revoked_allownil)}
-      X509_CRL_add0_revoked := @ERR_X509_CRL_add0_revoked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_add0_revoked_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_add0_revoked := @ERR_X509_CRL_add0_revoked;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_add0_revoked');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get0_by_serial := LoadLibFunction(ADllHandle, X509_CRL_get0_by_serial_procname);
-  FuncLoaded := assigned(X509_CRL_get0_by_serial);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get0_by_serial);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get0_by_serial_allownil)}
+    X509_CRL_get0_by_serial := @ERR_X509_CRL_get0_by_serial;
+    {$ifend}
     {$if declared(X509_CRL_get0_by_serial_introduced)}
     if LibVersion < X509_CRL_get0_by_serial_introduced then
     begin
       {$if declared(FC_X509_CRL_get0_by_serial)}
       X509_CRL_get0_by_serial := @FC_X509_CRL_get0_by_serial;
-      {$else}
-      {$if not defined(X509_CRL_get0_by_serial_allownil)}
-      X509_CRL_get0_by_serial := @ERR_X509_CRL_get0_by_serial;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get0_by_serial_removed)}
@@ -12634,39 +11209,31 @@ begin
     begin
       {$if declared(_X509_CRL_get0_by_serial)}
       X509_CRL_get0_by_serial := @_X509_CRL_get0_by_serial;
-      {$else}
-      {$if not defined(X509_CRL_get0_by_serial_allownil)}
-      X509_CRL_get0_by_serial := @ERR_X509_CRL_get0_by_serial;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get0_by_serial_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get0_by_serial := @ERR_X509_CRL_get0_by_serial;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get0_by_serial');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get0_by_cert := LoadLibFunction(ADllHandle, X509_CRL_get0_by_cert_procname);
-  FuncLoaded := assigned(X509_CRL_get0_by_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get0_by_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get0_by_cert_allownil)}
+    X509_CRL_get0_by_cert := @ERR_X509_CRL_get0_by_cert;
+    {$ifend}
     {$if declared(X509_CRL_get0_by_cert_introduced)}
     if LibVersion < X509_CRL_get0_by_cert_introduced then
     begin
       {$if declared(FC_X509_CRL_get0_by_cert)}
       X509_CRL_get0_by_cert := @FC_X509_CRL_get0_by_cert;
-      {$else}
-      {$if not defined(X509_CRL_get0_by_cert_allownil)}
-      X509_CRL_get0_by_cert := @ERR_X509_CRL_get0_by_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get0_by_cert_removed)}
@@ -12674,39 +11241,31 @@ begin
     begin
       {$if declared(_X509_CRL_get0_by_cert)}
       X509_CRL_get0_by_cert := @_X509_CRL_get0_by_cert;
-      {$else}
-      {$if not defined(X509_CRL_get0_by_cert_allownil)}
-      X509_CRL_get0_by_cert := @ERR_X509_CRL_get0_by_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get0_by_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get0_by_cert := @ERR_X509_CRL_get0_by_cert;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get0_by_cert');
-    end;
     {$ifend}
   end;
 
 
   X509_PKEY_new := LoadLibFunction(ADllHandle, X509_PKEY_new_procname);
-  FuncLoaded := assigned(X509_PKEY_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PKEY_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PKEY_new_allownil)}
+    X509_PKEY_new := @ERR_X509_PKEY_new;
+    {$ifend}
     {$if declared(X509_PKEY_new_introduced)}
     if LibVersion < X509_PKEY_new_introduced then
     begin
       {$if declared(FC_X509_PKEY_new)}
       X509_PKEY_new := @FC_X509_PKEY_new;
-      {$else}
-      {$if not defined(X509_PKEY_new_allownil)}
-      X509_PKEY_new := @ERR_X509_PKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PKEY_new_removed)}
@@ -12714,39 +11273,31 @@ begin
     begin
       {$if declared(_X509_PKEY_new)}
       X509_PKEY_new := @_X509_PKEY_new;
-      {$else}
-      {$if not defined(X509_PKEY_new_allownil)}
-      X509_PKEY_new := @ERR_X509_PKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PKEY_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PKEY_new := @ERR_X509_PKEY_new;
+    if FuncLoadError then
       AFailed.Add('X509_PKEY_new');
-    end;
     {$ifend}
   end;
 
 
   X509_PKEY_free := LoadLibFunction(ADllHandle, X509_PKEY_free_procname);
-  FuncLoaded := assigned(X509_PKEY_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PKEY_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PKEY_free_allownil)}
+    X509_PKEY_free := @ERR_X509_PKEY_free;
+    {$ifend}
     {$if declared(X509_PKEY_free_introduced)}
     if LibVersion < X509_PKEY_free_introduced then
     begin
       {$if declared(FC_X509_PKEY_free)}
       X509_PKEY_free := @FC_X509_PKEY_free;
-      {$else}
-      {$if not defined(X509_PKEY_free_allownil)}
-      X509_PKEY_free := @ERR_X509_PKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PKEY_free_removed)}
@@ -12754,39 +11305,31 @@ begin
     begin
       {$if declared(_X509_PKEY_free)}
       X509_PKEY_free := @_X509_PKEY_free;
-      {$else}
-      {$if not defined(X509_PKEY_free_allownil)}
-      X509_PKEY_free := @ERR_X509_PKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PKEY_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PKEY_free := @ERR_X509_PKEY_free;
+    if FuncLoadError then
       AFailed.Add('X509_PKEY_free');
-    end;
     {$ifend}
   end;
 
 
   X509_INFO_new := LoadLibFunction(ADllHandle, X509_INFO_new_procname);
-  FuncLoaded := assigned(X509_INFO_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_INFO_new);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_INFO_new_allownil)}
+    X509_INFO_new := @ERR_X509_INFO_new;
+    {$ifend}
     {$if declared(X509_INFO_new_introduced)}
     if LibVersion < X509_INFO_new_introduced then
     begin
       {$if declared(FC_X509_INFO_new)}
       X509_INFO_new := @FC_X509_INFO_new;
-      {$else}
-      {$if not defined(X509_INFO_new_allownil)}
-      X509_INFO_new := @ERR_X509_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_INFO_new_removed)}
@@ -12794,39 +11337,31 @@ begin
     begin
       {$if declared(_X509_INFO_new)}
       X509_INFO_new := @_X509_INFO_new;
-      {$else}
-      {$if not defined(X509_INFO_new_allownil)}
-      X509_INFO_new := @ERR_X509_INFO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_INFO_new_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_INFO_new := @ERR_X509_INFO_new;
+    if FuncLoadError then
       AFailed.Add('X509_INFO_new');
-    end;
     {$ifend}
   end;
 
 
   X509_INFO_free := LoadLibFunction(ADllHandle, X509_INFO_free_procname);
-  FuncLoaded := assigned(X509_INFO_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_INFO_free);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_INFO_free_allownil)}
+    X509_INFO_free := @ERR_X509_INFO_free;
+    {$ifend}
     {$if declared(X509_INFO_free_introduced)}
     if LibVersion < X509_INFO_free_introduced then
     begin
       {$if declared(FC_X509_INFO_free)}
       X509_INFO_free := @FC_X509_INFO_free;
-      {$else}
-      {$if not defined(X509_INFO_free_allownil)}
-      X509_INFO_free := @ERR_X509_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_INFO_free_removed)}
@@ -12834,39 +11369,31 @@ begin
     begin
       {$if declared(_X509_INFO_free)}
       X509_INFO_free := @_X509_INFO_free;
-      {$else}
-      {$if not defined(X509_INFO_free_allownil)}
-      X509_INFO_free := @ERR_X509_INFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_INFO_free_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_INFO_free := @ERR_X509_INFO_free;
+    if FuncLoadError then
       AFailed.Add('X509_INFO_free');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_oneline := LoadLibFunction(ADllHandle, X509_NAME_oneline_procname);
-  FuncLoaded := assigned(X509_NAME_oneline);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_oneline);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_oneline_allownil)}
+    X509_NAME_oneline := @ERR_X509_NAME_oneline;
+    {$ifend}
     {$if declared(X509_NAME_oneline_introduced)}
     if LibVersion < X509_NAME_oneline_introduced then
     begin
       {$if declared(FC_X509_NAME_oneline)}
       X509_NAME_oneline := @FC_X509_NAME_oneline;
-      {$else}
-      {$if not defined(X509_NAME_oneline_allownil)}
-      X509_NAME_oneline := @ERR_X509_NAME_oneline;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_oneline_removed)}
@@ -12874,39 +11401,31 @@ begin
     begin
       {$if declared(_X509_NAME_oneline)}
       X509_NAME_oneline := @_X509_NAME_oneline;
-      {$else}
-      {$if not defined(X509_NAME_oneline_allownil)}
-      X509_NAME_oneline := @ERR_X509_NAME_oneline;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_oneline_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_oneline := @ERR_X509_NAME_oneline;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_oneline');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_digest := LoadLibFunction(ADllHandle, ASN1_item_digest_procname);
-  FuncLoaded := assigned(ASN1_item_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_digest_allownil)}
+    ASN1_item_digest := @ERR_ASN1_item_digest;
+    {$ifend}
     {$if declared(ASN1_item_digest_introduced)}
     if LibVersion < ASN1_item_digest_introduced then
     begin
       {$if declared(FC_ASN1_item_digest)}
       ASN1_item_digest := @FC_ASN1_item_digest;
-      {$else}
-      {$if not defined(ASN1_item_digest_allownil)}
-      ASN1_item_digest := @ERR_ASN1_item_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_digest_removed)}
@@ -12914,39 +11433,31 @@ begin
     begin
       {$if declared(_ASN1_item_digest)}
       ASN1_item_digest := @_ASN1_item_digest;
-      {$else}
-      {$if not defined(ASN1_item_digest_allownil)}
-      ASN1_item_digest := @ERR_ASN1_item_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_digest := @ERR_ASN1_item_digest;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_digest');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_verify := LoadLibFunction(ADllHandle, ASN1_item_verify_procname);
-  FuncLoaded := assigned(ASN1_item_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_verify_allownil)}
+    ASN1_item_verify := @ERR_ASN1_item_verify;
+    {$ifend}
     {$if declared(ASN1_item_verify_introduced)}
     if LibVersion < ASN1_item_verify_introduced then
     begin
       {$if declared(FC_ASN1_item_verify)}
       ASN1_item_verify := @FC_ASN1_item_verify;
-      {$else}
-      {$if not defined(ASN1_item_verify_allownil)}
-      ASN1_item_verify := @ERR_ASN1_item_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_verify_removed)}
@@ -12954,39 +11465,31 @@ begin
     begin
       {$if declared(_ASN1_item_verify)}
       ASN1_item_verify := @_ASN1_item_verify;
-      {$else}
-      {$if not defined(ASN1_item_verify_allownil)}
-      ASN1_item_verify := @ERR_ASN1_item_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_verify := @ERR_ASN1_item_verify;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_verify');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_sign := LoadLibFunction(ADllHandle, ASN1_item_sign_procname);
-  FuncLoaded := assigned(ASN1_item_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_sign_allownil)}
+    ASN1_item_sign := @ERR_ASN1_item_sign;
+    {$ifend}
     {$if declared(ASN1_item_sign_introduced)}
     if LibVersion < ASN1_item_sign_introduced then
     begin
       {$if declared(FC_ASN1_item_sign)}
       ASN1_item_sign := @FC_ASN1_item_sign;
-      {$else}
-      {$if not defined(ASN1_item_sign_allownil)}
-      ASN1_item_sign := @ERR_ASN1_item_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_sign_removed)}
@@ -12994,39 +11497,31 @@ begin
     begin
       {$if declared(_ASN1_item_sign)}
       ASN1_item_sign := @_ASN1_item_sign;
-      {$else}
-      {$if not defined(ASN1_item_sign_allownil)}
-      ASN1_item_sign := @ERR_ASN1_item_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_sign := @ERR_ASN1_item_sign;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_sign');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_sign_ctx := LoadLibFunction(ADllHandle, ASN1_item_sign_ctx_procname);
-  FuncLoaded := assigned(ASN1_item_sign_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_sign_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_sign_ctx_allownil)}
+    ASN1_item_sign_ctx := @ERR_ASN1_item_sign_ctx;
+    {$ifend}
     {$if declared(ASN1_item_sign_ctx_introduced)}
     if LibVersion < ASN1_item_sign_ctx_introduced then
     begin
       {$if declared(FC_ASN1_item_sign_ctx)}
       ASN1_item_sign_ctx := @FC_ASN1_item_sign_ctx;
-      {$else}
-      {$if not defined(ASN1_item_sign_ctx_allownil)}
-      ASN1_item_sign_ctx := @ERR_ASN1_item_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_sign_ctx_removed)}
@@ -13034,39 +11529,31 @@ begin
     begin
       {$if declared(_ASN1_item_sign_ctx)}
       ASN1_item_sign_ctx := @_ASN1_item_sign_ctx;
-      {$else}
-      {$if not defined(ASN1_item_sign_ctx_allownil)}
-      ASN1_item_sign_ctx := @ERR_ASN1_item_sign_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_sign_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_sign_ctx := @ERR_ASN1_item_sign_ctx;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_sign_ctx');
-    end;
     {$ifend}
   end;
 
 
   X509_get_version := LoadLibFunction(ADllHandle, X509_get_version_procname);
-  FuncLoaded := assigned(X509_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_version_allownil)}
+    X509_get_version := @ERR_X509_get_version;
+    {$ifend}
     {$if declared(X509_get_version_introduced)}
     if LibVersion < X509_get_version_introduced then
     begin
       {$if declared(FC_X509_get_version)}
       X509_get_version := @FC_X509_get_version;
-      {$else}
-      {$if not defined(X509_get_version_allownil)}
-      X509_get_version := @ERR_X509_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_version_removed)}
@@ -13074,39 +11561,31 @@ begin
     begin
       {$if declared(_X509_get_version)}
       X509_get_version := @_X509_get_version;
-      {$else}
-      {$if not defined(X509_get_version_allownil)}
-      X509_get_version := @ERR_X509_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_version := @ERR_X509_get_version;
+    if FuncLoadError then
       AFailed.Add('X509_get_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_set_version := LoadLibFunction(ADllHandle, X509_set_version_procname);
-  FuncLoaded := assigned(X509_set_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_version_allownil)}
+    X509_set_version := @ERR_X509_set_version;
+    {$ifend}
     {$if declared(X509_set_version_introduced)}
     if LibVersion < X509_set_version_introduced then
     begin
       {$if declared(FC_X509_set_version)}
       X509_set_version := @FC_X509_set_version;
-      {$else}
-      {$if not defined(X509_set_version_allownil)}
-      X509_set_version := @ERR_X509_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_version_removed)}
@@ -13114,39 +11593,31 @@ begin
     begin
       {$if declared(_X509_set_version)}
       X509_set_version := @_X509_set_version;
-      {$else}
-      {$if not defined(X509_set_version_allownil)}
-      X509_set_version := @ERR_X509_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_version := @ERR_X509_set_version;
+    if FuncLoadError then
       AFailed.Add('X509_set_version');
-    end;
     {$ifend}
   end;
 
 
   X509_set_serialNumber := LoadLibFunction(ADllHandle, X509_set_serialNumber_procname);
-  FuncLoaded := assigned(X509_set_serialNumber);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_serialNumber);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_serialNumber_allownil)}
+    X509_set_serialNumber := @ERR_X509_set_serialNumber;
+    {$ifend}
     {$if declared(X509_set_serialNumber_introduced)}
     if LibVersion < X509_set_serialNumber_introduced then
     begin
       {$if declared(FC_X509_set_serialNumber)}
       X509_set_serialNumber := @FC_X509_set_serialNumber;
-      {$else}
-      {$if not defined(X509_set_serialNumber_allownil)}
-      X509_set_serialNumber := @ERR_X509_set_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_serialNumber_removed)}
@@ -13154,39 +11625,31 @@ begin
     begin
       {$if declared(_X509_set_serialNumber)}
       X509_set_serialNumber := @_X509_set_serialNumber;
-      {$else}
-      {$if not defined(X509_set_serialNumber_allownil)}
-      X509_set_serialNumber := @ERR_X509_set_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_serialNumber_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_serialNumber := @ERR_X509_set_serialNumber;
+    if FuncLoadError then
       AFailed.Add('X509_set_serialNumber');
-    end;
     {$ifend}
   end;
 
 
   X509_get_serialNumber := LoadLibFunction(ADllHandle, X509_get_serialNumber_procname);
-  FuncLoaded := assigned(X509_get_serialNumber);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_serialNumber);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_serialNumber_allownil)}
+    X509_get_serialNumber := @ERR_X509_get_serialNumber;
+    {$ifend}
     {$if declared(X509_get_serialNumber_introduced)}
     if LibVersion < X509_get_serialNumber_introduced then
     begin
       {$if declared(FC_X509_get_serialNumber)}
       X509_get_serialNumber := @FC_X509_get_serialNumber;
-      {$else}
-      {$if not defined(X509_get_serialNumber_allownil)}
-      X509_get_serialNumber := @ERR_X509_get_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_serialNumber_removed)}
@@ -13194,39 +11657,31 @@ begin
     begin
       {$if declared(_X509_get_serialNumber)}
       X509_get_serialNumber := @_X509_get_serialNumber;
-      {$else}
-      {$if not defined(X509_get_serialNumber_allownil)}
-      X509_get_serialNumber := @ERR_X509_get_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_serialNumber_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_serialNumber := @ERR_X509_get_serialNumber;
+    if FuncLoadError then
       AFailed.Add('X509_get_serialNumber');
-    end;
     {$ifend}
   end;
 
 
   X509_get0_serialNumber := LoadLibFunction(ADllHandle, X509_get0_serialNumber_procname);
-  FuncLoaded := assigned(X509_get0_serialNumber);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_serialNumber);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_serialNumber_allownil)}
+    X509_get0_serialNumber := @ERR_X509_get0_serialNumber;
+    {$ifend}
     {$if declared(X509_get0_serialNumber_introduced)}
     if LibVersion < X509_get0_serialNumber_introduced then
     begin
       {$if declared(FC_X509_get0_serialNumber)}
       X509_get0_serialNumber := @FC_X509_get0_serialNumber;
-      {$else}
-      {$if not defined(X509_get0_serialNumber_allownil)}
-      X509_get0_serialNumber := @ERR_X509_get0_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_serialNumber_removed)}
@@ -13234,39 +11689,31 @@ begin
     begin
       {$if declared(_X509_get0_serialNumber)}
       X509_get0_serialNumber := @_X509_get0_serialNumber;
-      {$else}
-      {$if not defined(X509_get0_serialNumber_allownil)}
-      X509_get0_serialNumber := @ERR_X509_get0_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_serialNumber_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_serialNumber := @ERR_X509_get0_serialNumber;
+    if FuncLoadError then
       AFailed.Add('X509_get0_serialNumber');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_set_issuer_name := LoadLibFunction(ADllHandle, X509_set_issuer_name_procname);
-  FuncLoaded := assigned(X509_set_issuer_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_issuer_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_issuer_name_allownil)}
+    X509_set_issuer_name := @ERR_X509_set_issuer_name;
+    {$ifend}
     {$if declared(X509_set_issuer_name_introduced)}
     if LibVersion < X509_set_issuer_name_introduced then
     begin
       {$if declared(FC_X509_set_issuer_name)}
       X509_set_issuer_name := @FC_X509_set_issuer_name;
-      {$else}
-      {$if not defined(X509_set_issuer_name_allownil)}
-      X509_set_issuer_name := @ERR_X509_set_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_issuer_name_removed)}
@@ -13274,39 +11721,31 @@ begin
     begin
       {$if declared(_X509_set_issuer_name)}
       X509_set_issuer_name := @_X509_set_issuer_name;
-      {$else}
-      {$if not defined(X509_set_issuer_name_allownil)}
-      X509_set_issuer_name := @ERR_X509_set_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_issuer_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_issuer_name := @ERR_X509_set_issuer_name;
+    if FuncLoadError then
       AFailed.Add('X509_set_issuer_name');
-    end;
     {$ifend}
   end;
 
 
   X509_get_issuer_name := LoadLibFunction(ADllHandle, X509_get_issuer_name_procname);
-  FuncLoaded := assigned(X509_get_issuer_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_issuer_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_issuer_name_allownil)}
+    X509_get_issuer_name := @ERR_X509_get_issuer_name;
+    {$ifend}
     {$if declared(X509_get_issuer_name_introduced)}
     if LibVersion < X509_get_issuer_name_introduced then
     begin
       {$if declared(FC_X509_get_issuer_name)}
       X509_get_issuer_name := @FC_X509_get_issuer_name;
-      {$else}
-      {$if not defined(X509_get_issuer_name_allownil)}
-      X509_get_issuer_name := @ERR_X509_get_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_issuer_name_removed)}
@@ -13314,39 +11753,31 @@ begin
     begin
       {$if declared(_X509_get_issuer_name)}
       X509_get_issuer_name := @_X509_get_issuer_name;
-      {$else}
-      {$if not defined(X509_get_issuer_name_allownil)}
-      X509_get_issuer_name := @ERR_X509_get_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_issuer_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_issuer_name := @ERR_X509_get_issuer_name;
+    if FuncLoadError then
       AFailed.Add('X509_get_issuer_name');
-    end;
     {$ifend}
   end;
 
 
   X509_set_subject_name := LoadLibFunction(ADllHandle, X509_set_subject_name_procname);
-  FuncLoaded := assigned(X509_set_subject_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_subject_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_subject_name_allownil)}
+    X509_set_subject_name := @ERR_X509_set_subject_name;
+    {$ifend}
     {$if declared(X509_set_subject_name_introduced)}
     if LibVersion < X509_set_subject_name_introduced then
     begin
       {$if declared(FC_X509_set_subject_name)}
       X509_set_subject_name := @FC_X509_set_subject_name;
-      {$else}
-      {$if not defined(X509_set_subject_name_allownil)}
-      X509_set_subject_name := @ERR_X509_set_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_subject_name_removed)}
@@ -13354,39 +11785,31 @@ begin
     begin
       {$if declared(_X509_set_subject_name)}
       X509_set_subject_name := @_X509_set_subject_name;
-      {$else}
-      {$if not defined(X509_set_subject_name_allownil)}
-      X509_set_subject_name := @ERR_X509_set_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_subject_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_subject_name := @ERR_X509_set_subject_name;
+    if FuncLoadError then
       AFailed.Add('X509_set_subject_name');
-    end;
     {$ifend}
   end;
 
 
   X509_get_subject_name := LoadLibFunction(ADllHandle, X509_get_subject_name_procname);
-  FuncLoaded := assigned(X509_get_subject_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_subject_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_subject_name_allownil)}
+    X509_get_subject_name := @ERR_X509_get_subject_name;
+    {$ifend}
     {$if declared(X509_get_subject_name_introduced)}
     if LibVersion < X509_get_subject_name_introduced then
     begin
       {$if declared(FC_X509_get_subject_name)}
       X509_get_subject_name := @FC_X509_get_subject_name;
-      {$else}
-      {$if not defined(X509_get_subject_name_allownil)}
-      X509_get_subject_name := @ERR_X509_get_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_subject_name_removed)}
@@ -13394,39 +11817,31 @@ begin
     begin
       {$if declared(_X509_get_subject_name)}
       X509_get_subject_name := @_X509_get_subject_name;
-      {$else}
-      {$if not defined(X509_get_subject_name_allownil)}
-      X509_get_subject_name := @ERR_X509_get_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_subject_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_subject_name := @ERR_X509_get_subject_name;
+    if FuncLoadError then
       AFailed.Add('X509_get_subject_name');
-    end;
     {$ifend}
   end;
 
 
   X509_get0_notBefore := LoadLibFunction(ADllHandle, X509_get0_notBefore_procname);
-  FuncLoaded := assigned(X509_get0_notBefore);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_notBefore);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_notBefore_allownil)}
+    X509_get0_notBefore := @ERR_X509_get0_notBefore;
+    {$ifend}
     {$if declared(X509_get0_notBefore_introduced)}
     if LibVersion < X509_get0_notBefore_introduced then
     begin
       {$if declared(FC_X509_get0_notBefore)}
       X509_get0_notBefore := @FC_X509_get0_notBefore;
-      {$else}
-      {$if not defined(X509_get0_notBefore_allownil)}
-      X509_get0_notBefore := @ERR_X509_get0_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_notBefore_removed)}
@@ -13434,39 +11849,31 @@ begin
     begin
       {$if declared(_X509_get0_notBefore)}
       X509_get0_notBefore := @_X509_get0_notBefore;
-      {$else}
-      {$if not defined(X509_get0_notBefore_allownil)}
-      X509_get0_notBefore := @ERR_X509_get0_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_notBefore_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_notBefore := @ERR_X509_get0_notBefore;
+    if FuncLoadError then
       AFailed.Add('X509_get0_notBefore');
-    end;
     {$ifend}
   end;
 
   {introduced 1.1.0}
   X509_getm_notBefore := LoadLibFunction(ADllHandle, X509_getm_notBefore_procname);
-  FuncLoaded := assigned(X509_getm_notBefore);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_getm_notBefore);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_getm_notBefore_allownil)}
+    X509_getm_notBefore := @ERR_X509_getm_notBefore;
+    {$ifend}
     {$if declared(X509_getm_notBefore_introduced)}
     if LibVersion < X509_getm_notBefore_introduced then
     begin
       {$if declared(FC_X509_getm_notBefore)}
       X509_getm_notBefore := @FC_X509_getm_notBefore;
-      {$else}
-      {$if not defined(X509_getm_notBefore_allownil)}
-      X509_getm_notBefore := @ERR_X509_getm_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_getm_notBefore_removed)}
@@ -13474,39 +11881,31 @@ begin
     begin
       {$if declared(_X509_getm_notBefore)}
       X509_getm_notBefore := @_X509_getm_notBefore;
-      {$else}
-      {$if not defined(X509_getm_notBefore_allownil)}
-      X509_getm_notBefore := @ERR_X509_getm_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_getm_notBefore_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_getm_notBefore := @ERR_X509_getm_notBefore;
+    if FuncLoadError then
       AFailed.Add('X509_getm_notBefore');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_set1_notBefore := LoadLibFunction(ADllHandle, X509_set1_notBefore_procname);
-  FuncLoaded := assigned(X509_set1_notBefore);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set1_notBefore);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set1_notBefore_allownil)}
+    X509_set1_notBefore := @ERR_X509_set1_notBefore;
+    {$ifend}
     {$if declared(X509_set1_notBefore_introduced)}
     if LibVersion < X509_set1_notBefore_introduced then
     begin
       {$if declared(FC_X509_set1_notBefore)}
       X509_set1_notBefore := @FC_X509_set1_notBefore;
-      {$else}
-      {$if not defined(X509_set1_notBefore_allownil)}
-      X509_set1_notBefore := @ERR_X509_set1_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set1_notBefore_removed)}
@@ -13514,39 +11913,31 @@ begin
     begin
       {$if declared(_X509_set1_notBefore)}
       X509_set1_notBefore := @_X509_set1_notBefore;
-      {$else}
-      {$if not defined(X509_set1_notBefore_allownil)}
-      X509_set1_notBefore := @ERR_X509_set1_notBefore;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set1_notBefore_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set1_notBefore := @ERR_X509_set1_notBefore;
+    if FuncLoadError then
       AFailed.Add('X509_set1_notBefore');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get0_notAfter := LoadLibFunction(ADllHandle, X509_get0_notAfter_procname);
-  FuncLoaded := assigned(X509_get0_notAfter);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_notAfter);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_notAfter_allownil)}
+    X509_get0_notAfter := @ERR_X509_get0_notAfter;
+    {$ifend}
     {$if declared(X509_get0_notAfter_introduced)}
     if LibVersion < X509_get0_notAfter_introduced then
     begin
       {$if declared(FC_X509_get0_notAfter)}
       X509_get0_notAfter := @FC_X509_get0_notAfter;
-      {$else}
-      {$if not defined(X509_get0_notAfter_allownil)}
-      X509_get0_notAfter := @ERR_X509_get0_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_notAfter_removed)}
@@ -13554,39 +11945,31 @@ begin
     begin
       {$if declared(_X509_get0_notAfter)}
       X509_get0_notAfter := @_X509_get0_notAfter;
-      {$else}
-      {$if not defined(X509_get0_notAfter_allownil)}
-      X509_get0_notAfter := @ERR_X509_get0_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_notAfter_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_notAfter := @ERR_X509_get0_notAfter;
+    if FuncLoadError then
       AFailed.Add('X509_get0_notAfter');
-    end;
     {$ifend}
   end;
 
   {introduced 1.1.0}
   X509_getm_notAfter := LoadLibFunction(ADllHandle, X509_getm_notAfter_procname);
-  FuncLoaded := assigned(X509_getm_notAfter);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_getm_notAfter);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_getm_notAfter_allownil)}
+    X509_getm_notAfter := @ERR_X509_getm_notAfter;
+    {$ifend}
     {$if declared(X509_getm_notAfter_introduced)}
     if LibVersion < X509_getm_notAfter_introduced then
     begin
       {$if declared(FC_X509_getm_notAfter)}
       X509_getm_notAfter := @FC_X509_getm_notAfter;
-      {$else}
-      {$if not defined(X509_getm_notAfter_allownil)}
-      X509_getm_notAfter := @ERR_X509_getm_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_getm_notAfter_removed)}
@@ -13594,39 +11977,31 @@ begin
     begin
       {$if declared(_X509_getm_notAfter)}
       X509_getm_notAfter := @_X509_getm_notAfter;
-      {$else}
-      {$if not defined(X509_getm_notAfter_allownil)}
-      X509_getm_notAfter := @ERR_X509_getm_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_getm_notAfter_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_getm_notAfter := @ERR_X509_getm_notAfter;
+    if FuncLoadError then
       AFailed.Add('X509_getm_notAfter');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_set1_notAfter := LoadLibFunction(ADllHandle, X509_set1_notAfter_procname);
-  FuncLoaded := assigned(X509_set1_notAfter);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set1_notAfter);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set1_notAfter_allownil)}
+    X509_set1_notAfter := @ERR_X509_set1_notAfter;
+    {$ifend}
     {$if declared(X509_set1_notAfter_introduced)}
     if LibVersion < X509_set1_notAfter_introduced then
     begin
       {$if declared(FC_X509_set1_notAfter)}
       X509_set1_notAfter := @FC_X509_set1_notAfter;
-      {$else}
-      {$if not defined(X509_set1_notAfter_allownil)}
-      X509_set1_notAfter := @ERR_X509_set1_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set1_notAfter_removed)}
@@ -13634,39 +12009,31 @@ begin
     begin
       {$if declared(_X509_set1_notAfter)}
       X509_set1_notAfter := @_X509_set1_notAfter;
-      {$else}
-      {$if not defined(X509_set1_notAfter_allownil)}
-      X509_set1_notAfter := @ERR_X509_set1_notAfter;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set1_notAfter_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set1_notAfter := @ERR_X509_set1_notAfter;
+    if FuncLoadError then
       AFailed.Add('X509_set1_notAfter');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_set_pubkey := LoadLibFunction(ADllHandle, X509_set_pubkey_procname);
-  FuncLoaded := assigned(X509_set_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_set_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_set_pubkey_allownil)}
+    X509_set_pubkey := @ERR_X509_set_pubkey;
+    {$ifend}
     {$if declared(X509_set_pubkey_introduced)}
     if LibVersion < X509_set_pubkey_introduced then
     begin
       {$if declared(FC_X509_set_pubkey)}
       X509_set_pubkey := @FC_X509_set_pubkey;
-      {$else}
-      {$if not defined(X509_set_pubkey_allownil)}
-      X509_set_pubkey := @ERR_X509_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_set_pubkey_removed)}
@@ -13674,39 +12041,31 @@ begin
     begin
       {$if declared(_X509_set_pubkey)}
       X509_set_pubkey := @_X509_set_pubkey;
-      {$else}
-      {$if not defined(X509_set_pubkey_allownil)}
-      X509_set_pubkey := @ERR_X509_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_set_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_set_pubkey := @ERR_X509_set_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_set_pubkey');
-    end;
     {$ifend}
   end;
 
 
   X509_up_ref := LoadLibFunction(ADllHandle, X509_up_ref_procname);
-  FuncLoaded := assigned(X509_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_up_ref_allownil)}
+    X509_up_ref := @ERR_X509_up_ref;
+    {$ifend}
     {$if declared(X509_up_ref_introduced)}
     if LibVersion < X509_up_ref_introduced then
     begin
       {$if declared(FC_X509_up_ref)}
       X509_up_ref := @FC_X509_up_ref;
-      {$else}
-      {$if not defined(X509_up_ref_allownil)}
-      X509_up_ref := @ERR_X509_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_up_ref_removed)}
@@ -13714,39 +12073,31 @@ begin
     begin
       {$if declared(_X509_up_ref)}
       X509_up_ref := @_X509_up_ref;
-      {$else}
-      {$if not defined(X509_up_ref_allownil)}
-      X509_up_ref := @ERR_X509_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_up_ref := @ERR_X509_up_ref;
+    if FuncLoadError then
       AFailed.Add('X509_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_signature_type := LoadLibFunction(ADllHandle, X509_get_signature_type_procname);
-  FuncLoaded := assigned(X509_get_signature_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_signature_type);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_signature_type_allownil)}
+    X509_get_signature_type := @ERR_X509_get_signature_type;
+    {$ifend}
     {$if declared(X509_get_signature_type_introduced)}
     if LibVersion < X509_get_signature_type_introduced then
     begin
       {$if declared(FC_X509_get_signature_type)}
       X509_get_signature_type := @FC_X509_get_signature_type;
-      {$else}
-      {$if not defined(X509_get_signature_type_allownil)}
-      X509_get_signature_type := @ERR_X509_get_signature_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_signature_type_removed)}
@@ -13754,39 +12105,31 @@ begin
     begin
       {$if declared(_X509_get_signature_type)}
       X509_get_signature_type := @_X509_get_signature_type;
-      {$else}
-      {$if not defined(X509_get_signature_type_allownil)}
-      X509_get_signature_type := @ERR_X509_get_signature_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_signature_type_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_signature_type := @ERR_X509_get_signature_type;
+    if FuncLoadError then
       AFailed.Add('X509_get_signature_type');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_X509_PUBKEY := LoadLibFunction(ADllHandle, X509_get_X509_PUBKEY_procname);
-  FuncLoaded := assigned(X509_get_X509_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_X509_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_X509_PUBKEY_allownil)}
+    X509_get_X509_PUBKEY := @ERR_X509_get_X509_PUBKEY;
+    {$ifend}
     {$if declared(X509_get_X509_PUBKEY_introduced)}
     if LibVersion < X509_get_X509_PUBKEY_introduced then
     begin
       {$if declared(FC_X509_get_X509_PUBKEY)}
       X509_get_X509_PUBKEY := @FC_X509_get_X509_PUBKEY;
-      {$else}
-      {$if not defined(X509_get_X509_PUBKEY_allownil)}
-      X509_get_X509_PUBKEY := @ERR_X509_get_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_X509_PUBKEY_removed)}
@@ -13794,39 +12137,31 @@ begin
     begin
       {$if declared(_X509_get_X509_PUBKEY)}
       X509_get_X509_PUBKEY := @_X509_get_X509_PUBKEY;
-      {$else}
-      {$if not defined(X509_get_X509_PUBKEY_allownil)}
-      X509_get_X509_PUBKEY := @ERR_X509_get_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_X509_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_X509_PUBKEY := @ERR_X509_get_X509_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('X509_get_X509_PUBKEY');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get0_uids := LoadLibFunction(ADllHandle, X509_get0_uids_procname);
-  FuncLoaded := assigned(X509_get0_uids);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_uids);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_uids_allownil)}
+    X509_get0_uids := @ERR_X509_get0_uids;
+    {$ifend}
     {$if declared(X509_get0_uids_introduced)}
     if LibVersion < X509_get0_uids_introduced then
     begin
       {$if declared(FC_X509_get0_uids)}
       X509_get0_uids := @FC_X509_get0_uids;
-      {$else}
-      {$if not defined(X509_get0_uids_allownil)}
-      X509_get0_uids := @ERR_X509_get0_uids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_uids_removed)}
@@ -13834,39 +12169,31 @@ begin
     begin
       {$if declared(_X509_get0_uids)}
       X509_get0_uids := @_X509_get0_uids;
-      {$else}
-      {$if not defined(X509_get0_uids_allownil)}
-      X509_get0_uids := @ERR_X509_get0_uids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_uids_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_uids := @ERR_X509_get0_uids;
+    if FuncLoadError then
       AFailed.Add('X509_get0_uids');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get0_tbs_sigalg := LoadLibFunction(ADllHandle, X509_get0_tbs_sigalg_procname);
-  FuncLoaded := assigned(X509_get0_tbs_sigalg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_tbs_sigalg);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_tbs_sigalg_allownil)}
+    X509_get0_tbs_sigalg := @ERR_X509_get0_tbs_sigalg;
+    {$ifend}
     {$if declared(X509_get0_tbs_sigalg_introduced)}
     if LibVersion < X509_get0_tbs_sigalg_introduced then
     begin
       {$if declared(FC_X509_get0_tbs_sigalg)}
       X509_get0_tbs_sigalg := @FC_X509_get0_tbs_sigalg;
-      {$else}
-      {$if not defined(X509_get0_tbs_sigalg_allownil)}
-      X509_get0_tbs_sigalg := @ERR_X509_get0_tbs_sigalg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_tbs_sigalg_removed)}
@@ -13874,39 +12201,31 @@ begin
     begin
       {$if declared(_X509_get0_tbs_sigalg)}
       X509_get0_tbs_sigalg := @_X509_get0_tbs_sigalg;
-      {$else}
-      {$if not defined(X509_get0_tbs_sigalg_allownil)}
-      X509_get0_tbs_sigalg := @ERR_X509_get0_tbs_sigalg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_tbs_sigalg_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_tbs_sigalg := @ERR_X509_get0_tbs_sigalg;
+    if FuncLoadError then
       AFailed.Add('X509_get0_tbs_sigalg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get0_pubkey := LoadLibFunction(ADllHandle, X509_get0_pubkey_procname);
-  FuncLoaded := assigned(X509_get0_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_pubkey_allownil)}
+    X509_get0_pubkey := @ERR_X509_get0_pubkey;
+    {$ifend}
     {$if declared(X509_get0_pubkey_introduced)}
     if LibVersion < X509_get0_pubkey_introduced then
     begin
       {$if declared(FC_X509_get0_pubkey)}
       X509_get0_pubkey := @FC_X509_get0_pubkey;
-      {$else}
-      {$if not defined(X509_get0_pubkey_allownil)}
-      X509_get0_pubkey := @ERR_X509_get0_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_pubkey_removed)}
@@ -13914,39 +12233,31 @@ begin
     begin
       {$if declared(_X509_get0_pubkey)}
       X509_get0_pubkey := @_X509_get0_pubkey;
-      {$else}
-      {$if not defined(X509_get0_pubkey_allownil)}
-      X509_get0_pubkey := @ERR_X509_get0_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_pubkey := @ERR_X509_get0_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_get0_pubkey');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_pubkey := LoadLibFunction(ADllHandle, X509_get_pubkey_procname);
-  FuncLoaded := assigned(X509_get_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_pubkey_allownil)}
+    X509_get_pubkey := @ERR_X509_get_pubkey;
+    {$ifend}
     {$if declared(X509_get_pubkey_introduced)}
     if LibVersion < X509_get_pubkey_introduced then
     begin
       {$if declared(FC_X509_get_pubkey)}
       X509_get_pubkey := @FC_X509_get_pubkey;
-      {$else}
-      {$if not defined(X509_get_pubkey_allownil)}
-      X509_get_pubkey := @ERR_X509_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_pubkey_removed)}
@@ -13954,39 +12265,31 @@ begin
     begin
       {$if declared(_X509_get_pubkey)}
       X509_get_pubkey := @_X509_get_pubkey;
-      {$else}
-      {$if not defined(X509_get_pubkey_allownil)}
-      X509_get_pubkey := @ERR_X509_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_pubkey := @ERR_X509_get_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_get_pubkey');
-    end;
     {$ifend}
   end;
 
 
   X509_get0_pubkey_bitstr := LoadLibFunction(ADllHandle, X509_get0_pubkey_bitstr_procname);
-  FuncLoaded := assigned(X509_get0_pubkey_bitstr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get0_pubkey_bitstr);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get0_pubkey_bitstr_allownil)}
+    X509_get0_pubkey_bitstr := @ERR_X509_get0_pubkey_bitstr;
+    {$ifend}
     {$if declared(X509_get0_pubkey_bitstr_introduced)}
     if LibVersion < X509_get0_pubkey_bitstr_introduced then
     begin
       {$if declared(FC_X509_get0_pubkey_bitstr)}
       X509_get0_pubkey_bitstr := @FC_X509_get0_pubkey_bitstr;
-      {$else}
-      {$if not defined(X509_get0_pubkey_bitstr_allownil)}
-      X509_get0_pubkey_bitstr := @ERR_X509_get0_pubkey_bitstr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get0_pubkey_bitstr_removed)}
@@ -13994,39 +12297,31 @@ begin
     begin
       {$if declared(_X509_get0_pubkey_bitstr)}
       X509_get0_pubkey_bitstr := @_X509_get0_pubkey_bitstr;
-      {$else}
-      {$if not defined(X509_get0_pubkey_bitstr_allownil)}
-      X509_get0_pubkey_bitstr := @ERR_X509_get0_pubkey_bitstr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get0_pubkey_bitstr_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get0_pubkey_bitstr := @ERR_X509_get0_pubkey_bitstr;
+    if FuncLoadError then
       AFailed.Add('X509_get0_pubkey_bitstr');
-    end;
     {$ifend}
   end;
 
 
   X509_certificate_type := LoadLibFunction(ADllHandle, X509_certificate_type_procname);
-  FuncLoaded := assigned(X509_certificate_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_certificate_type);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_certificate_type_allownil)}
+    X509_certificate_type := @ERR_X509_certificate_type;
+    {$ifend}
     {$if declared(X509_certificate_type_introduced)}
     if LibVersion < X509_certificate_type_introduced then
     begin
       {$if declared(FC_X509_certificate_type)}
       X509_certificate_type := @FC_X509_certificate_type;
-      {$else}
-      {$if not defined(X509_certificate_type_allownil)}
-      X509_certificate_type := @ERR_X509_certificate_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_certificate_type_removed)}
@@ -14034,39 +12329,31 @@ begin
     begin
       {$if declared(_X509_certificate_type)}
       X509_certificate_type := @_X509_certificate_type;
-      {$else}
-      {$if not defined(X509_certificate_type_allownil)}
-      X509_certificate_type := @ERR_X509_certificate_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_certificate_type_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_certificate_type := @ERR_X509_certificate_type;
+    if FuncLoadError then
       AFailed.Add('X509_certificate_type');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_version := LoadLibFunction(ADllHandle, X509_REQ_get_version_procname);
-  FuncLoaded := assigned(X509_REQ_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_version_allownil)}
+    X509_REQ_get_version := @ERR_X509_REQ_get_version;
+    {$ifend}
     {$if declared(X509_REQ_get_version_introduced)}
     if LibVersion < X509_REQ_get_version_introduced then
     begin
       {$if declared(FC_X509_REQ_get_version)}
       X509_REQ_get_version := @FC_X509_REQ_get_version;
-      {$else}
-      {$if not defined(X509_REQ_get_version_allownil)}
-      X509_REQ_get_version := @ERR_X509_REQ_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_version_removed)}
@@ -14074,39 +12361,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_version)}
       X509_REQ_get_version := @_X509_REQ_get_version;
-      {$else}
-      {$if not defined(X509_REQ_get_version_allownil)}
-      X509_REQ_get_version := @ERR_X509_REQ_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_version := @ERR_X509_REQ_get_version;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_set_version := LoadLibFunction(ADllHandle, X509_REQ_set_version_procname);
-  FuncLoaded := assigned(X509_REQ_set_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_set_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_set_version_allownil)}
+    X509_REQ_set_version := @ERR_X509_REQ_set_version;
+    {$ifend}
     {$if declared(X509_REQ_set_version_introduced)}
     if LibVersion < X509_REQ_set_version_introduced then
     begin
       {$if declared(FC_X509_REQ_set_version)}
       X509_REQ_set_version := @FC_X509_REQ_set_version;
-      {$else}
-      {$if not defined(X509_REQ_set_version_allownil)}
-      X509_REQ_set_version := @ERR_X509_REQ_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_set_version_removed)}
@@ -14114,39 +12393,31 @@ begin
     begin
       {$if declared(_X509_REQ_set_version)}
       X509_REQ_set_version := @_X509_REQ_set_version;
-      {$else}
-      {$if not defined(X509_REQ_set_version_allownil)}
-      X509_REQ_set_version := @ERR_X509_REQ_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_set_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_set_version := @ERR_X509_REQ_set_version;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_set_version');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_subject_name := LoadLibFunction(ADllHandle, X509_REQ_get_subject_name_procname);
-  FuncLoaded := assigned(X509_REQ_get_subject_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_subject_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_subject_name_allownil)}
+    X509_REQ_get_subject_name := @ERR_X509_REQ_get_subject_name;
+    {$ifend}
     {$if declared(X509_REQ_get_subject_name_introduced)}
     if LibVersion < X509_REQ_get_subject_name_introduced then
     begin
       {$if declared(FC_X509_REQ_get_subject_name)}
       X509_REQ_get_subject_name := @FC_X509_REQ_get_subject_name;
-      {$else}
-      {$if not defined(X509_REQ_get_subject_name_allownil)}
-      X509_REQ_get_subject_name := @ERR_X509_REQ_get_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_subject_name_removed)}
@@ -14154,39 +12425,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_subject_name)}
       X509_REQ_get_subject_name := @_X509_REQ_get_subject_name;
-      {$else}
-      {$if not defined(X509_REQ_get_subject_name_allownil)}
-      X509_REQ_get_subject_name := @ERR_X509_REQ_get_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_subject_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_subject_name := @ERR_X509_REQ_get_subject_name;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_subject_name');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_set_subject_name := LoadLibFunction(ADllHandle, X509_REQ_set_subject_name_procname);
-  FuncLoaded := assigned(X509_REQ_set_subject_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_set_subject_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_set_subject_name_allownil)}
+    X509_REQ_set_subject_name := @ERR_X509_REQ_set_subject_name;
+    {$ifend}
     {$if declared(X509_REQ_set_subject_name_introduced)}
     if LibVersion < X509_REQ_set_subject_name_introduced then
     begin
       {$if declared(FC_X509_REQ_set_subject_name)}
       X509_REQ_set_subject_name := @FC_X509_REQ_set_subject_name;
-      {$else}
-      {$if not defined(X509_REQ_set_subject_name_allownil)}
-      X509_REQ_set_subject_name := @ERR_X509_REQ_set_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_set_subject_name_removed)}
@@ -14194,39 +12457,31 @@ begin
     begin
       {$if declared(_X509_REQ_set_subject_name)}
       X509_REQ_set_subject_name := @_X509_REQ_set_subject_name;
-      {$else}
-      {$if not defined(X509_REQ_set_subject_name_allownil)}
-      X509_REQ_set_subject_name := @ERR_X509_REQ_set_subject_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_set_subject_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_set_subject_name := @ERR_X509_REQ_set_subject_name;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_set_subject_name');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get0_signature := LoadLibFunction(ADllHandle, X509_REQ_get0_signature_procname);
-  FuncLoaded := assigned(X509_REQ_get0_signature);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get0_signature);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get0_signature_allownil)}
+    X509_REQ_get0_signature := @ERR_X509_REQ_get0_signature;
+    {$ifend}
     {$if declared(X509_REQ_get0_signature_introduced)}
     if LibVersion < X509_REQ_get0_signature_introduced then
     begin
       {$if declared(FC_X509_REQ_get0_signature)}
       X509_REQ_get0_signature := @FC_X509_REQ_get0_signature;
-      {$else}
-      {$if not defined(X509_REQ_get0_signature_allownil)}
-      X509_REQ_get0_signature := @ERR_X509_REQ_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get0_signature_removed)}
@@ -14234,39 +12489,31 @@ begin
     begin
       {$if declared(_X509_REQ_get0_signature)}
       X509_REQ_get0_signature := @_X509_REQ_get0_signature;
-      {$else}
-      {$if not defined(X509_REQ_get0_signature_allownil)}
-      X509_REQ_get0_signature := @ERR_X509_REQ_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get0_signature_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get0_signature := @ERR_X509_REQ_get0_signature;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get0_signature');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0} 
   X509_REQ_get_signature_nid := LoadLibFunction(ADllHandle, X509_REQ_get_signature_nid_procname);
-  FuncLoaded := assigned(X509_REQ_get_signature_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_signature_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_signature_nid_allownil)}
+    X509_REQ_get_signature_nid := @ERR_X509_REQ_get_signature_nid;
+    {$ifend}
     {$if declared(X509_REQ_get_signature_nid_introduced)}
     if LibVersion < X509_REQ_get_signature_nid_introduced then
     begin
       {$if declared(FC_X509_REQ_get_signature_nid)}
       X509_REQ_get_signature_nid := @FC_X509_REQ_get_signature_nid;
-      {$else}
-      {$if not defined(X509_REQ_get_signature_nid_allownil)}
-      X509_REQ_get_signature_nid := @ERR_X509_REQ_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_signature_nid_removed)}
@@ -14274,39 +12521,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_signature_nid)}
       X509_REQ_get_signature_nid := @_X509_REQ_get_signature_nid;
-      {$else}
-      {$if not defined(X509_REQ_get_signature_nid_allownil)}
-      X509_REQ_get_signature_nid := @ERR_X509_REQ_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_signature_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_signature_nid := @ERR_X509_REQ_get_signature_nid;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_signature_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   i2d_re_X509_REQ_tbs := LoadLibFunction(ADllHandle, i2d_re_X509_REQ_tbs_procname);
-  FuncLoaded := assigned(i2d_re_X509_REQ_tbs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_re_X509_REQ_tbs);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_re_X509_REQ_tbs_allownil)}
+    i2d_re_X509_REQ_tbs := @ERR_i2d_re_X509_REQ_tbs;
+    {$ifend}
     {$if declared(i2d_re_X509_REQ_tbs_introduced)}
     if LibVersion < i2d_re_X509_REQ_tbs_introduced then
     begin
       {$if declared(FC_i2d_re_X509_REQ_tbs)}
       i2d_re_X509_REQ_tbs := @FC_i2d_re_X509_REQ_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_REQ_tbs_allownil)}
-      i2d_re_X509_REQ_tbs := @ERR_i2d_re_X509_REQ_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_re_X509_REQ_tbs_removed)}
@@ -14314,39 +12553,31 @@ begin
     begin
       {$if declared(_i2d_re_X509_REQ_tbs)}
       i2d_re_X509_REQ_tbs := @_i2d_re_X509_REQ_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_REQ_tbs_allownil)}
-      i2d_re_X509_REQ_tbs := @ERR_i2d_re_X509_REQ_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_re_X509_REQ_tbs_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_re_X509_REQ_tbs := @ERR_i2d_re_X509_REQ_tbs;
+    if FuncLoadError then
       AFailed.Add('i2d_re_X509_REQ_tbs');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_set_pubkey := LoadLibFunction(ADllHandle, X509_REQ_set_pubkey_procname);
-  FuncLoaded := assigned(X509_REQ_set_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_set_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_set_pubkey_allownil)}
+    X509_REQ_set_pubkey := @ERR_X509_REQ_set_pubkey;
+    {$ifend}
     {$if declared(X509_REQ_set_pubkey_introduced)}
     if LibVersion < X509_REQ_set_pubkey_introduced then
     begin
       {$if declared(FC_X509_REQ_set_pubkey)}
       X509_REQ_set_pubkey := @FC_X509_REQ_set_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_set_pubkey_allownil)}
-      X509_REQ_set_pubkey := @ERR_X509_REQ_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_set_pubkey_removed)}
@@ -14354,39 +12585,31 @@ begin
     begin
       {$if declared(_X509_REQ_set_pubkey)}
       X509_REQ_set_pubkey := @_X509_REQ_set_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_set_pubkey_allownil)}
-      X509_REQ_set_pubkey := @ERR_X509_REQ_set_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_set_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_set_pubkey := @ERR_X509_REQ_set_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_set_pubkey');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_pubkey := LoadLibFunction(ADllHandle, X509_REQ_get_pubkey_procname);
-  FuncLoaded := assigned(X509_REQ_get_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_pubkey_allownil)}
+    X509_REQ_get_pubkey := @ERR_X509_REQ_get_pubkey;
+    {$ifend}
     {$if declared(X509_REQ_get_pubkey_introduced)}
     if LibVersion < X509_REQ_get_pubkey_introduced then
     begin
       {$if declared(FC_X509_REQ_get_pubkey)}
       X509_REQ_get_pubkey := @FC_X509_REQ_get_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_get_pubkey_allownil)}
-      X509_REQ_get_pubkey := @ERR_X509_REQ_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_pubkey_removed)}
@@ -14394,39 +12617,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_pubkey)}
       X509_REQ_get_pubkey := @_X509_REQ_get_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_get_pubkey_allownil)}
-      X509_REQ_get_pubkey := @ERR_X509_REQ_get_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_pubkey := @ERR_X509_REQ_get_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_pubkey');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get0_pubkey := LoadLibFunction(ADllHandle, X509_REQ_get0_pubkey_procname);
-  FuncLoaded := assigned(X509_REQ_get0_pubkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get0_pubkey);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get0_pubkey_allownil)}
+    X509_REQ_get0_pubkey := @ERR_X509_REQ_get0_pubkey;
+    {$ifend}
     {$if declared(X509_REQ_get0_pubkey_introduced)}
     if LibVersion < X509_REQ_get0_pubkey_introduced then
     begin
       {$if declared(FC_X509_REQ_get0_pubkey)}
       X509_REQ_get0_pubkey := @FC_X509_REQ_get0_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_get0_pubkey_allownil)}
-      X509_REQ_get0_pubkey := @ERR_X509_REQ_get0_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get0_pubkey_removed)}
@@ -14434,39 +12649,31 @@ begin
     begin
       {$if declared(_X509_REQ_get0_pubkey)}
       X509_REQ_get0_pubkey := @_X509_REQ_get0_pubkey;
-      {$else}
-      {$if not defined(X509_REQ_get0_pubkey_allownil)}
-      X509_REQ_get0_pubkey := @ERR_X509_REQ_get0_pubkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get0_pubkey_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get0_pubkey := @ERR_X509_REQ_get0_pubkey;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get0_pubkey');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_get_X509_PUBKEY := LoadLibFunction(ADllHandle, X509_REQ_get_X509_PUBKEY_procname);
-  FuncLoaded := assigned(X509_REQ_get_X509_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_X509_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_X509_PUBKEY_allownil)}
+    X509_REQ_get_X509_PUBKEY := @ERR_X509_REQ_get_X509_PUBKEY;
+    {$ifend}
     {$if declared(X509_REQ_get_X509_PUBKEY_introduced)}
     if LibVersion < X509_REQ_get_X509_PUBKEY_introduced then
     begin
       {$if declared(FC_X509_REQ_get_X509_PUBKEY)}
       X509_REQ_get_X509_PUBKEY := @FC_X509_REQ_get_X509_PUBKEY;
-      {$else}
-      {$if not defined(X509_REQ_get_X509_PUBKEY_allownil)}
-      X509_REQ_get_X509_PUBKEY := @ERR_X509_REQ_get_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_X509_PUBKEY_removed)}
@@ -14474,39 +12681,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_X509_PUBKEY)}
       X509_REQ_get_X509_PUBKEY := @_X509_REQ_get_X509_PUBKEY;
-      {$else}
-      {$if not defined(X509_REQ_get_X509_PUBKEY_allownil)}
-      X509_REQ_get_X509_PUBKEY := @ERR_X509_REQ_get_X509_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_X509_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_X509_PUBKEY := @ERR_X509_REQ_get_X509_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_X509_PUBKEY');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REQ_extension_nid := LoadLibFunction(ADllHandle, X509_REQ_extension_nid_procname);
-  FuncLoaded := assigned(X509_REQ_extension_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_extension_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_extension_nid_allownil)}
+    X509_REQ_extension_nid := @ERR_X509_REQ_extension_nid;
+    {$ifend}
     {$if declared(X509_REQ_extension_nid_introduced)}
     if LibVersion < X509_REQ_extension_nid_introduced then
     begin
       {$if declared(FC_X509_REQ_extension_nid)}
       X509_REQ_extension_nid := @FC_X509_REQ_extension_nid;
-      {$else}
-      {$if not defined(X509_REQ_extension_nid_allownil)}
-      X509_REQ_extension_nid := @ERR_X509_REQ_extension_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_extension_nid_removed)}
@@ -14514,39 +12713,31 @@ begin
     begin
       {$if declared(_X509_REQ_extension_nid)}
       X509_REQ_extension_nid := @_X509_REQ_extension_nid;
-      {$else}
-      {$if not defined(X509_REQ_extension_nid_allownil)}
-      X509_REQ_extension_nid := @ERR_X509_REQ_extension_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_extension_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_extension_nid := @ERR_X509_REQ_extension_nid;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_extension_nid');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_extension_nids := LoadLibFunction(ADllHandle, X509_REQ_get_extension_nids_procname);
-  FuncLoaded := assigned(X509_REQ_get_extension_nids);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_extension_nids);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_extension_nids_allownil)}
+    X509_REQ_get_extension_nids := @ERR_X509_REQ_get_extension_nids;
+    {$ifend}
     {$if declared(X509_REQ_get_extension_nids_introduced)}
     if LibVersion < X509_REQ_get_extension_nids_introduced then
     begin
       {$if declared(FC_X509_REQ_get_extension_nids)}
       X509_REQ_get_extension_nids := @FC_X509_REQ_get_extension_nids;
-      {$else}
-      {$if not defined(X509_REQ_get_extension_nids_allownil)}
-      X509_REQ_get_extension_nids := @ERR_X509_REQ_get_extension_nids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_extension_nids_removed)}
@@ -14554,39 +12745,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_extension_nids)}
       X509_REQ_get_extension_nids := @_X509_REQ_get_extension_nids;
-      {$else}
-      {$if not defined(X509_REQ_get_extension_nids_allownil)}
-      X509_REQ_get_extension_nids := @ERR_X509_REQ_get_extension_nids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_extension_nids_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_extension_nids := @ERR_X509_REQ_get_extension_nids;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_extension_nids');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_set_extension_nids := LoadLibFunction(ADllHandle, X509_REQ_set_extension_nids_procname);
-  FuncLoaded := assigned(X509_REQ_set_extension_nids);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_set_extension_nids);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_set_extension_nids_allownil)}
+    X509_REQ_set_extension_nids := @ERR_X509_REQ_set_extension_nids;
+    {$ifend}
     {$if declared(X509_REQ_set_extension_nids_introduced)}
     if LibVersion < X509_REQ_set_extension_nids_introduced then
     begin
       {$if declared(FC_X509_REQ_set_extension_nids)}
       X509_REQ_set_extension_nids := @FC_X509_REQ_set_extension_nids;
-      {$else}
-      {$if not defined(X509_REQ_set_extension_nids_allownil)}
-      X509_REQ_set_extension_nids := @ERR_X509_REQ_set_extension_nids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_set_extension_nids_removed)}
@@ -14594,39 +12777,31 @@ begin
     begin
       {$if declared(_X509_REQ_set_extension_nids)}
       X509_REQ_set_extension_nids := @_X509_REQ_set_extension_nids;
-      {$else}
-      {$if not defined(X509_REQ_set_extension_nids_allownil)}
-      X509_REQ_set_extension_nids := @ERR_X509_REQ_set_extension_nids;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_set_extension_nids_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_set_extension_nids := @ERR_X509_REQ_set_extension_nids;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_set_extension_nids');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_attr_count := LoadLibFunction(ADllHandle, X509_REQ_get_attr_count_procname);
-  FuncLoaded := assigned(X509_REQ_get_attr_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_attr_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_attr_count_allownil)}
+    X509_REQ_get_attr_count := @ERR_X509_REQ_get_attr_count;
+    {$ifend}
     {$if declared(X509_REQ_get_attr_count_introduced)}
     if LibVersion < X509_REQ_get_attr_count_introduced then
     begin
       {$if declared(FC_X509_REQ_get_attr_count)}
       X509_REQ_get_attr_count := @FC_X509_REQ_get_attr_count;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_count_allownil)}
-      X509_REQ_get_attr_count := @ERR_X509_REQ_get_attr_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_attr_count_removed)}
@@ -14634,39 +12809,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_attr_count)}
       X509_REQ_get_attr_count := @_X509_REQ_get_attr_count;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_count_allownil)}
-      X509_REQ_get_attr_count := @ERR_X509_REQ_get_attr_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_attr_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_attr_count := @ERR_X509_REQ_get_attr_count;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_attr_count');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_attr_by_NID := LoadLibFunction(ADllHandle, X509_REQ_get_attr_by_NID_procname);
-  FuncLoaded := assigned(X509_REQ_get_attr_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_attr_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_attr_by_NID_allownil)}
+    X509_REQ_get_attr_by_NID := @ERR_X509_REQ_get_attr_by_NID;
+    {$ifend}
     {$if declared(X509_REQ_get_attr_by_NID_introduced)}
     if LibVersion < X509_REQ_get_attr_by_NID_introduced then
     begin
       {$if declared(FC_X509_REQ_get_attr_by_NID)}
       X509_REQ_get_attr_by_NID := @FC_X509_REQ_get_attr_by_NID;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_by_NID_allownil)}
-      X509_REQ_get_attr_by_NID := @ERR_X509_REQ_get_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_attr_by_NID_removed)}
@@ -14674,39 +12841,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_attr_by_NID)}
       X509_REQ_get_attr_by_NID := @_X509_REQ_get_attr_by_NID;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_by_NID_allownil)}
-      X509_REQ_get_attr_by_NID := @ERR_X509_REQ_get_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_attr_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_attr_by_NID := @ERR_X509_REQ_get_attr_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_attr_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_attr_by_OBJ := LoadLibFunction(ADllHandle, X509_REQ_get_attr_by_OBJ_procname);
-  FuncLoaded := assigned(X509_REQ_get_attr_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_attr_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_attr_by_OBJ_allownil)}
+    X509_REQ_get_attr_by_OBJ := @ERR_X509_REQ_get_attr_by_OBJ;
+    {$ifend}
     {$if declared(X509_REQ_get_attr_by_OBJ_introduced)}
     if LibVersion < X509_REQ_get_attr_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_REQ_get_attr_by_OBJ)}
       X509_REQ_get_attr_by_OBJ := @FC_X509_REQ_get_attr_by_OBJ;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_by_OBJ_allownil)}
-      X509_REQ_get_attr_by_OBJ := @ERR_X509_REQ_get_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_attr_by_OBJ_removed)}
@@ -14714,39 +12873,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_attr_by_OBJ)}
       X509_REQ_get_attr_by_OBJ := @_X509_REQ_get_attr_by_OBJ;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_by_OBJ_allownil)}
-      X509_REQ_get_attr_by_OBJ := @ERR_X509_REQ_get_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_attr_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_attr_by_OBJ := @ERR_X509_REQ_get_attr_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_attr_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_get_attr := LoadLibFunction(ADllHandle, X509_REQ_get_attr_procname);
-  FuncLoaded := assigned(X509_REQ_get_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_get_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_get_attr_allownil)}
+    X509_REQ_get_attr := @ERR_X509_REQ_get_attr;
+    {$ifend}
     {$if declared(X509_REQ_get_attr_introduced)}
     if LibVersion < X509_REQ_get_attr_introduced then
     begin
       {$if declared(FC_X509_REQ_get_attr)}
       X509_REQ_get_attr := @FC_X509_REQ_get_attr;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_allownil)}
-      X509_REQ_get_attr := @ERR_X509_REQ_get_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_get_attr_removed)}
@@ -14754,39 +12905,31 @@ begin
     begin
       {$if declared(_X509_REQ_get_attr)}
       X509_REQ_get_attr := @_X509_REQ_get_attr;
-      {$else}
-      {$if not defined(X509_REQ_get_attr_allownil)}
-      X509_REQ_get_attr := @ERR_X509_REQ_get_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_get_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_get_attr := @ERR_X509_REQ_get_attr;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_get_attr');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_delete_attr := LoadLibFunction(ADllHandle, X509_REQ_delete_attr_procname);
-  FuncLoaded := assigned(X509_REQ_delete_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_delete_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_delete_attr_allownil)}
+    X509_REQ_delete_attr := @ERR_X509_REQ_delete_attr;
+    {$ifend}
     {$if declared(X509_REQ_delete_attr_introduced)}
     if LibVersion < X509_REQ_delete_attr_introduced then
     begin
       {$if declared(FC_X509_REQ_delete_attr)}
       X509_REQ_delete_attr := @FC_X509_REQ_delete_attr;
-      {$else}
-      {$if not defined(X509_REQ_delete_attr_allownil)}
-      X509_REQ_delete_attr := @ERR_X509_REQ_delete_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_delete_attr_removed)}
@@ -14794,39 +12937,31 @@ begin
     begin
       {$if declared(_X509_REQ_delete_attr)}
       X509_REQ_delete_attr := @_X509_REQ_delete_attr;
-      {$else}
-      {$if not defined(X509_REQ_delete_attr_allownil)}
-      X509_REQ_delete_attr := @ERR_X509_REQ_delete_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_delete_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_delete_attr := @ERR_X509_REQ_delete_attr;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_delete_attr');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_add1_attr := LoadLibFunction(ADllHandle, X509_REQ_add1_attr_procname);
-  FuncLoaded := assigned(X509_REQ_add1_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_add1_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_add1_attr_allownil)}
+    X509_REQ_add1_attr := @ERR_X509_REQ_add1_attr;
+    {$ifend}
     {$if declared(X509_REQ_add1_attr_introduced)}
     if LibVersion < X509_REQ_add1_attr_introduced then
     begin
       {$if declared(FC_X509_REQ_add1_attr)}
       X509_REQ_add1_attr := @FC_X509_REQ_add1_attr;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_allownil)}
-      X509_REQ_add1_attr := @ERR_X509_REQ_add1_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_add1_attr_removed)}
@@ -14834,39 +12969,31 @@ begin
     begin
       {$if declared(_X509_REQ_add1_attr)}
       X509_REQ_add1_attr := @_X509_REQ_add1_attr;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_allownil)}
-      X509_REQ_add1_attr := @ERR_X509_REQ_add1_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_add1_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_add1_attr := @ERR_X509_REQ_add1_attr;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_add1_attr');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_add1_attr_by_OBJ := LoadLibFunction(ADllHandle, X509_REQ_add1_attr_by_OBJ_procname);
-  FuncLoaded := assigned(X509_REQ_add1_attr_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_add1_attr_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_add1_attr_by_OBJ_allownil)}
+    X509_REQ_add1_attr_by_OBJ := @ERR_X509_REQ_add1_attr_by_OBJ;
+    {$ifend}
     {$if declared(X509_REQ_add1_attr_by_OBJ_introduced)}
     if LibVersion < X509_REQ_add1_attr_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_REQ_add1_attr_by_OBJ)}
       X509_REQ_add1_attr_by_OBJ := @FC_X509_REQ_add1_attr_by_OBJ;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_OBJ_allownil)}
-      X509_REQ_add1_attr_by_OBJ := @ERR_X509_REQ_add1_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_add1_attr_by_OBJ_removed)}
@@ -14874,39 +13001,31 @@ begin
     begin
       {$if declared(_X509_REQ_add1_attr_by_OBJ)}
       X509_REQ_add1_attr_by_OBJ := @_X509_REQ_add1_attr_by_OBJ;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_OBJ_allownil)}
-      X509_REQ_add1_attr_by_OBJ := @ERR_X509_REQ_add1_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_add1_attr_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_add1_attr_by_OBJ := @ERR_X509_REQ_add1_attr_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_add1_attr_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_add1_attr_by_NID := LoadLibFunction(ADllHandle, X509_REQ_add1_attr_by_NID_procname);
-  FuncLoaded := assigned(X509_REQ_add1_attr_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_add1_attr_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_add1_attr_by_NID_allownil)}
+    X509_REQ_add1_attr_by_NID := @ERR_X509_REQ_add1_attr_by_NID;
+    {$ifend}
     {$if declared(X509_REQ_add1_attr_by_NID_introduced)}
     if LibVersion < X509_REQ_add1_attr_by_NID_introduced then
     begin
       {$if declared(FC_X509_REQ_add1_attr_by_NID)}
       X509_REQ_add1_attr_by_NID := @FC_X509_REQ_add1_attr_by_NID;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_NID_allownil)}
-      X509_REQ_add1_attr_by_NID := @ERR_X509_REQ_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_add1_attr_by_NID_removed)}
@@ -14914,39 +13033,31 @@ begin
     begin
       {$if declared(_X509_REQ_add1_attr_by_NID)}
       X509_REQ_add1_attr_by_NID := @_X509_REQ_add1_attr_by_NID;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_NID_allownil)}
-      X509_REQ_add1_attr_by_NID := @ERR_X509_REQ_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_add1_attr_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_add1_attr_by_NID := @ERR_X509_REQ_add1_attr_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_add1_attr_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_add1_attr_by_txt := LoadLibFunction(ADllHandle, X509_REQ_add1_attr_by_txt_procname);
-  FuncLoaded := assigned(X509_REQ_add1_attr_by_txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_add1_attr_by_txt);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_add1_attr_by_txt_allownil)}
+    X509_REQ_add1_attr_by_txt := @ERR_X509_REQ_add1_attr_by_txt;
+    {$ifend}
     {$if declared(X509_REQ_add1_attr_by_txt_introduced)}
     if LibVersion < X509_REQ_add1_attr_by_txt_introduced then
     begin
       {$if declared(FC_X509_REQ_add1_attr_by_txt)}
       X509_REQ_add1_attr_by_txt := @FC_X509_REQ_add1_attr_by_txt;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_txt_allownil)}
-      X509_REQ_add1_attr_by_txt := @ERR_X509_REQ_add1_attr_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_add1_attr_by_txt_removed)}
@@ -14954,39 +13065,31 @@ begin
     begin
       {$if declared(_X509_REQ_add1_attr_by_txt)}
       X509_REQ_add1_attr_by_txt := @_X509_REQ_add1_attr_by_txt;
-      {$else}
-      {$if not defined(X509_REQ_add1_attr_by_txt_allownil)}
-      X509_REQ_add1_attr_by_txt := @ERR_X509_REQ_add1_attr_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_add1_attr_by_txt_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_add1_attr_by_txt := @ERR_X509_REQ_add1_attr_by_txt;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_add1_attr_by_txt');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_set_version := LoadLibFunction(ADllHandle, X509_CRL_set_version_procname);
-  FuncLoaded := assigned(X509_CRL_set_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set_version_allownil)}
+    X509_CRL_set_version := @ERR_X509_CRL_set_version;
+    {$ifend}
     {$if declared(X509_CRL_set_version_introduced)}
     if LibVersion < X509_CRL_set_version_introduced then
     begin
       {$if declared(FC_X509_CRL_set_version)}
       X509_CRL_set_version := @FC_X509_CRL_set_version;
-      {$else}
-      {$if not defined(X509_CRL_set_version_allownil)}
-      X509_CRL_set_version := @ERR_X509_CRL_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set_version_removed)}
@@ -14994,39 +13097,31 @@ begin
     begin
       {$if declared(_X509_CRL_set_version)}
       X509_CRL_set_version := @_X509_CRL_set_version;
-      {$else}
-      {$if not defined(X509_CRL_set_version_allownil)}
-      X509_CRL_set_version := @ERR_X509_CRL_set_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set_version := @ERR_X509_CRL_set_version;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set_version');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_set_issuer_name := LoadLibFunction(ADllHandle, X509_CRL_set_issuer_name_procname);
-  FuncLoaded := assigned(X509_CRL_set_issuer_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set_issuer_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set_issuer_name_allownil)}
+    X509_CRL_set_issuer_name := @ERR_X509_CRL_set_issuer_name;
+    {$ifend}
     {$if declared(X509_CRL_set_issuer_name_introduced)}
     if LibVersion < X509_CRL_set_issuer_name_introduced then
     begin
       {$if declared(FC_X509_CRL_set_issuer_name)}
       X509_CRL_set_issuer_name := @FC_X509_CRL_set_issuer_name;
-      {$else}
-      {$if not defined(X509_CRL_set_issuer_name_allownil)}
-      X509_CRL_set_issuer_name := @ERR_X509_CRL_set_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set_issuer_name_removed)}
@@ -15034,39 +13129,31 @@ begin
     begin
       {$if declared(_X509_CRL_set_issuer_name)}
       X509_CRL_set_issuer_name := @_X509_CRL_set_issuer_name;
-      {$else}
-      {$if not defined(X509_CRL_set_issuer_name_allownil)}
-      X509_CRL_set_issuer_name := @ERR_X509_CRL_set_issuer_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set_issuer_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set_issuer_name := @ERR_X509_CRL_set_issuer_name;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set_issuer_name');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_set1_lastUpdate := LoadLibFunction(ADllHandle, X509_CRL_set1_lastUpdate_procname);
-  FuncLoaded := assigned(X509_CRL_set1_lastUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set1_lastUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set1_lastUpdate_allownil)}
+    X509_CRL_set1_lastUpdate := @ERR_X509_CRL_set1_lastUpdate;
+    {$ifend}
     {$if declared(X509_CRL_set1_lastUpdate_introduced)}
     if LibVersion < X509_CRL_set1_lastUpdate_introduced then
     begin
       {$if declared(FC_X509_CRL_set1_lastUpdate)}
       X509_CRL_set1_lastUpdate := @FC_X509_CRL_set1_lastUpdate;
-      {$else}
-      {$if not defined(X509_CRL_set1_lastUpdate_allownil)}
-      X509_CRL_set1_lastUpdate := @ERR_X509_CRL_set1_lastUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set1_lastUpdate_removed)}
@@ -15074,39 +13161,31 @@ begin
     begin
       {$if declared(_X509_CRL_set1_lastUpdate)}
       X509_CRL_set1_lastUpdate := @_X509_CRL_set1_lastUpdate;
-      {$else}
-      {$if not defined(X509_CRL_set1_lastUpdate_allownil)}
-      X509_CRL_set1_lastUpdate := @ERR_X509_CRL_set1_lastUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set1_lastUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set1_lastUpdate := @ERR_X509_CRL_set1_lastUpdate;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set1_lastUpdate');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_set1_nextUpdate := LoadLibFunction(ADllHandle, X509_CRL_set1_nextUpdate_procname);
-  FuncLoaded := assigned(X509_CRL_set1_nextUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_set1_nextUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_set1_nextUpdate_allownil)}
+    X509_CRL_set1_nextUpdate := @ERR_X509_CRL_set1_nextUpdate;
+    {$ifend}
     {$if declared(X509_CRL_set1_nextUpdate_introduced)}
     if LibVersion < X509_CRL_set1_nextUpdate_introduced then
     begin
       {$if declared(FC_X509_CRL_set1_nextUpdate)}
       X509_CRL_set1_nextUpdate := @FC_X509_CRL_set1_nextUpdate;
-      {$else}
-      {$if not defined(X509_CRL_set1_nextUpdate_allownil)}
-      X509_CRL_set1_nextUpdate := @ERR_X509_CRL_set1_nextUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_set1_nextUpdate_removed)}
@@ -15114,39 +13193,31 @@ begin
     begin
       {$if declared(_X509_CRL_set1_nextUpdate)}
       X509_CRL_set1_nextUpdate := @_X509_CRL_set1_nextUpdate;
-      {$else}
-      {$if not defined(X509_CRL_set1_nextUpdate_allownil)}
-      X509_CRL_set1_nextUpdate := @ERR_X509_CRL_set1_nextUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_set1_nextUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_set1_nextUpdate := @ERR_X509_CRL_set1_nextUpdate;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_set1_nextUpdate');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_sort := LoadLibFunction(ADllHandle, X509_CRL_sort_procname);
-  FuncLoaded := assigned(X509_CRL_sort);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_sort);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_sort_allownil)}
+    X509_CRL_sort := @ERR_X509_CRL_sort;
+    {$ifend}
     {$if declared(X509_CRL_sort_introduced)}
     if LibVersion < X509_CRL_sort_introduced then
     begin
       {$if declared(FC_X509_CRL_sort)}
       X509_CRL_sort := @FC_X509_CRL_sort;
-      {$else}
-      {$if not defined(X509_CRL_sort_allownil)}
-      X509_CRL_sort := @ERR_X509_CRL_sort;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_sort_removed)}
@@ -15154,39 +13225,31 @@ begin
     begin
       {$if declared(_X509_CRL_sort)}
       X509_CRL_sort := @_X509_CRL_sort;
-      {$else}
-      {$if not defined(X509_CRL_sort_allownil)}
-      X509_CRL_sort := @ERR_X509_CRL_sort;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_sort_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_sort := @ERR_X509_CRL_sort;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_sort');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_up_ref := LoadLibFunction(ADllHandle, X509_CRL_up_ref_procname);
-  FuncLoaded := assigned(X509_CRL_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_up_ref_allownil)}
+    X509_CRL_up_ref := @ERR_X509_CRL_up_ref;
+    {$ifend}
     {$if declared(X509_CRL_up_ref_introduced)}
     if LibVersion < X509_CRL_up_ref_introduced then
     begin
       {$if declared(FC_X509_CRL_up_ref)}
       X509_CRL_up_ref := @FC_X509_CRL_up_ref;
-      {$else}
-      {$if not defined(X509_CRL_up_ref_allownil)}
-      X509_CRL_up_ref := @ERR_X509_CRL_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_up_ref_removed)}
@@ -15194,39 +13257,31 @@ begin
     begin
       {$if declared(_X509_CRL_up_ref)}
       X509_CRL_up_ref := @_X509_CRL_up_ref;
-      {$else}
-      {$if not defined(X509_CRL_up_ref_allownil)}
-      X509_CRL_up_ref := @ERR_X509_CRL_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_up_ref := @ERR_X509_CRL_up_ref;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get_version := LoadLibFunction(ADllHandle, X509_CRL_get_version_procname);
-  FuncLoaded := assigned(X509_CRL_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_version_allownil)}
+    X509_CRL_get_version := @ERR_X509_CRL_get_version;
+    {$ifend}
     {$if declared(X509_CRL_get_version_introduced)}
     if LibVersion < X509_CRL_get_version_introduced then
     begin
       {$if declared(FC_X509_CRL_get_version)}
       X509_CRL_get_version := @FC_X509_CRL_get_version;
-      {$else}
-      {$if not defined(X509_CRL_get_version_allownil)}
-      X509_CRL_get_version := @ERR_X509_CRL_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_version_removed)}
@@ -15234,39 +13289,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_version)}
       X509_CRL_get_version := @_X509_CRL_get_version;
-      {$else}
-      {$if not defined(X509_CRL_get_version_allownil)}
-      X509_CRL_get_version := @ERR_X509_CRL_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_version := @ERR_X509_CRL_get_version;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get0_lastUpdate := LoadLibFunction(ADllHandle, X509_CRL_get0_lastUpdate_procname);
-  FuncLoaded := assigned(X509_CRL_get0_lastUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get0_lastUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get0_lastUpdate_allownil)}
+    X509_CRL_get0_lastUpdate := @ERR_X509_CRL_get0_lastUpdate;
+    {$ifend}
     {$if declared(X509_CRL_get0_lastUpdate_introduced)}
     if LibVersion < X509_CRL_get0_lastUpdate_introduced then
     begin
       {$if declared(FC_X509_CRL_get0_lastUpdate)}
       X509_CRL_get0_lastUpdate := @FC_X509_CRL_get0_lastUpdate;
-      {$else}
-      {$if not defined(X509_CRL_get0_lastUpdate_allownil)}
-      X509_CRL_get0_lastUpdate := @ERR_X509_CRL_get0_lastUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get0_lastUpdate_removed)}
@@ -15274,39 +13321,31 @@ begin
     begin
       {$if declared(_X509_CRL_get0_lastUpdate)}
       X509_CRL_get0_lastUpdate := @_X509_CRL_get0_lastUpdate;
-      {$else}
-      {$if not defined(X509_CRL_get0_lastUpdate_allownil)}
-      X509_CRL_get0_lastUpdate := @ERR_X509_CRL_get0_lastUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get0_lastUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get0_lastUpdate := @ERR_X509_CRL_get0_lastUpdate;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get0_lastUpdate');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get0_nextUpdate := LoadLibFunction(ADllHandle, X509_CRL_get0_nextUpdate_procname);
-  FuncLoaded := assigned(X509_CRL_get0_nextUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get0_nextUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get0_nextUpdate_allownil)}
+    X509_CRL_get0_nextUpdate := @ERR_X509_CRL_get0_nextUpdate;
+    {$ifend}
     {$if declared(X509_CRL_get0_nextUpdate_introduced)}
     if LibVersion < X509_CRL_get0_nextUpdate_introduced then
     begin
       {$if declared(FC_X509_CRL_get0_nextUpdate)}
       X509_CRL_get0_nextUpdate := @FC_X509_CRL_get0_nextUpdate;
-      {$else}
-      {$if not defined(X509_CRL_get0_nextUpdate_allownil)}
-      X509_CRL_get0_nextUpdate := @ERR_X509_CRL_get0_nextUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get0_nextUpdate_removed)}
@@ -15314,39 +13353,31 @@ begin
     begin
       {$if declared(_X509_CRL_get0_nextUpdate)}
       X509_CRL_get0_nextUpdate := @_X509_CRL_get0_nextUpdate;
-      {$else}
-      {$if not defined(X509_CRL_get0_nextUpdate_allownil)}
-      X509_CRL_get0_nextUpdate := @ERR_X509_CRL_get0_nextUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get0_nextUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get0_nextUpdate := @ERR_X509_CRL_get0_nextUpdate;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get0_nextUpdate');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get_issuer := LoadLibFunction(ADllHandle, X509_CRL_get_issuer_procname);
-  FuncLoaded := assigned(X509_CRL_get_issuer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_issuer);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_issuer_allownil)}
+    X509_CRL_get_issuer := @ERR_X509_CRL_get_issuer;
+    {$ifend}
     {$if declared(X509_CRL_get_issuer_introduced)}
     if LibVersion < X509_CRL_get_issuer_introduced then
     begin
       {$if declared(FC_X509_CRL_get_issuer)}
       X509_CRL_get_issuer := @FC_X509_CRL_get_issuer;
-      {$else}
-      {$if not defined(X509_CRL_get_issuer_allownil)}
-      X509_CRL_get_issuer := @ERR_X509_CRL_get_issuer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_issuer_removed)}
@@ -15354,39 +13385,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_issuer)}
       X509_CRL_get_issuer := @_X509_CRL_get_issuer;
-      {$else}
-      {$if not defined(X509_CRL_get_issuer_allownil)}
-      X509_CRL_get_issuer := @ERR_X509_CRL_get_issuer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_issuer_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_issuer := @ERR_X509_CRL_get_issuer;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_issuer');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get0_signature := LoadLibFunction(ADllHandle, X509_CRL_get0_signature_procname);
-  FuncLoaded := assigned(X509_CRL_get0_signature);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get0_signature);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get0_signature_allownil)}
+    X509_CRL_get0_signature := @ERR_X509_CRL_get0_signature;
+    {$ifend}
     {$if declared(X509_CRL_get0_signature_introduced)}
     if LibVersion < X509_CRL_get0_signature_introduced then
     begin
       {$if declared(FC_X509_CRL_get0_signature)}
       X509_CRL_get0_signature := @FC_X509_CRL_get0_signature;
-      {$else}
-      {$if not defined(X509_CRL_get0_signature_allownil)}
-      X509_CRL_get0_signature := @ERR_X509_CRL_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get0_signature_removed)}
@@ -15394,39 +13417,31 @@ begin
     begin
       {$if declared(_X509_CRL_get0_signature)}
       X509_CRL_get0_signature := @_X509_CRL_get0_signature;
-      {$else}
-      {$if not defined(X509_CRL_get0_signature_allownil)}
-      X509_CRL_get0_signature := @ERR_X509_CRL_get0_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get0_signature_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get0_signature := @ERR_X509_CRL_get0_signature;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get0_signature');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_get_signature_nid := LoadLibFunction(ADllHandle, X509_CRL_get_signature_nid_procname);
-  FuncLoaded := assigned(X509_CRL_get_signature_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_signature_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_signature_nid_allownil)}
+    X509_CRL_get_signature_nid := @ERR_X509_CRL_get_signature_nid;
+    {$ifend}
     {$if declared(X509_CRL_get_signature_nid_introduced)}
     if LibVersion < X509_CRL_get_signature_nid_introduced then
     begin
       {$if declared(FC_X509_CRL_get_signature_nid)}
       X509_CRL_get_signature_nid := @FC_X509_CRL_get_signature_nid;
-      {$else}
-      {$if not defined(X509_CRL_get_signature_nid_allownil)}
-      X509_CRL_get_signature_nid := @ERR_X509_CRL_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_signature_nid_removed)}
@@ -15434,39 +13449,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_signature_nid)}
       X509_CRL_get_signature_nid := @_X509_CRL_get_signature_nid;
-      {$else}
-      {$if not defined(X509_CRL_get_signature_nid_allownil)}
-      X509_CRL_get_signature_nid := @ERR_X509_CRL_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_signature_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_signature_nid := @ERR_X509_CRL_get_signature_nid;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_signature_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   i2d_re_X509_CRL_tbs := LoadLibFunction(ADllHandle, i2d_re_X509_CRL_tbs_procname);
-  FuncLoaded := assigned(i2d_re_X509_CRL_tbs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_re_X509_CRL_tbs);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_re_X509_CRL_tbs_allownil)}
+    i2d_re_X509_CRL_tbs := @ERR_i2d_re_X509_CRL_tbs;
+    {$ifend}
     {$if declared(i2d_re_X509_CRL_tbs_introduced)}
     if LibVersion < i2d_re_X509_CRL_tbs_introduced then
     begin
       {$if declared(FC_i2d_re_X509_CRL_tbs)}
       i2d_re_X509_CRL_tbs := @FC_i2d_re_X509_CRL_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_CRL_tbs_allownil)}
-      i2d_re_X509_CRL_tbs := @ERR_i2d_re_X509_CRL_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_re_X509_CRL_tbs_removed)}
@@ -15474,39 +13481,31 @@ begin
     begin
       {$if declared(_i2d_re_X509_CRL_tbs)}
       i2d_re_X509_CRL_tbs := @_i2d_re_X509_CRL_tbs;
-      {$else}
-      {$if not defined(i2d_re_X509_CRL_tbs_allownil)}
-      i2d_re_X509_CRL_tbs := @ERR_i2d_re_X509_CRL_tbs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_re_X509_CRL_tbs_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_re_X509_CRL_tbs := @ERR_i2d_re_X509_CRL_tbs;
+    if FuncLoadError then
       AFailed.Add('i2d_re_X509_CRL_tbs');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REVOKED_get0_serialNumber := LoadLibFunction(ADllHandle, X509_REVOKED_get0_serialNumber_procname);
-  FuncLoaded := assigned(X509_REVOKED_get0_serialNumber);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get0_serialNumber);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get0_serialNumber_allownil)}
+    X509_REVOKED_get0_serialNumber := @ERR_X509_REVOKED_get0_serialNumber;
+    {$ifend}
     {$if declared(X509_REVOKED_get0_serialNumber_introduced)}
     if LibVersion < X509_REVOKED_get0_serialNumber_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get0_serialNumber)}
       X509_REVOKED_get0_serialNumber := @FC_X509_REVOKED_get0_serialNumber;
-      {$else}
-      {$if not defined(X509_REVOKED_get0_serialNumber_allownil)}
-      X509_REVOKED_get0_serialNumber := @ERR_X509_REVOKED_get0_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get0_serialNumber_removed)}
@@ -15514,39 +13513,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get0_serialNumber)}
       X509_REVOKED_get0_serialNumber := @_X509_REVOKED_get0_serialNumber;
-      {$else}
-      {$if not defined(X509_REVOKED_get0_serialNumber_allownil)}
-      X509_REVOKED_get0_serialNumber := @ERR_X509_REVOKED_get0_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get0_serialNumber_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get0_serialNumber := @ERR_X509_REVOKED_get0_serialNumber;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get0_serialNumber');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REVOKED_set_serialNumber := LoadLibFunction(ADllHandle, X509_REVOKED_set_serialNumber_procname);
-  FuncLoaded := assigned(X509_REVOKED_set_serialNumber);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_set_serialNumber);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_set_serialNumber_allownil)}
+    X509_REVOKED_set_serialNumber := @ERR_X509_REVOKED_set_serialNumber;
+    {$ifend}
     {$if declared(X509_REVOKED_set_serialNumber_introduced)}
     if LibVersion < X509_REVOKED_set_serialNumber_introduced then
     begin
       {$if declared(FC_X509_REVOKED_set_serialNumber)}
       X509_REVOKED_set_serialNumber := @FC_X509_REVOKED_set_serialNumber;
-      {$else}
-      {$if not defined(X509_REVOKED_set_serialNumber_allownil)}
-      X509_REVOKED_set_serialNumber := @ERR_X509_REVOKED_set_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_set_serialNumber_removed)}
@@ -15554,39 +13545,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_set_serialNumber)}
       X509_REVOKED_set_serialNumber := @_X509_REVOKED_set_serialNumber;
-      {$else}
-      {$if not defined(X509_REVOKED_set_serialNumber_allownil)}
-      X509_REVOKED_set_serialNumber := @ERR_X509_REVOKED_set_serialNumber;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_set_serialNumber_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_set_serialNumber := @ERR_X509_REVOKED_set_serialNumber;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_set_serialNumber');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get0_revocationDate := LoadLibFunction(ADllHandle, X509_REVOKED_get0_revocationDate_procname);
-  FuncLoaded := assigned(X509_REVOKED_get0_revocationDate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get0_revocationDate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get0_revocationDate_allownil)}
+    X509_REVOKED_get0_revocationDate := @ERR_X509_REVOKED_get0_revocationDate;
+    {$ifend}
     {$if declared(X509_REVOKED_get0_revocationDate_introduced)}
     if LibVersion < X509_REVOKED_get0_revocationDate_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get0_revocationDate)}
       X509_REVOKED_get0_revocationDate := @FC_X509_REVOKED_get0_revocationDate;
-      {$else}
-      {$if not defined(X509_REVOKED_get0_revocationDate_allownil)}
-      X509_REVOKED_get0_revocationDate := @ERR_X509_REVOKED_get0_revocationDate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get0_revocationDate_removed)}
@@ -15594,39 +13577,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get0_revocationDate)}
       X509_REVOKED_get0_revocationDate := @_X509_REVOKED_get0_revocationDate;
-      {$else}
-      {$if not defined(X509_REVOKED_get0_revocationDate_allownil)}
-      X509_REVOKED_get0_revocationDate := @ERR_X509_REVOKED_get0_revocationDate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get0_revocationDate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get0_revocationDate := @ERR_X509_REVOKED_get0_revocationDate;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get0_revocationDate');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_REVOKED_set_revocationDate := LoadLibFunction(ADllHandle, X509_REVOKED_set_revocationDate_procname);
-  FuncLoaded := assigned(X509_REVOKED_set_revocationDate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_set_revocationDate);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_set_revocationDate_allownil)}
+    X509_REVOKED_set_revocationDate := @ERR_X509_REVOKED_set_revocationDate;
+    {$ifend}
     {$if declared(X509_REVOKED_set_revocationDate_introduced)}
     if LibVersion < X509_REVOKED_set_revocationDate_introduced then
     begin
       {$if declared(FC_X509_REVOKED_set_revocationDate)}
       X509_REVOKED_set_revocationDate := @FC_X509_REVOKED_set_revocationDate;
-      {$else}
-      {$if not defined(X509_REVOKED_set_revocationDate_allownil)}
-      X509_REVOKED_set_revocationDate := @ERR_X509_REVOKED_set_revocationDate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_set_revocationDate_removed)}
@@ -15634,39 +13609,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_set_revocationDate)}
       X509_REVOKED_set_revocationDate := @_X509_REVOKED_set_revocationDate;
-      {$else}
-      {$if not defined(X509_REVOKED_set_revocationDate_allownil)}
-      X509_REVOKED_set_revocationDate := @ERR_X509_REVOKED_set_revocationDate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_set_revocationDate_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_set_revocationDate := @ERR_X509_REVOKED_set_revocationDate;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_set_revocationDate');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_diff := LoadLibFunction(ADllHandle, X509_CRL_diff_procname);
-  FuncLoaded := assigned(X509_CRL_diff);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_diff);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_diff_allownil)}
+    X509_CRL_diff := @ERR_X509_CRL_diff;
+    {$ifend}
     {$if declared(X509_CRL_diff_introduced)}
     if LibVersion < X509_CRL_diff_introduced then
     begin
       {$if declared(FC_X509_CRL_diff)}
       X509_CRL_diff := @FC_X509_CRL_diff;
-      {$else}
-      {$if not defined(X509_CRL_diff_allownil)}
-      X509_CRL_diff := @ERR_X509_CRL_diff;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_diff_removed)}
@@ -15674,39 +13641,31 @@ begin
     begin
       {$if declared(_X509_CRL_diff)}
       X509_CRL_diff := @_X509_CRL_diff;
-      {$else}
-      {$if not defined(X509_CRL_diff_allownil)}
-      X509_CRL_diff := @ERR_X509_CRL_diff;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_diff_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_diff := @ERR_X509_CRL_diff;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_diff');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_check_private_key := LoadLibFunction(ADllHandle, X509_REQ_check_private_key_procname);
-  FuncLoaded := assigned(X509_REQ_check_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_check_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_check_private_key_allownil)}
+    X509_REQ_check_private_key := @ERR_X509_REQ_check_private_key;
+    {$ifend}
     {$if declared(X509_REQ_check_private_key_introduced)}
     if LibVersion < X509_REQ_check_private_key_introduced then
     begin
       {$if declared(FC_X509_REQ_check_private_key)}
       X509_REQ_check_private_key := @FC_X509_REQ_check_private_key;
-      {$else}
-      {$if not defined(X509_REQ_check_private_key_allownil)}
-      X509_REQ_check_private_key := @ERR_X509_REQ_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_check_private_key_removed)}
@@ -15714,39 +13673,31 @@ begin
     begin
       {$if declared(_X509_REQ_check_private_key)}
       X509_REQ_check_private_key := @_X509_REQ_check_private_key;
-      {$else}
-      {$if not defined(X509_REQ_check_private_key_allownil)}
-      X509_REQ_check_private_key := @ERR_X509_REQ_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_check_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_check_private_key := @ERR_X509_REQ_check_private_key;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_check_private_key');
-    end;
     {$ifend}
   end;
 
 
   X509_check_private_key := LoadLibFunction(ADllHandle, X509_check_private_key_procname);
-  FuncLoaded := assigned(X509_check_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_check_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_check_private_key_allownil)}
+    X509_check_private_key := @ERR_X509_check_private_key;
+    {$ifend}
     {$if declared(X509_check_private_key_introduced)}
     if LibVersion < X509_check_private_key_introduced then
     begin
       {$if declared(FC_X509_check_private_key)}
       X509_check_private_key := @FC_X509_check_private_key;
-      {$else}
-      {$if not defined(X509_check_private_key_allownil)}
-      X509_check_private_key := @ERR_X509_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_check_private_key_removed)}
@@ -15754,39 +13705,31 @@ begin
     begin
       {$if declared(_X509_check_private_key)}
       X509_check_private_key := @_X509_check_private_key;
-      {$else}
-      {$if not defined(X509_check_private_key_allownil)}
-      X509_check_private_key := @ERR_X509_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_check_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_check_private_key := @ERR_X509_check_private_key;
+    if FuncLoadError then
       AFailed.Add('X509_check_private_key');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_check_suiteb := LoadLibFunction(ADllHandle, X509_CRL_check_suiteb_procname);
-  FuncLoaded := assigned(X509_CRL_check_suiteb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_check_suiteb);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_check_suiteb_allownil)}
+    X509_CRL_check_suiteb := @ERR_X509_CRL_check_suiteb;
+    {$ifend}
     {$if declared(X509_CRL_check_suiteb_introduced)}
     if LibVersion < X509_CRL_check_suiteb_introduced then
     begin
       {$if declared(FC_X509_CRL_check_suiteb)}
       X509_CRL_check_suiteb := @FC_X509_CRL_check_suiteb;
-      {$else}
-      {$if not defined(X509_CRL_check_suiteb_allownil)}
-      X509_CRL_check_suiteb := @ERR_X509_CRL_check_suiteb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_check_suiteb_removed)}
@@ -15794,39 +13737,31 @@ begin
     begin
       {$if declared(_X509_CRL_check_suiteb)}
       X509_CRL_check_suiteb := @_X509_CRL_check_suiteb;
-      {$else}
-      {$if not defined(X509_CRL_check_suiteb_allownil)}
-      X509_CRL_check_suiteb := @ERR_X509_CRL_check_suiteb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_check_suiteb_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_check_suiteb := @ERR_X509_CRL_check_suiteb;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_check_suiteb');
-    end;
     {$ifend}
   end;
 
 
   X509_issuer_and_serial_cmp := LoadLibFunction(ADllHandle, X509_issuer_and_serial_cmp_procname);
-  FuncLoaded := assigned(X509_issuer_and_serial_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_issuer_and_serial_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_issuer_and_serial_cmp_allownil)}
+    X509_issuer_and_serial_cmp := @ERR_X509_issuer_and_serial_cmp;
+    {$ifend}
     {$if declared(X509_issuer_and_serial_cmp_introduced)}
     if LibVersion < X509_issuer_and_serial_cmp_introduced then
     begin
       {$if declared(FC_X509_issuer_and_serial_cmp)}
       X509_issuer_and_serial_cmp := @FC_X509_issuer_and_serial_cmp;
-      {$else}
-      {$if not defined(X509_issuer_and_serial_cmp_allownil)}
-      X509_issuer_and_serial_cmp := @ERR_X509_issuer_and_serial_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_issuer_and_serial_cmp_removed)}
@@ -15834,39 +13769,31 @@ begin
     begin
       {$if declared(_X509_issuer_and_serial_cmp)}
       X509_issuer_and_serial_cmp := @_X509_issuer_and_serial_cmp;
-      {$else}
-      {$if not defined(X509_issuer_and_serial_cmp_allownil)}
-      X509_issuer_and_serial_cmp := @ERR_X509_issuer_and_serial_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_issuer_and_serial_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_issuer_and_serial_cmp := @ERR_X509_issuer_and_serial_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_issuer_and_serial_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_issuer_and_serial_hash := LoadLibFunction(ADllHandle, X509_issuer_and_serial_hash_procname);
-  FuncLoaded := assigned(X509_issuer_and_serial_hash);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_issuer_and_serial_hash);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_issuer_and_serial_hash_allownil)}
+    X509_issuer_and_serial_hash := @ERR_X509_issuer_and_serial_hash;
+    {$ifend}
     {$if declared(X509_issuer_and_serial_hash_introduced)}
     if LibVersion < X509_issuer_and_serial_hash_introduced then
     begin
       {$if declared(FC_X509_issuer_and_serial_hash)}
       X509_issuer_and_serial_hash := @FC_X509_issuer_and_serial_hash;
-      {$else}
-      {$if not defined(X509_issuer_and_serial_hash_allownil)}
-      X509_issuer_and_serial_hash := @ERR_X509_issuer_and_serial_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_issuer_and_serial_hash_removed)}
@@ -15874,39 +13801,31 @@ begin
     begin
       {$if declared(_X509_issuer_and_serial_hash)}
       X509_issuer_and_serial_hash := @_X509_issuer_and_serial_hash;
-      {$else}
-      {$if not defined(X509_issuer_and_serial_hash_allownil)}
-      X509_issuer_and_serial_hash := @ERR_X509_issuer_and_serial_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_issuer_and_serial_hash_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_issuer_and_serial_hash := @ERR_X509_issuer_and_serial_hash;
+    if FuncLoadError then
       AFailed.Add('X509_issuer_and_serial_hash');
-    end;
     {$ifend}
   end;
 
 
   X509_issuer_name_cmp := LoadLibFunction(ADllHandle, X509_issuer_name_cmp_procname);
-  FuncLoaded := assigned(X509_issuer_name_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_issuer_name_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_issuer_name_cmp_allownil)}
+    X509_issuer_name_cmp := @ERR_X509_issuer_name_cmp;
+    {$ifend}
     {$if declared(X509_issuer_name_cmp_introduced)}
     if LibVersion < X509_issuer_name_cmp_introduced then
     begin
       {$if declared(FC_X509_issuer_name_cmp)}
       X509_issuer_name_cmp := @FC_X509_issuer_name_cmp;
-      {$else}
-      {$if not defined(X509_issuer_name_cmp_allownil)}
-      X509_issuer_name_cmp := @ERR_X509_issuer_name_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_issuer_name_cmp_removed)}
@@ -15914,39 +13833,31 @@ begin
     begin
       {$if declared(_X509_issuer_name_cmp)}
       X509_issuer_name_cmp := @_X509_issuer_name_cmp;
-      {$else}
-      {$if not defined(X509_issuer_name_cmp_allownil)}
-      X509_issuer_name_cmp := @ERR_X509_issuer_name_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_issuer_name_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_issuer_name_cmp := @ERR_X509_issuer_name_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_issuer_name_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_issuer_name_hash := LoadLibFunction(ADllHandle, X509_issuer_name_hash_procname);
-  FuncLoaded := assigned(X509_issuer_name_hash);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_issuer_name_hash);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_issuer_name_hash_allownil)}
+    X509_issuer_name_hash := @ERR_X509_issuer_name_hash;
+    {$ifend}
     {$if declared(X509_issuer_name_hash_introduced)}
     if LibVersion < X509_issuer_name_hash_introduced then
     begin
       {$if declared(FC_X509_issuer_name_hash)}
       X509_issuer_name_hash := @FC_X509_issuer_name_hash;
-      {$else}
-      {$if not defined(X509_issuer_name_hash_allownil)}
-      X509_issuer_name_hash := @ERR_X509_issuer_name_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_issuer_name_hash_removed)}
@@ -15954,39 +13865,31 @@ begin
     begin
       {$if declared(_X509_issuer_name_hash)}
       X509_issuer_name_hash := @_X509_issuer_name_hash;
-      {$else}
-      {$if not defined(X509_issuer_name_hash_allownil)}
-      X509_issuer_name_hash := @ERR_X509_issuer_name_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_issuer_name_hash_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_issuer_name_hash := @ERR_X509_issuer_name_hash;
+    if FuncLoadError then
       AFailed.Add('X509_issuer_name_hash');
-    end;
     {$ifend}
   end;
 
 
   X509_subject_name_cmp := LoadLibFunction(ADllHandle, X509_subject_name_cmp_procname);
-  FuncLoaded := assigned(X509_subject_name_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_subject_name_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_subject_name_cmp_allownil)}
+    X509_subject_name_cmp := @ERR_X509_subject_name_cmp;
+    {$ifend}
     {$if declared(X509_subject_name_cmp_introduced)}
     if LibVersion < X509_subject_name_cmp_introduced then
     begin
       {$if declared(FC_X509_subject_name_cmp)}
       X509_subject_name_cmp := @FC_X509_subject_name_cmp;
-      {$else}
-      {$if not defined(X509_subject_name_cmp_allownil)}
-      X509_subject_name_cmp := @ERR_X509_subject_name_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_subject_name_cmp_removed)}
@@ -15994,39 +13897,31 @@ begin
     begin
       {$if declared(_X509_subject_name_cmp)}
       X509_subject_name_cmp := @_X509_subject_name_cmp;
-      {$else}
-      {$if not defined(X509_subject_name_cmp_allownil)}
-      X509_subject_name_cmp := @ERR_X509_subject_name_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_subject_name_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_subject_name_cmp := @ERR_X509_subject_name_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_subject_name_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_subject_name_hash := LoadLibFunction(ADllHandle, X509_subject_name_hash_procname);
-  FuncLoaded := assigned(X509_subject_name_hash);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_subject_name_hash);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_subject_name_hash_allownil)}
+    X509_subject_name_hash := @ERR_X509_subject_name_hash;
+    {$ifend}
     {$if declared(X509_subject_name_hash_introduced)}
     if LibVersion < X509_subject_name_hash_introduced then
     begin
       {$if declared(FC_X509_subject_name_hash)}
       X509_subject_name_hash := @FC_X509_subject_name_hash;
-      {$else}
-      {$if not defined(X509_subject_name_hash_allownil)}
-      X509_subject_name_hash := @ERR_X509_subject_name_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_subject_name_hash_removed)}
@@ -16034,39 +13929,31 @@ begin
     begin
       {$if declared(_X509_subject_name_hash)}
       X509_subject_name_hash := @_X509_subject_name_hash;
-      {$else}
-      {$if not defined(X509_subject_name_hash_allownil)}
-      X509_subject_name_hash := @ERR_X509_subject_name_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_subject_name_hash_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_subject_name_hash := @ERR_X509_subject_name_hash;
+    if FuncLoadError then
       AFailed.Add('X509_subject_name_hash');
-    end;
     {$ifend}
   end;
 
 
   X509_cmp := LoadLibFunction(ADllHandle, X509_cmp_procname);
-  FuncLoaded := assigned(X509_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_cmp_allownil)}
+    X509_cmp := @ERR_X509_cmp;
+    {$ifend}
     {$if declared(X509_cmp_introduced)}
     if LibVersion < X509_cmp_introduced then
     begin
       {$if declared(FC_X509_cmp)}
       X509_cmp := @FC_X509_cmp;
-      {$else}
-      {$if not defined(X509_cmp_allownil)}
-      X509_cmp := @ERR_X509_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_cmp_removed)}
@@ -16074,39 +13961,31 @@ begin
     begin
       {$if declared(_X509_cmp)}
       X509_cmp := @_X509_cmp;
-      {$else}
-      {$if not defined(X509_cmp_allownil)}
-      X509_cmp := @ERR_X509_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_cmp := @ERR_X509_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_cmp := LoadLibFunction(ADllHandle, X509_NAME_cmp_procname);
-  FuncLoaded := assigned(X509_NAME_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_cmp_allownil)}
+    X509_NAME_cmp := @ERR_X509_NAME_cmp;
+    {$ifend}
     {$if declared(X509_NAME_cmp_introduced)}
     if LibVersion < X509_NAME_cmp_introduced then
     begin
       {$if declared(FC_X509_NAME_cmp)}
       X509_NAME_cmp := @FC_X509_NAME_cmp;
-      {$else}
-      {$if not defined(X509_NAME_cmp_allownil)}
-      X509_NAME_cmp := @ERR_X509_NAME_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_cmp_removed)}
@@ -16114,39 +13993,31 @@ begin
     begin
       {$if declared(_X509_NAME_cmp)}
       X509_NAME_cmp := @_X509_NAME_cmp;
-      {$else}
-      {$if not defined(X509_NAME_cmp_allownil)}
-      X509_NAME_cmp := @ERR_X509_NAME_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_cmp := @ERR_X509_NAME_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_hash := LoadLibFunction(ADllHandle, X509_NAME_hash_procname);
-  FuncLoaded := assigned(X509_NAME_hash);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_hash);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_hash_allownil)}
+    X509_NAME_hash := @ERR_X509_NAME_hash;
+    {$ifend}
     {$if declared(X509_NAME_hash_introduced)}
     if LibVersion < X509_NAME_hash_introduced then
     begin
       {$if declared(FC_X509_NAME_hash)}
       X509_NAME_hash := @FC_X509_NAME_hash;
-      {$else}
-      {$if not defined(X509_NAME_hash_allownil)}
-      X509_NAME_hash := @ERR_X509_NAME_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_hash_removed)}
@@ -16154,39 +14025,31 @@ begin
     begin
       {$if declared(_X509_NAME_hash)}
       X509_NAME_hash := @_X509_NAME_hash;
-      {$else}
-      {$if not defined(X509_NAME_hash_allownil)}
-      X509_NAME_hash := @ERR_X509_NAME_hash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_hash_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_hash := @ERR_X509_NAME_hash;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_hash');
-    end;
     {$ifend}
   end;
 
  
   X509_NAME_hash_old := LoadLibFunction(ADllHandle, X509_NAME_hash_old_procname);
-  FuncLoaded := assigned(X509_NAME_hash_old);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_hash_old);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_hash_old_allownil)}
+    X509_NAME_hash_old := @ERR_X509_NAME_hash_old;
+    {$ifend}
     {$if declared(X509_NAME_hash_old_introduced)}
     if LibVersion < X509_NAME_hash_old_introduced then
     begin
       {$if declared(FC_X509_NAME_hash_old)}
       X509_NAME_hash_old := @FC_X509_NAME_hash_old;
-      {$else}
-      {$if not defined(X509_NAME_hash_old_allownil)}
-      X509_NAME_hash_old := @ERR_X509_NAME_hash_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_hash_old_removed)}
@@ -16194,39 +14057,31 @@ begin
     begin
       {$if declared(_X509_NAME_hash_old)}
       X509_NAME_hash_old := @_X509_NAME_hash_old;
-      {$else}
-      {$if not defined(X509_NAME_hash_old_allownil)}
-      X509_NAME_hash_old := @ERR_X509_NAME_hash_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_hash_old_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_hash_old := @ERR_X509_NAME_hash_old;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_hash_old');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_cmp := LoadLibFunction(ADllHandle, X509_CRL_cmp_procname);
-  FuncLoaded := assigned(X509_CRL_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_cmp_allownil)}
+    X509_CRL_cmp := @ERR_X509_CRL_cmp;
+    {$ifend}
     {$if declared(X509_CRL_cmp_introduced)}
     if LibVersion < X509_CRL_cmp_introduced then
     begin
       {$if declared(FC_X509_CRL_cmp)}
       X509_CRL_cmp := @FC_X509_CRL_cmp;
-      {$else}
-      {$if not defined(X509_CRL_cmp_allownil)}
-      X509_CRL_cmp := @ERR_X509_CRL_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_cmp_removed)}
@@ -16234,39 +14089,31 @@ begin
     begin
       {$if declared(_X509_CRL_cmp)}
       X509_CRL_cmp := @_X509_CRL_cmp;
-      {$else}
-      {$if not defined(X509_CRL_cmp_allownil)}
-      X509_CRL_cmp := @ERR_X509_CRL_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_cmp := @ERR_X509_CRL_cmp;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_cmp');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_match := LoadLibFunction(ADllHandle, X509_CRL_match_procname);
-  FuncLoaded := assigned(X509_CRL_match);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_match);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_match_allownil)}
+    X509_CRL_match := @ERR_X509_CRL_match;
+    {$ifend}
     {$if declared(X509_CRL_match_introduced)}
     if LibVersion < X509_CRL_match_introduced then
     begin
       {$if declared(FC_X509_CRL_match)}
       X509_CRL_match := @FC_X509_CRL_match;
-      {$else}
-      {$if not defined(X509_CRL_match_allownil)}
-      X509_CRL_match := @ERR_X509_CRL_match;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_match_removed)}
@@ -16274,39 +14121,31 @@ begin
     begin
       {$if declared(_X509_CRL_match)}
       X509_CRL_match := @_X509_CRL_match;
-      {$else}
-      {$if not defined(X509_CRL_match_allownil)}
-      X509_CRL_match := @ERR_X509_CRL_match;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_match_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_match := @ERR_X509_CRL_match;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_match');
-    end;
     {$ifend}
   end;
 
 
   X509_aux_print := LoadLibFunction(ADllHandle, X509_aux_print_procname);
-  FuncLoaded := assigned(X509_aux_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_aux_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_aux_print_allownil)}
+    X509_aux_print := @ERR_X509_aux_print;
+    {$ifend}
     {$if declared(X509_aux_print_introduced)}
     if LibVersion < X509_aux_print_introduced then
     begin
       {$if declared(FC_X509_aux_print)}
       X509_aux_print := @FC_X509_aux_print;
-      {$else}
-      {$if not defined(X509_aux_print_allownil)}
-      X509_aux_print := @ERR_X509_aux_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_aux_print_removed)}
@@ -16314,39 +14153,31 @@ begin
     begin
       {$if declared(_X509_aux_print)}
       X509_aux_print := @_X509_aux_print;
-      {$else}
-      {$if not defined(X509_aux_print_allownil)}
-      X509_aux_print := @ERR_X509_aux_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_aux_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_aux_print := @ERR_X509_aux_print;
+    if FuncLoadError then
       AFailed.Add('X509_aux_print');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_NAME_print := LoadLibFunction(ADllHandle, X509_NAME_print_procname);
-  FuncLoaded := assigned(X509_NAME_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_print_allownil)}
+    X509_NAME_print := @ERR_X509_NAME_print;
+    {$ifend}
     {$if declared(X509_NAME_print_introduced)}
     if LibVersion < X509_NAME_print_introduced then
     begin
       {$if declared(FC_X509_NAME_print)}
       X509_NAME_print := @FC_X509_NAME_print;
-      {$else}
-      {$if not defined(X509_NAME_print_allownil)}
-      X509_NAME_print := @ERR_X509_NAME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_print_removed)}
@@ -16354,39 +14185,31 @@ begin
     begin
       {$if declared(_X509_NAME_print)}
       X509_NAME_print := @_X509_NAME_print;
-      {$else}
-      {$if not defined(X509_NAME_print_allownil)}
-      X509_NAME_print := @ERR_X509_NAME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_print := @ERR_X509_NAME_print;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_print');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_print_ex := LoadLibFunction(ADllHandle, X509_NAME_print_ex_procname);
-  FuncLoaded := assigned(X509_NAME_print_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_print_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_print_ex_allownil)}
+    X509_NAME_print_ex := @ERR_X509_NAME_print_ex;
+    {$ifend}
     {$if declared(X509_NAME_print_ex_introduced)}
     if LibVersion < X509_NAME_print_ex_introduced then
     begin
       {$if declared(FC_X509_NAME_print_ex)}
       X509_NAME_print_ex := @FC_X509_NAME_print_ex;
-      {$else}
-      {$if not defined(X509_NAME_print_ex_allownil)}
-      X509_NAME_print_ex := @ERR_X509_NAME_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_print_ex_removed)}
@@ -16394,39 +14217,31 @@ begin
     begin
       {$if declared(_X509_NAME_print_ex)}
       X509_NAME_print_ex := @_X509_NAME_print_ex;
-      {$else}
-      {$if not defined(X509_NAME_print_ex_allownil)}
-      X509_NAME_print_ex := @ERR_X509_NAME_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_print_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_print_ex := @ERR_X509_NAME_print_ex;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_print_ex');
-    end;
     {$ifend}
   end;
 
 
   X509_print_ex := LoadLibFunction(ADllHandle, X509_print_ex_procname);
-  FuncLoaded := assigned(X509_print_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_print_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_print_ex_allownil)}
+    X509_print_ex := @ERR_X509_print_ex;
+    {$ifend}
     {$if declared(X509_print_ex_introduced)}
     if LibVersion < X509_print_ex_introduced then
     begin
       {$if declared(FC_X509_print_ex)}
       X509_print_ex := @FC_X509_print_ex;
-      {$else}
-      {$if not defined(X509_print_ex_allownil)}
-      X509_print_ex := @ERR_X509_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_print_ex_removed)}
@@ -16434,39 +14249,31 @@ begin
     begin
       {$if declared(_X509_print_ex)}
       X509_print_ex := @_X509_print_ex;
-      {$else}
-      {$if not defined(X509_print_ex_allownil)}
-      X509_print_ex := @ERR_X509_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_print_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_print_ex := @ERR_X509_print_ex;
+    if FuncLoadError then
       AFailed.Add('X509_print_ex');
-    end;
     {$ifend}
   end;
 
 
   X509_print := LoadLibFunction(ADllHandle, X509_print_procname);
-  FuncLoaded := assigned(X509_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_print_allownil)}
+    X509_print := @ERR_X509_print;
+    {$ifend}
     {$if declared(X509_print_introduced)}
     if LibVersion < X509_print_introduced then
     begin
       {$if declared(FC_X509_print)}
       X509_print := @FC_X509_print;
-      {$else}
-      {$if not defined(X509_print_allownil)}
-      X509_print := @ERR_X509_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_print_removed)}
@@ -16474,39 +14281,31 @@ begin
     begin
       {$if declared(_X509_print)}
       X509_print := @_X509_print;
-      {$else}
-      {$if not defined(X509_print_allownil)}
-      X509_print := @ERR_X509_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_print := @ERR_X509_print;
+    if FuncLoadError then
       AFailed.Add('X509_print');
-    end;
     {$ifend}
   end;
 
 
   X509_ocspid_print := LoadLibFunction(ADllHandle, X509_ocspid_print_procname);
-  FuncLoaded := assigned(X509_ocspid_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ocspid_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ocspid_print_allownil)}
+    X509_ocspid_print := @ERR_X509_ocspid_print;
+    {$ifend}
     {$if declared(X509_ocspid_print_introduced)}
     if LibVersion < X509_ocspid_print_introduced then
     begin
       {$if declared(FC_X509_ocspid_print)}
       X509_ocspid_print := @FC_X509_ocspid_print;
-      {$else}
-      {$if not defined(X509_ocspid_print_allownil)}
-      X509_ocspid_print := @ERR_X509_ocspid_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ocspid_print_removed)}
@@ -16514,39 +14313,31 @@ begin
     begin
       {$if declared(_X509_ocspid_print)}
       X509_ocspid_print := @_X509_ocspid_print;
-      {$else}
-      {$if not defined(X509_ocspid_print_allownil)}
-      X509_ocspid_print := @ERR_X509_ocspid_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ocspid_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ocspid_print := @ERR_X509_ocspid_print;
+    if FuncLoadError then
       AFailed.Add('X509_ocspid_print');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_print_ex := LoadLibFunction(ADllHandle, X509_CRL_print_ex_procname);
-  FuncLoaded := assigned(X509_CRL_print_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_print_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_print_ex_allownil)}
+    X509_CRL_print_ex := @ERR_X509_CRL_print_ex;
+    {$ifend}
     {$if declared(X509_CRL_print_ex_introduced)}
     if LibVersion < X509_CRL_print_ex_introduced then
     begin
       {$if declared(FC_X509_CRL_print_ex)}
       X509_CRL_print_ex := @FC_X509_CRL_print_ex;
-      {$else}
-      {$if not defined(X509_CRL_print_ex_allownil)}
-      X509_CRL_print_ex := @ERR_X509_CRL_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_print_ex_removed)}
@@ -16554,39 +14345,31 @@ begin
     begin
       {$if declared(_X509_CRL_print_ex)}
       X509_CRL_print_ex := @_X509_CRL_print_ex;
-      {$else}
-      {$if not defined(X509_CRL_print_ex_allownil)}
-      X509_CRL_print_ex := @ERR_X509_CRL_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_print_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_print_ex := @ERR_X509_CRL_print_ex;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_print_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_CRL_print := LoadLibFunction(ADllHandle, X509_CRL_print_procname);
-  FuncLoaded := assigned(X509_CRL_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_print_allownil)}
+    X509_CRL_print := @ERR_X509_CRL_print;
+    {$ifend}
     {$if declared(X509_CRL_print_introduced)}
     if LibVersion < X509_CRL_print_introduced then
     begin
       {$if declared(FC_X509_CRL_print)}
       X509_CRL_print := @FC_X509_CRL_print;
-      {$else}
-      {$if not defined(X509_CRL_print_allownil)}
-      X509_CRL_print := @ERR_X509_CRL_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_print_removed)}
@@ -16594,39 +14377,31 @@ begin
     begin
       {$if declared(_X509_CRL_print)}
       X509_CRL_print := @_X509_CRL_print;
-      {$else}
-      {$if not defined(X509_CRL_print_allownil)}
-      X509_CRL_print := @ERR_X509_CRL_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_print := @ERR_X509_CRL_print;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_print');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_print_ex := LoadLibFunction(ADllHandle, X509_REQ_print_ex_procname);
-  FuncLoaded := assigned(X509_REQ_print_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_print_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_print_ex_allownil)}
+    X509_REQ_print_ex := @ERR_X509_REQ_print_ex;
+    {$ifend}
     {$if declared(X509_REQ_print_ex_introduced)}
     if LibVersion < X509_REQ_print_ex_introduced then
     begin
       {$if declared(FC_X509_REQ_print_ex)}
       X509_REQ_print_ex := @FC_X509_REQ_print_ex;
-      {$else}
-      {$if not defined(X509_REQ_print_ex_allownil)}
-      X509_REQ_print_ex := @ERR_X509_REQ_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_print_ex_removed)}
@@ -16634,39 +14409,31 @@ begin
     begin
       {$if declared(_X509_REQ_print_ex)}
       X509_REQ_print_ex := @_X509_REQ_print_ex;
-      {$else}
-      {$if not defined(X509_REQ_print_ex_allownil)}
-      X509_REQ_print_ex := @ERR_X509_REQ_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_print_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_print_ex := @ERR_X509_REQ_print_ex;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_print_ex');
-    end;
     {$ifend}
   end;
 
 
   X509_REQ_print := LoadLibFunction(ADllHandle, X509_REQ_print_procname);
-  FuncLoaded := assigned(X509_REQ_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REQ_print);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REQ_print_allownil)}
+    X509_REQ_print := @ERR_X509_REQ_print;
+    {$ifend}
     {$if declared(X509_REQ_print_introduced)}
     if LibVersion < X509_REQ_print_introduced then
     begin
       {$if declared(FC_X509_REQ_print)}
       X509_REQ_print := @FC_X509_REQ_print;
-      {$else}
-      {$if not defined(X509_REQ_print_allownil)}
-      X509_REQ_print := @ERR_X509_REQ_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REQ_print_removed)}
@@ -16674,39 +14441,31 @@ begin
     begin
       {$if declared(_X509_REQ_print)}
       X509_REQ_print := @_X509_REQ_print;
-      {$else}
-      {$if not defined(X509_REQ_print_allownil)}
-      X509_REQ_print := @ERR_X509_REQ_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REQ_print_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REQ_print := @ERR_X509_REQ_print;
+    if FuncLoadError then
       AFailed.Add('X509_REQ_print');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_entry_count := LoadLibFunction(ADllHandle, X509_NAME_entry_count_procname);
-  FuncLoaded := assigned(X509_NAME_entry_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_entry_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_entry_count_allownil)}
+    X509_NAME_entry_count := @ERR_X509_NAME_entry_count;
+    {$ifend}
     {$if declared(X509_NAME_entry_count_introduced)}
     if LibVersion < X509_NAME_entry_count_introduced then
     begin
       {$if declared(FC_X509_NAME_entry_count)}
       X509_NAME_entry_count := @FC_X509_NAME_entry_count;
-      {$else}
-      {$if not defined(X509_NAME_entry_count_allownil)}
-      X509_NAME_entry_count := @ERR_X509_NAME_entry_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_entry_count_removed)}
@@ -16714,39 +14473,31 @@ begin
     begin
       {$if declared(_X509_NAME_entry_count)}
       X509_NAME_entry_count := @_X509_NAME_entry_count;
-      {$else}
-      {$if not defined(X509_NAME_entry_count_allownil)}
-      X509_NAME_entry_count := @ERR_X509_NAME_entry_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_entry_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_entry_count := @ERR_X509_NAME_entry_count;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_entry_count');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_get_text_by_NID := LoadLibFunction(ADllHandle, X509_NAME_get_text_by_NID_procname);
-  FuncLoaded := assigned(X509_NAME_get_text_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get_text_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get_text_by_NID_allownil)}
+    X509_NAME_get_text_by_NID := @ERR_X509_NAME_get_text_by_NID;
+    {$ifend}
     {$if declared(X509_NAME_get_text_by_NID_introduced)}
     if LibVersion < X509_NAME_get_text_by_NID_introduced then
     begin
       {$if declared(FC_X509_NAME_get_text_by_NID)}
       X509_NAME_get_text_by_NID := @FC_X509_NAME_get_text_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_get_text_by_NID_allownil)}
-      X509_NAME_get_text_by_NID := @ERR_X509_NAME_get_text_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get_text_by_NID_removed)}
@@ -16754,39 +14505,31 @@ begin
     begin
       {$if declared(_X509_NAME_get_text_by_NID)}
       X509_NAME_get_text_by_NID := @_X509_NAME_get_text_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_get_text_by_NID_allownil)}
-      X509_NAME_get_text_by_NID := @ERR_X509_NAME_get_text_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get_text_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get_text_by_NID := @ERR_X509_NAME_get_text_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get_text_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_get_text_by_OBJ := LoadLibFunction(ADllHandle, X509_NAME_get_text_by_OBJ_procname);
-  FuncLoaded := assigned(X509_NAME_get_text_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get_text_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get_text_by_OBJ_allownil)}
+    X509_NAME_get_text_by_OBJ := @ERR_X509_NAME_get_text_by_OBJ;
+    {$ifend}
     {$if declared(X509_NAME_get_text_by_OBJ_introduced)}
     if LibVersion < X509_NAME_get_text_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_NAME_get_text_by_OBJ)}
       X509_NAME_get_text_by_OBJ := @FC_X509_NAME_get_text_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_get_text_by_OBJ_allownil)}
-      X509_NAME_get_text_by_OBJ := @ERR_X509_NAME_get_text_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get_text_by_OBJ_removed)}
@@ -16794,39 +14537,31 @@ begin
     begin
       {$if declared(_X509_NAME_get_text_by_OBJ)}
       X509_NAME_get_text_by_OBJ := @_X509_NAME_get_text_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_get_text_by_OBJ_allownil)}
-      X509_NAME_get_text_by_OBJ := @ERR_X509_NAME_get_text_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get_text_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get_text_by_OBJ := @ERR_X509_NAME_get_text_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get_text_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_get_index_by_NID := LoadLibFunction(ADllHandle, X509_NAME_get_index_by_NID_procname);
-  FuncLoaded := assigned(X509_NAME_get_index_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get_index_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get_index_by_NID_allownil)}
+    X509_NAME_get_index_by_NID := @ERR_X509_NAME_get_index_by_NID;
+    {$ifend}
     {$if declared(X509_NAME_get_index_by_NID_introduced)}
     if LibVersion < X509_NAME_get_index_by_NID_introduced then
     begin
       {$if declared(FC_X509_NAME_get_index_by_NID)}
       X509_NAME_get_index_by_NID := @FC_X509_NAME_get_index_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_get_index_by_NID_allownil)}
-      X509_NAME_get_index_by_NID := @ERR_X509_NAME_get_index_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get_index_by_NID_removed)}
@@ -16834,39 +14569,31 @@ begin
     begin
       {$if declared(_X509_NAME_get_index_by_NID)}
       X509_NAME_get_index_by_NID := @_X509_NAME_get_index_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_get_index_by_NID_allownil)}
-      X509_NAME_get_index_by_NID := @ERR_X509_NAME_get_index_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get_index_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get_index_by_NID := @ERR_X509_NAME_get_index_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get_index_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_get_index_by_OBJ := LoadLibFunction(ADllHandle, X509_NAME_get_index_by_OBJ_procname);
-  FuncLoaded := assigned(X509_NAME_get_index_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get_index_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get_index_by_OBJ_allownil)}
+    X509_NAME_get_index_by_OBJ := @ERR_X509_NAME_get_index_by_OBJ;
+    {$ifend}
     {$if declared(X509_NAME_get_index_by_OBJ_introduced)}
     if LibVersion < X509_NAME_get_index_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_NAME_get_index_by_OBJ)}
       X509_NAME_get_index_by_OBJ := @FC_X509_NAME_get_index_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_get_index_by_OBJ_allownil)}
-      X509_NAME_get_index_by_OBJ := @ERR_X509_NAME_get_index_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get_index_by_OBJ_removed)}
@@ -16874,39 +14601,31 @@ begin
     begin
       {$if declared(_X509_NAME_get_index_by_OBJ)}
       X509_NAME_get_index_by_OBJ := @_X509_NAME_get_index_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_get_index_by_OBJ_allownil)}
-      X509_NAME_get_index_by_OBJ := @ERR_X509_NAME_get_index_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get_index_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get_index_by_OBJ := @ERR_X509_NAME_get_index_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get_index_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_get_entry := LoadLibFunction(ADllHandle, X509_NAME_get_entry_procname);
-  FuncLoaded := assigned(X509_NAME_get_entry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get_entry);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get_entry_allownil)}
+    X509_NAME_get_entry := @ERR_X509_NAME_get_entry;
+    {$ifend}
     {$if declared(X509_NAME_get_entry_introduced)}
     if LibVersion < X509_NAME_get_entry_introduced then
     begin
       {$if declared(FC_X509_NAME_get_entry)}
       X509_NAME_get_entry := @FC_X509_NAME_get_entry;
-      {$else}
-      {$if not defined(X509_NAME_get_entry_allownil)}
-      X509_NAME_get_entry := @ERR_X509_NAME_get_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get_entry_removed)}
@@ -16914,39 +14633,31 @@ begin
     begin
       {$if declared(_X509_NAME_get_entry)}
       X509_NAME_get_entry := @_X509_NAME_get_entry;
-      {$else}
-      {$if not defined(X509_NAME_get_entry_allownil)}
-      X509_NAME_get_entry := @ERR_X509_NAME_get_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get_entry_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get_entry := @ERR_X509_NAME_get_entry;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get_entry');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_delete_entry := LoadLibFunction(ADllHandle, X509_NAME_delete_entry_procname);
-  FuncLoaded := assigned(X509_NAME_delete_entry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_delete_entry);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_delete_entry_allownil)}
+    X509_NAME_delete_entry := @ERR_X509_NAME_delete_entry;
+    {$ifend}
     {$if declared(X509_NAME_delete_entry_introduced)}
     if LibVersion < X509_NAME_delete_entry_introduced then
     begin
       {$if declared(FC_X509_NAME_delete_entry)}
       X509_NAME_delete_entry := @FC_X509_NAME_delete_entry;
-      {$else}
-      {$if not defined(X509_NAME_delete_entry_allownil)}
-      X509_NAME_delete_entry := @ERR_X509_NAME_delete_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_delete_entry_removed)}
@@ -16954,39 +14665,31 @@ begin
     begin
       {$if declared(_X509_NAME_delete_entry)}
       X509_NAME_delete_entry := @_X509_NAME_delete_entry;
-      {$else}
-      {$if not defined(X509_NAME_delete_entry_allownil)}
-      X509_NAME_delete_entry := @ERR_X509_NAME_delete_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_delete_entry_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_delete_entry := @ERR_X509_NAME_delete_entry;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_delete_entry');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_add_entry := LoadLibFunction(ADllHandle, X509_NAME_add_entry_procname);
-  FuncLoaded := assigned(X509_NAME_add_entry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_add_entry);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_add_entry_allownil)}
+    X509_NAME_add_entry := @ERR_X509_NAME_add_entry;
+    {$ifend}
     {$if declared(X509_NAME_add_entry_introduced)}
     if LibVersion < X509_NAME_add_entry_introduced then
     begin
       {$if declared(FC_X509_NAME_add_entry)}
       X509_NAME_add_entry := @FC_X509_NAME_add_entry;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_allownil)}
-      X509_NAME_add_entry := @ERR_X509_NAME_add_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_add_entry_removed)}
@@ -16994,39 +14697,31 @@ begin
     begin
       {$if declared(_X509_NAME_add_entry)}
       X509_NAME_add_entry := @_X509_NAME_add_entry;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_allownil)}
-      X509_NAME_add_entry := @ERR_X509_NAME_add_entry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_add_entry_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_add_entry := @ERR_X509_NAME_add_entry;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_add_entry');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_add_entry_by_OBJ := LoadLibFunction(ADllHandle, X509_NAME_add_entry_by_OBJ_procname);
-  FuncLoaded := assigned(X509_NAME_add_entry_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_add_entry_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_add_entry_by_OBJ_allownil)}
+    X509_NAME_add_entry_by_OBJ := @ERR_X509_NAME_add_entry_by_OBJ;
+    {$ifend}
     {$if declared(X509_NAME_add_entry_by_OBJ_introduced)}
     if LibVersion < X509_NAME_add_entry_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_NAME_add_entry_by_OBJ)}
       X509_NAME_add_entry_by_OBJ := @FC_X509_NAME_add_entry_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_OBJ_allownil)}
-      X509_NAME_add_entry_by_OBJ := @ERR_X509_NAME_add_entry_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_add_entry_by_OBJ_removed)}
@@ -17034,39 +14729,31 @@ begin
     begin
       {$if declared(_X509_NAME_add_entry_by_OBJ)}
       X509_NAME_add_entry_by_OBJ := @_X509_NAME_add_entry_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_OBJ_allownil)}
-      X509_NAME_add_entry_by_OBJ := @ERR_X509_NAME_add_entry_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_add_entry_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_add_entry_by_OBJ := @ERR_X509_NAME_add_entry_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_add_entry_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_add_entry_by_NID := LoadLibFunction(ADllHandle, X509_NAME_add_entry_by_NID_procname);
-  FuncLoaded := assigned(X509_NAME_add_entry_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_add_entry_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_add_entry_by_NID_allownil)}
+    X509_NAME_add_entry_by_NID := @ERR_X509_NAME_add_entry_by_NID;
+    {$ifend}
     {$if declared(X509_NAME_add_entry_by_NID_introduced)}
     if LibVersion < X509_NAME_add_entry_by_NID_introduced then
     begin
       {$if declared(FC_X509_NAME_add_entry_by_NID)}
       X509_NAME_add_entry_by_NID := @FC_X509_NAME_add_entry_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_NID_allownil)}
-      X509_NAME_add_entry_by_NID := @ERR_X509_NAME_add_entry_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_add_entry_by_NID_removed)}
@@ -17074,39 +14761,31 @@ begin
     begin
       {$if declared(_X509_NAME_add_entry_by_NID)}
       X509_NAME_add_entry_by_NID := @_X509_NAME_add_entry_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_NID_allownil)}
-      X509_NAME_add_entry_by_NID := @ERR_X509_NAME_add_entry_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_add_entry_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_add_entry_by_NID := @ERR_X509_NAME_add_entry_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_add_entry_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_create_by_txt := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_create_by_txt_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_create_by_txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_create_by_txt);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_create_by_txt_allownil)}
+    X509_NAME_ENTRY_create_by_txt := @ERR_X509_NAME_ENTRY_create_by_txt;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_txt_introduced)}
     if LibVersion < X509_NAME_ENTRY_create_by_txt_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_create_by_txt)}
       X509_NAME_ENTRY_create_by_txt := @FC_X509_NAME_ENTRY_create_by_txt;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_txt_allownil)}
-      X509_NAME_ENTRY_create_by_txt := @ERR_X509_NAME_ENTRY_create_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_txt_removed)}
@@ -17114,39 +14793,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_create_by_txt)}
       X509_NAME_ENTRY_create_by_txt := @_X509_NAME_ENTRY_create_by_txt;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_txt_allownil)}
-      X509_NAME_ENTRY_create_by_txt := @ERR_X509_NAME_ENTRY_create_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_create_by_txt_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_create_by_txt := @ERR_X509_NAME_ENTRY_create_by_txt;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_create_by_txt');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_create_by_NID := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_create_by_NID_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_create_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_create_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_create_by_NID_allownil)}
+    X509_NAME_ENTRY_create_by_NID := @ERR_X509_NAME_ENTRY_create_by_NID;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_NID_introduced)}
     if LibVersion < X509_NAME_ENTRY_create_by_NID_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_create_by_NID)}
       X509_NAME_ENTRY_create_by_NID := @FC_X509_NAME_ENTRY_create_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_NID_allownil)}
-      X509_NAME_ENTRY_create_by_NID := @ERR_X509_NAME_ENTRY_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_NID_removed)}
@@ -17154,39 +14825,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_create_by_NID)}
       X509_NAME_ENTRY_create_by_NID := @_X509_NAME_ENTRY_create_by_NID;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_NID_allownil)}
-      X509_NAME_ENTRY_create_by_NID := @ERR_X509_NAME_ENTRY_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_create_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_create_by_NID := @ERR_X509_NAME_ENTRY_create_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_create_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_add_entry_by_txt := LoadLibFunction(ADllHandle, X509_NAME_add_entry_by_txt_procname);
-  FuncLoaded := assigned(X509_NAME_add_entry_by_txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_add_entry_by_txt);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_add_entry_by_txt_allownil)}
+    X509_NAME_add_entry_by_txt := @ERR_X509_NAME_add_entry_by_txt;
+    {$ifend}
     {$if declared(X509_NAME_add_entry_by_txt_introduced)}
     if LibVersion < X509_NAME_add_entry_by_txt_introduced then
     begin
       {$if declared(FC_X509_NAME_add_entry_by_txt)}
       X509_NAME_add_entry_by_txt := @FC_X509_NAME_add_entry_by_txt;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_txt_allownil)}
-      X509_NAME_add_entry_by_txt := @ERR_X509_NAME_add_entry_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_add_entry_by_txt_removed)}
@@ -17194,39 +14857,31 @@ begin
     begin
       {$if declared(_X509_NAME_add_entry_by_txt)}
       X509_NAME_add_entry_by_txt := @_X509_NAME_add_entry_by_txt;
-      {$else}
-      {$if not defined(X509_NAME_add_entry_by_txt_allownil)}
-      X509_NAME_add_entry_by_txt := @ERR_X509_NAME_add_entry_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_add_entry_by_txt_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_add_entry_by_txt := @ERR_X509_NAME_add_entry_by_txt;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_add_entry_by_txt');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_create_by_OBJ := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_create_by_OBJ_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_create_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_create_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_create_by_OBJ_allownil)}
+    X509_NAME_ENTRY_create_by_OBJ := @ERR_X509_NAME_ENTRY_create_by_OBJ;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_OBJ_introduced)}
     if LibVersion < X509_NAME_ENTRY_create_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_create_by_OBJ)}
       X509_NAME_ENTRY_create_by_OBJ := @FC_X509_NAME_ENTRY_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_OBJ_allownil)}
-      X509_NAME_ENTRY_create_by_OBJ := @ERR_X509_NAME_ENTRY_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_create_by_OBJ_removed)}
@@ -17234,39 +14889,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_create_by_OBJ)}
       X509_NAME_ENTRY_create_by_OBJ := @_X509_NAME_ENTRY_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_create_by_OBJ_allownil)}
-      X509_NAME_ENTRY_create_by_OBJ := @ERR_X509_NAME_ENTRY_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_create_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_create_by_OBJ := @ERR_X509_NAME_ENTRY_create_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_create_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_set_object := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_set_object_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_set_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_set_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_set_object_allownil)}
+    X509_NAME_ENTRY_set_object := @ERR_X509_NAME_ENTRY_set_object;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_set_object_introduced)}
     if LibVersion < X509_NAME_ENTRY_set_object_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_set_object)}
       X509_NAME_ENTRY_set_object := @FC_X509_NAME_ENTRY_set_object;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_object_allownil)}
-      X509_NAME_ENTRY_set_object := @ERR_X509_NAME_ENTRY_set_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_set_object_removed)}
@@ -17274,39 +14921,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_set_object)}
       X509_NAME_ENTRY_set_object := @_X509_NAME_ENTRY_set_object;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_object_allownil)}
-      X509_NAME_ENTRY_set_object := @ERR_X509_NAME_ENTRY_set_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_set_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_set_object := @ERR_X509_NAME_ENTRY_set_object;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_set_object');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_set_data := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_set_data_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_set_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_set_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_set_data_allownil)}
+    X509_NAME_ENTRY_set_data := @ERR_X509_NAME_ENTRY_set_data;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_set_data_introduced)}
     if LibVersion < X509_NAME_ENTRY_set_data_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_set_data)}
       X509_NAME_ENTRY_set_data := @FC_X509_NAME_ENTRY_set_data;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_data_allownil)}
-      X509_NAME_ENTRY_set_data := @ERR_X509_NAME_ENTRY_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_set_data_removed)}
@@ -17314,39 +14953,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_set_data)}
       X509_NAME_ENTRY_set_data := @_X509_NAME_ENTRY_set_data;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_data_allownil)}
-      X509_NAME_ENTRY_set_data := @ERR_X509_NAME_ENTRY_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_set_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_set_data := @ERR_X509_NAME_ENTRY_set_data;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_set_data');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_get_object := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_get_object_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_get_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_get_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_get_object_allownil)}
+    X509_NAME_ENTRY_get_object := @ERR_X509_NAME_ENTRY_get_object;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_get_object_introduced)}
     if LibVersion < X509_NAME_ENTRY_get_object_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_get_object)}
       X509_NAME_ENTRY_get_object := @FC_X509_NAME_ENTRY_get_object;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_get_object_allownil)}
-      X509_NAME_ENTRY_get_object := @ERR_X509_NAME_ENTRY_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_get_object_removed)}
@@ -17354,39 +14985,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_get_object)}
       X509_NAME_ENTRY_get_object := @_X509_NAME_ENTRY_get_object;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_get_object_allownil)}
-      X509_NAME_ENTRY_get_object := @ERR_X509_NAME_ENTRY_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_get_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_get_object := @ERR_X509_NAME_ENTRY_get_object;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_get_object');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_get_data := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_get_data_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_get_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_get_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_get_data_allownil)}
+    X509_NAME_ENTRY_get_data := @ERR_X509_NAME_ENTRY_get_data;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_get_data_introduced)}
     if LibVersion < X509_NAME_ENTRY_get_data_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_get_data)}
       X509_NAME_ENTRY_get_data := @FC_X509_NAME_ENTRY_get_data;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_get_data_allownil)}
-      X509_NAME_ENTRY_get_data := @ERR_X509_NAME_ENTRY_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_get_data_removed)}
@@ -17394,39 +15017,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_get_data)}
       X509_NAME_ENTRY_get_data := @_X509_NAME_ENTRY_get_data;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_get_data_allownil)}
-      X509_NAME_ENTRY_get_data := @ERR_X509_NAME_ENTRY_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_get_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_get_data := @ERR_X509_NAME_ENTRY_get_data;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_get_data');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_ENTRY_set := LoadLibFunction(ADllHandle, X509_NAME_ENTRY_set_procname);
-  FuncLoaded := assigned(X509_NAME_ENTRY_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_ENTRY_set);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_ENTRY_set_allownil)}
+    X509_NAME_ENTRY_set := @ERR_X509_NAME_ENTRY_set;
+    {$ifend}
     {$if declared(X509_NAME_ENTRY_set_introduced)}
     if LibVersion < X509_NAME_ENTRY_set_introduced then
     begin
       {$if declared(FC_X509_NAME_ENTRY_set)}
       X509_NAME_ENTRY_set := @FC_X509_NAME_ENTRY_set;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_allownil)}
-      X509_NAME_ENTRY_set := @ERR_X509_NAME_ENTRY_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_ENTRY_set_removed)}
@@ -17434,39 +15049,31 @@ begin
     begin
       {$if declared(_X509_NAME_ENTRY_set)}
       X509_NAME_ENTRY_set := @_X509_NAME_ENTRY_set;
-      {$else}
-      {$if not defined(X509_NAME_ENTRY_set_allownil)}
-      X509_NAME_ENTRY_set := @ERR_X509_NAME_ENTRY_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_ENTRY_set_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_ENTRY_set := @ERR_X509_NAME_ENTRY_set;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_ENTRY_set');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_NAME_get0_der := LoadLibFunction(ADllHandle, X509_NAME_get0_der_procname);
-  FuncLoaded := assigned(X509_NAME_get0_der);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_get0_der);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_get0_der_allownil)}
+    X509_NAME_get0_der := @ERR_X509_NAME_get0_der;
+    {$ifend}
     {$if declared(X509_NAME_get0_der_introduced)}
     if LibVersion < X509_NAME_get0_der_introduced then
     begin
       {$if declared(FC_X509_NAME_get0_der)}
       X509_NAME_get0_der := @FC_X509_NAME_get0_der;
-      {$else}
-      {$if not defined(X509_NAME_get0_der_allownil)}
-      X509_NAME_get0_der := @ERR_X509_NAME_get0_der;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_get0_der_removed)}
@@ -17474,39 +15081,31 @@ begin
     begin
       {$if declared(_X509_NAME_get0_der)}
       X509_NAME_get0_der := @_X509_NAME_get0_der;
-      {$else}
-      {$if not defined(X509_NAME_get0_der_allownil)}
-      X509_NAME_get0_der := @ERR_X509_NAME_get0_der;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_get0_der_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_get0_der := @ERR_X509_NAME_get0_der;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_get0_der');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_get_ext_count := LoadLibFunction(ADllHandle, X509_get_ext_count_procname);
-  FuncLoaded := assigned(X509_get_ext_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_count_allownil)}
+    X509_get_ext_count := @ERR_X509_get_ext_count;
+    {$ifend}
     {$if declared(X509_get_ext_count_introduced)}
     if LibVersion < X509_get_ext_count_introduced then
     begin
       {$if declared(FC_X509_get_ext_count)}
       X509_get_ext_count := @FC_X509_get_ext_count;
-      {$else}
-      {$if not defined(X509_get_ext_count_allownil)}
-      X509_get_ext_count := @ERR_X509_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_count_removed)}
@@ -17514,39 +15113,31 @@ begin
     begin
       {$if declared(_X509_get_ext_count)}
       X509_get_ext_count := @_X509_get_ext_count;
-      {$else}
-      {$if not defined(X509_get_ext_count_allownil)}
-      X509_get_ext_count := @ERR_X509_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext_count := @ERR_X509_get_ext_count;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext_count');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ext_by_NID := LoadLibFunction(ADllHandle, X509_get_ext_by_NID_procname);
-  FuncLoaded := assigned(X509_get_ext_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_by_NID_allownil)}
+    X509_get_ext_by_NID := @ERR_X509_get_ext_by_NID;
+    {$ifend}
     {$if declared(X509_get_ext_by_NID_introduced)}
     if LibVersion < X509_get_ext_by_NID_introduced then
     begin
       {$if declared(FC_X509_get_ext_by_NID)}
       X509_get_ext_by_NID := @FC_X509_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_get_ext_by_NID_allownil)}
-      X509_get_ext_by_NID := @ERR_X509_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_by_NID_removed)}
@@ -17554,39 +15145,31 @@ begin
     begin
       {$if declared(_X509_get_ext_by_NID)}
       X509_get_ext_by_NID := @_X509_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_get_ext_by_NID_allownil)}
-      X509_get_ext_by_NID := @ERR_X509_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext_by_NID := @ERR_X509_get_ext_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ext_by_OBJ := LoadLibFunction(ADllHandle, X509_get_ext_by_OBJ_procname);
-  FuncLoaded := assigned(X509_get_ext_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_by_OBJ_allownil)}
+    X509_get_ext_by_OBJ := @ERR_X509_get_ext_by_OBJ;
+    {$ifend}
     {$if declared(X509_get_ext_by_OBJ_introduced)}
     if LibVersion < X509_get_ext_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_get_ext_by_OBJ)}
       X509_get_ext_by_OBJ := @FC_X509_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_get_ext_by_OBJ_allownil)}
-      X509_get_ext_by_OBJ := @ERR_X509_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_by_OBJ_removed)}
@@ -17594,39 +15177,31 @@ begin
     begin
       {$if declared(_X509_get_ext_by_OBJ)}
       X509_get_ext_by_OBJ := @_X509_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_get_ext_by_OBJ_allownil)}
-      X509_get_ext_by_OBJ := @ERR_X509_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext_by_OBJ := @ERR_X509_get_ext_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ext_by_critical := LoadLibFunction(ADllHandle, X509_get_ext_by_critical_procname);
-  FuncLoaded := assigned(X509_get_ext_by_critical);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext_by_critical);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_by_critical_allownil)}
+    X509_get_ext_by_critical := @ERR_X509_get_ext_by_critical;
+    {$ifend}
     {$if declared(X509_get_ext_by_critical_introduced)}
     if LibVersion < X509_get_ext_by_critical_introduced then
     begin
       {$if declared(FC_X509_get_ext_by_critical)}
       X509_get_ext_by_critical := @FC_X509_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_get_ext_by_critical_allownil)}
-      X509_get_ext_by_critical := @ERR_X509_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_by_critical_removed)}
@@ -17634,39 +15209,31 @@ begin
     begin
       {$if declared(_X509_get_ext_by_critical)}
       X509_get_ext_by_critical := @_X509_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_get_ext_by_critical_allownil)}
-      X509_get_ext_by_critical := @ERR_X509_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_by_critical_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext_by_critical := @ERR_X509_get_ext_by_critical;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext_by_critical');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ext := LoadLibFunction(ADllHandle, X509_get_ext_procname);
-  FuncLoaded := assigned(X509_get_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_allownil)}
+    X509_get_ext := @ERR_X509_get_ext;
+    {$ifend}
     {$if declared(X509_get_ext_introduced)}
     if LibVersion < X509_get_ext_introduced then
     begin
       {$if declared(FC_X509_get_ext)}
       X509_get_ext := @FC_X509_get_ext;
-      {$else}
-      {$if not defined(X509_get_ext_allownil)}
-      X509_get_ext := @ERR_X509_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_removed)}
@@ -17674,39 +15241,31 @@ begin
     begin
       {$if declared(_X509_get_ext)}
       X509_get_ext := @_X509_get_ext;
-      {$else}
-      {$if not defined(X509_get_ext_allownil)}
-      X509_get_ext := @ERR_X509_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext := @ERR_X509_get_ext;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_delete_ext := LoadLibFunction(ADllHandle, X509_delete_ext_procname);
-  FuncLoaded := assigned(X509_delete_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_delete_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_delete_ext_allownil)}
+    X509_delete_ext := @ERR_X509_delete_ext;
+    {$ifend}
     {$if declared(X509_delete_ext_introduced)}
     if LibVersion < X509_delete_ext_introduced then
     begin
       {$if declared(FC_X509_delete_ext)}
       X509_delete_ext := @FC_X509_delete_ext;
-      {$else}
-      {$if not defined(X509_delete_ext_allownil)}
-      X509_delete_ext := @ERR_X509_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_delete_ext_removed)}
@@ -17714,39 +15273,31 @@ begin
     begin
       {$if declared(_X509_delete_ext)}
       X509_delete_ext := @_X509_delete_ext;
-      {$else}
-      {$if not defined(X509_delete_ext_allownil)}
-      X509_delete_ext := @ERR_X509_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_delete_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_delete_ext := @ERR_X509_delete_ext;
+    if FuncLoadError then
       AFailed.Add('X509_delete_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_add_ext := LoadLibFunction(ADllHandle, X509_add_ext_procname);
-  FuncLoaded := assigned(X509_add_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_add_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_add_ext_allownil)}
+    X509_add_ext := @ERR_X509_add_ext;
+    {$ifend}
     {$if declared(X509_add_ext_introduced)}
     if LibVersion < X509_add_ext_introduced then
     begin
       {$if declared(FC_X509_add_ext)}
       X509_add_ext := @FC_X509_add_ext;
-      {$else}
-      {$if not defined(X509_add_ext_allownil)}
-      X509_add_ext := @ERR_X509_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_add_ext_removed)}
@@ -17754,39 +15305,31 @@ begin
     begin
       {$if declared(_X509_add_ext)}
       X509_add_ext := @_X509_add_ext;
-      {$else}
-      {$if not defined(X509_add_ext_allownil)}
-      X509_add_ext := @ERR_X509_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_add_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_add_ext := @ERR_X509_add_ext;
+    if FuncLoadError then
       AFailed.Add('X509_add_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_get_ext_d2i := LoadLibFunction(ADllHandle, X509_get_ext_d2i_procname);
-  FuncLoaded := assigned(X509_get_ext_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_get_ext_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_get_ext_d2i_allownil)}
+    X509_get_ext_d2i := @ERR_X509_get_ext_d2i;
+    {$ifend}
     {$if declared(X509_get_ext_d2i_introduced)}
     if LibVersion < X509_get_ext_d2i_introduced then
     begin
       {$if declared(FC_X509_get_ext_d2i)}
       X509_get_ext_d2i := @FC_X509_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_get_ext_d2i_allownil)}
-      X509_get_ext_d2i := @ERR_X509_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_get_ext_d2i_removed)}
@@ -17794,39 +15337,31 @@ begin
     begin
       {$if declared(_X509_get_ext_d2i)}
       X509_get_ext_d2i := @_X509_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_get_ext_d2i_allownil)}
-      X509_get_ext_d2i := @ERR_X509_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_get_ext_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_get_ext_d2i := @ERR_X509_get_ext_d2i;
+    if FuncLoadError then
       AFailed.Add('X509_get_ext_d2i');
-    end;
     {$ifend}
   end;
 
 
   X509_add1_ext_i2d := LoadLibFunction(ADllHandle, X509_add1_ext_i2d_procname);
-  FuncLoaded := assigned(X509_add1_ext_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_add1_ext_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_add1_ext_i2d_allownil)}
+    X509_add1_ext_i2d := @ERR_X509_add1_ext_i2d;
+    {$ifend}
     {$if declared(X509_add1_ext_i2d_introduced)}
     if LibVersion < X509_add1_ext_i2d_introduced then
     begin
       {$if declared(FC_X509_add1_ext_i2d)}
       X509_add1_ext_i2d := @FC_X509_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_add1_ext_i2d_allownil)}
-      X509_add1_ext_i2d := @ERR_X509_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_add1_ext_i2d_removed)}
@@ -17834,39 +15369,31 @@ begin
     begin
       {$if declared(_X509_add1_ext_i2d)}
       X509_add1_ext_i2d := @_X509_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_add1_ext_i2d_allownil)}
-      X509_add1_ext_i2d := @ERR_X509_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_add1_ext_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_add1_ext_i2d := @ERR_X509_add1_ext_i2d;
+    if FuncLoadError then
       AFailed.Add('X509_add1_ext_i2d');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext_count := LoadLibFunction(ADllHandle, X509_CRL_get_ext_count_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_count_allownil)}
+    X509_CRL_get_ext_count := @ERR_X509_CRL_get_ext_count;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_count_introduced)}
     if LibVersion < X509_CRL_get_ext_count_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext_count)}
       X509_CRL_get_ext_count := @FC_X509_CRL_get_ext_count;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_count_allownil)}
-      X509_CRL_get_ext_count := @ERR_X509_CRL_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_count_removed)}
@@ -17874,39 +15401,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext_count)}
       X509_CRL_get_ext_count := @_X509_CRL_get_ext_count;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_count_allownil)}
-      X509_CRL_get_ext_count := @ERR_X509_CRL_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext_count := @ERR_X509_CRL_get_ext_count;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext_count');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext_by_NID := LoadLibFunction(ADllHandle, X509_CRL_get_ext_by_NID_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_by_NID_allownil)}
+    X509_CRL_get_ext_by_NID := @ERR_X509_CRL_get_ext_by_NID;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_by_NID_introduced)}
     if LibVersion < X509_CRL_get_ext_by_NID_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext_by_NID)}
       X509_CRL_get_ext_by_NID := @FC_X509_CRL_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_NID_allownil)}
-      X509_CRL_get_ext_by_NID := @ERR_X509_CRL_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_by_NID_removed)}
@@ -17914,39 +15433,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext_by_NID)}
       X509_CRL_get_ext_by_NID := @_X509_CRL_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_NID_allownil)}
-      X509_CRL_get_ext_by_NID := @ERR_X509_CRL_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext_by_NID := @ERR_X509_CRL_get_ext_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext_by_OBJ := LoadLibFunction(ADllHandle, X509_CRL_get_ext_by_OBJ_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_by_OBJ_allownil)}
+    X509_CRL_get_ext_by_OBJ := @ERR_X509_CRL_get_ext_by_OBJ;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_by_OBJ_introduced)}
     if LibVersion < X509_CRL_get_ext_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext_by_OBJ)}
       X509_CRL_get_ext_by_OBJ := @FC_X509_CRL_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_OBJ_allownil)}
-      X509_CRL_get_ext_by_OBJ := @ERR_X509_CRL_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_by_OBJ_removed)}
@@ -17954,39 +15465,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext_by_OBJ)}
       X509_CRL_get_ext_by_OBJ := @_X509_CRL_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_OBJ_allownil)}
-      X509_CRL_get_ext_by_OBJ := @ERR_X509_CRL_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext_by_OBJ := @ERR_X509_CRL_get_ext_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext_by_critical := LoadLibFunction(ADllHandle, X509_CRL_get_ext_by_critical_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext_by_critical);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext_by_critical);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_by_critical_allownil)}
+    X509_CRL_get_ext_by_critical := @ERR_X509_CRL_get_ext_by_critical;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_by_critical_introduced)}
     if LibVersion < X509_CRL_get_ext_by_critical_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext_by_critical)}
       X509_CRL_get_ext_by_critical := @FC_X509_CRL_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_critical_allownil)}
-      X509_CRL_get_ext_by_critical := @ERR_X509_CRL_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_by_critical_removed)}
@@ -17994,39 +15497,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext_by_critical)}
       X509_CRL_get_ext_by_critical := @_X509_CRL_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_by_critical_allownil)}
-      X509_CRL_get_ext_by_critical := @ERR_X509_CRL_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_by_critical_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext_by_critical := @ERR_X509_CRL_get_ext_by_critical;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext_by_critical');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext := LoadLibFunction(ADllHandle, X509_CRL_get_ext_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_allownil)}
+    X509_CRL_get_ext := @ERR_X509_CRL_get_ext;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_introduced)}
     if LibVersion < X509_CRL_get_ext_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext)}
       X509_CRL_get_ext := @FC_X509_CRL_get_ext;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_allownil)}
-      X509_CRL_get_ext := @ERR_X509_CRL_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_removed)}
@@ -18034,39 +15529,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext)}
       X509_CRL_get_ext := @_X509_CRL_get_ext;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_allownil)}
-      X509_CRL_get_ext := @ERR_X509_CRL_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext := @ERR_X509_CRL_get_ext;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_delete_ext := LoadLibFunction(ADllHandle, X509_CRL_delete_ext_procname);
-  FuncLoaded := assigned(X509_CRL_delete_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_delete_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_delete_ext_allownil)}
+    X509_CRL_delete_ext := @ERR_X509_CRL_delete_ext;
+    {$ifend}
     {$if declared(X509_CRL_delete_ext_introduced)}
     if LibVersion < X509_CRL_delete_ext_introduced then
     begin
       {$if declared(FC_X509_CRL_delete_ext)}
       X509_CRL_delete_ext := @FC_X509_CRL_delete_ext;
-      {$else}
-      {$if not defined(X509_CRL_delete_ext_allownil)}
-      X509_CRL_delete_ext := @ERR_X509_CRL_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_delete_ext_removed)}
@@ -18074,39 +15561,31 @@ begin
     begin
       {$if declared(_X509_CRL_delete_ext)}
       X509_CRL_delete_ext := @_X509_CRL_delete_ext;
-      {$else}
-      {$if not defined(X509_CRL_delete_ext_allownil)}
-      X509_CRL_delete_ext := @ERR_X509_CRL_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_delete_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_delete_ext := @ERR_X509_CRL_delete_ext;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_delete_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_add_ext := LoadLibFunction(ADllHandle, X509_CRL_add_ext_procname);
-  FuncLoaded := assigned(X509_CRL_add_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_add_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_add_ext_allownil)}
+    X509_CRL_add_ext := @ERR_X509_CRL_add_ext;
+    {$ifend}
     {$if declared(X509_CRL_add_ext_introduced)}
     if LibVersion < X509_CRL_add_ext_introduced then
     begin
       {$if declared(FC_X509_CRL_add_ext)}
       X509_CRL_add_ext := @FC_X509_CRL_add_ext;
-      {$else}
-      {$if not defined(X509_CRL_add_ext_allownil)}
-      X509_CRL_add_ext := @ERR_X509_CRL_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_add_ext_removed)}
@@ -18114,39 +15593,31 @@ begin
     begin
       {$if declared(_X509_CRL_add_ext)}
       X509_CRL_add_ext := @_X509_CRL_add_ext;
-      {$else}
-      {$if not defined(X509_CRL_add_ext_allownil)}
-      X509_CRL_add_ext := @ERR_X509_CRL_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_add_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_add_ext := @ERR_X509_CRL_add_ext;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_add_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_get_ext_d2i := LoadLibFunction(ADllHandle, X509_CRL_get_ext_d2i_procname);
-  FuncLoaded := assigned(X509_CRL_get_ext_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_get_ext_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_get_ext_d2i_allownil)}
+    X509_CRL_get_ext_d2i := @ERR_X509_CRL_get_ext_d2i;
+    {$ifend}
     {$if declared(X509_CRL_get_ext_d2i_introduced)}
     if LibVersion < X509_CRL_get_ext_d2i_introduced then
     begin
       {$if declared(FC_X509_CRL_get_ext_d2i)}
       X509_CRL_get_ext_d2i := @FC_X509_CRL_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_d2i_allownil)}
-      X509_CRL_get_ext_d2i := @ERR_X509_CRL_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_get_ext_d2i_removed)}
@@ -18154,39 +15625,31 @@ begin
     begin
       {$if declared(_X509_CRL_get_ext_d2i)}
       X509_CRL_get_ext_d2i := @_X509_CRL_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_CRL_get_ext_d2i_allownil)}
-      X509_CRL_get_ext_d2i := @ERR_X509_CRL_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_get_ext_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_get_ext_d2i := @ERR_X509_CRL_get_ext_d2i;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_get_ext_d2i');
-    end;
     {$ifend}
   end;
 
 
   X509_CRL_add1_ext_i2d := LoadLibFunction(ADllHandle, X509_CRL_add1_ext_i2d_procname);
-  FuncLoaded := assigned(X509_CRL_add1_ext_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_CRL_add1_ext_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_CRL_add1_ext_i2d_allownil)}
+    X509_CRL_add1_ext_i2d := @ERR_X509_CRL_add1_ext_i2d;
+    {$ifend}
     {$if declared(X509_CRL_add1_ext_i2d_introduced)}
     if LibVersion < X509_CRL_add1_ext_i2d_introduced then
     begin
       {$if declared(FC_X509_CRL_add1_ext_i2d)}
       X509_CRL_add1_ext_i2d := @FC_X509_CRL_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_CRL_add1_ext_i2d_allownil)}
-      X509_CRL_add1_ext_i2d := @ERR_X509_CRL_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_CRL_add1_ext_i2d_removed)}
@@ -18194,39 +15657,31 @@ begin
     begin
       {$if declared(_X509_CRL_add1_ext_i2d)}
       X509_CRL_add1_ext_i2d := @_X509_CRL_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_CRL_add1_ext_i2d_allownil)}
-      X509_CRL_add1_ext_i2d := @ERR_X509_CRL_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_CRL_add1_ext_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_CRL_add1_ext_i2d := @ERR_X509_CRL_add1_ext_i2d;
+    if FuncLoadError then
       AFailed.Add('X509_CRL_add1_ext_i2d');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext_count := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_count_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_count_allownil)}
+    X509_REVOKED_get_ext_count := @ERR_X509_REVOKED_get_ext_count;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_count_introduced)}
     if LibVersion < X509_REVOKED_get_ext_count_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext_count)}
       X509_REVOKED_get_ext_count := @FC_X509_REVOKED_get_ext_count;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_count_allownil)}
-      X509_REVOKED_get_ext_count := @ERR_X509_REVOKED_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_count_removed)}
@@ -18234,39 +15689,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext_count)}
       X509_REVOKED_get_ext_count := @_X509_REVOKED_get_ext_count;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_count_allownil)}
-      X509_REVOKED_get_ext_count := @ERR_X509_REVOKED_get_ext_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext_count := @ERR_X509_REVOKED_get_ext_count;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext_count');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext_by_NID := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_by_NID_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_by_NID_allownil)}
+    X509_REVOKED_get_ext_by_NID := @ERR_X509_REVOKED_get_ext_by_NID;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_NID_introduced)}
     if LibVersion < X509_REVOKED_get_ext_by_NID_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext_by_NID)}
       X509_REVOKED_get_ext_by_NID := @FC_X509_REVOKED_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_NID_allownil)}
-      X509_REVOKED_get_ext_by_NID := @ERR_X509_REVOKED_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_NID_removed)}
@@ -18274,39 +15721,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext_by_NID)}
       X509_REVOKED_get_ext_by_NID := @_X509_REVOKED_get_ext_by_NID;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_NID_allownil)}
-      X509_REVOKED_get_ext_by_NID := @ERR_X509_REVOKED_get_ext_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext_by_NID := @ERR_X509_REVOKED_get_ext_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext_by_OBJ := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_by_OBJ_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_by_OBJ_allownil)}
+    X509_REVOKED_get_ext_by_OBJ := @ERR_X509_REVOKED_get_ext_by_OBJ;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_OBJ_introduced)}
     if LibVersion < X509_REVOKED_get_ext_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext_by_OBJ)}
       X509_REVOKED_get_ext_by_OBJ := @FC_X509_REVOKED_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_OBJ_allownil)}
-      X509_REVOKED_get_ext_by_OBJ := @ERR_X509_REVOKED_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_OBJ_removed)}
@@ -18314,39 +15753,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext_by_OBJ)}
       X509_REVOKED_get_ext_by_OBJ := @_X509_REVOKED_get_ext_by_OBJ;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_OBJ_allownil)}
-      X509_REVOKED_get_ext_by_OBJ := @ERR_X509_REVOKED_get_ext_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext_by_OBJ := @ERR_X509_REVOKED_get_ext_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext_by_critical := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_by_critical_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext_by_critical);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext_by_critical);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_by_critical_allownil)}
+    X509_REVOKED_get_ext_by_critical := @ERR_X509_REVOKED_get_ext_by_critical;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_critical_introduced)}
     if LibVersion < X509_REVOKED_get_ext_by_critical_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext_by_critical)}
       X509_REVOKED_get_ext_by_critical := @FC_X509_REVOKED_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_critical_allownil)}
-      X509_REVOKED_get_ext_by_critical := @ERR_X509_REVOKED_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_by_critical_removed)}
@@ -18354,39 +15785,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext_by_critical)}
       X509_REVOKED_get_ext_by_critical := @_X509_REVOKED_get_ext_by_critical;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_by_critical_allownil)}
-      X509_REVOKED_get_ext_by_critical := @ERR_X509_REVOKED_get_ext_by_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_by_critical_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext_by_critical := @ERR_X509_REVOKED_get_ext_by_critical;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext_by_critical');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_allownil)}
+    X509_REVOKED_get_ext := @ERR_X509_REVOKED_get_ext;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_introduced)}
     if LibVersion < X509_REVOKED_get_ext_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext)}
       X509_REVOKED_get_ext := @FC_X509_REVOKED_get_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_allownil)}
-      X509_REVOKED_get_ext := @ERR_X509_REVOKED_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_removed)}
@@ -18394,39 +15817,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext)}
       X509_REVOKED_get_ext := @_X509_REVOKED_get_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_allownil)}
-      X509_REVOKED_get_ext := @ERR_X509_REVOKED_get_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext := @ERR_X509_REVOKED_get_ext;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_delete_ext := LoadLibFunction(ADllHandle, X509_REVOKED_delete_ext_procname);
-  FuncLoaded := assigned(X509_REVOKED_delete_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_delete_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_delete_ext_allownil)}
+    X509_REVOKED_delete_ext := @ERR_X509_REVOKED_delete_ext;
+    {$ifend}
     {$if declared(X509_REVOKED_delete_ext_introduced)}
     if LibVersion < X509_REVOKED_delete_ext_introduced then
     begin
       {$if declared(FC_X509_REVOKED_delete_ext)}
       X509_REVOKED_delete_ext := @FC_X509_REVOKED_delete_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_delete_ext_allownil)}
-      X509_REVOKED_delete_ext := @ERR_X509_REVOKED_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_delete_ext_removed)}
@@ -18434,39 +15849,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_delete_ext)}
       X509_REVOKED_delete_ext := @_X509_REVOKED_delete_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_delete_ext_allownil)}
-      X509_REVOKED_delete_ext := @ERR_X509_REVOKED_delete_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_delete_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_delete_ext := @ERR_X509_REVOKED_delete_ext;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_delete_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_add_ext := LoadLibFunction(ADllHandle, X509_REVOKED_add_ext_procname);
-  FuncLoaded := assigned(X509_REVOKED_add_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_add_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_add_ext_allownil)}
+    X509_REVOKED_add_ext := @ERR_X509_REVOKED_add_ext;
+    {$ifend}
     {$if declared(X509_REVOKED_add_ext_introduced)}
     if LibVersion < X509_REVOKED_add_ext_introduced then
     begin
       {$if declared(FC_X509_REVOKED_add_ext)}
       X509_REVOKED_add_ext := @FC_X509_REVOKED_add_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_add_ext_allownil)}
-      X509_REVOKED_add_ext := @ERR_X509_REVOKED_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_add_ext_removed)}
@@ -18474,39 +15881,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_add_ext)}
       X509_REVOKED_add_ext := @_X509_REVOKED_add_ext;
-      {$else}
-      {$if not defined(X509_REVOKED_add_ext_allownil)}
-      X509_REVOKED_add_ext := @ERR_X509_REVOKED_add_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_add_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_add_ext := @ERR_X509_REVOKED_add_ext;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_add_ext');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_get_ext_d2i := LoadLibFunction(ADllHandle, X509_REVOKED_get_ext_d2i_procname);
-  FuncLoaded := assigned(X509_REVOKED_get_ext_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_get_ext_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_get_ext_d2i_allownil)}
+    X509_REVOKED_get_ext_d2i := @ERR_X509_REVOKED_get_ext_d2i;
+    {$ifend}
     {$if declared(X509_REVOKED_get_ext_d2i_introduced)}
     if LibVersion < X509_REVOKED_get_ext_d2i_introduced then
     begin
       {$if declared(FC_X509_REVOKED_get_ext_d2i)}
       X509_REVOKED_get_ext_d2i := @FC_X509_REVOKED_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_d2i_allownil)}
-      X509_REVOKED_get_ext_d2i := @ERR_X509_REVOKED_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_get_ext_d2i_removed)}
@@ -18514,39 +15913,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_get_ext_d2i)}
       X509_REVOKED_get_ext_d2i := @_X509_REVOKED_get_ext_d2i;
-      {$else}
-      {$if not defined(X509_REVOKED_get_ext_d2i_allownil)}
-      X509_REVOKED_get_ext_d2i := @ERR_X509_REVOKED_get_ext_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_get_ext_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_get_ext_d2i := @ERR_X509_REVOKED_get_ext_d2i;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_get_ext_d2i');
-    end;
     {$ifend}
   end;
 
 
   X509_REVOKED_add1_ext_i2d := LoadLibFunction(ADllHandle, X509_REVOKED_add1_ext_i2d_procname);
-  FuncLoaded := assigned(X509_REVOKED_add1_ext_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_REVOKED_add1_ext_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_REVOKED_add1_ext_i2d_allownil)}
+    X509_REVOKED_add1_ext_i2d := @ERR_X509_REVOKED_add1_ext_i2d;
+    {$ifend}
     {$if declared(X509_REVOKED_add1_ext_i2d_introduced)}
     if LibVersion < X509_REVOKED_add1_ext_i2d_introduced then
     begin
       {$if declared(FC_X509_REVOKED_add1_ext_i2d)}
       X509_REVOKED_add1_ext_i2d := @FC_X509_REVOKED_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_REVOKED_add1_ext_i2d_allownil)}
-      X509_REVOKED_add1_ext_i2d := @ERR_X509_REVOKED_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_REVOKED_add1_ext_i2d_removed)}
@@ -18554,39 +15945,31 @@ begin
     begin
       {$if declared(_X509_REVOKED_add1_ext_i2d)}
       X509_REVOKED_add1_ext_i2d := @_X509_REVOKED_add1_ext_i2d;
-      {$else}
-      {$if not defined(X509_REVOKED_add1_ext_i2d_allownil)}
-      X509_REVOKED_add1_ext_i2d := @ERR_X509_REVOKED_add1_ext_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_REVOKED_add1_ext_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_REVOKED_add1_ext_i2d := @ERR_X509_REVOKED_add1_ext_i2d;
+    if FuncLoadError then
       AFailed.Add('X509_REVOKED_add1_ext_i2d');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_create_by_NID := LoadLibFunction(ADllHandle, X509_EXTENSION_create_by_NID_procname);
-  FuncLoaded := assigned(X509_EXTENSION_create_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_create_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_create_by_NID_allownil)}
+    X509_EXTENSION_create_by_NID := @ERR_X509_EXTENSION_create_by_NID;
+    {$ifend}
     {$if declared(X509_EXTENSION_create_by_NID_introduced)}
     if LibVersion < X509_EXTENSION_create_by_NID_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_create_by_NID)}
       X509_EXTENSION_create_by_NID := @FC_X509_EXTENSION_create_by_NID;
-      {$else}
-      {$if not defined(X509_EXTENSION_create_by_NID_allownil)}
-      X509_EXTENSION_create_by_NID := @ERR_X509_EXTENSION_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_create_by_NID_removed)}
@@ -18594,39 +15977,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_create_by_NID)}
       X509_EXTENSION_create_by_NID := @_X509_EXTENSION_create_by_NID;
-      {$else}
-      {$if not defined(X509_EXTENSION_create_by_NID_allownil)}
-      X509_EXTENSION_create_by_NID := @ERR_X509_EXTENSION_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_create_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_create_by_NID := @ERR_X509_EXTENSION_create_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_create_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_create_by_OBJ := LoadLibFunction(ADllHandle, X509_EXTENSION_create_by_OBJ_procname);
-  FuncLoaded := assigned(X509_EXTENSION_create_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_create_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_create_by_OBJ_allownil)}
+    X509_EXTENSION_create_by_OBJ := @ERR_X509_EXTENSION_create_by_OBJ;
+    {$ifend}
     {$if declared(X509_EXTENSION_create_by_OBJ_introduced)}
     if LibVersion < X509_EXTENSION_create_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_create_by_OBJ)}
       X509_EXTENSION_create_by_OBJ := @FC_X509_EXTENSION_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_EXTENSION_create_by_OBJ_allownil)}
-      X509_EXTENSION_create_by_OBJ := @ERR_X509_EXTENSION_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_create_by_OBJ_removed)}
@@ -18634,39 +16009,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_create_by_OBJ)}
       X509_EXTENSION_create_by_OBJ := @_X509_EXTENSION_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_EXTENSION_create_by_OBJ_allownil)}
-      X509_EXTENSION_create_by_OBJ := @ERR_X509_EXTENSION_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_create_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_create_by_OBJ := @ERR_X509_EXTENSION_create_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_create_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_set_object := LoadLibFunction(ADllHandle, X509_EXTENSION_set_object_procname);
-  FuncLoaded := assigned(X509_EXTENSION_set_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_set_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_set_object_allownil)}
+    X509_EXTENSION_set_object := @ERR_X509_EXTENSION_set_object;
+    {$ifend}
     {$if declared(X509_EXTENSION_set_object_introduced)}
     if LibVersion < X509_EXTENSION_set_object_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_set_object)}
       X509_EXTENSION_set_object := @FC_X509_EXTENSION_set_object;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_object_allownil)}
-      X509_EXTENSION_set_object := @ERR_X509_EXTENSION_set_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_set_object_removed)}
@@ -18674,39 +16041,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_set_object)}
       X509_EXTENSION_set_object := @_X509_EXTENSION_set_object;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_object_allownil)}
-      X509_EXTENSION_set_object := @ERR_X509_EXTENSION_set_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_set_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_set_object := @ERR_X509_EXTENSION_set_object;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_set_object');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_set_critical := LoadLibFunction(ADllHandle, X509_EXTENSION_set_critical_procname);
-  FuncLoaded := assigned(X509_EXTENSION_set_critical);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_set_critical);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_set_critical_allownil)}
+    X509_EXTENSION_set_critical := @ERR_X509_EXTENSION_set_critical;
+    {$ifend}
     {$if declared(X509_EXTENSION_set_critical_introduced)}
     if LibVersion < X509_EXTENSION_set_critical_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_set_critical)}
       X509_EXTENSION_set_critical := @FC_X509_EXTENSION_set_critical;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_critical_allownil)}
-      X509_EXTENSION_set_critical := @ERR_X509_EXTENSION_set_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_set_critical_removed)}
@@ -18714,39 +16073,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_set_critical)}
       X509_EXTENSION_set_critical := @_X509_EXTENSION_set_critical;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_critical_allownil)}
-      X509_EXTENSION_set_critical := @ERR_X509_EXTENSION_set_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_set_critical_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_set_critical := @ERR_X509_EXTENSION_set_critical;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_set_critical');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_set_data := LoadLibFunction(ADllHandle, X509_EXTENSION_set_data_procname);
-  FuncLoaded := assigned(X509_EXTENSION_set_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_set_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_set_data_allownil)}
+    X509_EXTENSION_set_data := @ERR_X509_EXTENSION_set_data;
+    {$ifend}
     {$if declared(X509_EXTENSION_set_data_introduced)}
     if LibVersion < X509_EXTENSION_set_data_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_set_data)}
       X509_EXTENSION_set_data := @FC_X509_EXTENSION_set_data;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_data_allownil)}
-      X509_EXTENSION_set_data := @ERR_X509_EXTENSION_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_set_data_removed)}
@@ -18754,39 +16105,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_set_data)}
       X509_EXTENSION_set_data := @_X509_EXTENSION_set_data;
-      {$else}
-      {$if not defined(X509_EXTENSION_set_data_allownil)}
-      X509_EXTENSION_set_data := @ERR_X509_EXTENSION_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_set_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_set_data := @ERR_X509_EXTENSION_set_data;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_set_data');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_get_object := LoadLibFunction(ADllHandle, X509_EXTENSION_get_object_procname);
-  FuncLoaded := assigned(X509_EXTENSION_get_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_get_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_get_object_allownil)}
+    X509_EXTENSION_get_object := @ERR_X509_EXTENSION_get_object;
+    {$ifend}
     {$if declared(X509_EXTENSION_get_object_introduced)}
     if LibVersion < X509_EXTENSION_get_object_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_get_object)}
       X509_EXTENSION_get_object := @FC_X509_EXTENSION_get_object;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_object_allownil)}
-      X509_EXTENSION_get_object := @ERR_X509_EXTENSION_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_get_object_removed)}
@@ -18794,39 +16137,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_get_object)}
       X509_EXTENSION_get_object := @_X509_EXTENSION_get_object;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_object_allownil)}
-      X509_EXTENSION_get_object := @ERR_X509_EXTENSION_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_get_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_get_object := @ERR_X509_EXTENSION_get_object;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_get_object');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_get_data := LoadLibFunction(ADllHandle, X509_EXTENSION_get_data_procname);
-  FuncLoaded := assigned(X509_EXTENSION_get_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_get_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_get_data_allownil)}
+    X509_EXTENSION_get_data := @ERR_X509_EXTENSION_get_data;
+    {$ifend}
     {$if declared(X509_EXTENSION_get_data_introduced)}
     if LibVersion < X509_EXTENSION_get_data_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_get_data)}
       X509_EXTENSION_get_data := @FC_X509_EXTENSION_get_data;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_data_allownil)}
-      X509_EXTENSION_get_data := @ERR_X509_EXTENSION_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_get_data_removed)}
@@ -18834,39 +16169,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_get_data)}
       X509_EXTENSION_get_data := @_X509_EXTENSION_get_data;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_data_allownil)}
-      X509_EXTENSION_get_data := @ERR_X509_EXTENSION_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_get_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_get_data := @ERR_X509_EXTENSION_get_data;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_get_data');
-    end;
     {$ifend}
   end;
 
 
   X509_EXTENSION_get_critical := LoadLibFunction(ADllHandle, X509_EXTENSION_get_critical_procname);
-  FuncLoaded := assigned(X509_EXTENSION_get_critical);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_EXTENSION_get_critical);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_EXTENSION_get_critical_allownil)}
+    X509_EXTENSION_get_critical := @ERR_X509_EXTENSION_get_critical;
+    {$ifend}
     {$if declared(X509_EXTENSION_get_critical_introduced)}
     if LibVersion < X509_EXTENSION_get_critical_introduced then
     begin
       {$if declared(FC_X509_EXTENSION_get_critical)}
       X509_EXTENSION_get_critical := @FC_X509_EXTENSION_get_critical;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_critical_allownil)}
-      X509_EXTENSION_get_critical := @ERR_X509_EXTENSION_get_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_EXTENSION_get_critical_removed)}
@@ -18874,39 +16201,31 @@ begin
     begin
       {$if declared(_X509_EXTENSION_get_critical)}
       X509_EXTENSION_get_critical := @_X509_EXTENSION_get_critical;
-      {$else}
-      {$if not defined(X509_EXTENSION_get_critical_allownil)}
-      X509_EXTENSION_get_critical := @ERR_X509_EXTENSION_get_critical;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_EXTENSION_get_critical_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_EXTENSION_get_critical := @ERR_X509_EXTENSION_get_critical;
+    if FuncLoadError then
       AFailed.Add('X509_EXTENSION_get_critical');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_create_by_NID := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_create_by_NID_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_create_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_create_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_create_by_NID_allownil)}
+    X509_ATTRIBUTE_create_by_NID := @ERR_X509_ATTRIBUTE_create_by_NID;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_NID_introduced)}
     if LibVersion < X509_ATTRIBUTE_create_by_NID_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_create_by_NID)}
       X509_ATTRIBUTE_create_by_NID := @FC_X509_ATTRIBUTE_create_by_NID;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_NID_allownil)}
-      X509_ATTRIBUTE_create_by_NID := @ERR_X509_ATTRIBUTE_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_NID_removed)}
@@ -18914,39 +16233,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_create_by_NID)}
       X509_ATTRIBUTE_create_by_NID := @_X509_ATTRIBUTE_create_by_NID;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_NID_allownil)}
-      X509_ATTRIBUTE_create_by_NID := @ERR_X509_ATTRIBUTE_create_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_create_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_create_by_NID := @ERR_X509_ATTRIBUTE_create_by_NID;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_create_by_NID');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_create_by_OBJ := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_create_by_OBJ_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_create_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_create_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_create_by_OBJ_allownil)}
+    X509_ATTRIBUTE_create_by_OBJ := @ERR_X509_ATTRIBUTE_create_by_OBJ;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_OBJ_introduced)}
     if LibVersion < X509_ATTRIBUTE_create_by_OBJ_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_create_by_OBJ)}
       X509_ATTRIBUTE_create_by_OBJ := @FC_X509_ATTRIBUTE_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_OBJ_allownil)}
-      X509_ATTRIBUTE_create_by_OBJ := @ERR_X509_ATTRIBUTE_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_OBJ_removed)}
@@ -18954,39 +16265,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_create_by_OBJ)}
       X509_ATTRIBUTE_create_by_OBJ := @_X509_ATTRIBUTE_create_by_OBJ;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_OBJ_allownil)}
-      X509_ATTRIBUTE_create_by_OBJ := @ERR_X509_ATTRIBUTE_create_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_create_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_create_by_OBJ := @ERR_X509_ATTRIBUTE_create_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_create_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_create_by_txt := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_create_by_txt_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_create_by_txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_create_by_txt);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_create_by_txt_allownil)}
+    X509_ATTRIBUTE_create_by_txt := @ERR_X509_ATTRIBUTE_create_by_txt;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_txt_introduced)}
     if LibVersion < X509_ATTRIBUTE_create_by_txt_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_create_by_txt)}
       X509_ATTRIBUTE_create_by_txt := @FC_X509_ATTRIBUTE_create_by_txt;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_txt_allownil)}
-      X509_ATTRIBUTE_create_by_txt := @ERR_X509_ATTRIBUTE_create_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_create_by_txt_removed)}
@@ -18994,39 +16297,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_create_by_txt)}
       X509_ATTRIBUTE_create_by_txt := @_X509_ATTRIBUTE_create_by_txt;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_create_by_txt_allownil)}
-      X509_ATTRIBUTE_create_by_txt := @ERR_X509_ATTRIBUTE_create_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_create_by_txt_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_create_by_txt := @ERR_X509_ATTRIBUTE_create_by_txt;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_create_by_txt');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_set1_object := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_set1_object_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_set1_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_set1_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_set1_object_allownil)}
+    X509_ATTRIBUTE_set1_object := @ERR_X509_ATTRIBUTE_set1_object;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_set1_object_introduced)}
     if LibVersion < X509_ATTRIBUTE_set1_object_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_set1_object)}
       X509_ATTRIBUTE_set1_object := @FC_X509_ATTRIBUTE_set1_object;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_set1_object_allownil)}
-      X509_ATTRIBUTE_set1_object := @ERR_X509_ATTRIBUTE_set1_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_set1_object_removed)}
@@ -19034,39 +16329,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_set1_object)}
       X509_ATTRIBUTE_set1_object := @_X509_ATTRIBUTE_set1_object;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_set1_object_allownil)}
-      X509_ATTRIBUTE_set1_object := @ERR_X509_ATTRIBUTE_set1_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_set1_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_set1_object := @ERR_X509_ATTRIBUTE_set1_object;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_set1_object');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_set1_data := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_set1_data_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_set1_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_set1_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_set1_data_allownil)}
+    X509_ATTRIBUTE_set1_data := @ERR_X509_ATTRIBUTE_set1_data;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_set1_data_introduced)}
     if LibVersion < X509_ATTRIBUTE_set1_data_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_set1_data)}
       X509_ATTRIBUTE_set1_data := @FC_X509_ATTRIBUTE_set1_data;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_set1_data_allownil)}
-      X509_ATTRIBUTE_set1_data := @ERR_X509_ATTRIBUTE_set1_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_set1_data_removed)}
@@ -19074,39 +16361,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_set1_data)}
       X509_ATTRIBUTE_set1_data := @_X509_ATTRIBUTE_set1_data;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_set1_data_allownil)}
-      X509_ATTRIBUTE_set1_data := @ERR_X509_ATTRIBUTE_set1_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_set1_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_set1_data := @ERR_X509_ATTRIBUTE_set1_data;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_set1_data');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_get0_data := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_get0_data_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_get0_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_get0_data);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_get0_data_allownil)}
+    X509_ATTRIBUTE_get0_data := @ERR_X509_ATTRIBUTE_get0_data;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_data_introduced)}
     if LibVersion < X509_ATTRIBUTE_get0_data_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_get0_data)}
       X509_ATTRIBUTE_get0_data := @FC_X509_ATTRIBUTE_get0_data;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_data_allownil)}
-      X509_ATTRIBUTE_get0_data := @ERR_X509_ATTRIBUTE_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_data_removed)}
@@ -19114,39 +16393,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_get0_data)}
       X509_ATTRIBUTE_get0_data := @_X509_ATTRIBUTE_get0_data;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_data_allownil)}
-      X509_ATTRIBUTE_get0_data := @ERR_X509_ATTRIBUTE_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_get0_data_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_get0_data := @ERR_X509_ATTRIBUTE_get0_data;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_get0_data');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_count := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_count_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_count_allownil)}
+    X509_ATTRIBUTE_count := @ERR_X509_ATTRIBUTE_count;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_count_introduced)}
     if LibVersion < X509_ATTRIBUTE_count_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_count)}
       X509_ATTRIBUTE_count := @FC_X509_ATTRIBUTE_count;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_count_allownil)}
-      X509_ATTRIBUTE_count := @ERR_X509_ATTRIBUTE_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_count_removed)}
@@ -19154,39 +16425,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_count)}
       X509_ATTRIBUTE_count := @_X509_ATTRIBUTE_count;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_count_allownil)}
-      X509_ATTRIBUTE_count := @ERR_X509_ATTRIBUTE_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_count := @ERR_X509_ATTRIBUTE_count;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_count');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_get0_object := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_get0_object_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_get0_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_get0_object);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_get0_object_allownil)}
+    X509_ATTRIBUTE_get0_object := @ERR_X509_ATTRIBUTE_get0_object;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_object_introduced)}
     if LibVersion < X509_ATTRIBUTE_get0_object_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_get0_object)}
       X509_ATTRIBUTE_get0_object := @FC_X509_ATTRIBUTE_get0_object;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_object_allownil)}
-      X509_ATTRIBUTE_get0_object := @ERR_X509_ATTRIBUTE_get0_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_object_removed)}
@@ -19194,39 +16457,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_get0_object)}
       X509_ATTRIBUTE_get0_object := @_X509_ATTRIBUTE_get0_object;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_object_allownil)}
-      X509_ATTRIBUTE_get0_object := @ERR_X509_ATTRIBUTE_get0_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_get0_object_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_get0_object := @ERR_X509_ATTRIBUTE_get0_object;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_get0_object');
-    end;
     {$ifend}
   end;
 
 
   X509_ATTRIBUTE_get0_type := LoadLibFunction(ADllHandle, X509_ATTRIBUTE_get0_type_procname);
-  FuncLoaded := assigned(X509_ATTRIBUTE_get0_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_ATTRIBUTE_get0_type);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_ATTRIBUTE_get0_type_allownil)}
+    X509_ATTRIBUTE_get0_type := @ERR_X509_ATTRIBUTE_get0_type;
+    {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_type_introduced)}
     if LibVersion < X509_ATTRIBUTE_get0_type_introduced then
     begin
       {$if declared(FC_X509_ATTRIBUTE_get0_type)}
       X509_ATTRIBUTE_get0_type := @FC_X509_ATTRIBUTE_get0_type;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_type_allownil)}
-      X509_ATTRIBUTE_get0_type := @ERR_X509_ATTRIBUTE_get0_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_ATTRIBUTE_get0_type_removed)}
@@ -19234,39 +16489,31 @@ begin
     begin
       {$if declared(_X509_ATTRIBUTE_get0_type)}
       X509_ATTRIBUTE_get0_type := @_X509_ATTRIBUTE_get0_type;
-      {$else}
-      {$if not defined(X509_ATTRIBUTE_get0_type_allownil)}
-      X509_ATTRIBUTE_get0_type := @ERR_X509_ATTRIBUTE_get0_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_ATTRIBUTE_get0_type_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_ATTRIBUTE_get0_type := @ERR_X509_ATTRIBUTE_get0_type;
+    if FuncLoadError then
       AFailed.Add('X509_ATTRIBUTE_get0_type');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get_attr_count := LoadLibFunction(ADllHandle, EVP_PKEY_get_attr_count_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_attr_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_attr_count);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_attr_count_allownil)}
+    EVP_PKEY_get_attr_count := @ERR_EVP_PKEY_get_attr_count;
+    {$ifend}
     {$if declared(EVP_PKEY_get_attr_count_introduced)}
     if LibVersion < EVP_PKEY_get_attr_count_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_attr_count)}
       EVP_PKEY_get_attr_count := @FC_EVP_PKEY_get_attr_count;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_count_allownil)}
-      EVP_PKEY_get_attr_count := @ERR_EVP_PKEY_get_attr_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_attr_count_removed)}
@@ -19274,39 +16521,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_attr_count)}
       EVP_PKEY_get_attr_count := @_EVP_PKEY_get_attr_count;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_count_allownil)}
-      EVP_PKEY_get_attr_count := @ERR_EVP_PKEY_get_attr_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_attr_count_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_attr_count := @ERR_EVP_PKEY_get_attr_count;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_attr_count');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get_attr_by_NID := LoadLibFunction(ADllHandle, EVP_PKEY_get_attr_by_NID_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_attr_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_attr_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_attr_by_NID_allownil)}
+    EVP_PKEY_get_attr_by_NID := @ERR_EVP_PKEY_get_attr_by_NID;
+    {$ifend}
     {$if declared(EVP_PKEY_get_attr_by_NID_introduced)}
     if LibVersion < EVP_PKEY_get_attr_by_NID_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_attr_by_NID)}
       EVP_PKEY_get_attr_by_NID := @FC_EVP_PKEY_get_attr_by_NID;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_by_NID_allownil)}
-      EVP_PKEY_get_attr_by_NID := @ERR_EVP_PKEY_get_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_attr_by_NID_removed)}
@@ -19314,39 +16553,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_attr_by_NID)}
       EVP_PKEY_get_attr_by_NID := @_EVP_PKEY_get_attr_by_NID;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_by_NID_allownil)}
-      EVP_PKEY_get_attr_by_NID := @ERR_EVP_PKEY_get_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_attr_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_attr_by_NID := @ERR_EVP_PKEY_get_attr_by_NID;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_attr_by_NID');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get_attr_by_OBJ := LoadLibFunction(ADllHandle, EVP_PKEY_get_attr_by_OBJ_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_attr_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_attr_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_attr_by_OBJ_allownil)}
+    EVP_PKEY_get_attr_by_OBJ := @ERR_EVP_PKEY_get_attr_by_OBJ;
+    {$ifend}
     {$if declared(EVP_PKEY_get_attr_by_OBJ_introduced)}
     if LibVersion < EVP_PKEY_get_attr_by_OBJ_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_attr_by_OBJ)}
       EVP_PKEY_get_attr_by_OBJ := @FC_EVP_PKEY_get_attr_by_OBJ;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_by_OBJ_allownil)}
-      EVP_PKEY_get_attr_by_OBJ := @ERR_EVP_PKEY_get_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_attr_by_OBJ_removed)}
@@ -19354,39 +16585,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_attr_by_OBJ)}
       EVP_PKEY_get_attr_by_OBJ := @_EVP_PKEY_get_attr_by_OBJ;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_by_OBJ_allownil)}
-      EVP_PKEY_get_attr_by_OBJ := @ERR_EVP_PKEY_get_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_attr_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_attr_by_OBJ := @ERR_EVP_PKEY_get_attr_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_attr_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get_attr := LoadLibFunction(ADllHandle, EVP_PKEY_get_attr_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_attr_allownil)}
+    EVP_PKEY_get_attr := @ERR_EVP_PKEY_get_attr;
+    {$ifend}
     {$if declared(EVP_PKEY_get_attr_introduced)}
     if LibVersion < EVP_PKEY_get_attr_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_attr)}
       EVP_PKEY_get_attr := @FC_EVP_PKEY_get_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_allownil)}
-      EVP_PKEY_get_attr := @ERR_EVP_PKEY_get_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_attr_removed)}
@@ -19394,39 +16617,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_attr)}
       EVP_PKEY_get_attr := @_EVP_PKEY_get_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_get_attr_allownil)}
-      EVP_PKEY_get_attr := @ERR_EVP_PKEY_get_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_attr := @ERR_EVP_PKEY_get_attr;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_attr');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_delete_attr := LoadLibFunction(ADllHandle, EVP_PKEY_delete_attr_procname);
-  FuncLoaded := assigned(EVP_PKEY_delete_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_delete_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_delete_attr_allownil)}
+    EVP_PKEY_delete_attr := @ERR_EVP_PKEY_delete_attr;
+    {$ifend}
     {$if declared(EVP_PKEY_delete_attr_introduced)}
     if LibVersion < EVP_PKEY_delete_attr_introduced then
     begin
       {$if declared(FC_EVP_PKEY_delete_attr)}
       EVP_PKEY_delete_attr := @FC_EVP_PKEY_delete_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_delete_attr_allownil)}
-      EVP_PKEY_delete_attr := @ERR_EVP_PKEY_delete_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_delete_attr_removed)}
@@ -19434,39 +16649,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_delete_attr)}
       EVP_PKEY_delete_attr := @_EVP_PKEY_delete_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_delete_attr_allownil)}
-      EVP_PKEY_delete_attr := @ERR_EVP_PKEY_delete_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_delete_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_delete_attr := @ERR_EVP_PKEY_delete_attr;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_delete_attr');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_add1_attr := LoadLibFunction(ADllHandle, EVP_PKEY_add1_attr_procname);
-  FuncLoaded := assigned(EVP_PKEY_add1_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_add1_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_add1_attr_allownil)}
+    EVP_PKEY_add1_attr := @ERR_EVP_PKEY_add1_attr;
+    {$ifend}
     {$if declared(EVP_PKEY_add1_attr_introduced)}
     if LibVersion < EVP_PKEY_add1_attr_introduced then
     begin
       {$if declared(FC_EVP_PKEY_add1_attr)}
       EVP_PKEY_add1_attr := @FC_EVP_PKEY_add1_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_allownil)}
-      EVP_PKEY_add1_attr := @ERR_EVP_PKEY_add1_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_add1_attr_removed)}
@@ -19474,39 +16681,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_add1_attr)}
       EVP_PKEY_add1_attr := @_EVP_PKEY_add1_attr;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_allownil)}
-      EVP_PKEY_add1_attr := @ERR_EVP_PKEY_add1_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_add1_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_add1_attr := @ERR_EVP_PKEY_add1_attr;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_add1_attr');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_add1_attr_by_OBJ := LoadLibFunction(ADllHandle, EVP_PKEY_add1_attr_by_OBJ_procname);
-  FuncLoaded := assigned(EVP_PKEY_add1_attr_by_OBJ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_add1_attr_by_OBJ);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_add1_attr_by_OBJ_allownil)}
+    EVP_PKEY_add1_attr_by_OBJ := @ERR_EVP_PKEY_add1_attr_by_OBJ;
+    {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_OBJ_introduced)}
     if LibVersion < EVP_PKEY_add1_attr_by_OBJ_introduced then
     begin
       {$if declared(FC_EVP_PKEY_add1_attr_by_OBJ)}
       EVP_PKEY_add1_attr_by_OBJ := @FC_EVP_PKEY_add1_attr_by_OBJ;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_OBJ_allownil)}
-      EVP_PKEY_add1_attr_by_OBJ := @ERR_EVP_PKEY_add1_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_OBJ_removed)}
@@ -19514,39 +16713,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_add1_attr_by_OBJ)}
       EVP_PKEY_add1_attr_by_OBJ := @_EVP_PKEY_add1_attr_by_OBJ;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_OBJ_allownil)}
-      EVP_PKEY_add1_attr_by_OBJ := @ERR_EVP_PKEY_add1_attr_by_OBJ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_add1_attr_by_OBJ_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_add1_attr_by_OBJ := @ERR_EVP_PKEY_add1_attr_by_OBJ;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_add1_attr_by_OBJ');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_add1_attr_by_NID := LoadLibFunction(ADllHandle, EVP_PKEY_add1_attr_by_NID_procname);
-  FuncLoaded := assigned(EVP_PKEY_add1_attr_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_add1_attr_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_add1_attr_by_NID_allownil)}
+    EVP_PKEY_add1_attr_by_NID := @ERR_EVP_PKEY_add1_attr_by_NID;
+    {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_NID_introduced)}
     if LibVersion < EVP_PKEY_add1_attr_by_NID_introduced then
     begin
       {$if declared(FC_EVP_PKEY_add1_attr_by_NID)}
       EVP_PKEY_add1_attr_by_NID := @FC_EVP_PKEY_add1_attr_by_NID;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_NID_allownil)}
-      EVP_PKEY_add1_attr_by_NID := @ERR_EVP_PKEY_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_NID_removed)}
@@ -19554,39 +16745,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_add1_attr_by_NID)}
       EVP_PKEY_add1_attr_by_NID := @_EVP_PKEY_add1_attr_by_NID;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_NID_allownil)}
-      EVP_PKEY_add1_attr_by_NID := @ERR_EVP_PKEY_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_add1_attr_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_add1_attr_by_NID := @ERR_EVP_PKEY_add1_attr_by_NID;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_add1_attr_by_NID');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_add1_attr_by_txt := LoadLibFunction(ADllHandle, EVP_PKEY_add1_attr_by_txt_procname);
-  FuncLoaded := assigned(EVP_PKEY_add1_attr_by_txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_add1_attr_by_txt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_add1_attr_by_txt_allownil)}
+    EVP_PKEY_add1_attr_by_txt := @ERR_EVP_PKEY_add1_attr_by_txt;
+    {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_txt_introduced)}
     if LibVersion < EVP_PKEY_add1_attr_by_txt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_add1_attr_by_txt)}
       EVP_PKEY_add1_attr_by_txt := @FC_EVP_PKEY_add1_attr_by_txt;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_txt_allownil)}
-      EVP_PKEY_add1_attr_by_txt := @ERR_EVP_PKEY_add1_attr_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_add1_attr_by_txt_removed)}
@@ -19594,39 +16777,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_add1_attr_by_txt)}
       EVP_PKEY_add1_attr_by_txt := @_EVP_PKEY_add1_attr_by_txt;
-      {$else}
-      {$if not defined(EVP_PKEY_add1_attr_by_txt_allownil)}
-      EVP_PKEY_add1_attr_by_txt := @ERR_EVP_PKEY_add1_attr_by_txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_add1_attr_by_txt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_add1_attr_by_txt := @ERR_EVP_PKEY_add1_attr_by_txt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_add1_attr_by_txt');
-    end;
     {$ifend}
   end;
 
 
   X509_verify_cert := LoadLibFunction(ADllHandle, X509_verify_cert_procname);
-  FuncLoaded := assigned(X509_verify_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_verify_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_verify_cert_allownil)}
+    X509_verify_cert := @ERR_X509_verify_cert;
+    {$ifend}
     {$if declared(X509_verify_cert_introduced)}
     if LibVersion < X509_verify_cert_introduced then
     begin
       {$if declared(FC_X509_verify_cert)}
       X509_verify_cert := @FC_X509_verify_cert;
-      {$else}
-      {$if not defined(X509_verify_cert_allownil)}
-      X509_verify_cert := @ERR_X509_verify_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_verify_cert_removed)}
@@ -19634,39 +16809,31 @@ begin
     begin
       {$if declared(_X509_verify_cert)}
       X509_verify_cert := @_X509_verify_cert;
-      {$else}
-      {$if not defined(X509_verify_cert_allownil)}
-      X509_verify_cert := @ERR_X509_verify_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_verify_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_verify_cert := @ERR_X509_verify_cert;
+    if FuncLoadError then
       AFailed.Add('X509_verify_cert');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_pbe_set0_algor := LoadLibFunction(ADllHandle, PKCS5_pbe_set0_algor_procname);
-  FuncLoaded := assigned(PKCS5_pbe_set0_algor);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbe_set0_algor);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbe_set0_algor_allownil)}
+    PKCS5_pbe_set0_algor := @ERR_PKCS5_pbe_set0_algor;
+    {$ifend}
     {$if declared(PKCS5_pbe_set0_algor_introduced)}
     if LibVersion < PKCS5_pbe_set0_algor_introduced then
     begin
       {$if declared(FC_PKCS5_pbe_set0_algor)}
       PKCS5_pbe_set0_algor := @FC_PKCS5_pbe_set0_algor;
-      {$else}
-      {$if not defined(PKCS5_pbe_set0_algor_allownil)}
-      PKCS5_pbe_set0_algor := @ERR_PKCS5_pbe_set0_algor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbe_set0_algor_removed)}
@@ -19674,39 +16841,31 @@ begin
     begin
       {$if declared(_PKCS5_pbe_set0_algor)}
       PKCS5_pbe_set0_algor := @_PKCS5_pbe_set0_algor;
-      {$else}
-      {$if not defined(PKCS5_pbe_set0_algor_allownil)}
-      PKCS5_pbe_set0_algor := @ERR_PKCS5_pbe_set0_algor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbe_set0_algor_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbe_set0_algor := @ERR_PKCS5_pbe_set0_algor;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbe_set0_algor');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_pbe_set := LoadLibFunction(ADllHandle, PKCS5_pbe_set_procname);
-  FuncLoaded := assigned(PKCS5_pbe_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbe_set);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbe_set_allownil)}
+    PKCS5_pbe_set := @ERR_PKCS5_pbe_set;
+    {$ifend}
     {$if declared(PKCS5_pbe_set_introduced)}
     if LibVersion < PKCS5_pbe_set_introduced then
     begin
       {$if declared(FC_PKCS5_pbe_set)}
       PKCS5_pbe_set := @FC_PKCS5_pbe_set;
-      {$else}
-      {$if not defined(PKCS5_pbe_set_allownil)}
-      PKCS5_pbe_set := @ERR_PKCS5_pbe_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbe_set_removed)}
@@ -19714,39 +16873,31 @@ begin
     begin
       {$if declared(_PKCS5_pbe_set)}
       PKCS5_pbe_set := @_PKCS5_pbe_set;
-      {$else}
-      {$if not defined(PKCS5_pbe_set_allownil)}
-      PKCS5_pbe_set := @ERR_PKCS5_pbe_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbe_set_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbe_set := @ERR_PKCS5_pbe_set;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbe_set');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_pbe2_set := LoadLibFunction(ADllHandle, PKCS5_pbe2_set_procname);
-  FuncLoaded := assigned(PKCS5_pbe2_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbe2_set);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbe2_set_allownil)}
+    PKCS5_pbe2_set := @ERR_PKCS5_pbe2_set;
+    {$ifend}
     {$if declared(PKCS5_pbe2_set_introduced)}
     if LibVersion < PKCS5_pbe2_set_introduced then
     begin
       {$if declared(FC_PKCS5_pbe2_set)}
       PKCS5_pbe2_set := @FC_PKCS5_pbe2_set;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_allownil)}
-      PKCS5_pbe2_set := @ERR_PKCS5_pbe2_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbe2_set_removed)}
@@ -19754,39 +16905,31 @@ begin
     begin
       {$if declared(_PKCS5_pbe2_set)}
       PKCS5_pbe2_set := @_PKCS5_pbe2_set;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_allownil)}
-      PKCS5_pbe2_set := @ERR_PKCS5_pbe2_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbe2_set_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbe2_set := @ERR_PKCS5_pbe2_set;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbe2_set');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_pbe2_set_iv := LoadLibFunction(ADllHandle, PKCS5_pbe2_set_iv_procname);
-  FuncLoaded := assigned(PKCS5_pbe2_set_iv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbe2_set_iv);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbe2_set_iv_allownil)}
+    PKCS5_pbe2_set_iv := @ERR_PKCS5_pbe2_set_iv;
+    {$ifend}
     {$if declared(PKCS5_pbe2_set_iv_introduced)}
     if LibVersion < PKCS5_pbe2_set_iv_introduced then
     begin
       {$if declared(FC_PKCS5_pbe2_set_iv)}
       PKCS5_pbe2_set_iv := @FC_PKCS5_pbe2_set_iv;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_iv_allownil)}
-      PKCS5_pbe2_set_iv := @ERR_PKCS5_pbe2_set_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbe2_set_iv_removed)}
@@ -19794,39 +16937,31 @@ begin
     begin
       {$if declared(_PKCS5_pbe2_set_iv)}
       PKCS5_pbe2_set_iv := @_PKCS5_pbe2_set_iv;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_iv_allownil)}
-      PKCS5_pbe2_set_iv := @ERR_PKCS5_pbe2_set_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbe2_set_iv_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbe2_set_iv := @ERR_PKCS5_pbe2_set_iv;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbe2_set_iv');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_pbe2_set_scrypt := LoadLibFunction(ADllHandle, PKCS5_pbe2_set_scrypt_procname);
-  FuncLoaded := assigned(PKCS5_pbe2_set_scrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbe2_set_scrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbe2_set_scrypt_allownil)}
+    PKCS5_pbe2_set_scrypt := @ERR_PKCS5_pbe2_set_scrypt;
+    {$ifend}
     {$if declared(PKCS5_pbe2_set_scrypt_introduced)}
     if LibVersion < PKCS5_pbe2_set_scrypt_introduced then
     begin
       {$if declared(FC_PKCS5_pbe2_set_scrypt)}
       PKCS5_pbe2_set_scrypt := @FC_PKCS5_pbe2_set_scrypt;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_scrypt_allownil)}
-      PKCS5_pbe2_set_scrypt := @ERR_PKCS5_pbe2_set_scrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbe2_set_scrypt_removed)}
@@ -19834,39 +16969,31 @@ begin
     begin
       {$if declared(_PKCS5_pbe2_set_scrypt)}
       PKCS5_pbe2_set_scrypt := @_PKCS5_pbe2_set_scrypt;
-      {$else}
-      {$if not defined(PKCS5_pbe2_set_scrypt_allownil)}
-      PKCS5_pbe2_set_scrypt := @ERR_PKCS5_pbe2_set_scrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbe2_set_scrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbe2_set_scrypt := @ERR_PKCS5_pbe2_set_scrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbe2_set_scrypt');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS5_pbkdf2_set := LoadLibFunction(ADllHandle, PKCS5_pbkdf2_set_procname);
-  FuncLoaded := assigned(PKCS5_pbkdf2_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_pbkdf2_set);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_pbkdf2_set_allownil)}
+    PKCS5_pbkdf2_set := @ERR_PKCS5_pbkdf2_set;
+    {$ifend}
     {$if declared(PKCS5_pbkdf2_set_introduced)}
     if LibVersion < PKCS5_pbkdf2_set_introduced then
     begin
       {$if declared(FC_PKCS5_pbkdf2_set)}
       PKCS5_pbkdf2_set := @FC_PKCS5_pbkdf2_set;
-      {$else}
-      {$if not defined(PKCS5_pbkdf2_set_allownil)}
-      PKCS5_pbkdf2_set := @ERR_PKCS5_pbkdf2_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_pbkdf2_set_removed)}
@@ -19874,39 +17001,31 @@ begin
     begin
       {$if declared(_PKCS5_pbkdf2_set)}
       PKCS5_pbkdf2_set := @_PKCS5_pbkdf2_set;
-      {$else}
-      {$if not defined(PKCS5_pbkdf2_set_allownil)}
-      PKCS5_pbkdf2_set := @ERR_PKCS5_pbkdf2_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_pbkdf2_set_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_pbkdf2_set := @ERR_PKCS5_pbkdf2_set;
+    if FuncLoadError then
       AFailed.Add('PKCS5_pbkdf2_set');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKCS82PKEY := LoadLibFunction(ADllHandle, EVP_PKCS82PKEY_procname);
-  FuncLoaded := assigned(EVP_PKCS82PKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKCS82PKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKCS82PKEY_allownil)}
+    EVP_PKCS82PKEY := @ERR_EVP_PKCS82PKEY;
+    {$ifend}
     {$if declared(EVP_PKCS82PKEY_introduced)}
     if LibVersion < EVP_PKCS82PKEY_introduced then
     begin
       {$if declared(FC_EVP_PKCS82PKEY)}
       EVP_PKCS82PKEY := @FC_EVP_PKCS82PKEY;
-      {$else}
-      {$if not defined(EVP_PKCS82PKEY_allownil)}
-      EVP_PKCS82PKEY := @ERR_EVP_PKCS82PKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKCS82PKEY_removed)}
@@ -19914,39 +17033,31 @@ begin
     begin
       {$if declared(_EVP_PKCS82PKEY)}
       EVP_PKCS82PKEY := @_EVP_PKCS82PKEY;
-      {$else}
-      {$if not defined(EVP_PKCS82PKEY_allownil)}
-      EVP_PKCS82PKEY := @ERR_EVP_PKCS82PKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKCS82PKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKCS82PKEY := @ERR_EVP_PKCS82PKEY;
+    if FuncLoadError then
       AFailed.Add('EVP_PKCS82PKEY');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY2PKCS8 := LoadLibFunction(ADllHandle, EVP_PKEY2PKCS8_procname);
-  FuncLoaded := assigned(EVP_PKEY2PKCS8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY2PKCS8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY2PKCS8_allownil)}
+    EVP_PKEY2PKCS8 := @ERR_EVP_PKEY2PKCS8;
+    {$ifend}
     {$if declared(EVP_PKEY2PKCS8_introduced)}
     if LibVersion < EVP_PKEY2PKCS8_introduced then
     begin
       {$if declared(FC_EVP_PKEY2PKCS8)}
       EVP_PKEY2PKCS8 := @FC_EVP_PKEY2PKCS8;
-      {$else}
-      {$if not defined(EVP_PKEY2PKCS8_allownil)}
-      EVP_PKEY2PKCS8 := @ERR_EVP_PKEY2PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY2PKCS8_removed)}
@@ -19954,39 +17065,31 @@ begin
     begin
       {$if declared(_EVP_PKEY2PKCS8)}
       EVP_PKEY2PKCS8 := @_EVP_PKEY2PKCS8;
-      {$else}
-      {$if not defined(EVP_PKEY2PKCS8_allownil)}
-      EVP_PKEY2PKCS8 := @ERR_EVP_PKEY2PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY2PKCS8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY2PKCS8 := @ERR_EVP_PKEY2PKCS8;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY2PKCS8');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_pkey_set0 := LoadLibFunction(ADllHandle, PKCS8_pkey_set0_procname);
-  FuncLoaded := assigned(PKCS8_pkey_set0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_pkey_set0);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_pkey_set0_allownil)}
+    PKCS8_pkey_set0 := @ERR_PKCS8_pkey_set0;
+    {$ifend}
     {$if declared(PKCS8_pkey_set0_introduced)}
     if LibVersion < PKCS8_pkey_set0_introduced then
     begin
       {$if declared(FC_PKCS8_pkey_set0)}
       PKCS8_pkey_set0 := @FC_PKCS8_pkey_set0;
-      {$else}
-      {$if not defined(PKCS8_pkey_set0_allownil)}
-      PKCS8_pkey_set0 := @ERR_PKCS8_pkey_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_pkey_set0_removed)}
@@ -19994,39 +17097,31 @@ begin
     begin
       {$if declared(_PKCS8_pkey_set0)}
       PKCS8_pkey_set0 := @_PKCS8_pkey_set0;
-      {$else}
-      {$if not defined(PKCS8_pkey_set0_allownil)}
-      PKCS8_pkey_set0 := @ERR_PKCS8_pkey_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_pkey_set0_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_pkey_set0 := @ERR_PKCS8_pkey_set0;
+    if FuncLoadError then
       AFailed.Add('PKCS8_pkey_set0');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_pkey_get0 := LoadLibFunction(ADllHandle, PKCS8_pkey_get0_procname);
-  FuncLoaded := assigned(PKCS8_pkey_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_pkey_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_pkey_get0_allownil)}
+    PKCS8_pkey_get0 := @ERR_PKCS8_pkey_get0;
+    {$ifend}
     {$if declared(PKCS8_pkey_get0_introduced)}
     if LibVersion < PKCS8_pkey_get0_introduced then
     begin
       {$if declared(FC_PKCS8_pkey_get0)}
       PKCS8_pkey_get0 := @FC_PKCS8_pkey_get0;
-      {$else}
-      {$if not defined(PKCS8_pkey_get0_allownil)}
-      PKCS8_pkey_get0 := @ERR_PKCS8_pkey_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_pkey_get0_removed)}
@@ -20034,39 +17129,31 @@ begin
     begin
       {$if declared(_PKCS8_pkey_get0)}
       PKCS8_pkey_get0 := @_PKCS8_pkey_get0;
-      {$else}
-      {$if not defined(PKCS8_pkey_get0_allownil)}
-      PKCS8_pkey_get0 := @ERR_PKCS8_pkey_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_pkey_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_pkey_get0 := @ERR_PKCS8_pkey_get0;
+    if FuncLoadError then
       AFailed.Add('PKCS8_pkey_get0');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_pkey_add1_attr_by_NID := LoadLibFunction(ADllHandle, PKCS8_pkey_add1_attr_by_NID_procname);
-  FuncLoaded := assigned(PKCS8_pkey_add1_attr_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_pkey_add1_attr_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_pkey_add1_attr_by_NID_allownil)}
+    PKCS8_pkey_add1_attr_by_NID := @ERR_PKCS8_pkey_add1_attr_by_NID;
+    {$ifend}
     {$if declared(PKCS8_pkey_add1_attr_by_NID_introduced)}
     if LibVersion < PKCS8_pkey_add1_attr_by_NID_introduced then
     begin
       {$if declared(FC_PKCS8_pkey_add1_attr_by_NID)}
       PKCS8_pkey_add1_attr_by_NID := @FC_PKCS8_pkey_add1_attr_by_NID;
-      {$else}
-      {$if not defined(PKCS8_pkey_add1_attr_by_NID_allownil)}
-      PKCS8_pkey_add1_attr_by_NID := @ERR_PKCS8_pkey_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_pkey_add1_attr_by_NID_removed)}
@@ -20074,39 +17161,31 @@ begin
     begin
       {$if declared(_PKCS8_pkey_add1_attr_by_NID)}
       PKCS8_pkey_add1_attr_by_NID := @_PKCS8_pkey_add1_attr_by_NID;
-      {$else}
-      {$if not defined(PKCS8_pkey_add1_attr_by_NID_allownil)}
-      PKCS8_pkey_add1_attr_by_NID := @ERR_PKCS8_pkey_add1_attr_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_pkey_add1_attr_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_pkey_add1_attr_by_NID := @ERR_PKCS8_pkey_add1_attr_by_NID;
+    if FuncLoadError then
       AFailed.Add('PKCS8_pkey_add1_attr_by_NID');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   X509_PUBKEY_set0_param := LoadLibFunction(ADllHandle, X509_PUBKEY_set0_param_procname);
-  FuncLoaded := assigned(X509_PUBKEY_set0_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_set0_param);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_set0_param_allownil)}
+    X509_PUBKEY_set0_param := @ERR_X509_PUBKEY_set0_param;
+    {$ifend}
     {$if declared(X509_PUBKEY_set0_param_introduced)}
     if LibVersion < X509_PUBKEY_set0_param_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_set0_param)}
       X509_PUBKEY_set0_param := @FC_X509_PUBKEY_set0_param;
-      {$else}
-      {$if not defined(X509_PUBKEY_set0_param_allownil)}
-      X509_PUBKEY_set0_param := @ERR_X509_PUBKEY_set0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_set0_param_removed)}
@@ -20114,39 +17193,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_set0_param)}
       X509_PUBKEY_set0_param := @_X509_PUBKEY_set0_param;
-      {$else}
-      {$if not defined(X509_PUBKEY_set0_param_allownil)}
-      X509_PUBKEY_set0_param := @ERR_X509_PUBKEY_set0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_set0_param_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_set0_param := @ERR_X509_PUBKEY_set0_param;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_set0_param');
-    end;
     {$ifend}
   end;
 
 
   X509_PUBKEY_get0_param := LoadLibFunction(ADllHandle, X509_PUBKEY_get0_param_procname);
-  FuncLoaded := assigned(X509_PUBKEY_get0_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_PUBKEY_get0_param);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_PUBKEY_get0_param_allownil)}
+    X509_PUBKEY_get0_param := @ERR_X509_PUBKEY_get0_param;
+    {$ifend}
     {$if declared(X509_PUBKEY_get0_param_introduced)}
     if LibVersion < X509_PUBKEY_get0_param_introduced then
     begin
       {$if declared(FC_X509_PUBKEY_get0_param)}
       X509_PUBKEY_get0_param := @FC_X509_PUBKEY_get0_param;
-      {$else}
-      {$if not defined(X509_PUBKEY_get0_param_allownil)}
-      X509_PUBKEY_get0_param := @ERR_X509_PUBKEY_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_PUBKEY_get0_param_removed)}
@@ -20154,39 +17225,31 @@ begin
     begin
       {$if declared(_X509_PUBKEY_get0_param)}
       X509_PUBKEY_get0_param := @_X509_PUBKEY_get0_param;
-      {$else}
-      {$if not defined(X509_PUBKEY_get0_param_allownil)}
-      X509_PUBKEY_get0_param := @ERR_X509_PUBKEY_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_PUBKEY_get0_param_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_PUBKEY_get0_param := @ERR_X509_PUBKEY_get0_param;
+    if FuncLoadError then
       AFailed.Add('X509_PUBKEY_get0_param');
-    end;
     {$ifend}
   end;
 
 
   X509_check_trust := LoadLibFunction(ADllHandle, X509_check_trust_procname);
-  FuncLoaded := assigned(X509_check_trust);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_check_trust);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_check_trust_allownil)}
+    X509_check_trust := @ERR_X509_check_trust;
+    {$ifend}
     {$if declared(X509_check_trust_introduced)}
     if LibVersion < X509_check_trust_introduced then
     begin
       {$if declared(FC_X509_check_trust)}
       X509_check_trust := @FC_X509_check_trust;
-      {$else}
-      {$if not defined(X509_check_trust_allownil)}
-      X509_check_trust := @ERR_X509_check_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_check_trust_removed)}
@@ -20194,39 +17257,31 @@ begin
     begin
       {$if declared(_X509_check_trust)}
       X509_check_trust := @_X509_check_trust;
-      {$else}
-      {$if not defined(X509_check_trust_allownil)}
-      X509_check_trust := @ERR_X509_check_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_check_trust_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_check_trust := @ERR_X509_check_trust;
+    if FuncLoadError then
       AFailed.Add('X509_check_trust');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get_count := LoadLibFunction(ADllHandle, X509_TRUST_get_count_procname);
-  FuncLoaded := assigned(X509_TRUST_get_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get_count);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get_count_allownil)}
+    X509_TRUST_get_count := @ERR_X509_TRUST_get_count;
+    {$ifend}
     {$if declared(X509_TRUST_get_count_introduced)}
     if LibVersion < X509_TRUST_get_count_introduced then
     begin
       {$if declared(FC_X509_TRUST_get_count)}
       X509_TRUST_get_count := @FC_X509_TRUST_get_count;
-      {$else}
-      {$if not defined(X509_TRUST_get_count_allownil)}
-      X509_TRUST_get_count := @ERR_X509_TRUST_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get_count_removed)}
@@ -20234,39 +17289,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get_count)}
       X509_TRUST_get_count := @_X509_TRUST_get_count;
-      {$else}
-      {$if not defined(X509_TRUST_get_count_allownil)}
-      X509_TRUST_get_count := @ERR_X509_TRUST_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get_count_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get_count := @ERR_X509_TRUST_get_count;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get_count');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get0 := LoadLibFunction(ADllHandle, X509_TRUST_get0_procname);
-  FuncLoaded := assigned(X509_TRUST_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get0_allownil)}
+    X509_TRUST_get0 := @ERR_X509_TRUST_get0;
+    {$ifend}
     {$if declared(X509_TRUST_get0_introduced)}
     if LibVersion < X509_TRUST_get0_introduced then
     begin
       {$if declared(FC_X509_TRUST_get0)}
       X509_TRUST_get0 := @FC_X509_TRUST_get0;
-      {$else}
-      {$if not defined(X509_TRUST_get0_allownil)}
-      X509_TRUST_get0 := @ERR_X509_TRUST_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get0_removed)}
@@ -20274,39 +17321,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get0)}
       X509_TRUST_get0 := @_X509_TRUST_get0;
-      {$else}
-      {$if not defined(X509_TRUST_get0_allownil)}
-      X509_TRUST_get0 := @ERR_X509_TRUST_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get0 := @ERR_X509_TRUST_get0;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get0');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get_by_id := LoadLibFunction(ADllHandle, X509_TRUST_get_by_id_procname);
-  FuncLoaded := assigned(X509_TRUST_get_by_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get_by_id);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get_by_id_allownil)}
+    X509_TRUST_get_by_id := @ERR_X509_TRUST_get_by_id;
+    {$ifend}
     {$if declared(X509_TRUST_get_by_id_introduced)}
     if LibVersion < X509_TRUST_get_by_id_introduced then
     begin
       {$if declared(FC_X509_TRUST_get_by_id)}
       X509_TRUST_get_by_id := @FC_X509_TRUST_get_by_id;
-      {$else}
-      {$if not defined(X509_TRUST_get_by_id_allownil)}
-      X509_TRUST_get_by_id := @ERR_X509_TRUST_get_by_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get_by_id_removed)}
@@ -20314,39 +17353,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get_by_id)}
       X509_TRUST_get_by_id := @_X509_TRUST_get_by_id;
-      {$else}
-      {$if not defined(X509_TRUST_get_by_id_allownil)}
-      X509_TRUST_get_by_id := @ERR_X509_TRUST_get_by_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get_by_id_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get_by_id := @ERR_X509_TRUST_get_by_id;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get_by_id');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_cleanup := LoadLibFunction(ADllHandle, X509_TRUST_cleanup_procname);
-  FuncLoaded := assigned(X509_TRUST_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_cleanup_allownil)}
+    X509_TRUST_cleanup := @ERR_X509_TRUST_cleanup;
+    {$ifend}
     {$if declared(X509_TRUST_cleanup_introduced)}
     if LibVersion < X509_TRUST_cleanup_introduced then
     begin
       {$if declared(FC_X509_TRUST_cleanup)}
       X509_TRUST_cleanup := @FC_X509_TRUST_cleanup;
-      {$else}
-      {$if not defined(X509_TRUST_cleanup_allownil)}
-      X509_TRUST_cleanup := @ERR_X509_TRUST_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_cleanup_removed)}
@@ -20354,39 +17385,31 @@ begin
     begin
       {$if declared(_X509_TRUST_cleanup)}
       X509_TRUST_cleanup := @_X509_TRUST_cleanup;
-      {$else}
-      {$if not defined(X509_TRUST_cleanup_allownil)}
-      X509_TRUST_cleanup := @ERR_X509_TRUST_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_cleanup := @ERR_X509_TRUST_cleanup;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_cleanup');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get_flags := LoadLibFunction(ADllHandle, X509_TRUST_get_flags_procname);
-  FuncLoaded := assigned(X509_TRUST_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get_flags_allownil)}
+    X509_TRUST_get_flags := @ERR_X509_TRUST_get_flags;
+    {$ifend}
     {$if declared(X509_TRUST_get_flags_introduced)}
     if LibVersion < X509_TRUST_get_flags_introduced then
     begin
       {$if declared(FC_X509_TRUST_get_flags)}
       X509_TRUST_get_flags := @FC_X509_TRUST_get_flags;
-      {$else}
-      {$if not defined(X509_TRUST_get_flags_allownil)}
-      X509_TRUST_get_flags := @ERR_X509_TRUST_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get_flags_removed)}
@@ -20394,39 +17417,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get_flags)}
       X509_TRUST_get_flags := @_X509_TRUST_get_flags;
-      {$else}
-      {$if not defined(X509_TRUST_get_flags_allownil)}
-      X509_TRUST_get_flags := @ERR_X509_TRUST_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get_flags := @ERR_X509_TRUST_get_flags;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get_flags');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get0_name := LoadLibFunction(ADllHandle, X509_TRUST_get0_name_procname);
-  FuncLoaded := assigned(X509_TRUST_get0_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get0_name);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get0_name_allownil)}
+    X509_TRUST_get0_name := @ERR_X509_TRUST_get0_name;
+    {$ifend}
     {$if declared(X509_TRUST_get0_name_introduced)}
     if LibVersion < X509_TRUST_get0_name_introduced then
     begin
       {$if declared(FC_X509_TRUST_get0_name)}
       X509_TRUST_get0_name := @FC_X509_TRUST_get0_name;
-      {$else}
-      {$if not defined(X509_TRUST_get0_name_allownil)}
-      X509_TRUST_get0_name := @ERR_X509_TRUST_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get0_name_removed)}
@@ -20434,39 +17449,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get0_name)}
       X509_TRUST_get0_name := @_X509_TRUST_get0_name;
-      {$else}
-      {$if not defined(X509_TRUST_get0_name_allownil)}
-      X509_TRUST_get0_name := @ERR_X509_TRUST_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get0_name_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get0_name := @ERR_X509_TRUST_get0_name;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get0_name');
-    end;
     {$ifend}
   end;
 
 
   X509_TRUST_get_trust := LoadLibFunction(ADllHandle, X509_TRUST_get_trust_procname);
-  FuncLoaded := assigned(X509_TRUST_get_trust);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_TRUST_get_trust);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_TRUST_get_trust_allownil)}
+    X509_TRUST_get_trust := @ERR_X509_TRUST_get_trust;
+    {$ifend}
     {$if declared(X509_TRUST_get_trust_introduced)}
     if LibVersion < X509_TRUST_get_trust_introduced then
     begin
       {$if declared(FC_X509_TRUST_get_trust)}
       X509_TRUST_get_trust := @FC_X509_TRUST_get_trust;
-      {$else}
-      {$if not defined(X509_TRUST_get_trust_allownil)}
-      X509_TRUST_get_trust := @ERR_X509_TRUST_get_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_TRUST_get_trust_removed)}
@@ -20474,39 +17481,31 @@ begin
     begin
       {$if declared(_X509_TRUST_get_trust)}
       X509_TRUST_get_trust := @_X509_TRUST_get_trust;
-      {$else}
-      {$if not defined(X509_TRUST_get_trust_allownil)}
-      X509_TRUST_get_trust := @ERR_X509_TRUST_get_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_TRUST_get_trust_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_TRUST_get_trust := @ERR_X509_TRUST_get_trust;
+    if FuncLoadError then
       AFailed.Add('X509_TRUST_get_trust');
-    end;
     {$ifend}
   end;
 
 
   X509_NAME_hash_ex := LoadLibFunction(ADllHandle, X509_NAME_hash_ex_procname);
-  FuncLoaded := assigned(X509_NAME_hash_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509_NAME_hash_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(X509_NAME_hash_ex_allownil)}
+    X509_NAME_hash_ex := @ERR_X509_NAME_hash_ex;
+    {$ifend}
     {$if declared(X509_NAME_hash_ex_introduced)}
     if LibVersion < X509_NAME_hash_ex_introduced then
     begin
       {$if declared(FC_X509_NAME_hash_ex)}
       X509_NAME_hash_ex := @FC_X509_NAME_hash_ex;
-      {$else}
-      {$if not defined(X509_NAME_hash_ex_allownil)}
-      X509_NAME_hash_ex := @ERR_X509_NAME_hash_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509_NAME_hash_ex_removed)}
@@ -20514,20 +17513,13 @@ begin
     begin
       {$if declared(_X509_NAME_hash_ex)}
       X509_NAME_hash_ex := @_X509_NAME_hash_ex;
-      {$else}
-      {$if not defined(X509_NAME_hash_ex_allownil)}
-      X509_NAME_hash_ex := @ERR_X509_NAME_hash_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509_NAME_hash_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      X509_NAME_hash_ex := @ERR_X509_NAME_hash_ex;
+    if FuncLoadError then
       AFailed.Add('X509_NAME_hash_ex');
-    end;
     {$ifend}
   end;
 

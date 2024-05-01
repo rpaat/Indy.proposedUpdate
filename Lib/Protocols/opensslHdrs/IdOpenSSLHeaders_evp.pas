@@ -6936,24 +6936,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   EVP_PKEY_assign_RSA := LoadLibFunction(ADllHandle, EVP_PKEY_assign_RSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_RSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_RSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_RSA_allownil)}
+    EVP_PKEY_assign_RSA := @ERR_EVP_PKEY_assign_RSA;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_RSA_introduced)}
     if LibVersion < EVP_PKEY_assign_RSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_RSA)}
       EVP_PKEY_assign_RSA := @FC_EVP_PKEY_assign_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_RSA_allownil)}
-      EVP_PKEY_assign_RSA := @ERR_EVP_PKEY_assign_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_RSA_removed)}
@@ -6961,39 +6960,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_RSA)}
       EVP_PKEY_assign_RSA := @_EVP_PKEY_assign_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_RSA_allownil)}
-      EVP_PKEY_assign_RSA := @ERR_EVP_PKEY_assign_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_RSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_RSA := @ERR_EVP_PKEY_assign_RSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_RSA');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_assign_DSA := LoadLibFunction(ADllHandle, EVP_PKEY_assign_DSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_DSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_DSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_DSA_allownil)}
+    EVP_PKEY_assign_DSA := @ERR_EVP_PKEY_assign_DSA;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_DSA_introduced)}
     if LibVersion < EVP_PKEY_assign_DSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_DSA)}
       EVP_PKEY_assign_DSA := @FC_EVP_PKEY_assign_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_DSA_allownil)}
-      EVP_PKEY_assign_DSA := @ERR_EVP_PKEY_assign_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_DSA_removed)}
@@ -7001,39 +6992,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_DSA)}
       EVP_PKEY_assign_DSA := @_EVP_PKEY_assign_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_DSA_allownil)}
-      EVP_PKEY_assign_DSA := @ERR_EVP_PKEY_assign_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_DSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_DSA := @ERR_EVP_PKEY_assign_DSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_DSA');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_assign_DH := LoadLibFunction(ADllHandle, EVP_PKEY_assign_DH_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_DH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_DH);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_DH_allownil)}
+    EVP_PKEY_assign_DH := @ERR_EVP_PKEY_assign_DH;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_DH_introduced)}
     if LibVersion < EVP_PKEY_assign_DH_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_DH)}
       EVP_PKEY_assign_DH := @FC_EVP_PKEY_assign_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_DH_allownil)}
-      EVP_PKEY_assign_DH := @ERR_EVP_PKEY_assign_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_DH_removed)}
@@ -7041,39 +7024,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_DH)}
       EVP_PKEY_assign_DH := @_EVP_PKEY_assign_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_DH_allownil)}
-      EVP_PKEY_assign_DH := @ERR_EVP_PKEY_assign_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_DH_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_DH := @ERR_EVP_PKEY_assign_DH;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_DH');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_assign_EC_KEY := LoadLibFunction(ADllHandle, EVP_PKEY_assign_EC_KEY_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_EC_KEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_EC_KEY);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_EC_KEY_allownil)}
+    EVP_PKEY_assign_EC_KEY := @ERR_EVP_PKEY_assign_EC_KEY;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_EC_KEY_introduced)}
     if LibVersion < EVP_PKEY_assign_EC_KEY_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_EC_KEY)}
       EVP_PKEY_assign_EC_KEY := @FC_EVP_PKEY_assign_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_EC_KEY_allownil)}
-      EVP_PKEY_assign_EC_KEY := @ERR_EVP_PKEY_assign_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_EC_KEY_removed)}
@@ -7081,39 +7056,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_EC_KEY)}
       EVP_PKEY_assign_EC_KEY := @_EVP_PKEY_assign_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_EC_KEY_allownil)}
-      EVP_PKEY_assign_EC_KEY := @ERR_EVP_PKEY_assign_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_EC_KEY_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_EC_KEY := @ERR_EVP_PKEY_assign_EC_KEY;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_EC_KEY');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_assign_SIPHASH := LoadLibFunction(ADllHandle, EVP_PKEY_assign_SIPHASH_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_SIPHASH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_SIPHASH);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_SIPHASH_allownil)}
+    EVP_PKEY_assign_SIPHASH := @ERR_EVP_PKEY_assign_SIPHASH;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_SIPHASH_introduced)}
     if LibVersion < EVP_PKEY_assign_SIPHASH_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_SIPHASH)}
       EVP_PKEY_assign_SIPHASH := @FC_EVP_PKEY_assign_SIPHASH;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_SIPHASH_allownil)}
-      EVP_PKEY_assign_SIPHASH := @ERR_EVP_PKEY_assign_SIPHASH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_SIPHASH_removed)}
@@ -7121,39 +7088,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_SIPHASH)}
       EVP_PKEY_assign_SIPHASH := @_EVP_PKEY_assign_SIPHASH;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_SIPHASH_allownil)}
-      EVP_PKEY_assign_SIPHASH := @ERR_EVP_PKEY_assign_SIPHASH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_SIPHASH_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_SIPHASH := @ERR_EVP_PKEY_assign_SIPHASH;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_SIPHASH');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_assign_POLY1305 := LoadLibFunction(ADllHandle, EVP_PKEY_assign_POLY1305_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign_POLY1305);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign_POLY1305);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_POLY1305_allownil)}
+    EVP_PKEY_assign_POLY1305 := @ERR_EVP_PKEY_assign_POLY1305;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_POLY1305_introduced)}
     if LibVersion < EVP_PKEY_assign_POLY1305_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign_POLY1305)}
       EVP_PKEY_assign_POLY1305 := @FC_EVP_PKEY_assign_POLY1305;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_POLY1305_allownil)}
-      EVP_PKEY_assign_POLY1305 := @ERR_EVP_PKEY_assign_POLY1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_POLY1305_removed)}
@@ -7161,39 +7120,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign_POLY1305)}
       EVP_PKEY_assign_POLY1305 := @_EVP_PKEY_assign_POLY1305;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_POLY1305_allownil)}
-      EVP_PKEY_assign_POLY1305 := @ERR_EVP_PKEY_assign_POLY1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_POLY1305_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign_POLY1305 := @ERR_EVP_PKEY_assign_POLY1305;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign_POLY1305');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_meth_new := LoadLibFunction(ADllHandle, EVP_MD_meth_new_procname);
-  FuncLoaded := assigned(EVP_MD_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_new_allownil)}
+    EVP_MD_meth_new := @ERR_EVP_MD_meth_new;
+    {$ifend}
     {$if declared(EVP_MD_meth_new_introduced)}
     if LibVersion < EVP_MD_meth_new_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_new)}
       EVP_MD_meth_new := @FC_EVP_MD_meth_new;
-      {$else}
-      {$if not defined(EVP_MD_meth_new_allownil)}
-      EVP_MD_meth_new := @ERR_EVP_MD_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_new_removed)}
@@ -7201,39 +7152,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_new)}
       EVP_MD_meth_new := @_EVP_MD_meth_new;
-      {$else}
-      {$if not defined(EVP_MD_meth_new_allownil)}
-      EVP_MD_meth_new := @ERR_EVP_MD_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_new := @ERR_EVP_MD_meth_new;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_dup := LoadLibFunction(ADllHandle, EVP_MD_meth_dup_procname);
-  FuncLoaded := assigned(EVP_MD_meth_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_dup_allownil)}
+    EVP_MD_meth_dup := @ERR_EVP_MD_meth_dup;
+    {$ifend}
     {$if declared(EVP_MD_meth_dup_introduced)}
     if LibVersion < EVP_MD_meth_dup_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_dup)}
       EVP_MD_meth_dup := @FC_EVP_MD_meth_dup;
-      {$else}
-      {$if not defined(EVP_MD_meth_dup_allownil)}
-      EVP_MD_meth_dup := @ERR_EVP_MD_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_dup_removed)}
@@ -7241,39 +7184,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_dup)}
       EVP_MD_meth_dup := @_EVP_MD_meth_dup;
-      {$else}
-      {$if not defined(EVP_MD_meth_dup_allownil)}
-      EVP_MD_meth_dup := @ERR_EVP_MD_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_dup := @ERR_EVP_MD_meth_dup;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_dup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_free := LoadLibFunction(ADllHandle, EVP_MD_meth_free_procname);
-  FuncLoaded := assigned(EVP_MD_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_free_allownil)}
+    EVP_MD_meth_free := @ERR_EVP_MD_meth_free;
+    {$ifend}
     {$if declared(EVP_MD_meth_free_introduced)}
     if LibVersion < EVP_MD_meth_free_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_free)}
       EVP_MD_meth_free := @FC_EVP_MD_meth_free;
-      {$else}
-      {$if not defined(EVP_MD_meth_free_allownil)}
-      EVP_MD_meth_free := @ERR_EVP_MD_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_free_removed)}
@@ -7281,39 +7216,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_free)}
       EVP_MD_meth_free := @_EVP_MD_meth_free;
-      {$else}
-      {$if not defined(EVP_MD_meth_free_allownil)}
-      EVP_MD_meth_free := @ERR_EVP_MD_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_free := @ERR_EVP_MD_meth_free;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_input_blocksize := LoadLibFunction(ADllHandle, EVP_MD_meth_set_input_blocksize_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_input_blocksize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_input_blocksize);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_input_blocksize_allownil)}
+    EVP_MD_meth_set_input_blocksize := @ERR_EVP_MD_meth_set_input_blocksize;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_input_blocksize_introduced)}
     if LibVersion < EVP_MD_meth_set_input_blocksize_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_input_blocksize)}
       EVP_MD_meth_set_input_blocksize := @FC_EVP_MD_meth_set_input_blocksize;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_input_blocksize_allownil)}
-      EVP_MD_meth_set_input_blocksize := @ERR_EVP_MD_meth_set_input_blocksize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_input_blocksize_removed)}
@@ -7321,39 +7248,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_input_blocksize)}
       EVP_MD_meth_set_input_blocksize := @_EVP_MD_meth_set_input_blocksize;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_input_blocksize_allownil)}
-      EVP_MD_meth_set_input_blocksize := @ERR_EVP_MD_meth_set_input_blocksize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_input_blocksize_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_input_blocksize := @ERR_EVP_MD_meth_set_input_blocksize;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_input_blocksize');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_result_size := LoadLibFunction(ADllHandle, EVP_MD_meth_set_result_size_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_result_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_result_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_result_size_allownil)}
+    EVP_MD_meth_set_result_size := @ERR_EVP_MD_meth_set_result_size;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_result_size_introduced)}
     if LibVersion < EVP_MD_meth_set_result_size_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_result_size)}
       EVP_MD_meth_set_result_size := @FC_EVP_MD_meth_set_result_size;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_result_size_allownil)}
-      EVP_MD_meth_set_result_size := @ERR_EVP_MD_meth_set_result_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_result_size_removed)}
@@ -7361,39 +7280,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_result_size)}
       EVP_MD_meth_set_result_size := @_EVP_MD_meth_set_result_size;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_result_size_allownil)}
-      EVP_MD_meth_set_result_size := @ERR_EVP_MD_meth_set_result_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_result_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_result_size := @ERR_EVP_MD_meth_set_result_size;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_result_size');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_app_datasize := LoadLibFunction(ADllHandle, EVP_MD_meth_set_app_datasize_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_app_datasize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_app_datasize);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_app_datasize_allownil)}
+    EVP_MD_meth_set_app_datasize := @ERR_EVP_MD_meth_set_app_datasize;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_app_datasize_introduced)}
     if LibVersion < EVP_MD_meth_set_app_datasize_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_app_datasize)}
       EVP_MD_meth_set_app_datasize := @FC_EVP_MD_meth_set_app_datasize;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_app_datasize_allownil)}
-      EVP_MD_meth_set_app_datasize := @ERR_EVP_MD_meth_set_app_datasize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_app_datasize_removed)}
@@ -7401,39 +7312,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_app_datasize)}
       EVP_MD_meth_set_app_datasize := @_EVP_MD_meth_set_app_datasize;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_app_datasize_allownil)}
-      EVP_MD_meth_set_app_datasize := @ERR_EVP_MD_meth_set_app_datasize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_app_datasize_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_app_datasize := @ERR_EVP_MD_meth_set_app_datasize;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_app_datasize');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_flags := LoadLibFunction(ADllHandle, EVP_MD_meth_set_flags_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_flags_allownil)}
+    EVP_MD_meth_set_flags := @ERR_EVP_MD_meth_set_flags;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_flags_introduced)}
     if LibVersion < EVP_MD_meth_set_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_flags)}
       EVP_MD_meth_set_flags := @FC_EVP_MD_meth_set_flags;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_flags_allownil)}
-      EVP_MD_meth_set_flags := @ERR_EVP_MD_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_flags_removed)}
@@ -7441,39 +7344,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_flags)}
       EVP_MD_meth_set_flags := @_EVP_MD_meth_set_flags;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_flags_allownil)}
-      EVP_MD_meth_set_flags := @ERR_EVP_MD_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_flags := @ERR_EVP_MD_meth_set_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_init := LoadLibFunction(ADllHandle, EVP_MD_meth_set_init_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_init_allownil)}
+    EVP_MD_meth_set_init := @ERR_EVP_MD_meth_set_init;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_init_introduced)}
     if LibVersion < EVP_MD_meth_set_init_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_init)}
       EVP_MD_meth_set_init := @FC_EVP_MD_meth_set_init;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_init_allownil)}
-      EVP_MD_meth_set_init := @ERR_EVP_MD_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_init_removed)}
@@ -7481,39 +7376,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_init)}
       EVP_MD_meth_set_init := @_EVP_MD_meth_set_init;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_init_allownil)}
-      EVP_MD_meth_set_init := @ERR_EVP_MD_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_init := @ERR_EVP_MD_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_update := LoadLibFunction(ADllHandle, EVP_MD_meth_set_update_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_update);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_update_allownil)}
+    EVP_MD_meth_set_update := @ERR_EVP_MD_meth_set_update;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_update_introduced)}
     if LibVersion < EVP_MD_meth_set_update_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_update)}
       EVP_MD_meth_set_update := @FC_EVP_MD_meth_set_update;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_update_allownil)}
-      EVP_MD_meth_set_update := @ERR_EVP_MD_meth_set_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_update_removed)}
@@ -7521,39 +7408,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_update)}
       EVP_MD_meth_set_update := @_EVP_MD_meth_set_update;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_update_allownil)}
-      EVP_MD_meth_set_update := @ERR_EVP_MD_meth_set_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_update_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_update := @ERR_EVP_MD_meth_set_update;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_update');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_final := LoadLibFunction(ADllHandle, EVP_MD_meth_set_final_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_final);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_final_allownil)}
+    EVP_MD_meth_set_final := @ERR_EVP_MD_meth_set_final;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_final_introduced)}
     if LibVersion < EVP_MD_meth_set_final_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_final)}
       EVP_MD_meth_set_final := @FC_EVP_MD_meth_set_final;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_final_allownil)}
-      EVP_MD_meth_set_final := @ERR_EVP_MD_meth_set_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_final_removed)}
@@ -7561,39 +7440,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_final)}
       EVP_MD_meth_set_final := @_EVP_MD_meth_set_final;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_final_allownil)}
-      EVP_MD_meth_set_final := @ERR_EVP_MD_meth_set_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_final_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_final := @ERR_EVP_MD_meth_set_final;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_final');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_copy := LoadLibFunction(ADllHandle, EVP_MD_meth_set_copy_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_copy_allownil)}
+    EVP_MD_meth_set_copy := @ERR_EVP_MD_meth_set_copy;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_copy_introduced)}
     if LibVersion < EVP_MD_meth_set_copy_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_copy)}
       EVP_MD_meth_set_copy := @FC_EVP_MD_meth_set_copy;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_copy_allownil)}
-      EVP_MD_meth_set_copy := @ERR_EVP_MD_meth_set_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_copy_removed)}
@@ -7601,39 +7472,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_copy)}
       EVP_MD_meth_set_copy := @_EVP_MD_meth_set_copy;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_copy_allownil)}
-      EVP_MD_meth_set_copy := @ERR_EVP_MD_meth_set_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_copy := @ERR_EVP_MD_meth_set_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_copy');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_cleanup := LoadLibFunction(ADllHandle, EVP_MD_meth_set_cleanup_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_cleanup_allownil)}
+    EVP_MD_meth_set_cleanup := @ERR_EVP_MD_meth_set_cleanup;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_cleanup_introduced)}
     if LibVersion < EVP_MD_meth_set_cleanup_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_cleanup)}
       EVP_MD_meth_set_cleanup := @FC_EVP_MD_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_cleanup_allownil)}
-      EVP_MD_meth_set_cleanup := @ERR_EVP_MD_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_cleanup_removed)}
@@ -7641,39 +7504,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_cleanup)}
       EVP_MD_meth_set_cleanup := @_EVP_MD_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_cleanup_allownil)}
-      EVP_MD_meth_set_cleanup := @ERR_EVP_MD_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_cleanup := @ERR_EVP_MD_meth_set_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_cleanup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_set_ctrl := LoadLibFunction(ADllHandle, EVP_MD_meth_set_ctrl_procname);
-  FuncLoaded := assigned(EVP_MD_meth_set_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_set_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_set_ctrl_allownil)}
+    EVP_MD_meth_set_ctrl := @ERR_EVP_MD_meth_set_ctrl;
+    {$ifend}
     {$if declared(EVP_MD_meth_set_ctrl_introduced)}
     if LibVersion < EVP_MD_meth_set_ctrl_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_set_ctrl)}
       EVP_MD_meth_set_ctrl := @FC_EVP_MD_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_ctrl_allownil)}
-      EVP_MD_meth_set_ctrl := @ERR_EVP_MD_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_set_ctrl_removed)}
@@ -7681,39 +7536,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_set_ctrl)}
       EVP_MD_meth_set_ctrl := @_EVP_MD_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_meth_set_ctrl_allownil)}
-      EVP_MD_meth_set_ctrl := @ERR_EVP_MD_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_set_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_set_ctrl := @ERR_EVP_MD_meth_set_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_set_ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_input_blocksize := LoadLibFunction(ADllHandle, EVP_MD_meth_get_input_blocksize_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_input_blocksize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_input_blocksize);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_input_blocksize_allownil)}
+    EVP_MD_meth_get_input_blocksize := @ERR_EVP_MD_meth_get_input_blocksize;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_input_blocksize_introduced)}
     if LibVersion < EVP_MD_meth_get_input_blocksize_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_input_blocksize)}
       EVP_MD_meth_get_input_blocksize := @FC_EVP_MD_meth_get_input_blocksize;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_input_blocksize_allownil)}
-      EVP_MD_meth_get_input_blocksize := @ERR_EVP_MD_meth_get_input_blocksize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_input_blocksize_removed)}
@@ -7721,39 +7568,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_input_blocksize)}
       EVP_MD_meth_get_input_blocksize := @_EVP_MD_meth_get_input_blocksize;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_input_blocksize_allownil)}
-      EVP_MD_meth_get_input_blocksize := @ERR_EVP_MD_meth_get_input_blocksize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_input_blocksize_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_input_blocksize := @ERR_EVP_MD_meth_get_input_blocksize;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_input_blocksize');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_result_size := LoadLibFunction(ADllHandle, EVP_MD_meth_get_result_size_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_result_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_result_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_result_size_allownil)}
+    EVP_MD_meth_get_result_size := @ERR_EVP_MD_meth_get_result_size;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_result_size_introduced)}
     if LibVersion < EVP_MD_meth_get_result_size_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_result_size)}
       EVP_MD_meth_get_result_size := @FC_EVP_MD_meth_get_result_size;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_result_size_allownil)}
-      EVP_MD_meth_get_result_size := @ERR_EVP_MD_meth_get_result_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_result_size_removed)}
@@ -7761,39 +7600,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_result_size)}
       EVP_MD_meth_get_result_size := @_EVP_MD_meth_get_result_size;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_result_size_allownil)}
-      EVP_MD_meth_get_result_size := @ERR_EVP_MD_meth_get_result_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_result_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_result_size := @ERR_EVP_MD_meth_get_result_size;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_result_size');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_app_datasize := LoadLibFunction(ADllHandle, EVP_MD_meth_get_app_datasize_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_app_datasize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_app_datasize);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_app_datasize_allownil)}
+    EVP_MD_meth_get_app_datasize := @ERR_EVP_MD_meth_get_app_datasize;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_app_datasize_introduced)}
     if LibVersion < EVP_MD_meth_get_app_datasize_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_app_datasize)}
       EVP_MD_meth_get_app_datasize := @FC_EVP_MD_meth_get_app_datasize;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_app_datasize_allownil)}
-      EVP_MD_meth_get_app_datasize := @ERR_EVP_MD_meth_get_app_datasize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_app_datasize_removed)}
@@ -7801,39 +7632,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_app_datasize)}
       EVP_MD_meth_get_app_datasize := @_EVP_MD_meth_get_app_datasize;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_app_datasize_allownil)}
-      EVP_MD_meth_get_app_datasize := @ERR_EVP_MD_meth_get_app_datasize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_app_datasize_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_app_datasize := @ERR_EVP_MD_meth_get_app_datasize;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_app_datasize');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_flags := LoadLibFunction(ADllHandle, EVP_MD_meth_get_flags_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_flags_allownil)}
+    EVP_MD_meth_get_flags := @ERR_EVP_MD_meth_get_flags;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_flags_introduced)}
     if LibVersion < EVP_MD_meth_get_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_flags)}
       EVP_MD_meth_get_flags := @FC_EVP_MD_meth_get_flags;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_flags_allownil)}
-      EVP_MD_meth_get_flags := @ERR_EVP_MD_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_flags_removed)}
@@ -7841,39 +7664,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_flags)}
       EVP_MD_meth_get_flags := @_EVP_MD_meth_get_flags;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_flags_allownil)}
-      EVP_MD_meth_get_flags := @ERR_EVP_MD_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_flags := @ERR_EVP_MD_meth_get_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_init := LoadLibFunction(ADllHandle, EVP_MD_meth_get_init_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_init_allownil)}
+    EVP_MD_meth_get_init := @ERR_EVP_MD_meth_get_init;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_init_introduced)}
     if LibVersion < EVP_MD_meth_get_init_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_init)}
       EVP_MD_meth_get_init := @FC_EVP_MD_meth_get_init;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_init_allownil)}
-      EVP_MD_meth_get_init := @ERR_EVP_MD_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_init_removed)}
@@ -7881,39 +7696,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_init)}
       EVP_MD_meth_get_init := @_EVP_MD_meth_get_init;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_init_allownil)}
-      EVP_MD_meth_get_init := @ERR_EVP_MD_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_init := @ERR_EVP_MD_meth_get_init;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_update := LoadLibFunction(ADllHandle, EVP_MD_meth_get_update_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_update);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_update_allownil)}
+    EVP_MD_meth_get_update := @ERR_EVP_MD_meth_get_update;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_update_introduced)}
     if LibVersion < EVP_MD_meth_get_update_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_update)}
       EVP_MD_meth_get_update := @FC_EVP_MD_meth_get_update;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_update_allownil)}
-      EVP_MD_meth_get_update := @ERR_EVP_MD_meth_get_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_update_removed)}
@@ -7921,39 +7728,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_update)}
       EVP_MD_meth_get_update := @_EVP_MD_meth_get_update;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_update_allownil)}
-      EVP_MD_meth_get_update := @ERR_EVP_MD_meth_get_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_update_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_update := @ERR_EVP_MD_meth_get_update;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_update');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_final := LoadLibFunction(ADllHandle, EVP_MD_meth_get_final_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_final);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_final_allownil)}
+    EVP_MD_meth_get_final := @ERR_EVP_MD_meth_get_final;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_final_introduced)}
     if LibVersion < EVP_MD_meth_get_final_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_final)}
       EVP_MD_meth_get_final := @FC_EVP_MD_meth_get_final;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_final_allownil)}
-      EVP_MD_meth_get_final := @ERR_EVP_MD_meth_get_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_final_removed)}
@@ -7961,39 +7760,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_final)}
       EVP_MD_meth_get_final := @_EVP_MD_meth_get_final;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_final_allownil)}
-      EVP_MD_meth_get_final := @ERR_EVP_MD_meth_get_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_final_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_final := @ERR_EVP_MD_meth_get_final;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_final');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_copy := LoadLibFunction(ADllHandle, EVP_MD_meth_get_copy_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_copy_allownil)}
+    EVP_MD_meth_get_copy := @ERR_EVP_MD_meth_get_copy;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_copy_introduced)}
     if LibVersion < EVP_MD_meth_get_copy_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_copy)}
       EVP_MD_meth_get_copy := @FC_EVP_MD_meth_get_copy;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_copy_allownil)}
-      EVP_MD_meth_get_copy := @ERR_EVP_MD_meth_get_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_copy_removed)}
@@ -8001,39 +7792,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_copy)}
       EVP_MD_meth_get_copy := @_EVP_MD_meth_get_copy;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_copy_allownil)}
-      EVP_MD_meth_get_copy := @ERR_EVP_MD_meth_get_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_copy := @ERR_EVP_MD_meth_get_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_copy');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_cleanup := LoadLibFunction(ADllHandle, EVP_MD_meth_get_cleanup_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_cleanup_allownil)}
+    EVP_MD_meth_get_cleanup := @ERR_EVP_MD_meth_get_cleanup;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_cleanup_introduced)}
     if LibVersion < EVP_MD_meth_get_cleanup_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_cleanup)}
       EVP_MD_meth_get_cleanup := @FC_EVP_MD_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_cleanup_allownil)}
-      EVP_MD_meth_get_cleanup := @ERR_EVP_MD_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_cleanup_removed)}
@@ -8041,39 +7824,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_cleanup)}
       EVP_MD_meth_get_cleanup := @_EVP_MD_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_cleanup_allownil)}
-      EVP_MD_meth_get_cleanup := @ERR_EVP_MD_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_cleanup := @ERR_EVP_MD_meth_get_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_cleanup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_meth_get_ctrl := LoadLibFunction(ADllHandle, EVP_MD_meth_get_ctrl_procname);
-  FuncLoaded := assigned(EVP_MD_meth_get_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_meth_get_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_meth_get_ctrl_allownil)}
+    EVP_MD_meth_get_ctrl := @ERR_EVP_MD_meth_get_ctrl;
+    {$ifend}
     {$if declared(EVP_MD_meth_get_ctrl_introduced)}
     if LibVersion < EVP_MD_meth_get_ctrl_introduced then
     begin
       {$if declared(FC_EVP_MD_meth_get_ctrl)}
       EVP_MD_meth_get_ctrl := @FC_EVP_MD_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_ctrl_allownil)}
-      EVP_MD_meth_get_ctrl := @ERR_EVP_MD_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_meth_get_ctrl_removed)}
@@ -8081,39 +7856,31 @@ begin
     begin
       {$if declared(_EVP_MD_meth_get_ctrl)}
       EVP_MD_meth_get_ctrl := @_EVP_MD_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_meth_get_ctrl_allownil)}
-      EVP_MD_meth_get_ctrl := @ERR_EVP_MD_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_meth_get_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_meth_get_ctrl := @ERR_EVP_MD_meth_get_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_meth_get_ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_new := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_new_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_new_allownil)}
+    EVP_CIPHER_meth_new := @ERR_EVP_CIPHER_meth_new;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_new_introduced)}
     if LibVersion < EVP_CIPHER_meth_new_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_new)}
       EVP_CIPHER_meth_new := @FC_EVP_CIPHER_meth_new;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_new_allownil)}
-      EVP_CIPHER_meth_new := @ERR_EVP_CIPHER_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_new_removed)}
@@ -8121,39 +7888,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_new)}
       EVP_CIPHER_meth_new := @_EVP_CIPHER_meth_new;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_new_allownil)}
-      EVP_CIPHER_meth_new := @ERR_EVP_CIPHER_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_new := @ERR_EVP_CIPHER_meth_new;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_dup := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_dup_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_dup_allownil)}
+    EVP_CIPHER_meth_dup := @ERR_EVP_CIPHER_meth_dup;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_dup_introduced)}
     if LibVersion < EVP_CIPHER_meth_dup_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_dup)}
       EVP_CIPHER_meth_dup := @FC_EVP_CIPHER_meth_dup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_dup_allownil)}
-      EVP_CIPHER_meth_dup := @ERR_EVP_CIPHER_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_dup_removed)}
@@ -8161,39 +7920,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_dup)}
       EVP_CIPHER_meth_dup := @_EVP_CIPHER_meth_dup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_dup_allownil)}
-      EVP_CIPHER_meth_dup := @ERR_EVP_CIPHER_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_dup := @ERR_EVP_CIPHER_meth_dup;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_dup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_free := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_free_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_free_allownil)}
+    EVP_CIPHER_meth_free := @ERR_EVP_CIPHER_meth_free;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_free_introduced)}
     if LibVersion < EVP_CIPHER_meth_free_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_free)}
       EVP_CIPHER_meth_free := @FC_EVP_CIPHER_meth_free;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_free_allownil)}
-      EVP_CIPHER_meth_free := @ERR_EVP_CIPHER_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_free_removed)}
@@ -8201,39 +7952,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_free)}
       EVP_CIPHER_meth_free := @_EVP_CIPHER_meth_free;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_free_allownil)}
-      EVP_CIPHER_meth_free := @ERR_EVP_CIPHER_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_free := @ERR_EVP_CIPHER_meth_free;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_iv_length := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_iv_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_iv_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_iv_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_iv_length_allownil)}
+    EVP_CIPHER_meth_set_iv_length := @ERR_EVP_CIPHER_meth_set_iv_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_iv_length_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_iv_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_iv_length)}
       EVP_CIPHER_meth_set_iv_length := @FC_EVP_CIPHER_meth_set_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_iv_length_allownil)}
-      EVP_CIPHER_meth_set_iv_length := @ERR_EVP_CIPHER_meth_set_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_iv_length_removed)}
@@ -8241,39 +7984,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_iv_length)}
       EVP_CIPHER_meth_set_iv_length := @_EVP_CIPHER_meth_set_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_iv_length_allownil)}
-      EVP_CIPHER_meth_set_iv_length := @ERR_EVP_CIPHER_meth_set_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_iv_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_iv_length := @ERR_EVP_CIPHER_meth_set_iv_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_iv_length');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_flags := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_flags_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_flags_allownil)}
+    EVP_CIPHER_meth_set_flags := @ERR_EVP_CIPHER_meth_set_flags;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_flags_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_flags_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_flags)}
       EVP_CIPHER_meth_set_flags := @FC_EVP_CIPHER_meth_set_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_flags_allownil)}
-      EVP_CIPHER_meth_set_flags := @ERR_EVP_CIPHER_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_flags_removed)}
@@ -8281,39 +8016,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_flags)}
       EVP_CIPHER_meth_set_flags := @_EVP_CIPHER_meth_set_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_flags_allownil)}
-      EVP_CIPHER_meth_set_flags := @ERR_EVP_CIPHER_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_flags := @ERR_EVP_CIPHER_meth_set_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_impl_ctx_size := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_impl_ctx_size_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_impl_ctx_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_impl_ctx_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_impl_ctx_size_allownil)}
+    EVP_CIPHER_meth_set_impl_ctx_size := @ERR_EVP_CIPHER_meth_set_impl_ctx_size;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_impl_ctx_size_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_impl_ctx_size_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_impl_ctx_size)}
       EVP_CIPHER_meth_set_impl_ctx_size := @FC_EVP_CIPHER_meth_set_impl_ctx_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_impl_ctx_size_allownil)}
-      EVP_CIPHER_meth_set_impl_ctx_size := @ERR_EVP_CIPHER_meth_set_impl_ctx_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_impl_ctx_size_removed)}
@@ -8321,39 +8048,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_impl_ctx_size)}
       EVP_CIPHER_meth_set_impl_ctx_size := @_EVP_CIPHER_meth_set_impl_ctx_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_impl_ctx_size_allownil)}
-      EVP_CIPHER_meth_set_impl_ctx_size := @ERR_EVP_CIPHER_meth_set_impl_ctx_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_impl_ctx_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_impl_ctx_size := @ERR_EVP_CIPHER_meth_set_impl_ctx_size;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_impl_ctx_size');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_init := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_init_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_init_allownil)}
+    EVP_CIPHER_meth_set_init := @ERR_EVP_CIPHER_meth_set_init;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_init_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_init_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_init)}
       EVP_CIPHER_meth_set_init := @FC_EVP_CIPHER_meth_set_init;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_init_allownil)}
-      EVP_CIPHER_meth_set_init := @ERR_EVP_CIPHER_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_init_removed)}
@@ -8361,39 +8080,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_init)}
       EVP_CIPHER_meth_set_init := @_EVP_CIPHER_meth_set_init;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_init_allownil)}
-      EVP_CIPHER_meth_set_init := @ERR_EVP_CIPHER_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_init := @ERR_EVP_CIPHER_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_do_cipher := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_do_cipher_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_do_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_do_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_do_cipher_allownil)}
+    EVP_CIPHER_meth_set_do_cipher := @ERR_EVP_CIPHER_meth_set_do_cipher;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_do_cipher_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_do_cipher_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_do_cipher)}
       EVP_CIPHER_meth_set_do_cipher := @FC_EVP_CIPHER_meth_set_do_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_do_cipher_allownil)}
-      EVP_CIPHER_meth_set_do_cipher := @ERR_EVP_CIPHER_meth_set_do_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_do_cipher_removed)}
@@ -8401,39 +8112,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_do_cipher)}
       EVP_CIPHER_meth_set_do_cipher := @_EVP_CIPHER_meth_set_do_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_do_cipher_allownil)}
-      EVP_CIPHER_meth_set_do_cipher := @ERR_EVP_CIPHER_meth_set_do_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_do_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_do_cipher := @ERR_EVP_CIPHER_meth_set_do_cipher;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_do_cipher');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_cleanup := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_cleanup_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_cleanup_allownil)}
+    EVP_CIPHER_meth_set_cleanup := @ERR_EVP_CIPHER_meth_set_cleanup;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_cleanup_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_cleanup_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_cleanup)}
       EVP_CIPHER_meth_set_cleanup := @FC_EVP_CIPHER_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_cleanup_allownil)}
-      EVP_CIPHER_meth_set_cleanup := @ERR_EVP_CIPHER_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_cleanup_removed)}
@@ -8441,39 +8144,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_cleanup)}
       EVP_CIPHER_meth_set_cleanup := @_EVP_CIPHER_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_cleanup_allownil)}
-      EVP_CIPHER_meth_set_cleanup := @ERR_EVP_CIPHER_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_cleanup := @ERR_EVP_CIPHER_meth_set_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_cleanup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_set_asn1_params := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_set_asn1_params_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_set_asn1_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_set_asn1_params);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_set_asn1_params_allownil)}
+    EVP_CIPHER_meth_set_set_asn1_params := @ERR_EVP_CIPHER_meth_set_set_asn1_params;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_set_asn1_params_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_set_asn1_params_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_set_asn1_params)}
       EVP_CIPHER_meth_set_set_asn1_params := @FC_EVP_CIPHER_meth_set_set_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_set_asn1_params_allownil)}
-      EVP_CIPHER_meth_set_set_asn1_params := @ERR_EVP_CIPHER_meth_set_set_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_set_asn1_params_removed)}
@@ -8481,39 +8176,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_set_asn1_params)}
       EVP_CIPHER_meth_set_set_asn1_params := @_EVP_CIPHER_meth_set_set_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_set_asn1_params_allownil)}
-      EVP_CIPHER_meth_set_set_asn1_params := @ERR_EVP_CIPHER_meth_set_set_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_set_asn1_params_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_set_asn1_params := @ERR_EVP_CIPHER_meth_set_set_asn1_params;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_set_asn1_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_get_asn1_params := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_get_asn1_params_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_get_asn1_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_get_asn1_params);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_get_asn1_params_allownil)}
+    EVP_CIPHER_meth_set_get_asn1_params := @ERR_EVP_CIPHER_meth_set_get_asn1_params;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_get_asn1_params_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_get_asn1_params_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_get_asn1_params)}
       EVP_CIPHER_meth_set_get_asn1_params := @FC_EVP_CIPHER_meth_set_get_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_get_asn1_params_allownil)}
-      EVP_CIPHER_meth_set_get_asn1_params := @ERR_EVP_CIPHER_meth_set_get_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_get_asn1_params_removed)}
@@ -8521,39 +8208,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_get_asn1_params)}
       EVP_CIPHER_meth_set_get_asn1_params := @_EVP_CIPHER_meth_set_get_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_get_asn1_params_allownil)}
-      EVP_CIPHER_meth_set_get_asn1_params := @ERR_EVP_CIPHER_meth_set_get_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_get_asn1_params_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_get_asn1_params := @ERR_EVP_CIPHER_meth_set_get_asn1_params;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_get_asn1_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_set_ctrl := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_set_ctrl_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_set_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_set_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_set_ctrl_allownil)}
+    EVP_CIPHER_meth_set_ctrl := @ERR_EVP_CIPHER_meth_set_ctrl;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_set_ctrl_introduced)}
     if LibVersion < EVP_CIPHER_meth_set_ctrl_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_set_ctrl)}
       EVP_CIPHER_meth_set_ctrl := @FC_EVP_CIPHER_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_ctrl_allownil)}
-      EVP_CIPHER_meth_set_ctrl := @ERR_EVP_CIPHER_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_set_ctrl_removed)}
@@ -8561,39 +8240,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_set_ctrl)}
       EVP_CIPHER_meth_set_ctrl := @_EVP_CIPHER_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_set_ctrl_allownil)}
-      EVP_CIPHER_meth_set_ctrl := @ERR_EVP_CIPHER_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_set_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_set_ctrl := @ERR_EVP_CIPHER_meth_set_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_set_ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_init := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_init_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_init_allownil)}
+    EVP_CIPHER_meth_get_init := @ERR_EVP_CIPHER_meth_get_init;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_init_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_init_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_init)}
       EVP_CIPHER_meth_get_init := @FC_EVP_CIPHER_meth_get_init;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_init_allownil)}
-      EVP_CIPHER_meth_get_init := @ERR_EVP_CIPHER_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_init_removed)}
@@ -8601,39 +8272,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_init)}
       EVP_CIPHER_meth_get_init := @_EVP_CIPHER_meth_get_init;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_init_allownil)}
-      EVP_CIPHER_meth_get_init := @ERR_EVP_CIPHER_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_init := @ERR_EVP_CIPHER_meth_get_init;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_do_cipher := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_do_cipher_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_do_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_do_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_do_cipher_allownil)}
+    EVP_CIPHER_meth_get_do_cipher := @ERR_EVP_CIPHER_meth_get_do_cipher;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_do_cipher_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_do_cipher_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_do_cipher)}
       EVP_CIPHER_meth_get_do_cipher := @FC_EVP_CIPHER_meth_get_do_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_do_cipher_allownil)}
-      EVP_CIPHER_meth_get_do_cipher := @ERR_EVP_CIPHER_meth_get_do_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_do_cipher_removed)}
@@ -8641,39 +8304,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_do_cipher)}
       EVP_CIPHER_meth_get_do_cipher := @_EVP_CIPHER_meth_get_do_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_do_cipher_allownil)}
-      EVP_CIPHER_meth_get_do_cipher := @ERR_EVP_CIPHER_meth_get_do_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_do_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_do_cipher := @ERR_EVP_CIPHER_meth_get_do_cipher;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_do_cipher');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_cleanup := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_cleanup_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_cleanup_allownil)}
+    EVP_CIPHER_meth_get_cleanup := @ERR_EVP_CIPHER_meth_get_cleanup;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_cleanup_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_cleanup_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_cleanup)}
       EVP_CIPHER_meth_get_cleanup := @FC_EVP_CIPHER_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_cleanup_allownil)}
-      EVP_CIPHER_meth_get_cleanup := @ERR_EVP_CIPHER_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_cleanup_removed)}
@@ -8681,39 +8336,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_cleanup)}
       EVP_CIPHER_meth_get_cleanup := @_EVP_CIPHER_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_cleanup_allownil)}
-      EVP_CIPHER_meth_get_cleanup := @ERR_EVP_CIPHER_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_cleanup := @ERR_EVP_CIPHER_meth_get_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_cleanup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_set_asn1_params := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_set_asn1_params_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_set_asn1_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_set_asn1_params);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_set_asn1_params_allownil)}
+    EVP_CIPHER_meth_get_set_asn1_params := @ERR_EVP_CIPHER_meth_get_set_asn1_params;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_set_asn1_params_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_set_asn1_params_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_set_asn1_params)}
       EVP_CIPHER_meth_get_set_asn1_params := @FC_EVP_CIPHER_meth_get_set_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_set_asn1_params_allownil)}
-      EVP_CIPHER_meth_get_set_asn1_params := @ERR_EVP_CIPHER_meth_get_set_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_set_asn1_params_removed)}
@@ -8721,39 +8368,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_set_asn1_params)}
       EVP_CIPHER_meth_get_set_asn1_params := @_EVP_CIPHER_meth_get_set_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_set_asn1_params_allownil)}
-      EVP_CIPHER_meth_get_set_asn1_params := @ERR_EVP_CIPHER_meth_get_set_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_set_asn1_params_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_set_asn1_params := @ERR_EVP_CIPHER_meth_get_set_asn1_params;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_set_asn1_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_get_asn1_params := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_get_asn1_params_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_get_asn1_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_get_asn1_params);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_get_asn1_params_allownil)}
+    EVP_CIPHER_meth_get_get_asn1_params := @ERR_EVP_CIPHER_meth_get_get_asn1_params;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_get_asn1_params_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_get_asn1_params_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_get_asn1_params)}
       EVP_CIPHER_meth_get_get_asn1_params := @FC_EVP_CIPHER_meth_get_get_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_get_asn1_params_allownil)}
-      EVP_CIPHER_meth_get_get_asn1_params := @ERR_EVP_CIPHER_meth_get_get_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_get_asn1_params_removed)}
@@ -8761,39 +8400,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_get_asn1_params)}
       EVP_CIPHER_meth_get_get_asn1_params := @_EVP_CIPHER_meth_get_get_asn1_params;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_get_asn1_params_allownil)}
-      EVP_CIPHER_meth_get_get_asn1_params := @ERR_EVP_CIPHER_meth_get_get_asn1_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_get_asn1_params_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_get_asn1_params := @ERR_EVP_CIPHER_meth_get_get_asn1_params;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_get_asn1_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_meth_get_ctrl := LoadLibFunction(ADllHandle, EVP_CIPHER_meth_get_ctrl_procname);
-  FuncLoaded := assigned(EVP_CIPHER_meth_get_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_meth_get_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_meth_get_ctrl_allownil)}
+    EVP_CIPHER_meth_get_ctrl := @ERR_EVP_CIPHER_meth_get_ctrl;
+    {$ifend}
     {$if declared(EVP_CIPHER_meth_get_ctrl_introduced)}
     if LibVersion < EVP_CIPHER_meth_get_ctrl_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_meth_get_ctrl)}
       EVP_CIPHER_meth_get_ctrl := @FC_EVP_CIPHER_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_ctrl_allownil)}
-      EVP_CIPHER_meth_get_ctrl := @ERR_EVP_CIPHER_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_meth_get_ctrl_removed)}
@@ -8801,39 +8432,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_meth_get_ctrl)}
       EVP_CIPHER_meth_get_ctrl := @_EVP_CIPHER_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_meth_get_ctrl_allownil)}
-      EVP_CIPHER_meth_get_ctrl := @ERR_EVP_CIPHER_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_meth_get_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_meth_get_ctrl := @ERR_EVP_CIPHER_meth_get_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_meth_get_ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_type := LoadLibFunction(ADllHandle, EVP_MD_type_procname);
-  FuncLoaded := assigned(EVP_MD_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_type_allownil)}
+    EVP_MD_type := @ERR_EVP_MD_type;
+    {$ifend}
     {$if declared(EVP_MD_type_introduced)}
     if LibVersion < EVP_MD_type_introduced then
     begin
       {$if declared(FC_EVP_MD_type)}
       EVP_MD_type := @FC_EVP_MD_type;
-      {$else}
-      {$if not defined(EVP_MD_type_allownil)}
-      EVP_MD_type := @ERR_EVP_MD_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_type_removed)}
@@ -8841,39 +8464,31 @@ begin
     begin
       {$if declared(_EVP_MD_type)}
       EVP_MD_type := @_EVP_MD_type;
-      {$else}
-      {$if not defined(EVP_MD_type_allownil)}
-      EVP_MD_type := @ERR_EVP_MD_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_type := @ERR_EVP_MD_type;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_type');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_pkey_type := LoadLibFunction(ADllHandle, EVP_MD_pkey_type_procname);
-  FuncLoaded := assigned(EVP_MD_pkey_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_pkey_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_pkey_type_allownil)}
+    EVP_MD_pkey_type := @ERR_EVP_MD_pkey_type;
+    {$ifend}
     {$if declared(EVP_MD_pkey_type_introduced)}
     if LibVersion < EVP_MD_pkey_type_introduced then
     begin
       {$if declared(FC_EVP_MD_pkey_type)}
       EVP_MD_pkey_type := @FC_EVP_MD_pkey_type;
-      {$else}
-      {$if not defined(EVP_MD_pkey_type_allownil)}
-      EVP_MD_pkey_type := @ERR_EVP_MD_pkey_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_pkey_type_removed)}
@@ -8881,39 +8496,31 @@ begin
     begin
       {$if declared(_EVP_MD_pkey_type)}
       EVP_MD_pkey_type := @_EVP_MD_pkey_type;
-      {$else}
-      {$if not defined(EVP_MD_pkey_type_allownil)}
-      EVP_MD_pkey_type := @ERR_EVP_MD_pkey_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_pkey_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_pkey_type := @ERR_EVP_MD_pkey_type;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_pkey_type');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_size := LoadLibFunction(ADllHandle, EVP_MD_size_procname);
-  FuncLoaded := assigned(EVP_MD_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_size_allownil)}
+    EVP_MD_size := @ERR_EVP_MD_size;
+    {$ifend}
     {$if declared(EVP_MD_size_introduced)}
     if LibVersion < EVP_MD_size_introduced then
     begin
       {$if declared(FC_EVP_MD_size)}
       EVP_MD_size := @FC_EVP_MD_size;
-      {$else}
-      {$if not defined(EVP_MD_size_allownil)}
-      EVP_MD_size := @ERR_EVP_MD_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_size_removed)}
@@ -8921,39 +8528,31 @@ begin
     begin
       {$if declared(_EVP_MD_size)}
       EVP_MD_size := @_EVP_MD_size;
-      {$else}
-      {$if not defined(EVP_MD_size_allownil)}
-      EVP_MD_size := @ERR_EVP_MD_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_size := @ERR_EVP_MD_size;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_size');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_block_size := LoadLibFunction(ADllHandle, EVP_MD_block_size_procname);
-  FuncLoaded := assigned(EVP_MD_block_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_block_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_block_size_allownil)}
+    EVP_MD_block_size := @ERR_EVP_MD_block_size;
+    {$ifend}
     {$if declared(EVP_MD_block_size_introduced)}
     if LibVersion < EVP_MD_block_size_introduced then
     begin
       {$if declared(FC_EVP_MD_block_size)}
       EVP_MD_block_size := @FC_EVP_MD_block_size;
-      {$else}
-      {$if not defined(EVP_MD_block_size_allownil)}
-      EVP_MD_block_size := @ERR_EVP_MD_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_block_size_removed)}
@@ -8961,39 +8560,31 @@ begin
     begin
       {$if declared(_EVP_MD_block_size)}
       EVP_MD_block_size := @_EVP_MD_block_size;
-      {$else}
-      {$if not defined(EVP_MD_block_size_allownil)}
-      EVP_MD_block_size := @ERR_EVP_MD_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_block_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_block_size := @ERR_EVP_MD_block_size;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_block_size');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_flags := LoadLibFunction(ADllHandle, EVP_MD_flags_procname);
-  FuncLoaded := assigned(EVP_MD_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_flags_allownil)}
+    EVP_MD_flags := @ERR_EVP_MD_flags;
+    {$ifend}
     {$if declared(EVP_MD_flags_introduced)}
     if LibVersion < EVP_MD_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_flags)}
       EVP_MD_flags := @FC_EVP_MD_flags;
-      {$else}
-      {$if not defined(EVP_MD_flags_allownil)}
-      EVP_MD_flags := @ERR_EVP_MD_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_flags_removed)}
@@ -9001,39 +8592,31 @@ begin
     begin
       {$if declared(_EVP_MD_flags)}
       EVP_MD_flags := @_EVP_MD_flags;
-      {$else}
-      {$if not defined(EVP_MD_flags_allownil)}
-      EVP_MD_flags := @ERR_EVP_MD_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_flags := @ERR_EVP_MD_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_flags');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_CTX_md := LoadLibFunction(ADllHandle, EVP_MD_CTX_md_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_md);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_md_allownil)}
+    EVP_MD_CTX_md := @ERR_EVP_MD_CTX_md;
+    {$ifend}
     {$if declared(EVP_MD_CTX_md_introduced)}
     if LibVersion < EVP_MD_CTX_md_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_md)}
       EVP_MD_CTX_md := @FC_EVP_MD_CTX_md;
-      {$else}
-      {$if not defined(EVP_MD_CTX_md_allownil)}
-      EVP_MD_CTX_md := @ERR_EVP_MD_CTX_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_md_removed)}
@@ -9041,39 +8624,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_md)}
       EVP_MD_CTX_md := @_EVP_MD_CTX_md;
-      {$else}
-      {$if not defined(EVP_MD_CTX_md_allownil)}
-      EVP_MD_CTX_md := @ERR_EVP_MD_CTX_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_md_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_md := @ERR_EVP_MD_CTX_md;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_md');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_CTX_update_fn := LoadLibFunction(ADllHandle, EVP_MD_CTX_update_fn_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_update_fn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_update_fn);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_update_fn_allownil)}
+    EVP_MD_CTX_update_fn := @ERR_EVP_MD_CTX_update_fn;
+    {$ifend}
     {$if declared(EVP_MD_CTX_update_fn_introduced)}
     if LibVersion < EVP_MD_CTX_update_fn_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_update_fn)}
       EVP_MD_CTX_update_fn := @FC_EVP_MD_CTX_update_fn;
-      {$else}
-      {$if not defined(EVP_MD_CTX_update_fn_allownil)}
-      EVP_MD_CTX_update_fn := @ERR_EVP_MD_CTX_update_fn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_update_fn_removed)}
@@ -9081,39 +8656,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_update_fn)}
       EVP_MD_CTX_update_fn := @_EVP_MD_CTX_update_fn;
-      {$else}
-      {$if not defined(EVP_MD_CTX_update_fn_allownil)}
-      EVP_MD_CTX_update_fn := @ERR_EVP_MD_CTX_update_fn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_update_fn_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_update_fn := @ERR_EVP_MD_CTX_update_fn;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_update_fn');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_set_update_fn := LoadLibFunction(ADllHandle, EVP_MD_CTX_set_update_fn_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_set_update_fn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_set_update_fn);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_set_update_fn_allownil)}
+    EVP_MD_CTX_set_update_fn := @ERR_EVP_MD_CTX_set_update_fn;
+    {$ifend}
     {$if declared(EVP_MD_CTX_set_update_fn_introduced)}
     if LibVersion < EVP_MD_CTX_set_update_fn_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_set_update_fn)}
       EVP_MD_CTX_set_update_fn := @FC_EVP_MD_CTX_set_update_fn;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_update_fn_allownil)}
-      EVP_MD_CTX_set_update_fn := @ERR_EVP_MD_CTX_set_update_fn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_set_update_fn_removed)}
@@ -9121,39 +8688,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_set_update_fn)}
       EVP_MD_CTX_set_update_fn := @_EVP_MD_CTX_set_update_fn;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_update_fn_allownil)}
-      EVP_MD_CTX_set_update_fn := @ERR_EVP_MD_CTX_set_update_fn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_set_update_fn_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_set_update_fn := @ERR_EVP_MD_CTX_set_update_fn;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_set_update_fn');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_pkey_ctx := LoadLibFunction(ADllHandle, EVP_MD_CTX_pkey_ctx_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_pkey_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_pkey_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_pkey_ctx_allownil)}
+    EVP_MD_CTX_pkey_ctx := @ERR_EVP_MD_CTX_pkey_ctx;
+    {$ifend}
     {$if declared(EVP_MD_CTX_pkey_ctx_introduced)}
     if LibVersion < EVP_MD_CTX_pkey_ctx_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_pkey_ctx)}
       EVP_MD_CTX_pkey_ctx := @FC_EVP_MD_CTX_pkey_ctx;
-      {$else}
-      {$if not defined(EVP_MD_CTX_pkey_ctx_allownil)}
-      EVP_MD_CTX_pkey_ctx := @ERR_EVP_MD_CTX_pkey_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_pkey_ctx_removed)}
@@ -9161,39 +8720,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_pkey_ctx)}
       EVP_MD_CTX_pkey_ctx := @_EVP_MD_CTX_pkey_ctx;
-      {$else}
-      {$if not defined(EVP_MD_CTX_pkey_ctx_allownil)}
-      EVP_MD_CTX_pkey_ctx := @ERR_EVP_MD_CTX_pkey_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_pkey_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_pkey_ctx := @ERR_EVP_MD_CTX_pkey_ctx;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_pkey_ctx');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_CTX_set_pkey_ctx := LoadLibFunction(ADllHandle, EVP_MD_CTX_set_pkey_ctx_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_set_pkey_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_set_pkey_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_set_pkey_ctx_allownil)}
+    EVP_MD_CTX_set_pkey_ctx := @ERR_EVP_MD_CTX_set_pkey_ctx;
+    {$ifend}
     {$if declared(EVP_MD_CTX_set_pkey_ctx_introduced)}
     if LibVersion < EVP_MD_CTX_set_pkey_ctx_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_set_pkey_ctx)}
       EVP_MD_CTX_set_pkey_ctx := @FC_EVP_MD_CTX_set_pkey_ctx;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_pkey_ctx_allownil)}
-      EVP_MD_CTX_set_pkey_ctx := @ERR_EVP_MD_CTX_set_pkey_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_set_pkey_ctx_removed)}
@@ -9201,39 +8752,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_set_pkey_ctx)}
       EVP_MD_CTX_set_pkey_ctx := @_EVP_MD_CTX_set_pkey_ctx;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_pkey_ctx_allownil)}
-      EVP_MD_CTX_set_pkey_ctx := @ERR_EVP_MD_CTX_set_pkey_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_set_pkey_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_set_pkey_ctx := @ERR_EVP_MD_CTX_set_pkey_ctx;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_set_pkey_ctx');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_md_data := LoadLibFunction(ADllHandle, EVP_MD_CTX_md_data_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_md_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_md_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_md_data_allownil)}
+    EVP_MD_CTX_md_data := @ERR_EVP_MD_CTX_md_data;
+    {$ifend}
     {$if declared(EVP_MD_CTX_md_data_introduced)}
     if LibVersion < EVP_MD_CTX_md_data_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_md_data)}
       EVP_MD_CTX_md_data := @FC_EVP_MD_CTX_md_data;
-      {$else}
-      {$if not defined(EVP_MD_CTX_md_data_allownil)}
-      EVP_MD_CTX_md_data := @ERR_EVP_MD_CTX_md_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_md_data_removed)}
@@ -9241,39 +8784,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_md_data)}
       EVP_MD_CTX_md_data := @_EVP_MD_CTX_md_data;
-      {$else}
-      {$if not defined(EVP_MD_CTX_md_data_allownil)}
-      EVP_MD_CTX_md_data := @ERR_EVP_MD_CTX_md_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_md_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_md_data := @ERR_EVP_MD_CTX_md_data;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_md_data');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_nid := LoadLibFunction(ADllHandle, EVP_CIPHER_nid_procname);
-  FuncLoaded := assigned(EVP_CIPHER_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_nid_allownil)}
+    EVP_CIPHER_nid := @ERR_EVP_CIPHER_nid;
+    {$ifend}
     {$if declared(EVP_CIPHER_nid_introduced)}
     if LibVersion < EVP_CIPHER_nid_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_nid)}
       EVP_CIPHER_nid := @FC_EVP_CIPHER_nid;
-      {$else}
-      {$if not defined(EVP_CIPHER_nid_allownil)}
-      EVP_CIPHER_nid := @ERR_EVP_CIPHER_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_nid_removed)}
@@ -9281,39 +8816,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_nid)}
       EVP_CIPHER_nid := @_EVP_CIPHER_nid;
-      {$else}
-      {$if not defined(EVP_CIPHER_nid_allownil)}
-      EVP_CIPHER_nid := @ERR_EVP_CIPHER_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_nid := @ERR_EVP_CIPHER_nid;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_nid');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_block_size := LoadLibFunction(ADllHandle, EVP_CIPHER_block_size_procname);
-  FuncLoaded := assigned(EVP_CIPHER_block_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_block_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_block_size_allownil)}
+    EVP_CIPHER_block_size := @ERR_EVP_CIPHER_block_size;
+    {$ifend}
     {$if declared(EVP_CIPHER_block_size_introduced)}
     if LibVersion < EVP_CIPHER_block_size_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_block_size)}
       EVP_CIPHER_block_size := @FC_EVP_CIPHER_block_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_block_size_allownil)}
-      EVP_CIPHER_block_size := @ERR_EVP_CIPHER_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_block_size_removed)}
@@ -9321,39 +8848,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_block_size)}
       EVP_CIPHER_block_size := @_EVP_CIPHER_block_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_block_size_allownil)}
-      EVP_CIPHER_block_size := @ERR_EVP_CIPHER_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_block_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_block_size := @ERR_EVP_CIPHER_block_size;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_block_size');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_impl_ctx_size := LoadLibFunction(ADllHandle, EVP_CIPHER_impl_ctx_size_procname);
-  FuncLoaded := assigned(EVP_CIPHER_impl_ctx_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_impl_ctx_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_impl_ctx_size_allownil)}
+    EVP_CIPHER_impl_ctx_size := @ERR_EVP_CIPHER_impl_ctx_size;
+    {$ifend}
     {$if declared(EVP_CIPHER_impl_ctx_size_introduced)}
     if LibVersion < EVP_CIPHER_impl_ctx_size_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_impl_ctx_size)}
       EVP_CIPHER_impl_ctx_size := @FC_EVP_CIPHER_impl_ctx_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_impl_ctx_size_allownil)}
-      EVP_CIPHER_impl_ctx_size := @ERR_EVP_CIPHER_impl_ctx_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_impl_ctx_size_removed)}
@@ -9361,39 +8880,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_impl_ctx_size)}
       EVP_CIPHER_impl_ctx_size := @_EVP_CIPHER_impl_ctx_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_impl_ctx_size_allownil)}
-      EVP_CIPHER_impl_ctx_size := @ERR_EVP_CIPHER_impl_ctx_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_impl_ctx_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_impl_ctx_size := @ERR_EVP_CIPHER_impl_ctx_size;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_impl_ctx_size');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_key_length := LoadLibFunction(ADllHandle, EVP_CIPHER_key_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_key_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_key_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_key_length_allownil)}
+    EVP_CIPHER_key_length := @ERR_EVP_CIPHER_key_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_key_length_introduced)}
     if LibVersion < EVP_CIPHER_key_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_key_length)}
       EVP_CIPHER_key_length := @FC_EVP_CIPHER_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_key_length_allownil)}
-      EVP_CIPHER_key_length := @ERR_EVP_CIPHER_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_key_length_removed)}
@@ -9401,39 +8912,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_key_length)}
       EVP_CIPHER_key_length := @_EVP_CIPHER_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_key_length_allownil)}
-      EVP_CIPHER_key_length := @ERR_EVP_CIPHER_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_key_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_key_length := @ERR_EVP_CIPHER_key_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_key_length');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_iv_length := LoadLibFunction(ADllHandle, EVP_CIPHER_iv_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_iv_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_iv_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_iv_length_allownil)}
+    EVP_CIPHER_iv_length := @ERR_EVP_CIPHER_iv_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_iv_length_introduced)}
     if LibVersion < EVP_CIPHER_iv_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_iv_length)}
       EVP_CIPHER_iv_length := @FC_EVP_CIPHER_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_iv_length_allownil)}
-      EVP_CIPHER_iv_length := @ERR_EVP_CIPHER_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_iv_length_removed)}
@@ -9441,39 +8944,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_iv_length)}
       EVP_CIPHER_iv_length := @_EVP_CIPHER_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_iv_length_allownil)}
-      EVP_CIPHER_iv_length := @ERR_EVP_CIPHER_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_iv_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_iv_length := @ERR_EVP_CIPHER_iv_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_iv_length');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_flags := LoadLibFunction(ADllHandle, EVP_CIPHER_flags_procname);
-  FuncLoaded := assigned(EVP_CIPHER_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_flags_allownil)}
+    EVP_CIPHER_flags := @ERR_EVP_CIPHER_flags;
+    {$ifend}
     {$if declared(EVP_CIPHER_flags_introduced)}
     if LibVersion < EVP_CIPHER_flags_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_flags)}
       EVP_CIPHER_flags := @FC_EVP_CIPHER_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_flags_allownil)}
-      EVP_CIPHER_flags := @ERR_EVP_CIPHER_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_flags_removed)}
@@ -9481,39 +8976,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_flags)}
       EVP_CIPHER_flags := @_EVP_CIPHER_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_flags_allownil)}
-      EVP_CIPHER_flags := @ERR_EVP_CIPHER_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_flags := @ERR_EVP_CIPHER_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_flags');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_cipher := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_cipher_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_cipher_allownil)}
+    EVP_CIPHER_CTX_cipher := @ERR_EVP_CIPHER_CTX_cipher;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_cipher_introduced)}
     if LibVersion < EVP_CIPHER_CTX_cipher_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_cipher)}
       EVP_CIPHER_CTX_cipher := @FC_EVP_CIPHER_CTX_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_cipher_allownil)}
-      EVP_CIPHER_CTX_cipher := @ERR_EVP_CIPHER_CTX_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_cipher_removed)}
@@ -9521,39 +9008,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_cipher)}
       EVP_CIPHER_CTX_cipher := @_EVP_CIPHER_CTX_cipher;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_cipher_allownil)}
-      EVP_CIPHER_CTX_cipher := @ERR_EVP_CIPHER_CTX_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_cipher := @ERR_EVP_CIPHER_CTX_cipher;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_cipher');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_encrypting := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_encrypting_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_encrypting);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_encrypting);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_encrypting_allownil)}
+    EVP_CIPHER_CTX_encrypting := @ERR_EVP_CIPHER_CTX_encrypting;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_encrypting_introduced)}
     if LibVersion < EVP_CIPHER_CTX_encrypting_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_encrypting)}
       EVP_CIPHER_CTX_encrypting := @FC_EVP_CIPHER_CTX_encrypting;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_encrypting_allownil)}
-      EVP_CIPHER_CTX_encrypting := @ERR_EVP_CIPHER_CTX_encrypting;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_encrypting_removed)}
@@ -9561,39 +9040,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_encrypting)}
       EVP_CIPHER_CTX_encrypting := @_EVP_CIPHER_CTX_encrypting;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_encrypting_allownil)}
-      EVP_CIPHER_CTX_encrypting := @ERR_EVP_CIPHER_CTX_encrypting;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_encrypting_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_encrypting := @ERR_EVP_CIPHER_CTX_encrypting;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_encrypting');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_nid := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_nid_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_nid_allownil)}
+    EVP_CIPHER_CTX_nid := @ERR_EVP_CIPHER_CTX_nid;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_nid_introduced)}
     if LibVersion < EVP_CIPHER_CTX_nid_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_nid)}
       EVP_CIPHER_CTX_nid := @FC_EVP_CIPHER_CTX_nid;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_nid_allownil)}
-      EVP_CIPHER_CTX_nid := @ERR_EVP_CIPHER_CTX_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_nid_removed)}
@@ -9601,39 +9072,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_nid)}
       EVP_CIPHER_CTX_nid := @_EVP_CIPHER_CTX_nid;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_nid_allownil)}
-      EVP_CIPHER_CTX_nid := @ERR_EVP_CIPHER_CTX_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_nid := @ERR_EVP_CIPHER_CTX_nid;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_nid');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_block_size := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_block_size_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_block_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_block_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_block_size_allownil)}
+    EVP_CIPHER_CTX_block_size := @ERR_EVP_CIPHER_CTX_block_size;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_block_size_introduced)}
     if LibVersion < EVP_CIPHER_CTX_block_size_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_block_size)}
       EVP_CIPHER_CTX_block_size := @FC_EVP_CIPHER_CTX_block_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_block_size_allownil)}
-      EVP_CIPHER_CTX_block_size := @ERR_EVP_CIPHER_CTX_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_block_size_removed)}
@@ -9641,39 +9104,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_block_size)}
       EVP_CIPHER_CTX_block_size := @_EVP_CIPHER_CTX_block_size;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_block_size_allownil)}
-      EVP_CIPHER_CTX_block_size := @ERR_EVP_CIPHER_CTX_block_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_block_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_block_size := @ERR_EVP_CIPHER_CTX_block_size;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_block_size');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_key_length := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_key_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_key_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_key_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_key_length_allownil)}
+    EVP_CIPHER_CTX_key_length := @ERR_EVP_CIPHER_CTX_key_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_key_length_introduced)}
     if LibVersion < EVP_CIPHER_CTX_key_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_key_length)}
       EVP_CIPHER_CTX_key_length := @FC_EVP_CIPHER_CTX_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_key_length_allownil)}
-      EVP_CIPHER_CTX_key_length := @ERR_EVP_CIPHER_CTX_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_key_length_removed)}
@@ -9681,39 +9136,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_key_length)}
       EVP_CIPHER_CTX_key_length := @_EVP_CIPHER_CTX_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_key_length_allownil)}
-      EVP_CIPHER_CTX_key_length := @ERR_EVP_CIPHER_CTX_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_key_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_key_length := @ERR_EVP_CIPHER_CTX_key_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_key_length');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_iv_length := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_iv_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_iv_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_iv_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_iv_length_allownil)}
+    EVP_CIPHER_CTX_iv_length := @ERR_EVP_CIPHER_CTX_iv_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_length_introduced)}
     if LibVersion < EVP_CIPHER_CTX_iv_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_iv_length)}
       EVP_CIPHER_CTX_iv_length := @FC_EVP_CIPHER_CTX_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_length_allownil)}
-      EVP_CIPHER_CTX_iv_length := @ERR_EVP_CIPHER_CTX_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_length_removed)}
@@ -9721,39 +9168,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_iv_length)}
       EVP_CIPHER_CTX_iv_length := @_EVP_CIPHER_CTX_iv_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_length_allownil)}
-      EVP_CIPHER_CTX_iv_length := @ERR_EVP_CIPHER_CTX_iv_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_iv_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_iv_length := @ERR_EVP_CIPHER_CTX_iv_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_iv_length');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_iv := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_iv_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_iv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_iv);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_iv_allownil)}
+    EVP_CIPHER_CTX_iv := @ERR_EVP_CIPHER_CTX_iv;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_introduced)}
     if LibVersion < EVP_CIPHER_CTX_iv_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_iv)}
       EVP_CIPHER_CTX_iv := @FC_EVP_CIPHER_CTX_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_allownil)}
-      EVP_CIPHER_CTX_iv := @ERR_EVP_CIPHER_CTX_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_removed)}
@@ -9761,39 +9200,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_iv)}
       EVP_CIPHER_CTX_iv := @_EVP_CIPHER_CTX_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_allownil)}
-      EVP_CIPHER_CTX_iv := @ERR_EVP_CIPHER_CTX_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_iv_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_iv := @ERR_EVP_CIPHER_CTX_iv;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_iv');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_original_iv := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_original_iv_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_original_iv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_original_iv);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_original_iv_allownil)}
+    EVP_CIPHER_CTX_original_iv := @ERR_EVP_CIPHER_CTX_original_iv;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_original_iv_introduced)}
     if LibVersion < EVP_CIPHER_CTX_original_iv_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_original_iv)}
       EVP_CIPHER_CTX_original_iv := @FC_EVP_CIPHER_CTX_original_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_original_iv_allownil)}
-      EVP_CIPHER_CTX_original_iv := @ERR_EVP_CIPHER_CTX_original_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_original_iv_removed)}
@@ -9801,39 +9232,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_original_iv)}
       EVP_CIPHER_CTX_original_iv := @_EVP_CIPHER_CTX_original_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_original_iv_allownil)}
-      EVP_CIPHER_CTX_original_iv := @ERR_EVP_CIPHER_CTX_original_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_original_iv_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_original_iv := @ERR_EVP_CIPHER_CTX_original_iv;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_original_iv');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_iv_noconst := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_iv_noconst_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_iv_noconst);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_iv_noconst);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_iv_noconst_allownil)}
+    EVP_CIPHER_CTX_iv_noconst := @ERR_EVP_CIPHER_CTX_iv_noconst;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_noconst_introduced)}
     if LibVersion < EVP_CIPHER_CTX_iv_noconst_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_iv_noconst)}
       EVP_CIPHER_CTX_iv_noconst := @FC_EVP_CIPHER_CTX_iv_noconst;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_noconst_allownil)}
-      EVP_CIPHER_CTX_iv_noconst := @ERR_EVP_CIPHER_CTX_iv_noconst;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_iv_noconst_removed)}
@@ -9841,39 +9264,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_iv_noconst)}
       EVP_CIPHER_CTX_iv_noconst := @_EVP_CIPHER_CTX_iv_noconst;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_iv_noconst_allownil)}
-      EVP_CIPHER_CTX_iv_noconst := @ERR_EVP_CIPHER_CTX_iv_noconst;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_iv_noconst_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_iv_noconst := @ERR_EVP_CIPHER_CTX_iv_noconst;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_iv_noconst');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_buf_noconst := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_buf_noconst_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_buf_noconst);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_buf_noconst);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_buf_noconst_allownil)}
+    EVP_CIPHER_CTX_buf_noconst := @ERR_EVP_CIPHER_CTX_buf_noconst;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_buf_noconst_introduced)}
     if LibVersion < EVP_CIPHER_CTX_buf_noconst_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_buf_noconst)}
       EVP_CIPHER_CTX_buf_noconst := @FC_EVP_CIPHER_CTX_buf_noconst;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_buf_noconst_allownil)}
-      EVP_CIPHER_CTX_buf_noconst := @ERR_EVP_CIPHER_CTX_buf_noconst;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_buf_noconst_removed)}
@@ -9881,39 +9296,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_buf_noconst)}
       EVP_CIPHER_CTX_buf_noconst := @_EVP_CIPHER_CTX_buf_noconst;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_buf_noconst_allownil)}
-      EVP_CIPHER_CTX_buf_noconst := @ERR_EVP_CIPHER_CTX_buf_noconst;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_buf_noconst_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_buf_noconst := @ERR_EVP_CIPHER_CTX_buf_noconst;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_buf_noconst');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_num := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_num_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_num);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_num);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_num_allownil)}
+    EVP_CIPHER_CTX_num := @ERR_EVP_CIPHER_CTX_num;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_num_introduced)}
     if LibVersion < EVP_CIPHER_CTX_num_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_num)}
       EVP_CIPHER_CTX_num := @FC_EVP_CIPHER_CTX_num;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_num_allownil)}
-      EVP_CIPHER_CTX_num := @ERR_EVP_CIPHER_CTX_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_num_removed)}
@@ -9921,39 +9328,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_num)}
       EVP_CIPHER_CTX_num := @_EVP_CIPHER_CTX_num;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_num_allownil)}
-      EVP_CIPHER_CTX_num := @ERR_EVP_CIPHER_CTX_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_num_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_num := @ERR_EVP_CIPHER_CTX_num;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_num');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_CTX_set_num := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_num_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_num);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_num);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_num_allownil)}
+    EVP_CIPHER_CTX_set_num := @ERR_EVP_CIPHER_CTX_set_num;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_num_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_num_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_num)}
       EVP_CIPHER_CTX_set_num := @FC_EVP_CIPHER_CTX_set_num;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_num_allownil)}
-      EVP_CIPHER_CTX_set_num := @ERR_EVP_CIPHER_CTX_set_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_num_removed)}
@@ -9961,39 +9360,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_num)}
       EVP_CIPHER_CTX_set_num := @_EVP_CIPHER_CTX_set_num;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_num_allownil)}
-      EVP_CIPHER_CTX_set_num := @ERR_EVP_CIPHER_CTX_set_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_num_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_num := @ERR_EVP_CIPHER_CTX_set_num;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_num');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_copy := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_copy_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_copy_allownil)}
+    EVP_CIPHER_CTX_copy := @ERR_EVP_CIPHER_CTX_copy;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_copy_introduced)}
     if LibVersion < EVP_CIPHER_CTX_copy_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_copy)}
       EVP_CIPHER_CTX_copy := @FC_EVP_CIPHER_CTX_copy;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_copy_allownil)}
-      EVP_CIPHER_CTX_copy := @ERR_EVP_CIPHER_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_copy_removed)}
@@ -10001,39 +9392,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_copy)}
       EVP_CIPHER_CTX_copy := @_EVP_CIPHER_CTX_copy;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_copy_allownil)}
-      EVP_CIPHER_CTX_copy := @ERR_EVP_CIPHER_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_copy := @ERR_EVP_CIPHER_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_get_app_data := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_get_app_data_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_get_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_get_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_get_app_data_allownil)}
+    EVP_CIPHER_CTX_get_app_data := @ERR_EVP_CIPHER_CTX_get_app_data;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_get_app_data_introduced)}
     if LibVersion < EVP_CIPHER_CTX_get_app_data_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_get_app_data)}
       EVP_CIPHER_CTX_get_app_data := @FC_EVP_CIPHER_CTX_get_app_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_get_app_data_allownil)}
-      EVP_CIPHER_CTX_get_app_data := @ERR_EVP_CIPHER_CTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_get_app_data_removed)}
@@ -10041,39 +9424,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_get_app_data)}
       EVP_CIPHER_CTX_get_app_data := @_EVP_CIPHER_CTX_get_app_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_get_app_data_allownil)}
-      EVP_CIPHER_CTX_get_app_data := @ERR_EVP_CIPHER_CTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_get_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_get_app_data := @ERR_EVP_CIPHER_CTX_get_app_data;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_get_app_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_set_app_data := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_app_data_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_app_data_allownil)}
+    EVP_CIPHER_CTX_set_app_data := @ERR_EVP_CIPHER_CTX_set_app_data;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_app_data_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_app_data_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_app_data)}
       EVP_CIPHER_CTX_set_app_data := @FC_EVP_CIPHER_CTX_set_app_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_app_data_allownil)}
-      EVP_CIPHER_CTX_set_app_data := @ERR_EVP_CIPHER_CTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_app_data_removed)}
@@ -10081,39 +9456,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_app_data)}
       EVP_CIPHER_CTX_set_app_data := @_EVP_CIPHER_CTX_set_app_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_app_data_allownil)}
-      EVP_CIPHER_CTX_set_app_data := @ERR_EVP_CIPHER_CTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_app_data := @ERR_EVP_CIPHER_CTX_set_app_data;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_app_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_get_cipher_data := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_get_cipher_data_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_get_cipher_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_get_cipher_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_get_cipher_data_allownil)}
+    EVP_CIPHER_CTX_get_cipher_data := @ERR_EVP_CIPHER_CTX_get_cipher_data;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_get_cipher_data_introduced)}
     if LibVersion < EVP_CIPHER_CTX_get_cipher_data_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_get_cipher_data)}
       EVP_CIPHER_CTX_get_cipher_data := @FC_EVP_CIPHER_CTX_get_cipher_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_get_cipher_data_allownil)}
-      EVP_CIPHER_CTX_get_cipher_data := @ERR_EVP_CIPHER_CTX_get_cipher_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_get_cipher_data_removed)}
@@ -10121,39 +9488,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_get_cipher_data)}
       EVP_CIPHER_CTX_get_cipher_data := @_EVP_CIPHER_CTX_get_cipher_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_get_cipher_data_allownil)}
-      EVP_CIPHER_CTX_get_cipher_data := @ERR_EVP_CIPHER_CTX_get_cipher_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_get_cipher_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_get_cipher_data := @ERR_EVP_CIPHER_CTX_get_cipher_data;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_get_cipher_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_set_cipher_data := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_cipher_data_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_cipher_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_cipher_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_cipher_data_allownil)}
+    EVP_CIPHER_CTX_set_cipher_data := @ERR_EVP_CIPHER_CTX_set_cipher_data;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_cipher_data_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_cipher_data_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_cipher_data)}
       EVP_CIPHER_CTX_set_cipher_data := @FC_EVP_CIPHER_CTX_set_cipher_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_cipher_data_allownil)}
-      EVP_CIPHER_CTX_set_cipher_data := @ERR_EVP_CIPHER_CTX_set_cipher_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_cipher_data_removed)}
@@ -10161,39 +9520,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_cipher_data)}
       EVP_CIPHER_CTX_set_cipher_data := @_EVP_CIPHER_CTX_set_cipher_data;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_cipher_data_allownil)}
-      EVP_CIPHER_CTX_set_cipher_data := @ERR_EVP_CIPHER_CTX_set_cipher_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_cipher_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_cipher_data := @ERR_EVP_CIPHER_CTX_set_cipher_data;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_cipher_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_set_md := LoadLibFunction(ADllHandle, BIO_set_md_procname);
-  FuncLoaded := assigned(BIO_set_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_md);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_md_allownil)}
+    BIO_set_md := @ERR_BIO_set_md;
+    {$ifend}
     {$if declared(BIO_set_md_introduced)}
     if LibVersion < BIO_set_md_introduced then
     begin
       {$if declared(FC_BIO_set_md)}
       BIO_set_md := @FC_BIO_set_md;
-      {$else}
-      {$if not defined(BIO_set_md_allownil)}
-      BIO_set_md := @ERR_BIO_set_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_md_removed)}
@@ -10201,39 +9552,31 @@ begin
     begin
       {$if declared(_BIO_set_md)}
       BIO_set_md := @_BIO_set_md;
-      {$else}
-      {$if not defined(BIO_set_md_allownil)}
-      BIO_set_md := @ERR_BIO_set_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_md_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_md := @ERR_BIO_set_md;
+    if FuncLoadError then
       AFailed.Add('BIO_set_md');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_CTX_init := LoadLibFunction(ADllHandle, EVP_MD_CTX_init_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_init_allownil)}
+    EVP_MD_CTX_init := @ERR_EVP_MD_CTX_init;
+    {$ifend}
     {$if declared(EVP_MD_CTX_init_introduced)}
     if LibVersion < EVP_MD_CTX_init_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_init)}
       EVP_MD_CTX_init := @FC_EVP_MD_CTX_init;
-      {$else}
-      {$if not defined(EVP_MD_CTX_init_allownil)}
-      EVP_MD_CTX_init := @ERR_EVP_MD_CTX_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_init_removed)}
@@ -10241,39 +9584,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_init)}
       EVP_MD_CTX_init := @_EVP_MD_CTX_init;
-      {$else}
-      {$if not defined(EVP_MD_CTX_init_allownil)}
-      EVP_MD_CTX_init := @ERR_EVP_MD_CTX_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_init := @ERR_EVP_MD_CTX_init;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_init');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_CTX_cleanup := LoadLibFunction(ADllHandle, EVP_MD_CTX_cleanup_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_cleanup_allownil)}
+    EVP_MD_CTX_cleanup := @ERR_EVP_MD_CTX_cleanup;
+    {$ifend}
     {$if declared(EVP_MD_CTX_cleanup_introduced)}
     if LibVersion < EVP_MD_CTX_cleanup_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_cleanup)}
       EVP_MD_CTX_cleanup := @FC_EVP_MD_CTX_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_CTX_cleanup_allownil)}
-      EVP_MD_CTX_cleanup := @ERR_EVP_MD_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_cleanup_removed)}
@@ -10281,39 +9616,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_cleanup)}
       EVP_MD_CTX_cleanup := @_EVP_MD_CTX_cleanup;
-      {$else}
-      {$if not defined(EVP_MD_CTX_cleanup_allownil)}
-      EVP_MD_CTX_cleanup := @ERR_EVP_MD_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_cleanup := @ERR_EVP_MD_CTX_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_cleanup');
-    end;
     {$ifend}
   end;
 
  
   EVP_MD_CTX_ctrl := LoadLibFunction(ADllHandle, EVP_MD_CTX_ctrl_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_ctrl_allownil)}
+    EVP_MD_CTX_ctrl := @ERR_EVP_MD_CTX_ctrl;
+    {$ifend}
     {$if declared(EVP_MD_CTX_ctrl_introduced)}
     if LibVersion < EVP_MD_CTX_ctrl_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_ctrl)}
       EVP_MD_CTX_ctrl := @FC_EVP_MD_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_CTX_ctrl_allownil)}
-      EVP_MD_CTX_ctrl := @ERR_EVP_MD_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_ctrl_removed)}
@@ -10321,39 +9648,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_ctrl)}
       EVP_MD_CTX_ctrl := @_EVP_MD_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_MD_CTX_ctrl_allownil)}
-      EVP_MD_CTX_ctrl := @ERR_EVP_MD_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_ctrl := @ERR_EVP_MD_CTX_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_new := LoadLibFunction(ADllHandle, EVP_MD_CTX_new_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_new_allownil)}
+    EVP_MD_CTX_new := @ERR_EVP_MD_CTX_new;
+    {$ifend}
     {$if declared(EVP_MD_CTX_new_introduced)}
     if LibVersion < EVP_MD_CTX_new_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_new)}
       EVP_MD_CTX_new := @FC_EVP_MD_CTX_new;
-      {$else}
-      {$if not defined(EVP_MD_CTX_new_allownil)}
-      EVP_MD_CTX_new := @ERR_EVP_MD_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_new_removed)}
@@ -10361,39 +9680,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_new)}
       EVP_MD_CTX_new := @_EVP_MD_CTX_new;
-      {$else}
-      {$if not defined(EVP_MD_CTX_new_allownil)}
-      EVP_MD_CTX_new := @ERR_EVP_MD_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_new := @ERR_EVP_MD_CTX_new;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_reset := LoadLibFunction(ADllHandle, EVP_MD_CTX_reset_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_reset);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_reset);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_reset_allownil)}
+    EVP_MD_CTX_reset := @ERR_EVP_MD_CTX_reset;
+    {$ifend}
     {$if declared(EVP_MD_CTX_reset_introduced)}
     if LibVersion < EVP_MD_CTX_reset_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_reset)}
       EVP_MD_CTX_reset := @FC_EVP_MD_CTX_reset;
-      {$else}
-      {$if not defined(EVP_MD_CTX_reset_allownil)}
-      EVP_MD_CTX_reset := @ERR_EVP_MD_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_reset_removed)}
@@ -10401,39 +9712,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_reset)}
       EVP_MD_CTX_reset := @_EVP_MD_CTX_reset;
-      {$else}
-      {$if not defined(EVP_MD_CTX_reset_allownil)}
-      EVP_MD_CTX_reset := @ERR_EVP_MD_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_reset_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_reset := @ERR_EVP_MD_CTX_reset;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_reset');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_free := LoadLibFunction(ADllHandle, EVP_MD_CTX_free_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_free_allownil)}
+    EVP_MD_CTX_free := @ERR_EVP_MD_CTX_free;
+    {$ifend}
     {$if declared(EVP_MD_CTX_free_introduced)}
     if LibVersion < EVP_MD_CTX_free_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_free)}
       EVP_MD_CTX_free := @FC_EVP_MD_CTX_free;
-      {$else}
-      {$if not defined(EVP_MD_CTX_free_allownil)}
-      EVP_MD_CTX_free := @ERR_EVP_MD_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_free_removed)}
@@ -10441,39 +9744,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_free)}
       EVP_MD_CTX_free := @_EVP_MD_CTX_free;
-      {$else}
-      {$if not defined(EVP_MD_CTX_free_allownil)}
-      EVP_MD_CTX_free := @ERR_EVP_MD_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_free := @ERR_EVP_MD_CTX_free;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_MD_CTX_copy_ex := LoadLibFunction(ADllHandle, EVP_MD_CTX_copy_ex_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_copy_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_copy_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_copy_ex_allownil)}
+    EVP_MD_CTX_copy_ex := @ERR_EVP_MD_CTX_copy_ex;
+    {$ifend}
     {$if declared(EVP_MD_CTX_copy_ex_introduced)}
     if LibVersion < EVP_MD_CTX_copy_ex_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_copy_ex)}
       EVP_MD_CTX_copy_ex := @FC_EVP_MD_CTX_copy_ex;
-      {$else}
-      {$if not defined(EVP_MD_CTX_copy_ex_allownil)}
-      EVP_MD_CTX_copy_ex := @ERR_EVP_MD_CTX_copy_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_copy_ex_removed)}
@@ -10481,39 +9776,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_copy_ex)}
       EVP_MD_CTX_copy_ex := @_EVP_MD_CTX_copy_ex;
-      {$else}
-      {$if not defined(EVP_MD_CTX_copy_ex_allownil)}
-      EVP_MD_CTX_copy_ex := @ERR_EVP_MD_CTX_copy_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_copy_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_copy_ex := @ERR_EVP_MD_CTX_copy_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_copy_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_CTX_set_flags := LoadLibFunction(ADllHandle, EVP_MD_CTX_set_flags_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_set_flags_allownil)}
+    EVP_MD_CTX_set_flags := @ERR_EVP_MD_CTX_set_flags;
+    {$ifend}
     {$if declared(EVP_MD_CTX_set_flags_introduced)}
     if LibVersion < EVP_MD_CTX_set_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_set_flags)}
       EVP_MD_CTX_set_flags := @FC_EVP_MD_CTX_set_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_flags_allownil)}
-      EVP_MD_CTX_set_flags := @ERR_EVP_MD_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_set_flags_removed)}
@@ -10521,39 +9808,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_set_flags)}
       EVP_MD_CTX_set_flags := @_EVP_MD_CTX_set_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_set_flags_allownil)}
-      EVP_MD_CTX_set_flags := @ERR_EVP_MD_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_set_flags := @ERR_EVP_MD_CTX_set_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_set_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_CTX_clear_flags := LoadLibFunction(ADllHandle, EVP_MD_CTX_clear_flags_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_clear_flags_allownil)}
+    EVP_MD_CTX_clear_flags := @ERR_EVP_MD_CTX_clear_flags;
+    {$ifend}
     {$if declared(EVP_MD_CTX_clear_flags_introduced)}
     if LibVersion < EVP_MD_CTX_clear_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_clear_flags)}
       EVP_MD_CTX_clear_flags := @FC_EVP_MD_CTX_clear_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_clear_flags_allownil)}
-      EVP_MD_CTX_clear_flags := @ERR_EVP_MD_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_clear_flags_removed)}
@@ -10561,39 +9840,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_clear_flags)}
       EVP_MD_CTX_clear_flags := @_EVP_MD_CTX_clear_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_clear_flags_allownil)}
-      EVP_MD_CTX_clear_flags := @ERR_EVP_MD_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_clear_flags := @ERR_EVP_MD_CTX_clear_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_CTX_test_flags := LoadLibFunction(ADllHandle, EVP_MD_CTX_test_flags_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_test_flags_allownil)}
+    EVP_MD_CTX_test_flags := @ERR_EVP_MD_CTX_test_flags;
+    {$ifend}
     {$if declared(EVP_MD_CTX_test_flags_introduced)}
     if LibVersion < EVP_MD_CTX_test_flags_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_test_flags)}
       EVP_MD_CTX_test_flags := @FC_EVP_MD_CTX_test_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_test_flags_allownil)}
-      EVP_MD_CTX_test_flags := @ERR_EVP_MD_CTX_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_test_flags_removed)}
@@ -10601,39 +9872,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_test_flags)}
       EVP_MD_CTX_test_flags := @_EVP_MD_CTX_test_flags;
-      {$else}
-      {$if not defined(EVP_MD_CTX_test_flags_allownil)}
-      EVP_MD_CTX_test_flags := @ERR_EVP_MD_CTX_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_test_flags := @ERR_EVP_MD_CTX_test_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_test_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestInit_ex := LoadLibFunction(ADllHandle, EVP_DigestInit_ex_procname);
-  FuncLoaded := assigned(EVP_DigestInit_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestInit_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestInit_ex_allownil)}
+    EVP_DigestInit_ex := @ERR_EVP_DigestInit_ex;
+    {$ifend}
     {$if declared(EVP_DigestInit_ex_introduced)}
     if LibVersion < EVP_DigestInit_ex_introduced then
     begin
       {$if declared(FC_EVP_DigestInit_ex)}
       EVP_DigestInit_ex := @FC_EVP_DigestInit_ex;
-      {$else}
-      {$if not defined(EVP_DigestInit_ex_allownil)}
-      EVP_DigestInit_ex := @ERR_EVP_DigestInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestInit_ex_removed)}
@@ -10641,39 +9904,31 @@ begin
     begin
       {$if declared(_EVP_DigestInit_ex)}
       EVP_DigestInit_ex := @_EVP_DigestInit_ex;
-      {$else}
-      {$if not defined(EVP_DigestInit_ex_allownil)}
-      EVP_DigestInit_ex := @ERR_EVP_DigestInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestInit_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestInit_ex := @ERR_EVP_DigestInit_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestInit_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestUpdate := LoadLibFunction(ADllHandle, EVP_DigestUpdate_procname);
-  FuncLoaded := assigned(EVP_DigestUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestUpdate_allownil)}
+    EVP_DigestUpdate := @ERR_EVP_DigestUpdate;
+    {$ifend}
     {$if declared(EVP_DigestUpdate_introduced)}
     if LibVersion < EVP_DigestUpdate_introduced then
     begin
       {$if declared(FC_EVP_DigestUpdate)}
       EVP_DigestUpdate := @FC_EVP_DigestUpdate;
-      {$else}
-      {$if not defined(EVP_DigestUpdate_allownil)}
-      EVP_DigestUpdate := @ERR_EVP_DigestUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestUpdate_removed)}
@@ -10681,39 +9936,31 @@ begin
     begin
       {$if declared(_EVP_DigestUpdate)}
       EVP_DigestUpdate := @_EVP_DigestUpdate;
-      {$else}
-      {$if not defined(EVP_DigestUpdate_allownil)}
-      EVP_DigestUpdate := @ERR_EVP_DigestUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestUpdate := @ERR_EVP_DigestUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestFinal_ex := LoadLibFunction(ADllHandle, EVP_DigestFinal_ex_procname);
-  FuncLoaded := assigned(EVP_DigestFinal_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestFinal_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestFinal_ex_allownil)}
+    EVP_DigestFinal_ex := @ERR_EVP_DigestFinal_ex;
+    {$ifend}
     {$if declared(EVP_DigestFinal_ex_introduced)}
     if LibVersion < EVP_DigestFinal_ex_introduced then
     begin
       {$if declared(FC_EVP_DigestFinal_ex)}
       EVP_DigestFinal_ex := @FC_EVP_DigestFinal_ex;
-      {$else}
-      {$if not defined(EVP_DigestFinal_ex_allownil)}
-      EVP_DigestFinal_ex := @ERR_EVP_DigestFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestFinal_ex_removed)}
@@ -10721,39 +9968,31 @@ begin
     begin
       {$if declared(_EVP_DigestFinal_ex)}
       EVP_DigestFinal_ex := @_EVP_DigestFinal_ex;
-      {$else}
-      {$if not defined(EVP_DigestFinal_ex_allownil)}
-      EVP_DigestFinal_ex := @ERR_EVP_DigestFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestFinal_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestFinal_ex := @ERR_EVP_DigestFinal_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestFinal_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_Digest := LoadLibFunction(ADllHandle, EVP_Digest_procname);
-  FuncLoaded := assigned(EVP_Digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_Digest);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_Digest_allownil)}
+    EVP_Digest := @ERR_EVP_Digest;
+    {$ifend}
     {$if declared(EVP_Digest_introduced)}
     if LibVersion < EVP_Digest_introduced then
     begin
       {$if declared(FC_EVP_Digest)}
       EVP_Digest := @FC_EVP_Digest;
-      {$else}
-      {$if not defined(EVP_Digest_allownil)}
-      EVP_Digest := @ERR_EVP_Digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_Digest_removed)}
@@ -10761,39 +10000,31 @@ begin
     begin
       {$if declared(_EVP_Digest)}
       EVP_Digest := @_EVP_Digest;
-      {$else}
-      {$if not defined(EVP_Digest_allownil)}
-      EVP_Digest := @ERR_EVP_Digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_Digest_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_Digest := @ERR_EVP_Digest;
+    if FuncLoadError then
       AFailed.Add('EVP_Digest');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_CTX_copy := LoadLibFunction(ADllHandle, EVP_MD_CTX_copy_procname);
-  FuncLoaded := assigned(EVP_MD_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_CTX_copy_allownil)}
+    EVP_MD_CTX_copy := @ERR_EVP_MD_CTX_copy;
+    {$ifend}
     {$if declared(EVP_MD_CTX_copy_introduced)}
     if LibVersion < EVP_MD_CTX_copy_introduced then
     begin
       {$if declared(FC_EVP_MD_CTX_copy)}
       EVP_MD_CTX_copy := @FC_EVP_MD_CTX_copy;
-      {$else}
-      {$if not defined(EVP_MD_CTX_copy_allownil)}
-      EVP_MD_CTX_copy := @ERR_EVP_MD_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_CTX_copy_removed)}
@@ -10801,39 +10032,31 @@ begin
     begin
       {$if declared(_EVP_MD_CTX_copy)}
       EVP_MD_CTX_copy := @_EVP_MD_CTX_copy;
-      {$else}
-      {$if not defined(EVP_MD_CTX_copy_allownil)}
-      EVP_MD_CTX_copy := @ERR_EVP_MD_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_CTX_copy := @ERR_EVP_MD_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_CTX_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestInit := LoadLibFunction(ADllHandle, EVP_DigestInit_procname);
-  FuncLoaded := assigned(EVP_DigestInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestInit_allownil)}
+    EVP_DigestInit := @ERR_EVP_DigestInit;
+    {$ifend}
     {$if declared(EVP_DigestInit_introduced)}
     if LibVersion < EVP_DigestInit_introduced then
     begin
       {$if declared(FC_EVP_DigestInit)}
       EVP_DigestInit := @FC_EVP_DigestInit;
-      {$else}
-      {$if not defined(EVP_DigestInit_allownil)}
-      EVP_DigestInit := @ERR_EVP_DigestInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestInit_removed)}
@@ -10841,39 +10064,31 @@ begin
     begin
       {$if declared(_EVP_DigestInit)}
       EVP_DigestInit := @_EVP_DigestInit;
-      {$else}
-      {$if not defined(EVP_DigestInit_allownil)}
-      EVP_DigestInit := @ERR_EVP_DigestInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestInit := @ERR_EVP_DigestInit;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestFinal := LoadLibFunction(ADllHandle, EVP_DigestFinal_procname);
-  FuncLoaded := assigned(EVP_DigestFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestFinal_allownil)}
+    EVP_DigestFinal := @ERR_EVP_DigestFinal;
+    {$ifend}
     {$if declared(EVP_DigestFinal_introduced)}
     if LibVersion < EVP_DigestFinal_introduced then
     begin
       {$if declared(FC_EVP_DigestFinal)}
       EVP_DigestFinal := @FC_EVP_DigestFinal;
-      {$else}
-      {$if not defined(EVP_DigestFinal_allownil)}
-      EVP_DigestFinal := @ERR_EVP_DigestFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestFinal_removed)}
@@ -10881,39 +10096,31 @@ begin
     begin
       {$if declared(_EVP_DigestFinal)}
       EVP_DigestFinal := @_EVP_DigestFinal;
-      {$else}
-      {$if not defined(EVP_DigestFinal_allownil)}
-      EVP_DigestFinal := @ERR_EVP_DigestFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestFinal := @ERR_EVP_DigestFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestFinalXOF := LoadLibFunction(ADllHandle, EVP_DigestFinalXOF_procname);
-  FuncLoaded := assigned(EVP_DigestFinalXOF);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestFinalXOF);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestFinalXOF_allownil)}
+    EVP_DigestFinalXOF := @ERR_EVP_DigestFinalXOF;
+    {$ifend}
     {$if declared(EVP_DigestFinalXOF_introduced)}
     if LibVersion < EVP_DigestFinalXOF_introduced then
     begin
       {$if declared(FC_EVP_DigestFinalXOF)}
       EVP_DigestFinalXOF := @FC_EVP_DigestFinalXOF;
-      {$else}
-      {$if not defined(EVP_DigestFinalXOF_allownil)}
-      EVP_DigestFinalXOF := @ERR_EVP_DigestFinalXOF;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestFinalXOF_removed)}
@@ -10921,39 +10128,31 @@ begin
     begin
       {$if declared(_EVP_DigestFinalXOF)}
       EVP_DigestFinalXOF := @_EVP_DigestFinalXOF;
-      {$else}
-      {$if not defined(EVP_DigestFinalXOF_allownil)}
-      EVP_DigestFinalXOF := @ERR_EVP_DigestFinalXOF;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestFinalXOF_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestFinalXOF := @ERR_EVP_DigestFinalXOF;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestFinalXOF');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_read_pw_string := LoadLibFunction(ADllHandle, EVP_read_pw_string_procname);
-  FuncLoaded := assigned(EVP_read_pw_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_read_pw_string);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_read_pw_string_allownil)}
+    EVP_read_pw_string := @ERR_EVP_read_pw_string;
+    {$ifend}
     {$if declared(EVP_read_pw_string_introduced)}
     if LibVersion < EVP_read_pw_string_introduced then
     begin
       {$if declared(FC_EVP_read_pw_string)}
       EVP_read_pw_string := @FC_EVP_read_pw_string;
-      {$else}
-      {$if not defined(EVP_read_pw_string_allownil)}
-      EVP_read_pw_string := @ERR_EVP_read_pw_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_read_pw_string_removed)}
@@ -10961,39 +10160,31 @@ begin
     begin
       {$if declared(_EVP_read_pw_string)}
       EVP_read_pw_string := @_EVP_read_pw_string;
-      {$else}
-      {$if not defined(EVP_read_pw_string_allownil)}
-      EVP_read_pw_string := @ERR_EVP_read_pw_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_read_pw_string_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_read_pw_string := @ERR_EVP_read_pw_string;
+    if FuncLoadError then
       AFailed.Add('EVP_read_pw_string');
-    end;
     {$ifend}
   end;
 
 
   EVP_read_pw_string_min := LoadLibFunction(ADllHandle, EVP_read_pw_string_min_procname);
-  FuncLoaded := assigned(EVP_read_pw_string_min);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_read_pw_string_min);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_read_pw_string_min_allownil)}
+    EVP_read_pw_string_min := @ERR_EVP_read_pw_string_min;
+    {$ifend}
     {$if declared(EVP_read_pw_string_min_introduced)}
     if LibVersion < EVP_read_pw_string_min_introduced then
     begin
       {$if declared(FC_EVP_read_pw_string_min)}
       EVP_read_pw_string_min := @FC_EVP_read_pw_string_min;
-      {$else}
-      {$if not defined(EVP_read_pw_string_min_allownil)}
-      EVP_read_pw_string_min := @ERR_EVP_read_pw_string_min;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_read_pw_string_min_removed)}
@@ -11001,39 +10192,31 @@ begin
     begin
       {$if declared(_EVP_read_pw_string_min)}
       EVP_read_pw_string_min := @_EVP_read_pw_string_min;
-      {$else}
-      {$if not defined(EVP_read_pw_string_min_allownil)}
-      EVP_read_pw_string_min := @ERR_EVP_read_pw_string_min;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_read_pw_string_min_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_read_pw_string_min := @ERR_EVP_read_pw_string_min;
+    if FuncLoadError then
       AFailed.Add('EVP_read_pw_string_min');
-    end;
     {$ifend}
   end;
 
 
   EVP_set_pw_prompt := LoadLibFunction(ADllHandle, EVP_set_pw_prompt_procname);
-  FuncLoaded := assigned(EVP_set_pw_prompt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_set_pw_prompt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_set_pw_prompt_allownil)}
+    EVP_set_pw_prompt := @ERR_EVP_set_pw_prompt;
+    {$ifend}
     {$if declared(EVP_set_pw_prompt_introduced)}
     if LibVersion < EVP_set_pw_prompt_introduced then
     begin
       {$if declared(FC_EVP_set_pw_prompt)}
       EVP_set_pw_prompt := @FC_EVP_set_pw_prompt;
-      {$else}
-      {$if not defined(EVP_set_pw_prompt_allownil)}
-      EVP_set_pw_prompt := @ERR_EVP_set_pw_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_set_pw_prompt_removed)}
@@ -11041,39 +10224,31 @@ begin
     begin
       {$if declared(_EVP_set_pw_prompt)}
       EVP_set_pw_prompt := @_EVP_set_pw_prompt;
-      {$else}
-      {$if not defined(EVP_set_pw_prompt_allownil)}
-      EVP_set_pw_prompt := @ERR_EVP_set_pw_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_set_pw_prompt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_set_pw_prompt := @ERR_EVP_set_pw_prompt;
+    if FuncLoadError then
       AFailed.Add('EVP_set_pw_prompt');
-    end;
     {$ifend}
   end;
 
 
   EVP_get_pw_prompt := LoadLibFunction(ADllHandle, EVP_get_pw_prompt_procname);
-  FuncLoaded := assigned(EVP_get_pw_prompt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_get_pw_prompt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_get_pw_prompt_allownil)}
+    EVP_get_pw_prompt := @ERR_EVP_get_pw_prompt;
+    {$ifend}
     {$if declared(EVP_get_pw_prompt_introduced)}
     if LibVersion < EVP_get_pw_prompt_introduced then
     begin
       {$if declared(FC_EVP_get_pw_prompt)}
       EVP_get_pw_prompt := @FC_EVP_get_pw_prompt;
-      {$else}
-      {$if not defined(EVP_get_pw_prompt_allownil)}
-      EVP_get_pw_prompt := @ERR_EVP_get_pw_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_get_pw_prompt_removed)}
@@ -11081,39 +10256,31 @@ begin
     begin
       {$if declared(_EVP_get_pw_prompt)}
       EVP_get_pw_prompt := @_EVP_get_pw_prompt;
-      {$else}
-      {$if not defined(EVP_get_pw_prompt_allownil)}
-      EVP_get_pw_prompt := @ERR_EVP_get_pw_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_get_pw_prompt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_get_pw_prompt := @ERR_EVP_get_pw_prompt;
+    if FuncLoadError then
       AFailed.Add('EVP_get_pw_prompt');
-    end;
     {$ifend}
   end;
 
 
   EVP_BytesToKey := LoadLibFunction(ADllHandle, EVP_BytesToKey_procname);
-  FuncLoaded := assigned(EVP_BytesToKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_BytesToKey);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_BytesToKey_allownil)}
+    EVP_BytesToKey := @ERR_EVP_BytesToKey;
+    {$ifend}
     {$if declared(EVP_BytesToKey_introduced)}
     if LibVersion < EVP_BytesToKey_introduced then
     begin
       {$if declared(FC_EVP_BytesToKey)}
       EVP_BytesToKey := @FC_EVP_BytesToKey;
-      {$else}
-      {$if not defined(EVP_BytesToKey_allownil)}
-      EVP_BytesToKey := @ERR_EVP_BytesToKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_BytesToKey_removed)}
@@ -11121,39 +10288,31 @@ begin
     begin
       {$if declared(_EVP_BytesToKey)}
       EVP_BytesToKey := @_EVP_BytesToKey;
-      {$else}
-      {$if not defined(EVP_BytesToKey_allownil)}
-      EVP_BytesToKey := @ERR_EVP_BytesToKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_BytesToKey_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_BytesToKey := @ERR_EVP_BytesToKey;
+    if FuncLoadError then
       AFailed.Add('EVP_BytesToKey');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_set_flags := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_flags_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_flags_allownil)}
+    EVP_CIPHER_CTX_set_flags := @ERR_EVP_CIPHER_CTX_set_flags;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_flags_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_flags_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_flags)}
       EVP_CIPHER_CTX_set_flags := @FC_EVP_CIPHER_CTX_set_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_flags_allownil)}
-      EVP_CIPHER_CTX_set_flags := @ERR_EVP_CIPHER_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_flags_removed)}
@@ -11161,39 +10320,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_flags)}
       EVP_CIPHER_CTX_set_flags := @_EVP_CIPHER_CTX_set_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_flags_allownil)}
-      EVP_CIPHER_CTX_set_flags := @ERR_EVP_CIPHER_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_flags := @ERR_EVP_CIPHER_CTX_set_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_clear_flags := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_clear_flags_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_clear_flags_allownil)}
+    EVP_CIPHER_CTX_clear_flags := @ERR_EVP_CIPHER_CTX_clear_flags;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_clear_flags_introduced)}
     if LibVersion < EVP_CIPHER_CTX_clear_flags_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_clear_flags)}
       EVP_CIPHER_CTX_clear_flags := @FC_EVP_CIPHER_CTX_clear_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_clear_flags_allownil)}
-      EVP_CIPHER_CTX_clear_flags := @ERR_EVP_CIPHER_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_clear_flags_removed)}
@@ -11201,39 +10352,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_clear_flags)}
       EVP_CIPHER_CTX_clear_flags := @_EVP_CIPHER_CTX_clear_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_clear_flags_allownil)}
-      EVP_CIPHER_CTX_clear_flags := @ERR_EVP_CIPHER_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_clear_flags := @ERR_EVP_CIPHER_CTX_clear_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_test_flags := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_test_flags_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_test_flags_allownil)}
+    EVP_CIPHER_CTX_test_flags := @ERR_EVP_CIPHER_CTX_test_flags;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_test_flags_introduced)}
     if LibVersion < EVP_CIPHER_CTX_test_flags_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_test_flags)}
       EVP_CIPHER_CTX_test_flags := @FC_EVP_CIPHER_CTX_test_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_test_flags_allownil)}
-      EVP_CIPHER_CTX_test_flags := @ERR_EVP_CIPHER_CTX_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_test_flags_removed)}
@@ -11241,39 +10384,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_test_flags)}
       EVP_CIPHER_CTX_test_flags := @_EVP_CIPHER_CTX_test_flags;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_test_flags_allownil)}
-      EVP_CIPHER_CTX_test_flags := @ERR_EVP_CIPHER_CTX_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_test_flags := @ERR_EVP_CIPHER_CTX_test_flags;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_test_flags');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncryptInit := LoadLibFunction(ADllHandle, EVP_EncryptInit_procname);
-  FuncLoaded := assigned(EVP_EncryptInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncryptInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncryptInit_allownil)}
+    EVP_EncryptInit := @ERR_EVP_EncryptInit;
+    {$ifend}
     {$if declared(EVP_EncryptInit_introduced)}
     if LibVersion < EVP_EncryptInit_introduced then
     begin
       {$if declared(FC_EVP_EncryptInit)}
       EVP_EncryptInit := @FC_EVP_EncryptInit;
-      {$else}
-      {$if not defined(EVP_EncryptInit_allownil)}
-      EVP_EncryptInit := @ERR_EVP_EncryptInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncryptInit_removed)}
@@ -11281,39 +10416,31 @@ begin
     begin
       {$if declared(_EVP_EncryptInit)}
       EVP_EncryptInit := @_EVP_EncryptInit;
-      {$else}
-      {$if not defined(EVP_EncryptInit_allownil)}
-      EVP_EncryptInit := @ERR_EVP_EncryptInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncryptInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncryptInit := @ERR_EVP_EncryptInit;
+    if FuncLoadError then
       AFailed.Add('EVP_EncryptInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncryptInit_ex := LoadLibFunction(ADllHandle, EVP_EncryptInit_ex_procname);
-  FuncLoaded := assigned(EVP_EncryptInit_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncryptInit_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncryptInit_ex_allownil)}
+    EVP_EncryptInit_ex := @ERR_EVP_EncryptInit_ex;
+    {$ifend}
     {$if declared(EVP_EncryptInit_ex_introduced)}
     if LibVersion < EVP_EncryptInit_ex_introduced then
     begin
       {$if declared(FC_EVP_EncryptInit_ex)}
       EVP_EncryptInit_ex := @FC_EVP_EncryptInit_ex;
-      {$else}
-      {$if not defined(EVP_EncryptInit_ex_allownil)}
-      EVP_EncryptInit_ex := @ERR_EVP_EncryptInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncryptInit_ex_removed)}
@@ -11321,39 +10448,31 @@ begin
     begin
       {$if declared(_EVP_EncryptInit_ex)}
       EVP_EncryptInit_ex := @_EVP_EncryptInit_ex;
-      {$else}
-      {$if not defined(EVP_EncryptInit_ex_allownil)}
-      EVP_EncryptInit_ex := @ERR_EVP_EncryptInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncryptInit_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncryptInit_ex := @ERR_EVP_EncryptInit_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_EncryptInit_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncryptUpdate := LoadLibFunction(ADllHandle, EVP_EncryptUpdate_procname);
-  FuncLoaded := assigned(EVP_EncryptUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncryptUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncryptUpdate_allownil)}
+    EVP_EncryptUpdate := @ERR_EVP_EncryptUpdate;
+    {$ifend}
     {$if declared(EVP_EncryptUpdate_introduced)}
     if LibVersion < EVP_EncryptUpdate_introduced then
     begin
       {$if declared(FC_EVP_EncryptUpdate)}
       EVP_EncryptUpdate := @FC_EVP_EncryptUpdate;
-      {$else}
-      {$if not defined(EVP_EncryptUpdate_allownil)}
-      EVP_EncryptUpdate := @ERR_EVP_EncryptUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncryptUpdate_removed)}
@@ -11361,39 +10480,31 @@ begin
     begin
       {$if declared(_EVP_EncryptUpdate)}
       EVP_EncryptUpdate := @_EVP_EncryptUpdate;
-      {$else}
-      {$if not defined(EVP_EncryptUpdate_allownil)}
-      EVP_EncryptUpdate := @ERR_EVP_EncryptUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncryptUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncryptUpdate := @ERR_EVP_EncryptUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_EncryptUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncryptFinal_ex := LoadLibFunction(ADllHandle, EVP_EncryptFinal_ex_procname);
-  FuncLoaded := assigned(EVP_EncryptFinal_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncryptFinal_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncryptFinal_ex_allownil)}
+    EVP_EncryptFinal_ex := @ERR_EVP_EncryptFinal_ex;
+    {$ifend}
     {$if declared(EVP_EncryptFinal_ex_introduced)}
     if LibVersion < EVP_EncryptFinal_ex_introduced then
     begin
       {$if declared(FC_EVP_EncryptFinal_ex)}
       EVP_EncryptFinal_ex := @FC_EVP_EncryptFinal_ex;
-      {$else}
-      {$if not defined(EVP_EncryptFinal_ex_allownil)}
-      EVP_EncryptFinal_ex := @ERR_EVP_EncryptFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncryptFinal_ex_removed)}
@@ -11401,39 +10512,31 @@ begin
     begin
       {$if declared(_EVP_EncryptFinal_ex)}
       EVP_EncryptFinal_ex := @_EVP_EncryptFinal_ex;
-      {$else}
-      {$if not defined(EVP_EncryptFinal_ex_allownil)}
-      EVP_EncryptFinal_ex := @ERR_EVP_EncryptFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncryptFinal_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncryptFinal_ex := @ERR_EVP_EncryptFinal_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_EncryptFinal_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncryptFinal := LoadLibFunction(ADllHandle, EVP_EncryptFinal_procname);
-  FuncLoaded := assigned(EVP_EncryptFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncryptFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncryptFinal_allownil)}
+    EVP_EncryptFinal := @ERR_EVP_EncryptFinal;
+    {$ifend}
     {$if declared(EVP_EncryptFinal_introduced)}
     if LibVersion < EVP_EncryptFinal_introduced then
     begin
       {$if declared(FC_EVP_EncryptFinal)}
       EVP_EncryptFinal := @FC_EVP_EncryptFinal;
-      {$else}
-      {$if not defined(EVP_EncryptFinal_allownil)}
-      EVP_EncryptFinal := @ERR_EVP_EncryptFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncryptFinal_removed)}
@@ -11441,39 +10544,31 @@ begin
     begin
       {$if declared(_EVP_EncryptFinal)}
       EVP_EncryptFinal := @_EVP_EncryptFinal;
-      {$else}
-      {$if not defined(EVP_EncryptFinal_allownil)}
-      EVP_EncryptFinal := @ERR_EVP_EncryptFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncryptFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncryptFinal := @ERR_EVP_EncryptFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_EncryptFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecryptInit := LoadLibFunction(ADllHandle, EVP_DecryptInit_procname);
-  FuncLoaded := assigned(EVP_DecryptInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecryptInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecryptInit_allownil)}
+    EVP_DecryptInit := @ERR_EVP_DecryptInit;
+    {$ifend}
     {$if declared(EVP_DecryptInit_introduced)}
     if LibVersion < EVP_DecryptInit_introduced then
     begin
       {$if declared(FC_EVP_DecryptInit)}
       EVP_DecryptInit := @FC_EVP_DecryptInit;
-      {$else}
-      {$if not defined(EVP_DecryptInit_allownil)}
-      EVP_DecryptInit := @ERR_EVP_DecryptInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecryptInit_removed)}
@@ -11481,39 +10576,31 @@ begin
     begin
       {$if declared(_EVP_DecryptInit)}
       EVP_DecryptInit := @_EVP_DecryptInit;
-      {$else}
-      {$if not defined(EVP_DecryptInit_allownil)}
-      EVP_DecryptInit := @ERR_EVP_DecryptInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecryptInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecryptInit := @ERR_EVP_DecryptInit;
+    if FuncLoadError then
       AFailed.Add('EVP_DecryptInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecryptInit_ex := LoadLibFunction(ADllHandle, EVP_DecryptInit_ex_procname);
-  FuncLoaded := assigned(EVP_DecryptInit_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecryptInit_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecryptInit_ex_allownil)}
+    EVP_DecryptInit_ex := @ERR_EVP_DecryptInit_ex;
+    {$ifend}
     {$if declared(EVP_DecryptInit_ex_introduced)}
     if LibVersion < EVP_DecryptInit_ex_introduced then
     begin
       {$if declared(FC_EVP_DecryptInit_ex)}
       EVP_DecryptInit_ex := @FC_EVP_DecryptInit_ex;
-      {$else}
-      {$if not defined(EVP_DecryptInit_ex_allownil)}
-      EVP_DecryptInit_ex := @ERR_EVP_DecryptInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecryptInit_ex_removed)}
@@ -11521,39 +10608,31 @@ begin
     begin
       {$if declared(_EVP_DecryptInit_ex)}
       EVP_DecryptInit_ex := @_EVP_DecryptInit_ex;
-      {$else}
-      {$if not defined(EVP_DecryptInit_ex_allownil)}
-      EVP_DecryptInit_ex := @ERR_EVP_DecryptInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecryptInit_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecryptInit_ex := @ERR_EVP_DecryptInit_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_DecryptInit_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecryptUpdate := LoadLibFunction(ADllHandle, EVP_DecryptUpdate_procname);
-  FuncLoaded := assigned(EVP_DecryptUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecryptUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecryptUpdate_allownil)}
+    EVP_DecryptUpdate := @ERR_EVP_DecryptUpdate;
+    {$ifend}
     {$if declared(EVP_DecryptUpdate_introduced)}
     if LibVersion < EVP_DecryptUpdate_introduced then
     begin
       {$if declared(FC_EVP_DecryptUpdate)}
       EVP_DecryptUpdate := @FC_EVP_DecryptUpdate;
-      {$else}
-      {$if not defined(EVP_DecryptUpdate_allownil)}
-      EVP_DecryptUpdate := @ERR_EVP_DecryptUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecryptUpdate_removed)}
@@ -11561,39 +10640,31 @@ begin
     begin
       {$if declared(_EVP_DecryptUpdate)}
       EVP_DecryptUpdate := @_EVP_DecryptUpdate;
-      {$else}
-      {$if not defined(EVP_DecryptUpdate_allownil)}
-      EVP_DecryptUpdate := @ERR_EVP_DecryptUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecryptUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecryptUpdate := @ERR_EVP_DecryptUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_DecryptUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecryptFinal := LoadLibFunction(ADllHandle, EVP_DecryptFinal_procname);
-  FuncLoaded := assigned(EVP_DecryptFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecryptFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecryptFinal_allownil)}
+    EVP_DecryptFinal := @ERR_EVP_DecryptFinal;
+    {$ifend}
     {$if declared(EVP_DecryptFinal_introduced)}
     if LibVersion < EVP_DecryptFinal_introduced then
     begin
       {$if declared(FC_EVP_DecryptFinal)}
       EVP_DecryptFinal := @FC_EVP_DecryptFinal;
-      {$else}
-      {$if not defined(EVP_DecryptFinal_allownil)}
-      EVP_DecryptFinal := @ERR_EVP_DecryptFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecryptFinal_removed)}
@@ -11601,39 +10672,31 @@ begin
     begin
       {$if declared(_EVP_DecryptFinal)}
       EVP_DecryptFinal := @_EVP_DecryptFinal;
-      {$else}
-      {$if not defined(EVP_DecryptFinal_allownil)}
-      EVP_DecryptFinal := @ERR_EVP_DecryptFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecryptFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecryptFinal := @ERR_EVP_DecryptFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_DecryptFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecryptFinal_ex := LoadLibFunction(ADllHandle, EVP_DecryptFinal_ex_procname);
-  FuncLoaded := assigned(EVP_DecryptFinal_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecryptFinal_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecryptFinal_ex_allownil)}
+    EVP_DecryptFinal_ex := @ERR_EVP_DecryptFinal_ex;
+    {$ifend}
     {$if declared(EVP_DecryptFinal_ex_introduced)}
     if LibVersion < EVP_DecryptFinal_ex_introduced then
     begin
       {$if declared(FC_EVP_DecryptFinal_ex)}
       EVP_DecryptFinal_ex := @FC_EVP_DecryptFinal_ex;
-      {$else}
-      {$if not defined(EVP_DecryptFinal_ex_allownil)}
-      EVP_DecryptFinal_ex := @ERR_EVP_DecryptFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecryptFinal_ex_removed)}
@@ -11641,39 +10704,31 @@ begin
     begin
       {$if declared(_EVP_DecryptFinal_ex)}
       EVP_DecryptFinal_ex := @_EVP_DecryptFinal_ex;
-      {$else}
-      {$if not defined(EVP_DecryptFinal_ex_allownil)}
-      EVP_DecryptFinal_ex := @ERR_EVP_DecryptFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecryptFinal_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecryptFinal_ex := @ERR_EVP_DecryptFinal_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_DecryptFinal_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_CipherInit := LoadLibFunction(ADllHandle, EVP_CipherInit_procname);
-  FuncLoaded := assigned(EVP_CipherInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CipherInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CipherInit_allownil)}
+    EVP_CipherInit := @ERR_EVP_CipherInit;
+    {$ifend}
     {$if declared(EVP_CipherInit_introduced)}
     if LibVersion < EVP_CipherInit_introduced then
     begin
       {$if declared(FC_EVP_CipherInit)}
       EVP_CipherInit := @FC_EVP_CipherInit;
-      {$else}
-      {$if not defined(EVP_CipherInit_allownil)}
-      EVP_CipherInit := @ERR_EVP_CipherInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CipherInit_removed)}
@@ -11681,39 +10736,31 @@ begin
     begin
       {$if declared(_EVP_CipherInit)}
       EVP_CipherInit := @_EVP_CipherInit;
-      {$else}
-      {$if not defined(EVP_CipherInit_allownil)}
-      EVP_CipherInit := @ERR_EVP_CipherInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CipherInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CipherInit := @ERR_EVP_CipherInit;
+    if FuncLoadError then
       AFailed.Add('EVP_CipherInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_CipherInit_ex := LoadLibFunction(ADllHandle, EVP_CipherInit_ex_procname);
-  FuncLoaded := assigned(EVP_CipherInit_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CipherInit_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CipherInit_ex_allownil)}
+    EVP_CipherInit_ex := @ERR_EVP_CipherInit_ex;
+    {$ifend}
     {$if declared(EVP_CipherInit_ex_introduced)}
     if LibVersion < EVP_CipherInit_ex_introduced then
     begin
       {$if declared(FC_EVP_CipherInit_ex)}
       EVP_CipherInit_ex := @FC_EVP_CipherInit_ex;
-      {$else}
-      {$if not defined(EVP_CipherInit_ex_allownil)}
-      EVP_CipherInit_ex := @ERR_EVP_CipherInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CipherInit_ex_removed)}
@@ -11721,39 +10768,31 @@ begin
     begin
       {$if declared(_EVP_CipherInit_ex)}
       EVP_CipherInit_ex := @_EVP_CipherInit_ex;
-      {$else}
-      {$if not defined(EVP_CipherInit_ex_allownil)}
-      EVP_CipherInit_ex := @ERR_EVP_CipherInit_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CipherInit_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CipherInit_ex := @ERR_EVP_CipherInit_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_CipherInit_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_CipherUpdate := LoadLibFunction(ADllHandle, EVP_CipherUpdate_procname);
-  FuncLoaded := assigned(EVP_CipherUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CipherUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CipherUpdate_allownil)}
+    EVP_CipherUpdate := @ERR_EVP_CipherUpdate;
+    {$ifend}
     {$if declared(EVP_CipherUpdate_introduced)}
     if LibVersion < EVP_CipherUpdate_introduced then
     begin
       {$if declared(FC_EVP_CipherUpdate)}
       EVP_CipherUpdate := @FC_EVP_CipherUpdate;
-      {$else}
-      {$if not defined(EVP_CipherUpdate_allownil)}
-      EVP_CipherUpdate := @ERR_EVP_CipherUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CipherUpdate_removed)}
@@ -11761,39 +10800,31 @@ begin
     begin
       {$if declared(_EVP_CipherUpdate)}
       EVP_CipherUpdate := @_EVP_CipherUpdate;
-      {$else}
-      {$if not defined(EVP_CipherUpdate_allownil)}
-      EVP_CipherUpdate := @ERR_EVP_CipherUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CipherUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CipherUpdate := @ERR_EVP_CipherUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_CipherUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_CipherFinal := LoadLibFunction(ADllHandle, EVP_CipherFinal_procname);
-  FuncLoaded := assigned(EVP_CipherFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CipherFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CipherFinal_allownil)}
+    EVP_CipherFinal := @ERR_EVP_CipherFinal;
+    {$ifend}
     {$if declared(EVP_CipherFinal_introduced)}
     if LibVersion < EVP_CipherFinal_introduced then
     begin
       {$if declared(FC_EVP_CipherFinal)}
       EVP_CipherFinal := @FC_EVP_CipherFinal;
-      {$else}
-      {$if not defined(EVP_CipherFinal_allownil)}
-      EVP_CipherFinal := @ERR_EVP_CipherFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CipherFinal_removed)}
@@ -11801,39 +10832,31 @@ begin
     begin
       {$if declared(_EVP_CipherFinal)}
       EVP_CipherFinal := @_EVP_CipherFinal;
-      {$else}
-      {$if not defined(EVP_CipherFinal_allownil)}
-      EVP_CipherFinal := @ERR_EVP_CipherFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CipherFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CipherFinal := @ERR_EVP_CipherFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_CipherFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_CipherFinal_ex := LoadLibFunction(ADllHandle, EVP_CipherFinal_ex_procname);
-  FuncLoaded := assigned(EVP_CipherFinal_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CipherFinal_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CipherFinal_ex_allownil)}
+    EVP_CipherFinal_ex := @ERR_EVP_CipherFinal_ex;
+    {$ifend}
     {$if declared(EVP_CipherFinal_ex_introduced)}
     if LibVersion < EVP_CipherFinal_ex_introduced then
     begin
       {$if declared(FC_EVP_CipherFinal_ex)}
       EVP_CipherFinal_ex := @FC_EVP_CipherFinal_ex;
-      {$else}
-      {$if not defined(EVP_CipherFinal_ex_allownil)}
-      EVP_CipherFinal_ex := @ERR_EVP_CipherFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CipherFinal_ex_removed)}
@@ -11841,39 +10864,31 @@ begin
     begin
       {$if declared(_EVP_CipherFinal_ex)}
       EVP_CipherFinal_ex := @_EVP_CipherFinal_ex;
-      {$else}
-      {$if not defined(EVP_CipherFinal_ex_allownil)}
-      EVP_CipherFinal_ex := @ERR_EVP_CipherFinal_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CipherFinal_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CipherFinal_ex := @ERR_EVP_CipherFinal_ex;
+    if FuncLoadError then
       AFailed.Add('EVP_CipherFinal_ex');
-    end;
     {$ifend}
   end;
 
 
   EVP_SignFinal := LoadLibFunction(ADllHandle, EVP_SignFinal_procname);
-  FuncLoaded := assigned(EVP_SignFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_SignFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_SignFinal_allownil)}
+    EVP_SignFinal := @ERR_EVP_SignFinal;
+    {$ifend}
     {$if declared(EVP_SignFinal_introduced)}
     if LibVersion < EVP_SignFinal_introduced then
     begin
       {$if declared(FC_EVP_SignFinal)}
       EVP_SignFinal := @FC_EVP_SignFinal;
-      {$else}
-      {$if not defined(EVP_SignFinal_allownil)}
-      EVP_SignFinal := @ERR_EVP_SignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_SignFinal_removed)}
@@ -11881,39 +10896,31 @@ begin
     begin
       {$if declared(_EVP_SignFinal)}
       EVP_SignFinal := @_EVP_SignFinal;
-      {$else}
-      {$if not defined(EVP_SignFinal_allownil)}
-      EVP_SignFinal := @ERR_EVP_SignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_SignFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_SignFinal := @ERR_EVP_SignFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_SignFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestSign := LoadLibFunction(ADllHandle, EVP_DigestSign_procname);
-  FuncLoaded := assigned(EVP_DigestSign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestSign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestSign_allownil)}
+    EVP_DigestSign := @ERR_EVP_DigestSign;
+    {$ifend}
     {$if declared(EVP_DigestSign_introduced)}
     if LibVersion < EVP_DigestSign_introduced then
     begin
       {$if declared(FC_EVP_DigestSign)}
       EVP_DigestSign := @FC_EVP_DigestSign;
-      {$else}
-      {$if not defined(EVP_DigestSign_allownil)}
-      EVP_DigestSign := @ERR_EVP_DigestSign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestSign_removed)}
@@ -11921,39 +10928,31 @@ begin
     begin
       {$if declared(_EVP_DigestSign)}
       EVP_DigestSign := @_EVP_DigestSign;
-      {$else}
-      {$if not defined(EVP_DigestSign_allownil)}
-      EVP_DigestSign := @ERR_EVP_DigestSign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestSign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestSign := @ERR_EVP_DigestSign;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestSign');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_VerifyFinal := LoadLibFunction(ADllHandle, EVP_VerifyFinal_procname);
-  FuncLoaded := assigned(EVP_VerifyFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_VerifyFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_VerifyFinal_allownil)}
+    EVP_VerifyFinal := @ERR_EVP_VerifyFinal;
+    {$ifend}
     {$if declared(EVP_VerifyFinal_introduced)}
     if LibVersion < EVP_VerifyFinal_introduced then
     begin
       {$if declared(FC_EVP_VerifyFinal)}
       EVP_VerifyFinal := @FC_EVP_VerifyFinal;
-      {$else}
-      {$if not defined(EVP_VerifyFinal_allownil)}
-      EVP_VerifyFinal := @ERR_EVP_VerifyFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_VerifyFinal_removed)}
@@ -11961,39 +10960,31 @@ begin
     begin
       {$if declared(_EVP_VerifyFinal)}
       EVP_VerifyFinal := @_EVP_VerifyFinal;
-      {$else}
-      {$if not defined(EVP_VerifyFinal_allownil)}
-      EVP_VerifyFinal := @ERR_EVP_VerifyFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_VerifyFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_VerifyFinal := @ERR_EVP_VerifyFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_VerifyFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestVerify := LoadLibFunction(ADllHandle, EVP_DigestVerify_procname);
-  FuncLoaded := assigned(EVP_DigestVerify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestVerify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestVerify_allownil)}
+    EVP_DigestVerify := @ERR_EVP_DigestVerify;
+    {$ifend}
     {$if declared(EVP_DigestVerify_introduced)}
     if LibVersion < EVP_DigestVerify_introduced then
     begin
       {$if declared(FC_EVP_DigestVerify)}
       EVP_DigestVerify := @FC_EVP_DigestVerify;
-      {$else}
-      {$if not defined(EVP_DigestVerify_allownil)}
-      EVP_DigestVerify := @ERR_EVP_DigestVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestVerify_removed)}
@@ -12001,39 +10992,31 @@ begin
     begin
       {$if declared(_EVP_DigestVerify)}
       EVP_DigestVerify := @_EVP_DigestVerify;
-      {$else}
-      {$if not defined(EVP_DigestVerify_allownil)}
-      EVP_DigestVerify := @ERR_EVP_DigestVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestVerify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestVerify := @ERR_EVP_DigestVerify;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestVerify');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_DigestSignInit := LoadLibFunction(ADllHandle, EVP_DigestSignInit_procname);
-  FuncLoaded := assigned(EVP_DigestSignInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestSignInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestSignInit_allownil)}
+    EVP_DigestSignInit := @ERR_EVP_DigestSignInit;
+    {$ifend}
     {$if declared(EVP_DigestSignInit_introduced)}
     if LibVersion < EVP_DigestSignInit_introduced then
     begin
       {$if declared(FC_EVP_DigestSignInit)}
       EVP_DigestSignInit := @FC_EVP_DigestSignInit;
-      {$else}
-      {$if not defined(EVP_DigestSignInit_allownil)}
-      EVP_DigestSignInit := @ERR_EVP_DigestSignInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestSignInit_removed)}
@@ -12041,39 +11024,31 @@ begin
     begin
       {$if declared(_EVP_DigestSignInit)}
       EVP_DigestSignInit := @_EVP_DigestSignInit;
-      {$else}
-      {$if not defined(EVP_DigestSignInit_allownil)}
-      EVP_DigestSignInit := @ERR_EVP_DigestSignInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestSignInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestSignInit := @ERR_EVP_DigestSignInit;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestSignInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestSignFinal := LoadLibFunction(ADllHandle, EVP_DigestSignFinal_procname);
-  FuncLoaded := assigned(EVP_DigestSignFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestSignFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestSignFinal_allownil)}
+    EVP_DigestSignFinal := @ERR_EVP_DigestSignFinal;
+    {$ifend}
     {$if declared(EVP_DigestSignFinal_introduced)}
     if LibVersion < EVP_DigestSignFinal_introduced then
     begin
       {$if declared(FC_EVP_DigestSignFinal)}
       EVP_DigestSignFinal := @FC_EVP_DigestSignFinal;
-      {$else}
-      {$if not defined(EVP_DigestSignFinal_allownil)}
-      EVP_DigestSignFinal := @ERR_EVP_DigestSignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestSignFinal_removed)}
@@ -12081,39 +11056,31 @@ begin
     begin
       {$if declared(_EVP_DigestSignFinal)}
       EVP_DigestSignFinal := @_EVP_DigestSignFinal;
-      {$else}
-      {$if not defined(EVP_DigestSignFinal_allownil)}
-      EVP_DigestSignFinal := @ERR_EVP_DigestSignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestSignFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestSignFinal := @ERR_EVP_DigestSignFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestSignFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestVerifyInit := LoadLibFunction(ADllHandle, EVP_DigestVerifyInit_procname);
-  FuncLoaded := assigned(EVP_DigestVerifyInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestVerifyInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestVerifyInit_allownil)}
+    EVP_DigestVerifyInit := @ERR_EVP_DigestVerifyInit;
+    {$ifend}
     {$if declared(EVP_DigestVerifyInit_introduced)}
     if LibVersion < EVP_DigestVerifyInit_introduced then
     begin
       {$if declared(FC_EVP_DigestVerifyInit)}
       EVP_DigestVerifyInit := @FC_EVP_DigestVerifyInit;
-      {$else}
-      {$if not defined(EVP_DigestVerifyInit_allownil)}
-      EVP_DigestVerifyInit := @ERR_EVP_DigestVerifyInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestVerifyInit_removed)}
@@ -12121,39 +11088,31 @@ begin
     begin
       {$if declared(_EVP_DigestVerifyInit)}
       EVP_DigestVerifyInit := @_EVP_DigestVerifyInit;
-      {$else}
-      {$if not defined(EVP_DigestVerifyInit_allownil)}
-      EVP_DigestVerifyInit := @ERR_EVP_DigestVerifyInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestVerifyInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestVerifyInit := @ERR_EVP_DigestVerifyInit;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestVerifyInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_DigestVerifyFinal := LoadLibFunction(ADllHandle, EVP_DigestVerifyFinal_procname);
-  FuncLoaded := assigned(EVP_DigestVerifyFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DigestVerifyFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DigestVerifyFinal_allownil)}
+    EVP_DigestVerifyFinal := @ERR_EVP_DigestVerifyFinal;
+    {$ifend}
     {$if declared(EVP_DigestVerifyFinal_introduced)}
     if LibVersion < EVP_DigestVerifyFinal_introduced then
     begin
       {$if declared(FC_EVP_DigestVerifyFinal)}
       EVP_DigestVerifyFinal := @FC_EVP_DigestVerifyFinal;
-      {$else}
-      {$if not defined(EVP_DigestVerifyFinal_allownil)}
-      EVP_DigestVerifyFinal := @ERR_EVP_DigestVerifyFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DigestVerifyFinal_removed)}
@@ -12161,39 +11120,31 @@ begin
     begin
       {$if declared(_EVP_DigestVerifyFinal)}
       EVP_DigestVerifyFinal := @_EVP_DigestVerifyFinal;
-      {$else}
-      {$if not defined(EVP_DigestVerifyFinal_allownil)}
-      EVP_DigestVerifyFinal := @ERR_EVP_DigestVerifyFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DigestVerifyFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DigestVerifyFinal := @ERR_EVP_DigestVerifyFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_DigestVerifyFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_OpenInit := LoadLibFunction(ADllHandle, EVP_OpenInit_procname);
-  FuncLoaded := assigned(EVP_OpenInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_OpenInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_OpenInit_allownil)}
+    EVP_OpenInit := @ERR_EVP_OpenInit;
+    {$ifend}
     {$if declared(EVP_OpenInit_introduced)}
     if LibVersion < EVP_OpenInit_introduced then
     begin
       {$if declared(FC_EVP_OpenInit)}
       EVP_OpenInit := @FC_EVP_OpenInit;
-      {$else}
-      {$if not defined(EVP_OpenInit_allownil)}
-      EVP_OpenInit := @ERR_EVP_OpenInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_OpenInit_removed)}
@@ -12201,39 +11152,31 @@ begin
     begin
       {$if declared(_EVP_OpenInit)}
       EVP_OpenInit := @_EVP_OpenInit;
-      {$else}
-      {$if not defined(EVP_OpenInit_allownil)}
-      EVP_OpenInit := @ERR_EVP_OpenInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_OpenInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_OpenInit := @ERR_EVP_OpenInit;
+    if FuncLoadError then
       AFailed.Add('EVP_OpenInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_OpenFinal := LoadLibFunction(ADllHandle, EVP_OpenFinal_procname);
-  FuncLoaded := assigned(EVP_OpenFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_OpenFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_OpenFinal_allownil)}
+    EVP_OpenFinal := @ERR_EVP_OpenFinal;
+    {$ifend}
     {$if declared(EVP_OpenFinal_introduced)}
     if LibVersion < EVP_OpenFinal_introduced then
     begin
       {$if declared(FC_EVP_OpenFinal)}
       EVP_OpenFinal := @FC_EVP_OpenFinal;
-      {$else}
-      {$if not defined(EVP_OpenFinal_allownil)}
-      EVP_OpenFinal := @ERR_EVP_OpenFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_OpenFinal_removed)}
@@ -12241,39 +11184,31 @@ begin
     begin
       {$if declared(_EVP_OpenFinal)}
       EVP_OpenFinal := @_EVP_OpenFinal;
-      {$else}
-      {$if not defined(EVP_OpenFinal_allownil)}
-      EVP_OpenFinal := @ERR_EVP_OpenFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_OpenFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_OpenFinal := @ERR_EVP_OpenFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_OpenFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_SealInit := LoadLibFunction(ADllHandle, EVP_SealInit_procname);
-  FuncLoaded := assigned(EVP_SealInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_SealInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_SealInit_allownil)}
+    EVP_SealInit := @ERR_EVP_SealInit;
+    {$ifend}
     {$if declared(EVP_SealInit_introduced)}
     if LibVersion < EVP_SealInit_introduced then
     begin
       {$if declared(FC_EVP_SealInit)}
       EVP_SealInit := @FC_EVP_SealInit;
-      {$else}
-      {$if not defined(EVP_SealInit_allownil)}
-      EVP_SealInit := @ERR_EVP_SealInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_SealInit_removed)}
@@ -12281,39 +11216,31 @@ begin
     begin
       {$if declared(_EVP_SealInit)}
       EVP_SealInit := @_EVP_SealInit;
-      {$else}
-      {$if not defined(EVP_SealInit_allownil)}
-      EVP_SealInit := @ERR_EVP_SealInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_SealInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_SealInit := @ERR_EVP_SealInit;
+    if FuncLoadError then
       AFailed.Add('EVP_SealInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_SealFinal := LoadLibFunction(ADllHandle, EVP_SealFinal_procname);
-  FuncLoaded := assigned(EVP_SealFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_SealFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_SealFinal_allownil)}
+    EVP_SealFinal := @ERR_EVP_SealFinal;
+    {$ifend}
     {$if declared(EVP_SealFinal_introduced)}
     if LibVersion < EVP_SealFinal_introduced then
     begin
       {$if declared(FC_EVP_SealFinal)}
       EVP_SealFinal := @FC_EVP_SealFinal;
-      {$else}
-      {$if not defined(EVP_SealFinal_allownil)}
-      EVP_SealFinal := @ERR_EVP_SealFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_SealFinal_removed)}
@@ -12321,39 +11248,31 @@ begin
     begin
       {$if declared(_EVP_SealFinal)}
       EVP_SealFinal := @_EVP_SealFinal;
-      {$else}
-      {$if not defined(EVP_SealFinal_allownil)}
-      EVP_SealFinal := @ERR_EVP_SealFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_SealFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_SealFinal := @ERR_EVP_SealFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_SealFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_ENCODE_CTX_new := LoadLibFunction(ADllHandle, EVP_ENCODE_CTX_new_procname);
-  FuncLoaded := assigned(EVP_ENCODE_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_ENCODE_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_ENCODE_CTX_new_allownil)}
+    EVP_ENCODE_CTX_new := @ERR_EVP_ENCODE_CTX_new;
+    {$ifend}
     {$if declared(EVP_ENCODE_CTX_new_introduced)}
     if LibVersion < EVP_ENCODE_CTX_new_introduced then
     begin
       {$if declared(FC_EVP_ENCODE_CTX_new)}
       EVP_ENCODE_CTX_new := @FC_EVP_ENCODE_CTX_new;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_new_allownil)}
-      EVP_ENCODE_CTX_new := @ERR_EVP_ENCODE_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_ENCODE_CTX_new_removed)}
@@ -12361,39 +11280,31 @@ begin
     begin
       {$if declared(_EVP_ENCODE_CTX_new)}
       EVP_ENCODE_CTX_new := @_EVP_ENCODE_CTX_new;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_new_allownil)}
-      EVP_ENCODE_CTX_new := @ERR_EVP_ENCODE_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_ENCODE_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_ENCODE_CTX_new := @ERR_EVP_ENCODE_CTX_new;
+    if FuncLoadError then
       AFailed.Add('EVP_ENCODE_CTX_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_ENCODE_CTX_free := LoadLibFunction(ADllHandle, EVP_ENCODE_CTX_free_procname);
-  FuncLoaded := assigned(EVP_ENCODE_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_ENCODE_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_ENCODE_CTX_free_allownil)}
+    EVP_ENCODE_CTX_free := @ERR_EVP_ENCODE_CTX_free;
+    {$ifend}
     {$if declared(EVP_ENCODE_CTX_free_introduced)}
     if LibVersion < EVP_ENCODE_CTX_free_introduced then
     begin
       {$if declared(FC_EVP_ENCODE_CTX_free)}
       EVP_ENCODE_CTX_free := @FC_EVP_ENCODE_CTX_free;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_free_allownil)}
-      EVP_ENCODE_CTX_free := @ERR_EVP_ENCODE_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_ENCODE_CTX_free_removed)}
@@ -12401,39 +11312,31 @@ begin
     begin
       {$if declared(_EVP_ENCODE_CTX_free)}
       EVP_ENCODE_CTX_free := @_EVP_ENCODE_CTX_free;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_free_allownil)}
-      EVP_ENCODE_CTX_free := @ERR_EVP_ENCODE_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_ENCODE_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_ENCODE_CTX_free := @ERR_EVP_ENCODE_CTX_free;
+    if FuncLoadError then
       AFailed.Add('EVP_ENCODE_CTX_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_ENCODE_CTX_copy := LoadLibFunction(ADllHandle, EVP_ENCODE_CTX_copy_procname);
-  FuncLoaded := assigned(EVP_ENCODE_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_ENCODE_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_ENCODE_CTX_copy_allownil)}
+    EVP_ENCODE_CTX_copy := @ERR_EVP_ENCODE_CTX_copy;
+    {$ifend}
     {$if declared(EVP_ENCODE_CTX_copy_introduced)}
     if LibVersion < EVP_ENCODE_CTX_copy_introduced then
     begin
       {$if declared(FC_EVP_ENCODE_CTX_copy)}
       EVP_ENCODE_CTX_copy := @FC_EVP_ENCODE_CTX_copy;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_copy_allownil)}
-      EVP_ENCODE_CTX_copy := @ERR_EVP_ENCODE_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_ENCODE_CTX_copy_removed)}
@@ -12441,39 +11344,31 @@ begin
     begin
       {$if declared(_EVP_ENCODE_CTX_copy)}
       EVP_ENCODE_CTX_copy := @_EVP_ENCODE_CTX_copy;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_copy_allownil)}
-      EVP_ENCODE_CTX_copy := @ERR_EVP_ENCODE_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_ENCODE_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_ENCODE_CTX_copy := @ERR_EVP_ENCODE_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_ENCODE_CTX_copy');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_ENCODE_CTX_num := LoadLibFunction(ADllHandle, EVP_ENCODE_CTX_num_procname);
-  FuncLoaded := assigned(EVP_ENCODE_CTX_num);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_ENCODE_CTX_num);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_ENCODE_CTX_num_allownil)}
+    EVP_ENCODE_CTX_num := @ERR_EVP_ENCODE_CTX_num;
+    {$ifend}
     {$if declared(EVP_ENCODE_CTX_num_introduced)}
     if LibVersion < EVP_ENCODE_CTX_num_introduced then
     begin
       {$if declared(FC_EVP_ENCODE_CTX_num)}
       EVP_ENCODE_CTX_num := @FC_EVP_ENCODE_CTX_num;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_num_allownil)}
-      EVP_ENCODE_CTX_num := @ERR_EVP_ENCODE_CTX_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_ENCODE_CTX_num_removed)}
@@ -12481,39 +11376,31 @@ begin
     begin
       {$if declared(_EVP_ENCODE_CTX_num)}
       EVP_ENCODE_CTX_num := @_EVP_ENCODE_CTX_num;
-      {$else}
-      {$if not defined(EVP_ENCODE_CTX_num_allownil)}
-      EVP_ENCODE_CTX_num := @ERR_EVP_ENCODE_CTX_num;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_ENCODE_CTX_num_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_ENCODE_CTX_num := @ERR_EVP_ENCODE_CTX_num;
+    if FuncLoadError then
       AFailed.Add('EVP_ENCODE_CTX_num');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_EncodeInit := LoadLibFunction(ADllHandle, EVP_EncodeInit_procname);
-  FuncLoaded := assigned(EVP_EncodeInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncodeInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncodeInit_allownil)}
+    EVP_EncodeInit := @ERR_EVP_EncodeInit;
+    {$ifend}
     {$if declared(EVP_EncodeInit_introduced)}
     if LibVersion < EVP_EncodeInit_introduced then
     begin
       {$if declared(FC_EVP_EncodeInit)}
       EVP_EncodeInit := @FC_EVP_EncodeInit;
-      {$else}
-      {$if not defined(EVP_EncodeInit_allownil)}
-      EVP_EncodeInit := @ERR_EVP_EncodeInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncodeInit_removed)}
@@ -12521,39 +11408,31 @@ begin
     begin
       {$if declared(_EVP_EncodeInit)}
       EVP_EncodeInit := @_EVP_EncodeInit;
-      {$else}
-      {$if not defined(EVP_EncodeInit_allownil)}
-      EVP_EncodeInit := @ERR_EVP_EncodeInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncodeInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncodeInit := @ERR_EVP_EncodeInit;
+    if FuncLoadError then
       AFailed.Add('EVP_EncodeInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncodeUpdate := LoadLibFunction(ADllHandle, EVP_EncodeUpdate_procname);
-  FuncLoaded := assigned(EVP_EncodeUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncodeUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncodeUpdate_allownil)}
+    EVP_EncodeUpdate := @ERR_EVP_EncodeUpdate;
+    {$ifend}
     {$if declared(EVP_EncodeUpdate_introduced)}
     if LibVersion < EVP_EncodeUpdate_introduced then
     begin
       {$if declared(FC_EVP_EncodeUpdate)}
       EVP_EncodeUpdate := @FC_EVP_EncodeUpdate;
-      {$else}
-      {$if not defined(EVP_EncodeUpdate_allownil)}
-      EVP_EncodeUpdate := @ERR_EVP_EncodeUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncodeUpdate_removed)}
@@ -12561,39 +11440,31 @@ begin
     begin
       {$if declared(_EVP_EncodeUpdate)}
       EVP_EncodeUpdate := @_EVP_EncodeUpdate;
-      {$else}
-      {$if not defined(EVP_EncodeUpdate_allownil)}
-      EVP_EncodeUpdate := @ERR_EVP_EncodeUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncodeUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncodeUpdate := @ERR_EVP_EncodeUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_EncodeUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncodeFinal := LoadLibFunction(ADllHandle, EVP_EncodeFinal_procname);
-  FuncLoaded := assigned(EVP_EncodeFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncodeFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncodeFinal_allownil)}
+    EVP_EncodeFinal := @ERR_EVP_EncodeFinal;
+    {$ifend}
     {$if declared(EVP_EncodeFinal_introduced)}
     if LibVersion < EVP_EncodeFinal_introduced then
     begin
       {$if declared(FC_EVP_EncodeFinal)}
       EVP_EncodeFinal := @FC_EVP_EncodeFinal;
-      {$else}
-      {$if not defined(EVP_EncodeFinal_allownil)}
-      EVP_EncodeFinal := @ERR_EVP_EncodeFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncodeFinal_removed)}
@@ -12601,39 +11472,31 @@ begin
     begin
       {$if declared(_EVP_EncodeFinal)}
       EVP_EncodeFinal := @_EVP_EncodeFinal;
-      {$else}
-      {$if not defined(EVP_EncodeFinal_allownil)}
-      EVP_EncodeFinal := @ERR_EVP_EncodeFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncodeFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncodeFinal := @ERR_EVP_EncodeFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_EncodeFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_EncodeBlock := LoadLibFunction(ADllHandle, EVP_EncodeBlock_procname);
-  FuncLoaded := assigned(EVP_EncodeBlock);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_EncodeBlock);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_EncodeBlock_allownil)}
+    EVP_EncodeBlock := @ERR_EVP_EncodeBlock;
+    {$ifend}
     {$if declared(EVP_EncodeBlock_introduced)}
     if LibVersion < EVP_EncodeBlock_introduced then
     begin
       {$if declared(FC_EVP_EncodeBlock)}
       EVP_EncodeBlock := @FC_EVP_EncodeBlock;
-      {$else}
-      {$if not defined(EVP_EncodeBlock_allownil)}
-      EVP_EncodeBlock := @ERR_EVP_EncodeBlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_EncodeBlock_removed)}
@@ -12641,39 +11504,31 @@ begin
     begin
       {$if declared(_EVP_EncodeBlock)}
       EVP_EncodeBlock := @_EVP_EncodeBlock;
-      {$else}
-      {$if not defined(EVP_EncodeBlock_allownil)}
-      EVP_EncodeBlock := @ERR_EVP_EncodeBlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_EncodeBlock_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_EncodeBlock := @ERR_EVP_EncodeBlock;
+    if FuncLoadError then
       AFailed.Add('EVP_EncodeBlock');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecodeInit := LoadLibFunction(ADllHandle, EVP_DecodeInit_procname);
-  FuncLoaded := assigned(EVP_DecodeInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecodeInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecodeInit_allownil)}
+    EVP_DecodeInit := @ERR_EVP_DecodeInit;
+    {$ifend}
     {$if declared(EVP_DecodeInit_introduced)}
     if LibVersion < EVP_DecodeInit_introduced then
     begin
       {$if declared(FC_EVP_DecodeInit)}
       EVP_DecodeInit := @FC_EVP_DecodeInit;
-      {$else}
-      {$if not defined(EVP_DecodeInit_allownil)}
-      EVP_DecodeInit := @ERR_EVP_DecodeInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecodeInit_removed)}
@@ -12681,39 +11536,31 @@ begin
     begin
       {$if declared(_EVP_DecodeInit)}
       EVP_DecodeInit := @_EVP_DecodeInit;
-      {$else}
-      {$if not defined(EVP_DecodeInit_allownil)}
-      EVP_DecodeInit := @ERR_EVP_DecodeInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecodeInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecodeInit := @ERR_EVP_DecodeInit;
+    if FuncLoadError then
       AFailed.Add('EVP_DecodeInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecodeUpdate := LoadLibFunction(ADllHandle, EVP_DecodeUpdate_procname);
-  FuncLoaded := assigned(EVP_DecodeUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecodeUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecodeUpdate_allownil)}
+    EVP_DecodeUpdate := @ERR_EVP_DecodeUpdate;
+    {$ifend}
     {$if declared(EVP_DecodeUpdate_introduced)}
     if LibVersion < EVP_DecodeUpdate_introduced then
     begin
       {$if declared(FC_EVP_DecodeUpdate)}
       EVP_DecodeUpdate := @FC_EVP_DecodeUpdate;
-      {$else}
-      {$if not defined(EVP_DecodeUpdate_allownil)}
-      EVP_DecodeUpdate := @ERR_EVP_DecodeUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecodeUpdate_removed)}
@@ -12721,39 +11568,31 @@ begin
     begin
       {$if declared(_EVP_DecodeUpdate)}
       EVP_DecodeUpdate := @_EVP_DecodeUpdate;
-      {$else}
-      {$if not defined(EVP_DecodeUpdate_allownil)}
-      EVP_DecodeUpdate := @ERR_EVP_DecodeUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecodeUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecodeUpdate := @ERR_EVP_DecodeUpdate;
+    if FuncLoadError then
       AFailed.Add('EVP_DecodeUpdate');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecodeFinal := LoadLibFunction(ADllHandle, EVP_DecodeFinal_procname);
-  FuncLoaded := assigned(EVP_DecodeFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecodeFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecodeFinal_allownil)}
+    EVP_DecodeFinal := @ERR_EVP_DecodeFinal;
+    {$ifend}
     {$if declared(EVP_DecodeFinal_introduced)}
     if LibVersion < EVP_DecodeFinal_introduced then
     begin
       {$if declared(FC_EVP_DecodeFinal)}
       EVP_DecodeFinal := @FC_EVP_DecodeFinal;
-      {$else}
-      {$if not defined(EVP_DecodeFinal_allownil)}
-      EVP_DecodeFinal := @ERR_EVP_DecodeFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecodeFinal_removed)}
@@ -12761,39 +11600,31 @@ begin
     begin
       {$if declared(_EVP_DecodeFinal)}
       EVP_DecodeFinal := @_EVP_DecodeFinal;
-      {$else}
-      {$if not defined(EVP_DecodeFinal_allownil)}
-      EVP_DecodeFinal := @ERR_EVP_DecodeFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecodeFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecodeFinal := @ERR_EVP_DecodeFinal;
+    if FuncLoadError then
       AFailed.Add('EVP_DecodeFinal');
-    end;
     {$ifend}
   end;
 
 
   EVP_DecodeBlock := LoadLibFunction(ADllHandle, EVP_DecodeBlock_procname);
-  FuncLoaded := assigned(EVP_DecodeBlock);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_DecodeBlock);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_DecodeBlock_allownil)}
+    EVP_DecodeBlock := @ERR_EVP_DecodeBlock;
+    {$ifend}
     {$if declared(EVP_DecodeBlock_introduced)}
     if LibVersion < EVP_DecodeBlock_introduced then
     begin
       {$if declared(FC_EVP_DecodeBlock)}
       EVP_DecodeBlock := @FC_EVP_DecodeBlock;
-      {$else}
-      {$if not defined(EVP_DecodeBlock_allownil)}
-      EVP_DecodeBlock := @ERR_EVP_DecodeBlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_DecodeBlock_removed)}
@@ -12801,39 +11632,31 @@ begin
     begin
       {$if declared(_EVP_DecodeBlock)}
       EVP_DecodeBlock := @_EVP_DecodeBlock;
-      {$else}
-      {$if not defined(EVP_DecodeBlock_allownil)}
-      EVP_DecodeBlock := @ERR_EVP_DecodeBlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_DecodeBlock_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_DecodeBlock := @ERR_EVP_DecodeBlock;
+    if FuncLoadError then
       AFailed.Add('EVP_DecodeBlock');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_new := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_new_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_new_allownil)}
+    EVP_CIPHER_CTX_new := @ERR_EVP_CIPHER_CTX_new;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_new_introduced)}
     if LibVersion < EVP_CIPHER_CTX_new_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_new)}
       EVP_CIPHER_CTX_new := @FC_EVP_CIPHER_CTX_new;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_new_allownil)}
-      EVP_CIPHER_CTX_new := @ERR_EVP_CIPHER_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_new_removed)}
@@ -12841,39 +11664,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_new)}
       EVP_CIPHER_CTX_new := @_EVP_CIPHER_CTX_new;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_new_allownil)}
-      EVP_CIPHER_CTX_new := @ERR_EVP_CIPHER_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_new := @ERR_EVP_CIPHER_CTX_new;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_reset := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_reset_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_reset);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_reset);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_reset_allownil)}
+    EVP_CIPHER_CTX_reset := @ERR_EVP_CIPHER_CTX_reset;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_reset_introduced)}
     if LibVersion < EVP_CIPHER_CTX_reset_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_reset)}
       EVP_CIPHER_CTX_reset := @FC_EVP_CIPHER_CTX_reset;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_reset_allownil)}
-      EVP_CIPHER_CTX_reset := @ERR_EVP_CIPHER_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_reset_removed)}
@@ -12881,39 +11696,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_reset)}
       EVP_CIPHER_CTX_reset := @_EVP_CIPHER_CTX_reset;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_reset_allownil)}
-      EVP_CIPHER_CTX_reset := @ERR_EVP_CIPHER_CTX_reset;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_reset_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_reset := @ERR_EVP_CIPHER_CTX_reset;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_reset');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_CIPHER_CTX_free := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_free_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_free_allownil)}
+    EVP_CIPHER_CTX_free := @ERR_EVP_CIPHER_CTX_free;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_free_introduced)}
     if LibVersion < EVP_CIPHER_CTX_free_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_free)}
       EVP_CIPHER_CTX_free := @FC_EVP_CIPHER_CTX_free;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_free_allownil)}
-      EVP_CIPHER_CTX_free := @ERR_EVP_CIPHER_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_free_removed)}
@@ -12921,39 +11728,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_free)}
       EVP_CIPHER_CTX_free := @_EVP_CIPHER_CTX_free;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_free_allownil)}
-      EVP_CIPHER_CTX_free := @ERR_EVP_CIPHER_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_free := @ERR_EVP_CIPHER_CTX_free;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_set_key_length := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_key_length_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_key_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_key_length);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_key_length_allownil)}
+    EVP_CIPHER_CTX_set_key_length := @ERR_EVP_CIPHER_CTX_set_key_length;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_key_length_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_key_length_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_key_length)}
       EVP_CIPHER_CTX_set_key_length := @FC_EVP_CIPHER_CTX_set_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_key_length_allownil)}
-      EVP_CIPHER_CTX_set_key_length := @ERR_EVP_CIPHER_CTX_set_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_key_length_removed)}
@@ -12961,39 +11760,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_key_length)}
       EVP_CIPHER_CTX_set_key_length := @_EVP_CIPHER_CTX_set_key_length;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_key_length_allownil)}
-      EVP_CIPHER_CTX_set_key_length := @ERR_EVP_CIPHER_CTX_set_key_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_key_length_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_key_length := @ERR_EVP_CIPHER_CTX_set_key_length;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_key_length');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_set_padding := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_set_padding_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_set_padding);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_set_padding);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_set_padding_allownil)}
+    EVP_CIPHER_CTX_set_padding := @ERR_EVP_CIPHER_CTX_set_padding;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_padding_introduced)}
     if LibVersion < EVP_CIPHER_CTX_set_padding_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_set_padding)}
       EVP_CIPHER_CTX_set_padding := @FC_EVP_CIPHER_CTX_set_padding;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_padding_allownil)}
-      EVP_CIPHER_CTX_set_padding := @ERR_EVP_CIPHER_CTX_set_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_set_padding_removed)}
@@ -13001,39 +11792,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_set_padding)}
       EVP_CIPHER_CTX_set_padding := @_EVP_CIPHER_CTX_set_padding;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_set_padding_allownil)}
-      EVP_CIPHER_CTX_set_padding := @ERR_EVP_CIPHER_CTX_set_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_set_padding_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_set_padding := @ERR_EVP_CIPHER_CTX_set_padding;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_set_padding');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_ctrl := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_ctrl_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_ctrl_allownil)}
+    EVP_CIPHER_CTX_ctrl := @ERR_EVP_CIPHER_CTX_ctrl;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_ctrl_introduced)}
     if LibVersion < EVP_CIPHER_CTX_ctrl_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_ctrl)}
       EVP_CIPHER_CTX_ctrl := @FC_EVP_CIPHER_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_ctrl_allownil)}
-      EVP_CIPHER_CTX_ctrl := @ERR_EVP_CIPHER_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_ctrl_removed)}
@@ -13041,39 +11824,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_ctrl)}
       EVP_CIPHER_CTX_ctrl := @_EVP_CIPHER_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_ctrl_allownil)}
-      EVP_CIPHER_CTX_ctrl := @ERR_EVP_CIPHER_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_ctrl := @ERR_EVP_CIPHER_CTX_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_ctrl');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_CTX_rand_key := LoadLibFunction(ADllHandle, EVP_CIPHER_CTX_rand_key_procname);
-  FuncLoaded := assigned(EVP_CIPHER_CTX_rand_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_CTX_rand_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_CTX_rand_key_allownil)}
+    EVP_CIPHER_CTX_rand_key := @ERR_EVP_CIPHER_CTX_rand_key;
+    {$ifend}
     {$if declared(EVP_CIPHER_CTX_rand_key_introduced)}
     if LibVersion < EVP_CIPHER_CTX_rand_key_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_CTX_rand_key)}
       EVP_CIPHER_CTX_rand_key := @FC_EVP_CIPHER_CTX_rand_key;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_rand_key_allownil)}
-      EVP_CIPHER_CTX_rand_key := @ERR_EVP_CIPHER_CTX_rand_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_CTX_rand_key_removed)}
@@ -13081,39 +11856,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_CTX_rand_key)}
       EVP_CIPHER_CTX_rand_key := @_EVP_CIPHER_CTX_rand_key;
-      {$else}
-      {$if not defined(EVP_CIPHER_CTX_rand_key_allownil)}
-      EVP_CIPHER_CTX_rand_key := @ERR_EVP_CIPHER_CTX_rand_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_CTX_rand_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_CTX_rand_key := @ERR_EVP_CIPHER_CTX_rand_key;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_CTX_rand_key');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_md := LoadLibFunction(ADllHandle, BIO_f_md_procname);
-  FuncLoaded := assigned(BIO_f_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_md);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_md_allownil)}
+    BIO_f_md := @ERR_BIO_f_md;
+    {$ifend}
     {$if declared(BIO_f_md_introduced)}
     if LibVersion < BIO_f_md_introduced then
     begin
       {$if declared(FC_BIO_f_md)}
       BIO_f_md := @FC_BIO_f_md;
-      {$else}
-      {$if not defined(BIO_f_md_allownil)}
-      BIO_f_md := @ERR_BIO_f_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_md_removed)}
@@ -13121,39 +11888,31 @@ begin
     begin
       {$if declared(_BIO_f_md)}
       BIO_f_md := @_BIO_f_md;
-      {$else}
-      {$if not defined(BIO_f_md_allownil)}
-      BIO_f_md := @ERR_BIO_f_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_md_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_md := @ERR_BIO_f_md;
+    if FuncLoadError then
       AFailed.Add('BIO_f_md');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_base64 := LoadLibFunction(ADllHandle, BIO_f_base64_procname);
-  FuncLoaded := assigned(BIO_f_base64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_base64);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_base64_allownil)}
+    BIO_f_base64 := @ERR_BIO_f_base64;
+    {$ifend}
     {$if declared(BIO_f_base64_introduced)}
     if LibVersion < BIO_f_base64_introduced then
     begin
       {$if declared(FC_BIO_f_base64)}
       BIO_f_base64 := @FC_BIO_f_base64;
-      {$else}
-      {$if not defined(BIO_f_base64_allownil)}
-      BIO_f_base64 := @ERR_BIO_f_base64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_base64_removed)}
@@ -13161,39 +11920,31 @@ begin
     begin
       {$if declared(_BIO_f_base64)}
       BIO_f_base64 := @_BIO_f_base64;
-      {$else}
-      {$if not defined(BIO_f_base64_allownil)}
-      BIO_f_base64 := @ERR_BIO_f_base64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_base64_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_base64 := @ERR_BIO_f_base64;
+    if FuncLoadError then
       AFailed.Add('BIO_f_base64');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_cipher := LoadLibFunction(ADllHandle, BIO_f_cipher_procname);
-  FuncLoaded := assigned(BIO_f_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_cipher_allownil)}
+    BIO_f_cipher := @ERR_BIO_f_cipher;
+    {$ifend}
     {$if declared(BIO_f_cipher_introduced)}
     if LibVersion < BIO_f_cipher_introduced then
     begin
       {$if declared(FC_BIO_f_cipher)}
       BIO_f_cipher := @FC_BIO_f_cipher;
-      {$else}
-      {$if not defined(BIO_f_cipher_allownil)}
-      BIO_f_cipher := @ERR_BIO_f_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_cipher_removed)}
@@ -13201,39 +11952,31 @@ begin
     begin
       {$if declared(_BIO_f_cipher)}
       BIO_f_cipher := @_BIO_f_cipher;
-      {$else}
-      {$if not defined(BIO_f_cipher_allownil)}
-      BIO_f_cipher := @ERR_BIO_f_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_cipher := @ERR_BIO_f_cipher;
+    if FuncLoadError then
       AFailed.Add('BIO_f_cipher');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_reliable := LoadLibFunction(ADllHandle, BIO_f_reliable_procname);
-  FuncLoaded := assigned(BIO_f_reliable);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_reliable);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_reliable_allownil)}
+    BIO_f_reliable := @ERR_BIO_f_reliable;
+    {$ifend}
     {$if declared(BIO_f_reliable_introduced)}
     if LibVersion < BIO_f_reliable_introduced then
     begin
       {$if declared(FC_BIO_f_reliable)}
       BIO_f_reliable := @FC_BIO_f_reliable;
-      {$else}
-      {$if not defined(BIO_f_reliable_allownil)}
-      BIO_f_reliable := @ERR_BIO_f_reliable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_reliable_removed)}
@@ -13241,39 +11984,31 @@ begin
     begin
       {$if declared(_BIO_f_reliable)}
       BIO_f_reliable := @_BIO_f_reliable;
-      {$else}
-      {$if not defined(BIO_f_reliable_allownil)}
-      BIO_f_reliable := @ERR_BIO_f_reliable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_reliable_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_reliable := @ERR_BIO_f_reliable;
+    if FuncLoadError then
       AFailed.Add('BIO_f_reliable');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_cipher := LoadLibFunction(ADllHandle, BIO_set_cipher_procname);
-  FuncLoaded := assigned(BIO_set_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_cipher_allownil)}
+    BIO_set_cipher := @ERR_BIO_set_cipher;
+    {$ifend}
     {$if declared(BIO_set_cipher_introduced)}
     if LibVersion < BIO_set_cipher_introduced then
     begin
       {$if declared(FC_BIO_set_cipher)}
       BIO_set_cipher := @FC_BIO_set_cipher;
-      {$else}
-      {$if not defined(BIO_set_cipher_allownil)}
-      BIO_set_cipher := @ERR_BIO_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_cipher_removed)}
@@ -13281,39 +12016,31 @@ begin
     begin
       {$if declared(_BIO_set_cipher)}
       BIO_set_cipher := @_BIO_set_cipher;
-      {$else}
-      {$if not defined(BIO_set_cipher_allownil)}
-      BIO_set_cipher := @ERR_BIO_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_cipher := @ERR_BIO_set_cipher;
+    if FuncLoadError then
       AFailed.Add('BIO_set_cipher');
-    end;
     {$ifend}
   end;
 
 
   EVP_md_null := LoadLibFunction(ADllHandle, EVP_md_null_procname);
-  FuncLoaded := assigned(EVP_md_null);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_md_null);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_md_null_allownil)}
+    EVP_md_null := @ERR_EVP_md_null;
+    {$ifend}
     {$if declared(EVP_md_null_introduced)}
     if LibVersion < EVP_md_null_introduced then
     begin
       {$if declared(FC_EVP_md_null)}
       EVP_md_null := @FC_EVP_md_null;
-      {$else}
-      {$if not defined(EVP_md_null_allownil)}
-      EVP_md_null := @ERR_EVP_md_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_md_null_removed)}
@@ -13321,39 +12048,31 @@ begin
     begin
       {$if declared(_EVP_md_null)}
       EVP_md_null := @_EVP_md_null;
-      {$else}
-      {$if not defined(EVP_md_null_allownil)}
-      EVP_md_null := @ERR_EVP_md_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_md_null_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_md_null := @ERR_EVP_md_null;
+    if FuncLoadError then
       AFailed.Add('EVP_md_null');
-    end;
     {$ifend}
   end;
 
 
   EVP_md2 := LoadLibFunction(ADllHandle, EVP_md2_procname);
-  FuncLoaded := assigned(EVP_md2);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_md2);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_md2_allownil)}
+    EVP_md2 := @ERR_EVP_md2;
+    {$ifend}
     {$if declared(EVP_md2_introduced)}
     if LibVersion < EVP_md2_introduced then
     begin
       {$if declared(FC_EVP_md2)}
       EVP_md2 := @FC_EVP_md2;
-      {$else}
-      {$if not defined(EVP_md2_allownil)}
-      EVP_md2 := @ERR_EVP_md2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_md2_removed)}
@@ -13361,39 +12080,31 @@ begin
     begin
       {$if declared(_EVP_md2)}
       EVP_md2 := @_EVP_md2;
-      {$else}
-      {$if not defined(EVP_md2_allownil)}
-      EVP_md2 := @ERR_EVP_md2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_md2_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_md2 := @ERR_EVP_md2;
+    if FuncLoadError then
       AFailed.Add('EVP_md2');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}
   EVP_md4 := LoadLibFunction(ADllHandle, EVP_md4_procname);
-  FuncLoaded := assigned(EVP_md4);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_md4);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_md4_allownil)}
+    EVP_md4 := @ERR_EVP_md4;
+    {$ifend}
     {$if declared(EVP_md4_introduced)}
     if LibVersion < EVP_md4_introduced then
     begin
       {$if declared(FC_EVP_md4)}
       EVP_md4 := @FC_EVP_md4;
-      {$else}
-      {$if not defined(EVP_md4_allownil)}
-      EVP_md4 := @ERR_EVP_md4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_md4_removed)}
@@ -13401,39 +12112,31 @@ begin
     begin
       {$if declared(_EVP_md4)}
       EVP_md4 := @_EVP_md4;
-      {$else}
-      {$if not defined(EVP_md4_allownil)}
-      EVP_md4 := @ERR_EVP_md4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_md4_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_md4 := @ERR_EVP_md4;
+    if FuncLoadError then
       AFailed.Add('EVP_md4');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}
   EVP_md5 := LoadLibFunction(ADllHandle, EVP_md5_procname);
-  FuncLoaded := assigned(EVP_md5);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_md5);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_md5_allownil)}
+    EVP_md5 := @ERR_EVP_md5;
+    {$ifend}
     {$if declared(EVP_md5_introduced)}
     if LibVersion < EVP_md5_introduced then
     begin
       {$if declared(FC_EVP_md5)}
       EVP_md5 := @FC_EVP_md5;
-      {$else}
-      {$if not defined(EVP_md5_allownil)}
-      EVP_md5 := @ERR_EVP_md5;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_md5_removed)}
@@ -13441,39 +12144,31 @@ begin
     begin
       {$if declared(_EVP_md5)}
       EVP_md5 := @_EVP_md5;
-      {$else}
-      {$if not defined(EVP_md5_allownil)}
-      EVP_md5 := @ERR_EVP_md5;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_md5_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_md5 := @ERR_EVP_md5;
+    if FuncLoadError then
       AFailed.Add('EVP_md5');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}
   EVP_md5_sha1 := LoadLibFunction(ADllHandle, EVP_md5_sha1_procname);
-  FuncLoaded := assigned(EVP_md5_sha1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_md5_sha1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_md5_sha1_allownil)}
+    EVP_md5_sha1 := @ERR_EVP_md5_sha1;
+    {$ifend}
     {$if declared(EVP_md5_sha1_introduced)}
     if LibVersion < EVP_md5_sha1_introduced then
     begin
       {$if declared(FC_EVP_md5_sha1)}
       EVP_md5_sha1 := @FC_EVP_md5_sha1;
-      {$else}
-      {$if not defined(EVP_md5_sha1_allownil)}
-      EVP_md5_sha1 := @ERR_EVP_md5_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_md5_sha1_removed)}
@@ -13481,39 +12176,31 @@ begin
     begin
       {$if declared(_EVP_md5_sha1)}
       EVP_md5_sha1 := @_EVP_md5_sha1;
-      {$else}
-      {$if not defined(EVP_md5_sha1_allownil)}
-      EVP_md5_sha1 := @ERR_EVP_md5_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_md5_sha1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_md5_sha1 := @ERR_EVP_md5_sha1;
+    if FuncLoadError then
       AFailed.Add('EVP_md5_sha1');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha1 := LoadLibFunction(ADllHandle, EVP_sha1_procname);
-  FuncLoaded := assigned(EVP_sha1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha1_allownil)}
+    EVP_sha1 := @ERR_EVP_sha1;
+    {$ifend}
     {$if declared(EVP_sha1_introduced)}
     if LibVersion < EVP_sha1_introduced then
     begin
       {$if declared(FC_EVP_sha1)}
       EVP_sha1 := @FC_EVP_sha1;
-      {$else}
-      {$if not defined(EVP_sha1_allownil)}
-      EVP_sha1 := @ERR_EVP_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha1_removed)}
@@ -13521,39 +12208,31 @@ begin
     begin
       {$if declared(_EVP_sha1)}
       EVP_sha1 := @_EVP_sha1;
-      {$else}
-      {$if not defined(EVP_sha1_allownil)}
-      EVP_sha1 := @ERR_EVP_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha1 := @ERR_EVP_sha1;
+    if FuncLoadError then
       AFailed.Add('EVP_sha1');
-    end;
     {$ifend}
   end;
 
 
   EVP_sha224 := LoadLibFunction(ADllHandle, EVP_sha224_procname);
-  FuncLoaded := assigned(EVP_sha224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha224);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha224_allownil)}
+    EVP_sha224 := @ERR_EVP_sha224;
+    {$ifend}
     {$if declared(EVP_sha224_introduced)}
     if LibVersion < EVP_sha224_introduced then
     begin
       {$if declared(FC_EVP_sha224)}
       EVP_sha224 := @FC_EVP_sha224;
-      {$else}
-      {$if not defined(EVP_sha224_allownil)}
-      EVP_sha224 := @ERR_EVP_sha224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha224_removed)}
@@ -13561,39 +12240,31 @@ begin
     begin
       {$if declared(_EVP_sha224)}
       EVP_sha224 := @_EVP_sha224;
-      {$else}
-      {$if not defined(EVP_sha224_allownil)}
-      EVP_sha224 := @ERR_EVP_sha224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha224_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha224 := @ERR_EVP_sha224;
+    if FuncLoadError then
       AFailed.Add('EVP_sha224');
-    end;
     {$ifend}
   end;
 
 
   EVP_sha256 := LoadLibFunction(ADllHandle, EVP_sha256_procname);
-  FuncLoaded := assigned(EVP_sha256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha256_allownil)}
+    EVP_sha256 := @ERR_EVP_sha256;
+    {$ifend}
     {$if declared(EVP_sha256_introduced)}
     if LibVersion < EVP_sha256_introduced then
     begin
       {$if declared(FC_EVP_sha256)}
       EVP_sha256 := @FC_EVP_sha256;
-      {$else}
-      {$if not defined(EVP_sha256_allownil)}
-      EVP_sha256 := @ERR_EVP_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha256_removed)}
@@ -13601,39 +12272,31 @@ begin
     begin
       {$if declared(_EVP_sha256)}
       EVP_sha256 := @_EVP_sha256;
-      {$else}
-      {$if not defined(EVP_sha256_allownil)}
-      EVP_sha256 := @ERR_EVP_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha256 := @ERR_EVP_sha256;
+    if FuncLoadError then
       AFailed.Add('EVP_sha256');
-    end;
     {$ifend}
   end;
 
 
   EVP_sha384 := LoadLibFunction(ADllHandle, EVP_sha384_procname);
-  FuncLoaded := assigned(EVP_sha384);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha384);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha384_allownil)}
+    EVP_sha384 := @ERR_EVP_sha384;
+    {$ifend}
     {$if declared(EVP_sha384_introduced)}
     if LibVersion < EVP_sha384_introduced then
     begin
       {$if declared(FC_EVP_sha384)}
       EVP_sha384 := @FC_EVP_sha384;
-      {$else}
-      {$if not defined(EVP_sha384_allownil)}
-      EVP_sha384 := @ERR_EVP_sha384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha384_removed)}
@@ -13641,39 +12304,31 @@ begin
     begin
       {$if declared(_EVP_sha384)}
       EVP_sha384 := @_EVP_sha384;
-      {$else}
-      {$if not defined(EVP_sha384_allownil)}
-      EVP_sha384 := @ERR_EVP_sha384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha384_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha384 := @ERR_EVP_sha384;
+    if FuncLoadError then
       AFailed.Add('EVP_sha384');
-    end;
     {$ifend}
   end;
 
 
   EVP_sha512 := LoadLibFunction(ADllHandle, EVP_sha512_procname);
-  FuncLoaded := assigned(EVP_sha512);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha512);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha512_allownil)}
+    EVP_sha512 := @ERR_EVP_sha512;
+    {$ifend}
     {$if declared(EVP_sha512_introduced)}
     if LibVersion < EVP_sha512_introduced then
     begin
       {$if declared(FC_EVP_sha512)}
       EVP_sha512 := @FC_EVP_sha512;
-      {$else}
-      {$if not defined(EVP_sha512_allownil)}
-      EVP_sha512 := @ERR_EVP_sha512;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha512_removed)}
@@ -13681,39 +12336,31 @@ begin
     begin
       {$if declared(_EVP_sha512)}
       EVP_sha512 := @_EVP_sha512;
-      {$else}
-      {$if not defined(EVP_sha512_allownil)}
-      EVP_sha512 := @ERR_EVP_sha512;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha512_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha512 := @ERR_EVP_sha512;
+    if FuncLoadError then
       AFailed.Add('EVP_sha512');
-    end;
     {$ifend}
   end;
 
 
   EVP_sha512_224 := LoadLibFunction(ADllHandle, EVP_sha512_224_procname);
-  FuncLoaded := assigned(EVP_sha512_224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha512_224);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha512_224_allownil)}
+    EVP_sha512_224 := @ERR_EVP_sha512_224;
+    {$ifend}
     {$if declared(EVP_sha512_224_introduced)}
     if LibVersion < EVP_sha512_224_introduced then
     begin
       {$if declared(FC_EVP_sha512_224)}
       EVP_sha512_224 := @FC_EVP_sha512_224;
-      {$else}
-      {$if not defined(EVP_sha512_224_allownil)}
-      EVP_sha512_224 := @ERR_EVP_sha512_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha512_224_removed)}
@@ -13721,39 +12368,31 @@ begin
     begin
       {$if declared(_EVP_sha512_224)}
       EVP_sha512_224 := @_EVP_sha512_224;
-      {$else}
-      {$if not defined(EVP_sha512_224_allownil)}
-      EVP_sha512_224 := @ERR_EVP_sha512_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha512_224_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha512_224 := @ERR_EVP_sha512_224;
+    if FuncLoadError then
       AFailed.Add('EVP_sha512_224');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha512_256 := LoadLibFunction(ADllHandle, EVP_sha512_256_procname);
-  FuncLoaded := assigned(EVP_sha512_256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha512_256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha512_256_allownil)}
+    EVP_sha512_256 := @ERR_EVP_sha512_256;
+    {$ifend}
     {$if declared(EVP_sha512_256_introduced)}
     if LibVersion < EVP_sha512_256_introduced then
     begin
       {$if declared(FC_EVP_sha512_256)}
       EVP_sha512_256 := @FC_EVP_sha512_256;
-      {$else}
-      {$if not defined(EVP_sha512_256_allownil)}
-      EVP_sha512_256 := @ERR_EVP_sha512_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha512_256_removed)}
@@ -13761,39 +12400,31 @@ begin
     begin
       {$if declared(_EVP_sha512_256)}
       EVP_sha512_256 := @_EVP_sha512_256;
-      {$else}
-      {$if not defined(EVP_sha512_256_allownil)}
-      EVP_sha512_256 := @ERR_EVP_sha512_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha512_256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha512_256 := @ERR_EVP_sha512_256;
+    if FuncLoadError then
       AFailed.Add('EVP_sha512_256');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha3_224 := LoadLibFunction(ADllHandle, EVP_sha3_224_procname);
-  FuncLoaded := assigned(EVP_sha3_224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha3_224);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha3_224_allownil)}
+    EVP_sha3_224 := @ERR_EVP_sha3_224;
+    {$ifend}
     {$if declared(EVP_sha3_224_introduced)}
     if LibVersion < EVP_sha3_224_introduced then
     begin
       {$if declared(FC_EVP_sha3_224)}
       EVP_sha3_224 := @FC_EVP_sha3_224;
-      {$else}
-      {$if not defined(EVP_sha3_224_allownil)}
-      EVP_sha3_224 := @ERR_EVP_sha3_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha3_224_removed)}
@@ -13801,39 +12432,31 @@ begin
     begin
       {$if declared(_EVP_sha3_224)}
       EVP_sha3_224 := @_EVP_sha3_224;
-      {$else}
-      {$if not defined(EVP_sha3_224_allownil)}
-      EVP_sha3_224 := @ERR_EVP_sha3_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha3_224_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha3_224 := @ERR_EVP_sha3_224;
+    if FuncLoadError then
       AFailed.Add('EVP_sha3_224');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha3_256 := LoadLibFunction(ADllHandle, EVP_sha3_256_procname);
-  FuncLoaded := assigned(EVP_sha3_256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha3_256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha3_256_allownil)}
+    EVP_sha3_256 := @ERR_EVP_sha3_256;
+    {$ifend}
     {$if declared(EVP_sha3_256_introduced)}
     if LibVersion < EVP_sha3_256_introduced then
     begin
       {$if declared(FC_EVP_sha3_256)}
       EVP_sha3_256 := @FC_EVP_sha3_256;
-      {$else}
-      {$if not defined(EVP_sha3_256_allownil)}
-      EVP_sha3_256 := @ERR_EVP_sha3_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha3_256_removed)}
@@ -13841,39 +12464,31 @@ begin
     begin
       {$if declared(_EVP_sha3_256)}
       EVP_sha3_256 := @_EVP_sha3_256;
-      {$else}
-      {$if not defined(EVP_sha3_256_allownil)}
-      EVP_sha3_256 := @ERR_EVP_sha3_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha3_256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha3_256 := @ERR_EVP_sha3_256;
+    if FuncLoadError then
       AFailed.Add('EVP_sha3_256');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha3_384 := LoadLibFunction(ADllHandle, EVP_sha3_384_procname);
-  FuncLoaded := assigned(EVP_sha3_384);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha3_384);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha3_384_allownil)}
+    EVP_sha3_384 := @ERR_EVP_sha3_384;
+    {$ifend}
     {$if declared(EVP_sha3_384_introduced)}
     if LibVersion < EVP_sha3_384_introduced then
     begin
       {$if declared(FC_EVP_sha3_384)}
       EVP_sha3_384 := @FC_EVP_sha3_384;
-      {$else}
-      {$if not defined(EVP_sha3_384_allownil)}
-      EVP_sha3_384 := @ERR_EVP_sha3_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha3_384_removed)}
@@ -13881,39 +12496,31 @@ begin
     begin
       {$if declared(_EVP_sha3_384)}
       EVP_sha3_384 := @_EVP_sha3_384;
-      {$else}
-      {$if not defined(EVP_sha3_384_allownil)}
-      EVP_sha3_384 := @ERR_EVP_sha3_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha3_384_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha3_384 := @ERR_EVP_sha3_384;
+    if FuncLoadError then
       AFailed.Add('EVP_sha3_384');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sha3_512 := LoadLibFunction(ADllHandle, EVP_sha3_512_procname);
-  FuncLoaded := assigned(EVP_sha3_512);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sha3_512);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sha3_512_allownil)}
+    EVP_sha3_512 := @ERR_EVP_sha3_512;
+    {$ifend}
     {$if declared(EVP_sha3_512_introduced)}
     if LibVersion < EVP_sha3_512_introduced then
     begin
       {$if declared(FC_EVP_sha3_512)}
       EVP_sha3_512 := @FC_EVP_sha3_512;
-      {$else}
-      {$if not defined(EVP_sha3_512_allownil)}
-      EVP_sha3_512 := @ERR_EVP_sha3_512;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sha3_512_removed)}
@@ -13921,39 +12528,31 @@ begin
     begin
       {$if declared(_EVP_sha3_512)}
       EVP_sha3_512 := @_EVP_sha3_512;
-      {$else}
-      {$if not defined(EVP_sha3_512_allownil)}
-      EVP_sha3_512 := @ERR_EVP_sha3_512;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sha3_512_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sha3_512 := @ERR_EVP_sha3_512;
+    if FuncLoadError then
       AFailed.Add('EVP_sha3_512');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_shake128 := LoadLibFunction(ADllHandle, EVP_shake128_procname);
-  FuncLoaded := assigned(EVP_shake128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_shake128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_shake128_allownil)}
+    EVP_shake128 := @ERR_EVP_shake128;
+    {$ifend}
     {$if declared(EVP_shake128_introduced)}
     if LibVersion < EVP_shake128_introduced then
     begin
       {$if declared(FC_EVP_shake128)}
       EVP_shake128 := @FC_EVP_shake128;
-      {$else}
-      {$if not defined(EVP_shake128_allownil)}
-      EVP_shake128 := @ERR_EVP_shake128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_shake128_removed)}
@@ -13961,39 +12560,31 @@ begin
     begin
       {$if declared(_EVP_shake128)}
       EVP_shake128 := @_EVP_shake128;
-      {$else}
-      {$if not defined(EVP_shake128_allownil)}
-      EVP_shake128 := @ERR_EVP_shake128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_shake128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_shake128 := @ERR_EVP_shake128;
+    if FuncLoadError then
       AFailed.Add('EVP_shake128');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_shake256 := LoadLibFunction(ADllHandle, EVP_shake256_procname);
-  FuncLoaded := assigned(EVP_shake256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_shake256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_shake256_allownil)}
+    EVP_shake256 := @ERR_EVP_shake256;
+    {$ifend}
     {$if declared(EVP_shake256_introduced)}
     if LibVersion < EVP_shake256_introduced then
     begin
       {$if declared(FC_EVP_shake256)}
       EVP_shake256 := @FC_EVP_shake256;
-      {$else}
-      {$if not defined(EVP_shake256_allownil)}
-      EVP_shake256 := @ERR_EVP_shake256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_shake256_removed)}
@@ -14001,39 +12592,31 @@ begin
     begin
       {$if declared(_EVP_shake256)}
       EVP_shake256 := @_EVP_shake256;
-      {$else}
-      {$if not defined(EVP_shake256_allownil)}
-      EVP_shake256 := @ERR_EVP_shake256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_shake256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_shake256 := @ERR_EVP_shake256;
+    if FuncLoadError then
       AFailed.Add('EVP_shake256');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_enc_null := LoadLibFunction(ADllHandle, EVP_enc_null_procname);
-  FuncLoaded := assigned(EVP_enc_null);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_enc_null);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_enc_null_allownil)}
+    EVP_enc_null := @ERR_EVP_enc_null;
+    {$ifend}
     {$if declared(EVP_enc_null_introduced)}
     if LibVersion < EVP_enc_null_introduced then
     begin
       {$if declared(FC_EVP_enc_null)}
       EVP_enc_null := @FC_EVP_enc_null;
-      {$else}
-      {$if not defined(EVP_enc_null_allownil)}
-      EVP_enc_null := @ERR_EVP_enc_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_enc_null_removed)}
@@ -14041,39 +12624,31 @@ begin
     begin
       {$if declared(_EVP_enc_null)}
       EVP_enc_null := @_EVP_enc_null;
-      {$else}
-      {$if not defined(EVP_enc_null_allownil)}
-      EVP_enc_null := @ERR_EVP_enc_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_enc_null_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_enc_null := @ERR_EVP_enc_null;
+    if FuncLoadError then
       AFailed.Add('EVP_enc_null');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ecb := LoadLibFunction(ADllHandle, EVP_des_ecb_procname);
-  FuncLoaded := assigned(EVP_des_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ecb_allownil)}
+    EVP_des_ecb := @ERR_EVP_des_ecb;
+    {$ifend}
     {$if declared(EVP_des_ecb_introduced)}
     if LibVersion < EVP_des_ecb_introduced then
     begin
       {$if declared(FC_EVP_des_ecb)}
       EVP_des_ecb := @FC_EVP_des_ecb;
-      {$else}
-      {$if not defined(EVP_des_ecb_allownil)}
-      EVP_des_ecb := @ERR_EVP_des_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ecb_removed)}
@@ -14081,39 +12656,31 @@ begin
     begin
       {$if declared(_EVP_des_ecb)}
       EVP_des_ecb := @_EVP_des_ecb;
-      {$else}
-      {$if not defined(EVP_des_ecb_allownil)}
-      EVP_des_ecb := @ERR_EVP_des_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ecb := @ERR_EVP_des_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede := LoadLibFunction(ADllHandle, EVP_des_ede_procname);
-  FuncLoaded := assigned(EVP_des_ede);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede_allownil)}
+    EVP_des_ede := @ERR_EVP_des_ede;
+    {$ifend}
     {$if declared(EVP_des_ede_introduced)}
     if LibVersion < EVP_des_ede_introduced then
     begin
       {$if declared(FC_EVP_des_ede)}
       EVP_des_ede := @FC_EVP_des_ede;
-      {$else}
-      {$if not defined(EVP_des_ede_allownil)}
-      EVP_des_ede := @ERR_EVP_des_ede;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede_removed)}
@@ -14121,39 +12688,31 @@ begin
     begin
       {$if declared(_EVP_des_ede)}
       EVP_des_ede := @_EVP_des_ede;
-      {$else}
-      {$if not defined(EVP_des_ede_allownil)}
-      EVP_des_ede := @ERR_EVP_des_ede;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede := @ERR_EVP_des_ede;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3 := LoadLibFunction(ADllHandle, EVP_des_ede3_procname);
-  FuncLoaded := assigned(EVP_des_ede3);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_allownil)}
+    EVP_des_ede3 := @ERR_EVP_des_ede3;
+    {$ifend}
     {$if declared(EVP_des_ede3_introduced)}
     if LibVersion < EVP_des_ede3_introduced then
     begin
       {$if declared(FC_EVP_des_ede3)}
       EVP_des_ede3 := @FC_EVP_des_ede3;
-      {$else}
-      {$if not defined(EVP_des_ede3_allownil)}
-      EVP_des_ede3 := @ERR_EVP_des_ede3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_removed)}
@@ -14161,39 +12720,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3)}
       EVP_des_ede3 := @_EVP_des_ede3;
-      {$else}
-      {$if not defined(EVP_des_ede3_allownil)}
-      EVP_des_ede3 := @ERR_EVP_des_ede3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3 := @ERR_EVP_des_ede3;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede_ecb := LoadLibFunction(ADllHandle, EVP_des_ede_ecb_procname);
-  FuncLoaded := assigned(EVP_des_ede_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede_ecb_allownil)}
+    EVP_des_ede_ecb := @ERR_EVP_des_ede_ecb;
+    {$ifend}
     {$if declared(EVP_des_ede_ecb_introduced)}
     if LibVersion < EVP_des_ede_ecb_introduced then
     begin
       {$if declared(FC_EVP_des_ede_ecb)}
       EVP_des_ede_ecb := @FC_EVP_des_ede_ecb;
-      {$else}
-      {$if not defined(EVP_des_ede_ecb_allownil)}
-      EVP_des_ede_ecb := @ERR_EVP_des_ede_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede_ecb_removed)}
@@ -14201,39 +12752,31 @@ begin
     begin
       {$if declared(_EVP_des_ede_ecb)}
       EVP_des_ede_ecb := @_EVP_des_ede_ecb;
-      {$else}
-      {$if not defined(EVP_des_ede_ecb_allownil)}
-      EVP_des_ede_ecb := @ERR_EVP_des_ede_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede_ecb := @ERR_EVP_des_ede_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_ecb := LoadLibFunction(ADllHandle, EVP_des_ede3_ecb_procname);
-  FuncLoaded := assigned(EVP_des_ede3_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_ecb_allownil)}
+    EVP_des_ede3_ecb := @ERR_EVP_des_ede3_ecb;
+    {$ifend}
     {$if declared(EVP_des_ede3_ecb_introduced)}
     if LibVersion < EVP_des_ede3_ecb_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_ecb)}
       EVP_des_ede3_ecb := @FC_EVP_des_ede3_ecb;
-      {$else}
-      {$if not defined(EVP_des_ede3_ecb_allownil)}
-      EVP_des_ede3_ecb := @ERR_EVP_des_ede3_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_ecb_removed)}
@@ -14241,39 +12784,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_ecb)}
       EVP_des_ede3_ecb := @_EVP_des_ede3_ecb;
-      {$else}
-      {$if not defined(EVP_des_ede3_ecb_allownil)}
-      EVP_des_ede3_ecb := @ERR_EVP_des_ede3_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_ecb := @ERR_EVP_des_ede3_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_cfb64 := LoadLibFunction(ADllHandle, EVP_des_cfb64_procname);
-  FuncLoaded := assigned(EVP_des_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_cfb64_allownil)}
+    EVP_des_cfb64 := @ERR_EVP_des_cfb64;
+    {$ifend}
     {$if declared(EVP_des_cfb64_introduced)}
     if LibVersion < EVP_des_cfb64_introduced then
     begin
       {$if declared(FC_EVP_des_cfb64)}
       EVP_des_cfb64 := @FC_EVP_des_cfb64;
-      {$else}
-      {$if not defined(EVP_des_cfb64_allownil)}
-      EVP_des_cfb64 := @ERR_EVP_des_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_cfb64_removed)}
@@ -14281,39 +12816,31 @@ begin
     begin
       {$if declared(_EVP_des_cfb64)}
       EVP_des_cfb64 := @_EVP_des_cfb64;
-      {$else}
-      {$if not defined(EVP_des_cfb64_allownil)}
-      EVP_des_cfb64 := @ERR_EVP_des_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_cfb64 := @ERR_EVP_des_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_des_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_cfb1 := LoadLibFunction(ADllHandle, EVP_des_cfb1_procname);
-  FuncLoaded := assigned(EVP_des_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_cfb1_allownil)}
+    EVP_des_cfb1 := @ERR_EVP_des_cfb1;
+    {$ifend}
     {$if declared(EVP_des_cfb1_introduced)}
     if LibVersion < EVP_des_cfb1_introduced then
     begin
       {$if declared(FC_EVP_des_cfb1)}
       EVP_des_cfb1 := @FC_EVP_des_cfb1;
-      {$else}
-      {$if not defined(EVP_des_cfb1_allownil)}
-      EVP_des_cfb1 := @ERR_EVP_des_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_cfb1_removed)}
@@ -14321,39 +12848,31 @@ begin
     begin
       {$if declared(_EVP_des_cfb1)}
       EVP_des_cfb1 := @_EVP_des_cfb1;
-      {$else}
-      {$if not defined(EVP_des_cfb1_allownil)}
-      EVP_des_cfb1 := @ERR_EVP_des_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_cfb1 := @ERR_EVP_des_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_des_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_cfb8 := LoadLibFunction(ADllHandle, EVP_des_cfb8_procname);
-  FuncLoaded := assigned(EVP_des_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_cfb8_allownil)}
+    EVP_des_cfb8 := @ERR_EVP_des_cfb8;
+    {$ifend}
     {$if declared(EVP_des_cfb8_introduced)}
     if LibVersion < EVP_des_cfb8_introduced then
     begin
       {$if declared(FC_EVP_des_cfb8)}
       EVP_des_cfb8 := @FC_EVP_des_cfb8;
-      {$else}
-      {$if not defined(EVP_des_cfb8_allownil)}
-      EVP_des_cfb8 := @ERR_EVP_des_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_cfb8_removed)}
@@ -14361,39 +12880,31 @@ begin
     begin
       {$if declared(_EVP_des_cfb8)}
       EVP_des_cfb8 := @_EVP_des_cfb8;
-      {$else}
-      {$if not defined(EVP_des_cfb8_allownil)}
-      EVP_des_cfb8 := @ERR_EVP_des_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_cfb8 := @ERR_EVP_des_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_des_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede_cfb64 := LoadLibFunction(ADllHandle, EVP_des_ede_cfb64_procname);
-  FuncLoaded := assigned(EVP_des_ede_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede_cfb64_allownil)}
+    EVP_des_ede_cfb64 := @ERR_EVP_des_ede_cfb64;
+    {$ifend}
     {$if declared(EVP_des_ede_cfb64_introduced)}
     if LibVersion < EVP_des_ede_cfb64_introduced then
     begin
       {$if declared(FC_EVP_des_ede_cfb64)}
       EVP_des_ede_cfb64 := @FC_EVP_des_ede_cfb64;
-      {$else}
-      {$if not defined(EVP_des_ede_cfb64_allownil)}
-      EVP_des_ede_cfb64 := @ERR_EVP_des_ede_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede_cfb64_removed)}
@@ -14401,39 +12912,31 @@ begin
     begin
       {$if declared(_EVP_des_ede_cfb64)}
       EVP_des_ede_cfb64 := @_EVP_des_ede_cfb64;
-      {$else}
-      {$if not defined(EVP_des_ede_cfb64_allownil)}
-      EVP_des_ede_cfb64 := @ERR_EVP_des_ede_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede_cfb64 := @ERR_EVP_des_ede_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_cfb64 := LoadLibFunction(ADllHandle, EVP_des_ede3_cfb64_procname);
-  FuncLoaded := assigned(EVP_des_ede3_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_cfb64_allownil)}
+    EVP_des_ede3_cfb64 := @ERR_EVP_des_ede3_cfb64;
+    {$ifend}
     {$if declared(EVP_des_ede3_cfb64_introduced)}
     if LibVersion < EVP_des_ede3_cfb64_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_cfb64)}
       EVP_des_ede3_cfb64 := @FC_EVP_des_ede3_cfb64;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb64_allownil)}
-      EVP_des_ede3_cfb64 := @ERR_EVP_des_ede3_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_cfb64_removed)}
@@ -14441,39 +12944,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_cfb64)}
       EVP_des_ede3_cfb64 := @_EVP_des_ede3_cfb64;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb64_allownil)}
-      EVP_des_ede3_cfb64 := @ERR_EVP_des_ede3_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_cfb64 := @ERR_EVP_des_ede3_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_cfb1 := LoadLibFunction(ADllHandle, EVP_des_ede3_cfb1_procname);
-  FuncLoaded := assigned(EVP_des_ede3_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_cfb1_allownil)}
+    EVP_des_ede3_cfb1 := @ERR_EVP_des_ede3_cfb1;
+    {$ifend}
     {$if declared(EVP_des_ede3_cfb1_introduced)}
     if LibVersion < EVP_des_ede3_cfb1_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_cfb1)}
       EVP_des_ede3_cfb1 := @FC_EVP_des_ede3_cfb1;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb1_allownil)}
-      EVP_des_ede3_cfb1 := @ERR_EVP_des_ede3_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_cfb1_removed)}
@@ -14481,39 +12976,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_cfb1)}
       EVP_des_ede3_cfb1 := @_EVP_des_ede3_cfb1;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb1_allownil)}
-      EVP_des_ede3_cfb1 := @ERR_EVP_des_ede3_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_cfb1 := @ERR_EVP_des_ede3_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_cfb8 := LoadLibFunction(ADllHandle, EVP_des_ede3_cfb8_procname);
-  FuncLoaded := assigned(EVP_des_ede3_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_cfb8_allownil)}
+    EVP_des_ede3_cfb8 := @ERR_EVP_des_ede3_cfb8;
+    {$ifend}
     {$if declared(EVP_des_ede3_cfb8_introduced)}
     if LibVersion < EVP_des_ede3_cfb8_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_cfb8)}
       EVP_des_ede3_cfb8 := @FC_EVP_des_ede3_cfb8;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb8_allownil)}
-      EVP_des_ede3_cfb8 := @ERR_EVP_des_ede3_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_cfb8_removed)}
@@ -14521,39 +13008,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_cfb8)}
       EVP_des_ede3_cfb8 := @_EVP_des_ede3_cfb8;
-      {$else}
-      {$if not defined(EVP_des_ede3_cfb8_allownil)}
-      EVP_des_ede3_cfb8 := @ERR_EVP_des_ede3_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_cfb8 := @ERR_EVP_des_ede3_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ofb := LoadLibFunction(ADllHandle, EVP_des_ofb_procname);
-  FuncLoaded := assigned(EVP_des_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ofb_allownil)}
+    EVP_des_ofb := @ERR_EVP_des_ofb;
+    {$ifend}
     {$if declared(EVP_des_ofb_introduced)}
     if LibVersion < EVP_des_ofb_introduced then
     begin
       {$if declared(FC_EVP_des_ofb)}
       EVP_des_ofb := @FC_EVP_des_ofb;
-      {$else}
-      {$if not defined(EVP_des_ofb_allownil)}
-      EVP_des_ofb := @ERR_EVP_des_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ofb_removed)}
@@ -14561,39 +13040,31 @@ begin
     begin
       {$if declared(_EVP_des_ofb)}
       EVP_des_ofb := @_EVP_des_ofb;
-      {$else}
-      {$if not defined(EVP_des_ofb_allownil)}
-      EVP_des_ofb := @ERR_EVP_des_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ofb := @ERR_EVP_des_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede_ofb := LoadLibFunction(ADllHandle, EVP_des_ede_ofb_procname);
-  FuncLoaded := assigned(EVP_des_ede_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede_ofb_allownil)}
+    EVP_des_ede_ofb := @ERR_EVP_des_ede_ofb;
+    {$ifend}
     {$if declared(EVP_des_ede_ofb_introduced)}
     if LibVersion < EVP_des_ede_ofb_introduced then
     begin
       {$if declared(FC_EVP_des_ede_ofb)}
       EVP_des_ede_ofb := @FC_EVP_des_ede_ofb;
-      {$else}
-      {$if not defined(EVP_des_ede_ofb_allownil)}
-      EVP_des_ede_ofb := @ERR_EVP_des_ede_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede_ofb_removed)}
@@ -14601,39 +13072,31 @@ begin
     begin
       {$if declared(_EVP_des_ede_ofb)}
       EVP_des_ede_ofb := @_EVP_des_ede_ofb;
-      {$else}
-      {$if not defined(EVP_des_ede_ofb_allownil)}
-      EVP_des_ede_ofb := @ERR_EVP_des_ede_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede_ofb := @ERR_EVP_des_ede_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_ofb := LoadLibFunction(ADllHandle, EVP_des_ede3_ofb_procname);
-  FuncLoaded := assigned(EVP_des_ede3_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_ofb_allownil)}
+    EVP_des_ede3_ofb := @ERR_EVP_des_ede3_ofb;
+    {$ifend}
     {$if declared(EVP_des_ede3_ofb_introduced)}
     if LibVersion < EVP_des_ede3_ofb_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_ofb)}
       EVP_des_ede3_ofb := @FC_EVP_des_ede3_ofb;
-      {$else}
-      {$if not defined(EVP_des_ede3_ofb_allownil)}
-      EVP_des_ede3_ofb := @ERR_EVP_des_ede3_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_ofb_removed)}
@@ -14641,39 +13104,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_ofb)}
       EVP_des_ede3_ofb := @_EVP_des_ede3_ofb;
-      {$else}
-      {$if not defined(EVP_des_ede3_ofb_allownil)}
-      EVP_des_ede3_ofb := @ERR_EVP_des_ede3_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_ofb := @ERR_EVP_des_ede3_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_cbc := LoadLibFunction(ADllHandle, EVP_des_cbc_procname);
-  FuncLoaded := assigned(EVP_des_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_cbc_allownil)}
+    EVP_des_cbc := @ERR_EVP_des_cbc;
+    {$ifend}
     {$if declared(EVP_des_cbc_introduced)}
     if LibVersion < EVP_des_cbc_introduced then
     begin
       {$if declared(FC_EVP_des_cbc)}
       EVP_des_cbc := @FC_EVP_des_cbc;
-      {$else}
-      {$if not defined(EVP_des_cbc_allownil)}
-      EVP_des_cbc := @ERR_EVP_des_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_cbc_removed)}
@@ -14681,39 +13136,31 @@ begin
     begin
       {$if declared(_EVP_des_cbc)}
       EVP_des_cbc := @_EVP_des_cbc;
-      {$else}
-      {$if not defined(EVP_des_cbc_allownil)}
-      EVP_des_cbc := @ERR_EVP_des_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_cbc := @ERR_EVP_des_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_des_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede_cbc := LoadLibFunction(ADllHandle, EVP_des_ede_cbc_procname);
-  FuncLoaded := assigned(EVP_des_ede_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede_cbc_allownil)}
+    EVP_des_ede_cbc := @ERR_EVP_des_ede_cbc;
+    {$ifend}
     {$if declared(EVP_des_ede_cbc_introduced)}
     if LibVersion < EVP_des_ede_cbc_introduced then
     begin
       {$if declared(FC_EVP_des_ede_cbc)}
       EVP_des_ede_cbc := @FC_EVP_des_ede_cbc;
-      {$else}
-      {$if not defined(EVP_des_ede_cbc_allownil)}
-      EVP_des_ede_cbc := @ERR_EVP_des_ede_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede_cbc_removed)}
@@ -14721,39 +13168,31 @@ begin
     begin
       {$if declared(_EVP_des_ede_cbc)}
       EVP_des_ede_cbc := @_EVP_des_ede_cbc;
-      {$else}
-      {$if not defined(EVP_des_ede_cbc_allownil)}
-      EVP_des_ede_cbc := @ERR_EVP_des_ede_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede_cbc := @ERR_EVP_des_ede_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_cbc := LoadLibFunction(ADllHandle, EVP_des_ede3_cbc_procname);
-  FuncLoaded := assigned(EVP_des_ede3_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_cbc_allownil)}
+    EVP_des_ede3_cbc := @ERR_EVP_des_ede3_cbc;
+    {$ifend}
     {$if declared(EVP_des_ede3_cbc_introduced)}
     if LibVersion < EVP_des_ede3_cbc_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_cbc)}
       EVP_des_ede3_cbc := @FC_EVP_des_ede3_cbc;
-      {$else}
-      {$if not defined(EVP_des_ede3_cbc_allownil)}
-      EVP_des_ede3_cbc := @ERR_EVP_des_ede3_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_cbc_removed)}
@@ -14761,39 +13200,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_cbc)}
       EVP_des_ede3_cbc := @_EVP_des_ede3_cbc;
-      {$else}
-      {$if not defined(EVP_des_ede3_cbc_allownil)}
-      EVP_des_ede3_cbc := @ERR_EVP_des_ede3_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_cbc := @ERR_EVP_des_ede3_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_desx_cbc := LoadLibFunction(ADllHandle, EVP_desx_cbc_procname);
-  FuncLoaded := assigned(EVP_desx_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_desx_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_desx_cbc_allownil)}
+    EVP_desx_cbc := @ERR_EVP_desx_cbc;
+    {$ifend}
     {$if declared(EVP_desx_cbc_introduced)}
     if LibVersion < EVP_desx_cbc_introduced then
     begin
       {$if declared(FC_EVP_desx_cbc)}
       EVP_desx_cbc := @FC_EVP_desx_cbc;
-      {$else}
-      {$if not defined(EVP_desx_cbc_allownil)}
-      EVP_desx_cbc := @ERR_EVP_desx_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_desx_cbc_removed)}
@@ -14801,39 +13232,31 @@ begin
     begin
       {$if declared(_EVP_desx_cbc)}
       EVP_desx_cbc := @_EVP_desx_cbc;
-      {$else}
-      {$if not defined(EVP_desx_cbc_allownil)}
-      EVP_desx_cbc := @ERR_EVP_desx_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_desx_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_desx_cbc := @ERR_EVP_desx_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_desx_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_des_ede3_wrap := LoadLibFunction(ADllHandle, EVP_des_ede3_wrap_procname);
-  FuncLoaded := assigned(EVP_des_ede3_wrap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_des_ede3_wrap);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_des_ede3_wrap_allownil)}
+    EVP_des_ede3_wrap := @ERR_EVP_des_ede3_wrap;
+    {$ifend}
     {$if declared(EVP_des_ede3_wrap_introduced)}
     if LibVersion < EVP_des_ede3_wrap_introduced then
     begin
       {$if declared(FC_EVP_des_ede3_wrap)}
       EVP_des_ede3_wrap := @FC_EVP_des_ede3_wrap;
-      {$else}
-      {$if not defined(EVP_des_ede3_wrap_allownil)}
-      EVP_des_ede3_wrap := @ERR_EVP_des_ede3_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_des_ede3_wrap_removed)}
@@ -14841,39 +13264,31 @@ begin
     begin
       {$if declared(_EVP_des_ede3_wrap)}
       EVP_des_ede3_wrap := @_EVP_des_ede3_wrap;
-      {$else}
-      {$if not defined(EVP_des_ede3_wrap_allownil)}
-      EVP_des_ede3_wrap := @ERR_EVP_des_ede3_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_des_ede3_wrap_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_des_ede3_wrap := @ERR_EVP_des_ede3_wrap;
+    if FuncLoadError then
       AFailed.Add('EVP_des_ede3_wrap');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc4 := LoadLibFunction(ADllHandle, EVP_rc4_procname);
-  FuncLoaded := assigned(EVP_rc4);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc4);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc4_allownil)}
+    EVP_rc4 := @ERR_EVP_rc4;
+    {$ifend}
     {$if declared(EVP_rc4_introduced)}
     if LibVersion < EVP_rc4_introduced then
     begin
       {$if declared(FC_EVP_rc4)}
       EVP_rc4 := @FC_EVP_rc4;
-      {$else}
-      {$if not defined(EVP_rc4_allownil)}
-      EVP_rc4 := @ERR_EVP_rc4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc4_removed)}
@@ -14881,39 +13296,31 @@ begin
     begin
       {$if declared(_EVP_rc4)}
       EVP_rc4 := @_EVP_rc4;
-      {$else}
-      {$if not defined(EVP_rc4_allownil)}
-      EVP_rc4 := @ERR_EVP_rc4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc4_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc4 := @ERR_EVP_rc4;
+    if FuncLoadError then
       AFailed.Add('EVP_rc4');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc4_40 := LoadLibFunction(ADllHandle, EVP_rc4_40_procname);
-  FuncLoaded := assigned(EVP_rc4_40);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc4_40);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc4_40_allownil)}
+    EVP_rc4_40 := @ERR_EVP_rc4_40;
+    {$ifend}
     {$if declared(EVP_rc4_40_introduced)}
     if LibVersion < EVP_rc4_40_introduced then
     begin
       {$if declared(FC_EVP_rc4_40)}
       EVP_rc4_40 := @FC_EVP_rc4_40;
-      {$else}
-      {$if not defined(EVP_rc4_40_allownil)}
-      EVP_rc4_40 := @ERR_EVP_rc4_40;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc4_40_removed)}
@@ -14921,39 +13328,31 @@ begin
     begin
       {$if declared(_EVP_rc4_40)}
       EVP_rc4_40 := @_EVP_rc4_40;
-      {$else}
-      {$if not defined(EVP_rc4_40_allownil)}
-      EVP_rc4_40 := @ERR_EVP_rc4_40;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc4_40_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc4_40 := @ERR_EVP_rc4_40;
+    if FuncLoadError then
       AFailed.Add('EVP_rc4_40');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_ecb := LoadLibFunction(ADllHandle, EVP_rc2_ecb_procname);
-  FuncLoaded := assigned(EVP_rc2_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_ecb_allownil)}
+    EVP_rc2_ecb := @ERR_EVP_rc2_ecb;
+    {$ifend}
     {$if declared(EVP_rc2_ecb_introduced)}
     if LibVersion < EVP_rc2_ecb_introduced then
     begin
       {$if declared(FC_EVP_rc2_ecb)}
       EVP_rc2_ecb := @FC_EVP_rc2_ecb;
-      {$else}
-      {$if not defined(EVP_rc2_ecb_allownil)}
-      EVP_rc2_ecb := @ERR_EVP_rc2_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_ecb_removed)}
@@ -14961,39 +13360,31 @@ begin
     begin
       {$if declared(_EVP_rc2_ecb)}
       EVP_rc2_ecb := @_EVP_rc2_ecb;
-      {$else}
-      {$if not defined(EVP_rc2_ecb_allownil)}
-      EVP_rc2_ecb := @ERR_EVP_rc2_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_ecb := @ERR_EVP_rc2_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_cbc := LoadLibFunction(ADllHandle, EVP_rc2_cbc_procname);
-  FuncLoaded := assigned(EVP_rc2_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_cbc_allownil)}
+    EVP_rc2_cbc := @ERR_EVP_rc2_cbc;
+    {$ifend}
     {$if declared(EVP_rc2_cbc_introduced)}
     if LibVersion < EVP_rc2_cbc_introduced then
     begin
       {$if declared(FC_EVP_rc2_cbc)}
       EVP_rc2_cbc := @FC_EVP_rc2_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_cbc_allownil)}
-      EVP_rc2_cbc := @ERR_EVP_rc2_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_cbc_removed)}
@@ -15001,39 +13392,31 @@ begin
     begin
       {$if declared(_EVP_rc2_cbc)}
       EVP_rc2_cbc := @_EVP_rc2_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_cbc_allownil)}
-      EVP_rc2_cbc := @ERR_EVP_rc2_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_cbc := @ERR_EVP_rc2_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_40_cbc := LoadLibFunction(ADllHandle, EVP_rc2_40_cbc_procname);
-  FuncLoaded := assigned(EVP_rc2_40_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_40_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_40_cbc_allownil)}
+    EVP_rc2_40_cbc := @ERR_EVP_rc2_40_cbc;
+    {$ifend}
     {$if declared(EVP_rc2_40_cbc_introduced)}
     if LibVersion < EVP_rc2_40_cbc_introduced then
     begin
       {$if declared(FC_EVP_rc2_40_cbc)}
       EVP_rc2_40_cbc := @FC_EVP_rc2_40_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_40_cbc_allownil)}
-      EVP_rc2_40_cbc := @ERR_EVP_rc2_40_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_40_cbc_removed)}
@@ -15041,39 +13424,31 @@ begin
     begin
       {$if declared(_EVP_rc2_40_cbc)}
       EVP_rc2_40_cbc := @_EVP_rc2_40_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_40_cbc_allownil)}
-      EVP_rc2_40_cbc := @ERR_EVP_rc2_40_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_40_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_40_cbc := @ERR_EVP_rc2_40_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_40_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_64_cbc := LoadLibFunction(ADllHandle, EVP_rc2_64_cbc_procname);
-  FuncLoaded := assigned(EVP_rc2_64_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_64_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_64_cbc_allownil)}
+    EVP_rc2_64_cbc := @ERR_EVP_rc2_64_cbc;
+    {$ifend}
     {$if declared(EVP_rc2_64_cbc_introduced)}
     if LibVersion < EVP_rc2_64_cbc_introduced then
     begin
       {$if declared(FC_EVP_rc2_64_cbc)}
       EVP_rc2_64_cbc := @FC_EVP_rc2_64_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_64_cbc_allownil)}
-      EVP_rc2_64_cbc := @ERR_EVP_rc2_64_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_64_cbc_removed)}
@@ -15081,39 +13456,31 @@ begin
     begin
       {$if declared(_EVP_rc2_64_cbc)}
       EVP_rc2_64_cbc := @_EVP_rc2_64_cbc;
-      {$else}
-      {$if not defined(EVP_rc2_64_cbc_allownil)}
-      EVP_rc2_64_cbc := @ERR_EVP_rc2_64_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_64_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_64_cbc := @ERR_EVP_rc2_64_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_64_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_cfb64 := LoadLibFunction(ADllHandle, EVP_rc2_cfb64_procname);
-  FuncLoaded := assigned(EVP_rc2_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_cfb64_allownil)}
+    EVP_rc2_cfb64 := @ERR_EVP_rc2_cfb64;
+    {$ifend}
     {$if declared(EVP_rc2_cfb64_introduced)}
     if LibVersion < EVP_rc2_cfb64_introduced then
     begin
       {$if declared(FC_EVP_rc2_cfb64)}
       EVP_rc2_cfb64 := @FC_EVP_rc2_cfb64;
-      {$else}
-      {$if not defined(EVP_rc2_cfb64_allownil)}
-      EVP_rc2_cfb64 := @ERR_EVP_rc2_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_cfb64_removed)}
@@ -15121,39 +13488,31 @@ begin
     begin
       {$if declared(_EVP_rc2_cfb64)}
       EVP_rc2_cfb64 := @_EVP_rc2_cfb64;
-      {$else}
-      {$if not defined(EVP_rc2_cfb64_allownil)}
-      EVP_rc2_cfb64 := @ERR_EVP_rc2_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_cfb64 := @ERR_EVP_rc2_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_rc2_ofb := LoadLibFunction(ADllHandle, EVP_rc2_ofb_procname);
-  FuncLoaded := assigned(EVP_rc2_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_rc2_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_rc2_ofb_allownil)}
+    EVP_rc2_ofb := @ERR_EVP_rc2_ofb;
+    {$ifend}
     {$if declared(EVP_rc2_ofb_introduced)}
     if LibVersion < EVP_rc2_ofb_introduced then
     begin
       {$if declared(FC_EVP_rc2_ofb)}
       EVP_rc2_ofb := @FC_EVP_rc2_ofb;
-      {$else}
-      {$if not defined(EVP_rc2_ofb_allownil)}
-      EVP_rc2_ofb := @ERR_EVP_rc2_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_rc2_ofb_removed)}
@@ -15161,39 +13520,31 @@ begin
     begin
       {$if declared(_EVP_rc2_ofb)}
       EVP_rc2_ofb := @_EVP_rc2_ofb;
-      {$else}
-      {$if not defined(EVP_rc2_ofb_allownil)}
-      EVP_rc2_ofb := @ERR_EVP_rc2_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_rc2_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_rc2_ofb := @ERR_EVP_rc2_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_rc2_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_bf_ecb := LoadLibFunction(ADllHandle, EVP_bf_ecb_procname);
-  FuncLoaded := assigned(EVP_bf_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_bf_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_bf_ecb_allownil)}
+    EVP_bf_ecb := @ERR_EVP_bf_ecb;
+    {$ifend}
     {$if declared(EVP_bf_ecb_introduced)}
     if LibVersion < EVP_bf_ecb_introduced then
     begin
       {$if declared(FC_EVP_bf_ecb)}
       EVP_bf_ecb := @FC_EVP_bf_ecb;
-      {$else}
-      {$if not defined(EVP_bf_ecb_allownil)}
-      EVP_bf_ecb := @ERR_EVP_bf_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_bf_ecb_removed)}
@@ -15201,39 +13552,31 @@ begin
     begin
       {$if declared(_EVP_bf_ecb)}
       EVP_bf_ecb := @_EVP_bf_ecb;
-      {$else}
-      {$if not defined(EVP_bf_ecb_allownil)}
-      EVP_bf_ecb := @ERR_EVP_bf_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_bf_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_bf_ecb := @ERR_EVP_bf_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_bf_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_bf_cbc := LoadLibFunction(ADllHandle, EVP_bf_cbc_procname);
-  FuncLoaded := assigned(EVP_bf_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_bf_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_bf_cbc_allownil)}
+    EVP_bf_cbc := @ERR_EVP_bf_cbc;
+    {$ifend}
     {$if declared(EVP_bf_cbc_introduced)}
     if LibVersion < EVP_bf_cbc_introduced then
     begin
       {$if declared(FC_EVP_bf_cbc)}
       EVP_bf_cbc := @FC_EVP_bf_cbc;
-      {$else}
-      {$if not defined(EVP_bf_cbc_allownil)}
-      EVP_bf_cbc := @ERR_EVP_bf_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_bf_cbc_removed)}
@@ -15241,39 +13584,31 @@ begin
     begin
       {$if declared(_EVP_bf_cbc)}
       EVP_bf_cbc := @_EVP_bf_cbc;
-      {$else}
-      {$if not defined(EVP_bf_cbc_allownil)}
-      EVP_bf_cbc := @ERR_EVP_bf_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_bf_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_bf_cbc := @ERR_EVP_bf_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_bf_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_bf_cfb64 := LoadLibFunction(ADllHandle, EVP_bf_cfb64_procname);
-  FuncLoaded := assigned(EVP_bf_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_bf_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_bf_cfb64_allownil)}
+    EVP_bf_cfb64 := @ERR_EVP_bf_cfb64;
+    {$ifend}
     {$if declared(EVP_bf_cfb64_introduced)}
     if LibVersion < EVP_bf_cfb64_introduced then
     begin
       {$if declared(FC_EVP_bf_cfb64)}
       EVP_bf_cfb64 := @FC_EVP_bf_cfb64;
-      {$else}
-      {$if not defined(EVP_bf_cfb64_allownil)}
-      EVP_bf_cfb64 := @ERR_EVP_bf_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_bf_cfb64_removed)}
@@ -15281,39 +13616,31 @@ begin
     begin
       {$if declared(_EVP_bf_cfb64)}
       EVP_bf_cfb64 := @_EVP_bf_cfb64;
-      {$else}
-      {$if not defined(EVP_bf_cfb64_allownil)}
-      EVP_bf_cfb64 := @ERR_EVP_bf_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_bf_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_bf_cfb64 := @ERR_EVP_bf_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_bf_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_bf_ofb := LoadLibFunction(ADllHandle, EVP_bf_ofb_procname);
-  FuncLoaded := assigned(EVP_bf_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_bf_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_bf_ofb_allownil)}
+    EVP_bf_ofb := @ERR_EVP_bf_ofb;
+    {$ifend}
     {$if declared(EVP_bf_ofb_introduced)}
     if LibVersion < EVP_bf_ofb_introduced then
     begin
       {$if declared(FC_EVP_bf_ofb)}
       EVP_bf_ofb := @FC_EVP_bf_ofb;
-      {$else}
-      {$if not defined(EVP_bf_ofb_allownil)}
-      EVP_bf_ofb := @ERR_EVP_bf_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_bf_ofb_removed)}
@@ -15321,39 +13648,31 @@ begin
     begin
       {$if declared(_EVP_bf_ofb)}
       EVP_bf_ofb := @_EVP_bf_ofb;
-      {$else}
-      {$if not defined(EVP_bf_ofb_allownil)}
-      EVP_bf_ofb := @ERR_EVP_bf_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_bf_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_bf_ofb := @ERR_EVP_bf_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_bf_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_cast5_ecb := LoadLibFunction(ADllHandle, EVP_cast5_ecb_procname);
-  FuncLoaded := assigned(EVP_cast5_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_cast5_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_cast5_ecb_allownil)}
+    EVP_cast5_ecb := @ERR_EVP_cast5_ecb;
+    {$ifend}
     {$if declared(EVP_cast5_ecb_introduced)}
     if LibVersion < EVP_cast5_ecb_introduced then
     begin
       {$if declared(FC_EVP_cast5_ecb)}
       EVP_cast5_ecb := @FC_EVP_cast5_ecb;
-      {$else}
-      {$if not defined(EVP_cast5_ecb_allownil)}
-      EVP_cast5_ecb := @ERR_EVP_cast5_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_cast5_ecb_removed)}
@@ -15361,39 +13680,31 @@ begin
     begin
       {$if declared(_EVP_cast5_ecb)}
       EVP_cast5_ecb := @_EVP_cast5_ecb;
-      {$else}
-      {$if not defined(EVP_cast5_ecb_allownil)}
-      EVP_cast5_ecb := @ERR_EVP_cast5_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_cast5_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_cast5_ecb := @ERR_EVP_cast5_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_cast5_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_cast5_cbc := LoadLibFunction(ADllHandle, EVP_cast5_cbc_procname);
-  FuncLoaded := assigned(EVP_cast5_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_cast5_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_cast5_cbc_allownil)}
+    EVP_cast5_cbc := @ERR_EVP_cast5_cbc;
+    {$ifend}
     {$if declared(EVP_cast5_cbc_introduced)}
     if LibVersion < EVP_cast5_cbc_introduced then
     begin
       {$if declared(FC_EVP_cast5_cbc)}
       EVP_cast5_cbc := @FC_EVP_cast5_cbc;
-      {$else}
-      {$if not defined(EVP_cast5_cbc_allownil)}
-      EVP_cast5_cbc := @ERR_EVP_cast5_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_cast5_cbc_removed)}
@@ -15401,39 +13712,31 @@ begin
     begin
       {$if declared(_EVP_cast5_cbc)}
       EVP_cast5_cbc := @_EVP_cast5_cbc;
-      {$else}
-      {$if not defined(EVP_cast5_cbc_allownil)}
-      EVP_cast5_cbc := @ERR_EVP_cast5_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_cast5_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_cast5_cbc := @ERR_EVP_cast5_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_cast5_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_cast5_cfb64 := LoadLibFunction(ADllHandle, EVP_cast5_cfb64_procname);
-  FuncLoaded := assigned(EVP_cast5_cfb64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_cast5_cfb64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_cast5_cfb64_allownil)}
+    EVP_cast5_cfb64 := @ERR_EVP_cast5_cfb64;
+    {$ifend}
     {$if declared(EVP_cast5_cfb64_introduced)}
     if LibVersion < EVP_cast5_cfb64_introduced then
     begin
       {$if declared(FC_EVP_cast5_cfb64)}
       EVP_cast5_cfb64 := @FC_EVP_cast5_cfb64;
-      {$else}
-      {$if not defined(EVP_cast5_cfb64_allownil)}
-      EVP_cast5_cfb64 := @ERR_EVP_cast5_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_cast5_cfb64_removed)}
@@ -15441,39 +13744,31 @@ begin
     begin
       {$if declared(_EVP_cast5_cfb64)}
       EVP_cast5_cfb64 := @_EVP_cast5_cfb64;
-      {$else}
-      {$if not defined(EVP_cast5_cfb64_allownil)}
-      EVP_cast5_cfb64 := @ERR_EVP_cast5_cfb64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_cast5_cfb64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_cast5_cfb64 := @ERR_EVP_cast5_cfb64;
+    if FuncLoadError then
       AFailed.Add('EVP_cast5_cfb64');
-    end;
     {$ifend}
   end;
 
 
   EVP_cast5_ofb := LoadLibFunction(ADllHandle, EVP_cast5_ofb_procname);
-  FuncLoaded := assigned(EVP_cast5_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_cast5_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_cast5_ofb_allownil)}
+    EVP_cast5_ofb := @ERR_EVP_cast5_ofb;
+    {$ifend}
     {$if declared(EVP_cast5_ofb_introduced)}
     if LibVersion < EVP_cast5_ofb_introduced then
     begin
       {$if declared(FC_EVP_cast5_ofb)}
       EVP_cast5_ofb := @FC_EVP_cast5_ofb;
-      {$else}
-      {$if not defined(EVP_cast5_ofb_allownil)}
-      EVP_cast5_ofb := @ERR_EVP_cast5_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_cast5_ofb_removed)}
@@ -15481,39 +13776,31 @@ begin
     begin
       {$if declared(_EVP_cast5_ofb)}
       EVP_cast5_ofb := @_EVP_cast5_ofb;
-      {$else}
-      {$if not defined(EVP_cast5_ofb_allownil)}
-      EVP_cast5_ofb := @ERR_EVP_cast5_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_cast5_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_cast5_ofb := @ERR_EVP_cast5_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_cast5_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_ecb := LoadLibFunction(ADllHandle, EVP_aes_128_ecb_procname);
-  FuncLoaded := assigned(EVP_aes_128_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_ecb_allownil)}
+    EVP_aes_128_ecb := @ERR_EVP_aes_128_ecb;
+    {$ifend}
     {$if declared(EVP_aes_128_ecb_introduced)}
     if LibVersion < EVP_aes_128_ecb_introduced then
     begin
       {$if declared(FC_EVP_aes_128_ecb)}
       EVP_aes_128_ecb := @FC_EVP_aes_128_ecb;
-      {$else}
-      {$if not defined(EVP_aes_128_ecb_allownil)}
-      EVP_aes_128_ecb := @ERR_EVP_aes_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_ecb_removed)}
@@ -15521,39 +13808,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_ecb)}
       EVP_aes_128_ecb := @_EVP_aes_128_ecb;
-      {$else}
-      {$if not defined(EVP_aes_128_ecb_allownil)}
-      EVP_aes_128_ecb := @ERR_EVP_aes_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_ecb := @ERR_EVP_aes_128_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_cbc := LoadLibFunction(ADllHandle, EVP_aes_128_cbc_procname);
-  FuncLoaded := assigned(EVP_aes_128_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cbc_allownil)}
+    EVP_aes_128_cbc := @ERR_EVP_aes_128_cbc;
+    {$ifend}
     {$if declared(EVP_aes_128_cbc_introduced)}
     if LibVersion < EVP_aes_128_cbc_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cbc)}
       EVP_aes_128_cbc := @FC_EVP_aes_128_cbc;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_allownil)}
-      EVP_aes_128_cbc := @ERR_EVP_aes_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cbc_removed)}
@@ -15561,39 +13840,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cbc)}
       EVP_aes_128_cbc := @_EVP_aes_128_cbc;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_allownil)}
-      EVP_aes_128_cbc := @ERR_EVP_aes_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cbc := @ERR_EVP_aes_128_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_cfb1 := LoadLibFunction(ADllHandle, EVP_aes_128_cfb1_procname);
-  FuncLoaded := assigned(EVP_aes_128_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cfb1_allownil)}
+    EVP_aes_128_cfb1 := @ERR_EVP_aes_128_cfb1;
+    {$ifend}
     {$if declared(EVP_aes_128_cfb1_introduced)}
     if LibVersion < EVP_aes_128_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cfb1)}
       EVP_aes_128_cfb1 := @FC_EVP_aes_128_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb1_allownil)}
-      EVP_aes_128_cfb1 := @ERR_EVP_aes_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cfb1_removed)}
@@ -15601,39 +13872,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cfb1)}
       EVP_aes_128_cfb1 := @_EVP_aes_128_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb1_allownil)}
-      EVP_aes_128_cfb1 := @ERR_EVP_aes_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cfb1 := @ERR_EVP_aes_128_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_cfb8 := LoadLibFunction(ADllHandle, EVP_aes_128_cfb8_procname);
-  FuncLoaded := assigned(EVP_aes_128_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cfb8_allownil)}
+    EVP_aes_128_cfb8 := @ERR_EVP_aes_128_cfb8;
+    {$ifend}
     {$if declared(EVP_aes_128_cfb8_introduced)}
     if LibVersion < EVP_aes_128_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cfb8)}
       EVP_aes_128_cfb8 := @FC_EVP_aes_128_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb8_allownil)}
-      EVP_aes_128_cfb8 := @ERR_EVP_aes_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cfb8_removed)}
@@ -15641,39 +13904,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cfb8)}
       EVP_aes_128_cfb8 := @_EVP_aes_128_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb8_allownil)}
-      EVP_aes_128_cfb8 := @ERR_EVP_aes_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cfb8 := @ERR_EVP_aes_128_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_cfb128 := LoadLibFunction(ADllHandle, EVP_aes_128_cfb128_procname);
-  FuncLoaded := assigned(EVP_aes_128_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cfb128_allownil)}
+    EVP_aes_128_cfb128 := @ERR_EVP_aes_128_cfb128;
+    {$ifend}
     {$if declared(EVP_aes_128_cfb128_introduced)}
     if LibVersion < EVP_aes_128_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cfb128)}
       EVP_aes_128_cfb128 := @FC_EVP_aes_128_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb128_allownil)}
-      EVP_aes_128_cfb128 := @ERR_EVP_aes_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cfb128_removed)}
@@ -15681,39 +13936,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cfb128)}
       EVP_aes_128_cfb128 := @_EVP_aes_128_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_128_cfb128_allownil)}
-      EVP_aes_128_cfb128 := @ERR_EVP_aes_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cfb128 := @ERR_EVP_aes_128_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_ofb := LoadLibFunction(ADllHandle, EVP_aes_128_ofb_procname);
-  FuncLoaded := assigned(EVP_aes_128_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_ofb_allownil)}
+    EVP_aes_128_ofb := @ERR_EVP_aes_128_ofb;
+    {$ifend}
     {$if declared(EVP_aes_128_ofb_introduced)}
     if LibVersion < EVP_aes_128_ofb_introduced then
     begin
       {$if declared(FC_EVP_aes_128_ofb)}
       EVP_aes_128_ofb := @FC_EVP_aes_128_ofb;
-      {$else}
-      {$if not defined(EVP_aes_128_ofb_allownil)}
-      EVP_aes_128_ofb := @ERR_EVP_aes_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_ofb_removed)}
@@ -15721,39 +13968,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_ofb)}
       EVP_aes_128_ofb := @_EVP_aes_128_ofb;
-      {$else}
-      {$if not defined(EVP_aes_128_ofb_allownil)}
-      EVP_aes_128_ofb := @ERR_EVP_aes_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_ofb := @ERR_EVP_aes_128_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_ctr := LoadLibFunction(ADllHandle, EVP_aes_128_ctr_procname);
-  FuncLoaded := assigned(EVP_aes_128_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_ctr_allownil)}
+    EVP_aes_128_ctr := @ERR_EVP_aes_128_ctr;
+    {$ifend}
     {$if declared(EVP_aes_128_ctr_introduced)}
     if LibVersion < EVP_aes_128_ctr_introduced then
     begin
       {$if declared(FC_EVP_aes_128_ctr)}
       EVP_aes_128_ctr := @FC_EVP_aes_128_ctr;
-      {$else}
-      {$if not defined(EVP_aes_128_ctr_allownil)}
-      EVP_aes_128_ctr := @ERR_EVP_aes_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_ctr_removed)}
@@ -15761,39 +14000,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_ctr)}
       EVP_aes_128_ctr := @_EVP_aes_128_ctr;
-      {$else}
-      {$if not defined(EVP_aes_128_ctr_allownil)}
-      EVP_aes_128_ctr := @ERR_EVP_aes_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_ctr := @ERR_EVP_aes_128_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_ctr');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_ccm := LoadLibFunction(ADllHandle, EVP_aes_128_ccm_procname);
-  FuncLoaded := assigned(EVP_aes_128_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_ccm_allownil)}
+    EVP_aes_128_ccm := @ERR_EVP_aes_128_ccm;
+    {$ifend}
     {$if declared(EVP_aes_128_ccm_introduced)}
     if LibVersion < EVP_aes_128_ccm_introduced then
     begin
       {$if declared(FC_EVP_aes_128_ccm)}
       EVP_aes_128_ccm := @FC_EVP_aes_128_ccm;
-      {$else}
-      {$if not defined(EVP_aes_128_ccm_allownil)}
-      EVP_aes_128_ccm := @ERR_EVP_aes_128_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_ccm_removed)}
@@ -15801,39 +14032,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_ccm)}
       EVP_aes_128_ccm := @_EVP_aes_128_ccm;
-      {$else}
-      {$if not defined(EVP_aes_128_ccm_allownil)}
-      EVP_aes_128_ccm := @ERR_EVP_aes_128_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_ccm := @ERR_EVP_aes_128_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_ccm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_gcm := LoadLibFunction(ADllHandle, EVP_aes_128_gcm_procname);
-  FuncLoaded := assigned(EVP_aes_128_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_gcm_allownil)}
+    EVP_aes_128_gcm := @ERR_EVP_aes_128_gcm;
+    {$ifend}
     {$if declared(EVP_aes_128_gcm_introduced)}
     if LibVersion < EVP_aes_128_gcm_introduced then
     begin
       {$if declared(FC_EVP_aes_128_gcm)}
       EVP_aes_128_gcm := @FC_EVP_aes_128_gcm;
-      {$else}
-      {$if not defined(EVP_aes_128_gcm_allownil)}
-      EVP_aes_128_gcm := @ERR_EVP_aes_128_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_gcm_removed)}
@@ -15841,39 +14064,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_gcm)}
       EVP_aes_128_gcm := @_EVP_aes_128_gcm;
-      {$else}
-      {$if not defined(EVP_aes_128_gcm_allownil)}
-      EVP_aes_128_gcm := @ERR_EVP_aes_128_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_gcm := @ERR_EVP_aes_128_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_gcm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_xts := LoadLibFunction(ADllHandle, EVP_aes_128_xts_procname);
-  FuncLoaded := assigned(EVP_aes_128_xts);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_xts);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_xts_allownil)}
+    EVP_aes_128_xts := @ERR_EVP_aes_128_xts;
+    {$ifend}
     {$if declared(EVP_aes_128_xts_introduced)}
     if LibVersion < EVP_aes_128_xts_introduced then
     begin
       {$if declared(FC_EVP_aes_128_xts)}
       EVP_aes_128_xts := @FC_EVP_aes_128_xts;
-      {$else}
-      {$if not defined(EVP_aes_128_xts_allownil)}
-      EVP_aes_128_xts := @ERR_EVP_aes_128_xts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_xts_removed)}
@@ -15881,39 +14096,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_xts)}
       EVP_aes_128_xts := @_EVP_aes_128_xts;
-      {$else}
-      {$if not defined(EVP_aes_128_xts_allownil)}
-      EVP_aes_128_xts := @ERR_EVP_aes_128_xts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_xts_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_xts := @ERR_EVP_aes_128_xts;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_xts');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_wrap := LoadLibFunction(ADllHandle, EVP_aes_128_wrap_procname);
-  FuncLoaded := assigned(EVP_aes_128_wrap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_wrap);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_wrap_allownil)}
+    EVP_aes_128_wrap := @ERR_EVP_aes_128_wrap;
+    {$ifend}
     {$if declared(EVP_aes_128_wrap_introduced)}
     if LibVersion < EVP_aes_128_wrap_introduced then
     begin
       {$if declared(FC_EVP_aes_128_wrap)}
       EVP_aes_128_wrap := @FC_EVP_aes_128_wrap;
-      {$else}
-      {$if not defined(EVP_aes_128_wrap_allownil)}
-      EVP_aes_128_wrap := @ERR_EVP_aes_128_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_wrap_removed)}
@@ -15921,39 +14128,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_wrap)}
       EVP_aes_128_wrap := @_EVP_aes_128_wrap;
-      {$else}
-      {$if not defined(EVP_aes_128_wrap_allownil)}
-      EVP_aes_128_wrap := @ERR_EVP_aes_128_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_wrap_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_wrap := @ERR_EVP_aes_128_wrap;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_wrap');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_wrap_pad := LoadLibFunction(ADllHandle, EVP_aes_128_wrap_pad_procname);
-  FuncLoaded := assigned(EVP_aes_128_wrap_pad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_wrap_pad);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_wrap_pad_allownil)}
+    EVP_aes_128_wrap_pad := @ERR_EVP_aes_128_wrap_pad;
+    {$ifend}
     {$if declared(EVP_aes_128_wrap_pad_introduced)}
     if LibVersion < EVP_aes_128_wrap_pad_introduced then
     begin
       {$if declared(FC_EVP_aes_128_wrap_pad)}
       EVP_aes_128_wrap_pad := @FC_EVP_aes_128_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_128_wrap_pad_allownil)}
-      EVP_aes_128_wrap_pad := @ERR_EVP_aes_128_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_wrap_pad_removed)}
@@ -15961,39 +14160,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_wrap_pad)}
       EVP_aes_128_wrap_pad := @_EVP_aes_128_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_128_wrap_pad_allownil)}
-      EVP_aes_128_wrap_pad := @ERR_EVP_aes_128_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_wrap_pad_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_wrap_pad := @ERR_EVP_aes_128_wrap_pad;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_wrap_pad');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_128_ocb := LoadLibFunction(ADllHandle, EVP_aes_128_ocb_procname);
-  FuncLoaded := assigned(EVP_aes_128_ocb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_ocb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_ocb_allownil)}
+    EVP_aes_128_ocb := @ERR_EVP_aes_128_ocb;
+    {$ifend}
     {$if declared(EVP_aes_128_ocb_introduced)}
     if LibVersion < EVP_aes_128_ocb_introduced then
     begin
       {$if declared(FC_EVP_aes_128_ocb)}
       EVP_aes_128_ocb := @FC_EVP_aes_128_ocb;
-      {$else}
-      {$if not defined(EVP_aes_128_ocb_allownil)}
-      EVP_aes_128_ocb := @ERR_EVP_aes_128_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_ocb_removed)}
@@ -16001,39 +14192,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_ocb)}
       EVP_aes_128_ocb := @_EVP_aes_128_ocb;
-      {$else}
-      {$if not defined(EVP_aes_128_ocb_allownil)}
-      EVP_aes_128_ocb := @ERR_EVP_aes_128_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_ocb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_ocb := @ERR_EVP_aes_128_ocb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_ocb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_192_ecb := LoadLibFunction(ADllHandle, EVP_aes_192_ecb_procname);
-  FuncLoaded := assigned(EVP_aes_192_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_ecb_allownil)}
+    EVP_aes_192_ecb := @ERR_EVP_aes_192_ecb;
+    {$ifend}
     {$if declared(EVP_aes_192_ecb_introduced)}
     if LibVersion < EVP_aes_192_ecb_introduced then
     begin
       {$if declared(FC_EVP_aes_192_ecb)}
       EVP_aes_192_ecb := @FC_EVP_aes_192_ecb;
-      {$else}
-      {$if not defined(EVP_aes_192_ecb_allownil)}
-      EVP_aes_192_ecb := @ERR_EVP_aes_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_ecb_removed)}
@@ -16041,39 +14224,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_ecb)}
       EVP_aes_192_ecb := @_EVP_aes_192_ecb;
-      {$else}
-      {$if not defined(EVP_aes_192_ecb_allownil)}
-      EVP_aes_192_ecb := @ERR_EVP_aes_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_ecb := @ERR_EVP_aes_192_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_cbc := LoadLibFunction(ADllHandle, EVP_aes_192_cbc_procname);
-  FuncLoaded := assigned(EVP_aes_192_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_cbc_allownil)}
+    EVP_aes_192_cbc := @ERR_EVP_aes_192_cbc;
+    {$ifend}
     {$if declared(EVP_aes_192_cbc_introduced)}
     if LibVersion < EVP_aes_192_cbc_introduced then
     begin
       {$if declared(FC_EVP_aes_192_cbc)}
       EVP_aes_192_cbc := @FC_EVP_aes_192_cbc;
-      {$else}
-      {$if not defined(EVP_aes_192_cbc_allownil)}
-      EVP_aes_192_cbc := @ERR_EVP_aes_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_cbc_removed)}
@@ -16081,39 +14256,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_cbc)}
       EVP_aes_192_cbc := @_EVP_aes_192_cbc;
-      {$else}
-      {$if not defined(EVP_aes_192_cbc_allownil)}
-      EVP_aes_192_cbc := @ERR_EVP_aes_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_cbc := @ERR_EVP_aes_192_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_cfb1 := LoadLibFunction(ADllHandle, EVP_aes_192_cfb1_procname);
-  FuncLoaded := assigned(EVP_aes_192_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_cfb1_allownil)}
+    EVP_aes_192_cfb1 := @ERR_EVP_aes_192_cfb1;
+    {$ifend}
     {$if declared(EVP_aes_192_cfb1_introduced)}
     if LibVersion < EVP_aes_192_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aes_192_cfb1)}
       EVP_aes_192_cfb1 := @FC_EVP_aes_192_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb1_allownil)}
-      EVP_aes_192_cfb1 := @ERR_EVP_aes_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_cfb1_removed)}
@@ -16121,39 +14288,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_cfb1)}
       EVP_aes_192_cfb1 := @_EVP_aes_192_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb1_allownil)}
-      EVP_aes_192_cfb1 := @ERR_EVP_aes_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_cfb1 := @ERR_EVP_aes_192_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_cfb8 := LoadLibFunction(ADllHandle, EVP_aes_192_cfb8_procname);
-  FuncLoaded := assigned(EVP_aes_192_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_cfb8_allownil)}
+    EVP_aes_192_cfb8 := @ERR_EVP_aes_192_cfb8;
+    {$ifend}
     {$if declared(EVP_aes_192_cfb8_introduced)}
     if LibVersion < EVP_aes_192_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aes_192_cfb8)}
       EVP_aes_192_cfb8 := @FC_EVP_aes_192_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb8_allownil)}
-      EVP_aes_192_cfb8 := @ERR_EVP_aes_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_cfb8_removed)}
@@ -16161,39 +14320,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_cfb8)}
       EVP_aes_192_cfb8 := @_EVP_aes_192_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb8_allownil)}
-      EVP_aes_192_cfb8 := @ERR_EVP_aes_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_cfb8 := @ERR_EVP_aes_192_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_cfb128 := LoadLibFunction(ADllHandle, EVP_aes_192_cfb128_procname);
-  FuncLoaded := assigned(EVP_aes_192_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_cfb128_allownil)}
+    EVP_aes_192_cfb128 := @ERR_EVP_aes_192_cfb128;
+    {$ifend}
     {$if declared(EVP_aes_192_cfb128_introduced)}
     if LibVersion < EVP_aes_192_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aes_192_cfb128)}
       EVP_aes_192_cfb128 := @FC_EVP_aes_192_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb128_allownil)}
-      EVP_aes_192_cfb128 := @ERR_EVP_aes_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_cfb128_removed)}
@@ -16201,39 +14352,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_cfb128)}
       EVP_aes_192_cfb128 := @_EVP_aes_192_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_192_cfb128_allownil)}
-      EVP_aes_192_cfb128 := @ERR_EVP_aes_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_cfb128 := @ERR_EVP_aes_192_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_ofb := LoadLibFunction(ADllHandle, EVP_aes_192_ofb_procname);
-  FuncLoaded := assigned(EVP_aes_192_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_ofb_allownil)}
+    EVP_aes_192_ofb := @ERR_EVP_aes_192_ofb;
+    {$ifend}
     {$if declared(EVP_aes_192_ofb_introduced)}
     if LibVersion < EVP_aes_192_ofb_introduced then
     begin
       {$if declared(FC_EVP_aes_192_ofb)}
       EVP_aes_192_ofb := @FC_EVP_aes_192_ofb;
-      {$else}
-      {$if not defined(EVP_aes_192_ofb_allownil)}
-      EVP_aes_192_ofb := @ERR_EVP_aes_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_ofb_removed)}
@@ -16241,39 +14384,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_ofb)}
       EVP_aes_192_ofb := @_EVP_aes_192_ofb;
-      {$else}
-      {$if not defined(EVP_aes_192_ofb_allownil)}
-      EVP_aes_192_ofb := @ERR_EVP_aes_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_ofb := @ERR_EVP_aes_192_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_ctr := LoadLibFunction(ADllHandle, EVP_aes_192_ctr_procname);
-  FuncLoaded := assigned(EVP_aes_192_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_ctr_allownil)}
+    EVP_aes_192_ctr := @ERR_EVP_aes_192_ctr;
+    {$ifend}
     {$if declared(EVP_aes_192_ctr_introduced)}
     if LibVersion < EVP_aes_192_ctr_introduced then
     begin
       {$if declared(FC_EVP_aes_192_ctr)}
       EVP_aes_192_ctr := @FC_EVP_aes_192_ctr;
-      {$else}
-      {$if not defined(EVP_aes_192_ctr_allownil)}
-      EVP_aes_192_ctr := @ERR_EVP_aes_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_ctr_removed)}
@@ -16281,39 +14416,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_ctr)}
       EVP_aes_192_ctr := @_EVP_aes_192_ctr;
-      {$else}
-      {$if not defined(EVP_aes_192_ctr_allownil)}
-      EVP_aes_192_ctr := @ERR_EVP_aes_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_ctr := @ERR_EVP_aes_192_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_ctr');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_ccm := LoadLibFunction(ADllHandle, EVP_aes_192_ccm_procname);
-  FuncLoaded := assigned(EVP_aes_192_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_ccm_allownil)}
+    EVP_aes_192_ccm := @ERR_EVP_aes_192_ccm;
+    {$ifend}
     {$if declared(EVP_aes_192_ccm_introduced)}
     if LibVersion < EVP_aes_192_ccm_introduced then
     begin
       {$if declared(FC_EVP_aes_192_ccm)}
       EVP_aes_192_ccm := @FC_EVP_aes_192_ccm;
-      {$else}
-      {$if not defined(EVP_aes_192_ccm_allownil)}
-      EVP_aes_192_ccm := @ERR_EVP_aes_192_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_ccm_removed)}
@@ -16321,39 +14448,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_ccm)}
       EVP_aes_192_ccm := @_EVP_aes_192_ccm;
-      {$else}
-      {$if not defined(EVP_aes_192_ccm_allownil)}
-      EVP_aes_192_ccm := @ERR_EVP_aes_192_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_ccm := @ERR_EVP_aes_192_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_ccm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_gcm := LoadLibFunction(ADllHandle, EVP_aes_192_gcm_procname);
-  FuncLoaded := assigned(EVP_aes_192_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_gcm_allownil)}
+    EVP_aes_192_gcm := @ERR_EVP_aes_192_gcm;
+    {$ifend}
     {$if declared(EVP_aes_192_gcm_introduced)}
     if LibVersion < EVP_aes_192_gcm_introduced then
     begin
       {$if declared(FC_EVP_aes_192_gcm)}
       EVP_aes_192_gcm := @FC_EVP_aes_192_gcm;
-      {$else}
-      {$if not defined(EVP_aes_192_gcm_allownil)}
-      EVP_aes_192_gcm := @ERR_EVP_aes_192_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_gcm_removed)}
@@ -16361,39 +14480,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_gcm)}
       EVP_aes_192_gcm := @_EVP_aes_192_gcm;
-      {$else}
-      {$if not defined(EVP_aes_192_gcm_allownil)}
-      EVP_aes_192_gcm := @ERR_EVP_aes_192_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_gcm := @ERR_EVP_aes_192_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_gcm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_wrap := LoadLibFunction(ADllHandle, EVP_aes_192_wrap_procname);
-  FuncLoaded := assigned(EVP_aes_192_wrap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_wrap);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_wrap_allownil)}
+    EVP_aes_192_wrap := @ERR_EVP_aes_192_wrap;
+    {$ifend}
     {$if declared(EVP_aes_192_wrap_introduced)}
     if LibVersion < EVP_aes_192_wrap_introduced then
     begin
       {$if declared(FC_EVP_aes_192_wrap)}
       EVP_aes_192_wrap := @FC_EVP_aes_192_wrap;
-      {$else}
-      {$if not defined(EVP_aes_192_wrap_allownil)}
-      EVP_aes_192_wrap := @ERR_EVP_aes_192_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_wrap_removed)}
@@ -16401,39 +14512,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_wrap)}
       EVP_aes_192_wrap := @_EVP_aes_192_wrap;
-      {$else}
-      {$if not defined(EVP_aes_192_wrap_allownil)}
-      EVP_aes_192_wrap := @ERR_EVP_aes_192_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_wrap_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_wrap := @ERR_EVP_aes_192_wrap;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_wrap');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_192_wrap_pad := LoadLibFunction(ADllHandle, EVP_aes_192_wrap_pad_procname);
-  FuncLoaded := assigned(EVP_aes_192_wrap_pad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_wrap_pad);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_wrap_pad_allownil)}
+    EVP_aes_192_wrap_pad := @ERR_EVP_aes_192_wrap_pad;
+    {$ifend}
     {$if declared(EVP_aes_192_wrap_pad_introduced)}
     if LibVersion < EVP_aes_192_wrap_pad_introduced then
     begin
       {$if declared(FC_EVP_aes_192_wrap_pad)}
       EVP_aes_192_wrap_pad := @FC_EVP_aes_192_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_192_wrap_pad_allownil)}
-      EVP_aes_192_wrap_pad := @ERR_EVP_aes_192_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_wrap_pad_removed)}
@@ -16441,39 +14544,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_wrap_pad)}
       EVP_aes_192_wrap_pad := @_EVP_aes_192_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_192_wrap_pad_allownil)}
-      EVP_aes_192_wrap_pad := @ERR_EVP_aes_192_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_wrap_pad_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_wrap_pad := @ERR_EVP_aes_192_wrap_pad;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_wrap_pad');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_192_ocb := LoadLibFunction(ADllHandle, EVP_aes_192_ocb_procname);
-  FuncLoaded := assigned(EVP_aes_192_ocb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_192_ocb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_192_ocb_allownil)}
+    EVP_aes_192_ocb := @ERR_EVP_aes_192_ocb;
+    {$ifend}
     {$if declared(EVP_aes_192_ocb_introduced)}
     if LibVersion < EVP_aes_192_ocb_introduced then
     begin
       {$if declared(FC_EVP_aes_192_ocb)}
       EVP_aes_192_ocb := @FC_EVP_aes_192_ocb;
-      {$else}
-      {$if not defined(EVP_aes_192_ocb_allownil)}
-      EVP_aes_192_ocb := @ERR_EVP_aes_192_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_192_ocb_removed)}
@@ -16481,39 +14576,31 @@ begin
     begin
       {$if declared(_EVP_aes_192_ocb)}
       EVP_aes_192_ocb := @_EVP_aes_192_ocb;
-      {$else}
-      {$if not defined(EVP_aes_192_ocb_allownil)}
-      EVP_aes_192_ocb := @ERR_EVP_aes_192_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_192_ocb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_192_ocb := @ERR_EVP_aes_192_ocb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_192_ocb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_256_ecb := LoadLibFunction(ADllHandle, EVP_aes_256_ecb_procname);
-  FuncLoaded := assigned(EVP_aes_256_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_ecb_allownil)}
+    EVP_aes_256_ecb := @ERR_EVP_aes_256_ecb;
+    {$ifend}
     {$if declared(EVP_aes_256_ecb_introduced)}
     if LibVersion < EVP_aes_256_ecb_introduced then
     begin
       {$if declared(FC_EVP_aes_256_ecb)}
       EVP_aes_256_ecb := @FC_EVP_aes_256_ecb;
-      {$else}
-      {$if not defined(EVP_aes_256_ecb_allownil)}
-      EVP_aes_256_ecb := @ERR_EVP_aes_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_ecb_removed)}
@@ -16521,39 +14608,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_ecb)}
       EVP_aes_256_ecb := @_EVP_aes_256_ecb;
-      {$else}
-      {$if not defined(EVP_aes_256_ecb_allownil)}
-      EVP_aes_256_ecb := @ERR_EVP_aes_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_ecb := @ERR_EVP_aes_256_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cbc := LoadLibFunction(ADllHandle, EVP_aes_256_cbc_procname);
-  FuncLoaded := assigned(EVP_aes_256_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cbc_allownil)}
+    EVP_aes_256_cbc := @ERR_EVP_aes_256_cbc;
+    {$ifend}
     {$if declared(EVP_aes_256_cbc_introduced)}
     if LibVersion < EVP_aes_256_cbc_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cbc)}
       EVP_aes_256_cbc := @FC_EVP_aes_256_cbc;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_allownil)}
-      EVP_aes_256_cbc := @ERR_EVP_aes_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cbc_removed)}
@@ -16561,39 +14640,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cbc)}
       EVP_aes_256_cbc := @_EVP_aes_256_cbc;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_allownil)}
-      EVP_aes_256_cbc := @ERR_EVP_aes_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cbc := @ERR_EVP_aes_256_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cfb1 := LoadLibFunction(ADllHandle, EVP_aes_256_cfb1_procname);
-  FuncLoaded := assigned(EVP_aes_256_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cfb1_allownil)}
+    EVP_aes_256_cfb1 := @ERR_EVP_aes_256_cfb1;
+    {$ifend}
     {$if declared(EVP_aes_256_cfb1_introduced)}
     if LibVersion < EVP_aes_256_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cfb1)}
       EVP_aes_256_cfb1 := @FC_EVP_aes_256_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb1_allownil)}
-      EVP_aes_256_cfb1 := @ERR_EVP_aes_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cfb1_removed)}
@@ -16601,39 +14672,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cfb1)}
       EVP_aes_256_cfb1 := @_EVP_aes_256_cfb1;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb1_allownil)}
-      EVP_aes_256_cfb1 := @ERR_EVP_aes_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cfb1 := @ERR_EVP_aes_256_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cfb8 := LoadLibFunction(ADllHandle, EVP_aes_256_cfb8_procname);
-  FuncLoaded := assigned(EVP_aes_256_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cfb8_allownil)}
+    EVP_aes_256_cfb8 := @ERR_EVP_aes_256_cfb8;
+    {$ifend}
     {$if declared(EVP_aes_256_cfb8_introduced)}
     if LibVersion < EVP_aes_256_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cfb8)}
       EVP_aes_256_cfb8 := @FC_EVP_aes_256_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb8_allownil)}
-      EVP_aes_256_cfb8 := @ERR_EVP_aes_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cfb8_removed)}
@@ -16641,39 +14704,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cfb8)}
       EVP_aes_256_cfb8 := @_EVP_aes_256_cfb8;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb8_allownil)}
-      EVP_aes_256_cfb8 := @ERR_EVP_aes_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cfb8 := @ERR_EVP_aes_256_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cfb128 := LoadLibFunction(ADllHandle, EVP_aes_256_cfb128_procname);
-  FuncLoaded := assigned(EVP_aes_256_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cfb128_allownil)}
+    EVP_aes_256_cfb128 := @ERR_EVP_aes_256_cfb128;
+    {$ifend}
     {$if declared(EVP_aes_256_cfb128_introduced)}
     if LibVersion < EVP_aes_256_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cfb128)}
       EVP_aes_256_cfb128 := @FC_EVP_aes_256_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb128_allownil)}
-      EVP_aes_256_cfb128 := @ERR_EVP_aes_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cfb128_removed)}
@@ -16681,39 +14736,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cfb128)}
       EVP_aes_256_cfb128 := @_EVP_aes_256_cfb128;
-      {$else}
-      {$if not defined(EVP_aes_256_cfb128_allownil)}
-      EVP_aes_256_cfb128 := @ERR_EVP_aes_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cfb128 := @ERR_EVP_aes_256_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_ofb := LoadLibFunction(ADllHandle, EVP_aes_256_ofb_procname);
-  FuncLoaded := assigned(EVP_aes_256_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_ofb_allownil)}
+    EVP_aes_256_ofb := @ERR_EVP_aes_256_ofb;
+    {$ifend}
     {$if declared(EVP_aes_256_ofb_introduced)}
     if LibVersion < EVP_aes_256_ofb_introduced then
     begin
       {$if declared(FC_EVP_aes_256_ofb)}
       EVP_aes_256_ofb := @FC_EVP_aes_256_ofb;
-      {$else}
-      {$if not defined(EVP_aes_256_ofb_allownil)}
-      EVP_aes_256_ofb := @ERR_EVP_aes_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_ofb_removed)}
@@ -16721,39 +14768,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_ofb)}
       EVP_aes_256_ofb := @_EVP_aes_256_ofb;
-      {$else}
-      {$if not defined(EVP_aes_256_ofb_allownil)}
-      EVP_aes_256_ofb := @ERR_EVP_aes_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_ofb := @ERR_EVP_aes_256_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_ctr := LoadLibFunction(ADllHandle, EVP_aes_256_ctr_procname);
-  FuncLoaded := assigned(EVP_aes_256_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_ctr_allownil)}
+    EVP_aes_256_ctr := @ERR_EVP_aes_256_ctr;
+    {$ifend}
     {$if declared(EVP_aes_256_ctr_introduced)}
     if LibVersion < EVP_aes_256_ctr_introduced then
     begin
       {$if declared(FC_EVP_aes_256_ctr)}
       EVP_aes_256_ctr := @FC_EVP_aes_256_ctr;
-      {$else}
-      {$if not defined(EVP_aes_256_ctr_allownil)}
-      EVP_aes_256_ctr := @ERR_EVP_aes_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_ctr_removed)}
@@ -16761,39 +14800,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_ctr)}
       EVP_aes_256_ctr := @_EVP_aes_256_ctr;
-      {$else}
-      {$if not defined(EVP_aes_256_ctr_allownil)}
-      EVP_aes_256_ctr := @ERR_EVP_aes_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_ctr := @ERR_EVP_aes_256_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_ctr');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_ccm := LoadLibFunction(ADllHandle, EVP_aes_256_ccm_procname);
-  FuncLoaded := assigned(EVP_aes_256_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_ccm_allownil)}
+    EVP_aes_256_ccm := @ERR_EVP_aes_256_ccm;
+    {$ifend}
     {$if declared(EVP_aes_256_ccm_introduced)}
     if LibVersion < EVP_aes_256_ccm_introduced then
     begin
       {$if declared(FC_EVP_aes_256_ccm)}
       EVP_aes_256_ccm := @FC_EVP_aes_256_ccm;
-      {$else}
-      {$if not defined(EVP_aes_256_ccm_allownil)}
-      EVP_aes_256_ccm := @ERR_EVP_aes_256_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_ccm_removed)}
@@ -16801,39 +14832,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_ccm)}
       EVP_aes_256_ccm := @_EVP_aes_256_ccm;
-      {$else}
-      {$if not defined(EVP_aes_256_ccm_allownil)}
-      EVP_aes_256_ccm := @ERR_EVP_aes_256_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_ccm := @ERR_EVP_aes_256_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_ccm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_gcm := LoadLibFunction(ADllHandle, EVP_aes_256_gcm_procname);
-  FuncLoaded := assigned(EVP_aes_256_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_gcm_allownil)}
+    EVP_aes_256_gcm := @ERR_EVP_aes_256_gcm;
+    {$ifend}
     {$if declared(EVP_aes_256_gcm_introduced)}
     if LibVersion < EVP_aes_256_gcm_introduced then
     begin
       {$if declared(FC_EVP_aes_256_gcm)}
       EVP_aes_256_gcm := @FC_EVP_aes_256_gcm;
-      {$else}
-      {$if not defined(EVP_aes_256_gcm_allownil)}
-      EVP_aes_256_gcm := @ERR_EVP_aes_256_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_gcm_removed)}
@@ -16841,39 +14864,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_gcm)}
       EVP_aes_256_gcm := @_EVP_aes_256_gcm;
-      {$else}
-      {$if not defined(EVP_aes_256_gcm_allownil)}
-      EVP_aes_256_gcm := @ERR_EVP_aes_256_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_gcm := @ERR_EVP_aes_256_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_gcm');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_xts := LoadLibFunction(ADllHandle, EVP_aes_256_xts_procname);
-  FuncLoaded := assigned(EVP_aes_256_xts);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_xts);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_xts_allownil)}
+    EVP_aes_256_xts := @ERR_EVP_aes_256_xts;
+    {$ifend}
     {$if declared(EVP_aes_256_xts_introduced)}
     if LibVersion < EVP_aes_256_xts_introduced then
     begin
       {$if declared(FC_EVP_aes_256_xts)}
       EVP_aes_256_xts := @FC_EVP_aes_256_xts;
-      {$else}
-      {$if not defined(EVP_aes_256_xts_allownil)}
-      EVP_aes_256_xts := @ERR_EVP_aes_256_xts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_xts_removed)}
@@ -16881,39 +14896,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_xts)}
       EVP_aes_256_xts := @_EVP_aes_256_xts;
-      {$else}
-      {$if not defined(EVP_aes_256_xts_allownil)}
-      EVP_aes_256_xts := @ERR_EVP_aes_256_xts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_xts_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_xts := @ERR_EVP_aes_256_xts;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_xts');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_wrap := LoadLibFunction(ADllHandle, EVP_aes_256_wrap_procname);
-  FuncLoaded := assigned(EVP_aes_256_wrap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_wrap);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_wrap_allownil)}
+    EVP_aes_256_wrap := @ERR_EVP_aes_256_wrap;
+    {$ifend}
     {$if declared(EVP_aes_256_wrap_introduced)}
     if LibVersion < EVP_aes_256_wrap_introduced then
     begin
       {$if declared(FC_EVP_aes_256_wrap)}
       EVP_aes_256_wrap := @FC_EVP_aes_256_wrap;
-      {$else}
-      {$if not defined(EVP_aes_256_wrap_allownil)}
-      EVP_aes_256_wrap := @ERR_EVP_aes_256_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_wrap_removed)}
@@ -16921,39 +14928,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_wrap)}
       EVP_aes_256_wrap := @_EVP_aes_256_wrap;
-      {$else}
-      {$if not defined(EVP_aes_256_wrap_allownil)}
-      EVP_aes_256_wrap := @ERR_EVP_aes_256_wrap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_wrap_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_wrap := @ERR_EVP_aes_256_wrap;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_wrap');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_wrap_pad := LoadLibFunction(ADllHandle, EVP_aes_256_wrap_pad_procname);
-  FuncLoaded := assigned(EVP_aes_256_wrap_pad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_wrap_pad);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_wrap_pad_allownil)}
+    EVP_aes_256_wrap_pad := @ERR_EVP_aes_256_wrap_pad;
+    {$ifend}
     {$if declared(EVP_aes_256_wrap_pad_introduced)}
     if LibVersion < EVP_aes_256_wrap_pad_introduced then
     begin
       {$if declared(FC_EVP_aes_256_wrap_pad)}
       EVP_aes_256_wrap_pad := @FC_EVP_aes_256_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_256_wrap_pad_allownil)}
-      EVP_aes_256_wrap_pad := @ERR_EVP_aes_256_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_wrap_pad_removed)}
@@ -16961,39 +14960,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_wrap_pad)}
       EVP_aes_256_wrap_pad := @_EVP_aes_256_wrap_pad;
-      {$else}
-      {$if not defined(EVP_aes_256_wrap_pad_allownil)}
-      EVP_aes_256_wrap_pad := @ERR_EVP_aes_256_wrap_pad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_wrap_pad_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_wrap_pad := @ERR_EVP_aes_256_wrap_pad;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_wrap_pad');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_256_ocb := LoadLibFunction(ADllHandle, EVP_aes_256_ocb_procname);
-  FuncLoaded := assigned(EVP_aes_256_ocb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_ocb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_ocb_allownil)}
+    EVP_aes_256_ocb := @ERR_EVP_aes_256_ocb;
+    {$ifend}
     {$if declared(EVP_aes_256_ocb_introduced)}
     if LibVersion < EVP_aes_256_ocb_introduced then
     begin
       {$if declared(FC_EVP_aes_256_ocb)}
       EVP_aes_256_ocb := @FC_EVP_aes_256_ocb;
-      {$else}
-      {$if not defined(EVP_aes_256_ocb_allownil)}
-      EVP_aes_256_ocb := @ERR_EVP_aes_256_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_ocb_removed)}
@@ -17001,39 +14992,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_ocb)}
       EVP_aes_256_ocb := @_EVP_aes_256_ocb;
-      {$else}
-      {$if not defined(EVP_aes_256_ocb_allownil)}
-      EVP_aes_256_ocb := @ERR_EVP_aes_256_ocb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_ocb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_ocb := @ERR_EVP_aes_256_ocb;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_ocb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aes_128_cbc_hmac_sha1 := LoadLibFunction(ADllHandle, EVP_aes_128_cbc_hmac_sha1_procname);
-  FuncLoaded := assigned(EVP_aes_128_cbc_hmac_sha1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cbc_hmac_sha1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cbc_hmac_sha1_allownil)}
+    EVP_aes_128_cbc_hmac_sha1 := @ERR_EVP_aes_128_cbc_hmac_sha1;
+    {$ifend}
     {$if declared(EVP_aes_128_cbc_hmac_sha1_introduced)}
     if LibVersion < EVP_aes_128_cbc_hmac_sha1_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cbc_hmac_sha1)}
       EVP_aes_128_cbc_hmac_sha1 := @FC_EVP_aes_128_cbc_hmac_sha1;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_hmac_sha1_allownil)}
-      EVP_aes_128_cbc_hmac_sha1 := @ERR_EVP_aes_128_cbc_hmac_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cbc_hmac_sha1_removed)}
@@ -17041,39 +15024,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cbc_hmac_sha1)}
       EVP_aes_128_cbc_hmac_sha1 := @_EVP_aes_128_cbc_hmac_sha1;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_hmac_sha1_allownil)}
-      EVP_aes_128_cbc_hmac_sha1 := @ERR_EVP_aes_128_cbc_hmac_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cbc_hmac_sha1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cbc_hmac_sha1 := @ERR_EVP_aes_128_cbc_hmac_sha1;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cbc_hmac_sha1');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cbc_hmac_sha1 := LoadLibFunction(ADllHandle, EVP_aes_256_cbc_hmac_sha1_procname);
-  FuncLoaded := assigned(EVP_aes_256_cbc_hmac_sha1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cbc_hmac_sha1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cbc_hmac_sha1_allownil)}
+    EVP_aes_256_cbc_hmac_sha1 := @ERR_EVP_aes_256_cbc_hmac_sha1;
+    {$ifend}
     {$if declared(EVP_aes_256_cbc_hmac_sha1_introduced)}
     if LibVersion < EVP_aes_256_cbc_hmac_sha1_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cbc_hmac_sha1)}
       EVP_aes_256_cbc_hmac_sha1 := @FC_EVP_aes_256_cbc_hmac_sha1;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_hmac_sha1_allownil)}
-      EVP_aes_256_cbc_hmac_sha1 := @ERR_EVP_aes_256_cbc_hmac_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cbc_hmac_sha1_removed)}
@@ -17081,39 +15056,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cbc_hmac_sha1)}
       EVP_aes_256_cbc_hmac_sha1 := @_EVP_aes_256_cbc_hmac_sha1;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_hmac_sha1_allownil)}
-      EVP_aes_256_cbc_hmac_sha1 := @ERR_EVP_aes_256_cbc_hmac_sha1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cbc_hmac_sha1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cbc_hmac_sha1 := @ERR_EVP_aes_256_cbc_hmac_sha1;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cbc_hmac_sha1');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_128_cbc_hmac_sha256 := LoadLibFunction(ADllHandle, EVP_aes_128_cbc_hmac_sha256_procname);
-  FuncLoaded := assigned(EVP_aes_128_cbc_hmac_sha256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_128_cbc_hmac_sha256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_128_cbc_hmac_sha256_allownil)}
+    EVP_aes_128_cbc_hmac_sha256 := @ERR_EVP_aes_128_cbc_hmac_sha256;
+    {$ifend}
     {$if declared(EVP_aes_128_cbc_hmac_sha256_introduced)}
     if LibVersion < EVP_aes_128_cbc_hmac_sha256_introduced then
     begin
       {$if declared(FC_EVP_aes_128_cbc_hmac_sha256)}
       EVP_aes_128_cbc_hmac_sha256 := @FC_EVP_aes_128_cbc_hmac_sha256;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_hmac_sha256_allownil)}
-      EVP_aes_128_cbc_hmac_sha256 := @ERR_EVP_aes_128_cbc_hmac_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_128_cbc_hmac_sha256_removed)}
@@ -17121,39 +15088,31 @@ begin
     begin
       {$if declared(_EVP_aes_128_cbc_hmac_sha256)}
       EVP_aes_128_cbc_hmac_sha256 := @_EVP_aes_128_cbc_hmac_sha256;
-      {$else}
-      {$if not defined(EVP_aes_128_cbc_hmac_sha256_allownil)}
-      EVP_aes_128_cbc_hmac_sha256 := @ERR_EVP_aes_128_cbc_hmac_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_128_cbc_hmac_sha256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_128_cbc_hmac_sha256 := @ERR_EVP_aes_128_cbc_hmac_sha256;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_128_cbc_hmac_sha256');
-    end;
     {$ifend}
   end;
 
 
   EVP_aes_256_cbc_hmac_sha256 := LoadLibFunction(ADllHandle, EVP_aes_256_cbc_hmac_sha256_procname);
-  FuncLoaded := assigned(EVP_aes_256_cbc_hmac_sha256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aes_256_cbc_hmac_sha256);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aes_256_cbc_hmac_sha256_allownil)}
+    EVP_aes_256_cbc_hmac_sha256 := @ERR_EVP_aes_256_cbc_hmac_sha256;
+    {$ifend}
     {$if declared(EVP_aes_256_cbc_hmac_sha256_introduced)}
     if LibVersion < EVP_aes_256_cbc_hmac_sha256_introduced then
     begin
       {$if declared(FC_EVP_aes_256_cbc_hmac_sha256)}
       EVP_aes_256_cbc_hmac_sha256 := @FC_EVP_aes_256_cbc_hmac_sha256;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_hmac_sha256_allownil)}
-      EVP_aes_256_cbc_hmac_sha256 := @ERR_EVP_aes_256_cbc_hmac_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aes_256_cbc_hmac_sha256_removed)}
@@ -17161,39 +15120,31 @@ begin
     begin
       {$if declared(_EVP_aes_256_cbc_hmac_sha256)}
       EVP_aes_256_cbc_hmac_sha256 := @_EVP_aes_256_cbc_hmac_sha256;
-      {$else}
-      {$if not defined(EVP_aes_256_cbc_hmac_sha256_allownil)}
-      EVP_aes_256_cbc_hmac_sha256 := @ERR_EVP_aes_256_cbc_hmac_sha256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aes_256_cbc_hmac_sha256_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aes_256_cbc_hmac_sha256 := @ERR_EVP_aes_256_cbc_hmac_sha256;
+    if FuncLoadError then
       AFailed.Add('EVP_aes_256_cbc_hmac_sha256');
-    end;
     {$ifend}
   end;
 
 
   EVP_aria_128_ecb := LoadLibFunction(ADllHandle, EVP_aria_128_ecb_procname);
-  FuncLoaded := assigned(EVP_aria_128_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_ecb_allownil)}
+    EVP_aria_128_ecb := @ERR_EVP_aria_128_ecb;
+    {$ifend}
     {$if declared(EVP_aria_128_ecb_introduced)}
     if LibVersion < EVP_aria_128_ecb_introduced then
     begin
       {$if declared(FC_EVP_aria_128_ecb)}
       EVP_aria_128_ecb := @FC_EVP_aria_128_ecb;
-      {$else}
-      {$if not defined(EVP_aria_128_ecb_allownil)}
-      EVP_aria_128_ecb := @ERR_EVP_aria_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_ecb_removed)}
@@ -17201,39 +15152,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_ecb)}
       EVP_aria_128_ecb := @_EVP_aria_128_ecb;
-      {$else}
-      {$if not defined(EVP_aria_128_ecb_allownil)}
-      EVP_aria_128_ecb := @ERR_EVP_aria_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_ecb := @ERR_EVP_aria_128_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_ecb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_cbc := LoadLibFunction(ADllHandle, EVP_aria_128_cbc_procname);
-  FuncLoaded := assigned(EVP_aria_128_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_cbc_allownil)}
+    EVP_aria_128_cbc := @ERR_EVP_aria_128_cbc;
+    {$ifend}
     {$if declared(EVP_aria_128_cbc_introduced)}
     if LibVersion < EVP_aria_128_cbc_introduced then
     begin
       {$if declared(FC_EVP_aria_128_cbc)}
       EVP_aria_128_cbc := @FC_EVP_aria_128_cbc;
-      {$else}
-      {$if not defined(EVP_aria_128_cbc_allownil)}
-      EVP_aria_128_cbc := @ERR_EVP_aria_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_cbc_removed)}
@@ -17241,39 +15184,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_cbc)}
       EVP_aria_128_cbc := @_EVP_aria_128_cbc;
-      {$else}
-      {$if not defined(EVP_aria_128_cbc_allownil)}
-      EVP_aria_128_cbc := @ERR_EVP_aria_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_cbc := @ERR_EVP_aria_128_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_cbc');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_cfb1 := LoadLibFunction(ADllHandle, EVP_aria_128_cfb1_procname);
-  FuncLoaded := assigned(EVP_aria_128_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_cfb1_allownil)}
+    EVP_aria_128_cfb1 := @ERR_EVP_aria_128_cfb1;
+    {$ifend}
     {$if declared(EVP_aria_128_cfb1_introduced)}
     if LibVersion < EVP_aria_128_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aria_128_cfb1)}
       EVP_aria_128_cfb1 := @FC_EVP_aria_128_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb1_allownil)}
-      EVP_aria_128_cfb1 := @ERR_EVP_aria_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_cfb1_removed)}
@@ -17281,39 +15216,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_cfb1)}
       EVP_aria_128_cfb1 := @_EVP_aria_128_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb1_allownil)}
-      EVP_aria_128_cfb1 := @ERR_EVP_aria_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_cfb1 := @ERR_EVP_aria_128_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_cfb1');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_cfb8 := LoadLibFunction(ADllHandle, EVP_aria_128_cfb8_procname);
-  FuncLoaded := assigned(EVP_aria_128_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_cfb8_allownil)}
+    EVP_aria_128_cfb8 := @ERR_EVP_aria_128_cfb8;
+    {$ifend}
     {$if declared(EVP_aria_128_cfb8_introduced)}
     if LibVersion < EVP_aria_128_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aria_128_cfb8)}
       EVP_aria_128_cfb8 := @FC_EVP_aria_128_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb8_allownil)}
-      EVP_aria_128_cfb8 := @ERR_EVP_aria_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_cfb8_removed)}
@@ -17321,39 +15248,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_cfb8)}
       EVP_aria_128_cfb8 := @_EVP_aria_128_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb8_allownil)}
-      EVP_aria_128_cfb8 := @ERR_EVP_aria_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_cfb8 := @ERR_EVP_aria_128_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_cfb8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_cfb128 := LoadLibFunction(ADllHandle, EVP_aria_128_cfb128_procname);
-  FuncLoaded := assigned(EVP_aria_128_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_cfb128_allownil)}
+    EVP_aria_128_cfb128 := @ERR_EVP_aria_128_cfb128;
+    {$ifend}
     {$if declared(EVP_aria_128_cfb128_introduced)}
     if LibVersion < EVP_aria_128_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aria_128_cfb128)}
       EVP_aria_128_cfb128 := @FC_EVP_aria_128_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb128_allownil)}
-      EVP_aria_128_cfb128 := @ERR_EVP_aria_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_cfb128_removed)}
@@ -17361,39 +15280,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_cfb128)}
       EVP_aria_128_cfb128 := @_EVP_aria_128_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_128_cfb128_allownil)}
-      EVP_aria_128_cfb128 := @ERR_EVP_aria_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_cfb128 := @ERR_EVP_aria_128_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_cfb128');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_ctr := LoadLibFunction(ADllHandle, EVP_aria_128_ctr_procname);
-  FuncLoaded := assigned(EVP_aria_128_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_ctr_allownil)}
+    EVP_aria_128_ctr := @ERR_EVP_aria_128_ctr;
+    {$ifend}
     {$if declared(EVP_aria_128_ctr_introduced)}
     if LibVersion < EVP_aria_128_ctr_introduced then
     begin
       {$if declared(FC_EVP_aria_128_ctr)}
       EVP_aria_128_ctr := @FC_EVP_aria_128_ctr;
-      {$else}
-      {$if not defined(EVP_aria_128_ctr_allownil)}
-      EVP_aria_128_ctr := @ERR_EVP_aria_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_ctr_removed)}
@@ -17401,39 +15312,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_ctr)}
       EVP_aria_128_ctr := @_EVP_aria_128_ctr;
-      {$else}
-      {$if not defined(EVP_aria_128_ctr_allownil)}
-      EVP_aria_128_ctr := @ERR_EVP_aria_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_ctr := @ERR_EVP_aria_128_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_ofb := LoadLibFunction(ADllHandle, EVP_aria_128_ofb_procname);
-  FuncLoaded := assigned(EVP_aria_128_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_ofb_allownil)}
+    EVP_aria_128_ofb := @ERR_EVP_aria_128_ofb;
+    {$ifend}
     {$if declared(EVP_aria_128_ofb_introduced)}
     if LibVersion < EVP_aria_128_ofb_introduced then
     begin
       {$if declared(FC_EVP_aria_128_ofb)}
       EVP_aria_128_ofb := @FC_EVP_aria_128_ofb;
-      {$else}
-      {$if not defined(EVP_aria_128_ofb_allownil)}
-      EVP_aria_128_ofb := @ERR_EVP_aria_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_ofb_removed)}
@@ -17441,39 +15344,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_ofb)}
       EVP_aria_128_ofb := @_EVP_aria_128_ofb;
-      {$else}
-      {$if not defined(EVP_aria_128_ofb_allownil)}
-      EVP_aria_128_ofb := @ERR_EVP_aria_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_ofb := @ERR_EVP_aria_128_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_ofb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_gcm := LoadLibFunction(ADllHandle, EVP_aria_128_gcm_procname);
-  FuncLoaded := assigned(EVP_aria_128_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_gcm_allownil)}
+    EVP_aria_128_gcm := @ERR_EVP_aria_128_gcm;
+    {$ifend}
     {$if declared(EVP_aria_128_gcm_introduced)}
     if LibVersion < EVP_aria_128_gcm_introduced then
     begin
       {$if declared(FC_EVP_aria_128_gcm)}
       EVP_aria_128_gcm := @FC_EVP_aria_128_gcm;
-      {$else}
-      {$if not defined(EVP_aria_128_gcm_allownil)}
-      EVP_aria_128_gcm := @ERR_EVP_aria_128_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_gcm_removed)}
@@ -17481,39 +15376,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_gcm)}
       EVP_aria_128_gcm := @_EVP_aria_128_gcm;
-      {$else}
-      {$if not defined(EVP_aria_128_gcm_allownil)}
-      EVP_aria_128_gcm := @ERR_EVP_aria_128_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_gcm := @ERR_EVP_aria_128_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_gcm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_128_ccm := LoadLibFunction(ADllHandle, EVP_aria_128_ccm_procname);
-  FuncLoaded := assigned(EVP_aria_128_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_128_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_128_ccm_allownil)}
+    EVP_aria_128_ccm := @ERR_EVP_aria_128_ccm;
+    {$ifend}
     {$if declared(EVP_aria_128_ccm_introduced)}
     if LibVersion < EVP_aria_128_ccm_introduced then
     begin
       {$if declared(FC_EVP_aria_128_ccm)}
       EVP_aria_128_ccm := @FC_EVP_aria_128_ccm;
-      {$else}
-      {$if not defined(EVP_aria_128_ccm_allownil)}
-      EVP_aria_128_ccm := @ERR_EVP_aria_128_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_128_ccm_removed)}
@@ -17521,39 +15408,31 @@ begin
     begin
       {$if declared(_EVP_aria_128_ccm)}
       EVP_aria_128_ccm := @_EVP_aria_128_ccm;
-      {$else}
-      {$if not defined(EVP_aria_128_ccm_allownil)}
-      EVP_aria_128_ccm := @ERR_EVP_aria_128_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_128_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_128_ccm := @ERR_EVP_aria_128_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_128_ccm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_ecb := LoadLibFunction(ADllHandle, EVP_aria_192_ecb_procname);
-  FuncLoaded := assigned(EVP_aria_192_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_ecb_allownil)}
+    EVP_aria_192_ecb := @ERR_EVP_aria_192_ecb;
+    {$ifend}
     {$if declared(EVP_aria_192_ecb_introduced)}
     if LibVersion < EVP_aria_192_ecb_introduced then
     begin
       {$if declared(FC_EVP_aria_192_ecb)}
       EVP_aria_192_ecb := @FC_EVP_aria_192_ecb;
-      {$else}
-      {$if not defined(EVP_aria_192_ecb_allownil)}
-      EVP_aria_192_ecb := @ERR_EVP_aria_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_ecb_removed)}
@@ -17561,39 +15440,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_ecb)}
       EVP_aria_192_ecb := @_EVP_aria_192_ecb;
-      {$else}
-      {$if not defined(EVP_aria_192_ecb_allownil)}
-      EVP_aria_192_ecb := @ERR_EVP_aria_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_ecb := @ERR_EVP_aria_192_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_ecb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_cbc := LoadLibFunction(ADllHandle, EVP_aria_192_cbc_procname);
-  FuncLoaded := assigned(EVP_aria_192_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_cbc_allownil)}
+    EVP_aria_192_cbc := @ERR_EVP_aria_192_cbc;
+    {$ifend}
     {$if declared(EVP_aria_192_cbc_introduced)}
     if LibVersion < EVP_aria_192_cbc_introduced then
     begin
       {$if declared(FC_EVP_aria_192_cbc)}
       EVP_aria_192_cbc := @FC_EVP_aria_192_cbc;
-      {$else}
-      {$if not defined(EVP_aria_192_cbc_allownil)}
-      EVP_aria_192_cbc := @ERR_EVP_aria_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_cbc_removed)}
@@ -17601,39 +15472,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_cbc)}
       EVP_aria_192_cbc := @_EVP_aria_192_cbc;
-      {$else}
-      {$if not defined(EVP_aria_192_cbc_allownil)}
-      EVP_aria_192_cbc := @ERR_EVP_aria_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_cbc := @ERR_EVP_aria_192_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_cbc');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_cfb1 := LoadLibFunction(ADllHandle, EVP_aria_192_cfb1_procname);
-  FuncLoaded := assigned(EVP_aria_192_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_cfb1_allownil)}
+    EVP_aria_192_cfb1 := @ERR_EVP_aria_192_cfb1;
+    {$ifend}
     {$if declared(EVP_aria_192_cfb1_introduced)}
     if LibVersion < EVP_aria_192_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aria_192_cfb1)}
       EVP_aria_192_cfb1 := @FC_EVP_aria_192_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb1_allownil)}
-      EVP_aria_192_cfb1 := @ERR_EVP_aria_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_cfb1_removed)}
@@ -17641,39 +15504,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_cfb1)}
       EVP_aria_192_cfb1 := @_EVP_aria_192_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb1_allownil)}
-      EVP_aria_192_cfb1 := @ERR_EVP_aria_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_cfb1 := @ERR_EVP_aria_192_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_cfb1');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_cfb8 := LoadLibFunction(ADllHandle, EVP_aria_192_cfb8_procname);
-  FuncLoaded := assigned(EVP_aria_192_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_cfb8_allownil)}
+    EVP_aria_192_cfb8 := @ERR_EVP_aria_192_cfb8;
+    {$ifend}
     {$if declared(EVP_aria_192_cfb8_introduced)}
     if LibVersion < EVP_aria_192_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aria_192_cfb8)}
       EVP_aria_192_cfb8 := @FC_EVP_aria_192_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb8_allownil)}
-      EVP_aria_192_cfb8 := @ERR_EVP_aria_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_cfb8_removed)}
@@ -17681,39 +15536,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_cfb8)}
       EVP_aria_192_cfb8 := @_EVP_aria_192_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb8_allownil)}
-      EVP_aria_192_cfb8 := @ERR_EVP_aria_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_cfb8 := @ERR_EVP_aria_192_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_cfb8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_cfb128 := LoadLibFunction(ADllHandle, EVP_aria_192_cfb128_procname);
-  FuncLoaded := assigned(EVP_aria_192_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_cfb128_allownil)}
+    EVP_aria_192_cfb128 := @ERR_EVP_aria_192_cfb128;
+    {$ifend}
     {$if declared(EVP_aria_192_cfb128_introduced)}
     if LibVersion < EVP_aria_192_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aria_192_cfb128)}
       EVP_aria_192_cfb128 := @FC_EVP_aria_192_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb128_allownil)}
-      EVP_aria_192_cfb128 := @ERR_EVP_aria_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_cfb128_removed)}
@@ -17721,39 +15568,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_cfb128)}
       EVP_aria_192_cfb128 := @_EVP_aria_192_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_192_cfb128_allownil)}
-      EVP_aria_192_cfb128 := @ERR_EVP_aria_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_cfb128 := @ERR_EVP_aria_192_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_cfb128');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_ctr := LoadLibFunction(ADllHandle, EVP_aria_192_ctr_procname);
-  FuncLoaded := assigned(EVP_aria_192_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_ctr_allownil)}
+    EVP_aria_192_ctr := @ERR_EVP_aria_192_ctr;
+    {$ifend}
     {$if declared(EVP_aria_192_ctr_introduced)}
     if LibVersion < EVP_aria_192_ctr_introduced then
     begin
       {$if declared(FC_EVP_aria_192_ctr)}
       EVP_aria_192_ctr := @FC_EVP_aria_192_ctr;
-      {$else}
-      {$if not defined(EVP_aria_192_ctr_allownil)}
-      EVP_aria_192_ctr := @ERR_EVP_aria_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_ctr_removed)}
@@ -17761,39 +15600,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_ctr)}
       EVP_aria_192_ctr := @_EVP_aria_192_ctr;
-      {$else}
-      {$if not defined(EVP_aria_192_ctr_allownil)}
-      EVP_aria_192_ctr := @ERR_EVP_aria_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_ctr := @ERR_EVP_aria_192_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_ofb := LoadLibFunction(ADllHandle, EVP_aria_192_ofb_procname);
-  FuncLoaded := assigned(EVP_aria_192_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_ofb_allownil)}
+    EVP_aria_192_ofb := @ERR_EVP_aria_192_ofb;
+    {$ifend}
     {$if declared(EVP_aria_192_ofb_introduced)}
     if LibVersion < EVP_aria_192_ofb_introduced then
     begin
       {$if declared(FC_EVP_aria_192_ofb)}
       EVP_aria_192_ofb := @FC_EVP_aria_192_ofb;
-      {$else}
-      {$if not defined(EVP_aria_192_ofb_allownil)}
-      EVP_aria_192_ofb := @ERR_EVP_aria_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_ofb_removed)}
@@ -17801,39 +15632,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_ofb)}
       EVP_aria_192_ofb := @_EVP_aria_192_ofb;
-      {$else}
-      {$if not defined(EVP_aria_192_ofb_allownil)}
-      EVP_aria_192_ofb := @ERR_EVP_aria_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_ofb := @ERR_EVP_aria_192_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_ofb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_gcm := LoadLibFunction(ADllHandle, EVP_aria_192_gcm_procname);
-  FuncLoaded := assigned(EVP_aria_192_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_gcm_allownil)}
+    EVP_aria_192_gcm := @ERR_EVP_aria_192_gcm;
+    {$ifend}
     {$if declared(EVP_aria_192_gcm_introduced)}
     if LibVersion < EVP_aria_192_gcm_introduced then
     begin
       {$if declared(FC_EVP_aria_192_gcm)}
       EVP_aria_192_gcm := @FC_EVP_aria_192_gcm;
-      {$else}
-      {$if not defined(EVP_aria_192_gcm_allownil)}
-      EVP_aria_192_gcm := @ERR_EVP_aria_192_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_gcm_removed)}
@@ -17841,39 +15664,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_gcm)}
       EVP_aria_192_gcm := @_EVP_aria_192_gcm;
-      {$else}
-      {$if not defined(EVP_aria_192_gcm_allownil)}
-      EVP_aria_192_gcm := @ERR_EVP_aria_192_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_gcm := @ERR_EVP_aria_192_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_gcm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_192_ccm := LoadLibFunction(ADllHandle, EVP_aria_192_ccm_procname);
-  FuncLoaded := assigned(EVP_aria_192_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_192_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_192_ccm_allownil)}
+    EVP_aria_192_ccm := @ERR_EVP_aria_192_ccm;
+    {$ifend}
     {$if declared(EVP_aria_192_ccm_introduced)}
     if LibVersion < EVP_aria_192_ccm_introduced then
     begin
       {$if declared(FC_EVP_aria_192_ccm)}
       EVP_aria_192_ccm := @FC_EVP_aria_192_ccm;
-      {$else}
-      {$if not defined(EVP_aria_192_ccm_allownil)}
-      EVP_aria_192_ccm := @ERR_EVP_aria_192_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_192_ccm_removed)}
@@ -17881,39 +15696,31 @@ begin
     begin
       {$if declared(_EVP_aria_192_ccm)}
       EVP_aria_192_ccm := @_EVP_aria_192_ccm;
-      {$else}
-      {$if not defined(EVP_aria_192_ccm_allownil)}
-      EVP_aria_192_ccm := @ERR_EVP_aria_192_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_192_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_192_ccm := @ERR_EVP_aria_192_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_192_ccm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_ecb := LoadLibFunction(ADllHandle, EVP_aria_256_ecb_procname);
-  FuncLoaded := assigned(EVP_aria_256_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_ecb_allownil)}
+    EVP_aria_256_ecb := @ERR_EVP_aria_256_ecb;
+    {$ifend}
     {$if declared(EVP_aria_256_ecb_introduced)}
     if LibVersion < EVP_aria_256_ecb_introduced then
     begin
       {$if declared(FC_EVP_aria_256_ecb)}
       EVP_aria_256_ecb := @FC_EVP_aria_256_ecb;
-      {$else}
-      {$if not defined(EVP_aria_256_ecb_allownil)}
-      EVP_aria_256_ecb := @ERR_EVP_aria_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_ecb_removed)}
@@ -17921,39 +15728,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_ecb)}
       EVP_aria_256_ecb := @_EVP_aria_256_ecb;
-      {$else}
-      {$if not defined(EVP_aria_256_ecb_allownil)}
-      EVP_aria_256_ecb := @ERR_EVP_aria_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_ecb := @ERR_EVP_aria_256_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_ecb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_cbc := LoadLibFunction(ADllHandle, EVP_aria_256_cbc_procname);
-  FuncLoaded := assigned(EVP_aria_256_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_cbc_allownil)}
+    EVP_aria_256_cbc := @ERR_EVP_aria_256_cbc;
+    {$ifend}
     {$if declared(EVP_aria_256_cbc_introduced)}
     if LibVersion < EVP_aria_256_cbc_introduced then
     begin
       {$if declared(FC_EVP_aria_256_cbc)}
       EVP_aria_256_cbc := @FC_EVP_aria_256_cbc;
-      {$else}
-      {$if not defined(EVP_aria_256_cbc_allownil)}
-      EVP_aria_256_cbc := @ERR_EVP_aria_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_cbc_removed)}
@@ -17961,39 +15760,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_cbc)}
       EVP_aria_256_cbc := @_EVP_aria_256_cbc;
-      {$else}
-      {$if not defined(EVP_aria_256_cbc_allownil)}
-      EVP_aria_256_cbc := @ERR_EVP_aria_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_cbc := @ERR_EVP_aria_256_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_cbc');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_cfb1 := LoadLibFunction(ADllHandle, EVP_aria_256_cfb1_procname);
-  FuncLoaded := assigned(EVP_aria_256_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_cfb1_allownil)}
+    EVP_aria_256_cfb1 := @ERR_EVP_aria_256_cfb1;
+    {$ifend}
     {$if declared(EVP_aria_256_cfb1_introduced)}
     if LibVersion < EVP_aria_256_cfb1_introduced then
     begin
       {$if declared(FC_EVP_aria_256_cfb1)}
       EVP_aria_256_cfb1 := @FC_EVP_aria_256_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb1_allownil)}
-      EVP_aria_256_cfb1 := @ERR_EVP_aria_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_cfb1_removed)}
@@ -18001,39 +15792,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_cfb1)}
       EVP_aria_256_cfb1 := @_EVP_aria_256_cfb1;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb1_allownil)}
-      EVP_aria_256_cfb1 := @ERR_EVP_aria_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_cfb1 := @ERR_EVP_aria_256_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_cfb1');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_cfb8 := LoadLibFunction(ADllHandle, EVP_aria_256_cfb8_procname);
-  FuncLoaded := assigned(EVP_aria_256_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_cfb8_allownil)}
+    EVP_aria_256_cfb8 := @ERR_EVP_aria_256_cfb8;
+    {$ifend}
     {$if declared(EVP_aria_256_cfb8_introduced)}
     if LibVersion < EVP_aria_256_cfb8_introduced then
     begin
       {$if declared(FC_EVP_aria_256_cfb8)}
       EVP_aria_256_cfb8 := @FC_EVP_aria_256_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb8_allownil)}
-      EVP_aria_256_cfb8 := @ERR_EVP_aria_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_cfb8_removed)}
@@ -18041,39 +15824,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_cfb8)}
       EVP_aria_256_cfb8 := @_EVP_aria_256_cfb8;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb8_allownil)}
-      EVP_aria_256_cfb8 := @ERR_EVP_aria_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_cfb8 := @ERR_EVP_aria_256_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_cfb8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_cfb128 := LoadLibFunction(ADllHandle, EVP_aria_256_cfb128_procname);
-  FuncLoaded := assigned(EVP_aria_256_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_cfb128_allownil)}
+    EVP_aria_256_cfb128 := @ERR_EVP_aria_256_cfb128;
+    {$ifend}
     {$if declared(EVP_aria_256_cfb128_introduced)}
     if LibVersion < EVP_aria_256_cfb128_introduced then
     begin
       {$if declared(FC_EVP_aria_256_cfb128)}
       EVP_aria_256_cfb128 := @FC_EVP_aria_256_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb128_allownil)}
-      EVP_aria_256_cfb128 := @ERR_EVP_aria_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_cfb128_removed)}
@@ -18081,39 +15856,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_cfb128)}
       EVP_aria_256_cfb128 := @_EVP_aria_256_cfb128;
-      {$else}
-      {$if not defined(EVP_aria_256_cfb128_allownil)}
-      EVP_aria_256_cfb128 := @ERR_EVP_aria_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_cfb128 := @ERR_EVP_aria_256_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_cfb128');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_ctr := LoadLibFunction(ADllHandle, EVP_aria_256_ctr_procname);
-  FuncLoaded := assigned(EVP_aria_256_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_ctr_allownil)}
+    EVP_aria_256_ctr := @ERR_EVP_aria_256_ctr;
+    {$ifend}
     {$if declared(EVP_aria_256_ctr_introduced)}
     if LibVersion < EVP_aria_256_ctr_introduced then
     begin
       {$if declared(FC_EVP_aria_256_ctr)}
       EVP_aria_256_ctr := @FC_EVP_aria_256_ctr;
-      {$else}
-      {$if not defined(EVP_aria_256_ctr_allownil)}
-      EVP_aria_256_ctr := @ERR_EVP_aria_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_ctr_removed)}
@@ -18121,39 +15888,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_ctr)}
       EVP_aria_256_ctr := @_EVP_aria_256_ctr;
-      {$else}
-      {$if not defined(EVP_aria_256_ctr_allownil)}
-      EVP_aria_256_ctr := @ERR_EVP_aria_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_ctr := @ERR_EVP_aria_256_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_ofb := LoadLibFunction(ADllHandle, EVP_aria_256_ofb_procname);
-  FuncLoaded := assigned(EVP_aria_256_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_ofb_allownil)}
+    EVP_aria_256_ofb := @ERR_EVP_aria_256_ofb;
+    {$ifend}
     {$if declared(EVP_aria_256_ofb_introduced)}
     if LibVersion < EVP_aria_256_ofb_introduced then
     begin
       {$if declared(FC_EVP_aria_256_ofb)}
       EVP_aria_256_ofb := @FC_EVP_aria_256_ofb;
-      {$else}
-      {$if not defined(EVP_aria_256_ofb_allownil)}
-      EVP_aria_256_ofb := @ERR_EVP_aria_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_ofb_removed)}
@@ -18161,39 +15920,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_ofb)}
       EVP_aria_256_ofb := @_EVP_aria_256_ofb;
-      {$else}
-      {$if not defined(EVP_aria_256_ofb_allownil)}
-      EVP_aria_256_ofb := @ERR_EVP_aria_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_ofb := @ERR_EVP_aria_256_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_ofb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_gcm := LoadLibFunction(ADllHandle, EVP_aria_256_gcm_procname);
-  FuncLoaded := assigned(EVP_aria_256_gcm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_gcm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_gcm_allownil)}
+    EVP_aria_256_gcm := @ERR_EVP_aria_256_gcm;
+    {$ifend}
     {$if declared(EVP_aria_256_gcm_introduced)}
     if LibVersion < EVP_aria_256_gcm_introduced then
     begin
       {$if declared(FC_EVP_aria_256_gcm)}
       EVP_aria_256_gcm := @FC_EVP_aria_256_gcm;
-      {$else}
-      {$if not defined(EVP_aria_256_gcm_allownil)}
-      EVP_aria_256_gcm := @ERR_EVP_aria_256_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_gcm_removed)}
@@ -18201,39 +15952,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_gcm)}
       EVP_aria_256_gcm := @_EVP_aria_256_gcm;
-      {$else}
-      {$if not defined(EVP_aria_256_gcm_allownil)}
-      EVP_aria_256_gcm := @ERR_EVP_aria_256_gcm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_gcm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_gcm := @ERR_EVP_aria_256_gcm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_gcm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_aria_256_ccm := LoadLibFunction(ADllHandle, EVP_aria_256_ccm_procname);
-  FuncLoaded := assigned(EVP_aria_256_ccm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_aria_256_ccm);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_aria_256_ccm_allownil)}
+    EVP_aria_256_ccm := @ERR_EVP_aria_256_ccm;
+    {$ifend}
     {$if declared(EVP_aria_256_ccm_introduced)}
     if LibVersion < EVP_aria_256_ccm_introduced then
     begin
       {$if declared(FC_EVP_aria_256_ccm)}
       EVP_aria_256_ccm := @FC_EVP_aria_256_ccm;
-      {$else}
-      {$if not defined(EVP_aria_256_ccm_allownil)}
-      EVP_aria_256_ccm := @ERR_EVP_aria_256_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_aria_256_ccm_removed)}
@@ -18241,39 +15984,31 @@ begin
     begin
       {$if declared(_EVP_aria_256_ccm)}
       EVP_aria_256_ccm := @_EVP_aria_256_ccm;
-      {$else}
-      {$if not defined(EVP_aria_256_ccm_allownil)}
-      EVP_aria_256_ccm := @ERR_EVP_aria_256_ccm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_aria_256_ccm_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_aria_256_ccm := @ERR_EVP_aria_256_ccm;
+    if FuncLoadError then
       AFailed.Add('EVP_aria_256_ccm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_camellia_128_ecb := LoadLibFunction(ADllHandle, EVP_camellia_128_ecb_procname);
-  FuncLoaded := assigned(EVP_camellia_128_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_ecb_allownil)}
+    EVP_camellia_128_ecb := @ERR_EVP_camellia_128_ecb;
+    {$ifend}
     {$if declared(EVP_camellia_128_ecb_introduced)}
     if LibVersion < EVP_camellia_128_ecb_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_ecb)}
       EVP_camellia_128_ecb := @FC_EVP_camellia_128_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_128_ecb_allownil)}
-      EVP_camellia_128_ecb := @ERR_EVP_camellia_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_ecb_removed)}
@@ -18281,39 +16016,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_ecb)}
       EVP_camellia_128_ecb := @_EVP_camellia_128_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_128_ecb_allownil)}
-      EVP_camellia_128_ecb := @ERR_EVP_camellia_128_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_ecb := @ERR_EVP_camellia_128_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_cbc := LoadLibFunction(ADllHandle, EVP_camellia_128_cbc_procname);
-  FuncLoaded := assigned(EVP_camellia_128_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_cbc_allownil)}
+    EVP_camellia_128_cbc := @ERR_EVP_camellia_128_cbc;
+    {$ifend}
     {$if declared(EVP_camellia_128_cbc_introduced)}
     if LibVersion < EVP_camellia_128_cbc_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_cbc)}
       EVP_camellia_128_cbc := @FC_EVP_camellia_128_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_128_cbc_allownil)}
-      EVP_camellia_128_cbc := @ERR_EVP_camellia_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_cbc_removed)}
@@ -18321,39 +16048,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_cbc)}
       EVP_camellia_128_cbc := @_EVP_camellia_128_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_128_cbc_allownil)}
-      EVP_camellia_128_cbc := @ERR_EVP_camellia_128_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_cbc := @ERR_EVP_camellia_128_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_cfb1 := LoadLibFunction(ADllHandle, EVP_camellia_128_cfb1_procname);
-  FuncLoaded := assigned(EVP_camellia_128_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_cfb1_allownil)}
+    EVP_camellia_128_cfb1 := @ERR_EVP_camellia_128_cfb1;
+    {$ifend}
     {$if declared(EVP_camellia_128_cfb1_introduced)}
     if LibVersion < EVP_camellia_128_cfb1_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_cfb1)}
       EVP_camellia_128_cfb1 := @FC_EVP_camellia_128_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb1_allownil)}
-      EVP_camellia_128_cfb1 := @ERR_EVP_camellia_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_cfb1_removed)}
@@ -18361,39 +16080,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_cfb1)}
       EVP_camellia_128_cfb1 := @_EVP_camellia_128_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb1_allownil)}
-      EVP_camellia_128_cfb1 := @ERR_EVP_camellia_128_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_cfb1 := @ERR_EVP_camellia_128_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_cfb8 := LoadLibFunction(ADllHandle, EVP_camellia_128_cfb8_procname);
-  FuncLoaded := assigned(EVP_camellia_128_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_cfb8_allownil)}
+    EVP_camellia_128_cfb8 := @ERR_EVP_camellia_128_cfb8;
+    {$ifend}
     {$if declared(EVP_camellia_128_cfb8_introduced)}
     if LibVersion < EVP_camellia_128_cfb8_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_cfb8)}
       EVP_camellia_128_cfb8 := @FC_EVP_camellia_128_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb8_allownil)}
-      EVP_camellia_128_cfb8 := @ERR_EVP_camellia_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_cfb8_removed)}
@@ -18401,39 +16112,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_cfb8)}
       EVP_camellia_128_cfb8 := @_EVP_camellia_128_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb8_allownil)}
-      EVP_camellia_128_cfb8 := @ERR_EVP_camellia_128_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_cfb8 := @ERR_EVP_camellia_128_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_cfb128 := LoadLibFunction(ADllHandle, EVP_camellia_128_cfb128_procname);
-  FuncLoaded := assigned(EVP_camellia_128_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_cfb128_allownil)}
+    EVP_camellia_128_cfb128 := @ERR_EVP_camellia_128_cfb128;
+    {$ifend}
     {$if declared(EVP_camellia_128_cfb128_introduced)}
     if LibVersion < EVP_camellia_128_cfb128_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_cfb128)}
       EVP_camellia_128_cfb128 := @FC_EVP_camellia_128_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb128_allownil)}
-      EVP_camellia_128_cfb128 := @ERR_EVP_camellia_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_cfb128_removed)}
@@ -18441,39 +16144,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_cfb128)}
       EVP_camellia_128_cfb128 := @_EVP_camellia_128_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_128_cfb128_allownil)}
-      EVP_camellia_128_cfb128 := @ERR_EVP_camellia_128_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_cfb128 := @ERR_EVP_camellia_128_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_ofb := LoadLibFunction(ADllHandle, EVP_camellia_128_ofb_procname);
-  FuncLoaded := assigned(EVP_camellia_128_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_ofb_allownil)}
+    EVP_camellia_128_ofb := @ERR_EVP_camellia_128_ofb;
+    {$ifend}
     {$if declared(EVP_camellia_128_ofb_introduced)}
     if LibVersion < EVP_camellia_128_ofb_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_ofb)}
       EVP_camellia_128_ofb := @FC_EVP_camellia_128_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_128_ofb_allownil)}
-      EVP_camellia_128_ofb := @ERR_EVP_camellia_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_ofb_removed)}
@@ -18481,39 +16176,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_ofb)}
       EVP_camellia_128_ofb := @_EVP_camellia_128_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_128_ofb_allownil)}
-      EVP_camellia_128_ofb := @ERR_EVP_camellia_128_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_ofb := @ERR_EVP_camellia_128_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_128_ctr := LoadLibFunction(ADllHandle, EVP_camellia_128_ctr_procname);
-  FuncLoaded := assigned(EVP_camellia_128_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_128_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_128_ctr_allownil)}
+    EVP_camellia_128_ctr := @ERR_EVP_camellia_128_ctr;
+    {$ifend}
     {$if declared(EVP_camellia_128_ctr_introduced)}
     if LibVersion < EVP_camellia_128_ctr_introduced then
     begin
       {$if declared(FC_EVP_camellia_128_ctr)}
       EVP_camellia_128_ctr := @FC_EVP_camellia_128_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_128_ctr_allownil)}
-      EVP_camellia_128_ctr := @ERR_EVP_camellia_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_128_ctr_removed)}
@@ -18521,39 +16208,31 @@ begin
     begin
       {$if declared(_EVP_camellia_128_ctr)}
       EVP_camellia_128_ctr := @_EVP_camellia_128_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_128_ctr_allownil)}
-      EVP_camellia_128_ctr := @ERR_EVP_camellia_128_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_128_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_128_ctr := @ERR_EVP_camellia_128_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_128_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_camellia_192_ecb := LoadLibFunction(ADllHandle, EVP_camellia_192_ecb_procname);
-  FuncLoaded := assigned(EVP_camellia_192_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_ecb_allownil)}
+    EVP_camellia_192_ecb := @ERR_EVP_camellia_192_ecb;
+    {$ifend}
     {$if declared(EVP_camellia_192_ecb_introduced)}
     if LibVersion < EVP_camellia_192_ecb_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_ecb)}
       EVP_camellia_192_ecb := @FC_EVP_camellia_192_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_192_ecb_allownil)}
-      EVP_camellia_192_ecb := @ERR_EVP_camellia_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_ecb_removed)}
@@ -18561,39 +16240,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_ecb)}
       EVP_camellia_192_ecb := @_EVP_camellia_192_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_192_ecb_allownil)}
-      EVP_camellia_192_ecb := @ERR_EVP_camellia_192_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_ecb := @ERR_EVP_camellia_192_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_cbc := LoadLibFunction(ADllHandle, EVP_camellia_192_cbc_procname);
-  FuncLoaded := assigned(EVP_camellia_192_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_cbc_allownil)}
+    EVP_camellia_192_cbc := @ERR_EVP_camellia_192_cbc;
+    {$ifend}
     {$if declared(EVP_camellia_192_cbc_introduced)}
     if LibVersion < EVP_camellia_192_cbc_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_cbc)}
       EVP_camellia_192_cbc := @FC_EVP_camellia_192_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_192_cbc_allownil)}
-      EVP_camellia_192_cbc := @ERR_EVP_camellia_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_cbc_removed)}
@@ -18601,39 +16272,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_cbc)}
       EVP_camellia_192_cbc := @_EVP_camellia_192_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_192_cbc_allownil)}
-      EVP_camellia_192_cbc := @ERR_EVP_camellia_192_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_cbc := @ERR_EVP_camellia_192_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_cfb1 := LoadLibFunction(ADllHandle, EVP_camellia_192_cfb1_procname);
-  FuncLoaded := assigned(EVP_camellia_192_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_cfb1_allownil)}
+    EVP_camellia_192_cfb1 := @ERR_EVP_camellia_192_cfb1;
+    {$ifend}
     {$if declared(EVP_camellia_192_cfb1_introduced)}
     if LibVersion < EVP_camellia_192_cfb1_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_cfb1)}
       EVP_camellia_192_cfb1 := @FC_EVP_camellia_192_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb1_allownil)}
-      EVP_camellia_192_cfb1 := @ERR_EVP_camellia_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_cfb1_removed)}
@@ -18641,39 +16304,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_cfb1)}
       EVP_camellia_192_cfb1 := @_EVP_camellia_192_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb1_allownil)}
-      EVP_camellia_192_cfb1 := @ERR_EVP_camellia_192_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_cfb1 := @ERR_EVP_camellia_192_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_cfb8 := LoadLibFunction(ADllHandle, EVP_camellia_192_cfb8_procname);
-  FuncLoaded := assigned(EVP_camellia_192_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_cfb8_allownil)}
+    EVP_camellia_192_cfb8 := @ERR_EVP_camellia_192_cfb8;
+    {$ifend}
     {$if declared(EVP_camellia_192_cfb8_introduced)}
     if LibVersion < EVP_camellia_192_cfb8_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_cfb8)}
       EVP_camellia_192_cfb8 := @FC_EVP_camellia_192_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb8_allownil)}
-      EVP_camellia_192_cfb8 := @ERR_EVP_camellia_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_cfb8_removed)}
@@ -18681,39 +16336,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_cfb8)}
       EVP_camellia_192_cfb8 := @_EVP_camellia_192_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb8_allownil)}
-      EVP_camellia_192_cfb8 := @ERR_EVP_camellia_192_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_cfb8 := @ERR_EVP_camellia_192_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_cfb128 := LoadLibFunction(ADllHandle, EVP_camellia_192_cfb128_procname);
-  FuncLoaded := assigned(EVP_camellia_192_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_cfb128_allownil)}
+    EVP_camellia_192_cfb128 := @ERR_EVP_camellia_192_cfb128;
+    {$ifend}
     {$if declared(EVP_camellia_192_cfb128_introduced)}
     if LibVersion < EVP_camellia_192_cfb128_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_cfb128)}
       EVP_camellia_192_cfb128 := @FC_EVP_camellia_192_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb128_allownil)}
-      EVP_camellia_192_cfb128 := @ERR_EVP_camellia_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_cfb128_removed)}
@@ -18721,39 +16368,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_cfb128)}
       EVP_camellia_192_cfb128 := @_EVP_camellia_192_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_192_cfb128_allownil)}
-      EVP_camellia_192_cfb128 := @ERR_EVP_camellia_192_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_cfb128 := @ERR_EVP_camellia_192_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_ofb := LoadLibFunction(ADllHandle, EVP_camellia_192_ofb_procname);
-  FuncLoaded := assigned(EVP_camellia_192_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_ofb_allownil)}
+    EVP_camellia_192_ofb := @ERR_EVP_camellia_192_ofb;
+    {$ifend}
     {$if declared(EVP_camellia_192_ofb_introduced)}
     if LibVersion < EVP_camellia_192_ofb_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_ofb)}
       EVP_camellia_192_ofb := @FC_EVP_camellia_192_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_192_ofb_allownil)}
-      EVP_camellia_192_ofb := @ERR_EVP_camellia_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_ofb_removed)}
@@ -18761,39 +16400,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_ofb)}
       EVP_camellia_192_ofb := @_EVP_camellia_192_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_192_ofb_allownil)}
-      EVP_camellia_192_ofb := @ERR_EVP_camellia_192_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_ofb := @ERR_EVP_camellia_192_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_192_ctr := LoadLibFunction(ADllHandle, EVP_camellia_192_ctr_procname);
-  FuncLoaded := assigned(EVP_camellia_192_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_192_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_192_ctr_allownil)}
+    EVP_camellia_192_ctr := @ERR_EVP_camellia_192_ctr;
+    {$ifend}
     {$if declared(EVP_camellia_192_ctr_introduced)}
     if LibVersion < EVP_camellia_192_ctr_introduced then
     begin
       {$if declared(FC_EVP_camellia_192_ctr)}
       EVP_camellia_192_ctr := @FC_EVP_camellia_192_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_192_ctr_allownil)}
-      EVP_camellia_192_ctr := @ERR_EVP_camellia_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_192_ctr_removed)}
@@ -18801,39 +16432,31 @@ begin
     begin
       {$if declared(_EVP_camellia_192_ctr)}
       EVP_camellia_192_ctr := @_EVP_camellia_192_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_192_ctr_allownil)}
-      EVP_camellia_192_ctr := @ERR_EVP_camellia_192_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_192_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_192_ctr := @ERR_EVP_camellia_192_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_192_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_camellia_256_ecb := LoadLibFunction(ADllHandle, EVP_camellia_256_ecb_procname);
-  FuncLoaded := assigned(EVP_camellia_256_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_ecb_allownil)}
+    EVP_camellia_256_ecb := @ERR_EVP_camellia_256_ecb;
+    {$ifend}
     {$if declared(EVP_camellia_256_ecb_introduced)}
     if LibVersion < EVP_camellia_256_ecb_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_ecb)}
       EVP_camellia_256_ecb := @FC_EVP_camellia_256_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_256_ecb_allownil)}
-      EVP_camellia_256_ecb := @ERR_EVP_camellia_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_ecb_removed)}
@@ -18841,39 +16464,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_ecb)}
       EVP_camellia_256_ecb := @_EVP_camellia_256_ecb;
-      {$else}
-      {$if not defined(EVP_camellia_256_ecb_allownil)}
-      EVP_camellia_256_ecb := @ERR_EVP_camellia_256_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_ecb := @ERR_EVP_camellia_256_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_cbc := LoadLibFunction(ADllHandle, EVP_camellia_256_cbc_procname);
-  FuncLoaded := assigned(EVP_camellia_256_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_cbc_allownil)}
+    EVP_camellia_256_cbc := @ERR_EVP_camellia_256_cbc;
+    {$ifend}
     {$if declared(EVP_camellia_256_cbc_introduced)}
     if LibVersion < EVP_camellia_256_cbc_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_cbc)}
       EVP_camellia_256_cbc := @FC_EVP_camellia_256_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_256_cbc_allownil)}
-      EVP_camellia_256_cbc := @ERR_EVP_camellia_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_cbc_removed)}
@@ -18881,39 +16496,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_cbc)}
       EVP_camellia_256_cbc := @_EVP_camellia_256_cbc;
-      {$else}
-      {$if not defined(EVP_camellia_256_cbc_allownil)}
-      EVP_camellia_256_cbc := @ERR_EVP_camellia_256_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_cbc := @ERR_EVP_camellia_256_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_cfb1 := LoadLibFunction(ADllHandle, EVP_camellia_256_cfb1_procname);
-  FuncLoaded := assigned(EVP_camellia_256_cfb1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_cfb1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_cfb1_allownil)}
+    EVP_camellia_256_cfb1 := @ERR_EVP_camellia_256_cfb1;
+    {$ifend}
     {$if declared(EVP_camellia_256_cfb1_introduced)}
     if LibVersion < EVP_camellia_256_cfb1_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_cfb1)}
       EVP_camellia_256_cfb1 := @FC_EVP_camellia_256_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb1_allownil)}
-      EVP_camellia_256_cfb1 := @ERR_EVP_camellia_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_cfb1_removed)}
@@ -18921,39 +16528,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_cfb1)}
       EVP_camellia_256_cfb1 := @_EVP_camellia_256_cfb1;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb1_allownil)}
-      EVP_camellia_256_cfb1 := @ERR_EVP_camellia_256_cfb1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_cfb1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_cfb1 := @ERR_EVP_camellia_256_cfb1;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_cfb1');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_cfb8 := LoadLibFunction(ADllHandle, EVP_camellia_256_cfb8_procname);
-  FuncLoaded := assigned(EVP_camellia_256_cfb8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_cfb8);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_cfb8_allownil)}
+    EVP_camellia_256_cfb8 := @ERR_EVP_camellia_256_cfb8;
+    {$ifend}
     {$if declared(EVP_camellia_256_cfb8_introduced)}
     if LibVersion < EVP_camellia_256_cfb8_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_cfb8)}
       EVP_camellia_256_cfb8 := @FC_EVP_camellia_256_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb8_allownil)}
-      EVP_camellia_256_cfb8 := @ERR_EVP_camellia_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_cfb8_removed)}
@@ -18961,39 +16560,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_cfb8)}
       EVP_camellia_256_cfb8 := @_EVP_camellia_256_cfb8;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb8_allownil)}
-      EVP_camellia_256_cfb8 := @ERR_EVP_camellia_256_cfb8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_cfb8_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_cfb8 := @ERR_EVP_camellia_256_cfb8;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_cfb8');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_cfb128 := LoadLibFunction(ADllHandle, EVP_camellia_256_cfb128_procname);
-  FuncLoaded := assigned(EVP_camellia_256_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_cfb128_allownil)}
+    EVP_camellia_256_cfb128 := @ERR_EVP_camellia_256_cfb128;
+    {$ifend}
     {$if declared(EVP_camellia_256_cfb128_introduced)}
     if LibVersion < EVP_camellia_256_cfb128_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_cfb128)}
       EVP_camellia_256_cfb128 := @FC_EVP_camellia_256_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb128_allownil)}
-      EVP_camellia_256_cfb128 := @ERR_EVP_camellia_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_cfb128_removed)}
@@ -19001,39 +16592,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_cfb128)}
       EVP_camellia_256_cfb128 := @_EVP_camellia_256_cfb128;
-      {$else}
-      {$if not defined(EVP_camellia_256_cfb128_allownil)}
-      EVP_camellia_256_cfb128 := @ERR_EVP_camellia_256_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_cfb128 := @ERR_EVP_camellia_256_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_ofb := LoadLibFunction(ADllHandle, EVP_camellia_256_ofb_procname);
-  FuncLoaded := assigned(EVP_camellia_256_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_ofb_allownil)}
+    EVP_camellia_256_ofb := @ERR_EVP_camellia_256_ofb;
+    {$ifend}
     {$if declared(EVP_camellia_256_ofb_introduced)}
     if LibVersion < EVP_camellia_256_ofb_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_ofb)}
       EVP_camellia_256_ofb := @FC_EVP_camellia_256_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_256_ofb_allownil)}
-      EVP_camellia_256_ofb := @ERR_EVP_camellia_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_ofb_removed)}
@@ -19041,39 +16624,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_ofb)}
       EVP_camellia_256_ofb := @_EVP_camellia_256_ofb;
-      {$else}
-      {$if not defined(EVP_camellia_256_ofb_allownil)}
-      EVP_camellia_256_ofb := @ERR_EVP_camellia_256_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_ofb := @ERR_EVP_camellia_256_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_camellia_256_ctr := LoadLibFunction(ADllHandle, EVP_camellia_256_ctr_procname);
-  FuncLoaded := assigned(EVP_camellia_256_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_camellia_256_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_camellia_256_ctr_allownil)}
+    EVP_camellia_256_ctr := @ERR_EVP_camellia_256_ctr;
+    {$ifend}
     {$if declared(EVP_camellia_256_ctr_introduced)}
     if LibVersion < EVP_camellia_256_ctr_introduced then
     begin
       {$if declared(FC_EVP_camellia_256_ctr)}
       EVP_camellia_256_ctr := @FC_EVP_camellia_256_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_256_ctr_allownil)}
-      EVP_camellia_256_ctr := @ERR_EVP_camellia_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_camellia_256_ctr_removed)}
@@ -19081,39 +16656,31 @@ begin
     begin
       {$if declared(_EVP_camellia_256_ctr)}
       EVP_camellia_256_ctr := @_EVP_camellia_256_ctr;
-      {$else}
-      {$if not defined(EVP_camellia_256_ctr_allownil)}
-      EVP_camellia_256_ctr := @ERR_EVP_camellia_256_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_camellia_256_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_camellia_256_ctr := @ERR_EVP_camellia_256_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_camellia_256_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_chacha20 := LoadLibFunction(ADllHandle, EVP_chacha20_procname);
-  FuncLoaded := assigned(EVP_chacha20);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_chacha20);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_chacha20_allownil)}
+    EVP_chacha20 := @ERR_EVP_chacha20;
+    {$ifend}
     {$if declared(EVP_chacha20_introduced)}
     if LibVersion < EVP_chacha20_introduced then
     begin
       {$if declared(FC_EVP_chacha20)}
       EVP_chacha20 := @FC_EVP_chacha20;
-      {$else}
-      {$if not defined(EVP_chacha20_allownil)}
-      EVP_chacha20 := @ERR_EVP_chacha20;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_chacha20_removed)}
@@ -19121,39 +16688,31 @@ begin
     begin
       {$if declared(_EVP_chacha20)}
       EVP_chacha20 := @_EVP_chacha20;
-      {$else}
-      {$if not defined(EVP_chacha20_allownil)}
-      EVP_chacha20 := @ERR_EVP_chacha20;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_chacha20_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_chacha20 := @ERR_EVP_chacha20;
+    if FuncLoadError then
       AFailed.Add('EVP_chacha20');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_chacha20_poly1305 := LoadLibFunction(ADllHandle, EVP_chacha20_poly1305_procname);
-  FuncLoaded := assigned(EVP_chacha20_poly1305);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_chacha20_poly1305);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_chacha20_poly1305_allownil)}
+    EVP_chacha20_poly1305 := @ERR_EVP_chacha20_poly1305;
+    {$ifend}
     {$if declared(EVP_chacha20_poly1305_introduced)}
     if LibVersion < EVP_chacha20_poly1305_introduced then
     begin
       {$if declared(FC_EVP_chacha20_poly1305)}
       EVP_chacha20_poly1305 := @FC_EVP_chacha20_poly1305;
-      {$else}
-      {$if not defined(EVP_chacha20_poly1305_allownil)}
-      EVP_chacha20_poly1305 := @ERR_EVP_chacha20_poly1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_chacha20_poly1305_removed)}
@@ -19161,39 +16720,31 @@ begin
     begin
       {$if declared(_EVP_chacha20_poly1305)}
       EVP_chacha20_poly1305 := @_EVP_chacha20_poly1305;
-      {$else}
-      {$if not defined(EVP_chacha20_poly1305_allownil)}
-      EVP_chacha20_poly1305 := @ERR_EVP_chacha20_poly1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_chacha20_poly1305_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_chacha20_poly1305 := @ERR_EVP_chacha20_poly1305;
+    if FuncLoadError then
       AFailed.Add('EVP_chacha20_poly1305');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_seed_ecb := LoadLibFunction(ADllHandle, EVP_seed_ecb_procname);
-  FuncLoaded := assigned(EVP_seed_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_seed_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_seed_ecb_allownil)}
+    EVP_seed_ecb := @ERR_EVP_seed_ecb;
+    {$ifend}
     {$if declared(EVP_seed_ecb_introduced)}
     if LibVersion < EVP_seed_ecb_introduced then
     begin
       {$if declared(FC_EVP_seed_ecb)}
       EVP_seed_ecb := @FC_EVP_seed_ecb;
-      {$else}
-      {$if not defined(EVP_seed_ecb_allownil)}
-      EVP_seed_ecb := @ERR_EVP_seed_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_seed_ecb_removed)}
@@ -19201,39 +16752,31 @@ begin
     begin
       {$if declared(_EVP_seed_ecb)}
       EVP_seed_ecb := @_EVP_seed_ecb;
-      {$else}
-      {$if not defined(EVP_seed_ecb_allownil)}
-      EVP_seed_ecb := @ERR_EVP_seed_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_seed_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_seed_ecb := @ERR_EVP_seed_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_seed_ecb');
-    end;
     {$ifend}
   end;
 
 
   EVP_seed_cbc := LoadLibFunction(ADllHandle, EVP_seed_cbc_procname);
-  FuncLoaded := assigned(EVP_seed_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_seed_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_seed_cbc_allownil)}
+    EVP_seed_cbc := @ERR_EVP_seed_cbc;
+    {$ifend}
     {$if declared(EVP_seed_cbc_introduced)}
     if LibVersion < EVP_seed_cbc_introduced then
     begin
       {$if declared(FC_EVP_seed_cbc)}
       EVP_seed_cbc := @FC_EVP_seed_cbc;
-      {$else}
-      {$if not defined(EVP_seed_cbc_allownil)}
-      EVP_seed_cbc := @ERR_EVP_seed_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_seed_cbc_removed)}
@@ -19241,39 +16784,31 @@ begin
     begin
       {$if declared(_EVP_seed_cbc)}
       EVP_seed_cbc := @_EVP_seed_cbc;
-      {$else}
-      {$if not defined(EVP_seed_cbc_allownil)}
-      EVP_seed_cbc := @ERR_EVP_seed_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_seed_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_seed_cbc := @ERR_EVP_seed_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_seed_cbc');
-    end;
     {$ifend}
   end;
 
 
   EVP_seed_cfb128 := LoadLibFunction(ADllHandle, EVP_seed_cfb128_procname);
-  FuncLoaded := assigned(EVP_seed_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_seed_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_seed_cfb128_allownil)}
+    EVP_seed_cfb128 := @ERR_EVP_seed_cfb128;
+    {$ifend}
     {$if declared(EVP_seed_cfb128_introduced)}
     if LibVersion < EVP_seed_cfb128_introduced then
     begin
       {$if declared(FC_EVP_seed_cfb128)}
       EVP_seed_cfb128 := @FC_EVP_seed_cfb128;
-      {$else}
-      {$if not defined(EVP_seed_cfb128_allownil)}
-      EVP_seed_cfb128 := @ERR_EVP_seed_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_seed_cfb128_removed)}
@@ -19281,39 +16816,31 @@ begin
     begin
       {$if declared(_EVP_seed_cfb128)}
       EVP_seed_cfb128 := @_EVP_seed_cfb128;
-      {$else}
-      {$if not defined(EVP_seed_cfb128_allownil)}
-      EVP_seed_cfb128 := @ERR_EVP_seed_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_seed_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_seed_cfb128 := @ERR_EVP_seed_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_seed_cfb128');
-    end;
     {$ifend}
   end;
 
 
   EVP_seed_ofb := LoadLibFunction(ADllHandle, EVP_seed_ofb_procname);
-  FuncLoaded := assigned(EVP_seed_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_seed_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_seed_ofb_allownil)}
+    EVP_seed_ofb := @ERR_EVP_seed_ofb;
+    {$ifend}
     {$if declared(EVP_seed_ofb_introduced)}
     if LibVersion < EVP_seed_ofb_introduced then
     begin
       {$if declared(FC_EVP_seed_ofb)}
       EVP_seed_ofb := @FC_EVP_seed_ofb;
-      {$else}
-      {$if not defined(EVP_seed_ofb_allownil)}
-      EVP_seed_ofb := @ERR_EVP_seed_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_seed_ofb_removed)}
@@ -19321,39 +16848,31 @@ begin
     begin
       {$if declared(_EVP_seed_ofb)}
       EVP_seed_ofb := @_EVP_seed_ofb;
-      {$else}
-      {$if not defined(EVP_seed_ofb_allownil)}
-      EVP_seed_ofb := @ERR_EVP_seed_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_seed_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_seed_ofb := @ERR_EVP_seed_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_seed_ofb');
-    end;
     {$ifend}
   end;
 
 
   EVP_sm4_ecb := LoadLibFunction(ADllHandle, EVP_sm4_ecb_procname);
-  FuncLoaded := assigned(EVP_sm4_ecb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sm4_ecb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sm4_ecb_allownil)}
+    EVP_sm4_ecb := @ERR_EVP_sm4_ecb;
+    {$ifend}
     {$if declared(EVP_sm4_ecb_introduced)}
     if LibVersion < EVP_sm4_ecb_introduced then
     begin
       {$if declared(FC_EVP_sm4_ecb)}
       EVP_sm4_ecb := @FC_EVP_sm4_ecb;
-      {$else}
-      {$if not defined(EVP_sm4_ecb_allownil)}
-      EVP_sm4_ecb := @ERR_EVP_sm4_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sm4_ecb_removed)}
@@ -19361,39 +16880,31 @@ begin
     begin
       {$if declared(_EVP_sm4_ecb)}
       EVP_sm4_ecb := @_EVP_sm4_ecb;
-      {$else}
-      {$if not defined(EVP_sm4_ecb_allownil)}
-      EVP_sm4_ecb := @ERR_EVP_sm4_ecb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sm4_ecb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sm4_ecb := @ERR_EVP_sm4_ecb;
+    if FuncLoadError then
       AFailed.Add('EVP_sm4_ecb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sm4_cbc := LoadLibFunction(ADllHandle, EVP_sm4_cbc_procname);
-  FuncLoaded := assigned(EVP_sm4_cbc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sm4_cbc);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sm4_cbc_allownil)}
+    EVP_sm4_cbc := @ERR_EVP_sm4_cbc;
+    {$ifend}
     {$if declared(EVP_sm4_cbc_introduced)}
     if LibVersion < EVP_sm4_cbc_introduced then
     begin
       {$if declared(FC_EVP_sm4_cbc)}
       EVP_sm4_cbc := @FC_EVP_sm4_cbc;
-      {$else}
-      {$if not defined(EVP_sm4_cbc_allownil)}
-      EVP_sm4_cbc := @ERR_EVP_sm4_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sm4_cbc_removed)}
@@ -19401,39 +16912,31 @@ begin
     begin
       {$if declared(_EVP_sm4_cbc)}
       EVP_sm4_cbc := @_EVP_sm4_cbc;
-      {$else}
-      {$if not defined(EVP_sm4_cbc_allownil)}
-      EVP_sm4_cbc := @ERR_EVP_sm4_cbc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sm4_cbc_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sm4_cbc := @ERR_EVP_sm4_cbc;
+    if FuncLoadError then
       AFailed.Add('EVP_sm4_cbc');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sm4_cfb128 := LoadLibFunction(ADllHandle, EVP_sm4_cfb128_procname);
-  FuncLoaded := assigned(EVP_sm4_cfb128);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sm4_cfb128);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sm4_cfb128_allownil)}
+    EVP_sm4_cfb128 := @ERR_EVP_sm4_cfb128;
+    {$ifend}
     {$if declared(EVP_sm4_cfb128_introduced)}
     if LibVersion < EVP_sm4_cfb128_introduced then
     begin
       {$if declared(FC_EVP_sm4_cfb128)}
       EVP_sm4_cfb128 := @FC_EVP_sm4_cfb128;
-      {$else}
-      {$if not defined(EVP_sm4_cfb128_allownil)}
-      EVP_sm4_cfb128 := @ERR_EVP_sm4_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sm4_cfb128_removed)}
@@ -19441,39 +16944,31 @@ begin
     begin
       {$if declared(_EVP_sm4_cfb128)}
       EVP_sm4_cfb128 := @_EVP_sm4_cfb128;
-      {$else}
-      {$if not defined(EVP_sm4_cfb128_allownil)}
-      EVP_sm4_cfb128 := @ERR_EVP_sm4_cfb128;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sm4_cfb128_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sm4_cfb128 := @ERR_EVP_sm4_cfb128;
+    if FuncLoadError then
       AFailed.Add('EVP_sm4_cfb128');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sm4_ofb := LoadLibFunction(ADllHandle, EVP_sm4_ofb_procname);
-  FuncLoaded := assigned(EVP_sm4_ofb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sm4_ofb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sm4_ofb_allownil)}
+    EVP_sm4_ofb := @ERR_EVP_sm4_ofb;
+    {$ifend}
     {$if declared(EVP_sm4_ofb_introduced)}
     if LibVersion < EVP_sm4_ofb_introduced then
     begin
       {$if declared(FC_EVP_sm4_ofb)}
       EVP_sm4_ofb := @FC_EVP_sm4_ofb;
-      {$else}
-      {$if not defined(EVP_sm4_ofb_allownil)}
-      EVP_sm4_ofb := @ERR_EVP_sm4_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sm4_ofb_removed)}
@@ -19481,39 +16976,31 @@ begin
     begin
       {$if declared(_EVP_sm4_ofb)}
       EVP_sm4_ofb := @_EVP_sm4_ofb;
-      {$else}
-      {$if not defined(EVP_sm4_ofb_allownil)}
-      EVP_sm4_ofb := @ERR_EVP_sm4_ofb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sm4_ofb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sm4_ofb := @ERR_EVP_sm4_ofb;
+    if FuncLoadError then
       AFailed.Add('EVP_sm4_ofb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_sm4_ctr := LoadLibFunction(ADllHandle, EVP_sm4_ctr_procname);
-  FuncLoaded := assigned(EVP_sm4_ctr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_sm4_ctr);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_sm4_ctr_allownil)}
+    EVP_sm4_ctr := @ERR_EVP_sm4_ctr;
+    {$ifend}
     {$if declared(EVP_sm4_ctr_introduced)}
     if LibVersion < EVP_sm4_ctr_introduced then
     begin
       {$if declared(FC_EVP_sm4_ctr)}
       EVP_sm4_ctr := @FC_EVP_sm4_ctr;
-      {$else}
-      {$if not defined(EVP_sm4_ctr_allownil)}
-      EVP_sm4_ctr := @ERR_EVP_sm4_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_sm4_ctr_removed)}
@@ -19521,39 +17008,31 @@ begin
     begin
       {$if declared(_EVP_sm4_ctr)}
       EVP_sm4_ctr := @_EVP_sm4_ctr;
-      {$else}
-      {$if not defined(EVP_sm4_ctr_allownil)}
-      EVP_sm4_ctr := @ERR_EVP_sm4_ctr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_sm4_ctr_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_sm4_ctr := @ERR_EVP_sm4_ctr;
+    if FuncLoadError then
       AFailed.Add('EVP_sm4_ctr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_add_cipher := LoadLibFunction(ADllHandle, EVP_add_cipher_procname);
-  FuncLoaded := assigned(EVP_add_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_add_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_add_cipher_allownil)}
+    EVP_add_cipher := @ERR_EVP_add_cipher;
+    {$ifend}
     {$if declared(EVP_add_cipher_introduced)}
     if LibVersion < EVP_add_cipher_introduced then
     begin
       {$if declared(FC_EVP_add_cipher)}
       EVP_add_cipher := @FC_EVP_add_cipher;
-      {$else}
-      {$if not defined(EVP_add_cipher_allownil)}
-      EVP_add_cipher := @ERR_EVP_add_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_add_cipher_removed)}
@@ -19561,39 +17040,31 @@ begin
     begin
       {$if declared(_EVP_add_cipher)}
       EVP_add_cipher := @_EVP_add_cipher;
-      {$else}
-      {$if not defined(EVP_add_cipher_allownil)}
-      EVP_add_cipher := @ERR_EVP_add_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_add_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_add_cipher := @ERR_EVP_add_cipher;
+    if FuncLoadError then
       AFailed.Add('EVP_add_cipher');
-    end;
     {$ifend}
   end;
 
 
   EVP_add_digest := LoadLibFunction(ADllHandle, EVP_add_digest_procname);
-  FuncLoaded := assigned(EVP_add_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_add_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_add_digest_allownil)}
+    EVP_add_digest := @ERR_EVP_add_digest;
+    {$ifend}
     {$if declared(EVP_add_digest_introduced)}
     if LibVersion < EVP_add_digest_introduced then
     begin
       {$if declared(FC_EVP_add_digest)}
       EVP_add_digest := @FC_EVP_add_digest;
-      {$else}
-      {$if not defined(EVP_add_digest_allownil)}
-      EVP_add_digest := @ERR_EVP_add_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_add_digest_removed)}
@@ -19601,39 +17072,31 @@ begin
     begin
       {$if declared(_EVP_add_digest)}
       EVP_add_digest := @_EVP_add_digest;
-      {$else}
-      {$if not defined(EVP_add_digest_allownil)}
-      EVP_add_digest := @ERR_EVP_add_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_add_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_add_digest := @ERR_EVP_add_digest;
+    if FuncLoadError then
       AFailed.Add('EVP_add_digest');
-    end;
     {$ifend}
   end;
 
 
   EVP_get_cipherbyname := LoadLibFunction(ADllHandle, EVP_get_cipherbyname_procname);
-  FuncLoaded := assigned(EVP_get_cipherbyname);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_get_cipherbyname);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_get_cipherbyname_allownil)}
+    EVP_get_cipherbyname := @ERR_EVP_get_cipherbyname;
+    {$ifend}
     {$if declared(EVP_get_cipherbyname_introduced)}
     if LibVersion < EVP_get_cipherbyname_introduced then
     begin
       {$if declared(FC_EVP_get_cipherbyname)}
       EVP_get_cipherbyname := @FC_EVP_get_cipherbyname;
-      {$else}
-      {$if not defined(EVP_get_cipherbyname_allownil)}
-      EVP_get_cipherbyname := @ERR_EVP_get_cipherbyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_get_cipherbyname_removed)}
@@ -19641,39 +17104,31 @@ begin
     begin
       {$if declared(_EVP_get_cipherbyname)}
       EVP_get_cipherbyname := @_EVP_get_cipherbyname;
-      {$else}
-      {$if not defined(EVP_get_cipherbyname_allownil)}
-      EVP_get_cipherbyname := @ERR_EVP_get_cipherbyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_get_cipherbyname_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_get_cipherbyname := @ERR_EVP_get_cipherbyname;
+    if FuncLoadError then
       AFailed.Add('EVP_get_cipherbyname');
-    end;
     {$ifend}
   end;
 
 
   EVP_get_digestbyname := LoadLibFunction(ADllHandle, EVP_get_digestbyname_procname);
-  FuncLoaded := assigned(EVP_get_digestbyname);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_get_digestbyname);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_get_digestbyname_allownil)}
+    EVP_get_digestbyname := @ERR_EVP_get_digestbyname;
+    {$ifend}
     {$if declared(EVP_get_digestbyname_introduced)}
     if LibVersion < EVP_get_digestbyname_introduced then
     begin
       {$if declared(FC_EVP_get_digestbyname)}
       EVP_get_digestbyname := @FC_EVP_get_digestbyname;
-      {$else}
-      {$if not defined(EVP_get_digestbyname_allownil)}
-      EVP_get_digestbyname := @ERR_EVP_get_digestbyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_get_digestbyname_removed)}
@@ -19681,39 +17136,31 @@ begin
     begin
       {$if declared(_EVP_get_digestbyname)}
       EVP_get_digestbyname := @_EVP_get_digestbyname;
-      {$else}
-      {$if not defined(EVP_get_digestbyname_allownil)}
-      EVP_get_digestbyname := @ERR_EVP_get_digestbyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_get_digestbyname_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_get_digestbyname := @ERR_EVP_get_digestbyname;
+    if FuncLoadError then
       AFailed.Add('EVP_get_digestbyname');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_do_all := LoadLibFunction(ADllHandle, EVP_CIPHER_do_all_procname);
-  FuncLoaded := assigned(EVP_CIPHER_do_all);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_do_all);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_do_all_allownil)}
+    EVP_CIPHER_do_all := @ERR_EVP_CIPHER_do_all;
+    {$ifend}
     {$if declared(EVP_CIPHER_do_all_introduced)}
     if LibVersion < EVP_CIPHER_do_all_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_do_all)}
       EVP_CIPHER_do_all := @FC_EVP_CIPHER_do_all;
-      {$else}
-      {$if not defined(EVP_CIPHER_do_all_allownil)}
-      EVP_CIPHER_do_all := @ERR_EVP_CIPHER_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_do_all_removed)}
@@ -19721,39 +17168,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_do_all)}
       EVP_CIPHER_do_all := @_EVP_CIPHER_do_all;
-      {$else}
-      {$if not defined(EVP_CIPHER_do_all_allownil)}
-      EVP_CIPHER_do_all := @ERR_EVP_CIPHER_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_do_all_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_do_all := @ERR_EVP_CIPHER_do_all;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_do_all');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_do_all_sorted := LoadLibFunction(ADllHandle, EVP_CIPHER_do_all_sorted_procname);
-  FuncLoaded := assigned(EVP_CIPHER_do_all_sorted);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_do_all_sorted);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_do_all_sorted_allownil)}
+    EVP_CIPHER_do_all_sorted := @ERR_EVP_CIPHER_do_all_sorted;
+    {$ifend}
     {$if declared(EVP_CIPHER_do_all_sorted_introduced)}
     if LibVersion < EVP_CIPHER_do_all_sorted_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_do_all_sorted)}
       EVP_CIPHER_do_all_sorted := @FC_EVP_CIPHER_do_all_sorted;
-      {$else}
-      {$if not defined(EVP_CIPHER_do_all_sorted_allownil)}
-      EVP_CIPHER_do_all_sorted := @ERR_EVP_CIPHER_do_all_sorted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_do_all_sorted_removed)}
@@ -19761,39 +17200,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_do_all_sorted)}
       EVP_CIPHER_do_all_sorted := @_EVP_CIPHER_do_all_sorted;
-      {$else}
-      {$if not defined(EVP_CIPHER_do_all_sorted_allownil)}
-      EVP_CIPHER_do_all_sorted := @ERR_EVP_CIPHER_do_all_sorted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_do_all_sorted_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_do_all_sorted := @ERR_EVP_CIPHER_do_all_sorted;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_do_all_sorted');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_do_all := LoadLibFunction(ADllHandle, EVP_MD_do_all_procname);
-  FuncLoaded := assigned(EVP_MD_do_all);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_do_all);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_do_all_allownil)}
+    EVP_MD_do_all := @ERR_EVP_MD_do_all;
+    {$ifend}
     {$if declared(EVP_MD_do_all_introduced)}
     if LibVersion < EVP_MD_do_all_introduced then
     begin
       {$if declared(FC_EVP_MD_do_all)}
       EVP_MD_do_all := @FC_EVP_MD_do_all;
-      {$else}
-      {$if not defined(EVP_MD_do_all_allownil)}
-      EVP_MD_do_all := @ERR_EVP_MD_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_do_all_removed)}
@@ -19801,39 +17232,31 @@ begin
     begin
       {$if declared(_EVP_MD_do_all)}
       EVP_MD_do_all := @_EVP_MD_do_all;
-      {$else}
-      {$if not defined(EVP_MD_do_all_allownil)}
-      EVP_MD_do_all := @ERR_EVP_MD_do_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_do_all_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_do_all := @ERR_EVP_MD_do_all;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_do_all');
-    end;
     {$ifend}
   end;
 
 
   EVP_MD_do_all_sorted := LoadLibFunction(ADllHandle, EVP_MD_do_all_sorted_procname);
-  FuncLoaded := assigned(EVP_MD_do_all_sorted);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_MD_do_all_sorted);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_MD_do_all_sorted_allownil)}
+    EVP_MD_do_all_sorted := @ERR_EVP_MD_do_all_sorted;
+    {$ifend}
     {$if declared(EVP_MD_do_all_sorted_introduced)}
     if LibVersion < EVP_MD_do_all_sorted_introduced then
     begin
       {$if declared(FC_EVP_MD_do_all_sorted)}
       EVP_MD_do_all_sorted := @FC_EVP_MD_do_all_sorted;
-      {$else}
-      {$if not defined(EVP_MD_do_all_sorted_allownil)}
-      EVP_MD_do_all_sorted := @ERR_EVP_MD_do_all_sorted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_MD_do_all_sorted_removed)}
@@ -19841,39 +17264,31 @@ begin
     begin
       {$if declared(_EVP_MD_do_all_sorted)}
       EVP_MD_do_all_sorted := @_EVP_MD_do_all_sorted;
-      {$else}
-      {$if not defined(EVP_MD_do_all_sorted_allownil)}
-      EVP_MD_do_all_sorted := @ERR_EVP_MD_do_all_sorted;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_MD_do_all_sorted_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_MD_do_all_sorted := @ERR_EVP_MD_do_all_sorted;
+    if FuncLoadError then
       AFailed.Add('EVP_MD_do_all_sorted');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_decrypt_old := LoadLibFunction(ADllHandle, EVP_PKEY_decrypt_old_procname);
-  FuncLoaded := assigned(EVP_PKEY_decrypt_old);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_decrypt_old);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_decrypt_old_allownil)}
+    EVP_PKEY_decrypt_old := @ERR_EVP_PKEY_decrypt_old;
+    {$ifend}
     {$if declared(EVP_PKEY_decrypt_old_introduced)}
     if LibVersion < EVP_PKEY_decrypt_old_introduced then
     begin
       {$if declared(FC_EVP_PKEY_decrypt_old)}
       EVP_PKEY_decrypt_old := @FC_EVP_PKEY_decrypt_old;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_old_allownil)}
-      EVP_PKEY_decrypt_old := @ERR_EVP_PKEY_decrypt_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_decrypt_old_removed)}
@@ -19881,39 +17296,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_decrypt_old)}
       EVP_PKEY_decrypt_old := @_EVP_PKEY_decrypt_old;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_old_allownil)}
-      EVP_PKEY_decrypt_old := @ERR_EVP_PKEY_decrypt_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_decrypt_old_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_decrypt_old := @ERR_EVP_PKEY_decrypt_old;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_decrypt_old');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_encrypt_old := LoadLibFunction(ADllHandle, EVP_PKEY_encrypt_old_procname);
-  FuncLoaded := assigned(EVP_PKEY_encrypt_old);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_encrypt_old);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_encrypt_old_allownil)}
+    EVP_PKEY_encrypt_old := @ERR_EVP_PKEY_encrypt_old;
+    {$ifend}
     {$if declared(EVP_PKEY_encrypt_old_introduced)}
     if LibVersion < EVP_PKEY_encrypt_old_introduced then
     begin
       {$if declared(FC_EVP_PKEY_encrypt_old)}
       EVP_PKEY_encrypt_old := @FC_EVP_PKEY_encrypt_old;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_old_allownil)}
-      EVP_PKEY_encrypt_old := @ERR_EVP_PKEY_encrypt_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_encrypt_old_removed)}
@@ -19921,39 +17328,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_encrypt_old)}
       EVP_PKEY_encrypt_old := @_EVP_PKEY_encrypt_old;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_old_allownil)}
-      EVP_PKEY_encrypt_old := @ERR_EVP_PKEY_encrypt_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_encrypt_old_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_encrypt_old := @ERR_EVP_PKEY_encrypt_old;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_encrypt_old');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_type := LoadLibFunction(ADllHandle, EVP_PKEY_type_procname);
-  FuncLoaded := assigned(EVP_PKEY_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_type_allownil)}
+    EVP_PKEY_type := @ERR_EVP_PKEY_type;
+    {$ifend}
     {$if declared(EVP_PKEY_type_introduced)}
     if LibVersion < EVP_PKEY_type_introduced then
     begin
       {$if declared(FC_EVP_PKEY_type)}
       EVP_PKEY_type := @FC_EVP_PKEY_type;
-      {$else}
-      {$if not defined(EVP_PKEY_type_allownil)}
-      EVP_PKEY_type := @ERR_EVP_PKEY_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_type_removed)}
@@ -19961,39 +17360,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_type)}
       EVP_PKEY_type := @_EVP_PKEY_type;
-      {$else}
-      {$if not defined(EVP_PKEY_type_allownil)}
-      EVP_PKEY_type := @ERR_EVP_PKEY_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_type := @ERR_EVP_PKEY_type;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_type');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_id := LoadLibFunction(ADllHandle, EVP_PKEY_id_procname);
-  FuncLoaded := assigned(EVP_PKEY_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_id);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_id_allownil)}
+    EVP_PKEY_id := @ERR_EVP_PKEY_id;
+    {$ifend}
     {$if declared(EVP_PKEY_id_introduced)}
     if LibVersion < EVP_PKEY_id_introduced then
     begin
       {$if declared(FC_EVP_PKEY_id)}
       EVP_PKEY_id := @FC_EVP_PKEY_id;
-      {$else}
-      {$if not defined(EVP_PKEY_id_allownil)}
-      EVP_PKEY_id := @ERR_EVP_PKEY_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_id_removed)}
@@ -20001,39 +17392,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_id)}
       EVP_PKEY_id := @_EVP_PKEY_id;
-      {$else}
-      {$if not defined(EVP_PKEY_id_allownil)}
-      EVP_PKEY_id := @ERR_EVP_PKEY_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_id_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_id := @ERR_EVP_PKEY_id;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_id');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_base_id := LoadLibFunction(ADllHandle, EVP_PKEY_base_id_procname);
-  FuncLoaded := assigned(EVP_PKEY_base_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_base_id);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_base_id_allownil)}
+    EVP_PKEY_base_id := @ERR_EVP_PKEY_base_id;
+    {$ifend}
     {$if declared(EVP_PKEY_base_id_introduced)}
     if LibVersion < EVP_PKEY_base_id_introduced then
     begin
       {$if declared(FC_EVP_PKEY_base_id)}
       EVP_PKEY_base_id := @FC_EVP_PKEY_base_id;
-      {$else}
-      {$if not defined(EVP_PKEY_base_id_allownil)}
-      EVP_PKEY_base_id := @ERR_EVP_PKEY_base_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_base_id_removed)}
@@ -20041,39 +17424,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_base_id)}
       EVP_PKEY_base_id := @_EVP_PKEY_base_id;
-      {$else}
-      {$if not defined(EVP_PKEY_base_id_allownil)}
-      EVP_PKEY_base_id := @ERR_EVP_PKEY_base_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_base_id_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_base_id := @ERR_EVP_PKEY_base_id;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_base_id');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_bits := LoadLibFunction(ADllHandle, EVP_PKEY_bits_procname);
-  FuncLoaded := assigned(EVP_PKEY_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_bits_allownil)}
+    EVP_PKEY_bits := @ERR_EVP_PKEY_bits;
+    {$ifend}
     {$if declared(EVP_PKEY_bits_introduced)}
     if LibVersion < EVP_PKEY_bits_introduced then
     begin
       {$if declared(FC_EVP_PKEY_bits)}
       EVP_PKEY_bits := @FC_EVP_PKEY_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_bits_allownil)}
-      EVP_PKEY_bits := @ERR_EVP_PKEY_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_bits_removed)}
@@ -20081,39 +17456,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_bits)}
       EVP_PKEY_bits := @_EVP_PKEY_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_bits_allownil)}
-      EVP_PKEY_bits := @ERR_EVP_PKEY_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_bits := @ERR_EVP_PKEY_bits;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_bits');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_security_bits := LoadLibFunction(ADllHandle, EVP_PKEY_security_bits_procname);
-  FuncLoaded := assigned(EVP_PKEY_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_security_bits_allownil)}
+    EVP_PKEY_security_bits := @ERR_EVP_PKEY_security_bits;
+    {$ifend}
     {$if declared(EVP_PKEY_security_bits_introduced)}
     if LibVersion < EVP_PKEY_security_bits_introduced then
     begin
       {$if declared(FC_EVP_PKEY_security_bits)}
       EVP_PKEY_security_bits := @FC_EVP_PKEY_security_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_security_bits_allownil)}
-      EVP_PKEY_security_bits := @ERR_EVP_PKEY_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_security_bits_removed)}
@@ -20121,39 +17488,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_security_bits)}
       EVP_PKEY_security_bits := @_EVP_PKEY_security_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_security_bits_allownil)}
-      EVP_PKEY_security_bits := @ERR_EVP_PKEY_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_security_bits := @ERR_EVP_PKEY_security_bits;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_security_bits');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_size := LoadLibFunction(ADllHandle, EVP_PKEY_size_procname);
-  FuncLoaded := assigned(EVP_PKEY_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_size);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_size_allownil)}
+    EVP_PKEY_size := @ERR_EVP_PKEY_size;
+    {$ifend}
     {$if declared(EVP_PKEY_size_introduced)}
     if LibVersion < EVP_PKEY_size_introduced then
     begin
       {$if declared(FC_EVP_PKEY_size)}
       EVP_PKEY_size := @FC_EVP_PKEY_size;
-      {$else}
-      {$if not defined(EVP_PKEY_size_allownil)}
-      EVP_PKEY_size := @ERR_EVP_PKEY_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_size_removed)}
@@ -20161,39 +17520,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_size)}
       EVP_PKEY_size := @_EVP_PKEY_size;
-      {$else}
-      {$if not defined(EVP_PKEY_size_allownil)}
-      EVP_PKEY_size := @ERR_EVP_PKEY_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_size_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_size := @ERR_EVP_PKEY_size;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_size');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_set_type := LoadLibFunction(ADllHandle, EVP_PKEY_set_type_procname);
-  FuncLoaded := assigned(EVP_PKEY_set_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set_type_allownil)}
+    EVP_PKEY_set_type := @ERR_EVP_PKEY_set_type;
+    {$ifend}
     {$if declared(EVP_PKEY_set_type_introduced)}
     if LibVersion < EVP_PKEY_set_type_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set_type)}
       EVP_PKEY_set_type := @FC_EVP_PKEY_set_type;
-      {$else}
-      {$if not defined(EVP_PKEY_set_type_allownil)}
-      EVP_PKEY_set_type := @ERR_EVP_PKEY_set_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set_type_removed)}
@@ -20201,39 +17552,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set_type)}
       EVP_PKEY_set_type := @_EVP_PKEY_set_type;
-      {$else}
-      {$if not defined(EVP_PKEY_set_type_allownil)}
-      EVP_PKEY_set_type := @ERR_EVP_PKEY_set_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set_type := @ERR_EVP_PKEY_set_type;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set_type');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set_type_str := LoadLibFunction(ADllHandle, EVP_PKEY_set_type_str_procname);
-  FuncLoaded := assigned(EVP_PKEY_set_type_str);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set_type_str);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set_type_str_allownil)}
+    EVP_PKEY_set_type_str := @ERR_EVP_PKEY_set_type_str;
+    {$ifend}
     {$if declared(EVP_PKEY_set_type_str_introduced)}
     if LibVersion < EVP_PKEY_set_type_str_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set_type_str)}
       EVP_PKEY_set_type_str := @FC_EVP_PKEY_set_type_str;
-      {$else}
-      {$if not defined(EVP_PKEY_set_type_str_allownil)}
-      EVP_PKEY_set_type_str := @ERR_EVP_PKEY_set_type_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set_type_str_removed)}
@@ -20241,39 +17584,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set_type_str)}
       EVP_PKEY_set_type_str := @_EVP_PKEY_set_type_str;
-      {$else}
-      {$if not defined(EVP_PKEY_set_type_str_allownil)}
-      EVP_PKEY_set_type_str := @ERR_EVP_PKEY_set_type_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set_type_str_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set_type_str := @ERR_EVP_PKEY_set_type_str;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set_type_str');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set_alias_type := LoadLibFunction(ADllHandle, EVP_PKEY_set_alias_type_procname);
-  FuncLoaded := assigned(EVP_PKEY_set_alias_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set_alias_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set_alias_type_allownil)}
+    EVP_PKEY_set_alias_type := @ERR_EVP_PKEY_set_alias_type;
+    {$ifend}
     {$if declared(EVP_PKEY_set_alias_type_introduced)}
     if LibVersion < EVP_PKEY_set_alias_type_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set_alias_type)}
       EVP_PKEY_set_alias_type := @FC_EVP_PKEY_set_alias_type;
-      {$else}
-      {$if not defined(EVP_PKEY_set_alias_type_allownil)}
-      EVP_PKEY_set_alias_type := @ERR_EVP_PKEY_set_alias_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set_alias_type_removed)}
@@ -20281,39 +17616,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set_alias_type)}
       EVP_PKEY_set_alias_type := @_EVP_PKEY_set_alias_type;
-      {$else}
-      {$if not defined(EVP_PKEY_set_alias_type_allownil)}
-      EVP_PKEY_set_alias_type := @ERR_EVP_PKEY_set_alias_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set_alias_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set_alias_type := @ERR_EVP_PKEY_set_alias_type;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set_alias_type');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_set1_engine := LoadLibFunction(ADllHandle, EVP_PKEY_set1_engine_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_engine_allownil)}
+    EVP_PKEY_set1_engine := @ERR_EVP_PKEY_set1_engine;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_engine_introduced)}
     if LibVersion < EVP_PKEY_set1_engine_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_engine)}
       EVP_PKEY_set1_engine := @FC_EVP_PKEY_set1_engine;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_engine_allownil)}
-      EVP_PKEY_set1_engine := @ERR_EVP_PKEY_set1_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_engine_removed)}
@@ -20321,39 +17648,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_engine)}
       EVP_PKEY_set1_engine := @_EVP_PKEY_set1_engine;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_engine_allownil)}
-      EVP_PKEY_set1_engine := @ERR_EVP_PKEY_set1_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_engine := @ERR_EVP_PKEY_set1_engine;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_engine');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get0_engine := LoadLibFunction(ADllHandle, EVP_PKEY_get0_engine_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_engine_allownil)}
+    EVP_PKEY_get0_engine := @ERR_EVP_PKEY_get0_engine;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_engine_introduced)}
     if LibVersion < EVP_PKEY_get0_engine_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_engine)}
       EVP_PKEY_get0_engine := @FC_EVP_PKEY_get0_engine;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_engine_allownil)}
-      EVP_PKEY_get0_engine := @ERR_EVP_PKEY_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_engine_removed)}
@@ -20361,39 +17680,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_engine)}
       EVP_PKEY_get0_engine := @_EVP_PKEY_get0_engine;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_engine_allownil)}
-      EVP_PKEY_get0_engine := @ERR_EVP_PKEY_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_engine := @ERR_EVP_PKEY_get0_engine;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_engine');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_assign := LoadLibFunction(ADllHandle, EVP_PKEY_assign_procname);
-  FuncLoaded := assigned(EVP_PKEY_assign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_assign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_assign_allownil)}
+    EVP_PKEY_assign := @ERR_EVP_PKEY_assign;
+    {$ifend}
     {$if declared(EVP_PKEY_assign_introduced)}
     if LibVersion < EVP_PKEY_assign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_assign)}
       EVP_PKEY_assign := @FC_EVP_PKEY_assign;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_allownil)}
-      EVP_PKEY_assign := @ERR_EVP_PKEY_assign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_assign_removed)}
@@ -20401,39 +17712,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_assign)}
       EVP_PKEY_assign := @_EVP_PKEY_assign;
-      {$else}
-      {$if not defined(EVP_PKEY_assign_allownil)}
-      EVP_PKEY_assign := @ERR_EVP_PKEY_assign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_assign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_assign := @ERR_EVP_PKEY_assign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_assign');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0 := LoadLibFunction(ADllHandle, EVP_PKEY_get0_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_allownil)}
+    EVP_PKEY_get0 := @ERR_EVP_PKEY_get0;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_introduced)}
     if LibVersion < EVP_PKEY_get0_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0)}
       EVP_PKEY_get0 := @FC_EVP_PKEY_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_allownil)}
-      EVP_PKEY_get0 := @ERR_EVP_PKEY_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_removed)}
@@ -20441,39 +17744,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0)}
       EVP_PKEY_get0 := @_EVP_PKEY_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_allownil)}
-      EVP_PKEY_get0 := @ERR_EVP_PKEY_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0 := @ERR_EVP_PKEY_get0;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_hmac := LoadLibFunction(ADllHandle, EVP_PKEY_get0_hmac_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_hmac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_hmac);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_hmac_allownil)}
+    EVP_PKEY_get0_hmac := @ERR_EVP_PKEY_get0_hmac;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_hmac_introduced)}
     if LibVersion < EVP_PKEY_get0_hmac_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_hmac)}
       EVP_PKEY_get0_hmac := @FC_EVP_PKEY_get0_hmac;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_hmac_allownil)}
-      EVP_PKEY_get0_hmac := @ERR_EVP_PKEY_get0_hmac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_hmac_removed)}
@@ -20481,39 +17776,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_hmac)}
       EVP_PKEY_get0_hmac := @_EVP_PKEY_get0_hmac;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_hmac_allownil)}
-      EVP_PKEY_get0_hmac := @ERR_EVP_PKEY_get0_hmac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_hmac_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_hmac := @ERR_EVP_PKEY_get0_hmac;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_hmac');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get0_poly1305 := LoadLibFunction(ADllHandle, EVP_PKEY_get0_poly1305_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_poly1305);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_poly1305);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_poly1305_allownil)}
+    EVP_PKEY_get0_poly1305 := @ERR_EVP_PKEY_get0_poly1305;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_poly1305_introduced)}
     if LibVersion < EVP_PKEY_get0_poly1305_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_poly1305)}
       EVP_PKEY_get0_poly1305 := @FC_EVP_PKEY_get0_poly1305;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_poly1305_allownil)}
-      EVP_PKEY_get0_poly1305 := @ERR_EVP_PKEY_get0_poly1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_poly1305_removed)}
@@ -20521,39 +17808,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_poly1305)}
       EVP_PKEY_get0_poly1305 := @_EVP_PKEY_get0_poly1305;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_poly1305_allownil)}
-      EVP_PKEY_get0_poly1305 := @ERR_EVP_PKEY_get0_poly1305;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_poly1305_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_poly1305 := @ERR_EVP_PKEY_get0_poly1305;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_poly1305');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get0_siphash := LoadLibFunction(ADllHandle, EVP_PKEY_get0_siphash_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_siphash);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_siphash);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_siphash_allownil)}
+    EVP_PKEY_get0_siphash := @ERR_EVP_PKEY_get0_siphash;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_siphash_introduced)}
     if LibVersion < EVP_PKEY_get0_siphash_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_siphash)}
       EVP_PKEY_get0_siphash := @FC_EVP_PKEY_get0_siphash;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_siphash_allownil)}
-      EVP_PKEY_get0_siphash := @ERR_EVP_PKEY_get0_siphash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_siphash_removed)}
@@ -20561,39 +17840,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_siphash)}
       EVP_PKEY_get0_siphash := @_EVP_PKEY_get0_siphash;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_siphash_allownil)}
-      EVP_PKEY_get0_siphash := @ERR_EVP_PKEY_get0_siphash;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_siphash_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_siphash := @ERR_EVP_PKEY_get0_siphash;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_siphash');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_set1_RSA := LoadLibFunction(ADllHandle, EVP_PKEY_set1_RSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_RSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_RSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_RSA_allownil)}
+    EVP_PKEY_set1_RSA := @ERR_EVP_PKEY_set1_RSA;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_RSA_introduced)}
     if LibVersion < EVP_PKEY_set1_RSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_RSA)}
       EVP_PKEY_set1_RSA := @FC_EVP_PKEY_set1_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_RSA_allownil)}
-      EVP_PKEY_set1_RSA := @ERR_EVP_PKEY_set1_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_RSA_removed)}
@@ -20601,39 +17872,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_RSA)}
       EVP_PKEY_set1_RSA := @_EVP_PKEY_set1_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_RSA_allownil)}
-      EVP_PKEY_set1_RSA := @ERR_EVP_PKEY_set1_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_RSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_RSA := @ERR_EVP_PKEY_set1_RSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_RSA');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_RSA := LoadLibFunction(ADllHandle, EVP_PKEY_get0_RSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_RSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_RSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_RSA_allownil)}
+    EVP_PKEY_get0_RSA := @ERR_EVP_PKEY_get0_RSA;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_RSA_introduced)}
     if LibVersion < EVP_PKEY_get0_RSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_RSA)}
       EVP_PKEY_get0_RSA := @FC_EVP_PKEY_get0_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_RSA_allownil)}
-      EVP_PKEY_get0_RSA := @ERR_EVP_PKEY_get0_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_RSA_removed)}
@@ -20641,39 +17904,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_RSA)}
       EVP_PKEY_get0_RSA := @_EVP_PKEY_get0_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_RSA_allownil)}
-      EVP_PKEY_get0_RSA := @ERR_EVP_PKEY_get0_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_RSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_RSA := @ERR_EVP_PKEY_get0_RSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_RSA');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get1_RSA := LoadLibFunction(ADllHandle, EVP_PKEY_get1_RSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_get1_RSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get1_RSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get1_RSA_allownil)}
+    EVP_PKEY_get1_RSA := @ERR_EVP_PKEY_get1_RSA;
+    {$ifend}
     {$if declared(EVP_PKEY_get1_RSA_introduced)}
     if LibVersion < EVP_PKEY_get1_RSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get1_RSA)}
       EVP_PKEY_get1_RSA := @FC_EVP_PKEY_get1_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_RSA_allownil)}
-      EVP_PKEY_get1_RSA := @ERR_EVP_PKEY_get1_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get1_RSA_removed)}
@@ -20681,39 +17936,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get1_RSA)}
       EVP_PKEY_get1_RSA := @_EVP_PKEY_get1_RSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_RSA_allownil)}
-      EVP_PKEY_get1_RSA := @ERR_EVP_PKEY_get1_RSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get1_RSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get1_RSA := @ERR_EVP_PKEY_get1_RSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get1_RSA');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set1_DSA := LoadLibFunction(ADllHandle, EVP_PKEY_set1_DSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_DSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_DSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_DSA_allownil)}
+    EVP_PKEY_set1_DSA := @ERR_EVP_PKEY_set1_DSA;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_DSA_introduced)}
     if LibVersion < EVP_PKEY_set1_DSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_DSA)}
       EVP_PKEY_set1_DSA := @FC_EVP_PKEY_set1_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_DSA_allownil)}
-      EVP_PKEY_set1_DSA := @ERR_EVP_PKEY_set1_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_DSA_removed)}
@@ -20721,39 +17968,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_DSA)}
       EVP_PKEY_set1_DSA := @_EVP_PKEY_set1_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_DSA_allownil)}
-      EVP_PKEY_set1_DSA := @ERR_EVP_PKEY_set1_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_DSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_DSA := @ERR_EVP_PKEY_set1_DSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_DSA');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_DSA := LoadLibFunction(ADllHandle, EVP_PKEY_get0_DSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_DSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_DSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_DSA_allownil)}
+    EVP_PKEY_get0_DSA := @ERR_EVP_PKEY_get0_DSA;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_DSA_introduced)}
     if LibVersion < EVP_PKEY_get0_DSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_DSA)}
       EVP_PKEY_get0_DSA := @FC_EVP_PKEY_get0_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_DSA_allownil)}
-      EVP_PKEY_get0_DSA := @ERR_EVP_PKEY_get0_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_DSA_removed)}
@@ -20761,39 +18000,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_DSA)}
       EVP_PKEY_get0_DSA := @_EVP_PKEY_get0_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_DSA_allownil)}
-      EVP_PKEY_get0_DSA := @ERR_EVP_PKEY_get0_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_DSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_DSA := @ERR_EVP_PKEY_get0_DSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_DSA');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get1_DSA := LoadLibFunction(ADllHandle, EVP_PKEY_get1_DSA_procname);
-  FuncLoaded := assigned(EVP_PKEY_get1_DSA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get1_DSA);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get1_DSA_allownil)}
+    EVP_PKEY_get1_DSA := @ERR_EVP_PKEY_get1_DSA;
+    {$ifend}
     {$if declared(EVP_PKEY_get1_DSA_introduced)}
     if LibVersion < EVP_PKEY_get1_DSA_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get1_DSA)}
       EVP_PKEY_get1_DSA := @FC_EVP_PKEY_get1_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_DSA_allownil)}
-      EVP_PKEY_get1_DSA := @ERR_EVP_PKEY_get1_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get1_DSA_removed)}
@@ -20801,39 +18032,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get1_DSA)}
       EVP_PKEY_get1_DSA := @_EVP_PKEY_get1_DSA;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_DSA_allownil)}
-      EVP_PKEY_get1_DSA := @ERR_EVP_PKEY_get1_DSA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get1_DSA_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get1_DSA := @ERR_EVP_PKEY_get1_DSA;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get1_DSA');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set1_DH := LoadLibFunction(ADllHandle, EVP_PKEY_set1_DH_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_DH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_DH);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_DH_allownil)}
+    EVP_PKEY_set1_DH := @ERR_EVP_PKEY_set1_DH;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_DH_introduced)}
     if LibVersion < EVP_PKEY_set1_DH_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_DH)}
       EVP_PKEY_set1_DH := @FC_EVP_PKEY_set1_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_DH_allownil)}
-      EVP_PKEY_set1_DH := @ERR_EVP_PKEY_set1_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_DH_removed)}
@@ -20841,39 +18064,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_DH)}
       EVP_PKEY_set1_DH := @_EVP_PKEY_set1_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_DH_allownil)}
-      EVP_PKEY_set1_DH := @ERR_EVP_PKEY_set1_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_DH_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_DH := @ERR_EVP_PKEY_set1_DH;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_DH');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_DH := LoadLibFunction(ADllHandle, EVP_PKEY_get0_DH_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_DH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_DH);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_DH_allownil)}
+    EVP_PKEY_get0_DH := @ERR_EVP_PKEY_get0_DH;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_DH_introduced)}
     if LibVersion < EVP_PKEY_get0_DH_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_DH)}
       EVP_PKEY_get0_DH := @FC_EVP_PKEY_get0_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_DH_allownil)}
-      EVP_PKEY_get0_DH := @ERR_EVP_PKEY_get0_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_DH_removed)}
@@ -20881,39 +18096,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_DH)}
       EVP_PKEY_get0_DH := @_EVP_PKEY_get0_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_DH_allownil)}
-      EVP_PKEY_get0_DH := @ERR_EVP_PKEY_get0_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_DH_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_DH := @ERR_EVP_PKEY_get0_DH;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_DH');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get1_DH := LoadLibFunction(ADllHandle, EVP_PKEY_get1_DH_procname);
-  FuncLoaded := assigned(EVP_PKEY_get1_DH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get1_DH);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get1_DH_allownil)}
+    EVP_PKEY_get1_DH := @ERR_EVP_PKEY_get1_DH;
+    {$ifend}
     {$if declared(EVP_PKEY_get1_DH_introduced)}
     if LibVersion < EVP_PKEY_get1_DH_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get1_DH)}
       EVP_PKEY_get1_DH := @FC_EVP_PKEY_get1_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_DH_allownil)}
-      EVP_PKEY_get1_DH := @ERR_EVP_PKEY_get1_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get1_DH_removed)}
@@ -20921,39 +18128,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get1_DH)}
       EVP_PKEY_get1_DH := @_EVP_PKEY_get1_DH;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_DH_allownil)}
-      EVP_PKEY_get1_DH := @ERR_EVP_PKEY_get1_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get1_DH_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get1_DH := @ERR_EVP_PKEY_get1_DH;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get1_DH');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set1_EC_KEY := LoadLibFunction(ADllHandle, EVP_PKEY_set1_EC_KEY_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_EC_KEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_EC_KEY);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_EC_KEY_allownil)}
+    EVP_PKEY_set1_EC_KEY := @ERR_EVP_PKEY_set1_EC_KEY;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_EC_KEY_introduced)}
     if LibVersion < EVP_PKEY_set1_EC_KEY_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_EC_KEY)}
       EVP_PKEY_set1_EC_KEY := @FC_EVP_PKEY_set1_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_EC_KEY_allownil)}
-      EVP_PKEY_set1_EC_KEY := @ERR_EVP_PKEY_set1_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_EC_KEY_removed)}
@@ -20961,39 +18160,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_EC_KEY)}
       EVP_PKEY_set1_EC_KEY := @_EVP_PKEY_set1_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_EC_KEY_allownil)}
-      EVP_PKEY_set1_EC_KEY := @ERR_EVP_PKEY_set1_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_EC_KEY_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_EC_KEY := @ERR_EVP_PKEY_set1_EC_KEY;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_EC_KEY');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_EC_KEY := LoadLibFunction(ADllHandle, EVP_PKEY_get0_EC_KEY_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_EC_KEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_EC_KEY);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_EC_KEY_allownil)}
+    EVP_PKEY_get0_EC_KEY := @ERR_EVP_PKEY_get0_EC_KEY;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_EC_KEY_introduced)}
     if LibVersion < EVP_PKEY_get0_EC_KEY_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_EC_KEY)}
       EVP_PKEY_get0_EC_KEY := @FC_EVP_PKEY_get0_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_EC_KEY_allownil)}
-      EVP_PKEY_get0_EC_KEY := @ERR_EVP_PKEY_get0_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_EC_KEY_removed)}
@@ -21001,39 +18192,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_EC_KEY)}
       EVP_PKEY_get0_EC_KEY := @_EVP_PKEY_get0_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_EC_KEY_allownil)}
-      EVP_PKEY_get0_EC_KEY := @ERR_EVP_PKEY_get0_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_EC_KEY_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_EC_KEY := @ERR_EVP_PKEY_get0_EC_KEY;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_EC_KEY');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get1_EC_KEY := LoadLibFunction(ADllHandle, EVP_PKEY_get1_EC_KEY_procname);
-  FuncLoaded := assigned(EVP_PKEY_get1_EC_KEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get1_EC_KEY);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get1_EC_KEY_allownil)}
+    EVP_PKEY_get1_EC_KEY := @ERR_EVP_PKEY_get1_EC_KEY;
+    {$ifend}
     {$if declared(EVP_PKEY_get1_EC_KEY_introduced)}
     if LibVersion < EVP_PKEY_get1_EC_KEY_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get1_EC_KEY)}
       EVP_PKEY_get1_EC_KEY := @FC_EVP_PKEY_get1_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_EC_KEY_allownil)}
-      EVP_PKEY_get1_EC_KEY := @ERR_EVP_PKEY_get1_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get1_EC_KEY_removed)}
@@ -21041,39 +18224,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get1_EC_KEY)}
       EVP_PKEY_get1_EC_KEY := @_EVP_PKEY_get1_EC_KEY;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_EC_KEY_allownil)}
-      EVP_PKEY_get1_EC_KEY := @ERR_EVP_PKEY_get1_EC_KEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get1_EC_KEY_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get1_EC_KEY := @ERR_EVP_PKEY_get1_EC_KEY;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get1_EC_KEY');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_new := LoadLibFunction(ADllHandle, EVP_PKEY_new_procname);
-  FuncLoaded := assigned(EVP_PKEY_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_new_allownil)}
+    EVP_PKEY_new := @ERR_EVP_PKEY_new;
+    {$ifend}
     {$if declared(EVP_PKEY_new_introduced)}
     if LibVersion < EVP_PKEY_new_introduced then
     begin
       {$if declared(FC_EVP_PKEY_new)}
       EVP_PKEY_new := @FC_EVP_PKEY_new;
-      {$else}
-      {$if not defined(EVP_PKEY_new_allownil)}
-      EVP_PKEY_new := @ERR_EVP_PKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_new_removed)}
@@ -21081,39 +18256,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_new)}
       EVP_PKEY_new := @_EVP_PKEY_new;
-      {$else}
-      {$if not defined(EVP_PKEY_new_allownil)}
-      EVP_PKEY_new := @ERR_EVP_PKEY_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_new := @ERR_EVP_PKEY_new;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_new');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_up_ref := LoadLibFunction(ADllHandle, EVP_PKEY_up_ref_procname);
-  FuncLoaded := assigned(EVP_PKEY_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_up_ref_allownil)}
+    EVP_PKEY_up_ref := @ERR_EVP_PKEY_up_ref;
+    {$ifend}
     {$if declared(EVP_PKEY_up_ref_introduced)}
     if LibVersion < EVP_PKEY_up_ref_introduced then
     begin
       {$if declared(FC_EVP_PKEY_up_ref)}
       EVP_PKEY_up_ref := @FC_EVP_PKEY_up_ref;
-      {$else}
-      {$if not defined(EVP_PKEY_up_ref_allownil)}
-      EVP_PKEY_up_ref := @ERR_EVP_PKEY_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_up_ref_removed)}
@@ -21121,39 +18288,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_up_ref)}
       EVP_PKEY_up_ref := @_EVP_PKEY_up_ref;
-      {$else}
-      {$if not defined(EVP_PKEY_up_ref_allownil)}
-      EVP_PKEY_up_ref := @ERR_EVP_PKEY_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_up_ref := @ERR_EVP_PKEY_up_ref;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_free := LoadLibFunction(ADllHandle, EVP_PKEY_free_procname);
-  FuncLoaded := assigned(EVP_PKEY_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_free_allownil)}
+    EVP_PKEY_free := @ERR_EVP_PKEY_free;
+    {$ifend}
     {$if declared(EVP_PKEY_free_introduced)}
     if LibVersion < EVP_PKEY_free_introduced then
     begin
       {$if declared(FC_EVP_PKEY_free)}
       EVP_PKEY_free := @FC_EVP_PKEY_free;
-      {$else}
-      {$if not defined(EVP_PKEY_free_allownil)}
-      EVP_PKEY_free := @ERR_EVP_PKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_free_removed)}
@@ -21161,39 +18320,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_free)}
       EVP_PKEY_free := @_EVP_PKEY_free;
-      {$else}
-      {$if not defined(EVP_PKEY_free_allownil)}
-      EVP_PKEY_free := @ERR_EVP_PKEY_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_free := @ERR_EVP_PKEY_free;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_PublicKey := LoadLibFunction(ADllHandle, d2i_PublicKey_procname);
-  FuncLoaded := assigned(d2i_PublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PublicKey_allownil)}
+    d2i_PublicKey := @ERR_d2i_PublicKey;
+    {$ifend}
     {$if declared(d2i_PublicKey_introduced)}
     if LibVersion < d2i_PublicKey_introduced then
     begin
       {$if declared(FC_d2i_PublicKey)}
       d2i_PublicKey := @FC_d2i_PublicKey;
-      {$else}
-      {$if not defined(d2i_PublicKey_allownil)}
-      d2i_PublicKey := @ERR_d2i_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PublicKey_removed)}
@@ -21201,39 +18352,31 @@ begin
     begin
       {$if declared(_d2i_PublicKey)}
       d2i_PublicKey := @_d2i_PublicKey;
-      {$else}
-      {$if not defined(d2i_PublicKey_allownil)}
-      d2i_PublicKey := @ERR_d2i_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PublicKey := @ERR_d2i_PublicKey;
+    if FuncLoadError then
       AFailed.Add('d2i_PublicKey');
-    end;
     {$ifend}
   end;
 
 
   i2d_PublicKey := LoadLibFunction(ADllHandle, i2d_PublicKey_procname);
-  FuncLoaded := assigned(i2d_PublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PublicKey_allownil)}
+    i2d_PublicKey := @ERR_i2d_PublicKey;
+    {$ifend}
     {$if declared(i2d_PublicKey_introduced)}
     if LibVersion < i2d_PublicKey_introduced then
     begin
       {$if declared(FC_i2d_PublicKey)}
       i2d_PublicKey := @FC_i2d_PublicKey;
-      {$else}
-      {$if not defined(i2d_PublicKey_allownil)}
-      i2d_PublicKey := @ERR_i2d_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PublicKey_removed)}
@@ -21241,39 +18384,31 @@ begin
     begin
       {$if declared(_i2d_PublicKey)}
       i2d_PublicKey := @_i2d_PublicKey;
-      {$else}
-      {$if not defined(i2d_PublicKey_allownil)}
-      i2d_PublicKey := @ERR_i2d_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PublicKey := @ERR_i2d_PublicKey;
+    if FuncLoadError then
       AFailed.Add('i2d_PublicKey');
-    end;
     {$ifend}
   end;
 
 
   d2i_PrivateKey := LoadLibFunction(ADllHandle, d2i_PrivateKey_procname);
-  FuncLoaded := assigned(d2i_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PrivateKey_allownil)}
+    d2i_PrivateKey := @ERR_d2i_PrivateKey;
+    {$ifend}
     {$if declared(d2i_PrivateKey_introduced)}
     if LibVersion < d2i_PrivateKey_introduced then
     begin
       {$if declared(FC_d2i_PrivateKey)}
       d2i_PrivateKey := @FC_d2i_PrivateKey;
-      {$else}
-      {$if not defined(d2i_PrivateKey_allownil)}
-      d2i_PrivateKey := @ERR_d2i_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PrivateKey_removed)}
@@ -21281,39 +18416,31 @@ begin
     begin
       {$if declared(_d2i_PrivateKey)}
       d2i_PrivateKey := @_d2i_PrivateKey;
-      {$else}
-      {$if not defined(d2i_PrivateKey_allownil)}
-      d2i_PrivateKey := @ERR_d2i_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PrivateKey := @ERR_d2i_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('d2i_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   d2i_AutoPrivateKey := LoadLibFunction(ADllHandle, d2i_AutoPrivateKey_procname);
-  FuncLoaded := assigned(d2i_AutoPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_AutoPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_AutoPrivateKey_allownil)}
+    d2i_AutoPrivateKey := @ERR_d2i_AutoPrivateKey;
+    {$ifend}
     {$if declared(d2i_AutoPrivateKey_introduced)}
     if LibVersion < d2i_AutoPrivateKey_introduced then
     begin
       {$if declared(FC_d2i_AutoPrivateKey)}
       d2i_AutoPrivateKey := @FC_d2i_AutoPrivateKey;
-      {$else}
-      {$if not defined(d2i_AutoPrivateKey_allownil)}
-      d2i_AutoPrivateKey := @ERR_d2i_AutoPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_AutoPrivateKey_removed)}
@@ -21321,39 +18448,31 @@ begin
     begin
       {$if declared(_d2i_AutoPrivateKey)}
       d2i_AutoPrivateKey := @_d2i_AutoPrivateKey;
-      {$else}
-      {$if not defined(d2i_AutoPrivateKey_allownil)}
-      d2i_AutoPrivateKey := @ERR_d2i_AutoPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_AutoPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_AutoPrivateKey := @ERR_d2i_AutoPrivateKey;
+    if FuncLoadError then
       AFailed.Add('d2i_AutoPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   i2d_PrivateKey := LoadLibFunction(ADllHandle, i2d_PrivateKey_procname);
-  FuncLoaded := assigned(i2d_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PrivateKey_allownil)}
+    i2d_PrivateKey := @ERR_i2d_PrivateKey;
+    {$ifend}
     {$if declared(i2d_PrivateKey_introduced)}
     if LibVersion < i2d_PrivateKey_introduced then
     begin
       {$if declared(FC_i2d_PrivateKey)}
       i2d_PrivateKey := @FC_i2d_PrivateKey;
-      {$else}
-      {$if not defined(i2d_PrivateKey_allownil)}
-      i2d_PrivateKey := @ERR_i2d_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PrivateKey_removed)}
@@ -21361,39 +18480,31 @@ begin
     begin
       {$if declared(_i2d_PrivateKey)}
       i2d_PrivateKey := @_i2d_PrivateKey;
-      {$else}
-      {$if not defined(i2d_PrivateKey_allownil)}
-      i2d_PrivateKey := @ERR_i2d_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PrivateKey := @ERR_i2d_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('i2d_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_copy_parameters := LoadLibFunction(ADllHandle, EVP_PKEY_copy_parameters_procname);
-  FuncLoaded := assigned(EVP_PKEY_copy_parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_copy_parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_copy_parameters_allownil)}
+    EVP_PKEY_copy_parameters := @ERR_EVP_PKEY_copy_parameters;
+    {$ifend}
     {$if declared(EVP_PKEY_copy_parameters_introduced)}
     if LibVersion < EVP_PKEY_copy_parameters_introduced then
     begin
       {$if declared(FC_EVP_PKEY_copy_parameters)}
       EVP_PKEY_copy_parameters := @FC_EVP_PKEY_copy_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_copy_parameters_allownil)}
-      EVP_PKEY_copy_parameters := @ERR_EVP_PKEY_copy_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_copy_parameters_removed)}
@@ -21401,39 +18512,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_copy_parameters)}
       EVP_PKEY_copy_parameters := @_EVP_PKEY_copy_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_copy_parameters_allownil)}
-      EVP_PKEY_copy_parameters := @ERR_EVP_PKEY_copy_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_copy_parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_copy_parameters := @ERR_EVP_PKEY_copy_parameters;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_copy_parameters');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_missing_parameters := LoadLibFunction(ADllHandle, EVP_PKEY_missing_parameters_procname);
-  FuncLoaded := assigned(EVP_PKEY_missing_parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_missing_parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_missing_parameters_allownil)}
+    EVP_PKEY_missing_parameters := @ERR_EVP_PKEY_missing_parameters;
+    {$ifend}
     {$if declared(EVP_PKEY_missing_parameters_introduced)}
     if LibVersion < EVP_PKEY_missing_parameters_introduced then
     begin
       {$if declared(FC_EVP_PKEY_missing_parameters)}
       EVP_PKEY_missing_parameters := @FC_EVP_PKEY_missing_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_missing_parameters_allownil)}
-      EVP_PKEY_missing_parameters := @ERR_EVP_PKEY_missing_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_missing_parameters_removed)}
@@ -21441,39 +18544,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_missing_parameters)}
       EVP_PKEY_missing_parameters := @_EVP_PKEY_missing_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_missing_parameters_allownil)}
-      EVP_PKEY_missing_parameters := @ERR_EVP_PKEY_missing_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_missing_parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_missing_parameters := @ERR_EVP_PKEY_missing_parameters;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_missing_parameters');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_save_parameters := LoadLibFunction(ADllHandle, EVP_PKEY_save_parameters_procname);
-  FuncLoaded := assigned(EVP_PKEY_save_parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_save_parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_save_parameters_allownil)}
+    EVP_PKEY_save_parameters := @ERR_EVP_PKEY_save_parameters;
+    {$ifend}
     {$if declared(EVP_PKEY_save_parameters_introduced)}
     if LibVersion < EVP_PKEY_save_parameters_introduced then
     begin
       {$if declared(FC_EVP_PKEY_save_parameters)}
       EVP_PKEY_save_parameters := @FC_EVP_PKEY_save_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_save_parameters_allownil)}
-      EVP_PKEY_save_parameters := @ERR_EVP_PKEY_save_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_save_parameters_removed)}
@@ -21481,39 +18576,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_save_parameters)}
       EVP_PKEY_save_parameters := @_EVP_PKEY_save_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_save_parameters_allownil)}
-      EVP_PKEY_save_parameters := @ERR_EVP_PKEY_save_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_save_parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_save_parameters := @ERR_EVP_PKEY_save_parameters;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_save_parameters');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_cmp_parameters := LoadLibFunction(ADllHandle, EVP_PKEY_cmp_parameters_procname);
-  FuncLoaded := assigned(EVP_PKEY_cmp_parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_cmp_parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_cmp_parameters_allownil)}
+    EVP_PKEY_cmp_parameters := @ERR_EVP_PKEY_cmp_parameters;
+    {$ifend}
     {$if declared(EVP_PKEY_cmp_parameters_introduced)}
     if LibVersion < EVP_PKEY_cmp_parameters_introduced then
     begin
       {$if declared(FC_EVP_PKEY_cmp_parameters)}
       EVP_PKEY_cmp_parameters := @FC_EVP_PKEY_cmp_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_cmp_parameters_allownil)}
-      EVP_PKEY_cmp_parameters := @ERR_EVP_PKEY_cmp_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_cmp_parameters_removed)}
@@ -21521,39 +18608,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_cmp_parameters)}
       EVP_PKEY_cmp_parameters := @_EVP_PKEY_cmp_parameters;
-      {$else}
-      {$if not defined(EVP_PKEY_cmp_parameters_allownil)}
-      EVP_PKEY_cmp_parameters := @ERR_EVP_PKEY_cmp_parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_cmp_parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_cmp_parameters := @ERR_EVP_PKEY_cmp_parameters;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_cmp_parameters');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_cmp := LoadLibFunction(ADllHandle, EVP_PKEY_cmp_procname);
-  FuncLoaded := assigned(EVP_PKEY_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_cmp_allownil)}
+    EVP_PKEY_cmp := @ERR_EVP_PKEY_cmp;
+    {$ifend}
     {$if declared(EVP_PKEY_cmp_introduced)}
     if LibVersion < EVP_PKEY_cmp_introduced then
     begin
       {$if declared(FC_EVP_PKEY_cmp)}
       EVP_PKEY_cmp := @FC_EVP_PKEY_cmp;
-      {$else}
-      {$if not defined(EVP_PKEY_cmp_allownil)}
-      EVP_PKEY_cmp := @ERR_EVP_PKEY_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_cmp_removed)}
@@ -21561,39 +18640,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_cmp)}
       EVP_PKEY_cmp := @_EVP_PKEY_cmp;
-      {$else}
-      {$if not defined(EVP_PKEY_cmp_allownil)}
-      EVP_PKEY_cmp := @ERR_EVP_PKEY_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_cmp := @ERR_EVP_PKEY_cmp;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_cmp');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_print_public := LoadLibFunction(ADllHandle, EVP_PKEY_print_public_procname);
-  FuncLoaded := assigned(EVP_PKEY_print_public);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_print_public);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_print_public_allownil)}
+    EVP_PKEY_print_public := @ERR_EVP_PKEY_print_public;
+    {$ifend}
     {$if declared(EVP_PKEY_print_public_introduced)}
     if LibVersion < EVP_PKEY_print_public_introduced then
     begin
       {$if declared(FC_EVP_PKEY_print_public)}
       EVP_PKEY_print_public := @FC_EVP_PKEY_print_public;
-      {$else}
-      {$if not defined(EVP_PKEY_print_public_allownil)}
-      EVP_PKEY_print_public := @ERR_EVP_PKEY_print_public;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_print_public_removed)}
@@ -21601,39 +18672,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_print_public)}
       EVP_PKEY_print_public := @_EVP_PKEY_print_public;
-      {$else}
-      {$if not defined(EVP_PKEY_print_public_allownil)}
-      EVP_PKEY_print_public := @ERR_EVP_PKEY_print_public;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_print_public_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_print_public := @ERR_EVP_PKEY_print_public;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_print_public');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_print_private := LoadLibFunction(ADllHandle, EVP_PKEY_print_private_procname);
-  FuncLoaded := assigned(EVP_PKEY_print_private);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_print_private);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_print_private_allownil)}
+    EVP_PKEY_print_private := @ERR_EVP_PKEY_print_private;
+    {$ifend}
     {$if declared(EVP_PKEY_print_private_introduced)}
     if LibVersion < EVP_PKEY_print_private_introduced then
     begin
       {$if declared(FC_EVP_PKEY_print_private)}
       EVP_PKEY_print_private := @FC_EVP_PKEY_print_private;
-      {$else}
-      {$if not defined(EVP_PKEY_print_private_allownil)}
-      EVP_PKEY_print_private := @ERR_EVP_PKEY_print_private;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_print_private_removed)}
@@ -21641,39 +18704,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_print_private)}
       EVP_PKEY_print_private := @_EVP_PKEY_print_private;
-      {$else}
-      {$if not defined(EVP_PKEY_print_private_allownil)}
-      EVP_PKEY_print_private := @ERR_EVP_PKEY_print_private;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_print_private_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_print_private := @ERR_EVP_PKEY_print_private;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_print_private');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_print_params := LoadLibFunction(ADllHandle, EVP_PKEY_print_params_procname);
-  FuncLoaded := assigned(EVP_PKEY_print_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_print_params);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_print_params_allownil)}
+    EVP_PKEY_print_params := @ERR_EVP_PKEY_print_params;
+    {$ifend}
     {$if declared(EVP_PKEY_print_params_introduced)}
     if LibVersion < EVP_PKEY_print_params_introduced then
     begin
       {$if declared(FC_EVP_PKEY_print_params)}
       EVP_PKEY_print_params := @FC_EVP_PKEY_print_params;
-      {$else}
-      {$if not defined(EVP_PKEY_print_params_allownil)}
-      EVP_PKEY_print_params := @ERR_EVP_PKEY_print_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_print_params_removed)}
@@ -21681,39 +18736,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_print_params)}
       EVP_PKEY_print_params := @_EVP_PKEY_print_params;
-      {$else}
-      {$if not defined(EVP_PKEY_print_params_allownil)}
-      EVP_PKEY_print_params := @ERR_EVP_PKEY_print_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_print_params_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_print_params := @ERR_EVP_PKEY_print_params;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_print_params');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get_default_digest_nid := LoadLibFunction(ADllHandle, EVP_PKEY_get_default_digest_nid_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_default_digest_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_default_digest_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_default_digest_nid_allownil)}
+    EVP_PKEY_get_default_digest_nid := @ERR_EVP_PKEY_get_default_digest_nid;
+    {$ifend}
     {$if declared(EVP_PKEY_get_default_digest_nid_introduced)}
     if LibVersion < EVP_PKEY_get_default_digest_nid_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_default_digest_nid)}
       EVP_PKEY_get_default_digest_nid := @FC_EVP_PKEY_get_default_digest_nid;
-      {$else}
-      {$if not defined(EVP_PKEY_get_default_digest_nid_allownil)}
-      EVP_PKEY_get_default_digest_nid := @ERR_EVP_PKEY_get_default_digest_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_default_digest_nid_removed)}
@@ -21721,39 +18768,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_default_digest_nid)}
       EVP_PKEY_get_default_digest_nid := @_EVP_PKEY_get_default_digest_nid;
-      {$else}
-      {$if not defined(EVP_PKEY_get_default_digest_nid_allownil)}
-      EVP_PKEY_get_default_digest_nid := @ERR_EVP_PKEY_get_default_digest_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_default_digest_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_default_digest_nid := @ERR_EVP_PKEY_get_default_digest_nid;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_default_digest_nid');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_set1_tls_encodedpoint := LoadLibFunction(ADllHandle, EVP_PKEY_set1_tls_encodedpoint_procname);
-  FuncLoaded := assigned(EVP_PKEY_set1_tls_encodedpoint);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_set1_tls_encodedpoint);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_set1_tls_encodedpoint_allownil)}
+    EVP_PKEY_set1_tls_encodedpoint := @ERR_EVP_PKEY_set1_tls_encodedpoint;
+    {$ifend}
     {$if declared(EVP_PKEY_set1_tls_encodedpoint_introduced)}
     if LibVersion < EVP_PKEY_set1_tls_encodedpoint_introduced then
     begin
       {$if declared(FC_EVP_PKEY_set1_tls_encodedpoint)}
       EVP_PKEY_set1_tls_encodedpoint := @FC_EVP_PKEY_set1_tls_encodedpoint;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_tls_encodedpoint_allownil)}
-      EVP_PKEY_set1_tls_encodedpoint := @ERR_EVP_PKEY_set1_tls_encodedpoint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_set1_tls_encodedpoint_removed)}
@@ -21761,39 +18800,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_set1_tls_encodedpoint)}
       EVP_PKEY_set1_tls_encodedpoint := @_EVP_PKEY_set1_tls_encodedpoint;
-      {$else}
-      {$if not defined(EVP_PKEY_set1_tls_encodedpoint_allownil)}
-      EVP_PKEY_set1_tls_encodedpoint := @ERR_EVP_PKEY_set1_tls_encodedpoint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_set1_tls_encodedpoint_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_set1_tls_encodedpoint := @ERR_EVP_PKEY_set1_tls_encodedpoint;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_set1_tls_encodedpoint');
-    end;
     {$ifend}
   end;
 
  
   EVP_PKEY_get1_tls_encodedpoint := LoadLibFunction(ADllHandle, EVP_PKEY_get1_tls_encodedpoint_procname);
-  FuncLoaded := assigned(EVP_PKEY_get1_tls_encodedpoint);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get1_tls_encodedpoint);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get1_tls_encodedpoint_allownil)}
+    EVP_PKEY_get1_tls_encodedpoint := @ERR_EVP_PKEY_get1_tls_encodedpoint;
+    {$ifend}
     {$if declared(EVP_PKEY_get1_tls_encodedpoint_introduced)}
     if LibVersion < EVP_PKEY_get1_tls_encodedpoint_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get1_tls_encodedpoint)}
       EVP_PKEY_get1_tls_encodedpoint := @FC_EVP_PKEY_get1_tls_encodedpoint;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_tls_encodedpoint_allownil)}
-      EVP_PKEY_get1_tls_encodedpoint := @ERR_EVP_PKEY_get1_tls_encodedpoint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get1_tls_encodedpoint_removed)}
@@ -21801,39 +18832,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get1_tls_encodedpoint)}
       EVP_PKEY_get1_tls_encodedpoint := @_EVP_PKEY_get1_tls_encodedpoint;
-      {$else}
-      {$if not defined(EVP_PKEY_get1_tls_encodedpoint_allownil)}
-      EVP_PKEY_get1_tls_encodedpoint := @ERR_EVP_PKEY_get1_tls_encodedpoint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get1_tls_encodedpoint_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get1_tls_encodedpoint := @ERR_EVP_PKEY_get1_tls_encodedpoint;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get1_tls_encodedpoint');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_type := LoadLibFunction(ADllHandle, EVP_CIPHER_type_procname);
-  FuncLoaded := assigned(EVP_CIPHER_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_type_allownil)}
+    EVP_CIPHER_type := @ERR_EVP_CIPHER_type;
+    {$ifend}
     {$if declared(EVP_CIPHER_type_introduced)}
     if LibVersion < EVP_CIPHER_type_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_type)}
       EVP_CIPHER_type := @FC_EVP_CIPHER_type;
-      {$else}
-      {$if not defined(EVP_CIPHER_type_allownil)}
-      EVP_CIPHER_type := @ERR_EVP_CIPHER_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_type_removed)}
@@ -21841,39 +18864,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_type)}
       EVP_CIPHER_type := @_EVP_CIPHER_type;
-      {$else}
-      {$if not defined(EVP_CIPHER_type_allownil)}
-      EVP_CIPHER_type := @ERR_EVP_CIPHER_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_type := @ERR_EVP_CIPHER_type;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_type');
-    end;
     {$ifend}
   end;
 
  
   EVP_CIPHER_param_to_asn1 := LoadLibFunction(ADllHandle, EVP_CIPHER_param_to_asn1_procname);
-  FuncLoaded := assigned(EVP_CIPHER_param_to_asn1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_param_to_asn1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_param_to_asn1_allownil)}
+    EVP_CIPHER_param_to_asn1 := @ERR_EVP_CIPHER_param_to_asn1;
+    {$ifend}
     {$if declared(EVP_CIPHER_param_to_asn1_introduced)}
     if LibVersion < EVP_CIPHER_param_to_asn1_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_param_to_asn1)}
       EVP_CIPHER_param_to_asn1 := @FC_EVP_CIPHER_param_to_asn1;
-      {$else}
-      {$if not defined(EVP_CIPHER_param_to_asn1_allownil)}
-      EVP_CIPHER_param_to_asn1 := @ERR_EVP_CIPHER_param_to_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_param_to_asn1_removed)}
@@ -21881,39 +18896,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_param_to_asn1)}
       EVP_CIPHER_param_to_asn1 := @_EVP_CIPHER_param_to_asn1;
-      {$else}
-      {$if not defined(EVP_CIPHER_param_to_asn1_allownil)}
-      EVP_CIPHER_param_to_asn1 := @ERR_EVP_CIPHER_param_to_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_param_to_asn1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_param_to_asn1 := @ERR_EVP_CIPHER_param_to_asn1;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_param_to_asn1');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_asn1_to_param := LoadLibFunction(ADllHandle, EVP_CIPHER_asn1_to_param_procname);
-  FuncLoaded := assigned(EVP_CIPHER_asn1_to_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_asn1_to_param);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_asn1_to_param_allownil)}
+    EVP_CIPHER_asn1_to_param := @ERR_EVP_CIPHER_asn1_to_param;
+    {$ifend}
     {$if declared(EVP_CIPHER_asn1_to_param_introduced)}
     if LibVersion < EVP_CIPHER_asn1_to_param_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_asn1_to_param)}
       EVP_CIPHER_asn1_to_param := @FC_EVP_CIPHER_asn1_to_param;
-      {$else}
-      {$if not defined(EVP_CIPHER_asn1_to_param_allownil)}
-      EVP_CIPHER_asn1_to_param := @ERR_EVP_CIPHER_asn1_to_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_asn1_to_param_removed)}
@@ -21921,39 +18928,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_asn1_to_param)}
       EVP_CIPHER_asn1_to_param := @_EVP_CIPHER_asn1_to_param;
-      {$else}
-      {$if not defined(EVP_CIPHER_asn1_to_param_allownil)}
-      EVP_CIPHER_asn1_to_param := @ERR_EVP_CIPHER_asn1_to_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_asn1_to_param_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_asn1_to_param := @ERR_EVP_CIPHER_asn1_to_param;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_asn1_to_param');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_set_asn1_iv := LoadLibFunction(ADllHandle, EVP_CIPHER_set_asn1_iv_procname);
-  FuncLoaded := assigned(EVP_CIPHER_set_asn1_iv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_set_asn1_iv);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_set_asn1_iv_allownil)}
+    EVP_CIPHER_set_asn1_iv := @ERR_EVP_CIPHER_set_asn1_iv;
+    {$ifend}
     {$if declared(EVP_CIPHER_set_asn1_iv_introduced)}
     if LibVersion < EVP_CIPHER_set_asn1_iv_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_set_asn1_iv)}
       EVP_CIPHER_set_asn1_iv := @FC_EVP_CIPHER_set_asn1_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_set_asn1_iv_allownil)}
-      EVP_CIPHER_set_asn1_iv := @ERR_EVP_CIPHER_set_asn1_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_set_asn1_iv_removed)}
@@ -21961,39 +18960,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_set_asn1_iv)}
       EVP_CIPHER_set_asn1_iv := @_EVP_CIPHER_set_asn1_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_set_asn1_iv_allownil)}
-      EVP_CIPHER_set_asn1_iv := @ERR_EVP_CIPHER_set_asn1_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_set_asn1_iv_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_set_asn1_iv := @ERR_EVP_CIPHER_set_asn1_iv;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_set_asn1_iv');
-    end;
     {$ifend}
   end;
 
 
   EVP_CIPHER_get_asn1_iv := LoadLibFunction(ADllHandle, EVP_CIPHER_get_asn1_iv_procname);
-  FuncLoaded := assigned(EVP_CIPHER_get_asn1_iv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_CIPHER_get_asn1_iv);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_CIPHER_get_asn1_iv_allownil)}
+    EVP_CIPHER_get_asn1_iv := @ERR_EVP_CIPHER_get_asn1_iv;
+    {$ifend}
     {$if declared(EVP_CIPHER_get_asn1_iv_introduced)}
     if LibVersion < EVP_CIPHER_get_asn1_iv_introduced then
     begin
       {$if declared(FC_EVP_CIPHER_get_asn1_iv)}
       EVP_CIPHER_get_asn1_iv := @FC_EVP_CIPHER_get_asn1_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_get_asn1_iv_allownil)}
-      EVP_CIPHER_get_asn1_iv := @ERR_EVP_CIPHER_get_asn1_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_CIPHER_get_asn1_iv_removed)}
@@ -22001,39 +18992,31 @@ begin
     begin
       {$if declared(_EVP_CIPHER_get_asn1_iv)}
       EVP_CIPHER_get_asn1_iv := @_EVP_CIPHER_get_asn1_iv;
-      {$else}
-      {$if not defined(EVP_CIPHER_get_asn1_iv_allownil)}
-      EVP_CIPHER_get_asn1_iv := @ERR_EVP_CIPHER_get_asn1_iv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_CIPHER_get_asn1_iv_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_CIPHER_get_asn1_iv := @ERR_EVP_CIPHER_get_asn1_iv;
+    if FuncLoadError then
       AFailed.Add('EVP_CIPHER_get_asn1_iv');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_PBE_keyivgen := LoadLibFunction(ADllHandle, PKCS5_PBE_keyivgen_procname);
-  FuncLoaded := assigned(PKCS5_PBE_keyivgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_PBE_keyivgen);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_PBE_keyivgen_allownil)}
+    PKCS5_PBE_keyivgen := @ERR_PKCS5_PBE_keyivgen;
+    {$ifend}
     {$if declared(PKCS5_PBE_keyivgen_introduced)}
     if LibVersion < PKCS5_PBE_keyivgen_introduced then
     begin
       {$if declared(FC_PKCS5_PBE_keyivgen)}
       PKCS5_PBE_keyivgen := @FC_PKCS5_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_PBE_keyivgen_allownil)}
-      PKCS5_PBE_keyivgen := @ERR_PKCS5_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_PBE_keyivgen_removed)}
@@ -22041,39 +19024,31 @@ begin
     begin
       {$if declared(_PKCS5_PBE_keyivgen)}
       PKCS5_PBE_keyivgen := @_PKCS5_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_PBE_keyivgen_allownil)}
-      PKCS5_PBE_keyivgen := @ERR_PKCS5_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_PBE_keyivgen_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_PBE_keyivgen := @ERR_PKCS5_PBE_keyivgen;
+    if FuncLoadError then
       AFailed.Add('PKCS5_PBE_keyivgen');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_PBKDF2_HMAC_SHA1 := LoadLibFunction(ADllHandle, PKCS5_PBKDF2_HMAC_SHA1_procname);
-  FuncLoaded := assigned(PKCS5_PBKDF2_HMAC_SHA1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_PBKDF2_HMAC_SHA1);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_PBKDF2_HMAC_SHA1_allownil)}
+    PKCS5_PBKDF2_HMAC_SHA1 := @ERR_PKCS5_PBKDF2_HMAC_SHA1;
+    {$ifend}
     {$if declared(PKCS5_PBKDF2_HMAC_SHA1_introduced)}
     if LibVersion < PKCS5_PBKDF2_HMAC_SHA1_introduced then
     begin
       {$if declared(FC_PKCS5_PBKDF2_HMAC_SHA1)}
       PKCS5_PBKDF2_HMAC_SHA1 := @FC_PKCS5_PBKDF2_HMAC_SHA1;
-      {$else}
-      {$if not defined(PKCS5_PBKDF2_HMAC_SHA1_allownil)}
-      PKCS5_PBKDF2_HMAC_SHA1 := @ERR_PKCS5_PBKDF2_HMAC_SHA1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_PBKDF2_HMAC_SHA1_removed)}
@@ -22081,39 +19056,31 @@ begin
     begin
       {$if declared(_PKCS5_PBKDF2_HMAC_SHA1)}
       PKCS5_PBKDF2_HMAC_SHA1 := @_PKCS5_PBKDF2_HMAC_SHA1;
-      {$else}
-      {$if not defined(PKCS5_PBKDF2_HMAC_SHA1_allownil)}
-      PKCS5_PBKDF2_HMAC_SHA1 := @ERR_PKCS5_PBKDF2_HMAC_SHA1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_PBKDF2_HMAC_SHA1_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_PBKDF2_HMAC_SHA1 := @ERR_PKCS5_PBKDF2_HMAC_SHA1;
+    if FuncLoadError then
       AFailed.Add('PKCS5_PBKDF2_HMAC_SHA1');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_PBKDF2_HMAC := LoadLibFunction(ADllHandle, PKCS5_PBKDF2_HMAC_procname);
-  FuncLoaded := assigned(PKCS5_PBKDF2_HMAC);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_PBKDF2_HMAC);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_PBKDF2_HMAC_allownil)}
+    PKCS5_PBKDF2_HMAC := @ERR_PKCS5_PBKDF2_HMAC;
+    {$ifend}
     {$if declared(PKCS5_PBKDF2_HMAC_introduced)}
     if LibVersion < PKCS5_PBKDF2_HMAC_introduced then
     begin
       {$if declared(FC_PKCS5_PBKDF2_HMAC)}
       PKCS5_PBKDF2_HMAC := @FC_PKCS5_PBKDF2_HMAC;
-      {$else}
-      {$if not defined(PKCS5_PBKDF2_HMAC_allownil)}
-      PKCS5_PBKDF2_HMAC := @ERR_PKCS5_PBKDF2_HMAC;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_PBKDF2_HMAC_removed)}
@@ -22121,39 +19088,31 @@ begin
     begin
       {$if declared(_PKCS5_PBKDF2_HMAC)}
       PKCS5_PBKDF2_HMAC := @_PKCS5_PBKDF2_HMAC;
-      {$else}
-      {$if not defined(PKCS5_PBKDF2_HMAC_allownil)}
-      PKCS5_PBKDF2_HMAC := @ERR_PKCS5_PBKDF2_HMAC;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_PBKDF2_HMAC_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_PBKDF2_HMAC := @ERR_PKCS5_PBKDF2_HMAC;
+    if FuncLoadError then
       AFailed.Add('PKCS5_PBKDF2_HMAC');
-    end;
     {$ifend}
   end;
 
 
   PKCS5_v2_PBE_keyivgen := LoadLibFunction(ADllHandle, PKCS5_v2_PBE_keyivgen_procname);
-  FuncLoaded := assigned(PKCS5_v2_PBE_keyivgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_v2_PBE_keyivgen);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_v2_PBE_keyivgen_allownil)}
+    PKCS5_v2_PBE_keyivgen := @ERR_PKCS5_v2_PBE_keyivgen;
+    {$ifend}
     {$if declared(PKCS5_v2_PBE_keyivgen_introduced)}
     if LibVersion < PKCS5_v2_PBE_keyivgen_introduced then
     begin
       {$if declared(FC_PKCS5_v2_PBE_keyivgen)}
       PKCS5_v2_PBE_keyivgen := @FC_PKCS5_v2_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_v2_PBE_keyivgen_allownil)}
-      PKCS5_v2_PBE_keyivgen := @ERR_PKCS5_v2_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_v2_PBE_keyivgen_removed)}
@@ -22161,39 +19120,31 @@ begin
     begin
       {$if declared(_PKCS5_v2_PBE_keyivgen)}
       PKCS5_v2_PBE_keyivgen := @_PKCS5_v2_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_v2_PBE_keyivgen_allownil)}
-      PKCS5_v2_PBE_keyivgen := @ERR_PKCS5_v2_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_v2_PBE_keyivgen_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_v2_PBE_keyivgen := @ERR_PKCS5_v2_PBE_keyivgen;
+    if FuncLoadError then
       AFailed.Add('PKCS5_v2_PBE_keyivgen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_scrypt := LoadLibFunction(ADllHandle, EVP_PBE_scrypt_procname);
-  FuncLoaded := assigned(EVP_PBE_scrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_scrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_scrypt_allownil)}
+    EVP_PBE_scrypt := @ERR_EVP_PBE_scrypt;
+    {$ifend}
     {$if declared(EVP_PBE_scrypt_introduced)}
     if LibVersion < EVP_PBE_scrypt_introduced then
     begin
       {$if declared(FC_EVP_PBE_scrypt)}
       EVP_PBE_scrypt := @FC_EVP_PBE_scrypt;
-      {$else}
-      {$if not defined(EVP_PBE_scrypt_allownil)}
-      EVP_PBE_scrypt := @ERR_EVP_PBE_scrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_scrypt_removed)}
@@ -22201,39 +19152,31 @@ begin
     begin
       {$if declared(_EVP_PBE_scrypt)}
       EVP_PBE_scrypt := @_EVP_PBE_scrypt;
-      {$else}
-      {$if not defined(EVP_PBE_scrypt_allownil)}
-      EVP_PBE_scrypt := @ERR_EVP_PBE_scrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_scrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_scrypt := @ERR_EVP_PBE_scrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_scrypt');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS5_v2_scrypt_keyivgen := LoadLibFunction(ADllHandle, PKCS5_v2_scrypt_keyivgen_procname);
-  FuncLoaded := assigned(PKCS5_v2_scrypt_keyivgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_v2_scrypt_keyivgen);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_v2_scrypt_keyivgen_allownil)}
+    PKCS5_v2_scrypt_keyivgen := @ERR_PKCS5_v2_scrypt_keyivgen;
+    {$ifend}
     {$if declared(PKCS5_v2_scrypt_keyivgen_introduced)}
     if LibVersion < PKCS5_v2_scrypt_keyivgen_introduced then
     begin
       {$if declared(FC_PKCS5_v2_scrypt_keyivgen)}
       PKCS5_v2_scrypt_keyivgen := @FC_PKCS5_v2_scrypt_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_v2_scrypt_keyivgen_allownil)}
-      PKCS5_v2_scrypt_keyivgen := @ERR_PKCS5_v2_scrypt_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_v2_scrypt_keyivgen_removed)}
@@ -22241,39 +19184,31 @@ begin
     begin
       {$if declared(_PKCS5_v2_scrypt_keyivgen)}
       PKCS5_v2_scrypt_keyivgen := @_PKCS5_v2_scrypt_keyivgen;
-      {$else}
-      {$if not defined(PKCS5_v2_scrypt_keyivgen_allownil)}
-      PKCS5_v2_scrypt_keyivgen := @ERR_PKCS5_v2_scrypt_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_v2_scrypt_keyivgen_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_v2_scrypt_keyivgen := @ERR_PKCS5_v2_scrypt_keyivgen;
+    if FuncLoadError then
       AFailed.Add('PKCS5_v2_scrypt_keyivgen');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS5_PBE_add := LoadLibFunction(ADllHandle, PKCS5_PBE_add_procname);
-  FuncLoaded := assigned(PKCS5_PBE_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS5_PBE_add);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS5_PBE_add_allownil)}
+    PKCS5_PBE_add := @ERR_PKCS5_PBE_add;
+    {$ifend}
     {$if declared(PKCS5_PBE_add_introduced)}
     if LibVersion < PKCS5_PBE_add_introduced then
     begin
       {$if declared(FC_PKCS5_PBE_add)}
       PKCS5_PBE_add := @FC_PKCS5_PBE_add;
-      {$else}
-      {$if not defined(PKCS5_PBE_add_allownil)}
-      PKCS5_PBE_add := @ERR_PKCS5_PBE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS5_PBE_add_removed)}
@@ -22281,39 +19216,31 @@ begin
     begin
       {$if declared(_PKCS5_PBE_add)}
       PKCS5_PBE_add := @_PKCS5_PBE_add;
-      {$else}
-      {$if not defined(PKCS5_PBE_add_allownil)}
-      PKCS5_PBE_add := @ERR_PKCS5_PBE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS5_PBE_add_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS5_PBE_add := @ERR_PKCS5_PBE_add;
+    if FuncLoadError then
       AFailed.Add('PKCS5_PBE_add');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_CipherInit := LoadLibFunction(ADllHandle, EVP_PBE_CipherInit_procname);
-  FuncLoaded := assigned(EVP_PBE_CipherInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_CipherInit);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_CipherInit_allownil)}
+    EVP_PBE_CipherInit := @ERR_EVP_PBE_CipherInit;
+    {$ifend}
     {$if declared(EVP_PBE_CipherInit_introduced)}
     if LibVersion < EVP_PBE_CipherInit_introduced then
     begin
       {$if declared(FC_EVP_PBE_CipherInit)}
       EVP_PBE_CipherInit := @FC_EVP_PBE_CipherInit;
-      {$else}
-      {$if not defined(EVP_PBE_CipherInit_allownil)}
-      EVP_PBE_CipherInit := @ERR_EVP_PBE_CipherInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_CipherInit_removed)}
@@ -22321,39 +19248,31 @@ begin
     begin
       {$if declared(_EVP_PBE_CipherInit)}
       EVP_PBE_CipherInit := @_EVP_PBE_CipherInit;
-      {$else}
-      {$if not defined(EVP_PBE_CipherInit_allownil)}
-      EVP_PBE_CipherInit := @ERR_EVP_PBE_CipherInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_CipherInit_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_CipherInit := @ERR_EVP_PBE_CipherInit;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_CipherInit');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_alg_add_type := LoadLibFunction(ADllHandle, EVP_PBE_alg_add_type_procname);
-  FuncLoaded := assigned(EVP_PBE_alg_add_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_alg_add_type);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_alg_add_type_allownil)}
+    EVP_PBE_alg_add_type := @ERR_EVP_PBE_alg_add_type;
+    {$ifend}
     {$if declared(EVP_PBE_alg_add_type_introduced)}
     if LibVersion < EVP_PBE_alg_add_type_introduced then
     begin
       {$if declared(FC_EVP_PBE_alg_add_type)}
       EVP_PBE_alg_add_type := @FC_EVP_PBE_alg_add_type;
-      {$else}
-      {$if not defined(EVP_PBE_alg_add_type_allownil)}
-      EVP_PBE_alg_add_type := @ERR_EVP_PBE_alg_add_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_alg_add_type_removed)}
@@ -22361,39 +19280,31 @@ begin
     begin
       {$if declared(_EVP_PBE_alg_add_type)}
       EVP_PBE_alg_add_type := @_EVP_PBE_alg_add_type;
-      {$else}
-      {$if not defined(EVP_PBE_alg_add_type_allownil)}
-      EVP_PBE_alg_add_type := @ERR_EVP_PBE_alg_add_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_alg_add_type_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_alg_add_type := @ERR_EVP_PBE_alg_add_type;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_alg_add_type');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_alg_add := LoadLibFunction(ADllHandle, EVP_PBE_alg_add_procname);
-  FuncLoaded := assigned(EVP_PBE_alg_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_alg_add);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_alg_add_allownil)}
+    EVP_PBE_alg_add := @ERR_EVP_PBE_alg_add;
+    {$ifend}
     {$if declared(EVP_PBE_alg_add_introduced)}
     if LibVersion < EVP_PBE_alg_add_introduced then
     begin
       {$if declared(FC_EVP_PBE_alg_add)}
       EVP_PBE_alg_add := @FC_EVP_PBE_alg_add;
-      {$else}
-      {$if not defined(EVP_PBE_alg_add_allownil)}
-      EVP_PBE_alg_add := @ERR_EVP_PBE_alg_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_alg_add_removed)}
@@ -22401,39 +19312,31 @@ begin
     begin
       {$if declared(_EVP_PBE_alg_add)}
       EVP_PBE_alg_add := @_EVP_PBE_alg_add;
-      {$else}
-      {$if not defined(EVP_PBE_alg_add_allownil)}
-      EVP_PBE_alg_add := @ERR_EVP_PBE_alg_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_alg_add_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_alg_add := @ERR_EVP_PBE_alg_add;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_alg_add');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_find := LoadLibFunction(ADllHandle, EVP_PBE_find_procname);
-  FuncLoaded := assigned(EVP_PBE_find);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_find);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_find_allownil)}
+    EVP_PBE_find := @ERR_EVP_PBE_find;
+    {$ifend}
     {$if declared(EVP_PBE_find_introduced)}
     if LibVersion < EVP_PBE_find_introduced then
     begin
       {$if declared(FC_EVP_PBE_find)}
       EVP_PBE_find := @FC_EVP_PBE_find;
-      {$else}
-      {$if not defined(EVP_PBE_find_allownil)}
-      EVP_PBE_find := @ERR_EVP_PBE_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_find_removed)}
@@ -22441,39 +19344,31 @@ begin
     begin
       {$if declared(_EVP_PBE_find)}
       EVP_PBE_find := @_EVP_PBE_find;
-      {$else}
-      {$if not defined(EVP_PBE_find_allownil)}
-      EVP_PBE_find := @ERR_EVP_PBE_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_find_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_find := @ERR_EVP_PBE_find;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_find');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_cleanup := LoadLibFunction(ADllHandle, EVP_PBE_cleanup_procname);
-  FuncLoaded := assigned(EVP_PBE_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_cleanup_allownil)}
+    EVP_PBE_cleanup := @ERR_EVP_PBE_cleanup;
+    {$ifend}
     {$if declared(EVP_PBE_cleanup_introduced)}
     if LibVersion < EVP_PBE_cleanup_introduced then
     begin
       {$if declared(FC_EVP_PBE_cleanup)}
       EVP_PBE_cleanup := @FC_EVP_PBE_cleanup;
-      {$else}
-      {$if not defined(EVP_PBE_cleanup_allownil)}
-      EVP_PBE_cleanup := @ERR_EVP_PBE_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_cleanup_removed)}
@@ -22481,39 +19376,31 @@ begin
     begin
       {$if declared(_EVP_PBE_cleanup)}
       EVP_PBE_cleanup := @_EVP_PBE_cleanup;
-      {$else}
-      {$if not defined(EVP_PBE_cleanup_allownil)}
-      EVP_PBE_cleanup := @ERR_EVP_PBE_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_cleanup := @ERR_EVP_PBE_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_cleanup');
-    end;
     {$ifend}
   end;
 
 
   EVP_PBE_get := LoadLibFunction(ADllHandle, EVP_PBE_get_procname);
-  FuncLoaded := assigned(EVP_PBE_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PBE_get);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PBE_get_allownil)}
+    EVP_PBE_get := @ERR_EVP_PBE_get;
+    {$ifend}
     {$if declared(EVP_PBE_get_introduced)}
     if LibVersion < EVP_PBE_get_introduced then
     begin
       {$if declared(FC_EVP_PBE_get)}
       EVP_PBE_get := @FC_EVP_PBE_get;
-      {$else}
-      {$if not defined(EVP_PBE_get_allownil)}
-      EVP_PBE_get := @ERR_EVP_PBE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PBE_get_removed)}
@@ -22521,39 +19408,31 @@ begin
     begin
       {$if declared(_EVP_PBE_get)}
       EVP_PBE_get := @_EVP_PBE_get;
-      {$else}
-      {$if not defined(EVP_PBE_get_allownil)}
-      EVP_PBE_get := @ERR_EVP_PBE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PBE_get_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PBE_get := @ERR_EVP_PBE_get;
+    if FuncLoadError then
       AFailed.Add('EVP_PBE_get');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_get_count := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_get_count_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_get_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_get_count);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_get_count_allownil)}
+    EVP_PKEY_asn1_get_count := @ERR_EVP_PKEY_asn1_get_count;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_get_count_introduced)}
     if LibVersion < EVP_PKEY_asn1_get_count_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_get_count)}
       EVP_PKEY_asn1_get_count := @FC_EVP_PKEY_asn1_get_count;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get_count_allownil)}
-      EVP_PKEY_asn1_get_count := @ERR_EVP_PKEY_asn1_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_get_count_removed)}
@@ -22561,39 +19440,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_get_count)}
       EVP_PKEY_asn1_get_count := @_EVP_PKEY_asn1_get_count;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get_count_allownil)}
-      EVP_PKEY_asn1_get_count := @ERR_EVP_PKEY_asn1_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_get_count_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_get_count := @ERR_EVP_PKEY_asn1_get_count;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_get_count');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_get0 := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_get0_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_get0_allownil)}
+    EVP_PKEY_asn1_get0 := @ERR_EVP_PKEY_asn1_get0;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_get0_introduced)}
     if LibVersion < EVP_PKEY_asn1_get0_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_get0)}
       EVP_PKEY_asn1_get0 := @FC_EVP_PKEY_asn1_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get0_allownil)}
-      EVP_PKEY_asn1_get0 := @ERR_EVP_PKEY_asn1_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_get0_removed)}
@@ -22601,39 +19472,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_get0)}
       EVP_PKEY_asn1_get0 := @_EVP_PKEY_asn1_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get0_allownil)}
-      EVP_PKEY_asn1_get0 := @ERR_EVP_PKEY_asn1_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_get0 := @ERR_EVP_PKEY_asn1_get0;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_get0');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_find := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_find_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_find);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_find);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_find_allownil)}
+    EVP_PKEY_asn1_find := @ERR_EVP_PKEY_asn1_find;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_find_introduced)}
     if LibVersion < EVP_PKEY_asn1_find_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_find)}
       EVP_PKEY_asn1_find := @FC_EVP_PKEY_asn1_find;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_find_allownil)}
-      EVP_PKEY_asn1_find := @ERR_EVP_PKEY_asn1_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_find_removed)}
@@ -22641,39 +19504,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_find)}
       EVP_PKEY_asn1_find := @_EVP_PKEY_asn1_find;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_find_allownil)}
-      EVP_PKEY_asn1_find := @ERR_EVP_PKEY_asn1_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_find_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_find := @ERR_EVP_PKEY_asn1_find;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_find');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_find_str := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_find_str_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_find_str);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_find_str);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_find_str_allownil)}
+    EVP_PKEY_asn1_find_str := @ERR_EVP_PKEY_asn1_find_str;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_find_str_introduced)}
     if LibVersion < EVP_PKEY_asn1_find_str_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_find_str)}
       EVP_PKEY_asn1_find_str := @FC_EVP_PKEY_asn1_find_str;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_find_str_allownil)}
-      EVP_PKEY_asn1_find_str := @ERR_EVP_PKEY_asn1_find_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_find_str_removed)}
@@ -22681,39 +19536,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_find_str)}
       EVP_PKEY_asn1_find_str := @_EVP_PKEY_asn1_find_str;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_find_str_allownil)}
-      EVP_PKEY_asn1_find_str := @ERR_EVP_PKEY_asn1_find_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_find_str_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_find_str := @ERR_EVP_PKEY_asn1_find_str;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_find_str');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_add0 := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_add0_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_add0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_add0);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_add0_allownil)}
+    EVP_PKEY_asn1_add0 := @ERR_EVP_PKEY_asn1_add0;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_add0_introduced)}
     if LibVersion < EVP_PKEY_asn1_add0_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_add0)}
       EVP_PKEY_asn1_add0 := @FC_EVP_PKEY_asn1_add0;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_add0_allownil)}
-      EVP_PKEY_asn1_add0 := @ERR_EVP_PKEY_asn1_add0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_add0_removed)}
@@ -22721,39 +19568,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_add0)}
       EVP_PKEY_asn1_add0 := @_EVP_PKEY_asn1_add0;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_add0_allownil)}
-      EVP_PKEY_asn1_add0 := @ERR_EVP_PKEY_asn1_add0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_add0_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_add0 := @ERR_EVP_PKEY_asn1_add0;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_add0');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_add_alias := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_add_alias_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_add_alias);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_add_alias);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_add_alias_allownil)}
+    EVP_PKEY_asn1_add_alias := @ERR_EVP_PKEY_asn1_add_alias;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_add_alias_introduced)}
     if LibVersion < EVP_PKEY_asn1_add_alias_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_add_alias)}
       EVP_PKEY_asn1_add_alias := @FC_EVP_PKEY_asn1_add_alias;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_add_alias_allownil)}
-      EVP_PKEY_asn1_add_alias := @ERR_EVP_PKEY_asn1_add_alias;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_add_alias_removed)}
@@ -22761,39 +19600,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_add_alias)}
       EVP_PKEY_asn1_add_alias := @_EVP_PKEY_asn1_add_alias;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_add_alias_allownil)}
-      EVP_PKEY_asn1_add_alias := @ERR_EVP_PKEY_asn1_add_alias;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_add_alias_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_add_alias := @ERR_EVP_PKEY_asn1_add_alias;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_add_alias');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_get0_info := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_get0_info_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_get0_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_get0_info);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_get0_info_allownil)}
+    EVP_PKEY_asn1_get0_info := @ERR_EVP_PKEY_asn1_get0_info;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_get0_info_introduced)}
     if LibVersion < EVP_PKEY_asn1_get0_info_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_get0_info)}
       EVP_PKEY_asn1_get0_info := @FC_EVP_PKEY_asn1_get0_info;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get0_info_allownil)}
-      EVP_PKEY_asn1_get0_info := @ERR_EVP_PKEY_asn1_get0_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_get0_info_removed)}
@@ -22801,39 +19632,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_get0_info)}
       EVP_PKEY_asn1_get0_info := @_EVP_PKEY_asn1_get0_info;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_get0_info_allownil)}
-      EVP_PKEY_asn1_get0_info := @ERR_EVP_PKEY_asn1_get0_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_get0_info_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_get0_info := @ERR_EVP_PKEY_asn1_get0_info;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_get0_info');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_get0_asn1 := LoadLibFunction(ADllHandle, EVP_PKEY_get0_asn1_procname);
-  FuncLoaded := assigned(EVP_PKEY_get0_asn1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get0_asn1);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get0_asn1_allownil)}
+    EVP_PKEY_get0_asn1 := @ERR_EVP_PKEY_get0_asn1;
+    {$ifend}
     {$if declared(EVP_PKEY_get0_asn1_introduced)}
     if LibVersion < EVP_PKEY_get0_asn1_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get0_asn1)}
       EVP_PKEY_get0_asn1 := @FC_EVP_PKEY_get0_asn1;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_asn1_allownil)}
-      EVP_PKEY_get0_asn1 := @ERR_EVP_PKEY_get0_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get0_asn1_removed)}
@@ -22841,39 +19664,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get0_asn1)}
       EVP_PKEY_get0_asn1 := @_EVP_PKEY_get0_asn1;
-      {$else}
-      {$if not defined(EVP_PKEY_get0_asn1_allownil)}
-      EVP_PKEY_get0_asn1 := @ERR_EVP_PKEY_get0_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get0_asn1_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get0_asn1 := @ERR_EVP_PKEY_get0_asn1;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get0_asn1');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_new := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_new_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_new_allownil)}
+    EVP_PKEY_asn1_new := @ERR_EVP_PKEY_asn1_new;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_new_introduced)}
     if LibVersion < EVP_PKEY_asn1_new_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_new)}
       EVP_PKEY_asn1_new := @FC_EVP_PKEY_asn1_new;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_new_allownil)}
-      EVP_PKEY_asn1_new := @ERR_EVP_PKEY_asn1_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_new_removed)}
@@ -22881,39 +19696,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_new)}
       EVP_PKEY_asn1_new := @_EVP_PKEY_asn1_new;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_new_allownil)}
-      EVP_PKEY_asn1_new := @ERR_EVP_PKEY_asn1_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_new := @ERR_EVP_PKEY_asn1_new;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_new');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_copy := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_copy_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_copy_allownil)}
+    EVP_PKEY_asn1_copy := @ERR_EVP_PKEY_asn1_copy;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_copy_introduced)}
     if LibVersion < EVP_PKEY_asn1_copy_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_copy)}
       EVP_PKEY_asn1_copy := @FC_EVP_PKEY_asn1_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_copy_allownil)}
-      EVP_PKEY_asn1_copy := @ERR_EVP_PKEY_asn1_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_copy_removed)}
@@ -22921,39 +19728,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_copy)}
       EVP_PKEY_asn1_copy := @_EVP_PKEY_asn1_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_copy_allownil)}
-      EVP_PKEY_asn1_copy := @ERR_EVP_PKEY_asn1_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_copy := @ERR_EVP_PKEY_asn1_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_free := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_free_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_free_allownil)}
+    EVP_PKEY_asn1_free := @ERR_EVP_PKEY_asn1_free;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_free_introduced)}
     if LibVersion < EVP_PKEY_asn1_free_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_free)}
       EVP_PKEY_asn1_free := @FC_EVP_PKEY_asn1_free;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_free_allownil)}
-      EVP_PKEY_asn1_free := @ERR_EVP_PKEY_asn1_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_free_removed)}
@@ -22961,39 +19760,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_free)}
       EVP_PKEY_asn1_free := @_EVP_PKEY_asn1_free;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_free_allownil)}
-      EVP_PKEY_asn1_free := @ERR_EVP_PKEY_asn1_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_free := @ERR_EVP_PKEY_asn1_free;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_free');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_public := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_public_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_public);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_public);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_public_allownil)}
+    EVP_PKEY_asn1_set_public := @ERR_EVP_PKEY_asn1_set_public;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_public_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_public_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_public)}
       EVP_PKEY_asn1_set_public := @FC_EVP_PKEY_asn1_set_public;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_public_allownil)}
-      EVP_PKEY_asn1_set_public := @ERR_EVP_PKEY_asn1_set_public;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_public_removed)}
@@ -23001,39 +19792,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_public)}
       EVP_PKEY_asn1_set_public := @_EVP_PKEY_asn1_set_public;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_public_allownil)}
-      EVP_PKEY_asn1_set_public := @ERR_EVP_PKEY_asn1_set_public;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_public_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_public := @ERR_EVP_PKEY_asn1_set_public;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_public');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_private := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_private_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_private);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_private);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_private_allownil)}
+    EVP_PKEY_asn1_set_private := @ERR_EVP_PKEY_asn1_set_private;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_private_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_private_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_private)}
       EVP_PKEY_asn1_set_private := @FC_EVP_PKEY_asn1_set_private;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_private_allownil)}
-      EVP_PKEY_asn1_set_private := @ERR_EVP_PKEY_asn1_set_private;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_private_removed)}
@@ -23041,39 +19824,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_private)}
       EVP_PKEY_asn1_set_private := @_EVP_PKEY_asn1_set_private;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_private_allownil)}
-      EVP_PKEY_asn1_set_private := @ERR_EVP_PKEY_asn1_set_private;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_private_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_private := @ERR_EVP_PKEY_asn1_set_private;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_private');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_param := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_param_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_param);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_param_allownil)}
+    EVP_PKEY_asn1_set_param := @ERR_EVP_PKEY_asn1_set_param;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_param_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_param_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_param)}
       EVP_PKEY_asn1_set_param := @FC_EVP_PKEY_asn1_set_param;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_param_allownil)}
-      EVP_PKEY_asn1_set_param := @ERR_EVP_PKEY_asn1_set_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_param_removed)}
@@ -23081,39 +19856,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_param)}
       EVP_PKEY_asn1_set_param := @_EVP_PKEY_asn1_set_param;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_param_allownil)}
-      EVP_PKEY_asn1_set_param := @ERR_EVP_PKEY_asn1_set_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_param_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_param := @ERR_EVP_PKEY_asn1_set_param;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_param');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_free := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_free_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_free_allownil)}
+    EVP_PKEY_asn1_set_free := @ERR_EVP_PKEY_asn1_set_free;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_free_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_free_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_free)}
       EVP_PKEY_asn1_set_free := @FC_EVP_PKEY_asn1_set_free;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_free_allownil)}
-      EVP_PKEY_asn1_set_free := @ERR_EVP_PKEY_asn1_set_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_free_removed)}
@@ -23121,39 +19888,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_free)}
       EVP_PKEY_asn1_set_free := @_EVP_PKEY_asn1_set_free;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_free_allownil)}
-      EVP_PKEY_asn1_set_free := @ERR_EVP_PKEY_asn1_set_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_free := @ERR_EVP_PKEY_asn1_set_free;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_free');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_ctrl_allownil)}
+    EVP_PKEY_asn1_set_ctrl := @ERR_EVP_PKEY_asn1_set_ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_ctrl_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_ctrl)}
       EVP_PKEY_asn1_set_ctrl := @FC_EVP_PKEY_asn1_set_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_ctrl_allownil)}
-      EVP_PKEY_asn1_set_ctrl := @ERR_EVP_PKEY_asn1_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_ctrl_removed)}
@@ -23161,39 +19920,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_ctrl)}
       EVP_PKEY_asn1_set_ctrl := @_EVP_PKEY_asn1_set_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_ctrl_allownil)}
-      EVP_PKEY_asn1_set_ctrl := @ERR_EVP_PKEY_asn1_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_ctrl := @ERR_EVP_PKEY_asn1_set_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_ctrl');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_item := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_item_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_item);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_item);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_item_allownil)}
+    EVP_PKEY_asn1_set_item := @ERR_EVP_PKEY_asn1_set_item;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_item_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_item_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_item)}
       EVP_PKEY_asn1_set_item := @FC_EVP_PKEY_asn1_set_item;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_item_allownil)}
-      EVP_PKEY_asn1_set_item := @ERR_EVP_PKEY_asn1_set_item;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_item_removed)}
@@ -23201,39 +19952,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_item)}
       EVP_PKEY_asn1_set_item := @_EVP_PKEY_asn1_set_item;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_item_allownil)}
-      EVP_PKEY_asn1_set_item := @ERR_EVP_PKEY_asn1_set_item;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_item_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_item := @ERR_EVP_PKEY_asn1_set_item;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_item');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_asn1_set_siginf := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_siginf_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_siginf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_siginf);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_siginf_allownil)}
+    EVP_PKEY_asn1_set_siginf := @ERR_EVP_PKEY_asn1_set_siginf;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_siginf_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_siginf_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_siginf)}
       EVP_PKEY_asn1_set_siginf := @FC_EVP_PKEY_asn1_set_siginf;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_siginf_allownil)}
-      EVP_PKEY_asn1_set_siginf := @ERR_EVP_PKEY_asn1_set_siginf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_siginf_removed)}
@@ -23241,39 +19984,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_siginf)}
       EVP_PKEY_asn1_set_siginf := @_EVP_PKEY_asn1_set_siginf;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_siginf_allownil)}
-      EVP_PKEY_asn1_set_siginf := @ERR_EVP_PKEY_asn1_set_siginf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_siginf_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_siginf := @ERR_EVP_PKEY_asn1_set_siginf;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_siginf');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_check := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_check_allownil)}
+    EVP_PKEY_asn1_set_check := @ERR_EVP_PKEY_asn1_set_check;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_check_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_check)}
       EVP_PKEY_asn1_set_check := @FC_EVP_PKEY_asn1_set_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_check_allownil)}
-      EVP_PKEY_asn1_set_check := @ERR_EVP_PKEY_asn1_set_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_check_removed)}
@@ -23281,39 +20016,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_check)}
       EVP_PKEY_asn1_set_check := @_EVP_PKEY_asn1_set_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_check_allownil)}
-      EVP_PKEY_asn1_set_check := @ERR_EVP_PKEY_asn1_set_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_check := @ERR_EVP_PKEY_asn1_set_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_public_check := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_public_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_public_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_public_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_public_check_allownil)}
+    EVP_PKEY_asn1_set_public_check := @ERR_EVP_PKEY_asn1_set_public_check;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_public_check_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_public_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_public_check)}
       EVP_PKEY_asn1_set_public_check := @FC_EVP_PKEY_asn1_set_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_public_check_allownil)}
-      EVP_PKEY_asn1_set_public_check := @ERR_EVP_PKEY_asn1_set_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_public_check_removed)}
@@ -23321,39 +20048,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_public_check)}
       EVP_PKEY_asn1_set_public_check := @_EVP_PKEY_asn1_set_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_public_check_allownil)}
-      EVP_PKEY_asn1_set_public_check := @ERR_EVP_PKEY_asn1_set_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_public_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_public_check := @ERR_EVP_PKEY_asn1_set_public_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_public_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_param_check := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_param_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_param_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_param_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_param_check_allownil)}
+    EVP_PKEY_asn1_set_param_check := @ERR_EVP_PKEY_asn1_set_param_check;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_param_check_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_param_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_param_check)}
       EVP_PKEY_asn1_set_param_check := @FC_EVP_PKEY_asn1_set_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_param_check_allownil)}
-      EVP_PKEY_asn1_set_param_check := @ERR_EVP_PKEY_asn1_set_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_param_check_removed)}
@@ -23361,39 +20080,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_param_check)}
       EVP_PKEY_asn1_set_param_check := @_EVP_PKEY_asn1_set_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_param_check_allownil)}
-      EVP_PKEY_asn1_set_param_check := @ERR_EVP_PKEY_asn1_set_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_param_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_param_check := @ERR_EVP_PKEY_asn1_set_param_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_param_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_set_priv_key := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_set_priv_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_set_priv_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_set_priv_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_set_priv_key_allownil)}
+    EVP_PKEY_asn1_set_set_priv_key := @ERR_EVP_PKEY_asn1_set_set_priv_key;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_set_priv_key_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_set_priv_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_set_priv_key)}
       EVP_PKEY_asn1_set_set_priv_key := @FC_EVP_PKEY_asn1_set_set_priv_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_set_priv_key_allownil)}
-      EVP_PKEY_asn1_set_set_priv_key := @ERR_EVP_PKEY_asn1_set_set_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_set_priv_key_removed)}
@@ -23401,39 +20112,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_set_priv_key)}
       EVP_PKEY_asn1_set_set_priv_key := @_EVP_PKEY_asn1_set_set_priv_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_set_priv_key_allownil)}
-      EVP_PKEY_asn1_set_set_priv_key := @ERR_EVP_PKEY_asn1_set_set_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_set_priv_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_set_priv_key := @ERR_EVP_PKEY_asn1_set_set_priv_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_set_priv_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_set_pub_key := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_set_pub_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_set_pub_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_set_pub_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_set_pub_key_allownil)}
+    EVP_PKEY_asn1_set_set_pub_key := @ERR_EVP_PKEY_asn1_set_set_pub_key;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_set_pub_key_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_set_pub_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_set_pub_key)}
       EVP_PKEY_asn1_set_set_pub_key := @FC_EVP_PKEY_asn1_set_set_pub_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_set_pub_key_allownil)}
-      EVP_PKEY_asn1_set_set_pub_key := @ERR_EVP_PKEY_asn1_set_set_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_set_pub_key_removed)}
@@ -23441,39 +20144,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_set_pub_key)}
       EVP_PKEY_asn1_set_set_pub_key := @_EVP_PKEY_asn1_set_set_pub_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_set_pub_key_allownil)}
-      EVP_PKEY_asn1_set_set_pub_key := @ERR_EVP_PKEY_asn1_set_set_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_set_pub_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_set_pub_key := @ERR_EVP_PKEY_asn1_set_set_pub_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_set_pub_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_get_priv_key := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_get_priv_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_get_priv_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_get_priv_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_get_priv_key_allownil)}
+    EVP_PKEY_asn1_set_get_priv_key := @ERR_EVP_PKEY_asn1_set_get_priv_key;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_get_priv_key_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_get_priv_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_get_priv_key)}
       EVP_PKEY_asn1_set_get_priv_key := @FC_EVP_PKEY_asn1_set_get_priv_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_get_priv_key_allownil)}
-      EVP_PKEY_asn1_set_get_priv_key := @ERR_EVP_PKEY_asn1_set_get_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_get_priv_key_removed)}
@@ -23481,39 +20176,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_get_priv_key)}
       EVP_PKEY_asn1_set_get_priv_key := @_EVP_PKEY_asn1_set_get_priv_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_get_priv_key_allownil)}
-      EVP_PKEY_asn1_set_get_priv_key := @ERR_EVP_PKEY_asn1_set_get_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_get_priv_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_get_priv_key := @ERR_EVP_PKEY_asn1_set_get_priv_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_get_priv_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_get_pub_key := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_get_pub_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_get_pub_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_get_pub_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_get_pub_key_allownil)}
+    EVP_PKEY_asn1_set_get_pub_key := @ERR_EVP_PKEY_asn1_set_get_pub_key;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_get_pub_key_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_get_pub_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_get_pub_key)}
       EVP_PKEY_asn1_set_get_pub_key := @FC_EVP_PKEY_asn1_set_get_pub_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_get_pub_key_allownil)}
-      EVP_PKEY_asn1_set_get_pub_key := @ERR_EVP_PKEY_asn1_set_get_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_get_pub_key_removed)}
@@ -23521,39 +20208,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_get_pub_key)}
       EVP_PKEY_asn1_set_get_pub_key := @_EVP_PKEY_asn1_set_get_pub_key;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_get_pub_key_allownil)}
-      EVP_PKEY_asn1_set_get_pub_key := @ERR_EVP_PKEY_asn1_set_get_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_get_pub_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_get_pub_key := @ERR_EVP_PKEY_asn1_set_get_pub_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_get_pub_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_asn1_set_security_bits := LoadLibFunction(ADllHandle, EVP_PKEY_asn1_set_security_bits_procname);
-  FuncLoaded := assigned(EVP_PKEY_asn1_set_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_asn1_set_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_asn1_set_security_bits_allownil)}
+    EVP_PKEY_asn1_set_security_bits := @ERR_EVP_PKEY_asn1_set_security_bits;
+    {$ifend}
     {$if declared(EVP_PKEY_asn1_set_security_bits_introduced)}
     if LibVersion < EVP_PKEY_asn1_set_security_bits_introduced then
     begin
       {$if declared(FC_EVP_PKEY_asn1_set_security_bits)}
       EVP_PKEY_asn1_set_security_bits := @FC_EVP_PKEY_asn1_set_security_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_security_bits_allownil)}
-      EVP_PKEY_asn1_set_security_bits := @ERR_EVP_PKEY_asn1_set_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_asn1_set_security_bits_removed)}
@@ -23561,39 +20240,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_asn1_set_security_bits)}
       EVP_PKEY_asn1_set_security_bits := @_EVP_PKEY_asn1_set_security_bits;
-      {$else}
-      {$if not defined(EVP_PKEY_asn1_set_security_bits_allownil)}
-      EVP_PKEY_asn1_set_security_bits := @ERR_EVP_PKEY_asn1_set_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_asn1_set_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_asn1_set_security_bits := @ERR_EVP_PKEY_asn1_set_security_bits;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_asn1_set_security_bits');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_find := LoadLibFunction(ADllHandle, EVP_PKEY_meth_find_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_find);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_find);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_find_allownil)}
+    EVP_PKEY_meth_find := @ERR_EVP_PKEY_meth_find;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_find_introduced)}
     if LibVersion < EVP_PKEY_meth_find_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_find)}
       EVP_PKEY_meth_find := @FC_EVP_PKEY_meth_find;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_find_allownil)}
-      EVP_PKEY_meth_find := @ERR_EVP_PKEY_meth_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_find_removed)}
@@ -23601,39 +20272,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_find)}
       EVP_PKEY_meth_find := @_EVP_PKEY_meth_find;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_find_allownil)}
-      EVP_PKEY_meth_find := @ERR_EVP_PKEY_meth_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_find_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_find := @ERR_EVP_PKEY_meth_find;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_find');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_new := LoadLibFunction(ADllHandle, EVP_PKEY_meth_new_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_new_allownil)}
+    EVP_PKEY_meth_new := @ERR_EVP_PKEY_meth_new;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_new_introduced)}
     if LibVersion < EVP_PKEY_meth_new_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_new)}
       EVP_PKEY_meth_new := @FC_EVP_PKEY_meth_new;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_new_allownil)}
-      EVP_PKEY_meth_new := @ERR_EVP_PKEY_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_new_removed)}
@@ -23641,39 +20304,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_new)}
       EVP_PKEY_meth_new := @_EVP_PKEY_meth_new;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_new_allownil)}
-      EVP_PKEY_meth_new := @ERR_EVP_PKEY_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_new := @ERR_EVP_PKEY_meth_new;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_new');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get0_info := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get0_info_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get0_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get0_info);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get0_info_allownil)}
+    EVP_PKEY_meth_get0_info := @ERR_EVP_PKEY_meth_get0_info;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get0_info_introduced)}
     if LibVersion < EVP_PKEY_meth_get0_info_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get0_info)}
       EVP_PKEY_meth_get0_info := @FC_EVP_PKEY_meth_get0_info;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get0_info_allownil)}
-      EVP_PKEY_meth_get0_info := @ERR_EVP_PKEY_meth_get0_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get0_info_removed)}
@@ -23681,39 +20336,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get0_info)}
       EVP_PKEY_meth_get0_info := @_EVP_PKEY_meth_get0_info;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get0_info_allownil)}
-      EVP_PKEY_meth_get0_info := @ERR_EVP_PKEY_meth_get0_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get0_info_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get0_info := @ERR_EVP_PKEY_meth_get0_info;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get0_info');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_copy := LoadLibFunction(ADllHandle, EVP_PKEY_meth_copy_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_copy_allownil)}
+    EVP_PKEY_meth_copy := @ERR_EVP_PKEY_meth_copy;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_copy_introduced)}
     if LibVersion < EVP_PKEY_meth_copy_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_copy)}
       EVP_PKEY_meth_copy := @FC_EVP_PKEY_meth_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_copy_allownil)}
-      EVP_PKEY_meth_copy := @ERR_EVP_PKEY_meth_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_copy_removed)}
@@ -23721,39 +20368,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_copy)}
       EVP_PKEY_meth_copy := @_EVP_PKEY_meth_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_copy_allownil)}
-      EVP_PKEY_meth_copy := @ERR_EVP_PKEY_meth_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_copy := @ERR_EVP_PKEY_meth_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_free := LoadLibFunction(ADllHandle, EVP_PKEY_meth_free_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_free_allownil)}
+    EVP_PKEY_meth_free := @ERR_EVP_PKEY_meth_free;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_free_introduced)}
     if LibVersion < EVP_PKEY_meth_free_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_free)}
       EVP_PKEY_meth_free := @FC_EVP_PKEY_meth_free;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_free_allownil)}
-      EVP_PKEY_meth_free := @ERR_EVP_PKEY_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_free_removed)}
@@ -23761,39 +20400,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_free)}
       EVP_PKEY_meth_free := @_EVP_PKEY_meth_free;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_free_allownil)}
-      EVP_PKEY_meth_free := @ERR_EVP_PKEY_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_free := @ERR_EVP_PKEY_meth_free;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_free');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_add0 := LoadLibFunction(ADllHandle, EVP_PKEY_meth_add0_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_add0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_add0);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_add0_allownil)}
+    EVP_PKEY_meth_add0 := @ERR_EVP_PKEY_meth_add0;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_add0_introduced)}
     if LibVersion < EVP_PKEY_meth_add0_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_add0)}
       EVP_PKEY_meth_add0 := @FC_EVP_PKEY_meth_add0;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_add0_allownil)}
-      EVP_PKEY_meth_add0 := @ERR_EVP_PKEY_meth_add0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_add0_removed)}
@@ -23801,39 +20432,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_add0)}
       EVP_PKEY_meth_add0 := @_EVP_PKEY_meth_add0;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_add0_allownil)}
-      EVP_PKEY_meth_add0 := @ERR_EVP_PKEY_meth_add0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_add0_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_add0 := @ERR_EVP_PKEY_meth_add0;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_add0');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_remove := LoadLibFunction(ADllHandle, EVP_PKEY_meth_remove_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_remove);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_remove);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_remove_allownil)}
+    EVP_PKEY_meth_remove := @ERR_EVP_PKEY_meth_remove;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_remove_introduced)}
     if LibVersion < EVP_PKEY_meth_remove_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_remove)}
       EVP_PKEY_meth_remove := @FC_EVP_PKEY_meth_remove;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_remove_allownil)}
-      EVP_PKEY_meth_remove := @ERR_EVP_PKEY_meth_remove;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_remove_removed)}
@@ -23841,39 +20464,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_remove)}
       EVP_PKEY_meth_remove := @_EVP_PKEY_meth_remove;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_remove_allownil)}
-      EVP_PKEY_meth_remove := @ERR_EVP_PKEY_meth_remove;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_remove_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_remove := @ERR_EVP_PKEY_meth_remove;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_remove');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_count := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_count_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_count);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_count_allownil)}
+    EVP_PKEY_meth_get_count := @ERR_EVP_PKEY_meth_get_count;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_count_introduced)}
     if LibVersion < EVP_PKEY_meth_get_count_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_count)}
       EVP_PKEY_meth_get_count := @FC_EVP_PKEY_meth_get_count;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_count_allownil)}
-      EVP_PKEY_meth_get_count := @ERR_EVP_PKEY_meth_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_count_removed)}
@@ -23881,39 +20496,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_count)}
       EVP_PKEY_meth_get_count := @_EVP_PKEY_meth_get_count;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_count_allownil)}
-      EVP_PKEY_meth_get_count := @ERR_EVP_PKEY_meth_get_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_count_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_count := @ERR_EVP_PKEY_meth_get_count;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_count');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get0 := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get0_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get0_allownil)}
+    EVP_PKEY_meth_get0 := @ERR_EVP_PKEY_meth_get0;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get0_introduced)}
     if LibVersion < EVP_PKEY_meth_get0_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get0)}
       EVP_PKEY_meth_get0 := @FC_EVP_PKEY_meth_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get0_allownil)}
-      EVP_PKEY_meth_get0 := @ERR_EVP_PKEY_meth_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get0_removed)}
@@ -23921,39 +20528,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get0)}
       EVP_PKEY_meth_get0 := @_EVP_PKEY_meth_get0;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get0_allownil)}
-      EVP_PKEY_meth_get0 := @ERR_EVP_PKEY_meth_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get0 := @ERR_EVP_PKEY_meth_get0;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get0');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_new := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_new_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_new_allownil)}
+    EVP_PKEY_CTX_new := @ERR_EVP_PKEY_CTX_new;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_new_introduced)}
     if LibVersion < EVP_PKEY_CTX_new_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_new)}
       EVP_PKEY_CTX_new := @FC_EVP_PKEY_CTX_new;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_new_allownil)}
-      EVP_PKEY_CTX_new := @ERR_EVP_PKEY_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_new_removed)}
@@ -23961,39 +20560,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_new)}
       EVP_PKEY_CTX_new := @_EVP_PKEY_CTX_new;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_new_allownil)}
-      EVP_PKEY_CTX_new := @ERR_EVP_PKEY_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_new := @ERR_EVP_PKEY_CTX_new;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_new_id := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_new_id_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_new_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_new_id);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_new_id_allownil)}
+    EVP_PKEY_CTX_new_id := @ERR_EVP_PKEY_CTX_new_id;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_new_id_introduced)}
     if LibVersion < EVP_PKEY_CTX_new_id_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_new_id)}
       EVP_PKEY_CTX_new_id := @FC_EVP_PKEY_CTX_new_id;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_new_id_allownil)}
-      EVP_PKEY_CTX_new_id := @ERR_EVP_PKEY_CTX_new_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_new_id_removed)}
@@ -24001,39 +20592,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_new_id)}
       EVP_PKEY_CTX_new_id := @_EVP_PKEY_CTX_new_id;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_new_id_allownil)}
-      EVP_PKEY_CTX_new_id := @ERR_EVP_PKEY_CTX_new_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_new_id_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_new_id := @ERR_EVP_PKEY_CTX_new_id;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_new_id');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_dup := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_dup_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_dup_allownil)}
+    EVP_PKEY_CTX_dup := @ERR_EVP_PKEY_CTX_dup;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_dup_introduced)}
     if LibVersion < EVP_PKEY_CTX_dup_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_dup)}
       EVP_PKEY_CTX_dup := @FC_EVP_PKEY_CTX_dup;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_dup_allownil)}
-      EVP_PKEY_CTX_dup := @ERR_EVP_PKEY_CTX_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_dup_removed)}
@@ -24041,39 +20624,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_dup)}
       EVP_PKEY_CTX_dup := @_EVP_PKEY_CTX_dup;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_dup_allownil)}
-      EVP_PKEY_CTX_dup := @ERR_EVP_PKEY_CTX_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_dup := @ERR_EVP_PKEY_CTX_dup;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_dup');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_free := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_free_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_free_allownil)}
+    EVP_PKEY_CTX_free := @ERR_EVP_PKEY_CTX_free;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_free_introduced)}
     if LibVersion < EVP_PKEY_CTX_free_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_free)}
       EVP_PKEY_CTX_free := @FC_EVP_PKEY_CTX_free;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_free_allownil)}
-      EVP_PKEY_CTX_free := @ERR_EVP_PKEY_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_free_removed)}
@@ -24081,39 +20656,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_free)}
       EVP_PKEY_CTX_free := @_EVP_PKEY_CTX_free;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_free_allownil)}
-      EVP_PKEY_CTX_free := @ERR_EVP_PKEY_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_free := @ERR_EVP_PKEY_CTX_free;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_ctrl_allownil)}
+    EVP_PKEY_CTX_ctrl := @ERR_EVP_PKEY_CTX_ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_introduced)}
     if LibVersion < EVP_PKEY_CTX_ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_ctrl)}
       EVP_PKEY_CTX_ctrl := @FC_EVP_PKEY_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_allownil)}
-      EVP_PKEY_CTX_ctrl := @ERR_EVP_PKEY_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_removed)}
@@ -24121,39 +20688,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_ctrl)}
       EVP_PKEY_CTX_ctrl := @_EVP_PKEY_CTX_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_allownil)}
-      EVP_PKEY_CTX_ctrl := @ERR_EVP_PKEY_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_ctrl := @ERR_EVP_PKEY_CTX_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_ctrl');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_ctrl_str := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_ctrl_str_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_ctrl_str);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_ctrl_str);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_ctrl_str_allownil)}
+    EVP_PKEY_CTX_ctrl_str := @ERR_EVP_PKEY_CTX_ctrl_str;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_str_introduced)}
     if LibVersion < EVP_PKEY_CTX_ctrl_str_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_ctrl_str)}
       EVP_PKEY_CTX_ctrl_str := @FC_EVP_PKEY_CTX_ctrl_str;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_str_allownil)}
-      EVP_PKEY_CTX_ctrl_str := @ERR_EVP_PKEY_CTX_ctrl_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_str_removed)}
@@ -24161,39 +20720,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_ctrl_str)}
       EVP_PKEY_CTX_ctrl_str := @_EVP_PKEY_CTX_ctrl_str;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_str_allownil)}
-      EVP_PKEY_CTX_ctrl_str := @ERR_EVP_PKEY_CTX_ctrl_str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_ctrl_str_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_ctrl_str := @ERR_EVP_PKEY_CTX_ctrl_str;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_ctrl_str');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_ctrl_uint64 := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_ctrl_uint64_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_ctrl_uint64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_ctrl_uint64);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_ctrl_uint64_allownil)}
+    EVP_PKEY_CTX_ctrl_uint64 := @ERR_EVP_PKEY_CTX_ctrl_uint64;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_uint64_introduced)}
     if LibVersion < EVP_PKEY_CTX_ctrl_uint64_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_ctrl_uint64)}
       EVP_PKEY_CTX_ctrl_uint64 := @FC_EVP_PKEY_CTX_ctrl_uint64;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_uint64_allownil)}
-      EVP_PKEY_CTX_ctrl_uint64 := @ERR_EVP_PKEY_CTX_ctrl_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_ctrl_uint64_removed)}
@@ -24201,39 +20752,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_ctrl_uint64)}
       EVP_PKEY_CTX_ctrl_uint64 := @_EVP_PKEY_CTX_ctrl_uint64;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_ctrl_uint64_allownil)}
-      EVP_PKEY_CTX_ctrl_uint64 := @ERR_EVP_PKEY_CTX_ctrl_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_ctrl_uint64_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_ctrl_uint64 := @ERR_EVP_PKEY_CTX_ctrl_uint64;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_ctrl_uint64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_str2ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_str2ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_str2ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_str2ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_str2ctrl_allownil)}
+    EVP_PKEY_CTX_str2ctrl := @ERR_EVP_PKEY_CTX_str2ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_str2ctrl_introduced)}
     if LibVersion < EVP_PKEY_CTX_str2ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_str2ctrl)}
       EVP_PKEY_CTX_str2ctrl := @FC_EVP_PKEY_CTX_str2ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_str2ctrl_allownil)}
-      EVP_PKEY_CTX_str2ctrl := @ERR_EVP_PKEY_CTX_str2ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_str2ctrl_removed)}
@@ -24241,39 +20784,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_str2ctrl)}
       EVP_PKEY_CTX_str2ctrl := @_EVP_PKEY_CTX_str2ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_str2ctrl_allownil)}
-      EVP_PKEY_CTX_str2ctrl := @ERR_EVP_PKEY_CTX_str2ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_str2ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_str2ctrl := @ERR_EVP_PKEY_CTX_str2ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_str2ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_hex2ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_hex2ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_hex2ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_hex2ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_hex2ctrl_allownil)}
+    EVP_PKEY_CTX_hex2ctrl := @ERR_EVP_PKEY_CTX_hex2ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_hex2ctrl_introduced)}
     if LibVersion < EVP_PKEY_CTX_hex2ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_hex2ctrl)}
       EVP_PKEY_CTX_hex2ctrl := @FC_EVP_PKEY_CTX_hex2ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_hex2ctrl_allownil)}
-      EVP_PKEY_CTX_hex2ctrl := @ERR_EVP_PKEY_CTX_hex2ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_hex2ctrl_removed)}
@@ -24281,39 +20816,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_hex2ctrl)}
       EVP_PKEY_CTX_hex2ctrl := @_EVP_PKEY_CTX_hex2ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_hex2ctrl_allownil)}
-      EVP_PKEY_CTX_hex2ctrl := @ERR_EVP_PKEY_CTX_hex2ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_hex2ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_hex2ctrl := @ERR_EVP_PKEY_CTX_hex2ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_hex2ctrl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_md := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_md_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_md);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_md);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_md_allownil)}
+    EVP_PKEY_CTX_md := @ERR_EVP_PKEY_CTX_md;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_md_introduced)}
     if LibVersion < EVP_PKEY_CTX_md_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_md)}
       EVP_PKEY_CTX_md := @FC_EVP_PKEY_CTX_md;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_md_allownil)}
-      EVP_PKEY_CTX_md := @ERR_EVP_PKEY_CTX_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_md_removed)}
@@ -24321,39 +20848,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_md)}
       EVP_PKEY_CTX_md := @_EVP_PKEY_CTX_md;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_md_allownil)}
-      EVP_PKEY_CTX_md := @ERR_EVP_PKEY_CTX_md;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_md_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_md := @ERR_EVP_PKEY_CTX_md;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_md');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_get_operation := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get_operation_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get_operation);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get_operation);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get_operation_allownil)}
+    EVP_PKEY_CTX_get_operation := @ERR_EVP_PKEY_CTX_get_operation;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get_operation_introduced)}
     if LibVersion < EVP_PKEY_CTX_get_operation_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get_operation)}
       EVP_PKEY_CTX_get_operation := @FC_EVP_PKEY_CTX_get_operation;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_operation_allownil)}
-      EVP_PKEY_CTX_get_operation := @ERR_EVP_PKEY_CTX_get_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get_operation_removed)}
@@ -24361,39 +20880,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get_operation)}
       EVP_PKEY_CTX_get_operation := @_EVP_PKEY_CTX_get_operation;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_operation_allownil)}
-      EVP_PKEY_CTX_get_operation := @ERR_EVP_PKEY_CTX_get_operation;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get_operation_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get_operation := @ERR_EVP_PKEY_CTX_get_operation;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get_operation');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_set0_keygen_info := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_set0_keygen_info_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_set0_keygen_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_set0_keygen_info);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_set0_keygen_info_allownil)}
+    EVP_PKEY_CTX_set0_keygen_info := @ERR_EVP_PKEY_CTX_set0_keygen_info;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_set0_keygen_info_introduced)}
     if LibVersion < EVP_PKEY_CTX_set0_keygen_info_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_set0_keygen_info)}
       EVP_PKEY_CTX_set0_keygen_info := @FC_EVP_PKEY_CTX_set0_keygen_info;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set0_keygen_info_allownil)}
-      EVP_PKEY_CTX_set0_keygen_info := @ERR_EVP_PKEY_CTX_set0_keygen_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_set0_keygen_info_removed)}
@@ -24401,39 +20912,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_set0_keygen_info)}
       EVP_PKEY_CTX_set0_keygen_info := @_EVP_PKEY_CTX_set0_keygen_info;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set0_keygen_info_allownil)}
-      EVP_PKEY_CTX_set0_keygen_info := @ERR_EVP_PKEY_CTX_set0_keygen_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_set0_keygen_info_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_set0_keygen_info := @ERR_EVP_PKEY_CTX_set0_keygen_info;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_set0_keygen_info');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_new_mac_key := LoadLibFunction(ADllHandle, EVP_PKEY_new_mac_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_new_mac_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_new_mac_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_new_mac_key_allownil)}
+    EVP_PKEY_new_mac_key := @ERR_EVP_PKEY_new_mac_key;
+    {$ifend}
     {$if declared(EVP_PKEY_new_mac_key_introduced)}
     if LibVersion < EVP_PKEY_new_mac_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_new_mac_key)}
       EVP_PKEY_new_mac_key := @FC_EVP_PKEY_new_mac_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_mac_key_allownil)}
-      EVP_PKEY_new_mac_key := @ERR_EVP_PKEY_new_mac_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_new_mac_key_removed)}
@@ -24441,39 +20944,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_new_mac_key)}
       EVP_PKEY_new_mac_key := @_EVP_PKEY_new_mac_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_mac_key_allownil)}
-      EVP_PKEY_new_mac_key := @ERR_EVP_PKEY_new_mac_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_new_mac_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_new_mac_key := @ERR_EVP_PKEY_new_mac_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_new_mac_key');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_new_raw_private_key := LoadLibFunction(ADllHandle, EVP_PKEY_new_raw_private_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_new_raw_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_new_raw_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_new_raw_private_key_allownil)}
+    EVP_PKEY_new_raw_private_key := @ERR_EVP_PKEY_new_raw_private_key;
+    {$ifend}
     {$if declared(EVP_PKEY_new_raw_private_key_introduced)}
     if LibVersion < EVP_PKEY_new_raw_private_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_new_raw_private_key)}
       EVP_PKEY_new_raw_private_key := @FC_EVP_PKEY_new_raw_private_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_raw_private_key_allownil)}
-      EVP_PKEY_new_raw_private_key := @ERR_EVP_PKEY_new_raw_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_new_raw_private_key_removed)}
@@ -24481,39 +20976,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_new_raw_private_key)}
       EVP_PKEY_new_raw_private_key := @_EVP_PKEY_new_raw_private_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_raw_private_key_allownil)}
-      EVP_PKEY_new_raw_private_key := @ERR_EVP_PKEY_new_raw_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_new_raw_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_new_raw_private_key := @ERR_EVP_PKEY_new_raw_private_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_new_raw_private_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_new_raw_public_key := LoadLibFunction(ADllHandle, EVP_PKEY_new_raw_public_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_new_raw_public_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_new_raw_public_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_new_raw_public_key_allownil)}
+    EVP_PKEY_new_raw_public_key := @ERR_EVP_PKEY_new_raw_public_key;
+    {$ifend}
     {$if declared(EVP_PKEY_new_raw_public_key_introduced)}
     if LibVersion < EVP_PKEY_new_raw_public_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_new_raw_public_key)}
       EVP_PKEY_new_raw_public_key := @FC_EVP_PKEY_new_raw_public_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_raw_public_key_allownil)}
-      EVP_PKEY_new_raw_public_key := @ERR_EVP_PKEY_new_raw_public_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_new_raw_public_key_removed)}
@@ -24521,39 +21008,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_new_raw_public_key)}
       EVP_PKEY_new_raw_public_key := @_EVP_PKEY_new_raw_public_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_raw_public_key_allownil)}
-      EVP_PKEY_new_raw_public_key := @ERR_EVP_PKEY_new_raw_public_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_new_raw_public_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_new_raw_public_key := @ERR_EVP_PKEY_new_raw_public_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_new_raw_public_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get_raw_private_key := LoadLibFunction(ADllHandle, EVP_PKEY_get_raw_private_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_raw_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_raw_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_raw_private_key_allownil)}
+    EVP_PKEY_get_raw_private_key := @ERR_EVP_PKEY_get_raw_private_key;
+    {$ifend}
     {$if declared(EVP_PKEY_get_raw_private_key_introduced)}
     if LibVersion < EVP_PKEY_get_raw_private_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_raw_private_key)}
       EVP_PKEY_get_raw_private_key := @FC_EVP_PKEY_get_raw_private_key;
-      {$else}
-      {$if not defined(EVP_PKEY_get_raw_private_key_allownil)}
-      EVP_PKEY_get_raw_private_key := @ERR_EVP_PKEY_get_raw_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_raw_private_key_removed)}
@@ -24561,39 +21040,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_raw_private_key)}
       EVP_PKEY_get_raw_private_key := @_EVP_PKEY_get_raw_private_key;
-      {$else}
-      {$if not defined(EVP_PKEY_get_raw_private_key_allownil)}
-      EVP_PKEY_get_raw_private_key := @ERR_EVP_PKEY_get_raw_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_raw_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_raw_private_key := @ERR_EVP_PKEY_get_raw_private_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_raw_private_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_get_raw_public_key := LoadLibFunction(ADllHandle, EVP_PKEY_get_raw_public_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_get_raw_public_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_get_raw_public_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_get_raw_public_key_allownil)}
+    EVP_PKEY_get_raw_public_key := @ERR_EVP_PKEY_get_raw_public_key;
+    {$ifend}
     {$if declared(EVP_PKEY_get_raw_public_key_introduced)}
     if LibVersion < EVP_PKEY_get_raw_public_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_get_raw_public_key)}
       EVP_PKEY_get_raw_public_key := @FC_EVP_PKEY_get_raw_public_key;
-      {$else}
-      {$if not defined(EVP_PKEY_get_raw_public_key_allownil)}
-      EVP_PKEY_get_raw_public_key := @ERR_EVP_PKEY_get_raw_public_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_get_raw_public_key_removed)}
@@ -24601,39 +21072,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_get_raw_public_key)}
       EVP_PKEY_get_raw_public_key := @_EVP_PKEY_get_raw_public_key;
-      {$else}
-      {$if not defined(EVP_PKEY_get_raw_public_key_allownil)}
-      EVP_PKEY_get_raw_public_key := @ERR_EVP_PKEY_get_raw_public_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_get_raw_public_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_get_raw_public_key := @ERR_EVP_PKEY_get_raw_public_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_get_raw_public_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_new_CMAC_key := LoadLibFunction(ADllHandle, EVP_PKEY_new_CMAC_key_procname);
-  FuncLoaded := assigned(EVP_PKEY_new_CMAC_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_new_CMAC_key);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_new_CMAC_key_allownil)}
+    EVP_PKEY_new_CMAC_key := @ERR_EVP_PKEY_new_CMAC_key;
+    {$ifend}
     {$if declared(EVP_PKEY_new_CMAC_key_introduced)}
     if LibVersion < EVP_PKEY_new_CMAC_key_introduced then
     begin
       {$if declared(FC_EVP_PKEY_new_CMAC_key)}
       EVP_PKEY_new_CMAC_key := @FC_EVP_PKEY_new_CMAC_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_CMAC_key_allownil)}
-      EVP_PKEY_new_CMAC_key := @ERR_EVP_PKEY_new_CMAC_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_new_CMAC_key_removed)}
@@ -24641,39 +21104,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_new_CMAC_key)}
       EVP_PKEY_new_CMAC_key := @_EVP_PKEY_new_CMAC_key;
-      {$else}
-      {$if not defined(EVP_PKEY_new_CMAC_key_allownil)}
-      EVP_PKEY_new_CMAC_key := @ERR_EVP_PKEY_new_CMAC_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_new_CMAC_key_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_new_CMAC_key := @ERR_EVP_PKEY_new_CMAC_key;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_new_CMAC_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_set_data := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_set_data_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_set_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_set_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_set_data_allownil)}
+    EVP_PKEY_CTX_set_data := @ERR_EVP_PKEY_CTX_set_data;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_set_data_introduced)}
     if LibVersion < EVP_PKEY_CTX_set_data_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_set_data)}
       EVP_PKEY_CTX_set_data := @FC_EVP_PKEY_CTX_set_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_data_allownil)}
-      EVP_PKEY_CTX_set_data := @ERR_EVP_PKEY_CTX_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_set_data_removed)}
@@ -24681,39 +21136,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_set_data)}
       EVP_PKEY_CTX_set_data := @_EVP_PKEY_CTX_set_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_data_allownil)}
-      EVP_PKEY_CTX_set_data := @ERR_EVP_PKEY_CTX_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_set_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_set_data := @ERR_EVP_PKEY_CTX_set_data;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_set_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get_data := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get_data_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get_data_allownil)}
+    EVP_PKEY_CTX_get_data := @ERR_EVP_PKEY_CTX_get_data;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get_data_introduced)}
     if LibVersion < EVP_PKEY_CTX_get_data_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get_data)}
       EVP_PKEY_CTX_get_data := @FC_EVP_PKEY_CTX_get_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_data_allownil)}
-      EVP_PKEY_CTX_get_data := @ERR_EVP_PKEY_CTX_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get_data_removed)}
@@ -24721,39 +21168,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get_data)}
       EVP_PKEY_CTX_get_data := @_EVP_PKEY_CTX_get_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_data_allownil)}
-      EVP_PKEY_CTX_get_data := @ERR_EVP_PKEY_CTX_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get_data := @ERR_EVP_PKEY_CTX_get_data;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get0_pkey := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get0_pkey_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get0_pkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get0_pkey);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get0_pkey_allownil)}
+    EVP_PKEY_CTX_get0_pkey := @ERR_EVP_PKEY_CTX_get0_pkey;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get0_pkey_introduced)}
     if LibVersion < EVP_PKEY_CTX_get0_pkey_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get0_pkey)}
       EVP_PKEY_CTX_get0_pkey := @FC_EVP_PKEY_CTX_get0_pkey;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get0_pkey_allownil)}
-      EVP_PKEY_CTX_get0_pkey := @ERR_EVP_PKEY_CTX_get0_pkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get0_pkey_removed)}
@@ -24761,39 +21200,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get0_pkey)}
       EVP_PKEY_CTX_get0_pkey := @_EVP_PKEY_CTX_get0_pkey;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get0_pkey_allownil)}
-      EVP_PKEY_CTX_get0_pkey := @ERR_EVP_PKEY_CTX_get0_pkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get0_pkey_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get0_pkey := @ERR_EVP_PKEY_CTX_get0_pkey;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get0_pkey');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get0_peerkey := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get0_peerkey_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get0_peerkey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get0_peerkey);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get0_peerkey_allownil)}
+    EVP_PKEY_CTX_get0_peerkey := @ERR_EVP_PKEY_CTX_get0_peerkey;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get0_peerkey_introduced)}
     if LibVersion < EVP_PKEY_CTX_get0_peerkey_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get0_peerkey)}
       EVP_PKEY_CTX_get0_peerkey := @FC_EVP_PKEY_CTX_get0_peerkey;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get0_peerkey_allownil)}
-      EVP_PKEY_CTX_get0_peerkey := @ERR_EVP_PKEY_CTX_get0_peerkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get0_peerkey_removed)}
@@ -24801,39 +21232,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get0_peerkey)}
       EVP_PKEY_CTX_get0_peerkey := @_EVP_PKEY_CTX_get0_peerkey;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get0_peerkey_allownil)}
-      EVP_PKEY_CTX_get0_peerkey := @ERR_EVP_PKEY_CTX_get0_peerkey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get0_peerkey_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get0_peerkey := @ERR_EVP_PKEY_CTX_get0_peerkey;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get0_peerkey');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_set_app_data := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_set_app_data_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_set_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_set_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_set_app_data_allownil)}
+    EVP_PKEY_CTX_set_app_data := @ERR_EVP_PKEY_CTX_set_app_data;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_set_app_data_introduced)}
     if LibVersion < EVP_PKEY_CTX_set_app_data_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_set_app_data)}
       EVP_PKEY_CTX_set_app_data := @FC_EVP_PKEY_CTX_set_app_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_app_data_allownil)}
-      EVP_PKEY_CTX_set_app_data := @ERR_EVP_PKEY_CTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_set_app_data_removed)}
@@ -24841,39 +21264,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_set_app_data)}
       EVP_PKEY_CTX_set_app_data := @_EVP_PKEY_CTX_set_app_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_app_data_allownil)}
-      EVP_PKEY_CTX_set_app_data := @ERR_EVP_PKEY_CTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_set_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_set_app_data := @ERR_EVP_PKEY_CTX_set_app_data;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_set_app_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get_app_data := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get_app_data_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get_app_data_allownil)}
+    EVP_PKEY_CTX_get_app_data := @ERR_EVP_PKEY_CTX_get_app_data;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get_app_data_introduced)}
     if LibVersion < EVP_PKEY_CTX_get_app_data_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get_app_data)}
       EVP_PKEY_CTX_get_app_data := @FC_EVP_PKEY_CTX_get_app_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_app_data_allownil)}
-      EVP_PKEY_CTX_get_app_data := @ERR_EVP_PKEY_CTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get_app_data_removed)}
@@ -24881,39 +21296,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get_app_data)}
       EVP_PKEY_CTX_get_app_data := @_EVP_PKEY_CTX_get_app_data;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_app_data_allownil)}
-      EVP_PKEY_CTX_get_app_data := @ERR_EVP_PKEY_CTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get_app_data := @ERR_EVP_PKEY_CTX_get_app_data;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get_app_data');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_sign_init := LoadLibFunction(ADllHandle, EVP_PKEY_sign_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_sign_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_sign_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_sign_init_allownil)}
+    EVP_PKEY_sign_init := @ERR_EVP_PKEY_sign_init;
+    {$ifend}
     {$if declared(EVP_PKEY_sign_init_introduced)}
     if LibVersion < EVP_PKEY_sign_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_sign_init)}
       EVP_PKEY_sign_init := @FC_EVP_PKEY_sign_init;
-      {$else}
-      {$if not defined(EVP_PKEY_sign_init_allownil)}
-      EVP_PKEY_sign_init := @ERR_EVP_PKEY_sign_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_sign_init_removed)}
@@ -24921,39 +21328,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_sign_init)}
       EVP_PKEY_sign_init := @_EVP_PKEY_sign_init;
-      {$else}
-      {$if not defined(EVP_PKEY_sign_init_allownil)}
-      EVP_PKEY_sign_init := @ERR_EVP_PKEY_sign_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_sign_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_sign_init := @ERR_EVP_PKEY_sign_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_sign_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_sign := LoadLibFunction(ADllHandle, EVP_PKEY_sign_procname);
-  FuncLoaded := assigned(EVP_PKEY_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_sign_allownil)}
+    EVP_PKEY_sign := @ERR_EVP_PKEY_sign;
+    {$ifend}
     {$if declared(EVP_PKEY_sign_introduced)}
     if LibVersion < EVP_PKEY_sign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_sign)}
       EVP_PKEY_sign := @FC_EVP_PKEY_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_sign_allownil)}
-      EVP_PKEY_sign := @ERR_EVP_PKEY_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_sign_removed)}
@@ -24961,39 +21360,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_sign)}
       EVP_PKEY_sign := @_EVP_PKEY_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_sign_allownil)}
-      EVP_PKEY_sign := @ERR_EVP_PKEY_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_sign := @ERR_EVP_PKEY_sign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_sign');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_verify_init := LoadLibFunction(ADllHandle, EVP_PKEY_verify_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_verify_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_verify_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_verify_init_allownil)}
+    EVP_PKEY_verify_init := @ERR_EVP_PKEY_verify_init;
+    {$ifend}
     {$if declared(EVP_PKEY_verify_init_introduced)}
     if LibVersion < EVP_PKEY_verify_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_verify_init)}
       EVP_PKEY_verify_init := @FC_EVP_PKEY_verify_init;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_init_allownil)}
-      EVP_PKEY_verify_init := @ERR_EVP_PKEY_verify_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_verify_init_removed)}
@@ -25001,39 +21392,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_verify_init)}
       EVP_PKEY_verify_init := @_EVP_PKEY_verify_init;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_init_allownil)}
-      EVP_PKEY_verify_init := @ERR_EVP_PKEY_verify_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_verify_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_verify_init := @ERR_EVP_PKEY_verify_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_verify_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_verify := LoadLibFunction(ADllHandle, EVP_PKEY_verify_procname);
-  FuncLoaded := assigned(EVP_PKEY_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_verify_allownil)}
+    EVP_PKEY_verify := @ERR_EVP_PKEY_verify;
+    {$ifend}
     {$if declared(EVP_PKEY_verify_introduced)}
     if LibVersion < EVP_PKEY_verify_introduced then
     begin
       {$if declared(FC_EVP_PKEY_verify)}
       EVP_PKEY_verify := @FC_EVP_PKEY_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_allownil)}
-      EVP_PKEY_verify := @ERR_EVP_PKEY_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_verify_removed)}
@@ -25041,39 +21424,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_verify)}
       EVP_PKEY_verify := @_EVP_PKEY_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_allownil)}
-      EVP_PKEY_verify := @ERR_EVP_PKEY_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_verify := @ERR_EVP_PKEY_verify;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_verify');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_verify_recover_init := LoadLibFunction(ADllHandle, EVP_PKEY_verify_recover_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_verify_recover_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_verify_recover_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_verify_recover_init_allownil)}
+    EVP_PKEY_verify_recover_init := @ERR_EVP_PKEY_verify_recover_init;
+    {$ifend}
     {$if declared(EVP_PKEY_verify_recover_init_introduced)}
     if LibVersion < EVP_PKEY_verify_recover_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_verify_recover_init)}
       EVP_PKEY_verify_recover_init := @FC_EVP_PKEY_verify_recover_init;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_recover_init_allownil)}
-      EVP_PKEY_verify_recover_init := @ERR_EVP_PKEY_verify_recover_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_verify_recover_init_removed)}
@@ -25081,39 +21456,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_verify_recover_init)}
       EVP_PKEY_verify_recover_init := @_EVP_PKEY_verify_recover_init;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_recover_init_allownil)}
-      EVP_PKEY_verify_recover_init := @ERR_EVP_PKEY_verify_recover_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_verify_recover_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_verify_recover_init := @ERR_EVP_PKEY_verify_recover_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_verify_recover_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_verify_recover := LoadLibFunction(ADllHandle, EVP_PKEY_verify_recover_procname);
-  FuncLoaded := assigned(EVP_PKEY_verify_recover);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_verify_recover);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_verify_recover_allownil)}
+    EVP_PKEY_verify_recover := @ERR_EVP_PKEY_verify_recover;
+    {$ifend}
     {$if declared(EVP_PKEY_verify_recover_introduced)}
     if LibVersion < EVP_PKEY_verify_recover_introduced then
     begin
       {$if declared(FC_EVP_PKEY_verify_recover)}
       EVP_PKEY_verify_recover := @FC_EVP_PKEY_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_recover_allownil)}
-      EVP_PKEY_verify_recover := @ERR_EVP_PKEY_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_verify_recover_removed)}
@@ -25121,39 +21488,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_verify_recover)}
       EVP_PKEY_verify_recover := @_EVP_PKEY_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_verify_recover_allownil)}
-      EVP_PKEY_verify_recover := @ERR_EVP_PKEY_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_verify_recover_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_verify_recover := @ERR_EVP_PKEY_verify_recover;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_verify_recover');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_encrypt_init := LoadLibFunction(ADllHandle, EVP_PKEY_encrypt_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_encrypt_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_encrypt_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_encrypt_init_allownil)}
+    EVP_PKEY_encrypt_init := @ERR_EVP_PKEY_encrypt_init;
+    {$ifend}
     {$if declared(EVP_PKEY_encrypt_init_introduced)}
     if LibVersion < EVP_PKEY_encrypt_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_encrypt_init)}
       EVP_PKEY_encrypt_init := @FC_EVP_PKEY_encrypt_init;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_init_allownil)}
-      EVP_PKEY_encrypt_init := @ERR_EVP_PKEY_encrypt_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_encrypt_init_removed)}
@@ -25161,39 +21520,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_encrypt_init)}
       EVP_PKEY_encrypt_init := @_EVP_PKEY_encrypt_init;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_init_allownil)}
-      EVP_PKEY_encrypt_init := @ERR_EVP_PKEY_encrypt_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_encrypt_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_encrypt_init := @ERR_EVP_PKEY_encrypt_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_encrypt_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_encrypt := LoadLibFunction(ADllHandle, EVP_PKEY_encrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_encrypt_allownil)}
+    EVP_PKEY_encrypt := @ERR_EVP_PKEY_encrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_encrypt_introduced)}
     if LibVersion < EVP_PKEY_encrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_encrypt)}
       EVP_PKEY_encrypt := @FC_EVP_PKEY_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_allownil)}
-      EVP_PKEY_encrypt := @ERR_EVP_PKEY_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_encrypt_removed)}
@@ -25201,39 +21552,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_encrypt)}
       EVP_PKEY_encrypt := @_EVP_PKEY_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_encrypt_allownil)}
-      EVP_PKEY_encrypt := @ERR_EVP_PKEY_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_encrypt := @ERR_EVP_PKEY_encrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_encrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_decrypt_init := LoadLibFunction(ADllHandle, EVP_PKEY_decrypt_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_decrypt_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_decrypt_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_decrypt_init_allownil)}
+    EVP_PKEY_decrypt_init := @ERR_EVP_PKEY_decrypt_init;
+    {$ifend}
     {$if declared(EVP_PKEY_decrypt_init_introduced)}
     if LibVersion < EVP_PKEY_decrypt_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_decrypt_init)}
       EVP_PKEY_decrypt_init := @FC_EVP_PKEY_decrypt_init;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_init_allownil)}
-      EVP_PKEY_decrypt_init := @ERR_EVP_PKEY_decrypt_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_decrypt_init_removed)}
@@ -25241,39 +21584,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_decrypt_init)}
       EVP_PKEY_decrypt_init := @_EVP_PKEY_decrypt_init;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_init_allownil)}
-      EVP_PKEY_decrypt_init := @ERR_EVP_PKEY_decrypt_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_decrypt_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_decrypt_init := @ERR_EVP_PKEY_decrypt_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_decrypt_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_decrypt := LoadLibFunction(ADllHandle, EVP_PKEY_decrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_decrypt_allownil)}
+    EVP_PKEY_decrypt := @ERR_EVP_PKEY_decrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_decrypt_introduced)}
     if LibVersion < EVP_PKEY_decrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_decrypt)}
       EVP_PKEY_decrypt := @FC_EVP_PKEY_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_allownil)}
-      EVP_PKEY_decrypt := @ERR_EVP_PKEY_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_decrypt_removed)}
@@ -25281,39 +21616,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_decrypt)}
       EVP_PKEY_decrypt := @_EVP_PKEY_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_decrypt_allownil)}
-      EVP_PKEY_decrypt := @ERR_EVP_PKEY_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_decrypt := @ERR_EVP_PKEY_decrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_decrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_derive_init := LoadLibFunction(ADllHandle, EVP_PKEY_derive_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_derive_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_derive_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_derive_init_allownil)}
+    EVP_PKEY_derive_init := @ERR_EVP_PKEY_derive_init;
+    {$ifend}
     {$if declared(EVP_PKEY_derive_init_introduced)}
     if LibVersion < EVP_PKEY_derive_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_derive_init)}
       EVP_PKEY_derive_init := @FC_EVP_PKEY_derive_init;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_init_allownil)}
-      EVP_PKEY_derive_init := @ERR_EVP_PKEY_derive_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_derive_init_removed)}
@@ -25321,39 +21648,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_derive_init)}
       EVP_PKEY_derive_init := @_EVP_PKEY_derive_init;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_init_allownil)}
-      EVP_PKEY_derive_init := @ERR_EVP_PKEY_derive_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_derive_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_derive_init := @ERR_EVP_PKEY_derive_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_derive_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_derive_set_peer := LoadLibFunction(ADllHandle, EVP_PKEY_derive_set_peer_procname);
-  FuncLoaded := assigned(EVP_PKEY_derive_set_peer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_derive_set_peer);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_derive_set_peer_allownil)}
+    EVP_PKEY_derive_set_peer := @ERR_EVP_PKEY_derive_set_peer;
+    {$ifend}
     {$if declared(EVP_PKEY_derive_set_peer_introduced)}
     if LibVersion < EVP_PKEY_derive_set_peer_introduced then
     begin
       {$if declared(FC_EVP_PKEY_derive_set_peer)}
       EVP_PKEY_derive_set_peer := @FC_EVP_PKEY_derive_set_peer;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_set_peer_allownil)}
-      EVP_PKEY_derive_set_peer := @ERR_EVP_PKEY_derive_set_peer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_derive_set_peer_removed)}
@@ -25361,39 +21680,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_derive_set_peer)}
       EVP_PKEY_derive_set_peer := @_EVP_PKEY_derive_set_peer;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_set_peer_allownil)}
-      EVP_PKEY_derive_set_peer := @ERR_EVP_PKEY_derive_set_peer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_derive_set_peer_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_derive_set_peer := @ERR_EVP_PKEY_derive_set_peer;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_derive_set_peer');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_derive := LoadLibFunction(ADllHandle, EVP_PKEY_derive_procname);
-  FuncLoaded := assigned(EVP_PKEY_derive);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_derive);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_derive_allownil)}
+    EVP_PKEY_derive := @ERR_EVP_PKEY_derive;
+    {$ifend}
     {$if declared(EVP_PKEY_derive_introduced)}
     if LibVersion < EVP_PKEY_derive_introduced then
     begin
       {$if declared(FC_EVP_PKEY_derive)}
       EVP_PKEY_derive := @FC_EVP_PKEY_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_allownil)}
-      EVP_PKEY_derive := @ERR_EVP_PKEY_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_derive_removed)}
@@ -25401,39 +21712,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_derive)}
       EVP_PKEY_derive := @_EVP_PKEY_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_derive_allownil)}
-      EVP_PKEY_derive := @ERR_EVP_PKEY_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_derive_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_derive := @ERR_EVP_PKEY_derive;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_derive');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_paramgen_init := LoadLibFunction(ADllHandle, EVP_PKEY_paramgen_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_paramgen_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_paramgen_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_paramgen_init_allownil)}
+    EVP_PKEY_paramgen_init := @ERR_EVP_PKEY_paramgen_init;
+    {$ifend}
     {$if declared(EVP_PKEY_paramgen_init_introduced)}
     if LibVersion < EVP_PKEY_paramgen_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_paramgen_init)}
       EVP_PKEY_paramgen_init := @FC_EVP_PKEY_paramgen_init;
-      {$else}
-      {$if not defined(EVP_PKEY_paramgen_init_allownil)}
-      EVP_PKEY_paramgen_init := @ERR_EVP_PKEY_paramgen_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_paramgen_init_removed)}
@@ -25441,39 +21744,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_paramgen_init)}
       EVP_PKEY_paramgen_init := @_EVP_PKEY_paramgen_init;
-      {$else}
-      {$if not defined(EVP_PKEY_paramgen_init_allownil)}
-      EVP_PKEY_paramgen_init := @ERR_EVP_PKEY_paramgen_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_paramgen_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_paramgen_init := @ERR_EVP_PKEY_paramgen_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_paramgen_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_paramgen := LoadLibFunction(ADllHandle, EVP_PKEY_paramgen_procname);
-  FuncLoaded := assigned(EVP_PKEY_paramgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_paramgen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_paramgen_allownil)}
+    EVP_PKEY_paramgen := @ERR_EVP_PKEY_paramgen;
+    {$ifend}
     {$if declared(EVP_PKEY_paramgen_introduced)}
     if LibVersion < EVP_PKEY_paramgen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_paramgen)}
       EVP_PKEY_paramgen := @FC_EVP_PKEY_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_paramgen_allownil)}
-      EVP_PKEY_paramgen := @ERR_EVP_PKEY_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_paramgen_removed)}
@@ -25481,39 +21776,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_paramgen)}
       EVP_PKEY_paramgen := @_EVP_PKEY_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_paramgen_allownil)}
-      EVP_PKEY_paramgen := @ERR_EVP_PKEY_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_paramgen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_paramgen := @ERR_EVP_PKEY_paramgen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_paramgen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_keygen_init := LoadLibFunction(ADllHandle, EVP_PKEY_keygen_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_keygen_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_keygen_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_keygen_init_allownil)}
+    EVP_PKEY_keygen_init := @ERR_EVP_PKEY_keygen_init;
+    {$ifend}
     {$if declared(EVP_PKEY_keygen_init_introduced)}
     if LibVersion < EVP_PKEY_keygen_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_keygen_init)}
       EVP_PKEY_keygen_init := @FC_EVP_PKEY_keygen_init;
-      {$else}
-      {$if not defined(EVP_PKEY_keygen_init_allownil)}
-      EVP_PKEY_keygen_init := @ERR_EVP_PKEY_keygen_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_keygen_init_removed)}
@@ -25521,39 +21808,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_keygen_init)}
       EVP_PKEY_keygen_init := @_EVP_PKEY_keygen_init;
-      {$else}
-      {$if not defined(EVP_PKEY_keygen_init_allownil)}
-      EVP_PKEY_keygen_init := @ERR_EVP_PKEY_keygen_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_keygen_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_keygen_init := @ERR_EVP_PKEY_keygen_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_keygen_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_keygen := LoadLibFunction(ADllHandle, EVP_PKEY_keygen_procname);
-  FuncLoaded := assigned(EVP_PKEY_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_keygen_allownil)}
+    EVP_PKEY_keygen := @ERR_EVP_PKEY_keygen;
+    {$ifend}
     {$if declared(EVP_PKEY_keygen_introduced)}
     if LibVersion < EVP_PKEY_keygen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_keygen)}
       EVP_PKEY_keygen := @FC_EVP_PKEY_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_keygen_allownil)}
-      EVP_PKEY_keygen := @ERR_EVP_PKEY_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_keygen_removed)}
@@ -25561,39 +21840,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_keygen)}
       EVP_PKEY_keygen := @_EVP_PKEY_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_keygen_allownil)}
-      EVP_PKEY_keygen := @ERR_EVP_PKEY_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_keygen := @ERR_EVP_PKEY_keygen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_keygen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_check := LoadLibFunction(ADllHandle, EVP_PKEY_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_check_allownil)}
+    EVP_PKEY_check := @ERR_EVP_PKEY_check;
+    {$ifend}
     {$if declared(EVP_PKEY_check_introduced)}
     if LibVersion < EVP_PKEY_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_check)}
       EVP_PKEY_check := @FC_EVP_PKEY_check;
-      {$else}
-      {$if not defined(EVP_PKEY_check_allownil)}
-      EVP_PKEY_check := @ERR_EVP_PKEY_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_check_removed)}
@@ -25601,39 +21872,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_check)}
       EVP_PKEY_check := @_EVP_PKEY_check;
-      {$else}
-      {$if not defined(EVP_PKEY_check_allownil)}
-      EVP_PKEY_check := @ERR_EVP_PKEY_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_check := @ERR_EVP_PKEY_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_public_check := LoadLibFunction(ADllHandle, EVP_PKEY_public_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_public_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_public_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_public_check_allownil)}
+    EVP_PKEY_public_check := @ERR_EVP_PKEY_public_check;
+    {$ifend}
     {$if declared(EVP_PKEY_public_check_introduced)}
     if LibVersion < EVP_PKEY_public_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_public_check)}
       EVP_PKEY_public_check := @FC_EVP_PKEY_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_public_check_allownil)}
-      EVP_PKEY_public_check := @ERR_EVP_PKEY_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_public_check_removed)}
@@ -25641,39 +21904,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_public_check)}
       EVP_PKEY_public_check := @_EVP_PKEY_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_public_check_allownil)}
-      EVP_PKEY_public_check := @ERR_EVP_PKEY_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_public_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_public_check := @ERR_EVP_PKEY_public_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_public_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_param_check := LoadLibFunction(ADllHandle, EVP_PKEY_param_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_param_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_param_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_param_check_allownil)}
+    EVP_PKEY_param_check := @ERR_EVP_PKEY_param_check;
+    {$ifend}
     {$if declared(EVP_PKEY_param_check_introduced)}
     if LibVersion < EVP_PKEY_param_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_param_check)}
       EVP_PKEY_param_check := @FC_EVP_PKEY_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_param_check_allownil)}
-      EVP_PKEY_param_check := @ERR_EVP_PKEY_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_param_check_removed)}
@@ -25681,39 +21936,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_param_check)}
       EVP_PKEY_param_check := @_EVP_PKEY_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_param_check_allownil)}
-      EVP_PKEY_param_check := @ERR_EVP_PKEY_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_param_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_param_check := @ERR_EVP_PKEY_param_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_param_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_CTX_set_cb := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_set_cb_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_set_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_set_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_set_cb_allownil)}
+    EVP_PKEY_CTX_set_cb := @ERR_EVP_PKEY_CTX_set_cb;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_set_cb_introduced)}
     if LibVersion < EVP_PKEY_CTX_set_cb_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_set_cb)}
       EVP_PKEY_CTX_set_cb := @FC_EVP_PKEY_CTX_set_cb;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_cb_allownil)}
-      EVP_PKEY_CTX_set_cb := @ERR_EVP_PKEY_CTX_set_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_set_cb_removed)}
@@ -25721,39 +21968,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_set_cb)}
       EVP_PKEY_CTX_set_cb := @_EVP_PKEY_CTX_set_cb;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_set_cb_allownil)}
-      EVP_PKEY_CTX_set_cb := @ERR_EVP_PKEY_CTX_set_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_set_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_set_cb := @ERR_EVP_PKEY_CTX_set_cb;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_set_cb');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get_cb := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get_cb_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get_cb_allownil)}
+    EVP_PKEY_CTX_get_cb := @ERR_EVP_PKEY_CTX_get_cb;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get_cb_introduced)}
     if LibVersion < EVP_PKEY_CTX_get_cb_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get_cb)}
       EVP_PKEY_CTX_get_cb := @FC_EVP_PKEY_CTX_get_cb;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_cb_allownil)}
-      EVP_PKEY_CTX_get_cb := @ERR_EVP_PKEY_CTX_get_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get_cb_removed)}
@@ -25761,39 +22000,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get_cb)}
       EVP_PKEY_CTX_get_cb := @_EVP_PKEY_CTX_get_cb;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_cb_allownil)}
-      EVP_PKEY_CTX_get_cb := @ERR_EVP_PKEY_CTX_get_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get_cb := @ERR_EVP_PKEY_CTX_get_cb;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get_cb');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_CTX_get_keygen_info := LoadLibFunction(ADllHandle, EVP_PKEY_CTX_get_keygen_info_procname);
-  FuncLoaded := assigned(EVP_PKEY_CTX_get_keygen_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_CTX_get_keygen_info);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_CTX_get_keygen_info_allownil)}
+    EVP_PKEY_CTX_get_keygen_info := @ERR_EVP_PKEY_CTX_get_keygen_info;
+    {$ifend}
     {$if declared(EVP_PKEY_CTX_get_keygen_info_introduced)}
     if LibVersion < EVP_PKEY_CTX_get_keygen_info_introduced then
     begin
       {$if declared(FC_EVP_PKEY_CTX_get_keygen_info)}
       EVP_PKEY_CTX_get_keygen_info := @FC_EVP_PKEY_CTX_get_keygen_info;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_keygen_info_allownil)}
-      EVP_PKEY_CTX_get_keygen_info := @ERR_EVP_PKEY_CTX_get_keygen_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_CTX_get_keygen_info_removed)}
@@ -25801,39 +22032,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_CTX_get_keygen_info)}
       EVP_PKEY_CTX_get_keygen_info := @_EVP_PKEY_CTX_get_keygen_info;
-      {$else}
-      {$if not defined(EVP_PKEY_CTX_get_keygen_info_allownil)}
-      EVP_PKEY_CTX_get_keygen_info := @ERR_EVP_PKEY_CTX_get_keygen_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_CTX_get_keygen_info_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_CTX_get_keygen_info := @ERR_EVP_PKEY_CTX_get_keygen_info;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_CTX_get_keygen_info');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_init := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_init_allownil)}
+    EVP_PKEY_meth_set_init := @ERR_EVP_PKEY_meth_set_init;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_init_introduced)}
     if LibVersion < EVP_PKEY_meth_set_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_init)}
       EVP_PKEY_meth_set_init := @FC_EVP_PKEY_meth_set_init;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_init_allownil)}
-      EVP_PKEY_meth_set_init := @ERR_EVP_PKEY_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_init_removed)}
@@ -25841,39 +22064,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_init)}
       EVP_PKEY_meth_set_init := @_EVP_PKEY_meth_set_init;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_init_allownil)}
-      EVP_PKEY_meth_set_init := @ERR_EVP_PKEY_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_init := @ERR_EVP_PKEY_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_copy := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_copy_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_copy_allownil)}
+    EVP_PKEY_meth_set_copy := @ERR_EVP_PKEY_meth_set_copy;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_copy_introduced)}
     if LibVersion < EVP_PKEY_meth_set_copy_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_copy)}
       EVP_PKEY_meth_set_copy := @FC_EVP_PKEY_meth_set_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_copy_allownil)}
-      EVP_PKEY_meth_set_copy := @ERR_EVP_PKEY_meth_set_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_copy_removed)}
@@ -25881,39 +22096,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_copy)}
       EVP_PKEY_meth_set_copy := @_EVP_PKEY_meth_set_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_copy_allownil)}
-      EVP_PKEY_meth_set_copy := @ERR_EVP_PKEY_meth_set_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_copy := @ERR_EVP_PKEY_meth_set_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_cleanup := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_cleanup_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_cleanup_allownil)}
+    EVP_PKEY_meth_set_cleanup := @ERR_EVP_PKEY_meth_set_cleanup;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_cleanup_introduced)}
     if LibVersion < EVP_PKEY_meth_set_cleanup_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_cleanup)}
       EVP_PKEY_meth_set_cleanup := @FC_EVP_PKEY_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_cleanup_allownil)}
-      EVP_PKEY_meth_set_cleanup := @ERR_EVP_PKEY_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_cleanup_removed)}
@@ -25921,39 +22128,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_cleanup)}
       EVP_PKEY_meth_set_cleanup := @_EVP_PKEY_meth_set_cleanup;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_cleanup_allownil)}
-      EVP_PKEY_meth_set_cleanup := @ERR_EVP_PKEY_meth_set_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_cleanup := @ERR_EVP_PKEY_meth_set_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_cleanup');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_paramgen := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_paramgen_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_paramgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_paramgen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_paramgen_allownil)}
+    EVP_PKEY_meth_set_paramgen := @ERR_EVP_PKEY_meth_set_paramgen;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_paramgen_introduced)}
     if LibVersion < EVP_PKEY_meth_set_paramgen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_paramgen)}
       EVP_PKEY_meth_set_paramgen := @FC_EVP_PKEY_meth_set_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_paramgen_allownil)}
-      EVP_PKEY_meth_set_paramgen := @ERR_EVP_PKEY_meth_set_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_paramgen_removed)}
@@ -25961,39 +22160,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_paramgen)}
       EVP_PKEY_meth_set_paramgen := @_EVP_PKEY_meth_set_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_paramgen_allownil)}
-      EVP_PKEY_meth_set_paramgen := @ERR_EVP_PKEY_meth_set_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_paramgen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_paramgen := @ERR_EVP_PKEY_meth_set_paramgen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_paramgen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_keygen := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_keygen_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_keygen_allownil)}
+    EVP_PKEY_meth_set_keygen := @ERR_EVP_PKEY_meth_set_keygen;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_keygen_introduced)}
     if LibVersion < EVP_PKEY_meth_set_keygen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_keygen)}
       EVP_PKEY_meth_set_keygen := @FC_EVP_PKEY_meth_set_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_keygen_allownil)}
-      EVP_PKEY_meth_set_keygen := @ERR_EVP_PKEY_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_keygen_removed)}
@@ -26001,39 +22192,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_keygen)}
       EVP_PKEY_meth_set_keygen := @_EVP_PKEY_meth_set_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_keygen_allownil)}
-      EVP_PKEY_meth_set_keygen := @ERR_EVP_PKEY_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_keygen := @ERR_EVP_PKEY_meth_set_keygen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_keygen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_sign := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_sign_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_sign_allownil)}
+    EVP_PKEY_meth_set_sign := @ERR_EVP_PKEY_meth_set_sign;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_sign_introduced)}
     if LibVersion < EVP_PKEY_meth_set_sign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_sign)}
       EVP_PKEY_meth_set_sign := @FC_EVP_PKEY_meth_set_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_sign_allownil)}
-      EVP_PKEY_meth_set_sign := @ERR_EVP_PKEY_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_sign_removed)}
@@ -26041,39 +22224,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_sign)}
       EVP_PKEY_meth_set_sign := @_EVP_PKEY_meth_set_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_sign_allownil)}
-      EVP_PKEY_meth_set_sign := @ERR_EVP_PKEY_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_sign := @ERR_EVP_PKEY_meth_set_sign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_sign');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_verify := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_verify_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_verify_allownil)}
+    EVP_PKEY_meth_set_verify := @ERR_EVP_PKEY_meth_set_verify;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_verify_introduced)}
     if LibVersion < EVP_PKEY_meth_set_verify_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_verify)}
       EVP_PKEY_meth_set_verify := @FC_EVP_PKEY_meth_set_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verify_allownil)}
-      EVP_PKEY_meth_set_verify := @ERR_EVP_PKEY_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_verify_removed)}
@@ -26081,39 +22256,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_verify)}
       EVP_PKEY_meth_set_verify := @_EVP_PKEY_meth_set_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verify_allownil)}
-      EVP_PKEY_meth_set_verify := @ERR_EVP_PKEY_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_verify := @ERR_EVP_PKEY_meth_set_verify;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_verify');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_verify_recover := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_verify_recover_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_verify_recover);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_verify_recover);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_verify_recover_allownil)}
+    EVP_PKEY_meth_set_verify_recover := @ERR_EVP_PKEY_meth_set_verify_recover;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_verify_recover_introduced)}
     if LibVersion < EVP_PKEY_meth_set_verify_recover_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_verify_recover)}
       EVP_PKEY_meth_set_verify_recover := @FC_EVP_PKEY_meth_set_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verify_recover_allownil)}
-      EVP_PKEY_meth_set_verify_recover := @ERR_EVP_PKEY_meth_set_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_verify_recover_removed)}
@@ -26121,39 +22288,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_verify_recover)}
       EVP_PKEY_meth_set_verify_recover := @_EVP_PKEY_meth_set_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verify_recover_allownil)}
-      EVP_PKEY_meth_set_verify_recover := @ERR_EVP_PKEY_meth_set_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_verify_recover_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_verify_recover := @ERR_EVP_PKEY_meth_set_verify_recover;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_verify_recover');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_signctx := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_signctx_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_signctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_signctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_signctx_allownil)}
+    EVP_PKEY_meth_set_signctx := @ERR_EVP_PKEY_meth_set_signctx;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_signctx_introduced)}
     if LibVersion < EVP_PKEY_meth_set_signctx_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_signctx)}
       EVP_PKEY_meth_set_signctx := @FC_EVP_PKEY_meth_set_signctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_signctx_allownil)}
-      EVP_PKEY_meth_set_signctx := @ERR_EVP_PKEY_meth_set_signctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_signctx_removed)}
@@ -26161,39 +22320,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_signctx)}
       EVP_PKEY_meth_set_signctx := @_EVP_PKEY_meth_set_signctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_signctx_allownil)}
-      EVP_PKEY_meth_set_signctx := @ERR_EVP_PKEY_meth_set_signctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_signctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_signctx := @ERR_EVP_PKEY_meth_set_signctx;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_signctx');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_verifyctx := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_verifyctx_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_verifyctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_verifyctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_verifyctx_allownil)}
+    EVP_PKEY_meth_set_verifyctx := @ERR_EVP_PKEY_meth_set_verifyctx;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_verifyctx_introduced)}
     if LibVersion < EVP_PKEY_meth_set_verifyctx_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_verifyctx)}
       EVP_PKEY_meth_set_verifyctx := @FC_EVP_PKEY_meth_set_verifyctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verifyctx_allownil)}
-      EVP_PKEY_meth_set_verifyctx := @ERR_EVP_PKEY_meth_set_verifyctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_verifyctx_removed)}
@@ -26201,39 +22352,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_verifyctx)}
       EVP_PKEY_meth_set_verifyctx := @_EVP_PKEY_meth_set_verifyctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_verifyctx_allownil)}
-      EVP_PKEY_meth_set_verifyctx := @ERR_EVP_PKEY_meth_set_verifyctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_verifyctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_verifyctx := @ERR_EVP_PKEY_meth_set_verifyctx;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_verifyctx');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_encrypt := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_encrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_encrypt_allownil)}
+    EVP_PKEY_meth_set_encrypt := @ERR_EVP_PKEY_meth_set_encrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_encrypt_introduced)}
     if LibVersion < EVP_PKEY_meth_set_encrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_encrypt)}
       EVP_PKEY_meth_set_encrypt := @FC_EVP_PKEY_meth_set_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_encrypt_allownil)}
-      EVP_PKEY_meth_set_encrypt := @ERR_EVP_PKEY_meth_set_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_encrypt_removed)}
@@ -26241,39 +22384,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_encrypt)}
       EVP_PKEY_meth_set_encrypt := @_EVP_PKEY_meth_set_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_encrypt_allownil)}
-      EVP_PKEY_meth_set_encrypt := @ERR_EVP_PKEY_meth_set_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_encrypt := @ERR_EVP_PKEY_meth_set_encrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_encrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_decrypt := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_decrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_decrypt_allownil)}
+    EVP_PKEY_meth_set_decrypt := @ERR_EVP_PKEY_meth_set_decrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_decrypt_introduced)}
     if LibVersion < EVP_PKEY_meth_set_decrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_decrypt)}
       EVP_PKEY_meth_set_decrypt := @FC_EVP_PKEY_meth_set_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_decrypt_allownil)}
-      EVP_PKEY_meth_set_decrypt := @ERR_EVP_PKEY_meth_set_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_decrypt_removed)}
@@ -26281,39 +22416,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_decrypt)}
       EVP_PKEY_meth_set_decrypt := @_EVP_PKEY_meth_set_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_decrypt_allownil)}
-      EVP_PKEY_meth_set_decrypt := @ERR_EVP_PKEY_meth_set_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_decrypt := @ERR_EVP_PKEY_meth_set_decrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_decrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_derive := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_derive_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_derive);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_derive);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_derive_allownil)}
+    EVP_PKEY_meth_set_derive := @ERR_EVP_PKEY_meth_set_derive;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_derive_introduced)}
     if LibVersion < EVP_PKEY_meth_set_derive_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_derive)}
       EVP_PKEY_meth_set_derive := @FC_EVP_PKEY_meth_set_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_derive_allownil)}
-      EVP_PKEY_meth_set_derive := @ERR_EVP_PKEY_meth_set_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_derive_removed)}
@@ -26321,39 +22448,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_derive)}
       EVP_PKEY_meth_set_derive := @_EVP_PKEY_meth_set_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_derive_allownil)}
-      EVP_PKEY_meth_set_derive := @ERR_EVP_PKEY_meth_set_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_derive_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_derive := @ERR_EVP_PKEY_meth_set_derive;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_derive');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_ctrl_allownil)}
+    EVP_PKEY_meth_set_ctrl := @ERR_EVP_PKEY_meth_set_ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_ctrl_introduced)}
     if LibVersion < EVP_PKEY_meth_set_ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_ctrl)}
       EVP_PKEY_meth_set_ctrl := @FC_EVP_PKEY_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_ctrl_allownil)}
-      EVP_PKEY_meth_set_ctrl := @ERR_EVP_PKEY_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_ctrl_removed)}
@@ -26361,39 +22480,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_ctrl)}
       EVP_PKEY_meth_set_ctrl := @_EVP_PKEY_meth_set_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_ctrl_allownil)}
-      EVP_PKEY_meth_set_ctrl := @ERR_EVP_PKEY_meth_set_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_ctrl := @ERR_EVP_PKEY_meth_set_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_ctrl');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_set_digestsign := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_digestsign_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_digestsign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_digestsign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_digestsign_allownil)}
+    EVP_PKEY_meth_set_digestsign := @ERR_EVP_PKEY_meth_set_digestsign;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_digestsign_introduced)}
     if LibVersion < EVP_PKEY_meth_set_digestsign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_digestsign)}
       EVP_PKEY_meth_set_digestsign := @FC_EVP_PKEY_meth_set_digestsign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digestsign_allownil)}
-      EVP_PKEY_meth_set_digestsign := @ERR_EVP_PKEY_meth_set_digestsign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_digestsign_removed)}
@@ -26401,39 +22512,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_digestsign)}
       EVP_PKEY_meth_set_digestsign := @_EVP_PKEY_meth_set_digestsign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digestsign_allownil)}
-      EVP_PKEY_meth_set_digestsign := @ERR_EVP_PKEY_meth_set_digestsign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_digestsign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_digestsign := @ERR_EVP_PKEY_meth_set_digestsign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_digestsign');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_set_digestverify := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_digestverify_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_digestverify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_digestverify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_digestverify_allownil)}
+    EVP_PKEY_meth_set_digestverify := @ERR_EVP_PKEY_meth_set_digestverify;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_digestverify_introduced)}
     if LibVersion < EVP_PKEY_meth_set_digestverify_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_digestverify)}
       EVP_PKEY_meth_set_digestverify := @FC_EVP_PKEY_meth_set_digestverify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digestverify_allownil)}
-      EVP_PKEY_meth_set_digestverify := @ERR_EVP_PKEY_meth_set_digestverify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_digestverify_removed)}
@@ -26441,39 +22544,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_digestverify)}
       EVP_PKEY_meth_set_digestverify := @_EVP_PKEY_meth_set_digestverify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digestverify_allownil)}
-      EVP_PKEY_meth_set_digestverify := @ERR_EVP_PKEY_meth_set_digestverify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_digestverify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_digestverify := @ERR_EVP_PKEY_meth_set_digestverify;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_digestverify');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_set_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_check_allownil)}
+    EVP_PKEY_meth_set_check := @ERR_EVP_PKEY_meth_set_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_check_introduced)}
     if LibVersion < EVP_PKEY_meth_set_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_check)}
       EVP_PKEY_meth_set_check := @FC_EVP_PKEY_meth_set_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_check_allownil)}
-      EVP_PKEY_meth_set_check := @ERR_EVP_PKEY_meth_set_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_check_removed)}
@@ -26481,39 +22576,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_check)}
       EVP_PKEY_meth_set_check := @_EVP_PKEY_meth_set_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_check_allownil)}
-      EVP_PKEY_meth_set_check := @ERR_EVP_PKEY_meth_set_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_check := @ERR_EVP_PKEY_meth_set_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_set_public_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_public_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_public_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_public_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_public_check_allownil)}
+    EVP_PKEY_meth_set_public_check := @ERR_EVP_PKEY_meth_set_public_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_public_check_introduced)}
     if LibVersion < EVP_PKEY_meth_set_public_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_public_check)}
       EVP_PKEY_meth_set_public_check := @FC_EVP_PKEY_meth_set_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_public_check_allownil)}
-      EVP_PKEY_meth_set_public_check := @ERR_EVP_PKEY_meth_set_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_public_check_removed)}
@@ -26521,39 +22608,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_public_check)}
       EVP_PKEY_meth_set_public_check := @_EVP_PKEY_meth_set_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_public_check_allownil)}
-      EVP_PKEY_meth_set_public_check := @ERR_EVP_PKEY_meth_set_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_public_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_public_check := @ERR_EVP_PKEY_meth_set_public_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_public_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_set_param_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_param_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_param_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_param_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_param_check_allownil)}
+    EVP_PKEY_meth_set_param_check := @ERR_EVP_PKEY_meth_set_param_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_param_check_introduced)}
     if LibVersion < EVP_PKEY_meth_set_param_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_param_check)}
       EVP_PKEY_meth_set_param_check := @FC_EVP_PKEY_meth_set_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_param_check_allownil)}
-      EVP_PKEY_meth_set_param_check := @ERR_EVP_PKEY_meth_set_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_param_check_removed)}
@@ -26561,39 +22640,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_param_check)}
       EVP_PKEY_meth_set_param_check := @_EVP_PKEY_meth_set_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_param_check_allownil)}
-      EVP_PKEY_meth_set_param_check := @ERR_EVP_PKEY_meth_set_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_param_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_param_check := @ERR_EVP_PKEY_meth_set_param_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_param_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_set_digest_custom := LoadLibFunction(ADllHandle, EVP_PKEY_meth_set_digest_custom_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_set_digest_custom);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_set_digest_custom);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_set_digest_custom_allownil)}
+    EVP_PKEY_meth_set_digest_custom := @ERR_EVP_PKEY_meth_set_digest_custom;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_set_digest_custom_introduced)}
     if LibVersion < EVP_PKEY_meth_set_digest_custom_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_set_digest_custom)}
       EVP_PKEY_meth_set_digest_custom := @FC_EVP_PKEY_meth_set_digest_custom;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digest_custom_allownil)}
-      EVP_PKEY_meth_set_digest_custom := @ERR_EVP_PKEY_meth_set_digest_custom;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_set_digest_custom_removed)}
@@ -26601,39 +22672,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_set_digest_custom)}
       EVP_PKEY_meth_set_digest_custom := @_EVP_PKEY_meth_set_digest_custom;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_set_digest_custom_allownil)}
-      EVP_PKEY_meth_set_digest_custom := @ERR_EVP_PKEY_meth_set_digest_custom;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_set_digest_custom_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_set_digest_custom := @ERR_EVP_PKEY_meth_set_digest_custom;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_set_digest_custom');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_init := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_init_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_init_allownil)}
+    EVP_PKEY_meth_get_init := @ERR_EVP_PKEY_meth_get_init;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_init_introduced)}
     if LibVersion < EVP_PKEY_meth_get_init_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_init)}
       EVP_PKEY_meth_get_init := @FC_EVP_PKEY_meth_get_init;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_init_allownil)}
-      EVP_PKEY_meth_get_init := @ERR_EVP_PKEY_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_init_removed)}
@@ -26641,39 +22704,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_init)}
       EVP_PKEY_meth_get_init := @_EVP_PKEY_meth_get_init;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_init_allownil)}
-      EVP_PKEY_meth_get_init := @ERR_EVP_PKEY_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_init := @ERR_EVP_PKEY_meth_get_init;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_init');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_copy := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_copy_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_copy_allownil)}
+    EVP_PKEY_meth_get_copy := @ERR_EVP_PKEY_meth_get_copy;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_copy_introduced)}
     if LibVersion < EVP_PKEY_meth_get_copy_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_copy)}
       EVP_PKEY_meth_get_copy := @FC_EVP_PKEY_meth_get_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_copy_allownil)}
-      EVP_PKEY_meth_get_copy := @ERR_EVP_PKEY_meth_get_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_copy_removed)}
@@ -26681,39 +22736,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_copy)}
       EVP_PKEY_meth_get_copy := @_EVP_PKEY_meth_get_copy;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_copy_allownil)}
-      EVP_PKEY_meth_get_copy := @ERR_EVP_PKEY_meth_get_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_copy := @ERR_EVP_PKEY_meth_get_copy;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_copy');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_cleanup := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_cleanup_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_cleanup_allownil)}
+    EVP_PKEY_meth_get_cleanup := @ERR_EVP_PKEY_meth_get_cleanup;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_cleanup_introduced)}
     if LibVersion < EVP_PKEY_meth_get_cleanup_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_cleanup)}
       EVP_PKEY_meth_get_cleanup := @FC_EVP_PKEY_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_cleanup_allownil)}
-      EVP_PKEY_meth_get_cleanup := @ERR_EVP_PKEY_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_cleanup_removed)}
@@ -26721,39 +22768,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_cleanup)}
       EVP_PKEY_meth_get_cleanup := @_EVP_PKEY_meth_get_cleanup;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_cleanup_allownil)}
-      EVP_PKEY_meth_get_cleanup := @ERR_EVP_PKEY_meth_get_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_cleanup := @ERR_EVP_PKEY_meth_get_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_cleanup');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_paramgen := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_paramgen_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_paramgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_paramgen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_paramgen_allownil)}
+    EVP_PKEY_meth_get_paramgen := @ERR_EVP_PKEY_meth_get_paramgen;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_paramgen_introduced)}
     if LibVersion < EVP_PKEY_meth_get_paramgen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_paramgen)}
       EVP_PKEY_meth_get_paramgen := @FC_EVP_PKEY_meth_get_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_paramgen_allownil)}
-      EVP_PKEY_meth_get_paramgen := @ERR_EVP_PKEY_meth_get_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_paramgen_removed)}
@@ -26761,39 +22800,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_paramgen)}
       EVP_PKEY_meth_get_paramgen := @_EVP_PKEY_meth_get_paramgen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_paramgen_allownil)}
-      EVP_PKEY_meth_get_paramgen := @ERR_EVP_PKEY_meth_get_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_paramgen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_paramgen := @ERR_EVP_PKEY_meth_get_paramgen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_paramgen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_keygen := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_keygen_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_keygen_allownil)}
+    EVP_PKEY_meth_get_keygen := @ERR_EVP_PKEY_meth_get_keygen;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_keygen_introduced)}
     if LibVersion < EVP_PKEY_meth_get_keygen_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_keygen)}
       EVP_PKEY_meth_get_keygen := @FC_EVP_PKEY_meth_get_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_keygen_allownil)}
-      EVP_PKEY_meth_get_keygen := @ERR_EVP_PKEY_meth_get_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_keygen_removed)}
@@ -26801,39 +22832,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_keygen)}
       EVP_PKEY_meth_get_keygen := @_EVP_PKEY_meth_get_keygen;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_keygen_allownil)}
-      EVP_PKEY_meth_get_keygen := @ERR_EVP_PKEY_meth_get_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_keygen := @ERR_EVP_PKEY_meth_get_keygen;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_keygen');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_sign := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_sign_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_sign_allownil)}
+    EVP_PKEY_meth_get_sign := @ERR_EVP_PKEY_meth_get_sign;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_sign_introduced)}
     if LibVersion < EVP_PKEY_meth_get_sign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_sign)}
       EVP_PKEY_meth_get_sign := @FC_EVP_PKEY_meth_get_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_sign_allownil)}
-      EVP_PKEY_meth_get_sign := @ERR_EVP_PKEY_meth_get_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_sign_removed)}
@@ -26841,39 +22864,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_sign)}
       EVP_PKEY_meth_get_sign := @_EVP_PKEY_meth_get_sign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_sign_allownil)}
-      EVP_PKEY_meth_get_sign := @ERR_EVP_PKEY_meth_get_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_sign := @ERR_EVP_PKEY_meth_get_sign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_sign');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_verify := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_verify_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_verify_allownil)}
+    EVP_PKEY_meth_get_verify := @ERR_EVP_PKEY_meth_get_verify;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_verify_introduced)}
     if LibVersion < EVP_PKEY_meth_get_verify_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_verify)}
       EVP_PKEY_meth_get_verify := @FC_EVP_PKEY_meth_get_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verify_allownil)}
-      EVP_PKEY_meth_get_verify := @ERR_EVP_PKEY_meth_get_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_verify_removed)}
@@ -26881,39 +22896,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_verify)}
       EVP_PKEY_meth_get_verify := @_EVP_PKEY_meth_get_verify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verify_allownil)}
-      EVP_PKEY_meth_get_verify := @ERR_EVP_PKEY_meth_get_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_verify := @ERR_EVP_PKEY_meth_get_verify;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_verify');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_verify_recover := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_verify_recover_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_verify_recover);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_verify_recover);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_verify_recover_allownil)}
+    EVP_PKEY_meth_get_verify_recover := @ERR_EVP_PKEY_meth_get_verify_recover;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_verify_recover_introduced)}
     if LibVersion < EVP_PKEY_meth_get_verify_recover_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_verify_recover)}
       EVP_PKEY_meth_get_verify_recover := @FC_EVP_PKEY_meth_get_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verify_recover_allownil)}
-      EVP_PKEY_meth_get_verify_recover := @ERR_EVP_PKEY_meth_get_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_verify_recover_removed)}
@@ -26921,39 +22928,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_verify_recover)}
       EVP_PKEY_meth_get_verify_recover := @_EVP_PKEY_meth_get_verify_recover;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verify_recover_allownil)}
-      EVP_PKEY_meth_get_verify_recover := @ERR_EVP_PKEY_meth_get_verify_recover;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_verify_recover_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_verify_recover := @ERR_EVP_PKEY_meth_get_verify_recover;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_verify_recover');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_signctx := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_signctx_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_signctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_signctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_signctx_allownil)}
+    EVP_PKEY_meth_get_signctx := @ERR_EVP_PKEY_meth_get_signctx;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_signctx_introduced)}
     if LibVersion < EVP_PKEY_meth_get_signctx_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_signctx)}
       EVP_PKEY_meth_get_signctx := @FC_EVP_PKEY_meth_get_signctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_signctx_allownil)}
-      EVP_PKEY_meth_get_signctx := @ERR_EVP_PKEY_meth_get_signctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_signctx_removed)}
@@ -26961,39 +22960,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_signctx)}
       EVP_PKEY_meth_get_signctx := @_EVP_PKEY_meth_get_signctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_signctx_allownil)}
-      EVP_PKEY_meth_get_signctx := @ERR_EVP_PKEY_meth_get_signctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_signctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_signctx := @ERR_EVP_PKEY_meth_get_signctx;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_signctx');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_verifyctx := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_verifyctx_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_verifyctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_verifyctx);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_verifyctx_allownil)}
+    EVP_PKEY_meth_get_verifyctx := @ERR_EVP_PKEY_meth_get_verifyctx;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_verifyctx_introduced)}
     if LibVersion < EVP_PKEY_meth_get_verifyctx_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_verifyctx)}
       EVP_PKEY_meth_get_verifyctx := @FC_EVP_PKEY_meth_get_verifyctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verifyctx_allownil)}
-      EVP_PKEY_meth_get_verifyctx := @ERR_EVP_PKEY_meth_get_verifyctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_verifyctx_removed)}
@@ -27001,39 +22992,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_verifyctx)}
       EVP_PKEY_meth_get_verifyctx := @_EVP_PKEY_meth_get_verifyctx;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_verifyctx_allownil)}
-      EVP_PKEY_meth_get_verifyctx := @ERR_EVP_PKEY_meth_get_verifyctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_verifyctx_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_verifyctx := @ERR_EVP_PKEY_meth_get_verifyctx;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_verifyctx');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_encrypt := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_encrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_encrypt_allownil)}
+    EVP_PKEY_meth_get_encrypt := @ERR_EVP_PKEY_meth_get_encrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_encrypt_introduced)}
     if LibVersion < EVP_PKEY_meth_get_encrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_encrypt)}
       EVP_PKEY_meth_get_encrypt := @FC_EVP_PKEY_meth_get_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_encrypt_allownil)}
-      EVP_PKEY_meth_get_encrypt := @ERR_EVP_PKEY_meth_get_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_encrypt_removed)}
@@ -27041,39 +23024,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_encrypt)}
       EVP_PKEY_meth_get_encrypt := @_EVP_PKEY_meth_get_encrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_encrypt_allownil)}
-      EVP_PKEY_meth_get_encrypt := @ERR_EVP_PKEY_meth_get_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_encrypt := @ERR_EVP_PKEY_meth_get_encrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_encrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_decrypt := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_decrypt_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_decrypt_allownil)}
+    EVP_PKEY_meth_get_decrypt := @ERR_EVP_PKEY_meth_get_decrypt;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_decrypt_introduced)}
     if LibVersion < EVP_PKEY_meth_get_decrypt_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_decrypt)}
       EVP_PKEY_meth_get_decrypt := @FC_EVP_PKEY_meth_get_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_decrypt_allownil)}
-      EVP_PKEY_meth_get_decrypt := @ERR_EVP_PKEY_meth_get_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_decrypt_removed)}
@@ -27081,39 +23056,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_decrypt)}
       EVP_PKEY_meth_get_decrypt := @_EVP_PKEY_meth_get_decrypt;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_decrypt_allownil)}
-      EVP_PKEY_meth_get_decrypt := @ERR_EVP_PKEY_meth_get_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_decrypt := @ERR_EVP_PKEY_meth_get_decrypt;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_decrypt');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_derive := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_derive_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_derive);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_derive);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_derive_allownil)}
+    EVP_PKEY_meth_get_derive := @ERR_EVP_PKEY_meth_get_derive;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_derive_introduced)}
     if LibVersion < EVP_PKEY_meth_get_derive_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_derive)}
       EVP_PKEY_meth_get_derive := @FC_EVP_PKEY_meth_get_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_derive_allownil)}
-      EVP_PKEY_meth_get_derive := @ERR_EVP_PKEY_meth_get_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_derive_removed)}
@@ -27121,39 +23088,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_derive)}
       EVP_PKEY_meth_get_derive := @_EVP_PKEY_meth_get_derive;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_derive_allownil)}
-      EVP_PKEY_meth_get_derive := @ERR_EVP_PKEY_meth_get_derive;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_derive_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_derive := @ERR_EVP_PKEY_meth_get_derive;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_derive');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_ctrl := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_ctrl_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_ctrl_allownil)}
+    EVP_PKEY_meth_get_ctrl := @ERR_EVP_PKEY_meth_get_ctrl;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_ctrl_introduced)}
     if LibVersion < EVP_PKEY_meth_get_ctrl_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_ctrl)}
       EVP_PKEY_meth_get_ctrl := @FC_EVP_PKEY_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_ctrl_allownil)}
-      EVP_PKEY_meth_get_ctrl := @ERR_EVP_PKEY_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_ctrl_removed)}
@@ -27161,39 +23120,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_ctrl)}
       EVP_PKEY_meth_get_ctrl := @_EVP_PKEY_meth_get_ctrl;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_ctrl_allownil)}
-      EVP_PKEY_meth_get_ctrl := @ERR_EVP_PKEY_meth_get_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_ctrl := @ERR_EVP_PKEY_meth_get_ctrl;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_ctrl');
-    end;
     {$ifend}
   end;
 
 
   EVP_PKEY_meth_get_digestsign := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_digestsign_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_digestsign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_digestsign);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_digestsign_allownil)}
+    EVP_PKEY_meth_get_digestsign := @ERR_EVP_PKEY_meth_get_digestsign;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_digestsign_introduced)}
     if LibVersion < EVP_PKEY_meth_get_digestsign_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_digestsign)}
       EVP_PKEY_meth_get_digestsign := @FC_EVP_PKEY_meth_get_digestsign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digestsign_allownil)}
-      EVP_PKEY_meth_get_digestsign := @ERR_EVP_PKEY_meth_get_digestsign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_digestsign_removed)}
@@ -27201,39 +23152,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_digestsign)}
       EVP_PKEY_meth_get_digestsign := @_EVP_PKEY_meth_get_digestsign;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digestsign_allownil)}
-      EVP_PKEY_meth_get_digestsign := @ERR_EVP_PKEY_meth_get_digestsign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_digestsign_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_digestsign := @ERR_EVP_PKEY_meth_get_digestsign;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_digestsign');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_digestverify := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_digestverify_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_digestverify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_digestverify);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_digestverify_allownil)}
+    EVP_PKEY_meth_get_digestverify := @ERR_EVP_PKEY_meth_get_digestverify;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_digestverify_introduced)}
     if LibVersion < EVP_PKEY_meth_get_digestverify_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_digestverify)}
       EVP_PKEY_meth_get_digestverify := @FC_EVP_PKEY_meth_get_digestverify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digestverify_allownil)}
-      EVP_PKEY_meth_get_digestverify := @ERR_EVP_PKEY_meth_get_digestverify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_digestverify_removed)}
@@ -27241,39 +23184,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_digestverify)}
       EVP_PKEY_meth_get_digestverify := @_EVP_PKEY_meth_get_digestverify;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digestverify_allownil)}
-      EVP_PKEY_meth_get_digestverify := @ERR_EVP_PKEY_meth_get_digestverify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_digestverify_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_digestverify := @ERR_EVP_PKEY_meth_get_digestverify;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_digestverify');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_check_allownil)}
+    EVP_PKEY_meth_get_check := @ERR_EVP_PKEY_meth_get_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_check_introduced)}
     if LibVersion < EVP_PKEY_meth_get_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_check)}
       EVP_PKEY_meth_get_check := @FC_EVP_PKEY_meth_get_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_check_allownil)}
-      EVP_PKEY_meth_get_check := @ERR_EVP_PKEY_meth_get_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_check_removed)}
@@ -27281,39 +23216,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_check)}
       EVP_PKEY_meth_get_check := @_EVP_PKEY_meth_get_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_check_allownil)}
-      EVP_PKEY_meth_get_check := @ERR_EVP_PKEY_meth_get_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_check := @ERR_EVP_PKEY_meth_get_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_public_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_public_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_public_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_public_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_public_check_allownil)}
+    EVP_PKEY_meth_get_public_check := @ERR_EVP_PKEY_meth_get_public_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_public_check_introduced)}
     if LibVersion < EVP_PKEY_meth_get_public_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_public_check)}
       EVP_PKEY_meth_get_public_check := @FC_EVP_PKEY_meth_get_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_public_check_allownil)}
-      EVP_PKEY_meth_get_public_check := @ERR_EVP_PKEY_meth_get_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_public_check_removed)}
@@ -27321,39 +23248,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_public_check)}
       EVP_PKEY_meth_get_public_check := @_EVP_PKEY_meth_get_public_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_public_check_allownil)}
-      EVP_PKEY_meth_get_public_check := @ERR_EVP_PKEY_meth_get_public_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_public_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_public_check := @ERR_EVP_PKEY_meth_get_public_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_public_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_param_check := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_param_check_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_param_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_param_check);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_param_check_allownil)}
+    EVP_PKEY_meth_get_param_check := @ERR_EVP_PKEY_meth_get_param_check;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_param_check_introduced)}
     if LibVersion < EVP_PKEY_meth_get_param_check_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_param_check)}
       EVP_PKEY_meth_get_param_check := @FC_EVP_PKEY_meth_get_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_param_check_allownil)}
-      EVP_PKEY_meth_get_param_check := @ERR_EVP_PKEY_meth_get_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_param_check_removed)}
@@ -27361,39 +23280,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_param_check)}
       EVP_PKEY_meth_get_param_check := @_EVP_PKEY_meth_get_param_check;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_param_check_allownil)}
-      EVP_PKEY_meth_get_param_check := @ERR_EVP_PKEY_meth_get_param_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_param_check_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_param_check := @ERR_EVP_PKEY_meth_get_param_check;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_param_check');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_PKEY_meth_get_digest_custom := LoadLibFunction(ADllHandle, EVP_PKEY_meth_get_digest_custom_procname);
-  FuncLoaded := assigned(EVP_PKEY_meth_get_digest_custom);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_PKEY_meth_get_digest_custom);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_PKEY_meth_get_digest_custom_allownil)}
+    EVP_PKEY_meth_get_digest_custom := @ERR_EVP_PKEY_meth_get_digest_custom;
+    {$ifend}
     {$if declared(EVP_PKEY_meth_get_digest_custom_introduced)}
     if LibVersion < EVP_PKEY_meth_get_digest_custom_introduced then
     begin
       {$if declared(FC_EVP_PKEY_meth_get_digest_custom)}
       EVP_PKEY_meth_get_digest_custom := @FC_EVP_PKEY_meth_get_digest_custom;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digest_custom_allownil)}
-      EVP_PKEY_meth_get_digest_custom := @ERR_EVP_PKEY_meth_get_digest_custom;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_PKEY_meth_get_digest_custom_removed)}
@@ -27401,39 +23312,31 @@ begin
     begin
       {$if declared(_EVP_PKEY_meth_get_digest_custom)}
       EVP_PKEY_meth_get_digest_custom := @_EVP_PKEY_meth_get_digest_custom;
-      {$else}
-      {$if not defined(EVP_PKEY_meth_get_digest_custom_allownil)}
-      EVP_PKEY_meth_get_digest_custom := @ERR_EVP_PKEY_meth_get_digest_custom;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_PKEY_meth_get_digest_custom_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_PKEY_meth_get_digest_custom := @ERR_EVP_PKEY_meth_get_digest_custom;
+    if FuncLoadError then
       AFailed.Add('EVP_PKEY_meth_get_digest_custom');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   EVP_add_alg_module := LoadLibFunction(ADllHandle, EVP_add_alg_module_procname);
-  FuncLoaded := assigned(EVP_add_alg_module);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_add_alg_module);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_add_alg_module_allownil)}
+    EVP_add_alg_module := @ERR_EVP_add_alg_module;
+    {$ifend}
     {$if declared(EVP_add_alg_module_introduced)}
     if LibVersion < EVP_add_alg_module_introduced then
     begin
       {$if declared(FC_EVP_add_alg_module)}
       EVP_add_alg_module := @FC_EVP_add_alg_module;
-      {$else}
-      {$if not defined(EVP_add_alg_module_allownil)}
-      EVP_add_alg_module := @ERR_EVP_add_alg_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_add_alg_module_removed)}
@@ -27441,39 +23344,31 @@ begin
     begin
       {$if declared(_EVP_add_alg_module)}
       EVP_add_alg_module := @_EVP_add_alg_module;
-      {$else}
-      {$if not defined(EVP_add_alg_module_allownil)}
-      EVP_add_alg_module := @ERR_EVP_add_alg_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_add_alg_module_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_add_alg_module := @ERR_EVP_add_alg_module;
+    if FuncLoadError then
       AFailed.Add('EVP_add_alg_module');
-    end;
     {$ifend}
   end;
 
 
   OpenSSL_add_all_ciphers := LoadLibFunction(ADllHandle, OpenSSL_add_all_ciphers_procname);
-  FuncLoaded := assigned(OpenSSL_add_all_ciphers);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OpenSSL_add_all_ciphers);
+  if FuncLoadError then
   begin
+    {$if not defined(OpenSSL_add_all_ciphers_allownil)}
+    OpenSSL_add_all_ciphers := @ERR_OpenSSL_add_all_ciphers;
+    {$ifend}
     {$if declared(OpenSSL_add_all_ciphers_introduced)}
     if LibVersion < OpenSSL_add_all_ciphers_introduced then
     begin
       {$if declared(FC_OpenSSL_add_all_ciphers)}
       OpenSSL_add_all_ciphers := @FC_OpenSSL_add_all_ciphers;
-      {$else}
-      {$if not defined(OpenSSL_add_all_ciphers_allownil)}
-      OpenSSL_add_all_ciphers := @ERR_OpenSSL_add_all_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OpenSSL_add_all_ciphers_removed)}
@@ -27481,39 +23376,31 @@ begin
     begin
       {$if declared(_OpenSSL_add_all_ciphers)}
       OpenSSL_add_all_ciphers := @_OpenSSL_add_all_ciphers;
-      {$else}
-      {$if not defined(OpenSSL_add_all_ciphers_allownil)}
-      OpenSSL_add_all_ciphers := @ERR_OpenSSL_add_all_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OpenSSL_add_all_ciphers_allownil)}
-    if not FuncLoaded then
-    begin
-      OpenSSL_add_all_ciphers := @ERR_OpenSSL_add_all_ciphers;
+    if FuncLoadError then
       AFailed.Add('OpenSSL_add_all_ciphers');
-    end;
     {$ifend}
   end;
 
  
   OpenSSL_add_all_digests := LoadLibFunction(ADllHandle, OpenSSL_add_all_digests_procname);
-  FuncLoaded := assigned(OpenSSL_add_all_digests);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OpenSSL_add_all_digests);
+  if FuncLoadError then
   begin
+    {$if not defined(OpenSSL_add_all_digests_allownil)}
+    OpenSSL_add_all_digests := @ERR_OpenSSL_add_all_digests;
+    {$ifend}
     {$if declared(OpenSSL_add_all_digests_introduced)}
     if LibVersion < OpenSSL_add_all_digests_introduced then
     begin
       {$if declared(FC_OpenSSL_add_all_digests)}
       OpenSSL_add_all_digests := @FC_OpenSSL_add_all_digests;
-      {$else}
-      {$if not defined(OpenSSL_add_all_digests_allownil)}
-      OpenSSL_add_all_digests := @ERR_OpenSSL_add_all_digests;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OpenSSL_add_all_digests_removed)}
@@ -27521,39 +23408,31 @@ begin
     begin
       {$if declared(_OpenSSL_add_all_digests)}
       OpenSSL_add_all_digests := @_OpenSSL_add_all_digests;
-      {$else}
-      {$if not defined(OpenSSL_add_all_digests_allownil)}
-      OpenSSL_add_all_digests := @ERR_OpenSSL_add_all_digests;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OpenSSL_add_all_digests_allownil)}
-    if not FuncLoaded then
-    begin
-      OpenSSL_add_all_digests := @ERR_OpenSSL_add_all_digests;
+    if FuncLoadError then
       AFailed.Add('OpenSSL_add_all_digests');
-    end;
     {$ifend}
   end;
 
  
   EVP_cleanup := LoadLibFunction(ADllHandle, EVP_cleanup_procname);
-  FuncLoaded := assigned(EVP_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(EVP_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(EVP_cleanup_allownil)}
+    EVP_cleanup := @ERR_EVP_cleanup;
+    {$ifend}
     {$if declared(EVP_cleanup_introduced)}
     if LibVersion < EVP_cleanup_introduced then
     begin
       {$if declared(FC_EVP_cleanup)}
       EVP_cleanup := @FC_EVP_cleanup;
-      {$else}
-      {$if not defined(EVP_cleanup_allownil)}
-      EVP_cleanup := @ERR_EVP_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(EVP_cleanup_removed)}
@@ -27561,20 +23440,13 @@ begin
     begin
       {$if declared(_EVP_cleanup)}
       EVP_cleanup := @_EVP_cleanup;
-      {$else}
-      {$if not defined(EVP_cleanup_allownil)}
-      EVP_cleanup := @ERR_EVP_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(EVP_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      EVP_cleanup := @ERR_EVP_cleanup;
+    if FuncLoadError then
       AFailed.Add('EVP_cleanup');
-    end;
     {$ifend}
   end;
 

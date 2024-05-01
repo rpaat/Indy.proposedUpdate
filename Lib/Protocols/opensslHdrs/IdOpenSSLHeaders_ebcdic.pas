@@ -101,24 +101,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ebcdic2ascii := LoadLibFunction(ADllHandle, ebcdic2ascii_procname);
-  FuncLoaded := assigned(ebcdic2ascii);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ebcdic2ascii);
+  if FuncLoadError then
   begin
+    {$if not defined(ebcdic2ascii_allownil)}
+    ebcdic2ascii := @ERR_ebcdic2ascii;
+    {$ifend}
     {$if declared(ebcdic2ascii_introduced)}
     if LibVersion < ebcdic2ascii_introduced then
     begin
       {$if declared(FC_ebcdic2ascii)}
       ebcdic2ascii := @FC_ebcdic2ascii;
-      {$else}
-      {$if not defined(ebcdic2ascii_allownil)}
-      ebcdic2ascii := @ERR_ebcdic2ascii;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ebcdic2ascii_removed)}
@@ -126,39 +125,31 @@ begin
     begin
       {$if declared(_ebcdic2ascii)}
       ebcdic2ascii := @_ebcdic2ascii;
-      {$else}
-      {$if not defined(ebcdic2ascii_allownil)}
-      ebcdic2ascii := @ERR_ebcdic2ascii;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ebcdic2ascii_allownil)}
-    if not FuncLoaded then
-    begin
-      ebcdic2ascii := @ERR_ebcdic2ascii;
+    if FuncLoadError then
       AFailed.Add('ebcdic2ascii');
-    end;
     {$ifend}
   end;
 
 
   ascii2ebcdic := LoadLibFunction(ADllHandle, ascii2ebcdic_procname);
-  FuncLoaded := assigned(ascii2ebcdic);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ascii2ebcdic);
+  if FuncLoadError then
   begin
+    {$if not defined(ascii2ebcdic_allownil)}
+    ascii2ebcdic := @ERR_ascii2ebcdic;
+    {$ifend}
     {$if declared(ascii2ebcdic_introduced)}
     if LibVersion < ascii2ebcdic_introduced then
     begin
       {$if declared(FC_ascii2ebcdic)}
       ascii2ebcdic := @FC_ascii2ebcdic;
-      {$else}
-      {$if not defined(ascii2ebcdic_allownil)}
-      ascii2ebcdic := @ERR_ascii2ebcdic;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ascii2ebcdic_removed)}
@@ -166,20 +157,13 @@ begin
     begin
       {$if declared(_ascii2ebcdic)}
       ascii2ebcdic := @_ascii2ebcdic;
-      {$else}
-      {$if not defined(ascii2ebcdic_allownil)}
-      ascii2ebcdic := @ERR_ascii2ebcdic;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ascii2ebcdic_allownil)}
-    if not FuncLoaded then
-    begin
-      ascii2ebcdic := @ERR_ascii2ebcdic;
+    if FuncLoadError then
       AFailed.Add('ascii2ebcdic');
-    end;
     {$ifend}
   end;
 

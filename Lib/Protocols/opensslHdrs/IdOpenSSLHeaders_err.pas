@@ -684,24 +684,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ERR_put_error := LoadLibFunction(ADllHandle, ERR_put_error_procname);
-  FuncLoaded := assigned(ERR_put_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_put_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_put_error_allownil)}
+    ERR_put_error := @ERR_ERR_put_error;
+    {$ifend}
     {$if declared(ERR_put_error_introduced)}
     if LibVersion < ERR_put_error_introduced then
     begin
       {$if declared(FC_ERR_put_error)}
       ERR_put_error := @FC_ERR_put_error;
-      {$else}
-      {$if not defined(ERR_put_error_allownil)}
-      ERR_put_error := @ERR_ERR_put_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_put_error_removed)}
@@ -709,39 +708,31 @@ begin
     begin
       {$if declared(_ERR_put_error)}
       ERR_put_error := @_ERR_put_error;
-      {$else}
-      {$if not defined(ERR_put_error_allownil)}
-      ERR_put_error := @ERR_ERR_put_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_put_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_put_error := @ERR_ERR_put_error;
+    if FuncLoadError then
       AFailed.Add('ERR_put_error');
-    end;
     {$ifend}
   end;
 
  
   ERR_new := LoadLibFunction(ADllHandle, ERR_new_procname);
-  FuncLoaded := assigned(ERR_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_new_allownil)}
+    ERR_new := @ERR_ERR_new;
+    {$ifend}
     {$if declared(ERR_new_introduced)}
     if LibVersion < ERR_new_introduced then
     begin
       {$if declared(FC_ERR_new)}
       ERR_new := @FC_ERR_new;
-      {$else}
-      {$if not defined(ERR_new_allownil)}
-      ERR_new := @ERR_ERR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_new_removed)}
@@ -749,39 +740,31 @@ begin
     begin
       {$if declared(_ERR_new)}
       ERR_new := @_ERR_new;
-      {$else}
-      {$if not defined(ERR_new_allownil)}
-      ERR_new := @ERR_ERR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_new := @ERR_ERR_new;
+    if FuncLoadError then
       AFailed.Add('ERR_new');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   ERR_set_debug := LoadLibFunction(ADllHandle, ERR_set_debug_procname);
-  FuncLoaded := assigned(ERR_set_debug);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_set_debug);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_set_debug_allownil)}
+    ERR_set_debug := @ERR_ERR_set_debug;
+    {$ifend}
     {$if declared(ERR_set_debug_introduced)}
     if LibVersion < ERR_set_debug_introduced then
     begin
       {$if declared(FC_ERR_set_debug)}
       ERR_set_debug := @FC_ERR_set_debug;
-      {$else}
-      {$if not defined(ERR_set_debug_allownil)}
-      ERR_set_debug := @ERR_ERR_set_debug;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_set_debug_removed)}
@@ -789,39 +772,31 @@ begin
     begin
       {$if declared(_ERR_set_debug)}
       ERR_set_debug := @_ERR_set_debug;
-      {$else}
-      {$if not defined(ERR_set_debug_allownil)}
-      ERR_set_debug := @ERR_ERR_set_debug;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_set_debug_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_set_debug := @ERR_ERR_set_debug;
+    if FuncLoadError then
       AFailed.Add('ERR_set_debug');
-    end;
     {$ifend}
   end;
 
   {introduced 3.0.0}
   ERR_set_error := LoadLibFunction(ADllHandle, ERR_set_error_procname);
-  FuncLoaded := assigned(ERR_set_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_set_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_set_error_allownil)}
+    ERR_set_error := @ERR_ERR_set_error;
+    {$ifend}
     {$if declared(ERR_set_error_introduced)}
     if LibVersion < ERR_set_error_introduced then
     begin
       {$if declared(FC_ERR_set_error)}
       ERR_set_error := @FC_ERR_set_error;
-      {$else}
-      {$if not defined(ERR_set_error_allownil)}
-      ERR_set_error := @ERR_ERR_set_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_set_error_removed)}
@@ -829,39 +804,31 @@ begin
     begin
       {$if declared(_ERR_set_error)}
       ERR_set_error := @_ERR_set_error;
-      {$else}
-      {$if not defined(ERR_set_error_allownil)}
-      ERR_set_error := @ERR_ERR_set_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_set_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_set_error := @ERR_ERR_set_error;
+    if FuncLoadError then
       AFailed.Add('ERR_set_error');
-    end;
     {$ifend}
   end;
 
  {introduced 3.0.0}
   ERR_set_error_data := LoadLibFunction(ADllHandle, ERR_set_error_data_procname);
-  FuncLoaded := assigned(ERR_set_error_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_set_error_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_set_error_data_allownil)}
+    ERR_set_error_data := @ERR_ERR_set_error_data;
+    {$ifend}
     {$if declared(ERR_set_error_data_introduced)}
     if LibVersion < ERR_set_error_data_introduced then
     begin
       {$if declared(FC_ERR_set_error_data)}
       ERR_set_error_data := @FC_ERR_set_error_data;
-      {$else}
-      {$if not defined(ERR_set_error_data_allownil)}
-      ERR_set_error_data := @ERR_ERR_set_error_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_set_error_data_removed)}
@@ -869,39 +836,31 @@ begin
     begin
       {$if declared(_ERR_set_error_data)}
       ERR_set_error_data := @_ERR_set_error_data;
-      {$else}
-      {$if not defined(ERR_set_error_data_allownil)}
-      ERR_set_error_data := @ERR_ERR_set_error_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_set_error_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_set_error_data := @ERR_ERR_set_error_data;
+    if FuncLoadError then
       AFailed.Add('ERR_set_error_data');
-    end;
     {$ifend}
   end;
 
 
   ERR_get_error := LoadLibFunction(ADllHandle, ERR_get_error_procname);
-  FuncLoaded := assigned(ERR_get_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_get_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_get_error_allownil)}
+    ERR_get_error := @ERR_ERR_get_error;
+    {$ifend}
     {$if declared(ERR_get_error_introduced)}
     if LibVersion < ERR_get_error_introduced then
     begin
       {$if declared(FC_ERR_get_error)}
       ERR_get_error := @FC_ERR_get_error;
-      {$else}
-      {$if not defined(ERR_get_error_allownil)}
-      ERR_get_error := @ERR_ERR_get_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_get_error_removed)}
@@ -909,39 +868,31 @@ begin
     begin
       {$if declared(_ERR_get_error)}
       ERR_get_error := @_ERR_get_error;
-      {$else}
-      {$if not defined(ERR_get_error_allownil)}
-      ERR_get_error := @ERR_ERR_get_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_get_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_get_error := @ERR_ERR_get_error;
+    if FuncLoadError then
       AFailed.Add('ERR_get_error');
-    end;
     {$ifend}
   end;
 
 
   ERR_get_error_line := LoadLibFunction(ADllHandle, ERR_get_error_line_procname);
-  FuncLoaded := assigned(ERR_get_error_line);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_get_error_line);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_get_error_line_allownil)}
+    ERR_get_error_line := @ERR_ERR_get_error_line;
+    {$ifend}
     {$if declared(ERR_get_error_line_introduced)}
     if LibVersion < ERR_get_error_line_introduced then
     begin
       {$if declared(FC_ERR_get_error_line)}
       ERR_get_error_line := @FC_ERR_get_error_line;
-      {$else}
-      {$if not defined(ERR_get_error_line_allownil)}
-      ERR_get_error_line := @ERR_ERR_get_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_get_error_line_removed)}
@@ -949,39 +900,31 @@ begin
     begin
       {$if declared(_ERR_get_error_line)}
       ERR_get_error_line := @_ERR_get_error_line;
-      {$else}
-      {$if not defined(ERR_get_error_line_allownil)}
-      ERR_get_error_line := @ERR_ERR_get_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_get_error_line_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_get_error_line := @ERR_ERR_get_error_line;
+    if FuncLoadError then
       AFailed.Add('ERR_get_error_line');
-    end;
     {$ifend}
   end;
 
 
   ERR_get_error_line_data := LoadLibFunction(ADllHandle, ERR_get_error_line_data_procname);
-  FuncLoaded := assigned(ERR_get_error_line_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_get_error_line_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_get_error_line_data_allownil)}
+    ERR_get_error_line_data := @ERR_ERR_get_error_line_data;
+    {$ifend}
     {$if declared(ERR_get_error_line_data_introduced)}
     if LibVersion < ERR_get_error_line_data_introduced then
     begin
       {$if declared(FC_ERR_get_error_line_data)}
       ERR_get_error_line_data := @FC_ERR_get_error_line_data;
-      {$else}
-      {$if not defined(ERR_get_error_line_data_allownil)}
-      ERR_get_error_line_data := @ERR_ERR_get_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_get_error_line_data_removed)}
@@ -989,39 +932,31 @@ begin
     begin
       {$if declared(_ERR_get_error_line_data)}
       ERR_get_error_line_data := @_ERR_get_error_line_data;
-      {$else}
-      {$if not defined(ERR_get_error_line_data_allownil)}
-      ERR_get_error_line_data := @ERR_ERR_get_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_get_error_line_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_get_error_line_data := @ERR_ERR_get_error_line_data;
+    if FuncLoadError then
       AFailed.Add('ERR_get_error_line_data');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_error := LoadLibFunction(ADllHandle, ERR_peek_error_procname);
-  FuncLoaded := assigned(ERR_peek_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_error_allownil)}
+    ERR_peek_error := @ERR_ERR_peek_error;
+    {$ifend}
     {$if declared(ERR_peek_error_introduced)}
     if LibVersion < ERR_peek_error_introduced then
     begin
       {$if declared(FC_ERR_peek_error)}
       ERR_peek_error := @FC_ERR_peek_error;
-      {$else}
-      {$if not defined(ERR_peek_error_allownil)}
-      ERR_peek_error := @ERR_ERR_peek_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_error_removed)}
@@ -1029,39 +964,31 @@ begin
     begin
       {$if declared(_ERR_peek_error)}
       ERR_peek_error := @_ERR_peek_error;
-      {$else}
-      {$if not defined(ERR_peek_error_allownil)}
-      ERR_peek_error := @ERR_ERR_peek_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_error := @ERR_ERR_peek_error;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_error');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_error_line := LoadLibFunction(ADllHandle, ERR_peek_error_line_procname);
-  FuncLoaded := assigned(ERR_peek_error_line);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_error_line);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_error_line_allownil)}
+    ERR_peek_error_line := @ERR_ERR_peek_error_line;
+    {$ifend}
     {$if declared(ERR_peek_error_line_introduced)}
     if LibVersion < ERR_peek_error_line_introduced then
     begin
       {$if declared(FC_ERR_peek_error_line)}
       ERR_peek_error_line := @FC_ERR_peek_error_line;
-      {$else}
-      {$if not defined(ERR_peek_error_line_allownil)}
-      ERR_peek_error_line := @ERR_ERR_peek_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_error_line_removed)}
@@ -1069,39 +996,31 @@ begin
     begin
       {$if declared(_ERR_peek_error_line)}
       ERR_peek_error_line := @_ERR_peek_error_line;
-      {$else}
-      {$if not defined(ERR_peek_error_line_allownil)}
-      ERR_peek_error_line := @ERR_ERR_peek_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_error_line_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_error_line := @ERR_ERR_peek_error_line;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_error_line');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_error_line_data := LoadLibFunction(ADllHandle, ERR_peek_error_line_data_procname);
-  FuncLoaded := assigned(ERR_peek_error_line_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_error_line_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_error_line_data_allownil)}
+    ERR_peek_error_line_data := @ERR_ERR_peek_error_line_data;
+    {$ifend}
     {$if declared(ERR_peek_error_line_data_introduced)}
     if LibVersion < ERR_peek_error_line_data_introduced then
     begin
       {$if declared(FC_ERR_peek_error_line_data)}
       ERR_peek_error_line_data := @FC_ERR_peek_error_line_data;
-      {$else}
-      {$if not defined(ERR_peek_error_line_data_allownil)}
-      ERR_peek_error_line_data := @ERR_ERR_peek_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_error_line_data_removed)}
@@ -1109,39 +1028,31 @@ begin
     begin
       {$if declared(_ERR_peek_error_line_data)}
       ERR_peek_error_line_data := @_ERR_peek_error_line_data;
-      {$else}
-      {$if not defined(ERR_peek_error_line_data_allownil)}
-      ERR_peek_error_line_data := @ERR_ERR_peek_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_error_line_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_error_line_data := @ERR_ERR_peek_error_line_data;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_error_line_data');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_last_error := LoadLibFunction(ADllHandle, ERR_peek_last_error_procname);
-  FuncLoaded := assigned(ERR_peek_last_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_last_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_last_error_allownil)}
+    ERR_peek_last_error := @ERR_ERR_peek_last_error;
+    {$ifend}
     {$if declared(ERR_peek_last_error_introduced)}
     if LibVersion < ERR_peek_last_error_introduced then
     begin
       {$if declared(FC_ERR_peek_last_error)}
       ERR_peek_last_error := @FC_ERR_peek_last_error;
-      {$else}
-      {$if not defined(ERR_peek_last_error_allownil)}
-      ERR_peek_last_error := @ERR_ERR_peek_last_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_last_error_removed)}
@@ -1149,39 +1060,31 @@ begin
     begin
       {$if declared(_ERR_peek_last_error)}
       ERR_peek_last_error := @_ERR_peek_last_error;
-      {$else}
-      {$if not defined(ERR_peek_last_error_allownil)}
-      ERR_peek_last_error := @ERR_ERR_peek_last_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_last_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_last_error := @ERR_ERR_peek_last_error;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_last_error');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_last_error_line := LoadLibFunction(ADllHandle, ERR_peek_last_error_line_procname);
-  FuncLoaded := assigned(ERR_peek_last_error_line);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_last_error_line);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_last_error_line_allownil)}
+    ERR_peek_last_error_line := @ERR_ERR_peek_last_error_line;
+    {$ifend}
     {$if declared(ERR_peek_last_error_line_introduced)}
     if LibVersion < ERR_peek_last_error_line_introduced then
     begin
       {$if declared(FC_ERR_peek_last_error_line)}
       ERR_peek_last_error_line := @FC_ERR_peek_last_error_line;
-      {$else}
-      {$if not defined(ERR_peek_last_error_line_allownil)}
-      ERR_peek_last_error_line := @ERR_ERR_peek_last_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_last_error_line_removed)}
@@ -1189,39 +1092,31 @@ begin
     begin
       {$if declared(_ERR_peek_last_error_line)}
       ERR_peek_last_error_line := @_ERR_peek_last_error_line;
-      {$else}
-      {$if not defined(ERR_peek_last_error_line_allownil)}
-      ERR_peek_last_error_line := @ERR_ERR_peek_last_error_line;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_last_error_line_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_last_error_line := @ERR_ERR_peek_last_error_line;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_last_error_line');
-    end;
     {$ifend}
   end;
 
 
   ERR_peek_last_error_line_data := LoadLibFunction(ADllHandle, ERR_peek_last_error_line_data_procname);
-  FuncLoaded := assigned(ERR_peek_last_error_line_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_peek_last_error_line_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_peek_last_error_line_data_allownil)}
+    ERR_peek_last_error_line_data := @ERR_ERR_peek_last_error_line_data;
+    {$ifend}
     {$if declared(ERR_peek_last_error_line_data_introduced)}
     if LibVersion < ERR_peek_last_error_line_data_introduced then
     begin
       {$if declared(FC_ERR_peek_last_error_line_data)}
       ERR_peek_last_error_line_data := @FC_ERR_peek_last_error_line_data;
-      {$else}
-      {$if not defined(ERR_peek_last_error_line_data_allownil)}
-      ERR_peek_last_error_line_data := @ERR_ERR_peek_last_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_peek_last_error_line_data_removed)}
@@ -1229,39 +1124,31 @@ begin
     begin
       {$if declared(_ERR_peek_last_error_line_data)}
       ERR_peek_last_error_line_data := @_ERR_peek_last_error_line_data;
-      {$else}
-      {$if not defined(ERR_peek_last_error_line_data_allownil)}
-      ERR_peek_last_error_line_data := @ERR_ERR_peek_last_error_line_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_peek_last_error_line_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_peek_last_error_line_data := @ERR_ERR_peek_last_error_line_data;
+    if FuncLoadError then
       AFailed.Add('ERR_peek_last_error_line_data');
-    end;
     {$ifend}
   end;
 
 
   ERR_clear_error := LoadLibFunction(ADllHandle, ERR_clear_error_procname);
-  FuncLoaded := assigned(ERR_clear_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_clear_error);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_clear_error_allownil)}
+    ERR_clear_error := @ERR_ERR_clear_error;
+    {$ifend}
     {$if declared(ERR_clear_error_introduced)}
     if LibVersion < ERR_clear_error_introduced then
     begin
       {$if declared(FC_ERR_clear_error)}
       ERR_clear_error := @FC_ERR_clear_error;
-      {$else}
-      {$if not defined(ERR_clear_error_allownil)}
-      ERR_clear_error := @ERR_ERR_clear_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_clear_error_removed)}
@@ -1269,39 +1156,31 @@ begin
     begin
       {$if declared(_ERR_clear_error)}
       ERR_clear_error := @_ERR_clear_error;
-      {$else}
-      {$if not defined(ERR_clear_error_allownil)}
-      ERR_clear_error := @ERR_ERR_clear_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_clear_error_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_clear_error := @ERR_ERR_clear_error;
+    if FuncLoadError then
       AFailed.Add('ERR_clear_error');
-    end;
     {$ifend}
   end;
 
 
   ERR_error_string := LoadLibFunction(ADllHandle, ERR_error_string_procname);
-  FuncLoaded := assigned(ERR_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_error_string_allownil)}
+    ERR_error_string := @ERR_ERR_error_string;
+    {$ifend}
     {$if declared(ERR_error_string_introduced)}
     if LibVersion < ERR_error_string_introduced then
     begin
       {$if declared(FC_ERR_error_string)}
       ERR_error_string := @FC_ERR_error_string;
-      {$else}
-      {$if not defined(ERR_error_string_allownil)}
-      ERR_error_string := @ERR_ERR_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_error_string_removed)}
@@ -1309,39 +1188,31 @@ begin
     begin
       {$if declared(_ERR_error_string)}
       ERR_error_string := @_ERR_error_string;
-      {$else}
-      {$if not defined(ERR_error_string_allownil)}
-      ERR_error_string := @ERR_ERR_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_error_string := @ERR_ERR_error_string;
+    if FuncLoadError then
       AFailed.Add('ERR_error_string');
-    end;
     {$ifend}
   end;
 
 
   ERR_error_string_n := LoadLibFunction(ADllHandle, ERR_error_string_n_procname);
-  FuncLoaded := assigned(ERR_error_string_n);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_error_string_n);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_error_string_n_allownil)}
+    ERR_error_string_n := @ERR_ERR_error_string_n;
+    {$ifend}
     {$if declared(ERR_error_string_n_introduced)}
     if LibVersion < ERR_error_string_n_introduced then
     begin
       {$if declared(FC_ERR_error_string_n)}
       ERR_error_string_n := @FC_ERR_error_string_n;
-      {$else}
-      {$if not defined(ERR_error_string_n_allownil)}
-      ERR_error_string_n := @ERR_ERR_error_string_n;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_error_string_n_removed)}
@@ -1349,39 +1220,31 @@ begin
     begin
       {$if declared(_ERR_error_string_n)}
       ERR_error_string_n := @_ERR_error_string_n;
-      {$else}
-      {$if not defined(ERR_error_string_n_allownil)}
-      ERR_error_string_n := @ERR_ERR_error_string_n;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_error_string_n_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_error_string_n := @ERR_ERR_error_string_n;
+    if FuncLoadError then
       AFailed.Add('ERR_error_string_n');
-    end;
     {$ifend}
   end;
 
 
   ERR_lib_error_string := LoadLibFunction(ADllHandle, ERR_lib_error_string_procname);
-  FuncLoaded := assigned(ERR_lib_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_lib_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_lib_error_string_allownil)}
+    ERR_lib_error_string := @ERR_ERR_lib_error_string;
+    {$ifend}
     {$if declared(ERR_lib_error_string_introduced)}
     if LibVersion < ERR_lib_error_string_introduced then
     begin
       {$if declared(FC_ERR_lib_error_string)}
       ERR_lib_error_string := @FC_ERR_lib_error_string;
-      {$else}
-      {$if not defined(ERR_lib_error_string_allownil)}
-      ERR_lib_error_string := @ERR_ERR_lib_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_lib_error_string_removed)}
@@ -1389,39 +1252,31 @@ begin
     begin
       {$if declared(_ERR_lib_error_string)}
       ERR_lib_error_string := @_ERR_lib_error_string;
-      {$else}
-      {$if not defined(ERR_lib_error_string_allownil)}
-      ERR_lib_error_string := @ERR_ERR_lib_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_lib_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_lib_error_string := @ERR_ERR_lib_error_string;
+    if FuncLoadError then
       AFailed.Add('ERR_lib_error_string');
-    end;
     {$ifend}
   end;
 
 
   ERR_func_error_string := LoadLibFunction(ADllHandle, ERR_func_error_string_procname);
-  FuncLoaded := assigned(ERR_func_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_func_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_func_error_string_allownil)}
+    ERR_func_error_string := @ERR_ERR_func_error_string;
+    {$ifend}
     {$if declared(ERR_func_error_string_introduced)}
     if LibVersion < ERR_func_error_string_introduced then
     begin
       {$if declared(FC_ERR_func_error_string)}
       ERR_func_error_string := @FC_ERR_func_error_string;
-      {$else}
-      {$if not defined(ERR_func_error_string_allownil)}
-      ERR_func_error_string := @ERR_ERR_func_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_func_error_string_removed)}
@@ -1429,39 +1284,31 @@ begin
     begin
       {$if declared(_ERR_func_error_string)}
       ERR_func_error_string := @_ERR_func_error_string;
-      {$else}
-      {$if not defined(ERR_func_error_string_allownil)}
-      ERR_func_error_string := @ERR_ERR_func_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_func_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_func_error_string := @ERR_ERR_func_error_string;
+    if FuncLoadError then
       AFailed.Add('ERR_func_error_string');
-    end;
     {$ifend}
   end;
 
 
   ERR_reason_error_string := LoadLibFunction(ADllHandle, ERR_reason_error_string_procname);
-  FuncLoaded := assigned(ERR_reason_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_reason_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_reason_error_string_allownil)}
+    ERR_reason_error_string := @ERR_ERR_reason_error_string;
+    {$ifend}
     {$if declared(ERR_reason_error_string_introduced)}
     if LibVersion < ERR_reason_error_string_introduced then
     begin
       {$if declared(FC_ERR_reason_error_string)}
       ERR_reason_error_string := @FC_ERR_reason_error_string;
-      {$else}
-      {$if not defined(ERR_reason_error_string_allownil)}
-      ERR_reason_error_string := @ERR_ERR_reason_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_reason_error_string_removed)}
@@ -1469,39 +1316,31 @@ begin
     begin
       {$if declared(_ERR_reason_error_string)}
       ERR_reason_error_string := @_ERR_reason_error_string;
-      {$else}
-      {$if not defined(ERR_reason_error_string_allownil)}
-      ERR_reason_error_string := @ERR_ERR_reason_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_reason_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_reason_error_string := @ERR_ERR_reason_error_string;
+    if FuncLoadError then
       AFailed.Add('ERR_reason_error_string');
-    end;
     {$ifend}
   end;
 
 
   ERR_print_errors_cb := LoadLibFunction(ADllHandle, ERR_print_errors_cb_procname);
-  FuncLoaded := assigned(ERR_print_errors_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_print_errors_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_print_errors_cb_allownil)}
+    ERR_print_errors_cb := @ERR_ERR_print_errors_cb;
+    {$ifend}
     {$if declared(ERR_print_errors_cb_introduced)}
     if LibVersion < ERR_print_errors_cb_introduced then
     begin
       {$if declared(FC_ERR_print_errors_cb)}
       ERR_print_errors_cb := @FC_ERR_print_errors_cb;
-      {$else}
-      {$if not defined(ERR_print_errors_cb_allownil)}
-      ERR_print_errors_cb := @ERR_ERR_print_errors_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_print_errors_cb_removed)}
@@ -1509,39 +1348,31 @@ begin
     begin
       {$if declared(_ERR_print_errors_cb)}
       ERR_print_errors_cb := @_ERR_print_errors_cb;
-      {$else}
-      {$if not defined(ERR_print_errors_cb_allownil)}
-      ERR_print_errors_cb := @ERR_ERR_print_errors_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_print_errors_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_print_errors_cb := @ERR_ERR_print_errors_cb;
+    if FuncLoadError then
       AFailed.Add('ERR_print_errors_cb');
-    end;
     {$ifend}
   end;
 
 
   ERR_print_errors := LoadLibFunction(ADllHandle, ERR_print_errors_procname);
-  FuncLoaded := assigned(ERR_print_errors);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_print_errors);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_print_errors_allownil)}
+    ERR_print_errors := @ERR_ERR_print_errors;
+    {$ifend}
     {$if declared(ERR_print_errors_introduced)}
     if LibVersion < ERR_print_errors_introduced then
     begin
       {$if declared(FC_ERR_print_errors)}
       ERR_print_errors := @FC_ERR_print_errors;
-      {$else}
-      {$if not defined(ERR_print_errors_allownil)}
-      ERR_print_errors := @ERR_ERR_print_errors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_print_errors_removed)}
@@ -1549,39 +1380,31 @@ begin
     begin
       {$if declared(_ERR_print_errors)}
       ERR_print_errors := @_ERR_print_errors;
-      {$else}
-      {$if not defined(ERR_print_errors_allownil)}
-      ERR_print_errors := @ERR_ERR_print_errors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_print_errors_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_print_errors := @ERR_ERR_print_errors;
+    if FuncLoadError then
       AFailed.Add('ERR_print_errors');
-    end;
     {$ifend}
   end;
 
 
   ERR_load_strings := LoadLibFunction(ADllHandle, ERR_load_strings_procname);
-  FuncLoaded := assigned(ERR_load_strings);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_load_strings);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_load_strings_allownil)}
+    ERR_load_strings := @ERR_ERR_load_strings;
+    {$ifend}
     {$if declared(ERR_load_strings_introduced)}
     if LibVersion < ERR_load_strings_introduced then
     begin
       {$if declared(FC_ERR_load_strings)}
       ERR_load_strings := @FC_ERR_load_strings;
-      {$else}
-      {$if not defined(ERR_load_strings_allownil)}
-      ERR_load_strings := @ERR_ERR_load_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_load_strings_removed)}
@@ -1589,39 +1412,31 @@ begin
     begin
       {$if declared(_ERR_load_strings)}
       ERR_load_strings := @_ERR_load_strings;
-      {$else}
-      {$if not defined(ERR_load_strings_allownil)}
-      ERR_load_strings := @ERR_ERR_load_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_load_strings_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_load_strings := @ERR_ERR_load_strings;
+    if FuncLoadError then
       AFailed.Add('ERR_load_strings');
-    end;
     {$ifend}
   end;
 
 
   ERR_load_strings_const := LoadLibFunction(ADllHandle, ERR_load_strings_const_procname);
-  FuncLoaded := assigned(ERR_load_strings_const);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_load_strings_const);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_load_strings_const_allownil)}
+    ERR_load_strings_const := @ERR_ERR_load_strings_const;
+    {$ifend}
     {$if declared(ERR_load_strings_const_introduced)}
     if LibVersion < ERR_load_strings_const_introduced then
     begin
       {$if declared(FC_ERR_load_strings_const)}
       ERR_load_strings_const := @FC_ERR_load_strings_const;
-      {$else}
-      {$if not defined(ERR_load_strings_const_allownil)}
-      ERR_load_strings_const := @ERR_ERR_load_strings_const;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_load_strings_const_removed)}
@@ -1629,39 +1444,31 @@ begin
     begin
       {$if declared(_ERR_load_strings_const)}
       ERR_load_strings_const := @_ERR_load_strings_const;
-      {$else}
-      {$if not defined(ERR_load_strings_const_allownil)}
-      ERR_load_strings_const := @ERR_ERR_load_strings_const;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_load_strings_const_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_load_strings_const := @ERR_ERR_load_strings_const;
+    if FuncLoadError then
       AFailed.Add('ERR_load_strings_const');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ERR_unload_strings := LoadLibFunction(ADllHandle, ERR_unload_strings_procname);
-  FuncLoaded := assigned(ERR_unload_strings);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_unload_strings);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_unload_strings_allownil)}
+    ERR_unload_strings := @ERR_ERR_unload_strings;
+    {$ifend}
     {$if declared(ERR_unload_strings_introduced)}
     if LibVersion < ERR_unload_strings_introduced then
     begin
       {$if declared(FC_ERR_unload_strings)}
       ERR_unload_strings := @FC_ERR_unload_strings;
-      {$else}
-      {$if not defined(ERR_unload_strings_allownil)}
-      ERR_unload_strings := @ERR_ERR_unload_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_unload_strings_removed)}
@@ -1669,39 +1476,31 @@ begin
     begin
       {$if declared(_ERR_unload_strings)}
       ERR_unload_strings := @_ERR_unload_strings;
-      {$else}
-      {$if not defined(ERR_unload_strings_allownil)}
-      ERR_unload_strings := @ERR_ERR_unload_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_unload_strings_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_unload_strings := @ERR_ERR_unload_strings;
+    if FuncLoadError then
       AFailed.Add('ERR_unload_strings');
-    end;
     {$ifend}
   end;
 
 
   ERR_load_ERR_strings := LoadLibFunction(ADllHandle, ERR_load_ERR_strings_procname);
-  FuncLoaded := assigned(ERR_load_ERR_strings);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_load_ERR_strings);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_load_ERR_strings_allownil)}
+    ERR_load_ERR_strings := @ERR_ERR_load_ERR_strings;
+    {$ifend}
     {$if declared(ERR_load_ERR_strings_introduced)}
     if LibVersion < ERR_load_ERR_strings_introduced then
     begin
       {$if declared(FC_ERR_load_ERR_strings)}
       ERR_load_ERR_strings := @FC_ERR_load_ERR_strings;
-      {$else}
-      {$if not defined(ERR_load_ERR_strings_allownil)}
-      ERR_load_ERR_strings := @ERR_ERR_load_ERR_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_load_ERR_strings_removed)}
@@ -1709,39 +1508,31 @@ begin
     begin
       {$if declared(_ERR_load_ERR_strings)}
       ERR_load_ERR_strings := @_ERR_load_ERR_strings;
-      {$else}
-      {$if not defined(ERR_load_ERR_strings_allownil)}
-      ERR_load_ERR_strings := @ERR_ERR_load_ERR_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_load_ERR_strings_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_load_ERR_strings := @ERR_ERR_load_ERR_strings;
+    if FuncLoadError then
       AFailed.Add('ERR_load_ERR_strings');
-    end;
     {$ifend}
   end;
 
 
   ERR_get_state := LoadLibFunction(ADllHandle, ERR_get_state_procname);
-  FuncLoaded := assigned(ERR_get_state);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_get_state);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_get_state_allownil)}
+    ERR_get_state := @ERR_ERR_get_state;
+    {$ifend}
     {$if declared(ERR_get_state_introduced)}
     if LibVersion < ERR_get_state_introduced then
     begin
       {$if declared(FC_ERR_get_state)}
       ERR_get_state := @FC_ERR_get_state;
-      {$else}
-      {$if not defined(ERR_get_state_allownil)}
-      ERR_get_state := @ERR_ERR_get_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_get_state_removed)}
@@ -1749,39 +1540,31 @@ begin
     begin
       {$if declared(_ERR_get_state)}
       ERR_get_state := @_ERR_get_state;
-      {$else}
-      {$if not defined(ERR_get_state_allownil)}
-      ERR_get_state := @ERR_ERR_get_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_get_state_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_get_state := @ERR_ERR_get_state;
+    if FuncLoadError then
       AFailed.Add('ERR_get_state');
-    end;
     {$ifend}
   end;
 
 
   ERR_get_next_error_library := LoadLibFunction(ADllHandle, ERR_get_next_error_library_procname);
-  FuncLoaded := assigned(ERR_get_next_error_library);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_get_next_error_library);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_get_next_error_library_allownil)}
+    ERR_get_next_error_library := @ERR_ERR_get_next_error_library;
+    {$ifend}
     {$if declared(ERR_get_next_error_library_introduced)}
     if LibVersion < ERR_get_next_error_library_introduced then
     begin
       {$if declared(FC_ERR_get_next_error_library)}
       ERR_get_next_error_library := @FC_ERR_get_next_error_library;
-      {$else}
-      {$if not defined(ERR_get_next_error_library_allownil)}
-      ERR_get_next_error_library := @ERR_ERR_get_next_error_library;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_get_next_error_library_removed)}
@@ -1789,39 +1572,31 @@ begin
     begin
       {$if declared(_ERR_get_next_error_library)}
       ERR_get_next_error_library := @_ERR_get_next_error_library;
-      {$else}
-      {$if not defined(ERR_get_next_error_library_allownil)}
-      ERR_get_next_error_library := @ERR_ERR_get_next_error_library;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_get_next_error_library_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_get_next_error_library := @ERR_ERR_get_next_error_library;
+    if FuncLoadError then
       AFailed.Add('ERR_get_next_error_library');
-    end;
     {$ifend}
   end;
 
 
   ERR_set_mark := LoadLibFunction(ADllHandle, ERR_set_mark_procname);
-  FuncLoaded := assigned(ERR_set_mark);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_set_mark);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_set_mark_allownil)}
+    ERR_set_mark := @ERR_ERR_set_mark;
+    {$ifend}
     {$if declared(ERR_set_mark_introduced)}
     if LibVersion < ERR_set_mark_introduced then
     begin
       {$if declared(FC_ERR_set_mark)}
       ERR_set_mark := @FC_ERR_set_mark;
-      {$else}
-      {$if not defined(ERR_set_mark_allownil)}
-      ERR_set_mark := @ERR_ERR_set_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_set_mark_removed)}
@@ -1829,39 +1604,31 @@ begin
     begin
       {$if declared(_ERR_set_mark)}
       ERR_set_mark := @_ERR_set_mark;
-      {$else}
-      {$if not defined(ERR_set_mark_allownil)}
-      ERR_set_mark := @ERR_ERR_set_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_set_mark_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_set_mark := @ERR_ERR_set_mark;
+    if FuncLoadError then
       AFailed.Add('ERR_set_mark');
-    end;
     {$ifend}
   end;
 
 
   ERR_pop_to_mark := LoadLibFunction(ADllHandle, ERR_pop_to_mark_procname);
-  FuncLoaded := assigned(ERR_pop_to_mark);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_pop_to_mark);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_pop_to_mark_allownil)}
+    ERR_pop_to_mark := @ERR_ERR_pop_to_mark;
+    {$ifend}
     {$if declared(ERR_pop_to_mark_introduced)}
     if LibVersion < ERR_pop_to_mark_introduced then
     begin
       {$if declared(FC_ERR_pop_to_mark)}
       ERR_pop_to_mark := @FC_ERR_pop_to_mark;
-      {$else}
-      {$if not defined(ERR_pop_to_mark_allownil)}
-      ERR_pop_to_mark := @ERR_ERR_pop_to_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_pop_to_mark_removed)}
@@ -1869,39 +1636,31 @@ begin
     begin
       {$if declared(_ERR_pop_to_mark)}
       ERR_pop_to_mark := @_ERR_pop_to_mark;
-      {$else}
-      {$if not defined(ERR_pop_to_mark_allownil)}
-      ERR_pop_to_mark := @ERR_ERR_pop_to_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_pop_to_mark_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_pop_to_mark := @ERR_ERR_pop_to_mark;
+    if FuncLoadError then
       AFailed.Add('ERR_pop_to_mark');
-    end;
     {$ifend}
   end;
 
 
   ERR_clear_last_mark := LoadLibFunction(ADllHandle, ERR_clear_last_mark_procname);
-  FuncLoaded := assigned(ERR_clear_last_mark);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_clear_last_mark);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_clear_last_mark_allownil)}
+    ERR_clear_last_mark := @ERR_ERR_clear_last_mark;
+    {$ifend}
     {$if declared(ERR_clear_last_mark_introduced)}
     if LibVersion < ERR_clear_last_mark_introduced then
     begin
       {$if declared(FC_ERR_clear_last_mark)}
       ERR_clear_last_mark := @FC_ERR_clear_last_mark;
-      {$else}
-      {$if not defined(ERR_clear_last_mark_allownil)}
-      ERR_clear_last_mark := @ERR_ERR_clear_last_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_clear_last_mark_removed)}
@@ -1909,39 +1668,31 @@ begin
     begin
       {$if declared(_ERR_clear_last_mark)}
       ERR_clear_last_mark := @_ERR_clear_last_mark;
-      {$else}
-      {$if not defined(ERR_clear_last_mark_allownil)}
-      ERR_clear_last_mark := @ERR_ERR_clear_last_mark;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_clear_last_mark_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_clear_last_mark := @ERR_ERR_clear_last_mark;
+    if FuncLoadError then
       AFailed.Add('ERR_clear_last_mark');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSLErr := LoadLibFunction(ADllHandle, SSLErr_procname);
-  FuncLoaded := assigned(SSLErr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLErr);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLErr_allownil)}
+    SSLErr := @ERR_SSLErr;
+    {$ifend}
     {$if declared(SSLErr_introduced)}
     if LibVersion < SSLErr_introduced then
     begin
       {$if declared(FC_SSLErr)}
       SSLErr := @FC_SSLErr;
-      {$else}
-      {$if not defined(SSLErr_allownil)}
-      SSLErr := @ERR_SSLErr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLErr_removed)}
@@ -1949,39 +1700,31 @@ begin
     begin
       {$if declared(_SSLErr)}
       SSLErr := @_SSLErr;
-      {$else}
-      {$if not defined(SSLErr_allownil)}
-      SSLErr := @ERR_SSLErr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLErr_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLErr := @ERR_SSLErr;
+    if FuncLoadError then
       AFailed.Add('SSLErr');
-    end;
     {$ifend}
   end;
 
  
   X509err := LoadLibFunction(ADllHandle, X509err_procname);
-  FuncLoaded := assigned(X509err);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(X509err);
+  if FuncLoadError then
   begin
+    {$if not defined(X509err_allownil)}
+    X509err := @ERR_X509err;
+    {$ifend}
     {$if declared(X509err_introduced)}
     if LibVersion < X509err_introduced then
     begin
       {$if declared(FC_X509err)}
       X509err := @FC_X509err;
-      {$else}
-      {$if not defined(X509err_allownil)}
-      X509err := @ERR_X509err;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(X509err_removed)}
@@ -1989,39 +1732,31 @@ begin
     begin
       {$if declared(_X509err)}
       X509err := @_X509err;
-      {$else}
-      {$if not defined(X509err_allownil)}
-      X509err := @ERR_X509err;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(X509err_allownil)}
-    if not FuncLoaded then
-    begin
-      X509err := @ERR_X509err;
+    if FuncLoadError then
       AFailed.Add('X509err');
-    end;
     {$ifend}
   end;
 
  
   ERR_GET_REASON := LoadLibFunction(ADllHandle, ERR_GET_REASON_procname);
-  FuncLoaded := assigned(ERR_GET_REASON);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_GET_REASON);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_GET_REASON_allownil)}
+    ERR_GET_REASON := @ERR_ERR_GET_REASON;
+    {$ifend}
     {$if declared(ERR_GET_REASON_introduced)}
     if LibVersion < ERR_GET_REASON_introduced then
     begin
       {$if declared(FC_ERR_GET_REASON)}
       ERR_GET_REASON := @FC_ERR_GET_REASON;
-      {$else}
-      {$if not defined(ERR_GET_REASON_allownil)}
-      ERR_GET_REASON := @ERR_ERR_GET_REASON;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_GET_REASON_removed)}
@@ -2029,20 +1764,13 @@ begin
     begin
       {$if declared(_ERR_GET_REASON)}
       ERR_GET_REASON := @_ERR_GET_REASON;
-      {$else}
-      {$if not defined(ERR_GET_REASON_allownil)}
-      ERR_GET_REASON := @ERR_ERR_GET_REASON;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_GET_REASON_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_GET_REASON := @ERR_ERR_GET_REASON;
+    if FuncLoadError then
       AFailed.Add('ERR_GET_REASON');
-    end;
     {$ifend}
   end;
 

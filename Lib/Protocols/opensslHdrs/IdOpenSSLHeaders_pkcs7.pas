@@ -1042,24 +1042,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   PKCS7_ISSUER_AND_SERIAL_digest := LoadLibFunction(ADllHandle, PKCS7_ISSUER_AND_SERIAL_digest_procname);
-  FuncLoaded := assigned(PKCS7_ISSUER_AND_SERIAL_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_ISSUER_AND_SERIAL_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
+    PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
+    {$ifend}
     {$if declared(PKCS7_ISSUER_AND_SERIAL_digest_introduced)}
     if LibVersion < PKCS7_ISSUER_AND_SERIAL_digest_introduced then
     begin
       {$if declared(FC_PKCS7_ISSUER_AND_SERIAL_digest)}
       PKCS7_ISSUER_AND_SERIAL_digest := @FC_PKCS7_ISSUER_AND_SERIAL_digest;
-      {$else}
-      {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
-      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_ISSUER_AND_SERIAL_digest_removed)}
@@ -1067,39 +1066,31 @@ begin
     begin
       {$if declared(_PKCS7_ISSUER_AND_SERIAL_digest)}
       PKCS7_ISSUER_AND_SERIAL_digest := @_PKCS7_ISSUER_AND_SERIAL_digest;
-      {$else}
-      {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
-      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_ISSUER_AND_SERIAL_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_ISSUER_AND_SERIAL_digest := @ERR_PKCS7_ISSUER_AND_SERIAL_digest;
+    if FuncLoadError then
       AFailed.Add('PKCS7_ISSUER_AND_SERIAL_digest');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_dup := LoadLibFunction(ADllHandle, PKCS7_dup_procname);
-  FuncLoaded := assigned(PKCS7_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_dup_allownil)}
+    PKCS7_dup := @ERR_PKCS7_dup;
+    {$ifend}
     {$if declared(PKCS7_dup_introduced)}
     if LibVersion < PKCS7_dup_introduced then
     begin
       {$if declared(FC_PKCS7_dup)}
       PKCS7_dup := @FC_PKCS7_dup;
-      {$else}
-      {$if not defined(PKCS7_dup_allownil)}
-      PKCS7_dup := @ERR_PKCS7_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_dup_removed)}
@@ -1107,39 +1098,31 @@ begin
     begin
       {$if declared(_PKCS7_dup)}
       PKCS7_dup := @_PKCS7_dup;
-      {$else}
-      {$if not defined(PKCS7_dup_allownil)}
-      PKCS7_dup := @ERR_PKCS7_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_dup := @ERR_PKCS7_dup;
+    if FuncLoadError then
       AFailed.Add('PKCS7_dup');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS7_bio := LoadLibFunction(ADllHandle, d2i_PKCS7_bio_procname);
-  FuncLoaded := assigned(d2i_PKCS7_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS7_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS7_bio_allownil)}
+    d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
+    {$ifend}
     {$if declared(d2i_PKCS7_bio_introduced)}
     if LibVersion < d2i_PKCS7_bio_introduced then
     begin
       {$if declared(FC_d2i_PKCS7_bio)}
       d2i_PKCS7_bio := @FC_d2i_PKCS7_bio;
-      {$else}
-      {$if not defined(d2i_PKCS7_bio_allownil)}
-      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS7_bio_removed)}
@@ -1147,39 +1130,31 @@ begin
     begin
       {$if declared(_d2i_PKCS7_bio)}
       d2i_PKCS7_bio := @_d2i_PKCS7_bio;
-      {$else}
-      {$if not defined(d2i_PKCS7_bio_allownil)}
-      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS7_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS7_bio := @ERR_d2i_PKCS7_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS7_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS7_bio := LoadLibFunction(ADllHandle, i2d_PKCS7_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS7_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS7_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS7_bio_allownil)}
+    i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
+    {$ifend}
     {$if declared(i2d_PKCS7_bio_introduced)}
     if LibVersion < i2d_PKCS7_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS7_bio)}
       i2d_PKCS7_bio := @FC_i2d_PKCS7_bio;
-      {$else}
-      {$if not defined(i2d_PKCS7_bio_allownil)}
-      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS7_bio_removed)}
@@ -1187,39 +1162,31 @@ begin
     begin
       {$if declared(_i2d_PKCS7_bio)}
       i2d_PKCS7_bio := @_i2d_PKCS7_bio;
-      {$else}
-      {$if not defined(i2d_PKCS7_bio_allownil)}
-      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS7_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS7_bio := @ERR_i2d_PKCS7_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS7_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS7_bio_stream := LoadLibFunction(ADllHandle, i2d_PKCS7_bio_stream_procname);
-  FuncLoaded := assigned(i2d_PKCS7_bio_stream);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS7_bio_stream);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS7_bio_stream_allownil)}
+    i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
+    {$ifend}
     {$if declared(i2d_PKCS7_bio_stream_introduced)}
     if LibVersion < i2d_PKCS7_bio_stream_introduced then
     begin
       {$if declared(FC_i2d_PKCS7_bio_stream)}
       i2d_PKCS7_bio_stream := @FC_i2d_PKCS7_bio_stream;
-      {$else}
-      {$if not defined(i2d_PKCS7_bio_stream_allownil)}
-      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS7_bio_stream_removed)}
@@ -1227,39 +1194,31 @@ begin
     begin
       {$if declared(_i2d_PKCS7_bio_stream)}
       i2d_PKCS7_bio_stream := @_i2d_PKCS7_bio_stream;
-      {$else}
-      {$if not defined(i2d_PKCS7_bio_stream_allownil)}
-      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS7_bio_stream_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS7_bio_stream := @ERR_i2d_PKCS7_bio_stream;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS7_bio_stream');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PKCS7_stream := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS7_stream_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS7_stream);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS7_stream);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
+    PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS7_stream_introduced)}
     if LibVersion < PEM_write_bio_PKCS7_stream_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS7_stream)}
       PEM_write_bio_PKCS7_stream := @FC_PEM_write_bio_PKCS7_stream;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
-      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS7_stream_removed)}
@@ -1267,39 +1226,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS7_stream)}
       PEM_write_bio_PKCS7_stream := @_PEM_write_bio_PKCS7_stream;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
-      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS7_stream_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS7_stream := @ERR_PEM_write_bio_PKCS7_stream;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS7_stream');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_ctrl := LoadLibFunction(ADllHandle, PKCS7_ctrl_procname);
-  FuncLoaded := assigned(PKCS7_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_ctrl_allownil)}
+    PKCS7_ctrl := @ERR_PKCS7_ctrl;
+    {$ifend}
     {$if declared(PKCS7_ctrl_introduced)}
     if LibVersion < PKCS7_ctrl_introduced then
     begin
       {$if declared(FC_PKCS7_ctrl)}
       PKCS7_ctrl := @FC_PKCS7_ctrl;
-      {$else}
-      {$if not defined(PKCS7_ctrl_allownil)}
-      PKCS7_ctrl := @ERR_PKCS7_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_ctrl_removed)}
@@ -1307,39 +1258,31 @@ begin
     begin
       {$if declared(_PKCS7_ctrl)}
       PKCS7_ctrl := @_PKCS7_ctrl;
-      {$else}
-      {$if not defined(PKCS7_ctrl_allownil)}
-      PKCS7_ctrl := @ERR_PKCS7_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_ctrl := @ERR_PKCS7_ctrl;
+    if FuncLoadError then
       AFailed.Add('PKCS7_ctrl');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_set_type := LoadLibFunction(ADllHandle, PKCS7_set_type_procname);
-  FuncLoaded := assigned(PKCS7_set_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_set_type);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_set_type_allownil)}
+    PKCS7_set_type := @ERR_PKCS7_set_type;
+    {$ifend}
     {$if declared(PKCS7_set_type_introduced)}
     if LibVersion < PKCS7_set_type_introduced then
     begin
       {$if declared(FC_PKCS7_set_type)}
       PKCS7_set_type := @FC_PKCS7_set_type;
-      {$else}
-      {$if not defined(PKCS7_set_type_allownil)}
-      PKCS7_set_type := @ERR_PKCS7_set_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_set_type_removed)}
@@ -1347,39 +1290,31 @@ begin
     begin
       {$if declared(_PKCS7_set_type)}
       PKCS7_set_type := @_PKCS7_set_type;
-      {$else}
-      {$if not defined(PKCS7_set_type_allownil)}
-      PKCS7_set_type := @ERR_PKCS7_set_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_set_type_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_set_type := @ERR_PKCS7_set_type;
+    if FuncLoadError then
       AFailed.Add('PKCS7_set_type');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_set0_type_other := LoadLibFunction(ADllHandle, PKCS7_set0_type_other_procname);
-  FuncLoaded := assigned(PKCS7_set0_type_other);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_set0_type_other);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_set0_type_other_allownil)}
+    PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
+    {$ifend}
     {$if declared(PKCS7_set0_type_other_introduced)}
     if LibVersion < PKCS7_set0_type_other_introduced then
     begin
       {$if declared(FC_PKCS7_set0_type_other)}
       PKCS7_set0_type_other := @FC_PKCS7_set0_type_other;
-      {$else}
-      {$if not defined(PKCS7_set0_type_other_allownil)}
-      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_set0_type_other_removed)}
@@ -1387,39 +1322,31 @@ begin
     begin
       {$if declared(_PKCS7_set0_type_other)}
       PKCS7_set0_type_other := @_PKCS7_set0_type_other;
-      {$else}
-      {$if not defined(PKCS7_set0_type_other_allownil)}
-      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_set0_type_other_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_set0_type_other := @ERR_PKCS7_set0_type_other;
+    if FuncLoadError then
       AFailed.Add('PKCS7_set0_type_other');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_set_content := LoadLibFunction(ADllHandle, PKCS7_set_content_procname);
-  FuncLoaded := assigned(PKCS7_set_content);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_set_content);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_set_content_allownil)}
+    PKCS7_set_content := @ERR_PKCS7_set_content;
+    {$ifend}
     {$if declared(PKCS7_set_content_introduced)}
     if LibVersion < PKCS7_set_content_introduced then
     begin
       {$if declared(FC_PKCS7_set_content)}
       PKCS7_set_content := @FC_PKCS7_set_content;
-      {$else}
-      {$if not defined(PKCS7_set_content_allownil)}
-      PKCS7_set_content := @ERR_PKCS7_set_content;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_set_content_removed)}
@@ -1427,39 +1354,31 @@ begin
     begin
       {$if declared(_PKCS7_set_content)}
       PKCS7_set_content := @_PKCS7_set_content;
-      {$else}
-      {$if not defined(PKCS7_set_content_allownil)}
-      PKCS7_set_content := @ERR_PKCS7_set_content;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_set_content_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_set_content := @ERR_PKCS7_set_content;
+    if FuncLoadError then
       AFailed.Add('PKCS7_set_content');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_SIGNER_INFO_set := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_set_procname);
-  FuncLoaded := assigned(PKCS7_SIGNER_INFO_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_SIGNER_INFO_set);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
+    PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
+    {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_set_introduced)}
     if LibVersion < PKCS7_SIGNER_INFO_set_introduced then
     begin
       {$if declared(FC_PKCS7_SIGNER_INFO_set)}
       PKCS7_SIGNER_INFO_set := @FC_PKCS7_SIGNER_INFO_set;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
-      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_set_removed)}
@@ -1467,39 +1386,31 @@ begin
     begin
       {$if declared(_PKCS7_SIGNER_INFO_set)}
       PKCS7_SIGNER_INFO_set := @_PKCS7_SIGNER_INFO_set;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
-      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_SIGNER_INFO_set_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_SIGNER_INFO_set := @ERR_PKCS7_SIGNER_INFO_set;
+    if FuncLoadError then
       AFailed.Add('PKCS7_SIGNER_INFO_set');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_SIGNER_INFO_sign := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_sign_procname);
-  FuncLoaded := assigned(PKCS7_SIGNER_INFO_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_SIGNER_INFO_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
+    PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
+    {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_sign_introduced)}
     if LibVersion < PKCS7_SIGNER_INFO_sign_introduced then
     begin
       {$if declared(FC_PKCS7_SIGNER_INFO_sign)}
       PKCS7_SIGNER_INFO_sign := @FC_PKCS7_SIGNER_INFO_sign;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
-      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_sign_removed)}
@@ -1507,39 +1418,31 @@ begin
     begin
       {$if declared(_PKCS7_SIGNER_INFO_sign)}
       PKCS7_SIGNER_INFO_sign := @_PKCS7_SIGNER_INFO_sign;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
-      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_SIGNER_INFO_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_SIGNER_INFO_sign := @ERR_PKCS7_SIGNER_INFO_sign;
+    if FuncLoadError then
       AFailed.Add('PKCS7_SIGNER_INFO_sign');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_signer := LoadLibFunction(ADllHandle, PKCS7_add_signer_procname);
-  FuncLoaded := assigned(PKCS7_add_signer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_signer);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_signer_allownil)}
+    PKCS7_add_signer := @ERR_PKCS7_add_signer;
+    {$ifend}
     {$if declared(PKCS7_add_signer_introduced)}
     if LibVersion < PKCS7_add_signer_introduced then
     begin
       {$if declared(FC_PKCS7_add_signer)}
       PKCS7_add_signer := @FC_PKCS7_add_signer;
-      {$else}
-      {$if not defined(PKCS7_add_signer_allownil)}
-      PKCS7_add_signer := @ERR_PKCS7_add_signer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_signer_removed)}
@@ -1547,39 +1450,31 @@ begin
     begin
       {$if declared(_PKCS7_add_signer)}
       PKCS7_add_signer := @_PKCS7_add_signer;
-      {$else}
-      {$if not defined(PKCS7_add_signer_allownil)}
-      PKCS7_add_signer := @ERR_PKCS7_add_signer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_signer_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_signer := @ERR_PKCS7_add_signer;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_signer');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_certificate := LoadLibFunction(ADllHandle, PKCS7_add_certificate_procname);
-  FuncLoaded := assigned(PKCS7_add_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_certificate_allownil)}
+    PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
+    {$ifend}
     {$if declared(PKCS7_add_certificate_introduced)}
     if LibVersion < PKCS7_add_certificate_introduced then
     begin
       {$if declared(FC_PKCS7_add_certificate)}
       PKCS7_add_certificate := @FC_PKCS7_add_certificate;
-      {$else}
-      {$if not defined(PKCS7_add_certificate_allownil)}
-      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_certificate_removed)}
@@ -1587,39 +1482,31 @@ begin
     begin
       {$if declared(_PKCS7_add_certificate)}
       PKCS7_add_certificate := @_PKCS7_add_certificate;
-      {$else}
-      {$if not defined(PKCS7_add_certificate_allownil)}
-      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_certificate := @ERR_PKCS7_add_certificate;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_certificate');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_crl := LoadLibFunction(ADllHandle, PKCS7_add_crl_procname);
-  FuncLoaded := assigned(PKCS7_add_crl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_crl);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_crl_allownil)}
+    PKCS7_add_crl := @ERR_PKCS7_add_crl;
+    {$ifend}
     {$if declared(PKCS7_add_crl_introduced)}
     if LibVersion < PKCS7_add_crl_introduced then
     begin
       {$if declared(FC_PKCS7_add_crl)}
       PKCS7_add_crl := @FC_PKCS7_add_crl;
-      {$else}
-      {$if not defined(PKCS7_add_crl_allownil)}
-      PKCS7_add_crl := @ERR_PKCS7_add_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_crl_removed)}
@@ -1627,39 +1514,31 @@ begin
     begin
       {$if declared(_PKCS7_add_crl)}
       PKCS7_add_crl := @_PKCS7_add_crl;
-      {$else}
-      {$if not defined(PKCS7_add_crl_allownil)}
-      PKCS7_add_crl := @ERR_PKCS7_add_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_crl_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_crl := @ERR_PKCS7_add_crl;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_crl');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_content_new := LoadLibFunction(ADllHandle, PKCS7_content_new_procname);
-  FuncLoaded := assigned(PKCS7_content_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_content_new);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_content_new_allownil)}
+    PKCS7_content_new := @ERR_PKCS7_content_new;
+    {$ifend}
     {$if declared(PKCS7_content_new_introduced)}
     if LibVersion < PKCS7_content_new_introduced then
     begin
       {$if declared(FC_PKCS7_content_new)}
       PKCS7_content_new := @FC_PKCS7_content_new;
-      {$else}
-      {$if not defined(PKCS7_content_new_allownil)}
-      PKCS7_content_new := @ERR_PKCS7_content_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_content_new_removed)}
@@ -1667,39 +1546,31 @@ begin
     begin
       {$if declared(_PKCS7_content_new)}
       PKCS7_content_new := @_PKCS7_content_new;
-      {$else}
-      {$if not defined(PKCS7_content_new_allownil)}
-      PKCS7_content_new := @ERR_PKCS7_content_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_content_new_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_content_new := @ERR_PKCS7_content_new;
+    if FuncLoadError then
       AFailed.Add('PKCS7_content_new');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_dataVerify := LoadLibFunction(ADllHandle, PKCS7_dataVerify_procname);
-  FuncLoaded := assigned(PKCS7_dataVerify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_dataVerify);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_dataVerify_allownil)}
+    PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
+    {$ifend}
     {$if declared(PKCS7_dataVerify_introduced)}
     if LibVersion < PKCS7_dataVerify_introduced then
     begin
       {$if declared(FC_PKCS7_dataVerify)}
       PKCS7_dataVerify := @FC_PKCS7_dataVerify;
-      {$else}
-      {$if not defined(PKCS7_dataVerify_allownil)}
-      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_dataVerify_removed)}
@@ -1707,39 +1578,31 @@ begin
     begin
       {$if declared(_PKCS7_dataVerify)}
       PKCS7_dataVerify := @_PKCS7_dataVerify;
-      {$else}
-      {$if not defined(PKCS7_dataVerify_allownil)}
-      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_dataVerify_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_dataVerify := @ERR_PKCS7_dataVerify;
+    if FuncLoadError then
       AFailed.Add('PKCS7_dataVerify');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_signatureVerify := LoadLibFunction(ADllHandle, PKCS7_signatureVerify_procname);
-  FuncLoaded := assigned(PKCS7_signatureVerify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_signatureVerify);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_signatureVerify_allownil)}
+    PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
+    {$ifend}
     {$if declared(PKCS7_signatureVerify_introduced)}
     if LibVersion < PKCS7_signatureVerify_introduced then
     begin
       {$if declared(FC_PKCS7_signatureVerify)}
       PKCS7_signatureVerify := @FC_PKCS7_signatureVerify;
-      {$else}
-      {$if not defined(PKCS7_signatureVerify_allownil)}
-      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_signatureVerify_removed)}
@@ -1747,39 +1610,31 @@ begin
     begin
       {$if declared(_PKCS7_signatureVerify)}
       PKCS7_signatureVerify := @_PKCS7_signatureVerify;
-      {$else}
-      {$if not defined(PKCS7_signatureVerify_allownil)}
-      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_signatureVerify_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_signatureVerify := @ERR_PKCS7_signatureVerify;
+    if FuncLoadError then
       AFailed.Add('PKCS7_signatureVerify');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_dataInit := LoadLibFunction(ADllHandle, PKCS7_dataInit_procname);
-  FuncLoaded := assigned(PKCS7_dataInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_dataInit);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_dataInit_allownil)}
+    PKCS7_dataInit := @ERR_PKCS7_dataInit;
+    {$ifend}
     {$if declared(PKCS7_dataInit_introduced)}
     if LibVersion < PKCS7_dataInit_introduced then
     begin
       {$if declared(FC_PKCS7_dataInit)}
       PKCS7_dataInit := @FC_PKCS7_dataInit;
-      {$else}
-      {$if not defined(PKCS7_dataInit_allownil)}
-      PKCS7_dataInit := @ERR_PKCS7_dataInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_dataInit_removed)}
@@ -1787,39 +1642,31 @@ begin
     begin
       {$if declared(_PKCS7_dataInit)}
       PKCS7_dataInit := @_PKCS7_dataInit;
-      {$else}
-      {$if not defined(PKCS7_dataInit_allownil)}
-      PKCS7_dataInit := @ERR_PKCS7_dataInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_dataInit_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_dataInit := @ERR_PKCS7_dataInit;
+    if FuncLoadError then
       AFailed.Add('PKCS7_dataInit');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_dataFinal := LoadLibFunction(ADllHandle, PKCS7_dataFinal_procname);
-  FuncLoaded := assigned(PKCS7_dataFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_dataFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_dataFinal_allownil)}
+    PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
+    {$ifend}
     {$if declared(PKCS7_dataFinal_introduced)}
     if LibVersion < PKCS7_dataFinal_introduced then
     begin
       {$if declared(FC_PKCS7_dataFinal)}
       PKCS7_dataFinal := @FC_PKCS7_dataFinal;
-      {$else}
-      {$if not defined(PKCS7_dataFinal_allownil)}
-      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_dataFinal_removed)}
@@ -1827,39 +1674,31 @@ begin
     begin
       {$if declared(_PKCS7_dataFinal)}
       PKCS7_dataFinal := @_PKCS7_dataFinal;
-      {$else}
-      {$if not defined(PKCS7_dataFinal_allownil)}
-      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_dataFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_dataFinal := @ERR_PKCS7_dataFinal;
+    if FuncLoadError then
       AFailed.Add('PKCS7_dataFinal');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_dataDecode := LoadLibFunction(ADllHandle, PKCS7_dataDecode_procname);
-  FuncLoaded := assigned(PKCS7_dataDecode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_dataDecode);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_dataDecode_allownil)}
+    PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
+    {$ifend}
     {$if declared(PKCS7_dataDecode_introduced)}
     if LibVersion < PKCS7_dataDecode_introduced then
     begin
       {$if declared(FC_PKCS7_dataDecode)}
       PKCS7_dataDecode := @FC_PKCS7_dataDecode;
-      {$else}
-      {$if not defined(PKCS7_dataDecode_allownil)}
-      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_dataDecode_removed)}
@@ -1867,39 +1706,31 @@ begin
     begin
       {$if declared(_PKCS7_dataDecode)}
       PKCS7_dataDecode := @_PKCS7_dataDecode;
-      {$else}
-      {$if not defined(PKCS7_dataDecode_allownil)}
-      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_dataDecode_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_dataDecode := @ERR_PKCS7_dataDecode;
+    if FuncLoadError then
       AFailed.Add('PKCS7_dataDecode');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_signature := LoadLibFunction(ADllHandle, PKCS7_add_signature_procname);
-  FuncLoaded := assigned(PKCS7_add_signature);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_signature);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_signature_allownil)}
+    PKCS7_add_signature := @ERR_PKCS7_add_signature;
+    {$ifend}
     {$if declared(PKCS7_add_signature_introduced)}
     if LibVersion < PKCS7_add_signature_introduced then
     begin
       {$if declared(FC_PKCS7_add_signature)}
       PKCS7_add_signature := @FC_PKCS7_add_signature;
-      {$else}
-      {$if not defined(PKCS7_add_signature_allownil)}
-      PKCS7_add_signature := @ERR_PKCS7_add_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_signature_removed)}
@@ -1907,39 +1738,31 @@ begin
     begin
       {$if declared(_PKCS7_add_signature)}
       PKCS7_add_signature := @_PKCS7_add_signature;
-      {$else}
-      {$if not defined(PKCS7_add_signature_allownil)}
-      PKCS7_add_signature := @ERR_PKCS7_add_signature;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_signature_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_signature := @ERR_PKCS7_add_signature;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_signature');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_cert_from_signer_info := LoadLibFunction(ADllHandle, PKCS7_cert_from_signer_info_procname);
-  FuncLoaded := assigned(PKCS7_cert_from_signer_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_cert_from_signer_info);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_cert_from_signer_info_allownil)}
+    PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
+    {$ifend}
     {$if declared(PKCS7_cert_from_signer_info_introduced)}
     if LibVersion < PKCS7_cert_from_signer_info_introduced then
     begin
       {$if declared(FC_PKCS7_cert_from_signer_info)}
       PKCS7_cert_from_signer_info := @FC_PKCS7_cert_from_signer_info;
-      {$else}
-      {$if not defined(PKCS7_cert_from_signer_info_allownil)}
-      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_cert_from_signer_info_removed)}
@@ -1947,39 +1770,31 @@ begin
     begin
       {$if declared(_PKCS7_cert_from_signer_info)}
       PKCS7_cert_from_signer_info := @_PKCS7_cert_from_signer_info;
-      {$else}
-      {$if not defined(PKCS7_cert_from_signer_info_allownil)}
-      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_cert_from_signer_info_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_cert_from_signer_info := @ERR_PKCS7_cert_from_signer_info;
+    if FuncLoadError then
       AFailed.Add('PKCS7_cert_from_signer_info');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_set_digest := LoadLibFunction(ADllHandle, PKCS7_set_digest_procname);
-  FuncLoaded := assigned(PKCS7_set_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_set_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_set_digest_allownil)}
+    PKCS7_set_digest := @ERR_PKCS7_set_digest;
+    {$ifend}
     {$if declared(PKCS7_set_digest_introduced)}
     if LibVersion < PKCS7_set_digest_introduced then
     begin
       {$if declared(FC_PKCS7_set_digest)}
       PKCS7_set_digest := @FC_PKCS7_set_digest;
-      {$else}
-      {$if not defined(PKCS7_set_digest_allownil)}
-      PKCS7_set_digest := @ERR_PKCS7_set_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_set_digest_removed)}
@@ -1987,39 +1802,31 @@ begin
     begin
       {$if declared(_PKCS7_set_digest)}
       PKCS7_set_digest := @_PKCS7_set_digest;
-      {$else}
-      {$if not defined(PKCS7_set_digest_allownil)}
-      PKCS7_set_digest := @ERR_PKCS7_set_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_set_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_set_digest := @ERR_PKCS7_set_digest;
+    if FuncLoadError then
       AFailed.Add('PKCS7_set_digest');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_recipient := LoadLibFunction(ADllHandle, PKCS7_add_recipient_procname);
-  FuncLoaded := assigned(PKCS7_add_recipient);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_recipient);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_recipient_allownil)}
+    PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
+    {$ifend}
     {$if declared(PKCS7_add_recipient_introduced)}
     if LibVersion < PKCS7_add_recipient_introduced then
     begin
       {$if declared(FC_PKCS7_add_recipient)}
       PKCS7_add_recipient := @FC_PKCS7_add_recipient;
-      {$else}
-      {$if not defined(PKCS7_add_recipient_allownil)}
-      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_recipient_removed)}
@@ -2027,39 +1834,31 @@ begin
     begin
       {$if declared(_PKCS7_add_recipient)}
       PKCS7_add_recipient := @_PKCS7_add_recipient;
-      {$else}
-      {$if not defined(PKCS7_add_recipient_allownil)}
-      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_recipient_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_recipient := @ERR_PKCS7_add_recipient;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_recipient');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_SIGNER_INFO_get0_algs := LoadLibFunction(ADllHandle, PKCS7_SIGNER_INFO_get0_algs_procname);
-  FuncLoaded := assigned(PKCS7_SIGNER_INFO_get0_algs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_SIGNER_INFO_get0_algs);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
+    PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
+    {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_get0_algs_introduced)}
     if LibVersion < PKCS7_SIGNER_INFO_get0_algs_introduced then
     begin
       {$if declared(FC_PKCS7_SIGNER_INFO_get0_algs)}
       PKCS7_SIGNER_INFO_get0_algs := @FC_PKCS7_SIGNER_INFO_get0_algs;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
-      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_SIGNER_INFO_get0_algs_removed)}
@@ -2067,39 +1866,31 @@ begin
     begin
       {$if declared(_PKCS7_SIGNER_INFO_get0_algs)}
       PKCS7_SIGNER_INFO_get0_algs := @_PKCS7_SIGNER_INFO_get0_algs;
-      {$else}
-      {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
-      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_SIGNER_INFO_get0_algs_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_SIGNER_INFO_get0_algs := @ERR_PKCS7_SIGNER_INFO_get0_algs;
+    if FuncLoadError then
       AFailed.Add('PKCS7_SIGNER_INFO_get0_algs');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_RECIP_INFO_get0_alg := LoadLibFunction(ADllHandle, PKCS7_RECIP_INFO_get0_alg_procname);
-  FuncLoaded := assigned(PKCS7_RECIP_INFO_get0_alg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_RECIP_INFO_get0_alg);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
+    PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
+    {$ifend}
     {$if declared(PKCS7_RECIP_INFO_get0_alg_introduced)}
     if LibVersion < PKCS7_RECIP_INFO_get0_alg_introduced then
     begin
       {$if declared(FC_PKCS7_RECIP_INFO_get0_alg)}
       PKCS7_RECIP_INFO_get0_alg := @FC_PKCS7_RECIP_INFO_get0_alg;
-      {$else}
-      {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
-      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_RECIP_INFO_get0_alg_removed)}
@@ -2107,39 +1898,31 @@ begin
     begin
       {$if declared(_PKCS7_RECIP_INFO_get0_alg)}
       PKCS7_RECIP_INFO_get0_alg := @_PKCS7_RECIP_INFO_get0_alg;
-      {$else}
-      {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
-      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_RECIP_INFO_get0_alg_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_RECIP_INFO_get0_alg := @ERR_PKCS7_RECIP_INFO_get0_alg;
+    if FuncLoadError then
       AFailed.Add('PKCS7_RECIP_INFO_get0_alg');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_recipient_info := LoadLibFunction(ADllHandle, PKCS7_add_recipient_info_procname);
-  FuncLoaded := assigned(PKCS7_add_recipient_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_recipient_info);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_recipient_info_allownil)}
+    PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
+    {$ifend}
     {$if declared(PKCS7_add_recipient_info_introduced)}
     if LibVersion < PKCS7_add_recipient_info_introduced then
     begin
       {$if declared(FC_PKCS7_add_recipient_info)}
       PKCS7_add_recipient_info := @FC_PKCS7_add_recipient_info;
-      {$else}
-      {$if not defined(PKCS7_add_recipient_info_allownil)}
-      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_recipient_info_removed)}
@@ -2147,39 +1930,31 @@ begin
     begin
       {$if declared(_PKCS7_add_recipient_info)}
       PKCS7_add_recipient_info := @_PKCS7_add_recipient_info;
-      {$else}
-      {$if not defined(PKCS7_add_recipient_info_allownil)}
-      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_recipient_info_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_recipient_info := @ERR_PKCS7_add_recipient_info;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_recipient_info');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_RECIP_INFO_set := LoadLibFunction(ADllHandle, PKCS7_RECIP_INFO_set_procname);
-  FuncLoaded := assigned(PKCS7_RECIP_INFO_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_RECIP_INFO_set);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
+    PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
+    {$ifend}
     {$if declared(PKCS7_RECIP_INFO_set_introduced)}
     if LibVersion < PKCS7_RECIP_INFO_set_introduced then
     begin
       {$if declared(FC_PKCS7_RECIP_INFO_set)}
       PKCS7_RECIP_INFO_set := @FC_PKCS7_RECIP_INFO_set;
-      {$else}
-      {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
-      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_RECIP_INFO_set_removed)}
@@ -2187,39 +1962,31 @@ begin
     begin
       {$if declared(_PKCS7_RECIP_INFO_set)}
       PKCS7_RECIP_INFO_set := @_PKCS7_RECIP_INFO_set;
-      {$else}
-      {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
-      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_RECIP_INFO_set_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_RECIP_INFO_set := @ERR_PKCS7_RECIP_INFO_set;
+    if FuncLoadError then
       AFailed.Add('PKCS7_RECIP_INFO_set');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_set_cipher := LoadLibFunction(ADllHandle, PKCS7_set_cipher_procname);
-  FuncLoaded := assigned(PKCS7_set_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_set_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_set_cipher_allownil)}
+    PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
+    {$ifend}
     {$if declared(PKCS7_set_cipher_introduced)}
     if LibVersion < PKCS7_set_cipher_introduced then
     begin
       {$if declared(FC_PKCS7_set_cipher)}
       PKCS7_set_cipher := @FC_PKCS7_set_cipher;
-      {$else}
-      {$if not defined(PKCS7_set_cipher_allownil)}
-      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_set_cipher_removed)}
@@ -2227,39 +1994,31 @@ begin
     begin
       {$if declared(_PKCS7_set_cipher)}
       PKCS7_set_cipher := @_PKCS7_set_cipher;
-      {$else}
-      {$if not defined(PKCS7_set_cipher_allownil)}
-      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_set_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_set_cipher := @ERR_PKCS7_set_cipher;
+    if FuncLoadError then
       AFailed.Add('PKCS7_set_cipher');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_stream := LoadLibFunction(ADllHandle, PKCS7_stream_procname);
-  FuncLoaded := assigned(PKCS7_stream);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_stream);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_stream_allownil)}
+    PKCS7_stream := @ERR_PKCS7_stream;
+    {$ifend}
     {$if declared(PKCS7_stream_introduced)}
     if LibVersion < PKCS7_stream_introduced then
     begin
       {$if declared(FC_PKCS7_stream)}
       PKCS7_stream := @FC_PKCS7_stream;
-      {$else}
-      {$if not defined(PKCS7_stream_allownil)}
-      PKCS7_stream := @ERR_PKCS7_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_stream_removed)}
@@ -2267,39 +2026,31 @@ begin
     begin
       {$if declared(_PKCS7_stream)}
       PKCS7_stream := @_PKCS7_stream;
-      {$else}
-      {$if not defined(PKCS7_stream_allownil)}
-      PKCS7_stream := @ERR_PKCS7_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_stream_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_stream := @ERR_PKCS7_stream;
+    if FuncLoadError then
       AFailed.Add('PKCS7_stream');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_get_issuer_and_serial := LoadLibFunction(ADllHandle, PKCS7_get_issuer_and_serial_procname);
-  FuncLoaded := assigned(PKCS7_get_issuer_and_serial);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_get_issuer_and_serial);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
+    PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
+    {$ifend}
     {$if declared(PKCS7_get_issuer_and_serial_introduced)}
     if LibVersion < PKCS7_get_issuer_and_serial_introduced then
     begin
       {$if declared(FC_PKCS7_get_issuer_and_serial)}
       PKCS7_get_issuer_and_serial := @FC_PKCS7_get_issuer_and_serial;
-      {$else}
-      {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
-      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_get_issuer_and_serial_removed)}
@@ -2307,39 +2058,31 @@ begin
     begin
       {$if declared(_PKCS7_get_issuer_and_serial)}
       PKCS7_get_issuer_and_serial := @_PKCS7_get_issuer_and_serial;
-      {$else}
-      {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
-      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_get_issuer_and_serial_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_get_issuer_and_serial := @ERR_PKCS7_get_issuer_and_serial;
+    if FuncLoadError then
       AFailed.Add('PKCS7_get_issuer_and_serial');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_signed_attribute := LoadLibFunction(ADllHandle, PKCS7_add_signed_attribute_procname);
-  FuncLoaded := assigned(PKCS7_add_signed_attribute);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_signed_attribute);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_signed_attribute_allownil)}
+    PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
+    {$ifend}
     {$if declared(PKCS7_add_signed_attribute_introduced)}
     if LibVersion < PKCS7_add_signed_attribute_introduced then
     begin
       {$if declared(FC_PKCS7_add_signed_attribute)}
       PKCS7_add_signed_attribute := @FC_PKCS7_add_signed_attribute;
-      {$else}
-      {$if not defined(PKCS7_add_signed_attribute_allownil)}
-      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_signed_attribute_removed)}
@@ -2347,39 +2090,31 @@ begin
     begin
       {$if declared(_PKCS7_add_signed_attribute)}
       PKCS7_add_signed_attribute := @_PKCS7_add_signed_attribute;
-      {$else}
-      {$if not defined(PKCS7_add_signed_attribute_allownil)}
-      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_signed_attribute_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_signed_attribute := @ERR_PKCS7_add_signed_attribute;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_signed_attribute');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_attribute := LoadLibFunction(ADllHandle, PKCS7_add_attribute_procname);
-  FuncLoaded := assigned(PKCS7_add_attribute);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_attribute);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_attribute_allownil)}
+    PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
+    {$ifend}
     {$if declared(PKCS7_add_attribute_introduced)}
     if LibVersion < PKCS7_add_attribute_introduced then
     begin
       {$if declared(FC_PKCS7_add_attribute)}
       PKCS7_add_attribute := @FC_PKCS7_add_attribute;
-      {$else}
-      {$if not defined(PKCS7_add_attribute_allownil)}
-      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_attribute_removed)}
@@ -2387,39 +2122,31 @@ begin
     begin
       {$if declared(_PKCS7_add_attribute)}
       PKCS7_add_attribute := @_PKCS7_add_attribute;
-      {$else}
-      {$if not defined(PKCS7_add_attribute_allownil)}
-      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_attribute_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_attribute := @ERR_PKCS7_add_attribute;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_attribute');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_get_attribute := LoadLibFunction(ADllHandle, PKCS7_get_attribute_procname);
-  FuncLoaded := assigned(PKCS7_get_attribute);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_get_attribute);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_get_attribute_allownil)}
+    PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
+    {$ifend}
     {$if declared(PKCS7_get_attribute_introduced)}
     if LibVersion < PKCS7_get_attribute_introduced then
     begin
       {$if declared(FC_PKCS7_get_attribute)}
       PKCS7_get_attribute := @FC_PKCS7_get_attribute;
-      {$else}
-      {$if not defined(PKCS7_get_attribute_allownil)}
-      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_get_attribute_removed)}
@@ -2427,39 +2154,31 @@ begin
     begin
       {$if declared(_PKCS7_get_attribute)}
       PKCS7_get_attribute := @_PKCS7_get_attribute;
-      {$else}
-      {$if not defined(PKCS7_get_attribute_allownil)}
-      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_get_attribute_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_get_attribute := @ERR_PKCS7_get_attribute;
+    if FuncLoadError then
       AFailed.Add('PKCS7_get_attribute');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_get_signed_attribute := LoadLibFunction(ADllHandle, PKCS7_get_signed_attribute_procname);
-  FuncLoaded := assigned(PKCS7_get_signed_attribute);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_get_signed_attribute);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_get_signed_attribute_allownil)}
+    PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
+    {$ifend}
     {$if declared(PKCS7_get_signed_attribute_introduced)}
     if LibVersion < PKCS7_get_signed_attribute_introduced then
     begin
       {$if declared(FC_PKCS7_get_signed_attribute)}
       PKCS7_get_signed_attribute := @FC_PKCS7_get_signed_attribute;
-      {$else}
-      {$if not defined(PKCS7_get_signed_attribute_allownil)}
-      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_get_signed_attribute_removed)}
@@ -2467,39 +2186,31 @@ begin
     begin
       {$if declared(_PKCS7_get_signed_attribute)}
       PKCS7_get_signed_attribute := @_PKCS7_get_signed_attribute;
-      {$else}
-      {$if not defined(PKCS7_get_signed_attribute_allownil)}
-      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_get_signed_attribute_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_get_signed_attribute := @ERR_PKCS7_get_signed_attribute;
+    if FuncLoadError then
       AFailed.Add('PKCS7_get_signed_attribute');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_sign_add_signer := LoadLibFunction(ADllHandle, PKCS7_sign_add_signer_procname);
-  FuncLoaded := assigned(PKCS7_sign_add_signer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_sign_add_signer);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_sign_add_signer_allownil)}
+    PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
+    {$ifend}
     {$if declared(PKCS7_sign_add_signer_introduced)}
     if LibVersion < PKCS7_sign_add_signer_introduced then
     begin
       {$if declared(FC_PKCS7_sign_add_signer)}
       PKCS7_sign_add_signer := @FC_PKCS7_sign_add_signer;
-      {$else}
-      {$if not defined(PKCS7_sign_add_signer_allownil)}
-      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_sign_add_signer_removed)}
@@ -2507,39 +2218,31 @@ begin
     begin
       {$if declared(_PKCS7_sign_add_signer)}
       PKCS7_sign_add_signer := @_PKCS7_sign_add_signer;
-      {$else}
-      {$if not defined(PKCS7_sign_add_signer_allownil)}
-      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_sign_add_signer_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_sign_add_signer := @ERR_PKCS7_sign_add_signer;
+    if FuncLoadError then
       AFailed.Add('PKCS7_sign_add_signer');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_final := LoadLibFunction(ADllHandle, PKCS7_final_procname);
-  FuncLoaded := assigned(PKCS7_final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_final);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_final_allownil)}
+    PKCS7_final := @ERR_PKCS7_final;
+    {$ifend}
     {$if declared(PKCS7_final_introduced)}
     if LibVersion < PKCS7_final_introduced then
     begin
       {$if declared(FC_PKCS7_final)}
       PKCS7_final := @FC_PKCS7_final;
-      {$else}
-      {$if not defined(PKCS7_final_allownil)}
-      PKCS7_final := @ERR_PKCS7_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_final_removed)}
@@ -2547,39 +2250,31 @@ begin
     begin
       {$if declared(_PKCS7_final)}
       PKCS7_final := @_PKCS7_final;
-      {$else}
-      {$if not defined(PKCS7_final_allownil)}
-      PKCS7_final := @ERR_PKCS7_final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_final_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_final := @ERR_PKCS7_final;
+    if FuncLoadError then
       AFailed.Add('PKCS7_final');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_decrypt := LoadLibFunction(ADllHandle, PKCS7_decrypt_procname);
-  FuncLoaded := assigned(PKCS7_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_decrypt_allownil)}
+    PKCS7_decrypt := @ERR_PKCS7_decrypt;
+    {$ifend}
     {$if declared(PKCS7_decrypt_introduced)}
     if LibVersion < PKCS7_decrypt_introduced then
     begin
       {$if declared(FC_PKCS7_decrypt)}
       PKCS7_decrypt := @FC_PKCS7_decrypt;
-      {$else}
-      {$if not defined(PKCS7_decrypt_allownil)}
-      PKCS7_decrypt := @ERR_PKCS7_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_decrypt_removed)}
@@ -2587,39 +2282,31 @@ begin
     begin
       {$if declared(_PKCS7_decrypt)}
       PKCS7_decrypt := @_PKCS7_decrypt;
-      {$else}
-      {$if not defined(PKCS7_decrypt_allownil)}
-      PKCS7_decrypt := @ERR_PKCS7_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_decrypt := @ERR_PKCS7_decrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS7_decrypt');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add_attrib_content_type := LoadLibFunction(ADllHandle, PKCS7_add_attrib_content_type_procname);
-  FuncLoaded := assigned(PKCS7_add_attrib_content_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add_attrib_content_type);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add_attrib_content_type_allownil)}
+    PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
+    {$ifend}
     {$if declared(PKCS7_add_attrib_content_type_introduced)}
     if LibVersion < PKCS7_add_attrib_content_type_introduced then
     begin
       {$if declared(FC_PKCS7_add_attrib_content_type)}
       PKCS7_add_attrib_content_type := @FC_PKCS7_add_attrib_content_type;
-      {$else}
-      {$if not defined(PKCS7_add_attrib_content_type_allownil)}
-      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add_attrib_content_type_removed)}
@@ -2627,39 +2314,31 @@ begin
     begin
       {$if declared(_PKCS7_add_attrib_content_type)}
       PKCS7_add_attrib_content_type := @_PKCS7_add_attrib_content_type;
-      {$else}
-      {$if not defined(PKCS7_add_attrib_content_type_allownil)}
-      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add_attrib_content_type_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add_attrib_content_type := @ERR_PKCS7_add_attrib_content_type;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add_attrib_content_type');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add0_attrib_signing_time := LoadLibFunction(ADllHandle, PKCS7_add0_attrib_signing_time_procname);
-  FuncLoaded := assigned(PKCS7_add0_attrib_signing_time);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add0_attrib_signing_time);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
+    PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
+    {$ifend}
     {$if declared(PKCS7_add0_attrib_signing_time_introduced)}
     if LibVersion < PKCS7_add0_attrib_signing_time_introduced then
     begin
       {$if declared(FC_PKCS7_add0_attrib_signing_time)}
       PKCS7_add0_attrib_signing_time := @FC_PKCS7_add0_attrib_signing_time;
-      {$else}
-      {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
-      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add0_attrib_signing_time_removed)}
@@ -2667,39 +2346,31 @@ begin
     begin
       {$if declared(_PKCS7_add0_attrib_signing_time)}
       PKCS7_add0_attrib_signing_time := @_PKCS7_add0_attrib_signing_time;
-      {$else}
-      {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
-      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add0_attrib_signing_time_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add0_attrib_signing_time := @ERR_PKCS7_add0_attrib_signing_time;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add0_attrib_signing_time');
-    end;
     {$ifend}
   end;
 
 
   PKCS7_add1_attrib_digest := LoadLibFunction(ADllHandle, PKCS7_add1_attrib_digest_procname);
-  FuncLoaded := assigned(PKCS7_add1_attrib_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS7_add1_attrib_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS7_add1_attrib_digest_allownil)}
+    PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
+    {$ifend}
     {$if declared(PKCS7_add1_attrib_digest_introduced)}
     if LibVersion < PKCS7_add1_attrib_digest_introduced then
     begin
       {$if declared(FC_PKCS7_add1_attrib_digest)}
       PKCS7_add1_attrib_digest := @FC_PKCS7_add1_attrib_digest;
-      {$else}
-      {$if not defined(PKCS7_add1_attrib_digest_allownil)}
-      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS7_add1_attrib_digest_removed)}
@@ -2707,39 +2378,31 @@ begin
     begin
       {$if declared(_PKCS7_add1_attrib_digest)}
       PKCS7_add1_attrib_digest := @_PKCS7_add1_attrib_digest;
-      {$else}
-      {$if not defined(PKCS7_add1_attrib_digest_allownil)}
-      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS7_add1_attrib_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS7_add1_attrib_digest := @ERR_PKCS7_add1_attrib_digest;
+    if FuncLoadError then
       AFailed.Add('PKCS7_add1_attrib_digest');
-    end;
     {$ifend}
   end;
 
 
   SMIME_write_PKCS7 := LoadLibFunction(ADllHandle, SMIME_write_PKCS7_procname);
-  FuncLoaded := assigned(SMIME_write_PKCS7);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SMIME_write_PKCS7);
+  if FuncLoadError then
   begin
+    {$if not defined(SMIME_write_PKCS7_allownil)}
+    SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
+    {$ifend}
     {$if declared(SMIME_write_PKCS7_introduced)}
     if LibVersion < SMIME_write_PKCS7_introduced then
     begin
       {$if declared(FC_SMIME_write_PKCS7)}
       SMIME_write_PKCS7 := @FC_SMIME_write_PKCS7;
-      {$else}
-      {$if not defined(SMIME_write_PKCS7_allownil)}
-      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SMIME_write_PKCS7_removed)}
@@ -2747,39 +2410,31 @@ begin
     begin
       {$if declared(_SMIME_write_PKCS7)}
       SMIME_write_PKCS7 := @_SMIME_write_PKCS7;
-      {$else}
-      {$if not defined(SMIME_write_PKCS7_allownil)}
-      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SMIME_write_PKCS7_allownil)}
-    if not FuncLoaded then
-    begin
-      SMIME_write_PKCS7 := @ERR_SMIME_write_PKCS7;
+    if FuncLoadError then
       AFailed.Add('SMIME_write_PKCS7');
-    end;
     {$ifend}
   end;
 
 
   SMIME_read_PKCS7 := LoadLibFunction(ADllHandle, SMIME_read_PKCS7_procname);
-  FuncLoaded := assigned(SMIME_read_PKCS7);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SMIME_read_PKCS7);
+  if FuncLoadError then
   begin
+    {$if not defined(SMIME_read_PKCS7_allownil)}
+    SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
+    {$ifend}
     {$if declared(SMIME_read_PKCS7_introduced)}
     if LibVersion < SMIME_read_PKCS7_introduced then
     begin
       {$if declared(FC_SMIME_read_PKCS7)}
       SMIME_read_PKCS7 := @FC_SMIME_read_PKCS7;
-      {$else}
-      {$if not defined(SMIME_read_PKCS7_allownil)}
-      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SMIME_read_PKCS7_removed)}
@@ -2787,39 +2442,31 @@ begin
     begin
       {$if declared(_SMIME_read_PKCS7)}
       SMIME_read_PKCS7 := @_SMIME_read_PKCS7;
-      {$else}
-      {$if not defined(SMIME_read_PKCS7_allownil)}
-      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SMIME_read_PKCS7_allownil)}
-    if not FuncLoaded then
-    begin
-      SMIME_read_PKCS7 := @ERR_SMIME_read_PKCS7;
+    if FuncLoadError then
       AFailed.Add('SMIME_read_PKCS7');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_PKCS7 := LoadLibFunction(ADllHandle, BIO_new_PKCS7_procname);
-  FuncLoaded := assigned(BIO_new_PKCS7);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_PKCS7);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_PKCS7_allownil)}
+    BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
+    {$ifend}
     {$if declared(BIO_new_PKCS7_introduced)}
     if LibVersion < BIO_new_PKCS7_introduced then
     begin
       {$if declared(FC_BIO_new_PKCS7)}
       BIO_new_PKCS7 := @FC_BIO_new_PKCS7;
-      {$else}
-      {$if not defined(BIO_new_PKCS7_allownil)}
-      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_PKCS7_removed)}
@@ -2827,20 +2474,13 @@ begin
     begin
       {$if declared(_BIO_new_PKCS7)}
       BIO_new_PKCS7 := @_BIO_new_PKCS7;
-      {$else}
-      {$if not defined(BIO_new_PKCS7_allownil)}
-      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_PKCS7_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_PKCS7 := @ERR_BIO_new_PKCS7;
+    if FuncLoadError then
       AFailed.Add('BIO_new_PKCS7');
-    end;
     {$ifend}
   end;
 

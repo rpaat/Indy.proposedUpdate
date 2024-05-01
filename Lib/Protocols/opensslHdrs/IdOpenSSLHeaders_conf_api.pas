@@ -177,24 +177,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   _CONF_new_section := LoadLibFunction(ADllHandle, _CONF_new_section_procname);
-  FuncLoaded := assigned(_CONF_new_section);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_new_section);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_new_section_allownil)}
+    _CONF_new_section := @ERR__CONF_new_section;
+    {$ifend}
     {$if declared(_CONF_new_section_introduced)}
     if LibVersion < _CONF_new_section_introduced then
     begin
       {$if declared(FC__CONF_new_section)}
       _CONF_new_section := @FC__CONF_new_section;
-      {$else}
-      {$if not defined(_CONF_new_section_allownil)}
-      _CONF_new_section := @ERR__CONF_new_section;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_new_section_removed)}
@@ -202,39 +201,31 @@ begin
     begin
       {$if declared(__CONF_new_section)}
       _CONF_new_section := @__CONF_new_section;
-      {$else}
-      {$if not defined(_CONF_new_section_allownil)}
-      _CONF_new_section := @ERR__CONF_new_section;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_new_section_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_new_section := @ERR__CONF_new_section;
+    if FuncLoadError then
       AFailed.Add('_CONF_new_section');
-    end;
     {$ifend}
   end;
 
 
   _CONF_get_section := LoadLibFunction(ADllHandle, _CONF_get_section_procname);
-  FuncLoaded := assigned(_CONF_get_section);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_get_section);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_get_section_allownil)}
+    _CONF_get_section := @ERR__CONF_get_section;
+    {$ifend}
     {$if declared(_CONF_get_section_introduced)}
     if LibVersion < _CONF_get_section_introduced then
     begin
       {$if declared(FC__CONF_get_section)}
       _CONF_get_section := @FC__CONF_get_section;
-      {$else}
-      {$if not defined(_CONF_get_section_allownil)}
-      _CONF_get_section := @ERR__CONF_get_section;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_get_section_removed)}
@@ -242,39 +233,31 @@ begin
     begin
       {$if declared(__CONF_get_section)}
       _CONF_get_section := @__CONF_get_section;
-      {$else}
-      {$if not defined(_CONF_get_section_allownil)}
-      _CONF_get_section := @ERR__CONF_get_section;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_get_section_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_get_section := @ERR__CONF_get_section;
+    if FuncLoadError then
       AFailed.Add('_CONF_get_section');
-    end;
     {$ifend}
   end;
 
 
   _CONF_add_string := LoadLibFunction(ADllHandle, _CONF_add_string_procname);
-  FuncLoaded := assigned(_CONF_add_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_add_string);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_add_string_allownil)}
+    _CONF_add_string := @ERR__CONF_add_string;
+    {$ifend}
     {$if declared(_CONF_add_string_introduced)}
     if LibVersion < _CONF_add_string_introduced then
     begin
       {$if declared(FC__CONF_add_string)}
       _CONF_add_string := @FC__CONF_add_string;
-      {$else}
-      {$if not defined(_CONF_add_string_allownil)}
-      _CONF_add_string := @ERR__CONF_add_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_add_string_removed)}
@@ -282,39 +265,31 @@ begin
     begin
       {$if declared(__CONF_add_string)}
       _CONF_add_string := @__CONF_add_string;
-      {$else}
-      {$if not defined(_CONF_add_string_allownil)}
-      _CONF_add_string := @ERR__CONF_add_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_add_string_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_add_string := @ERR__CONF_add_string;
+    if FuncLoadError then
       AFailed.Add('_CONF_add_string');
-    end;
     {$ifend}
   end;
 
 
   _CONF_get_string := LoadLibFunction(ADllHandle, _CONF_get_string_procname);
-  FuncLoaded := assigned(_CONF_get_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_get_string);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_get_string_allownil)}
+    _CONF_get_string := @ERR__CONF_get_string;
+    {$ifend}
     {$if declared(_CONF_get_string_introduced)}
     if LibVersion < _CONF_get_string_introduced then
     begin
       {$if declared(FC__CONF_get_string)}
       _CONF_get_string := @FC__CONF_get_string;
-      {$else}
-      {$if not defined(_CONF_get_string_allownil)}
-      _CONF_get_string := @ERR__CONF_get_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_get_string_removed)}
@@ -322,39 +297,31 @@ begin
     begin
       {$if declared(__CONF_get_string)}
       _CONF_get_string := @__CONF_get_string;
-      {$else}
-      {$if not defined(_CONF_get_string_allownil)}
-      _CONF_get_string := @ERR__CONF_get_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_get_string_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_get_string := @ERR__CONF_get_string;
+    if FuncLoadError then
       AFailed.Add('_CONF_get_string');
-    end;
     {$ifend}
   end;
 
 
   _CONF_get_number := LoadLibFunction(ADllHandle, _CONF_get_number_procname);
-  FuncLoaded := assigned(_CONF_get_number);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_get_number);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_get_number_allownil)}
+    _CONF_get_number := @ERR__CONF_get_number;
+    {$ifend}
     {$if declared(_CONF_get_number_introduced)}
     if LibVersion < _CONF_get_number_introduced then
     begin
       {$if declared(FC__CONF_get_number)}
       _CONF_get_number := @FC__CONF_get_number;
-      {$else}
-      {$if not defined(_CONF_get_number_allownil)}
-      _CONF_get_number := @ERR__CONF_get_number;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_get_number_removed)}
@@ -362,39 +329,31 @@ begin
     begin
       {$if declared(__CONF_get_number)}
       _CONF_get_number := @__CONF_get_number;
-      {$else}
-      {$if not defined(_CONF_get_number_allownil)}
-      _CONF_get_number := @ERR__CONF_get_number;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_get_number_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_get_number := @ERR__CONF_get_number;
+    if FuncLoadError then
       AFailed.Add('_CONF_get_number');
-    end;
     {$ifend}
   end;
 
 
   _CONF_new_data := LoadLibFunction(ADllHandle, _CONF_new_data_procname);
-  FuncLoaded := assigned(_CONF_new_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_new_data);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_new_data_allownil)}
+    _CONF_new_data := @ERR__CONF_new_data;
+    {$ifend}
     {$if declared(_CONF_new_data_introduced)}
     if LibVersion < _CONF_new_data_introduced then
     begin
       {$if declared(FC__CONF_new_data)}
       _CONF_new_data := @FC__CONF_new_data;
-      {$else}
-      {$if not defined(_CONF_new_data_allownil)}
-      _CONF_new_data := @ERR__CONF_new_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_new_data_removed)}
@@ -402,39 +361,31 @@ begin
     begin
       {$if declared(__CONF_new_data)}
       _CONF_new_data := @__CONF_new_data;
-      {$else}
-      {$if not defined(_CONF_new_data_allownil)}
-      _CONF_new_data := @ERR__CONF_new_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_new_data_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_new_data := @ERR__CONF_new_data;
+    if FuncLoadError then
       AFailed.Add('_CONF_new_data');
-    end;
     {$ifend}
   end;
 
 
   _CONF_free_data := LoadLibFunction(ADllHandle, _CONF_free_data_procname);
-  FuncLoaded := assigned(_CONF_free_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(_CONF_free_data);
+  if FuncLoadError then
   begin
+    {$if not defined(_CONF_free_data_allownil)}
+    _CONF_free_data := @ERR__CONF_free_data;
+    {$ifend}
     {$if declared(_CONF_free_data_introduced)}
     if LibVersion < _CONF_free_data_introduced then
     begin
       {$if declared(FC__CONF_free_data)}
       _CONF_free_data := @FC__CONF_free_data;
-      {$else}
-      {$if not defined(_CONF_free_data_allownil)}
-      _CONF_free_data := @ERR__CONF_free_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(_CONF_free_data_removed)}
@@ -442,20 +393,13 @@ begin
     begin
       {$if declared(__CONF_free_data)}
       _CONF_free_data := @__CONF_free_data;
-      {$else}
-      {$if not defined(_CONF_free_data_allownil)}
-      _CONF_free_data := @ERR__CONF_free_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(_CONF_free_data_allownil)}
-    if not FuncLoaded then
-    begin
-      _CONF_free_data := @ERR__CONF_free_data;
+    if FuncLoadError then
       AFailed.Add('_CONF_free_data');
-    end;
     {$ifend}
   end;
 

@@ -135,7 +135,7 @@ conflict with procedure variables of the same name.
 ii. The  {forward_compatibility} section is then copied to the implementation 
 with procedure/function names prepended with "FC_".
 
-iii. An error handling function/procedure is added for each introduced/removed 
+iii. An error handling function/procedure is added for each  
 function/procedure in the interface section other than those with the 
 "allow_nil" tag. This has the same name and function signature as given in the 
 interface section, except that the name is prepended with ERR_.

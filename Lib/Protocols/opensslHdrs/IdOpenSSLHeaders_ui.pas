@@ -1499,24 +1499,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   UI_new := LoadLibFunction(ADllHandle, UI_new_procname);
-  FuncLoaded := assigned(UI_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_new);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_new_allownil)}
+    UI_new := @ERR_UI_new;
+    {$ifend}
     {$if declared(UI_new_introduced)}
     if LibVersion < UI_new_introduced then
     begin
       {$if declared(FC_UI_new)}
       UI_new := @FC_UI_new;
-      {$else}
-      {$if not defined(UI_new_allownil)}
-      UI_new := @ERR_UI_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_new_removed)}
@@ -1524,39 +1523,31 @@ begin
     begin
       {$if declared(_UI_new)}
       UI_new := @_UI_new;
-      {$else}
-      {$if not defined(UI_new_allownil)}
-      UI_new := @ERR_UI_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_new_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_new := @ERR_UI_new;
+    if FuncLoadError then
       AFailed.Add('UI_new');
-    end;
     {$ifend}
   end;
 
 
   UI_new_method := LoadLibFunction(ADllHandle, UI_new_method_procname);
-  FuncLoaded := assigned(UI_new_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_new_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_new_method_allownil)}
+    UI_new_method := @ERR_UI_new_method;
+    {$ifend}
     {$if declared(UI_new_method_introduced)}
     if LibVersion < UI_new_method_introduced then
     begin
       {$if declared(FC_UI_new_method)}
       UI_new_method := @FC_UI_new_method;
-      {$else}
-      {$if not defined(UI_new_method_allownil)}
-      UI_new_method := @ERR_UI_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_new_method_removed)}
@@ -1564,39 +1555,31 @@ begin
     begin
       {$if declared(_UI_new_method)}
       UI_new_method := @_UI_new_method;
-      {$else}
-      {$if not defined(UI_new_method_allownil)}
-      UI_new_method := @ERR_UI_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_new_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_new_method := @ERR_UI_new_method;
+    if FuncLoadError then
       AFailed.Add('UI_new_method');
-    end;
     {$ifend}
   end;
 
 
   UI_free := LoadLibFunction(ADllHandle, UI_free_procname);
-  FuncLoaded := assigned(UI_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_free);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_free_allownil)}
+    UI_free := @ERR_UI_free;
+    {$ifend}
     {$if declared(UI_free_introduced)}
     if LibVersion < UI_free_introduced then
     begin
       {$if declared(FC_UI_free)}
       UI_free := @FC_UI_free;
-      {$else}
-      {$if not defined(UI_free_allownil)}
-      UI_free := @ERR_UI_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_free_removed)}
@@ -1604,39 +1587,31 @@ begin
     begin
       {$if declared(_UI_free)}
       UI_free := @_UI_free;
-      {$else}
-      {$if not defined(UI_free_allownil)}
-      UI_free := @ERR_UI_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_free_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_free := @ERR_UI_free;
+    if FuncLoadError then
       AFailed.Add('UI_free');
-    end;
     {$ifend}
   end;
 
 
   UI_add_input_string := LoadLibFunction(ADllHandle, UI_add_input_string_procname);
-  FuncLoaded := assigned(UI_add_input_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_input_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_input_string_allownil)}
+    UI_add_input_string := @ERR_UI_add_input_string;
+    {$ifend}
     {$if declared(UI_add_input_string_introduced)}
     if LibVersion < UI_add_input_string_introduced then
     begin
       {$if declared(FC_UI_add_input_string)}
       UI_add_input_string := @FC_UI_add_input_string;
-      {$else}
-      {$if not defined(UI_add_input_string_allownil)}
-      UI_add_input_string := @ERR_UI_add_input_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_input_string_removed)}
@@ -1644,39 +1619,31 @@ begin
     begin
       {$if declared(_UI_add_input_string)}
       UI_add_input_string := @_UI_add_input_string;
-      {$else}
-      {$if not defined(UI_add_input_string_allownil)}
-      UI_add_input_string := @ERR_UI_add_input_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_input_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_input_string := @ERR_UI_add_input_string;
+    if FuncLoadError then
       AFailed.Add('UI_add_input_string');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_input_string := LoadLibFunction(ADllHandle, UI_dup_input_string_procname);
-  FuncLoaded := assigned(UI_dup_input_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_input_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_input_string_allownil)}
+    UI_dup_input_string := @ERR_UI_dup_input_string;
+    {$ifend}
     {$if declared(UI_dup_input_string_introduced)}
     if LibVersion < UI_dup_input_string_introduced then
     begin
       {$if declared(FC_UI_dup_input_string)}
       UI_dup_input_string := @FC_UI_dup_input_string;
-      {$else}
-      {$if not defined(UI_dup_input_string_allownil)}
-      UI_dup_input_string := @ERR_UI_dup_input_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_input_string_removed)}
@@ -1684,39 +1651,31 @@ begin
     begin
       {$if declared(_UI_dup_input_string)}
       UI_dup_input_string := @_UI_dup_input_string;
-      {$else}
-      {$if not defined(UI_dup_input_string_allownil)}
-      UI_dup_input_string := @ERR_UI_dup_input_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_input_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_input_string := @ERR_UI_dup_input_string;
+    if FuncLoadError then
       AFailed.Add('UI_dup_input_string');
-    end;
     {$ifend}
   end;
 
 
   UI_add_verify_string := LoadLibFunction(ADllHandle, UI_add_verify_string_procname);
-  FuncLoaded := assigned(UI_add_verify_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_verify_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_verify_string_allownil)}
+    UI_add_verify_string := @ERR_UI_add_verify_string;
+    {$ifend}
     {$if declared(UI_add_verify_string_introduced)}
     if LibVersion < UI_add_verify_string_introduced then
     begin
       {$if declared(FC_UI_add_verify_string)}
       UI_add_verify_string := @FC_UI_add_verify_string;
-      {$else}
-      {$if not defined(UI_add_verify_string_allownil)}
-      UI_add_verify_string := @ERR_UI_add_verify_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_verify_string_removed)}
@@ -1724,39 +1683,31 @@ begin
     begin
       {$if declared(_UI_add_verify_string)}
       UI_add_verify_string := @_UI_add_verify_string;
-      {$else}
-      {$if not defined(UI_add_verify_string_allownil)}
-      UI_add_verify_string := @ERR_UI_add_verify_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_verify_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_verify_string := @ERR_UI_add_verify_string;
+    if FuncLoadError then
       AFailed.Add('UI_add_verify_string');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_verify_string := LoadLibFunction(ADllHandle, UI_dup_verify_string_procname);
-  FuncLoaded := assigned(UI_dup_verify_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_verify_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_verify_string_allownil)}
+    UI_dup_verify_string := @ERR_UI_dup_verify_string;
+    {$ifend}
     {$if declared(UI_dup_verify_string_introduced)}
     if LibVersion < UI_dup_verify_string_introduced then
     begin
       {$if declared(FC_UI_dup_verify_string)}
       UI_dup_verify_string := @FC_UI_dup_verify_string;
-      {$else}
-      {$if not defined(UI_dup_verify_string_allownil)}
-      UI_dup_verify_string := @ERR_UI_dup_verify_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_verify_string_removed)}
@@ -1764,39 +1715,31 @@ begin
     begin
       {$if declared(_UI_dup_verify_string)}
       UI_dup_verify_string := @_UI_dup_verify_string;
-      {$else}
-      {$if not defined(UI_dup_verify_string_allownil)}
-      UI_dup_verify_string := @ERR_UI_dup_verify_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_verify_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_verify_string := @ERR_UI_dup_verify_string;
+    if FuncLoadError then
       AFailed.Add('UI_dup_verify_string');
-    end;
     {$ifend}
   end;
 
 
   UI_add_input_boolean := LoadLibFunction(ADllHandle, UI_add_input_boolean_procname);
-  FuncLoaded := assigned(UI_add_input_boolean);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_input_boolean);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_input_boolean_allownil)}
+    UI_add_input_boolean := @ERR_UI_add_input_boolean;
+    {$ifend}
     {$if declared(UI_add_input_boolean_introduced)}
     if LibVersion < UI_add_input_boolean_introduced then
     begin
       {$if declared(FC_UI_add_input_boolean)}
       UI_add_input_boolean := @FC_UI_add_input_boolean;
-      {$else}
-      {$if not defined(UI_add_input_boolean_allownil)}
-      UI_add_input_boolean := @ERR_UI_add_input_boolean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_input_boolean_removed)}
@@ -1804,39 +1747,31 @@ begin
     begin
       {$if declared(_UI_add_input_boolean)}
       UI_add_input_boolean := @_UI_add_input_boolean;
-      {$else}
-      {$if not defined(UI_add_input_boolean_allownil)}
-      UI_add_input_boolean := @ERR_UI_add_input_boolean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_input_boolean_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_input_boolean := @ERR_UI_add_input_boolean;
+    if FuncLoadError then
       AFailed.Add('UI_add_input_boolean');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_input_boolean := LoadLibFunction(ADllHandle, UI_dup_input_boolean_procname);
-  FuncLoaded := assigned(UI_dup_input_boolean);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_input_boolean);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_input_boolean_allownil)}
+    UI_dup_input_boolean := @ERR_UI_dup_input_boolean;
+    {$ifend}
     {$if declared(UI_dup_input_boolean_introduced)}
     if LibVersion < UI_dup_input_boolean_introduced then
     begin
       {$if declared(FC_UI_dup_input_boolean)}
       UI_dup_input_boolean := @FC_UI_dup_input_boolean;
-      {$else}
-      {$if not defined(UI_dup_input_boolean_allownil)}
-      UI_dup_input_boolean := @ERR_UI_dup_input_boolean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_input_boolean_removed)}
@@ -1844,39 +1779,31 @@ begin
     begin
       {$if declared(_UI_dup_input_boolean)}
       UI_dup_input_boolean := @_UI_dup_input_boolean;
-      {$else}
-      {$if not defined(UI_dup_input_boolean_allownil)}
-      UI_dup_input_boolean := @ERR_UI_dup_input_boolean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_input_boolean_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_input_boolean := @ERR_UI_dup_input_boolean;
+    if FuncLoadError then
       AFailed.Add('UI_dup_input_boolean');
-    end;
     {$ifend}
   end;
 
 
   UI_add_info_string := LoadLibFunction(ADllHandle, UI_add_info_string_procname);
-  FuncLoaded := assigned(UI_add_info_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_info_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_info_string_allownil)}
+    UI_add_info_string := @ERR_UI_add_info_string;
+    {$ifend}
     {$if declared(UI_add_info_string_introduced)}
     if LibVersion < UI_add_info_string_introduced then
     begin
       {$if declared(FC_UI_add_info_string)}
       UI_add_info_string := @FC_UI_add_info_string;
-      {$else}
-      {$if not defined(UI_add_info_string_allownil)}
-      UI_add_info_string := @ERR_UI_add_info_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_info_string_removed)}
@@ -1884,39 +1811,31 @@ begin
     begin
       {$if declared(_UI_add_info_string)}
       UI_add_info_string := @_UI_add_info_string;
-      {$else}
-      {$if not defined(UI_add_info_string_allownil)}
-      UI_add_info_string := @ERR_UI_add_info_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_info_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_info_string := @ERR_UI_add_info_string;
+    if FuncLoadError then
       AFailed.Add('UI_add_info_string');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_info_string := LoadLibFunction(ADllHandle, UI_dup_info_string_procname);
-  FuncLoaded := assigned(UI_dup_info_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_info_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_info_string_allownil)}
+    UI_dup_info_string := @ERR_UI_dup_info_string;
+    {$ifend}
     {$if declared(UI_dup_info_string_introduced)}
     if LibVersion < UI_dup_info_string_introduced then
     begin
       {$if declared(FC_UI_dup_info_string)}
       UI_dup_info_string := @FC_UI_dup_info_string;
-      {$else}
-      {$if not defined(UI_dup_info_string_allownil)}
-      UI_dup_info_string := @ERR_UI_dup_info_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_info_string_removed)}
@@ -1924,39 +1843,31 @@ begin
     begin
       {$if declared(_UI_dup_info_string)}
       UI_dup_info_string := @_UI_dup_info_string;
-      {$else}
-      {$if not defined(UI_dup_info_string_allownil)}
-      UI_dup_info_string := @ERR_UI_dup_info_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_info_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_info_string := @ERR_UI_dup_info_string;
+    if FuncLoadError then
       AFailed.Add('UI_dup_info_string');
-    end;
     {$ifend}
   end;
 
 
   UI_add_error_string := LoadLibFunction(ADllHandle, UI_add_error_string_procname);
-  FuncLoaded := assigned(UI_add_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_error_string_allownil)}
+    UI_add_error_string := @ERR_UI_add_error_string;
+    {$ifend}
     {$if declared(UI_add_error_string_introduced)}
     if LibVersion < UI_add_error_string_introduced then
     begin
       {$if declared(FC_UI_add_error_string)}
       UI_add_error_string := @FC_UI_add_error_string;
-      {$else}
-      {$if not defined(UI_add_error_string_allownil)}
-      UI_add_error_string := @ERR_UI_add_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_error_string_removed)}
@@ -1964,39 +1875,31 @@ begin
     begin
       {$if declared(_UI_add_error_string)}
       UI_add_error_string := @_UI_add_error_string;
-      {$else}
-      {$if not defined(UI_add_error_string_allownil)}
-      UI_add_error_string := @ERR_UI_add_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_error_string := @ERR_UI_add_error_string;
+    if FuncLoadError then
       AFailed.Add('UI_add_error_string');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_error_string := LoadLibFunction(ADllHandle, UI_dup_error_string_procname);
-  FuncLoaded := assigned(UI_dup_error_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_error_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_error_string_allownil)}
+    UI_dup_error_string := @ERR_UI_dup_error_string;
+    {$ifend}
     {$if declared(UI_dup_error_string_introduced)}
     if LibVersion < UI_dup_error_string_introduced then
     begin
       {$if declared(FC_UI_dup_error_string)}
       UI_dup_error_string := @FC_UI_dup_error_string;
-      {$else}
-      {$if not defined(UI_dup_error_string_allownil)}
-      UI_dup_error_string := @ERR_UI_dup_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_error_string_removed)}
@@ -2004,39 +1907,31 @@ begin
     begin
       {$if declared(_UI_dup_error_string)}
       UI_dup_error_string := @_UI_dup_error_string;
-      {$else}
-      {$if not defined(UI_dup_error_string_allownil)}
-      UI_dup_error_string := @ERR_UI_dup_error_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_error_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_error_string := @ERR_UI_dup_error_string;
+    if FuncLoadError then
       AFailed.Add('UI_dup_error_string');
-    end;
     {$ifend}
   end;
 
 
   UI_construct_prompt := LoadLibFunction(ADllHandle, UI_construct_prompt_procname);
-  FuncLoaded := assigned(UI_construct_prompt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_construct_prompt);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_construct_prompt_allownil)}
+    UI_construct_prompt := @ERR_UI_construct_prompt;
+    {$ifend}
     {$if declared(UI_construct_prompt_introduced)}
     if LibVersion < UI_construct_prompt_introduced then
     begin
       {$if declared(FC_UI_construct_prompt)}
       UI_construct_prompt := @FC_UI_construct_prompt;
-      {$else}
-      {$if not defined(UI_construct_prompt_allownil)}
-      UI_construct_prompt := @ERR_UI_construct_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_construct_prompt_removed)}
@@ -2044,39 +1939,31 @@ begin
     begin
       {$if declared(_UI_construct_prompt)}
       UI_construct_prompt := @_UI_construct_prompt;
-      {$else}
-      {$if not defined(UI_construct_prompt_allownil)}
-      UI_construct_prompt := @ERR_UI_construct_prompt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_construct_prompt_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_construct_prompt := @ERR_UI_construct_prompt;
+    if FuncLoadError then
       AFailed.Add('UI_construct_prompt');
-    end;
     {$ifend}
   end;
 
 
   UI_add_user_data := LoadLibFunction(ADllHandle, UI_add_user_data_procname);
-  FuncLoaded := assigned(UI_add_user_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_add_user_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_add_user_data_allownil)}
+    UI_add_user_data := @ERR_UI_add_user_data;
+    {$ifend}
     {$if declared(UI_add_user_data_introduced)}
     if LibVersion < UI_add_user_data_introduced then
     begin
       {$if declared(FC_UI_add_user_data)}
       UI_add_user_data := @FC_UI_add_user_data;
-      {$else}
-      {$if not defined(UI_add_user_data_allownil)}
-      UI_add_user_data := @ERR_UI_add_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_add_user_data_removed)}
@@ -2084,39 +1971,31 @@ begin
     begin
       {$if declared(_UI_add_user_data)}
       UI_add_user_data := @_UI_add_user_data;
-      {$else}
-      {$if not defined(UI_add_user_data_allownil)}
-      UI_add_user_data := @ERR_UI_add_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_add_user_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_add_user_data := @ERR_UI_add_user_data;
+    if FuncLoadError then
       AFailed.Add('UI_add_user_data');
-    end;
     {$ifend}
   end;
 
 
   UI_dup_user_data := LoadLibFunction(ADllHandle, UI_dup_user_data_procname);
-  FuncLoaded := assigned(UI_dup_user_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_dup_user_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_dup_user_data_allownil)}
+    UI_dup_user_data := @ERR_UI_dup_user_data;
+    {$ifend}
     {$if declared(UI_dup_user_data_introduced)}
     if LibVersion < UI_dup_user_data_introduced then
     begin
       {$if declared(FC_UI_dup_user_data)}
       UI_dup_user_data := @FC_UI_dup_user_data;
-      {$else}
-      {$if not defined(UI_dup_user_data_allownil)}
-      UI_dup_user_data := @ERR_UI_dup_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_dup_user_data_removed)}
@@ -2124,39 +2003,31 @@ begin
     begin
       {$if declared(_UI_dup_user_data)}
       UI_dup_user_data := @_UI_dup_user_data;
-      {$else}
-      {$if not defined(UI_dup_user_data_allownil)}
-      UI_dup_user_data := @ERR_UI_dup_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_dup_user_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_dup_user_data := @ERR_UI_dup_user_data;
+    if FuncLoadError then
       AFailed.Add('UI_dup_user_data');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_user_data := LoadLibFunction(ADllHandle, UI_get0_user_data_procname);
-  FuncLoaded := assigned(UI_get0_user_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_user_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_user_data_allownil)}
+    UI_get0_user_data := @ERR_UI_get0_user_data;
+    {$ifend}
     {$if declared(UI_get0_user_data_introduced)}
     if LibVersion < UI_get0_user_data_introduced then
     begin
       {$if declared(FC_UI_get0_user_data)}
       UI_get0_user_data := @FC_UI_get0_user_data;
-      {$else}
-      {$if not defined(UI_get0_user_data_allownil)}
-      UI_get0_user_data := @ERR_UI_get0_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_user_data_removed)}
@@ -2164,39 +2035,31 @@ begin
     begin
       {$if declared(_UI_get0_user_data)}
       UI_get0_user_data := @_UI_get0_user_data;
-      {$else}
-      {$if not defined(UI_get0_user_data_allownil)}
-      UI_get0_user_data := @ERR_UI_get0_user_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_user_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_user_data := @ERR_UI_get0_user_data;
+    if FuncLoadError then
       AFailed.Add('UI_get0_user_data');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_result := LoadLibFunction(ADllHandle, UI_get0_result_procname);
-  FuncLoaded := assigned(UI_get0_result);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_result);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_result_allownil)}
+    UI_get0_result := @ERR_UI_get0_result;
+    {$ifend}
     {$if declared(UI_get0_result_introduced)}
     if LibVersion < UI_get0_result_introduced then
     begin
       {$if declared(FC_UI_get0_result)}
       UI_get0_result := @FC_UI_get0_result;
-      {$else}
-      {$if not defined(UI_get0_result_allownil)}
-      UI_get0_result := @ERR_UI_get0_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_result_removed)}
@@ -2204,39 +2067,31 @@ begin
     begin
       {$if declared(_UI_get0_result)}
       UI_get0_result := @_UI_get0_result;
-      {$else}
-      {$if not defined(UI_get0_result_allownil)}
-      UI_get0_result := @ERR_UI_get0_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_result_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_result := @ERR_UI_get0_result;
+    if FuncLoadError then
       AFailed.Add('UI_get0_result');
-    end;
     {$ifend}
   end;
 
 
   UI_get_result_length := LoadLibFunction(ADllHandle, UI_get_result_length_procname);
-  FuncLoaded := assigned(UI_get_result_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_result_length);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_result_length_allownil)}
+    UI_get_result_length := @ERR_UI_get_result_length;
+    {$ifend}
     {$if declared(UI_get_result_length_introduced)}
     if LibVersion < UI_get_result_length_introduced then
     begin
       {$if declared(FC_UI_get_result_length)}
       UI_get_result_length := @FC_UI_get_result_length;
-      {$else}
-      {$if not defined(UI_get_result_length_allownil)}
-      UI_get_result_length := @ERR_UI_get_result_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_result_length_removed)}
@@ -2244,39 +2099,31 @@ begin
     begin
       {$if declared(_UI_get_result_length)}
       UI_get_result_length := @_UI_get_result_length;
-      {$else}
-      {$if not defined(UI_get_result_length_allownil)}
-      UI_get_result_length := @ERR_UI_get_result_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_result_length_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_result_length := @ERR_UI_get_result_length;
+    if FuncLoadError then
       AFailed.Add('UI_get_result_length');
-    end;
     {$ifend}
   end;
 
 
   UI_process := LoadLibFunction(ADllHandle, UI_process_procname);
-  FuncLoaded := assigned(UI_process);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_process);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_process_allownil)}
+    UI_process := @ERR_UI_process;
+    {$ifend}
     {$if declared(UI_process_introduced)}
     if LibVersion < UI_process_introduced then
     begin
       {$if declared(FC_UI_process)}
       UI_process := @FC_UI_process;
-      {$else}
-      {$if not defined(UI_process_allownil)}
-      UI_process := @ERR_UI_process;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_process_removed)}
@@ -2284,39 +2131,31 @@ begin
     begin
       {$if declared(_UI_process)}
       UI_process := @_UI_process;
-      {$else}
-      {$if not defined(UI_process_allownil)}
-      UI_process := @ERR_UI_process;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_process_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_process := @ERR_UI_process;
+    if FuncLoadError then
       AFailed.Add('UI_process');
-    end;
     {$ifend}
   end;
 
 
   UI_ctrl := LoadLibFunction(ADllHandle, UI_ctrl_procname);
-  FuncLoaded := assigned(UI_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_ctrl_allownil)}
+    UI_ctrl := @ERR_UI_ctrl;
+    {$ifend}
     {$if declared(UI_ctrl_introduced)}
     if LibVersion < UI_ctrl_introduced then
     begin
       {$if declared(FC_UI_ctrl)}
       UI_ctrl := @FC_UI_ctrl;
-      {$else}
-      {$if not defined(UI_ctrl_allownil)}
-      UI_ctrl := @ERR_UI_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_ctrl_removed)}
@@ -2324,39 +2163,31 @@ begin
     begin
       {$if declared(_UI_ctrl)}
       UI_ctrl := @_UI_ctrl;
-      {$else}
-      {$if not defined(UI_ctrl_allownil)}
-      UI_ctrl := @ERR_UI_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_ctrl := @ERR_UI_ctrl;
+    if FuncLoadError then
       AFailed.Add('UI_ctrl');
-    end;
     {$ifend}
   end;
 
 
   UI_set_ex_data := LoadLibFunction(ADllHandle, UI_set_ex_data_procname);
-  FuncLoaded := assigned(UI_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_set_ex_data_allownil)}
+    UI_set_ex_data := @ERR_UI_set_ex_data;
+    {$ifend}
     {$if declared(UI_set_ex_data_introduced)}
     if LibVersion < UI_set_ex_data_introduced then
     begin
       {$if declared(FC_UI_set_ex_data)}
       UI_set_ex_data := @FC_UI_set_ex_data;
-      {$else}
-      {$if not defined(UI_set_ex_data_allownil)}
-      UI_set_ex_data := @ERR_UI_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_set_ex_data_removed)}
@@ -2364,39 +2195,31 @@ begin
     begin
       {$if declared(_UI_set_ex_data)}
       UI_set_ex_data := @_UI_set_ex_data;
-      {$else}
-      {$if not defined(UI_set_ex_data_allownil)}
-      UI_set_ex_data := @ERR_UI_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_set_ex_data := @ERR_UI_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('UI_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   UI_get_ex_data := LoadLibFunction(ADllHandle, UI_get_ex_data_procname);
-  FuncLoaded := assigned(UI_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_ex_data_allownil)}
+    UI_get_ex_data := @ERR_UI_get_ex_data;
+    {$ifend}
     {$if declared(UI_get_ex_data_introduced)}
     if LibVersion < UI_get_ex_data_introduced then
     begin
       {$if declared(FC_UI_get_ex_data)}
       UI_get_ex_data := @FC_UI_get_ex_data;
-      {$else}
-      {$if not defined(UI_get_ex_data_allownil)}
-      UI_get_ex_data := @ERR_UI_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_ex_data_removed)}
@@ -2404,39 +2227,31 @@ begin
     begin
       {$if declared(_UI_get_ex_data)}
       UI_get_ex_data := @_UI_get_ex_data;
-      {$else}
-      {$if not defined(UI_get_ex_data_allownil)}
-      UI_get_ex_data := @ERR_UI_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_ex_data := @ERR_UI_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('UI_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   UI_set_default_method := LoadLibFunction(ADllHandle, UI_set_default_method_procname);
-  FuncLoaded := assigned(UI_set_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_set_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_set_default_method_allownil)}
+    UI_set_default_method := @ERR_UI_set_default_method;
+    {$ifend}
     {$if declared(UI_set_default_method_introduced)}
     if LibVersion < UI_set_default_method_introduced then
     begin
       {$if declared(FC_UI_set_default_method)}
       UI_set_default_method := @FC_UI_set_default_method;
-      {$else}
-      {$if not defined(UI_set_default_method_allownil)}
-      UI_set_default_method := @ERR_UI_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_set_default_method_removed)}
@@ -2444,39 +2259,31 @@ begin
     begin
       {$if declared(_UI_set_default_method)}
       UI_set_default_method := @_UI_set_default_method;
-      {$else}
-      {$if not defined(UI_set_default_method_allownil)}
-      UI_set_default_method := @ERR_UI_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_set_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_set_default_method := @ERR_UI_set_default_method;
+    if FuncLoadError then
       AFailed.Add('UI_set_default_method');
-    end;
     {$ifend}
   end;
 
 
   UI_get_default_method := LoadLibFunction(ADllHandle, UI_get_default_method_procname);
-  FuncLoaded := assigned(UI_get_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_default_method_allownil)}
+    UI_get_default_method := @ERR_UI_get_default_method;
+    {$ifend}
     {$if declared(UI_get_default_method_introduced)}
     if LibVersion < UI_get_default_method_introduced then
     begin
       {$if declared(FC_UI_get_default_method)}
       UI_get_default_method := @FC_UI_get_default_method;
-      {$else}
-      {$if not defined(UI_get_default_method_allownil)}
-      UI_get_default_method := @ERR_UI_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_default_method_removed)}
@@ -2484,39 +2291,31 @@ begin
     begin
       {$if declared(_UI_get_default_method)}
       UI_get_default_method := @_UI_get_default_method;
-      {$else}
-      {$if not defined(UI_get_default_method_allownil)}
-      UI_get_default_method := @ERR_UI_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_default_method := @ERR_UI_get_default_method;
+    if FuncLoadError then
       AFailed.Add('UI_get_default_method');
-    end;
     {$ifend}
   end;
 
 
   UI_get_method := LoadLibFunction(ADllHandle, UI_get_method_procname);
-  FuncLoaded := assigned(UI_get_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_method_allownil)}
+    UI_get_method := @ERR_UI_get_method;
+    {$ifend}
     {$if declared(UI_get_method_introduced)}
     if LibVersion < UI_get_method_introduced then
     begin
       {$if declared(FC_UI_get_method)}
       UI_get_method := @FC_UI_get_method;
-      {$else}
-      {$if not defined(UI_get_method_allownil)}
-      UI_get_method := @ERR_UI_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_method_removed)}
@@ -2524,39 +2323,31 @@ begin
     begin
       {$if declared(_UI_get_method)}
       UI_get_method := @_UI_get_method;
-      {$else}
-      {$if not defined(UI_get_method_allownil)}
-      UI_get_method := @ERR_UI_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_method := @ERR_UI_get_method;
+    if FuncLoadError then
       AFailed.Add('UI_get_method');
-    end;
     {$ifend}
   end;
 
 
   UI_set_method := LoadLibFunction(ADllHandle, UI_set_method_procname);
-  FuncLoaded := assigned(UI_set_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_set_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_set_method_allownil)}
+    UI_set_method := @ERR_UI_set_method;
+    {$ifend}
     {$if declared(UI_set_method_introduced)}
     if LibVersion < UI_set_method_introduced then
     begin
       {$if declared(FC_UI_set_method)}
       UI_set_method := @FC_UI_set_method;
-      {$else}
-      {$if not defined(UI_set_method_allownil)}
-      UI_set_method := @ERR_UI_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_set_method_removed)}
@@ -2564,39 +2355,31 @@ begin
     begin
       {$if declared(_UI_set_method)}
       UI_set_method := @_UI_set_method;
-      {$else}
-      {$if not defined(UI_set_method_allownil)}
-      UI_set_method := @ERR_UI_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_set_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_set_method := @ERR_UI_set_method;
+    if FuncLoadError then
       AFailed.Add('UI_set_method');
-    end;
     {$ifend}
   end;
 
 
   UI_OpenSSL := LoadLibFunction(ADllHandle, UI_OpenSSL_procname);
-  FuncLoaded := assigned(UI_OpenSSL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_OpenSSL);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_OpenSSL_allownil)}
+    UI_OpenSSL := @ERR_UI_OpenSSL;
+    {$ifend}
     {$if declared(UI_OpenSSL_introduced)}
     if LibVersion < UI_OpenSSL_introduced then
     begin
       {$if declared(FC_UI_OpenSSL)}
       UI_OpenSSL := @FC_UI_OpenSSL;
-      {$else}
-      {$if not defined(UI_OpenSSL_allownil)}
-      UI_OpenSSL := @ERR_UI_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_OpenSSL_removed)}
@@ -2604,39 +2387,31 @@ begin
     begin
       {$if declared(_UI_OpenSSL)}
       UI_OpenSSL := @_UI_OpenSSL;
-      {$else}
-      {$if not defined(UI_OpenSSL_allownil)}
-      UI_OpenSSL := @ERR_UI_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_OpenSSL_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_OpenSSL := @ERR_UI_OpenSSL;
+    if FuncLoadError then
       AFailed.Add('UI_OpenSSL');
-    end;
     {$ifend}
   end;
 
 
   UI_null := LoadLibFunction(ADllHandle, UI_null_procname);
-  FuncLoaded := assigned(UI_null);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_null);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_null_allownil)}
+    UI_null := @ERR_UI_null;
+    {$ifend}
     {$if declared(UI_null_introduced)}
     if LibVersion < UI_null_introduced then
     begin
       {$if declared(FC_UI_null)}
       UI_null := @FC_UI_null;
-      {$else}
-      {$if not defined(UI_null_allownil)}
-      UI_null := @ERR_UI_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_null_removed)}
@@ -2644,39 +2419,31 @@ begin
     begin
       {$if declared(_UI_null)}
       UI_null := @_UI_null;
-      {$else}
-      {$if not defined(UI_null_allownil)}
-      UI_null := @ERR_UI_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_null_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_null := @ERR_UI_null;
+    if FuncLoadError then
       AFailed.Add('UI_null');
-    end;
     {$ifend}
   end;
 
 
   UI_create_method := LoadLibFunction(ADllHandle, UI_create_method_procname);
-  FuncLoaded := assigned(UI_create_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_create_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_create_method_allownil)}
+    UI_create_method := @ERR_UI_create_method;
+    {$ifend}
     {$if declared(UI_create_method_introduced)}
     if LibVersion < UI_create_method_introduced then
     begin
       {$if declared(FC_UI_create_method)}
       UI_create_method := @FC_UI_create_method;
-      {$else}
-      {$if not defined(UI_create_method_allownil)}
-      UI_create_method := @ERR_UI_create_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_create_method_removed)}
@@ -2684,39 +2451,31 @@ begin
     begin
       {$if declared(_UI_create_method)}
       UI_create_method := @_UI_create_method;
-      {$else}
-      {$if not defined(UI_create_method_allownil)}
-      UI_create_method := @ERR_UI_create_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_create_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_create_method := @ERR_UI_create_method;
+    if FuncLoadError then
       AFailed.Add('UI_create_method');
-    end;
     {$ifend}
   end;
 
 
   UI_destroy_method := LoadLibFunction(ADllHandle, UI_destroy_method_procname);
-  FuncLoaded := assigned(UI_destroy_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_destroy_method);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_destroy_method_allownil)}
+    UI_destroy_method := @ERR_UI_destroy_method;
+    {$ifend}
     {$if declared(UI_destroy_method_introduced)}
     if LibVersion < UI_destroy_method_introduced then
     begin
       {$if declared(FC_UI_destroy_method)}
       UI_destroy_method := @FC_UI_destroy_method;
-      {$else}
-      {$if not defined(UI_destroy_method_allownil)}
-      UI_destroy_method := @ERR_UI_destroy_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_destroy_method_removed)}
@@ -2724,39 +2483,31 @@ begin
     begin
       {$if declared(_UI_destroy_method)}
       UI_destroy_method := @_UI_destroy_method;
-      {$else}
-      {$if not defined(UI_destroy_method_allownil)}
-      UI_destroy_method := @ERR_UI_destroy_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_destroy_method_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_destroy_method := @ERR_UI_destroy_method;
+    if FuncLoadError then
       AFailed.Add('UI_destroy_method');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_opener := LoadLibFunction(ADllHandle, UI_method_set_opener_procname);
-  FuncLoaded := assigned(UI_method_set_opener);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_opener);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_opener_allownil)}
+    UI_method_set_opener := @ERR_UI_method_set_opener;
+    {$ifend}
     {$if declared(UI_method_set_opener_introduced)}
     if LibVersion < UI_method_set_opener_introduced then
     begin
       {$if declared(FC_UI_method_set_opener)}
       UI_method_set_opener := @FC_UI_method_set_opener;
-      {$else}
-      {$if not defined(UI_method_set_opener_allownil)}
-      UI_method_set_opener := @ERR_UI_method_set_opener;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_opener_removed)}
@@ -2764,39 +2515,31 @@ begin
     begin
       {$if declared(_UI_method_set_opener)}
       UI_method_set_opener := @_UI_method_set_opener;
-      {$else}
-      {$if not defined(UI_method_set_opener_allownil)}
-      UI_method_set_opener := @ERR_UI_method_set_opener;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_opener_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_opener := @ERR_UI_method_set_opener;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_opener');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_writer := LoadLibFunction(ADllHandle, UI_method_set_writer_procname);
-  FuncLoaded := assigned(UI_method_set_writer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_writer);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_writer_allownil)}
+    UI_method_set_writer := @ERR_UI_method_set_writer;
+    {$ifend}
     {$if declared(UI_method_set_writer_introduced)}
     if LibVersion < UI_method_set_writer_introduced then
     begin
       {$if declared(FC_UI_method_set_writer)}
       UI_method_set_writer := @FC_UI_method_set_writer;
-      {$else}
-      {$if not defined(UI_method_set_writer_allownil)}
-      UI_method_set_writer := @ERR_UI_method_set_writer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_writer_removed)}
@@ -2804,39 +2547,31 @@ begin
     begin
       {$if declared(_UI_method_set_writer)}
       UI_method_set_writer := @_UI_method_set_writer;
-      {$else}
-      {$if not defined(UI_method_set_writer_allownil)}
-      UI_method_set_writer := @ERR_UI_method_set_writer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_writer_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_writer := @ERR_UI_method_set_writer;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_writer');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_flusher := LoadLibFunction(ADllHandle, UI_method_set_flusher_procname);
-  FuncLoaded := assigned(UI_method_set_flusher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_flusher);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_flusher_allownil)}
+    UI_method_set_flusher := @ERR_UI_method_set_flusher;
+    {$ifend}
     {$if declared(UI_method_set_flusher_introduced)}
     if LibVersion < UI_method_set_flusher_introduced then
     begin
       {$if declared(FC_UI_method_set_flusher)}
       UI_method_set_flusher := @FC_UI_method_set_flusher;
-      {$else}
-      {$if not defined(UI_method_set_flusher_allownil)}
-      UI_method_set_flusher := @ERR_UI_method_set_flusher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_flusher_removed)}
@@ -2844,39 +2579,31 @@ begin
     begin
       {$if declared(_UI_method_set_flusher)}
       UI_method_set_flusher := @_UI_method_set_flusher;
-      {$else}
-      {$if not defined(UI_method_set_flusher_allownil)}
-      UI_method_set_flusher := @ERR_UI_method_set_flusher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_flusher_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_flusher := @ERR_UI_method_set_flusher;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_flusher');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_reader := LoadLibFunction(ADllHandle, UI_method_set_reader_procname);
-  FuncLoaded := assigned(UI_method_set_reader);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_reader);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_reader_allownil)}
+    UI_method_set_reader := @ERR_UI_method_set_reader;
+    {$ifend}
     {$if declared(UI_method_set_reader_introduced)}
     if LibVersion < UI_method_set_reader_introduced then
     begin
       {$if declared(FC_UI_method_set_reader)}
       UI_method_set_reader := @FC_UI_method_set_reader;
-      {$else}
-      {$if not defined(UI_method_set_reader_allownil)}
-      UI_method_set_reader := @ERR_UI_method_set_reader;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_reader_removed)}
@@ -2884,39 +2611,31 @@ begin
     begin
       {$if declared(_UI_method_set_reader)}
       UI_method_set_reader := @_UI_method_set_reader;
-      {$else}
-      {$if not defined(UI_method_set_reader_allownil)}
-      UI_method_set_reader := @ERR_UI_method_set_reader;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_reader_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_reader := @ERR_UI_method_set_reader;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_reader');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_closer := LoadLibFunction(ADllHandle, UI_method_set_closer_procname);
-  FuncLoaded := assigned(UI_method_set_closer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_closer);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_closer_allownil)}
+    UI_method_set_closer := @ERR_UI_method_set_closer;
+    {$ifend}
     {$if declared(UI_method_set_closer_introduced)}
     if LibVersion < UI_method_set_closer_introduced then
     begin
       {$if declared(FC_UI_method_set_closer)}
       UI_method_set_closer := @FC_UI_method_set_closer;
-      {$else}
-      {$if not defined(UI_method_set_closer_allownil)}
-      UI_method_set_closer := @ERR_UI_method_set_closer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_closer_removed)}
@@ -2924,39 +2643,31 @@ begin
     begin
       {$if declared(_UI_method_set_closer)}
       UI_method_set_closer := @_UI_method_set_closer;
-      {$else}
-      {$if not defined(UI_method_set_closer_allownil)}
-      UI_method_set_closer := @ERR_UI_method_set_closer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_closer_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_closer := @ERR_UI_method_set_closer;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_closer');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_data_duplicator := LoadLibFunction(ADllHandle, UI_method_set_data_duplicator_procname);
-  FuncLoaded := assigned(UI_method_set_data_duplicator);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_data_duplicator);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_data_duplicator_allownil)}
+    UI_method_set_data_duplicator := @ERR_UI_method_set_data_duplicator;
+    {$ifend}
     {$if declared(UI_method_set_data_duplicator_introduced)}
     if LibVersion < UI_method_set_data_duplicator_introduced then
     begin
       {$if declared(FC_UI_method_set_data_duplicator)}
       UI_method_set_data_duplicator := @FC_UI_method_set_data_duplicator;
-      {$else}
-      {$if not defined(UI_method_set_data_duplicator_allownil)}
-      UI_method_set_data_duplicator := @ERR_UI_method_set_data_duplicator;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_data_duplicator_removed)}
@@ -2964,39 +2675,31 @@ begin
     begin
       {$if declared(_UI_method_set_data_duplicator)}
       UI_method_set_data_duplicator := @_UI_method_set_data_duplicator;
-      {$else}
-      {$if not defined(UI_method_set_data_duplicator_allownil)}
-      UI_method_set_data_duplicator := @ERR_UI_method_set_data_duplicator;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_data_duplicator_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_data_duplicator := @ERR_UI_method_set_data_duplicator;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_data_duplicator');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_prompt_constructor := LoadLibFunction(ADllHandle, UI_method_set_prompt_constructor_procname);
-  FuncLoaded := assigned(UI_method_set_prompt_constructor);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_prompt_constructor);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_prompt_constructor_allownil)}
+    UI_method_set_prompt_constructor := @ERR_UI_method_set_prompt_constructor;
+    {$ifend}
     {$if declared(UI_method_set_prompt_constructor_introduced)}
     if LibVersion < UI_method_set_prompt_constructor_introduced then
     begin
       {$if declared(FC_UI_method_set_prompt_constructor)}
       UI_method_set_prompt_constructor := @FC_UI_method_set_prompt_constructor;
-      {$else}
-      {$if not defined(UI_method_set_prompt_constructor_allownil)}
-      UI_method_set_prompt_constructor := @ERR_UI_method_set_prompt_constructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_prompt_constructor_removed)}
@@ -3004,39 +2707,31 @@ begin
     begin
       {$if declared(_UI_method_set_prompt_constructor)}
       UI_method_set_prompt_constructor := @_UI_method_set_prompt_constructor;
-      {$else}
-      {$if not defined(UI_method_set_prompt_constructor_allownil)}
-      UI_method_set_prompt_constructor := @ERR_UI_method_set_prompt_constructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_prompt_constructor_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_prompt_constructor := @ERR_UI_method_set_prompt_constructor;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_prompt_constructor');
-    end;
     {$ifend}
   end;
 
 
   UI_method_set_ex_data := LoadLibFunction(ADllHandle, UI_method_set_ex_data_procname);
-  FuncLoaded := assigned(UI_method_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_set_ex_data_allownil)}
+    UI_method_set_ex_data := @ERR_UI_method_set_ex_data;
+    {$ifend}
     {$if declared(UI_method_set_ex_data_introduced)}
     if LibVersion < UI_method_set_ex_data_introduced then
     begin
       {$if declared(FC_UI_method_set_ex_data)}
       UI_method_set_ex_data := @FC_UI_method_set_ex_data;
-      {$else}
-      {$if not defined(UI_method_set_ex_data_allownil)}
-      UI_method_set_ex_data := @ERR_UI_method_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_set_ex_data_removed)}
@@ -3044,39 +2739,31 @@ begin
     begin
       {$if declared(_UI_method_set_ex_data)}
       UI_method_set_ex_data := @_UI_method_set_ex_data;
-      {$else}
-      {$if not defined(UI_method_set_ex_data_allownil)}
-      UI_method_set_ex_data := @ERR_UI_method_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_set_ex_data := @ERR_UI_method_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('UI_method_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_opener := LoadLibFunction(ADllHandle, UI_method_get_opener_procname);
-  FuncLoaded := assigned(UI_method_get_opener);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_opener);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_opener_allownil)}
+    UI_method_get_opener := @ERR_UI_method_get_opener;
+    {$ifend}
     {$if declared(UI_method_get_opener_introduced)}
     if LibVersion < UI_method_get_opener_introduced then
     begin
       {$if declared(FC_UI_method_get_opener)}
       UI_method_get_opener := @FC_UI_method_get_opener;
-      {$else}
-      {$if not defined(UI_method_get_opener_allownil)}
-      UI_method_get_opener := @ERR_UI_method_get_opener;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_opener_removed)}
@@ -3084,39 +2771,31 @@ begin
     begin
       {$if declared(_UI_method_get_opener)}
       UI_method_get_opener := @_UI_method_get_opener;
-      {$else}
-      {$if not defined(UI_method_get_opener_allownil)}
-      UI_method_get_opener := @ERR_UI_method_get_opener;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_opener_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_opener := @ERR_UI_method_get_opener;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_opener');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_writer := LoadLibFunction(ADllHandle, UI_method_get_writer_procname);
-  FuncLoaded := assigned(UI_method_get_writer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_writer);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_writer_allownil)}
+    UI_method_get_writer := @ERR_UI_method_get_writer;
+    {$ifend}
     {$if declared(UI_method_get_writer_introduced)}
     if LibVersion < UI_method_get_writer_introduced then
     begin
       {$if declared(FC_UI_method_get_writer)}
       UI_method_get_writer := @FC_UI_method_get_writer;
-      {$else}
-      {$if not defined(UI_method_get_writer_allownil)}
-      UI_method_get_writer := @ERR_UI_method_get_writer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_writer_removed)}
@@ -3124,39 +2803,31 @@ begin
     begin
       {$if declared(_UI_method_get_writer)}
       UI_method_get_writer := @_UI_method_get_writer;
-      {$else}
-      {$if not defined(UI_method_get_writer_allownil)}
-      UI_method_get_writer := @ERR_UI_method_get_writer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_writer_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_writer := @ERR_UI_method_get_writer;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_writer');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_flusher := LoadLibFunction(ADllHandle, UI_method_get_flusher_procname);
-  FuncLoaded := assigned(UI_method_get_flusher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_flusher);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_flusher_allownil)}
+    UI_method_get_flusher := @ERR_UI_method_get_flusher;
+    {$ifend}
     {$if declared(UI_method_get_flusher_introduced)}
     if LibVersion < UI_method_get_flusher_introduced then
     begin
       {$if declared(FC_UI_method_get_flusher)}
       UI_method_get_flusher := @FC_UI_method_get_flusher;
-      {$else}
-      {$if not defined(UI_method_get_flusher_allownil)}
-      UI_method_get_flusher := @ERR_UI_method_get_flusher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_flusher_removed)}
@@ -3164,39 +2835,31 @@ begin
     begin
       {$if declared(_UI_method_get_flusher)}
       UI_method_get_flusher := @_UI_method_get_flusher;
-      {$else}
-      {$if not defined(UI_method_get_flusher_allownil)}
-      UI_method_get_flusher := @ERR_UI_method_get_flusher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_flusher_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_flusher := @ERR_UI_method_get_flusher;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_flusher');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_reader := LoadLibFunction(ADllHandle, UI_method_get_reader_procname);
-  FuncLoaded := assigned(UI_method_get_reader);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_reader);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_reader_allownil)}
+    UI_method_get_reader := @ERR_UI_method_get_reader;
+    {$ifend}
     {$if declared(UI_method_get_reader_introduced)}
     if LibVersion < UI_method_get_reader_introduced then
     begin
       {$if declared(FC_UI_method_get_reader)}
       UI_method_get_reader := @FC_UI_method_get_reader;
-      {$else}
-      {$if not defined(UI_method_get_reader_allownil)}
-      UI_method_get_reader := @ERR_UI_method_get_reader;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_reader_removed)}
@@ -3204,39 +2867,31 @@ begin
     begin
       {$if declared(_UI_method_get_reader)}
       UI_method_get_reader := @_UI_method_get_reader;
-      {$else}
-      {$if not defined(UI_method_get_reader_allownil)}
-      UI_method_get_reader := @ERR_UI_method_get_reader;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_reader_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_reader := @ERR_UI_method_get_reader;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_reader');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_closer := LoadLibFunction(ADllHandle, UI_method_get_closer_procname);
-  FuncLoaded := assigned(UI_method_get_closer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_closer);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_closer_allownil)}
+    UI_method_get_closer := @ERR_UI_method_get_closer;
+    {$ifend}
     {$if declared(UI_method_get_closer_introduced)}
     if LibVersion < UI_method_get_closer_introduced then
     begin
       {$if declared(FC_UI_method_get_closer)}
       UI_method_get_closer := @FC_UI_method_get_closer;
-      {$else}
-      {$if not defined(UI_method_get_closer_allownil)}
-      UI_method_get_closer := @ERR_UI_method_get_closer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_closer_removed)}
@@ -3244,39 +2899,31 @@ begin
     begin
       {$if declared(_UI_method_get_closer)}
       UI_method_get_closer := @_UI_method_get_closer;
-      {$else}
-      {$if not defined(UI_method_get_closer_allownil)}
-      UI_method_get_closer := @ERR_UI_method_get_closer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_closer_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_closer := @ERR_UI_method_get_closer;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_closer');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_prompt_constructor := LoadLibFunction(ADllHandle, UI_method_get_prompt_constructor_procname);
-  FuncLoaded := assigned(UI_method_get_prompt_constructor);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_prompt_constructor);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_prompt_constructor_allownil)}
+    UI_method_get_prompt_constructor := @ERR_UI_method_get_prompt_constructor;
+    {$ifend}
     {$if declared(UI_method_get_prompt_constructor_introduced)}
     if LibVersion < UI_method_get_prompt_constructor_introduced then
     begin
       {$if declared(FC_UI_method_get_prompt_constructor)}
       UI_method_get_prompt_constructor := @FC_UI_method_get_prompt_constructor;
-      {$else}
-      {$if not defined(UI_method_get_prompt_constructor_allownil)}
-      UI_method_get_prompt_constructor := @ERR_UI_method_get_prompt_constructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_prompt_constructor_removed)}
@@ -3284,39 +2931,31 @@ begin
     begin
       {$if declared(_UI_method_get_prompt_constructor)}
       UI_method_get_prompt_constructor := @_UI_method_get_prompt_constructor;
-      {$else}
-      {$if not defined(UI_method_get_prompt_constructor_allownil)}
-      UI_method_get_prompt_constructor := @ERR_UI_method_get_prompt_constructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_prompt_constructor_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_prompt_constructor := @ERR_UI_method_get_prompt_constructor;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_prompt_constructor');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_data_duplicator := LoadLibFunction(ADllHandle, UI_method_get_data_duplicator_procname);
-  FuncLoaded := assigned(UI_method_get_data_duplicator);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_data_duplicator);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_data_duplicator_allownil)}
+    UI_method_get_data_duplicator := @ERR_UI_method_get_data_duplicator;
+    {$ifend}
     {$if declared(UI_method_get_data_duplicator_introduced)}
     if LibVersion < UI_method_get_data_duplicator_introduced then
     begin
       {$if declared(FC_UI_method_get_data_duplicator)}
       UI_method_get_data_duplicator := @FC_UI_method_get_data_duplicator;
-      {$else}
-      {$if not defined(UI_method_get_data_duplicator_allownil)}
-      UI_method_get_data_duplicator := @ERR_UI_method_get_data_duplicator;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_data_duplicator_removed)}
@@ -3324,39 +2963,31 @@ begin
     begin
       {$if declared(_UI_method_get_data_duplicator)}
       UI_method_get_data_duplicator := @_UI_method_get_data_duplicator;
-      {$else}
-      {$if not defined(UI_method_get_data_duplicator_allownil)}
-      UI_method_get_data_duplicator := @ERR_UI_method_get_data_duplicator;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_data_duplicator_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_data_duplicator := @ERR_UI_method_get_data_duplicator;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_data_duplicator');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_data_destructor := LoadLibFunction(ADllHandle, UI_method_get_data_destructor_procname);
-  FuncLoaded := assigned(UI_method_get_data_destructor);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_data_destructor);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_data_destructor_allownil)}
+    UI_method_get_data_destructor := @ERR_UI_method_get_data_destructor;
+    {$ifend}
     {$if declared(UI_method_get_data_destructor_introduced)}
     if LibVersion < UI_method_get_data_destructor_introduced then
     begin
       {$if declared(FC_UI_method_get_data_destructor)}
       UI_method_get_data_destructor := @FC_UI_method_get_data_destructor;
-      {$else}
-      {$if not defined(UI_method_get_data_destructor_allownil)}
-      UI_method_get_data_destructor := @ERR_UI_method_get_data_destructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_data_destructor_removed)}
@@ -3364,39 +2995,31 @@ begin
     begin
       {$if declared(_UI_method_get_data_destructor)}
       UI_method_get_data_destructor := @_UI_method_get_data_destructor;
-      {$else}
-      {$if not defined(UI_method_get_data_destructor_allownil)}
-      UI_method_get_data_destructor := @ERR_UI_method_get_data_destructor;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_data_destructor_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_data_destructor := @ERR_UI_method_get_data_destructor;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_data_destructor');
-    end;
     {$ifend}
   end;
 
 
   UI_method_get_ex_data := LoadLibFunction(ADllHandle, UI_method_get_ex_data_procname);
-  FuncLoaded := assigned(UI_method_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_method_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_method_get_ex_data_allownil)}
+    UI_method_get_ex_data := @ERR_UI_method_get_ex_data;
+    {$ifend}
     {$if declared(UI_method_get_ex_data_introduced)}
     if LibVersion < UI_method_get_ex_data_introduced then
     begin
       {$if declared(FC_UI_method_get_ex_data)}
       UI_method_get_ex_data := @FC_UI_method_get_ex_data;
-      {$else}
-      {$if not defined(UI_method_get_ex_data_allownil)}
-      UI_method_get_ex_data := @ERR_UI_method_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_method_get_ex_data_removed)}
@@ -3404,39 +3027,31 @@ begin
     begin
       {$if declared(_UI_method_get_ex_data)}
       UI_method_get_ex_data := @_UI_method_get_ex_data;
-      {$else}
-      {$if not defined(UI_method_get_ex_data_allownil)}
-      UI_method_get_ex_data := @ERR_UI_method_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_method_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_method_get_ex_data := @ERR_UI_method_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('UI_method_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   UI_get_string_type := LoadLibFunction(ADllHandle, UI_get_string_type_procname);
-  FuncLoaded := assigned(UI_get_string_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_string_type);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_string_type_allownil)}
+    UI_get_string_type := @ERR_UI_get_string_type;
+    {$ifend}
     {$if declared(UI_get_string_type_introduced)}
     if LibVersion < UI_get_string_type_introduced then
     begin
       {$if declared(FC_UI_get_string_type)}
       UI_get_string_type := @FC_UI_get_string_type;
-      {$else}
-      {$if not defined(UI_get_string_type_allownil)}
-      UI_get_string_type := @ERR_UI_get_string_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_string_type_removed)}
@@ -3444,39 +3059,31 @@ begin
     begin
       {$if declared(_UI_get_string_type)}
       UI_get_string_type := @_UI_get_string_type;
-      {$else}
-      {$if not defined(UI_get_string_type_allownil)}
-      UI_get_string_type := @ERR_UI_get_string_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_string_type_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_string_type := @ERR_UI_get_string_type;
+    if FuncLoadError then
       AFailed.Add('UI_get_string_type');
-    end;
     {$ifend}
   end;
 
 
   UI_get_input_flags := LoadLibFunction(ADllHandle, UI_get_input_flags_procname);
-  FuncLoaded := assigned(UI_get_input_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_input_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_input_flags_allownil)}
+    UI_get_input_flags := @ERR_UI_get_input_flags;
+    {$ifend}
     {$if declared(UI_get_input_flags_introduced)}
     if LibVersion < UI_get_input_flags_introduced then
     begin
       {$if declared(FC_UI_get_input_flags)}
       UI_get_input_flags := @FC_UI_get_input_flags;
-      {$else}
-      {$if not defined(UI_get_input_flags_allownil)}
-      UI_get_input_flags := @ERR_UI_get_input_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_input_flags_removed)}
@@ -3484,39 +3091,31 @@ begin
     begin
       {$if declared(_UI_get_input_flags)}
       UI_get_input_flags := @_UI_get_input_flags;
-      {$else}
-      {$if not defined(UI_get_input_flags_allownil)}
-      UI_get_input_flags := @ERR_UI_get_input_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_input_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_input_flags := @ERR_UI_get_input_flags;
+    if FuncLoadError then
       AFailed.Add('UI_get_input_flags');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_output_string := LoadLibFunction(ADllHandle, UI_get0_output_string_procname);
-  FuncLoaded := assigned(UI_get0_output_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_output_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_output_string_allownil)}
+    UI_get0_output_string := @ERR_UI_get0_output_string;
+    {$ifend}
     {$if declared(UI_get0_output_string_introduced)}
     if LibVersion < UI_get0_output_string_introduced then
     begin
       {$if declared(FC_UI_get0_output_string)}
       UI_get0_output_string := @FC_UI_get0_output_string;
-      {$else}
-      {$if not defined(UI_get0_output_string_allownil)}
-      UI_get0_output_string := @ERR_UI_get0_output_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_output_string_removed)}
@@ -3524,39 +3123,31 @@ begin
     begin
       {$if declared(_UI_get0_output_string)}
       UI_get0_output_string := @_UI_get0_output_string;
-      {$else}
-      {$if not defined(UI_get0_output_string_allownil)}
-      UI_get0_output_string := @ERR_UI_get0_output_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_output_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_output_string := @ERR_UI_get0_output_string;
+    if FuncLoadError then
       AFailed.Add('UI_get0_output_string');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_action_string := LoadLibFunction(ADllHandle, UI_get0_action_string_procname);
-  FuncLoaded := assigned(UI_get0_action_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_action_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_action_string_allownil)}
+    UI_get0_action_string := @ERR_UI_get0_action_string;
+    {$ifend}
     {$if declared(UI_get0_action_string_introduced)}
     if LibVersion < UI_get0_action_string_introduced then
     begin
       {$if declared(FC_UI_get0_action_string)}
       UI_get0_action_string := @FC_UI_get0_action_string;
-      {$else}
-      {$if not defined(UI_get0_action_string_allownil)}
-      UI_get0_action_string := @ERR_UI_get0_action_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_action_string_removed)}
@@ -3564,39 +3155,31 @@ begin
     begin
       {$if declared(_UI_get0_action_string)}
       UI_get0_action_string := @_UI_get0_action_string;
-      {$else}
-      {$if not defined(UI_get0_action_string_allownil)}
-      UI_get0_action_string := @ERR_UI_get0_action_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_action_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_action_string := @ERR_UI_get0_action_string;
+    if FuncLoadError then
       AFailed.Add('UI_get0_action_string');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_result_string := LoadLibFunction(ADllHandle, UI_get0_result_string_procname);
-  FuncLoaded := assigned(UI_get0_result_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_result_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_result_string_allownil)}
+    UI_get0_result_string := @ERR_UI_get0_result_string;
+    {$ifend}
     {$if declared(UI_get0_result_string_introduced)}
     if LibVersion < UI_get0_result_string_introduced then
     begin
       {$if declared(FC_UI_get0_result_string)}
       UI_get0_result_string := @FC_UI_get0_result_string;
-      {$else}
-      {$if not defined(UI_get0_result_string_allownil)}
-      UI_get0_result_string := @ERR_UI_get0_result_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_result_string_removed)}
@@ -3604,39 +3187,31 @@ begin
     begin
       {$if declared(_UI_get0_result_string)}
       UI_get0_result_string := @_UI_get0_result_string;
-      {$else}
-      {$if not defined(UI_get0_result_string_allownil)}
-      UI_get0_result_string := @ERR_UI_get0_result_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_result_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_result_string := @ERR_UI_get0_result_string;
+    if FuncLoadError then
       AFailed.Add('UI_get0_result_string');
-    end;
     {$ifend}
   end;
 
 
   UI_get_result_string_length := LoadLibFunction(ADllHandle, UI_get_result_string_length_procname);
-  FuncLoaded := assigned(UI_get_result_string_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_result_string_length);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_result_string_length_allownil)}
+    UI_get_result_string_length := @ERR_UI_get_result_string_length;
+    {$ifend}
     {$if declared(UI_get_result_string_length_introduced)}
     if LibVersion < UI_get_result_string_length_introduced then
     begin
       {$if declared(FC_UI_get_result_string_length)}
       UI_get_result_string_length := @FC_UI_get_result_string_length;
-      {$else}
-      {$if not defined(UI_get_result_string_length_allownil)}
-      UI_get_result_string_length := @ERR_UI_get_result_string_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_result_string_length_removed)}
@@ -3644,39 +3219,31 @@ begin
     begin
       {$if declared(_UI_get_result_string_length)}
       UI_get_result_string_length := @_UI_get_result_string_length;
-      {$else}
-      {$if not defined(UI_get_result_string_length_allownil)}
-      UI_get_result_string_length := @ERR_UI_get_result_string_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_result_string_length_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_result_string_length := @ERR_UI_get_result_string_length;
+    if FuncLoadError then
       AFailed.Add('UI_get_result_string_length');
-    end;
     {$ifend}
   end;
 
 
   UI_get0_test_string := LoadLibFunction(ADllHandle, UI_get0_test_string_procname);
-  FuncLoaded := assigned(UI_get0_test_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get0_test_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get0_test_string_allownil)}
+    UI_get0_test_string := @ERR_UI_get0_test_string;
+    {$ifend}
     {$if declared(UI_get0_test_string_introduced)}
     if LibVersion < UI_get0_test_string_introduced then
     begin
       {$if declared(FC_UI_get0_test_string)}
       UI_get0_test_string := @FC_UI_get0_test_string;
-      {$else}
-      {$if not defined(UI_get0_test_string_allownil)}
-      UI_get0_test_string := @ERR_UI_get0_test_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get0_test_string_removed)}
@@ -3684,39 +3251,31 @@ begin
     begin
       {$if declared(_UI_get0_test_string)}
       UI_get0_test_string := @_UI_get0_test_string;
-      {$else}
-      {$if not defined(UI_get0_test_string_allownil)}
-      UI_get0_test_string := @ERR_UI_get0_test_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get0_test_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get0_test_string := @ERR_UI_get0_test_string;
+    if FuncLoadError then
       AFailed.Add('UI_get0_test_string');
-    end;
     {$ifend}
   end;
 
 
   UI_get_result_minsize := LoadLibFunction(ADllHandle, UI_get_result_minsize_procname);
-  FuncLoaded := assigned(UI_get_result_minsize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_result_minsize);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_result_minsize_allownil)}
+    UI_get_result_minsize := @ERR_UI_get_result_minsize;
+    {$ifend}
     {$if declared(UI_get_result_minsize_introduced)}
     if LibVersion < UI_get_result_minsize_introduced then
     begin
       {$if declared(FC_UI_get_result_minsize)}
       UI_get_result_minsize := @FC_UI_get_result_minsize;
-      {$else}
-      {$if not defined(UI_get_result_minsize_allownil)}
-      UI_get_result_minsize := @ERR_UI_get_result_minsize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_result_minsize_removed)}
@@ -3724,39 +3283,31 @@ begin
     begin
       {$if declared(_UI_get_result_minsize)}
       UI_get_result_minsize := @_UI_get_result_minsize;
-      {$else}
-      {$if not defined(UI_get_result_minsize_allownil)}
-      UI_get_result_minsize := @ERR_UI_get_result_minsize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_result_minsize_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_result_minsize := @ERR_UI_get_result_minsize;
+    if FuncLoadError then
       AFailed.Add('UI_get_result_minsize');
-    end;
     {$ifend}
   end;
 
 
   UI_get_result_maxsize := LoadLibFunction(ADllHandle, UI_get_result_maxsize_procname);
-  FuncLoaded := assigned(UI_get_result_maxsize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_get_result_maxsize);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_get_result_maxsize_allownil)}
+    UI_get_result_maxsize := @ERR_UI_get_result_maxsize;
+    {$ifend}
     {$if declared(UI_get_result_maxsize_introduced)}
     if LibVersion < UI_get_result_maxsize_introduced then
     begin
       {$if declared(FC_UI_get_result_maxsize)}
       UI_get_result_maxsize := @FC_UI_get_result_maxsize;
-      {$else}
-      {$if not defined(UI_get_result_maxsize_allownil)}
-      UI_get_result_maxsize := @ERR_UI_get_result_maxsize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_get_result_maxsize_removed)}
@@ -3764,39 +3315,31 @@ begin
     begin
       {$if declared(_UI_get_result_maxsize)}
       UI_get_result_maxsize := @_UI_get_result_maxsize;
-      {$else}
-      {$if not defined(UI_get_result_maxsize_allownil)}
-      UI_get_result_maxsize := @ERR_UI_get_result_maxsize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_get_result_maxsize_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_get_result_maxsize := @ERR_UI_get_result_maxsize;
+    if FuncLoadError then
       AFailed.Add('UI_get_result_maxsize');
-    end;
     {$ifend}
   end;
 
 
   UI_set_result := LoadLibFunction(ADllHandle, UI_set_result_procname);
-  FuncLoaded := assigned(UI_set_result);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_set_result);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_set_result_allownil)}
+    UI_set_result := @ERR_UI_set_result;
+    {$ifend}
     {$if declared(UI_set_result_introduced)}
     if LibVersion < UI_set_result_introduced then
     begin
       {$if declared(FC_UI_set_result)}
       UI_set_result := @FC_UI_set_result;
-      {$else}
-      {$if not defined(UI_set_result_allownil)}
-      UI_set_result := @ERR_UI_set_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_set_result_removed)}
@@ -3804,39 +3347,31 @@ begin
     begin
       {$if declared(_UI_set_result)}
       UI_set_result := @_UI_set_result;
-      {$else}
-      {$if not defined(UI_set_result_allownil)}
-      UI_set_result := @ERR_UI_set_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_set_result_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_set_result := @ERR_UI_set_result;
+    if FuncLoadError then
       AFailed.Add('UI_set_result');
-    end;
     {$ifend}
   end;
 
 
   UI_set_result_ex := LoadLibFunction(ADllHandle, UI_set_result_ex_procname);
-  FuncLoaded := assigned(UI_set_result_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_set_result_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_set_result_ex_allownil)}
+    UI_set_result_ex := @ERR_UI_set_result_ex;
+    {$ifend}
     {$if declared(UI_set_result_ex_introduced)}
     if LibVersion < UI_set_result_ex_introduced then
     begin
       {$if declared(FC_UI_set_result_ex)}
       UI_set_result_ex := @FC_UI_set_result_ex;
-      {$else}
-      {$if not defined(UI_set_result_ex_allownil)}
-      UI_set_result_ex := @ERR_UI_set_result_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_set_result_ex_removed)}
@@ -3844,39 +3379,31 @@ begin
     begin
       {$if declared(_UI_set_result_ex)}
       UI_set_result_ex := @_UI_set_result_ex;
-      {$else}
-      {$if not defined(UI_set_result_ex_allownil)}
-      UI_set_result_ex := @ERR_UI_set_result_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_set_result_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_set_result_ex := @ERR_UI_set_result_ex;
+    if FuncLoadError then
       AFailed.Add('UI_set_result_ex');
-    end;
     {$ifend}
   end;
 
 
   UI_UTIL_read_pw_string := LoadLibFunction(ADllHandle, UI_UTIL_read_pw_string_procname);
-  FuncLoaded := assigned(UI_UTIL_read_pw_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_UTIL_read_pw_string);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_UTIL_read_pw_string_allownil)}
+    UI_UTIL_read_pw_string := @ERR_UI_UTIL_read_pw_string;
+    {$ifend}
     {$if declared(UI_UTIL_read_pw_string_introduced)}
     if LibVersion < UI_UTIL_read_pw_string_introduced then
     begin
       {$if declared(FC_UI_UTIL_read_pw_string)}
       UI_UTIL_read_pw_string := @FC_UI_UTIL_read_pw_string;
-      {$else}
-      {$if not defined(UI_UTIL_read_pw_string_allownil)}
-      UI_UTIL_read_pw_string := @ERR_UI_UTIL_read_pw_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_UTIL_read_pw_string_removed)}
@@ -3884,39 +3411,31 @@ begin
     begin
       {$if declared(_UI_UTIL_read_pw_string)}
       UI_UTIL_read_pw_string := @_UI_UTIL_read_pw_string;
-      {$else}
-      {$if not defined(UI_UTIL_read_pw_string_allownil)}
-      UI_UTIL_read_pw_string := @ERR_UI_UTIL_read_pw_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_UTIL_read_pw_string_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_UTIL_read_pw_string := @ERR_UI_UTIL_read_pw_string;
+    if FuncLoadError then
       AFailed.Add('UI_UTIL_read_pw_string');
-    end;
     {$ifend}
   end;
 
 
   UI_UTIL_read_pw := LoadLibFunction(ADllHandle, UI_UTIL_read_pw_procname);
-  FuncLoaded := assigned(UI_UTIL_read_pw);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_UTIL_read_pw);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_UTIL_read_pw_allownil)}
+    UI_UTIL_read_pw := @ERR_UI_UTIL_read_pw;
+    {$ifend}
     {$if declared(UI_UTIL_read_pw_introduced)}
     if LibVersion < UI_UTIL_read_pw_introduced then
     begin
       {$if declared(FC_UI_UTIL_read_pw)}
       UI_UTIL_read_pw := @FC_UI_UTIL_read_pw;
-      {$else}
-      {$if not defined(UI_UTIL_read_pw_allownil)}
-      UI_UTIL_read_pw := @ERR_UI_UTIL_read_pw;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_UTIL_read_pw_removed)}
@@ -3924,39 +3443,31 @@ begin
     begin
       {$if declared(_UI_UTIL_read_pw)}
       UI_UTIL_read_pw := @_UI_UTIL_read_pw;
-      {$else}
-      {$if not defined(UI_UTIL_read_pw_allownil)}
-      UI_UTIL_read_pw := @ERR_UI_UTIL_read_pw;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_UTIL_read_pw_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_UTIL_read_pw := @ERR_UI_UTIL_read_pw;
+    if FuncLoadError then
       AFailed.Add('UI_UTIL_read_pw');
-    end;
     {$ifend}
   end;
 
 
   UI_UTIL_wrap_read_pem_callback := LoadLibFunction(ADllHandle, UI_UTIL_wrap_read_pem_callback_procname);
-  FuncLoaded := assigned(UI_UTIL_wrap_read_pem_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UI_UTIL_wrap_read_pem_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(UI_UTIL_wrap_read_pem_callback_allownil)}
+    UI_UTIL_wrap_read_pem_callback := @ERR_UI_UTIL_wrap_read_pem_callback;
+    {$ifend}
     {$if declared(UI_UTIL_wrap_read_pem_callback_introduced)}
     if LibVersion < UI_UTIL_wrap_read_pem_callback_introduced then
     begin
       {$if declared(FC_UI_UTIL_wrap_read_pem_callback)}
       UI_UTIL_wrap_read_pem_callback := @FC_UI_UTIL_wrap_read_pem_callback;
-      {$else}
-      {$if not defined(UI_UTIL_wrap_read_pem_callback_allownil)}
-      UI_UTIL_wrap_read_pem_callback := @ERR_UI_UTIL_wrap_read_pem_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UI_UTIL_wrap_read_pem_callback_removed)}
@@ -3964,20 +3475,13 @@ begin
     begin
       {$if declared(_UI_UTIL_wrap_read_pem_callback)}
       UI_UTIL_wrap_read_pem_callback := @_UI_UTIL_wrap_read_pem_callback;
-      {$else}
-      {$if not defined(UI_UTIL_wrap_read_pem_callback_allownil)}
-      UI_UTIL_wrap_read_pem_callback := @ERR_UI_UTIL_wrap_read_pem_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UI_UTIL_wrap_read_pem_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      UI_UTIL_wrap_read_pem_callback := @ERR_UI_UTIL_wrap_read_pem_callback;
+    if FuncLoadError then
       AFailed.Add('UI_UTIL_wrap_read_pem_callback');
-    end;
     {$ifend}
   end;
 

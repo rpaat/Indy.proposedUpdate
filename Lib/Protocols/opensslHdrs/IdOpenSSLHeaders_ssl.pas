@@ -9269,24 +9269,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   SSL_CTX_set_mode := LoadLibFunction(ADllHandle, SSL_CTX_set_mode_procname);
-  FuncLoaded := assigned(SSL_CTX_set_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_mode_allownil)}
+    SSL_CTX_set_mode := @ERR_SSL_CTX_set_mode;
+    {$ifend}
     {$if declared(SSL_CTX_set_mode_introduced)}
     if LibVersion < SSL_CTX_set_mode_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_mode)}
       SSL_CTX_set_mode := @FC_SSL_CTX_set_mode;
-      {$else}
-      {$if not defined(SSL_CTX_set_mode_allownil)}
-      SSL_CTX_set_mode := @ERR_SSL_CTX_set_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_mode_removed)}
@@ -9294,39 +9293,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_mode)}
       SSL_CTX_set_mode := @_SSL_CTX_set_mode;
-      {$else}
-      {$if not defined(SSL_CTX_set_mode_allownil)}
-      SSL_CTX_set_mode := @ERR_SSL_CTX_set_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_mode := @ERR_SSL_CTX_set_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_mode');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_clear_mode := LoadLibFunction(ADllHandle, SSL_CTX_clear_mode_procname);
-  FuncLoaded := assigned(SSL_CTX_clear_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_clear_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_clear_mode_allownil)}
+    SSL_CTX_clear_mode := @ERR_SSL_CTX_clear_mode;
+    {$ifend}
     {$if declared(SSL_CTX_clear_mode_introduced)}
     if LibVersion < SSL_CTX_clear_mode_introduced then
     begin
       {$if declared(FC_SSL_CTX_clear_mode)}
       SSL_CTX_clear_mode := @FC_SSL_CTX_clear_mode;
-      {$else}
-      {$if not defined(SSL_CTX_clear_mode_allownil)}
-      SSL_CTX_clear_mode := @ERR_SSL_CTX_clear_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_clear_mode_removed)}
@@ -9334,39 +9325,31 @@ begin
     begin
       {$if declared(_SSL_CTX_clear_mode)}
       SSL_CTX_clear_mode := @_SSL_CTX_clear_mode;
-      {$else}
-      {$if not defined(SSL_CTX_clear_mode_allownil)}
-      SSL_CTX_clear_mode := @ERR_SSL_CTX_clear_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_clear_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_clear_mode := @ERR_SSL_CTX_clear_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_clear_mode');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_sess_set_cache_size := LoadLibFunction(ADllHandle, SSL_CTX_sess_set_cache_size_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_set_cache_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_set_cache_size);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_set_cache_size_allownil)}
+    SSL_CTX_sess_set_cache_size := @ERR_SSL_CTX_sess_set_cache_size;
+    {$ifend}
     {$if declared(SSL_CTX_sess_set_cache_size_introduced)}
     if LibVersion < SSL_CTX_sess_set_cache_size_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_set_cache_size)}
       SSL_CTX_sess_set_cache_size := @FC_SSL_CTX_sess_set_cache_size;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_cache_size_allownil)}
-      SSL_CTX_sess_set_cache_size := @ERR_SSL_CTX_sess_set_cache_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_set_cache_size_removed)}
@@ -9374,39 +9357,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_set_cache_size)}
       SSL_CTX_sess_set_cache_size := @_SSL_CTX_sess_set_cache_size;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_cache_size_allownil)}
-      SSL_CTX_sess_set_cache_size := @ERR_SSL_CTX_sess_set_cache_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_set_cache_size_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_set_cache_size := @ERR_SSL_CTX_sess_set_cache_size;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_set_cache_size');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_sess_get_cache_size := LoadLibFunction(ADllHandle, SSL_CTX_sess_get_cache_size_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_get_cache_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_get_cache_size);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_get_cache_size_allownil)}
+    SSL_CTX_sess_get_cache_size := @ERR_SSL_CTX_sess_get_cache_size;
+    {$ifend}
     {$if declared(SSL_CTX_sess_get_cache_size_introduced)}
     if LibVersion < SSL_CTX_sess_get_cache_size_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_get_cache_size)}
       SSL_CTX_sess_get_cache_size := @FC_SSL_CTX_sess_get_cache_size;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_cache_size_allownil)}
-      SSL_CTX_sess_get_cache_size := @ERR_SSL_CTX_sess_get_cache_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_get_cache_size_removed)}
@@ -9414,39 +9389,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_get_cache_size)}
       SSL_CTX_sess_get_cache_size := @_SSL_CTX_sess_get_cache_size;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_cache_size_allownil)}
-      SSL_CTX_sess_get_cache_size := @ERR_SSL_CTX_sess_get_cache_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_get_cache_size_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_get_cache_size := @ERR_SSL_CTX_sess_get_cache_size;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_get_cache_size');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set_session_cache_mode := LoadLibFunction(ADllHandle, SSL_CTX_set_session_cache_mode_procname);
-  FuncLoaded := assigned(SSL_CTX_set_session_cache_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_session_cache_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_session_cache_mode_allownil)}
+    SSL_CTX_set_session_cache_mode := @ERR_SSL_CTX_set_session_cache_mode;
+    {$ifend}
     {$if declared(SSL_CTX_set_session_cache_mode_introduced)}
     if LibVersion < SSL_CTX_set_session_cache_mode_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_session_cache_mode)}
       SSL_CTX_set_session_cache_mode := @FC_SSL_CTX_set_session_cache_mode;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_cache_mode_allownil)}
-      SSL_CTX_set_session_cache_mode := @ERR_SSL_CTX_set_session_cache_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_session_cache_mode_removed)}
@@ -9454,39 +9421,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_session_cache_mode)}
       SSL_CTX_set_session_cache_mode := @_SSL_CTX_set_session_cache_mode;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_cache_mode_allownil)}
-      SSL_CTX_set_session_cache_mode := @ERR_SSL_CTX_set_session_cache_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_session_cache_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_session_cache_mode := @ERR_SSL_CTX_set_session_cache_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_session_cache_mode');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get_session_cache_mode := LoadLibFunction(ADllHandle, SSL_CTX_get_session_cache_mode_procname);
-  FuncLoaded := assigned(SSL_CTX_get_session_cache_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_session_cache_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_session_cache_mode_allownil)}
+    SSL_CTX_get_session_cache_mode := @ERR_SSL_CTX_get_session_cache_mode;
+    {$ifend}
     {$if declared(SSL_CTX_get_session_cache_mode_introduced)}
     if LibVersion < SSL_CTX_get_session_cache_mode_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_session_cache_mode)}
       SSL_CTX_get_session_cache_mode := @FC_SSL_CTX_get_session_cache_mode;
-      {$else}
-      {$if not defined(SSL_CTX_get_session_cache_mode_allownil)}
-      SSL_CTX_get_session_cache_mode := @ERR_SSL_CTX_get_session_cache_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_session_cache_mode_removed)}
@@ -9494,39 +9453,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_session_cache_mode)}
       SSL_CTX_get_session_cache_mode := @_SSL_CTX_get_session_cache_mode;
-      {$else}
-      {$if not defined(SSL_CTX_get_session_cache_mode_allownil)}
-      SSL_CTX_get_session_cache_mode := @ERR_SSL_CTX_get_session_cache_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_session_cache_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_session_cache_mode := @ERR_SSL_CTX_get_session_cache_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_session_cache_mode');
-    end;
     {$ifend}
   end;
 
  
   SSL_clear_num_renegotiations := LoadLibFunction(ADllHandle, SSL_clear_num_renegotiations_procname);
-  FuncLoaded := assigned(SSL_clear_num_renegotiations);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_clear_num_renegotiations);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_clear_num_renegotiations_allownil)}
+    SSL_clear_num_renegotiations := @ERR_SSL_clear_num_renegotiations;
+    {$ifend}
     {$if declared(SSL_clear_num_renegotiations_introduced)}
     if LibVersion < SSL_clear_num_renegotiations_introduced then
     begin
       {$if declared(FC_SSL_clear_num_renegotiations)}
       SSL_clear_num_renegotiations := @FC_SSL_clear_num_renegotiations;
-      {$else}
-      {$if not defined(SSL_clear_num_renegotiations_allownil)}
-      SSL_clear_num_renegotiations := @ERR_SSL_clear_num_renegotiations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_clear_num_renegotiations_removed)}
@@ -9534,39 +9485,31 @@ begin
     begin
       {$if declared(_SSL_clear_num_renegotiations)}
       SSL_clear_num_renegotiations := @_SSL_clear_num_renegotiations;
-      {$else}
-      {$if not defined(SSL_clear_num_renegotiations_allownil)}
-      SSL_clear_num_renegotiations := @ERR_SSL_clear_num_renegotiations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_clear_num_renegotiations_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_clear_num_renegotiations := @ERR_SSL_clear_num_renegotiations;
+    if FuncLoadError then
       AFailed.Add('SSL_clear_num_renegotiations');
-    end;
     {$ifend}
   end;
 
  
   SSL_total_renegotiations := LoadLibFunction(ADllHandle, SSL_total_renegotiations_procname);
-  FuncLoaded := assigned(SSL_total_renegotiations);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_total_renegotiations);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_total_renegotiations_allownil)}
+    SSL_total_renegotiations := @ERR_SSL_total_renegotiations;
+    {$ifend}
     {$if declared(SSL_total_renegotiations_introduced)}
     if LibVersion < SSL_total_renegotiations_introduced then
     begin
       {$if declared(FC_SSL_total_renegotiations)}
       SSL_total_renegotiations := @FC_SSL_total_renegotiations;
-      {$else}
-      {$if not defined(SSL_total_renegotiations_allownil)}
-      SSL_total_renegotiations := @ERR_SSL_total_renegotiations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_total_renegotiations_removed)}
@@ -9574,39 +9517,31 @@ begin
     begin
       {$if declared(_SSL_total_renegotiations)}
       SSL_total_renegotiations := @_SSL_total_renegotiations;
-      {$else}
-      {$if not defined(SSL_total_renegotiations_allownil)}
-      SSL_total_renegotiations := @ERR_SSL_total_renegotiations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_total_renegotiations_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_total_renegotiations := @ERR_SSL_total_renegotiations;
+    if FuncLoadError then
       AFailed.Add('SSL_total_renegotiations');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set_tmp_dh := LoadLibFunction(ADllHandle, SSL_CTX_set_tmp_dh_procname);
-  FuncLoaded := assigned(SSL_CTX_set_tmp_dh);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_tmp_dh);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_tmp_dh_allownil)}
+    SSL_CTX_set_tmp_dh := @ERR_SSL_CTX_set_tmp_dh;
+    {$ifend}
     {$if declared(SSL_CTX_set_tmp_dh_introduced)}
     if LibVersion < SSL_CTX_set_tmp_dh_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_tmp_dh)}
       SSL_CTX_set_tmp_dh := @FC_SSL_CTX_set_tmp_dh;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_dh_allownil)}
-      SSL_CTX_set_tmp_dh := @ERR_SSL_CTX_set_tmp_dh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_tmp_dh_removed)}
@@ -9614,39 +9549,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_tmp_dh)}
       SSL_CTX_set_tmp_dh := @_SSL_CTX_set_tmp_dh;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_dh_allownil)}
-      SSL_CTX_set_tmp_dh := @ERR_SSL_CTX_set_tmp_dh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_tmp_dh_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_tmp_dh := @ERR_SSL_CTX_set_tmp_dh;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_tmp_dh');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set_tmp_ecdh := LoadLibFunction(ADllHandle, SSL_CTX_set_tmp_ecdh_procname);
-  FuncLoaded := assigned(SSL_CTX_set_tmp_ecdh);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_tmp_ecdh);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_tmp_ecdh_allownil)}
+    SSL_CTX_set_tmp_ecdh := @ERR_SSL_CTX_set_tmp_ecdh;
+    {$ifend}
     {$if declared(SSL_CTX_set_tmp_ecdh_introduced)}
     if LibVersion < SSL_CTX_set_tmp_ecdh_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_tmp_ecdh)}
       SSL_CTX_set_tmp_ecdh := @FC_SSL_CTX_set_tmp_ecdh;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_ecdh_allownil)}
-      SSL_CTX_set_tmp_ecdh := @ERR_SSL_CTX_set_tmp_ecdh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_tmp_ecdh_removed)}
@@ -9654,39 +9581,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_tmp_ecdh)}
       SSL_CTX_set_tmp_ecdh := @_SSL_CTX_set_tmp_ecdh;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_ecdh_allownil)}
-      SSL_CTX_set_tmp_ecdh := @ERR_SSL_CTX_set_tmp_ecdh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_tmp_ecdh_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_tmp_ecdh := @ERR_SSL_CTX_set_tmp_ecdh;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_tmp_ecdh');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set_dh_auto := LoadLibFunction(ADllHandle, SSL_CTX_set_dh_auto_procname);
-  FuncLoaded := assigned(SSL_CTX_set_dh_auto);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_dh_auto);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_dh_auto_allownil)}
+    SSL_CTX_set_dh_auto := @ERR_SSL_CTX_set_dh_auto;
+    {$ifend}
     {$if declared(SSL_CTX_set_dh_auto_introduced)}
     if LibVersion < SSL_CTX_set_dh_auto_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_dh_auto)}
       SSL_CTX_set_dh_auto := @FC_SSL_CTX_set_dh_auto;
-      {$else}
-      {$if not defined(SSL_CTX_set_dh_auto_allownil)}
-      SSL_CTX_set_dh_auto := @ERR_SSL_CTX_set_dh_auto;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_dh_auto_removed)}
@@ -9694,39 +9613,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_dh_auto)}
       SSL_CTX_set_dh_auto := @_SSL_CTX_set_dh_auto;
-      {$else}
-      {$if not defined(SSL_CTX_set_dh_auto_allownil)}
-      SSL_CTX_set_dh_auto := @ERR_SSL_CTX_set_dh_auto;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_dh_auto_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_dh_auto := @ERR_SSL_CTX_set_dh_auto;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_dh_auto');
-    end;
     {$ifend}
   end;
 
  
   SSL_set_dh_auto := LoadLibFunction(ADllHandle, SSL_set_dh_auto_procname);
-  FuncLoaded := assigned(SSL_set_dh_auto);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_dh_auto);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_dh_auto_allownil)}
+    SSL_set_dh_auto := @ERR_SSL_set_dh_auto;
+    {$ifend}
     {$if declared(SSL_set_dh_auto_introduced)}
     if LibVersion < SSL_set_dh_auto_introduced then
     begin
       {$if declared(FC_SSL_set_dh_auto)}
       SSL_set_dh_auto := @FC_SSL_set_dh_auto;
-      {$else}
-      {$if not defined(SSL_set_dh_auto_allownil)}
-      SSL_set_dh_auto := @ERR_SSL_set_dh_auto;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_dh_auto_removed)}
@@ -9734,39 +9645,31 @@ begin
     begin
       {$if declared(_SSL_set_dh_auto)}
       SSL_set_dh_auto := @_SSL_set_dh_auto;
-      {$else}
-      {$if not defined(SSL_set_dh_auto_allownil)}
-      SSL_set_dh_auto := @ERR_SSL_set_dh_auto;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_dh_auto_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_dh_auto := @ERR_SSL_set_dh_auto;
+    if FuncLoadError then
       AFailed.Add('SSL_set_dh_auto');
-    end;
     {$ifend}
   end;
 
  
   SSL_set_tmp_dh := LoadLibFunction(ADllHandle, SSL_set_tmp_dh_procname);
-  FuncLoaded := assigned(SSL_set_tmp_dh);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_tmp_dh);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_tmp_dh_allownil)}
+    SSL_set_tmp_dh := @ERR_SSL_set_tmp_dh;
+    {$ifend}
     {$if declared(SSL_set_tmp_dh_introduced)}
     if LibVersion < SSL_set_tmp_dh_introduced then
     begin
       {$if declared(FC_SSL_set_tmp_dh)}
       SSL_set_tmp_dh := @FC_SSL_set_tmp_dh;
-      {$else}
-      {$if not defined(SSL_set_tmp_dh_allownil)}
-      SSL_set_tmp_dh := @ERR_SSL_set_tmp_dh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_tmp_dh_removed)}
@@ -9774,39 +9677,31 @@ begin
     begin
       {$if declared(_SSL_set_tmp_dh)}
       SSL_set_tmp_dh := @_SSL_set_tmp_dh;
-      {$else}
-      {$if not defined(SSL_set_tmp_dh_allownil)}
-      SSL_set_tmp_dh := @ERR_SSL_set_tmp_dh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_tmp_dh_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_tmp_dh := @ERR_SSL_set_tmp_dh;
+    if FuncLoadError then
       AFailed.Add('SSL_set_tmp_dh');
-    end;
     {$ifend}
   end;
 
  
   SSL_set_tmp_ecdh := LoadLibFunction(ADllHandle, SSL_set_tmp_ecdh_procname);
-  FuncLoaded := assigned(SSL_set_tmp_ecdh);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_tmp_ecdh);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_tmp_ecdh_allownil)}
+    SSL_set_tmp_ecdh := @ERR_SSL_set_tmp_ecdh;
+    {$ifend}
     {$if declared(SSL_set_tmp_ecdh_introduced)}
     if LibVersion < SSL_set_tmp_ecdh_introduced then
     begin
       {$if declared(FC_SSL_set_tmp_ecdh)}
       SSL_set_tmp_ecdh := @FC_SSL_set_tmp_ecdh;
-      {$else}
-      {$if not defined(SSL_set_tmp_ecdh_allownil)}
-      SSL_set_tmp_ecdh := @ERR_SSL_set_tmp_ecdh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_tmp_ecdh_removed)}
@@ -9814,39 +9709,31 @@ begin
     begin
       {$if declared(_SSL_set_tmp_ecdh)}
       SSL_set_tmp_ecdh := @_SSL_set_tmp_ecdh;
-      {$else}
-      {$if not defined(SSL_set_tmp_ecdh_allownil)}
-      SSL_set_tmp_ecdh := @ERR_SSL_set_tmp_ecdh;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_tmp_ecdh_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_tmp_ecdh := @ERR_SSL_set_tmp_ecdh;
+    if FuncLoadError then
       AFailed.Add('SSL_set_tmp_ecdh');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_add_extra_chain_cert := LoadLibFunction(ADllHandle, SSL_CTX_add_extra_chain_cert_procname);
-  FuncLoaded := assigned(SSL_CTX_add_extra_chain_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_add_extra_chain_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_add_extra_chain_cert_allownil)}
+    SSL_CTX_add_extra_chain_cert := @ERR_SSL_CTX_add_extra_chain_cert;
+    {$ifend}
     {$if declared(SSL_CTX_add_extra_chain_cert_introduced)}
     if LibVersion < SSL_CTX_add_extra_chain_cert_introduced then
     begin
       {$if declared(FC_SSL_CTX_add_extra_chain_cert)}
       SSL_CTX_add_extra_chain_cert := @FC_SSL_CTX_add_extra_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add_extra_chain_cert_allownil)}
-      SSL_CTX_add_extra_chain_cert := @ERR_SSL_CTX_add_extra_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_add_extra_chain_cert_removed)}
@@ -9854,39 +9741,31 @@ begin
     begin
       {$if declared(_SSL_CTX_add_extra_chain_cert)}
       SSL_CTX_add_extra_chain_cert := @_SSL_CTX_add_extra_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add_extra_chain_cert_allownil)}
-      SSL_CTX_add_extra_chain_cert := @ERR_SSL_CTX_add_extra_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_add_extra_chain_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_add_extra_chain_cert := @ERR_SSL_CTX_add_extra_chain_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_add_extra_chain_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get_extra_chain_certs := LoadLibFunction(ADllHandle, SSL_CTX_get_extra_chain_certs_procname);
-  FuncLoaded := assigned(SSL_CTX_get_extra_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_extra_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_extra_chain_certs_allownil)}
+    SSL_CTX_get_extra_chain_certs := @ERR_SSL_CTX_get_extra_chain_certs;
+    {$ifend}
     {$if declared(SSL_CTX_get_extra_chain_certs_introduced)}
     if LibVersion < SSL_CTX_get_extra_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_extra_chain_certs)}
       SSL_CTX_get_extra_chain_certs := @FC_SSL_CTX_get_extra_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_get_extra_chain_certs_allownil)}
-      SSL_CTX_get_extra_chain_certs := @ERR_SSL_CTX_get_extra_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_extra_chain_certs_removed)}
@@ -9894,39 +9773,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_extra_chain_certs)}
       SSL_CTX_get_extra_chain_certs := @_SSL_CTX_get_extra_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_get_extra_chain_certs_allownil)}
-      SSL_CTX_get_extra_chain_certs := @ERR_SSL_CTX_get_extra_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_extra_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_extra_chain_certs := @ERR_SSL_CTX_get_extra_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_extra_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get_extra_chain_certs_only := LoadLibFunction(ADllHandle, SSL_CTX_get_extra_chain_certs_only_procname);
-  FuncLoaded := assigned(SSL_CTX_get_extra_chain_certs_only);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_extra_chain_certs_only);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_extra_chain_certs_only_allownil)}
+    SSL_CTX_get_extra_chain_certs_only := @ERR_SSL_CTX_get_extra_chain_certs_only;
+    {$ifend}
     {$if declared(SSL_CTX_get_extra_chain_certs_only_introduced)}
     if LibVersion < SSL_CTX_get_extra_chain_certs_only_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_extra_chain_certs_only)}
       SSL_CTX_get_extra_chain_certs_only := @FC_SSL_CTX_get_extra_chain_certs_only;
-      {$else}
-      {$if not defined(SSL_CTX_get_extra_chain_certs_only_allownil)}
-      SSL_CTX_get_extra_chain_certs_only := @ERR_SSL_CTX_get_extra_chain_certs_only;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_extra_chain_certs_only_removed)}
@@ -9934,39 +9805,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_extra_chain_certs_only)}
       SSL_CTX_get_extra_chain_certs_only := @_SSL_CTX_get_extra_chain_certs_only;
-      {$else}
-      {$if not defined(SSL_CTX_get_extra_chain_certs_only_allownil)}
-      SSL_CTX_get_extra_chain_certs_only := @ERR_SSL_CTX_get_extra_chain_certs_only;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_extra_chain_certs_only_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_extra_chain_certs_only := @ERR_SSL_CTX_get_extra_chain_certs_only;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_extra_chain_certs_only');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_clear_extra_chain_certs := LoadLibFunction(ADllHandle, SSL_CTX_clear_extra_chain_certs_procname);
-  FuncLoaded := assigned(SSL_CTX_clear_extra_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_clear_extra_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_clear_extra_chain_certs_allownil)}
+    SSL_CTX_clear_extra_chain_certs := @ERR_SSL_CTX_clear_extra_chain_certs;
+    {$ifend}
     {$if declared(SSL_CTX_clear_extra_chain_certs_introduced)}
     if LibVersion < SSL_CTX_clear_extra_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_CTX_clear_extra_chain_certs)}
       SSL_CTX_clear_extra_chain_certs := @FC_SSL_CTX_clear_extra_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_clear_extra_chain_certs_allownil)}
-      SSL_CTX_clear_extra_chain_certs := @ERR_SSL_CTX_clear_extra_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_clear_extra_chain_certs_removed)}
@@ -9974,39 +9837,31 @@ begin
     begin
       {$if declared(_SSL_CTX_clear_extra_chain_certs)}
       SSL_CTX_clear_extra_chain_certs := @_SSL_CTX_clear_extra_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_clear_extra_chain_certs_allownil)}
-      SSL_CTX_clear_extra_chain_certs := @ERR_SSL_CTX_clear_extra_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_clear_extra_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_clear_extra_chain_certs := @ERR_SSL_CTX_clear_extra_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_clear_extra_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set0_chain := LoadLibFunction(ADllHandle, SSL_CTX_set0_chain_procname);
-  FuncLoaded := assigned(SSL_CTX_set0_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set0_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set0_chain_allownil)}
+    SSL_CTX_set0_chain := @ERR_SSL_CTX_set0_chain;
+    {$ifend}
     {$if declared(SSL_CTX_set0_chain_introduced)}
     if LibVersion < SSL_CTX_set0_chain_introduced then
     begin
       {$if declared(FC_SSL_CTX_set0_chain)}
       SSL_CTX_set0_chain := @FC_SSL_CTX_set0_chain;
-      {$else}
-      {$if not defined(SSL_CTX_set0_chain_allownil)}
-      SSL_CTX_set0_chain := @ERR_SSL_CTX_set0_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set0_chain_removed)}
@@ -10014,39 +9869,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set0_chain)}
       SSL_CTX_set0_chain := @_SSL_CTX_set0_chain;
-      {$else}
-      {$if not defined(SSL_CTX_set0_chain_allownil)}
-      SSL_CTX_set0_chain := @ERR_SSL_CTX_set0_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set0_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set0_chain := @ERR_SSL_CTX_set0_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set0_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_chain := LoadLibFunction(ADllHandle, SSL_CTX_set1_chain_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_chain_allownil)}
+    SSL_CTX_set1_chain := @ERR_SSL_CTX_set1_chain;
+    {$ifend}
     {$if declared(SSL_CTX_set1_chain_introduced)}
     if LibVersion < SSL_CTX_set1_chain_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_chain)}
       SSL_CTX_set1_chain := @FC_SSL_CTX_set1_chain;
-      {$else}
-      {$if not defined(SSL_CTX_set1_chain_allownil)}
-      SSL_CTX_set1_chain := @ERR_SSL_CTX_set1_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_chain_removed)}
@@ -10054,39 +9901,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_chain)}
       SSL_CTX_set1_chain := @_SSL_CTX_set1_chain;
-      {$else}
-      {$if not defined(SSL_CTX_set1_chain_allownil)}
-      SSL_CTX_set1_chain := @ERR_SSL_CTX_set1_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_chain := @ERR_SSL_CTX_set1_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_add0_chain_cert := LoadLibFunction(ADllHandle, SSL_CTX_add0_chain_cert_procname);
-  FuncLoaded := assigned(SSL_CTX_add0_chain_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_add0_chain_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_add0_chain_cert_allownil)}
+    SSL_CTX_add0_chain_cert := @ERR_SSL_CTX_add0_chain_cert;
+    {$ifend}
     {$if declared(SSL_CTX_add0_chain_cert_introduced)}
     if LibVersion < SSL_CTX_add0_chain_cert_introduced then
     begin
       {$if declared(FC_SSL_CTX_add0_chain_cert)}
       SSL_CTX_add0_chain_cert := @FC_SSL_CTX_add0_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add0_chain_cert_allownil)}
-      SSL_CTX_add0_chain_cert := @ERR_SSL_CTX_add0_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_add0_chain_cert_removed)}
@@ -10094,39 +9933,31 @@ begin
     begin
       {$if declared(_SSL_CTX_add0_chain_cert)}
       SSL_CTX_add0_chain_cert := @_SSL_CTX_add0_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add0_chain_cert_allownil)}
-      SSL_CTX_add0_chain_cert := @ERR_SSL_CTX_add0_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_add0_chain_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_add0_chain_cert := @ERR_SSL_CTX_add0_chain_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_add0_chain_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_add1_chain_cert := LoadLibFunction(ADllHandle, SSL_CTX_add1_chain_cert_procname);
-  FuncLoaded := assigned(SSL_CTX_add1_chain_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_add1_chain_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_add1_chain_cert_allownil)}
+    SSL_CTX_add1_chain_cert := @ERR_SSL_CTX_add1_chain_cert;
+    {$ifend}
     {$if declared(SSL_CTX_add1_chain_cert_introduced)}
     if LibVersion < SSL_CTX_add1_chain_cert_introduced then
     begin
       {$if declared(FC_SSL_CTX_add1_chain_cert)}
       SSL_CTX_add1_chain_cert := @FC_SSL_CTX_add1_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add1_chain_cert_allownil)}
-      SSL_CTX_add1_chain_cert := @ERR_SSL_CTX_add1_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_add1_chain_cert_removed)}
@@ -10134,39 +9965,31 @@ begin
     begin
       {$if declared(_SSL_CTX_add1_chain_cert)}
       SSL_CTX_add1_chain_cert := @_SSL_CTX_add1_chain_cert;
-      {$else}
-      {$if not defined(SSL_CTX_add1_chain_cert_allownil)}
-      SSL_CTX_add1_chain_cert := @ERR_SSL_CTX_add1_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_add1_chain_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_add1_chain_cert := @ERR_SSL_CTX_add1_chain_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_add1_chain_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get0_chain_certs := LoadLibFunction(ADllHandle, SSL_CTX_get0_chain_certs_procname);
-  FuncLoaded := assigned(SSL_CTX_get0_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get0_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get0_chain_certs_allownil)}
+    SSL_CTX_get0_chain_certs := @ERR_SSL_CTX_get0_chain_certs;
+    {$ifend}
     {$if declared(SSL_CTX_get0_chain_certs_introduced)}
     if LibVersion < SSL_CTX_get0_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_CTX_get0_chain_certs)}
       SSL_CTX_get0_chain_certs := @FC_SSL_CTX_get0_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_get0_chain_certs_allownil)}
-      SSL_CTX_get0_chain_certs := @ERR_SSL_CTX_get0_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get0_chain_certs_removed)}
@@ -10174,39 +9997,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get0_chain_certs)}
       SSL_CTX_get0_chain_certs := @_SSL_CTX_get0_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_get0_chain_certs_allownil)}
-      SSL_CTX_get0_chain_certs := @ERR_SSL_CTX_get0_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get0_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get0_chain_certs := @ERR_SSL_CTX_get0_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get0_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_clear_chain_certs := LoadLibFunction(ADllHandle, SSL_CTX_clear_chain_certs_procname);
-  FuncLoaded := assigned(SSL_CTX_clear_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_clear_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_clear_chain_certs_allownil)}
+    SSL_CTX_clear_chain_certs := @ERR_SSL_CTX_clear_chain_certs;
+    {$ifend}
     {$if declared(SSL_CTX_clear_chain_certs_introduced)}
     if LibVersion < SSL_CTX_clear_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_CTX_clear_chain_certs)}
       SSL_CTX_clear_chain_certs := @FC_SSL_CTX_clear_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_clear_chain_certs_allownil)}
-      SSL_CTX_clear_chain_certs := @ERR_SSL_CTX_clear_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_clear_chain_certs_removed)}
@@ -10214,39 +10029,31 @@ begin
     begin
       {$if declared(_SSL_CTX_clear_chain_certs)}
       SSL_CTX_clear_chain_certs := @_SSL_CTX_clear_chain_certs;
-      {$else}
-      {$if not defined(SSL_CTX_clear_chain_certs_allownil)}
-      SSL_CTX_clear_chain_certs := @ERR_SSL_CTX_clear_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_clear_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_clear_chain_certs := @ERR_SSL_CTX_clear_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_clear_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_build_cert_chain := LoadLibFunction(ADllHandle, SSL_CTX_build_cert_chain_procname);
-  FuncLoaded := assigned(SSL_CTX_build_cert_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_build_cert_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_build_cert_chain_allownil)}
+    SSL_CTX_build_cert_chain := @ERR_SSL_CTX_build_cert_chain;
+    {$ifend}
     {$if declared(SSL_CTX_build_cert_chain_introduced)}
     if LibVersion < SSL_CTX_build_cert_chain_introduced then
     begin
       {$if declared(FC_SSL_CTX_build_cert_chain)}
       SSL_CTX_build_cert_chain := @FC_SSL_CTX_build_cert_chain;
-      {$else}
-      {$if not defined(SSL_CTX_build_cert_chain_allownil)}
-      SSL_CTX_build_cert_chain := @ERR_SSL_CTX_build_cert_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_build_cert_chain_removed)}
@@ -10254,39 +10061,31 @@ begin
     begin
       {$if declared(_SSL_CTX_build_cert_chain)}
       SSL_CTX_build_cert_chain := @_SSL_CTX_build_cert_chain;
-      {$else}
-      {$if not defined(SSL_CTX_build_cert_chain_allownil)}
-      SSL_CTX_build_cert_chain := @ERR_SSL_CTX_build_cert_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_build_cert_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_build_cert_chain := @ERR_SSL_CTX_build_cert_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_build_cert_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_select_current_cert := LoadLibFunction(ADllHandle, SSL_CTX_select_current_cert_procname);
-  FuncLoaded := assigned(SSL_CTX_select_current_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_select_current_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_select_current_cert_allownil)}
+    SSL_CTX_select_current_cert := @ERR_SSL_CTX_select_current_cert;
+    {$ifend}
     {$if declared(SSL_CTX_select_current_cert_introduced)}
     if LibVersion < SSL_CTX_select_current_cert_introduced then
     begin
       {$if declared(FC_SSL_CTX_select_current_cert)}
       SSL_CTX_select_current_cert := @FC_SSL_CTX_select_current_cert;
-      {$else}
-      {$if not defined(SSL_CTX_select_current_cert_allownil)}
-      SSL_CTX_select_current_cert := @ERR_SSL_CTX_select_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_select_current_cert_removed)}
@@ -10294,39 +10093,31 @@ begin
     begin
       {$if declared(_SSL_CTX_select_current_cert)}
       SSL_CTX_select_current_cert := @_SSL_CTX_select_current_cert;
-      {$else}
-      {$if not defined(SSL_CTX_select_current_cert_allownil)}
-      SSL_CTX_select_current_cert := @ERR_SSL_CTX_select_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_select_current_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_select_current_cert := @ERR_SSL_CTX_select_current_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_select_current_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set_current_cert := LoadLibFunction(ADllHandle, SSL_CTX_set_current_cert_procname);
-  FuncLoaded := assigned(SSL_CTX_set_current_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_current_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_current_cert_allownil)}
+    SSL_CTX_set_current_cert := @ERR_SSL_CTX_set_current_cert;
+    {$ifend}
     {$if declared(SSL_CTX_set_current_cert_introduced)}
     if LibVersion < SSL_CTX_set_current_cert_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_current_cert)}
       SSL_CTX_set_current_cert := @FC_SSL_CTX_set_current_cert;
-      {$else}
-      {$if not defined(SSL_CTX_set_current_cert_allownil)}
-      SSL_CTX_set_current_cert := @ERR_SSL_CTX_set_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_current_cert_removed)}
@@ -10334,39 +10125,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_current_cert)}
       SSL_CTX_set_current_cert := @_SSL_CTX_set_current_cert;
-      {$else}
-      {$if not defined(SSL_CTX_set_current_cert_allownil)}
-      SSL_CTX_set_current_cert := @ERR_SSL_CTX_set_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_current_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_current_cert := @ERR_SSL_CTX_set_current_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_current_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set0_verify_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set0_verify_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set0_verify_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set0_verify_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set0_verify_cert_store_allownil)}
+    SSL_CTX_set0_verify_cert_store := @ERR_SSL_CTX_set0_verify_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set0_verify_cert_store_introduced)}
     if LibVersion < SSL_CTX_set0_verify_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set0_verify_cert_store)}
       SSL_CTX_set0_verify_cert_store := @FC_SSL_CTX_set0_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_verify_cert_store_allownil)}
-      SSL_CTX_set0_verify_cert_store := @ERR_SSL_CTX_set0_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set0_verify_cert_store_removed)}
@@ -10374,39 +10157,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set0_verify_cert_store)}
       SSL_CTX_set0_verify_cert_store := @_SSL_CTX_set0_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_verify_cert_store_allownil)}
-      SSL_CTX_set0_verify_cert_store := @ERR_SSL_CTX_set0_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set0_verify_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set0_verify_cert_store := @ERR_SSL_CTX_set0_verify_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set0_verify_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_verify_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set1_verify_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_verify_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_verify_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_verify_cert_store_allownil)}
+    SSL_CTX_set1_verify_cert_store := @ERR_SSL_CTX_set1_verify_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set1_verify_cert_store_introduced)}
     if LibVersion < SSL_CTX_set1_verify_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_verify_cert_store)}
       SSL_CTX_set1_verify_cert_store := @FC_SSL_CTX_set1_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_verify_cert_store_allownil)}
-      SSL_CTX_set1_verify_cert_store := @ERR_SSL_CTX_set1_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_verify_cert_store_removed)}
@@ -10414,39 +10189,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_verify_cert_store)}
       SSL_CTX_set1_verify_cert_store := @_SSL_CTX_set1_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_verify_cert_store_allownil)}
-      SSL_CTX_set1_verify_cert_store := @ERR_SSL_CTX_set1_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_verify_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_verify_cert_store := @ERR_SSL_CTX_set1_verify_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_verify_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set0_chain_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set0_chain_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set0_chain_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set0_chain_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set0_chain_cert_store_allownil)}
+    SSL_CTX_set0_chain_cert_store := @ERR_SSL_CTX_set0_chain_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set0_chain_cert_store_introduced)}
     if LibVersion < SSL_CTX_set0_chain_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set0_chain_cert_store)}
       SSL_CTX_set0_chain_cert_store := @FC_SSL_CTX_set0_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_chain_cert_store_allownil)}
-      SSL_CTX_set0_chain_cert_store := @ERR_SSL_CTX_set0_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set0_chain_cert_store_removed)}
@@ -10454,39 +10221,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set0_chain_cert_store)}
       SSL_CTX_set0_chain_cert_store := @_SSL_CTX_set0_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_chain_cert_store_allownil)}
-      SSL_CTX_set0_chain_cert_store := @ERR_SSL_CTX_set0_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set0_chain_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set0_chain_cert_store := @ERR_SSL_CTX_set0_chain_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set0_chain_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_chain_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set1_chain_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_chain_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_chain_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_chain_cert_store_allownil)}
+    SSL_CTX_set1_chain_cert_store := @ERR_SSL_CTX_set1_chain_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set1_chain_cert_store_introduced)}
     if LibVersion < SSL_CTX_set1_chain_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_chain_cert_store)}
       SSL_CTX_set1_chain_cert_store := @FC_SSL_CTX_set1_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_chain_cert_store_allownil)}
-      SSL_CTX_set1_chain_cert_store := @ERR_SSL_CTX_set1_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_chain_cert_store_removed)}
@@ -10494,39 +10253,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_chain_cert_store)}
       SSL_CTX_set1_chain_cert_store := @_SSL_CTX_set1_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_chain_cert_store_allownil)}
-      SSL_CTX_set1_chain_cert_store := @ERR_SSL_CTX_set1_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_chain_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_chain_cert_store := @ERR_SSL_CTX_set1_chain_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_chain_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_set0_chain := LoadLibFunction(ADllHandle, SSL_set0_chain_procname);
-  FuncLoaded := assigned(SSL_set0_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_chain_allownil)}
+    SSL_set0_chain := @ERR_SSL_set0_chain;
+    {$ifend}
     {$if declared(SSL_set0_chain_introduced)}
     if LibVersion < SSL_set0_chain_introduced then
     begin
       {$if declared(FC_SSL_set0_chain)}
       SSL_set0_chain := @FC_SSL_set0_chain;
-      {$else}
-      {$if not defined(SSL_set0_chain_allownil)}
-      SSL_set0_chain := @ERR_SSL_set0_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_chain_removed)}
@@ -10534,39 +10285,31 @@ begin
     begin
       {$if declared(_SSL_set0_chain)}
       SSL_set0_chain := @_SSL_set0_chain;
-      {$else}
-      {$if not defined(SSL_set0_chain_allownil)}
-      SSL_set0_chain := @ERR_SSL_set0_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_chain := @ERR_SSL_set0_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_chain := LoadLibFunction(ADllHandle, SSL_set1_chain_procname);
-  FuncLoaded := assigned(SSL_set1_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_chain_allownil)}
+    SSL_set1_chain := @ERR_SSL_set1_chain;
+    {$ifend}
     {$if declared(SSL_set1_chain_introduced)}
     if LibVersion < SSL_set1_chain_introduced then
     begin
       {$if declared(FC_SSL_set1_chain)}
       SSL_set1_chain := @FC_SSL_set1_chain;
-      {$else}
-      {$if not defined(SSL_set1_chain_allownil)}
-      SSL_set1_chain := @ERR_SSL_set1_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_chain_removed)}
@@ -10574,39 +10317,31 @@ begin
     begin
       {$if declared(_SSL_set1_chain)}
       SSL_set1_chain := @_SSL_set1_chain;
-      {$else}
-      {$if not defined(SSL_set1_chain_allownil)}
-      SSL_set1_chain := @ERR_SSL_set1_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_chain := @ERR_SSL_set1_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_add0_chain_cert := LoadLibFunction(ADllHandle, SSL_add0_chain_cert_procname);
-  FuncLoaded := assigned(SSL_add0_chain_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add0_chain_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add0_chain_cert_allownil)}
+    SSL_add0_chain_cert := @ERR_SSL_add0_chain_cert;
+    {$ifend}
     {$if declared(SSL_add0_chain_cert_introduced)}
     if LibVersion < SSL_add0_chain_cert_introduced then
     begin
       {$if declared(FC_SSL_add0_chain_cert)}
       SSL_add0_chain_cert := @FC_SSL_add0_chain_cert;
-      {$else}
-      {$if not defined(SSL_add0_chain_cert_allownil)}
-      SSL_add0_chain_cert := @ERR_SSL_add0_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add0_chain_cert_removed)}
@@ -10614,39 +10349,31 @@ begin
     begin
       {$if declared(_SSL_add0_chain_cert)}
       SSL_add0_chain_cert := @_SSL_add0_chain_cert;
-      {$else}
-      {$if not defined(SSL_add0_chain_cert_allownil)}
-      SSL_add0_chain_cert := @ERR_SSL_add0_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add0_chain_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add0_chain_cert := @ERR_SSL_add0_chain_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_add0_chain_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_add1_chain_cert := LoadLibFunction(ADllHandle, SSL_add1_chain_cert_procname);
-  FuncLoaded := assigned(SSL_add1_chain_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add1_chain_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add1_chain_cert_allownil)}
+    SSL_add1_chain_cert := @ERR_SSL_add1_chain_cert;
+    {$ifend}
     {$if declared(SSL_add1_chain_cert_introduced)}
     if LibVersion < SSL_add1_chain_cert_introduced then
     begin
       {$if declared(FC_SSL_add1_chain_cert)}
       SSL_add1_chain_cert := @FC_SSL_add1_chain_cert;
-      {$else}
-      {$if not defined(SSL_add1_chain_cert_allownil)}
-      SSL_add1_chain_cert := @ERR_SSL_add1_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add1_chain_cert_removed)}
@@ -10654,39 +10381,31 @@ begin
     begin
       {$if declared(_SSL_add1_chain_cert)}
       SSL_add1_chain_cert := @_SSL_add1_chain_cert;
-      {$else}
-      {$if not defined(SSL_add1_chain_cert_allownil)}
-      SSL_add1_chain_cert := @ERR_SSL_add1_chain_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add1_chain_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add1_chain_cert := @ERR_SSL_add1_chain_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_add1_chain_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_get0_chain_certs := LoadLibFunction(ADllHandle, SSL_get0_chain_certs_procname);
-  FuncLoaded := assigned(SSL_get0_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_chain_certs_allownil)}
+    SSL_get0_chain_certs := @ERR_SSL_get0_chain_certs;
+    {$ifend}
     {$if declared(SSL_get0_chain_certs_introduced)}
     if LibVersion < SSL_get0_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_get0_chain_certs)}
       SSL_get0_chain_certs := @FC_SSL_get0_chain_certs;
-      {$else}
-      {$if not defined(SSL_get0_chain_certs_allownil)}
-      SSL_get0_chain_certs := @ERR_SSL_get0_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_chain_certs_removed)}
@@ -10694,39 +10413,31 @@ begin
     begin
       {$if declared(_SSL_get0_chain_certs)}
       SSL_get0_chain_certs := @_SSL_get0_chain_certs;
-      {$else}
-      {$if not defined(SSL_get0_chain_certs_allownil)}
-      SSL_get0_chain_certs := @ERR_SSL_get0_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_chain_certs := @ERR_SSL_get0_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_clear_chain_certs := LoadLibFunction(ADllHandle, SSL_clear_chain_certs_procname);
-  FuncLoaded := assigned(SSL_clear_chain_certs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_clear_chain_certs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_clear_chain_certs_allownil)}
+    SSL_clear_chain_certs := @ERR_SSL_clear_chain_certs;
+    {$ifend}
     {$if declared(SSL_clear_chain_certs_introduced)}
     if LibVersion < SSL_clear_chain_certs_introduced then
     begin
       {$if declared(FC_SSL_clear_chain_certs)}
       SSL_clear_chain_certs := @FC_SSL_clear_chain_certs;
-      {$else}
-      {$if not defined(SSL_clear_chain_certs_allownil)}
-      SSL_clear_chain_certs := @ERR_SSL_clear_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_clear_chain_certs_removed)}
@@ -10734,39 +10445,31 @@ begin
     begin
       {$if declared(_SSL_clear_chain_certs)}
       SSL_clear_chain_certs := @_SSL_clear_chain_certs;
-      {$else}
-      {$if not defined(SSL_clear_chain_certs_allownil)}
-      SSL_clear_chain_certs := @ERR_SSL_clear_chain_certs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_clear_chain_certs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_clear_chain_certs := @ERR_SSL_clear_chain_certs;
+    if FuncLoadError then
       AFailed.Add('SSL_clear_chain_certs');
-    end;
     {$ifend}
   end;
 
  
   SSL_build_cert_chain := LoadLibFunction(ADllHandle, SSL_build_cert_chain_procname);
-  FuncLoaded := assigned(SSL_build_cert_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_build_cert_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_build_cert_chain_allownil)}
+    SSL_build_cert_chain := @ERR_SSL_build_cert_chain;
+    {$ifend}
     {$if declared(SSL_build_cert_chain_introduced)}
     if LibVersion < SSL_build_cert_chain_introduced then
     begin
       {$if declared(FC_SSL_build_cert_chain)}
       SSL_build_cert_chain := @FC_SSL_build_cert_chain;
-      {$else}
-      {$if not defined(SSL_build_cert_chain_allownil)}
-      SSL_build_cert_chain := @ERR_SSL_build_cert_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_build_cert_chain_removed)}
@@ -10774,39 +10477,31 @@ begin
     begin
       {$if declared(_SSL_build_cert_chain)}
       SSL_build_cert_chain := @_SSL_build_cert_chain;
-      {$else}
-      {$if not defined(SSL_build_cert_chain_allownil)}
-      SSL_build_cert_chain := @ERR_SSL_build_cert_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_build_cert_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_build_cert_chain := @ERR_SSL_build_cert_chain;
+    if FuncLoadError then
       AFailed.Add('SSL_build_cert_chain');
-    end;
     {$ifend}
   end;
 
  
   SSL_select_current_cert := LoadLibFunction(ADllHandle, SSL_select_current_cert_procname);
-  FuncLoaded := assigned(SSL_select_current_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_select_current_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_select_current_cert_allownil)}
+    SSL_select_current_cert := @ERR_SSL_select_current_cert;
+    {$ifend}
     {$if declared(SSL_select_current_cert_introduced)}
     if LibVersion < SSL_select_current_cert_introduced then
     begin
       {$if declared(FC_SSL_select_current_cert)}
       SSL_select_current_cert := @FC_SSL_select_current_cert;
-      {$else}
-      {$if not defined(SSL_select_current_cert_allownil)}
-      SSL_select_current_cert := @ERR_SSL_select_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_select_current_cert_removed)}
@@ -10814,39 +10509,31 @@ begin
     begin
       {$if declared(_SSL_select_current_cert)}
       SSL_select_current_cert := @_SSL_select_current_cert;
-      {$else}
-      {$if not defined(SSL_select_current_cert_allownil)}
-      SSL_select_current_cert := @ERR_SSL_select_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_select_current_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_select_current_cert := @ERR_SSL_select_current_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_select_current_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_set_current_cert := LoadLibFunction(ADllHandle, SSL_set_current_cert_procname);
-  FuncLoaded := assigned(SSL_set_current_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_current_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_current_cert_allownil)}
+    SSL_set_current_cert := @ERR_SSL_set_current_cert;
+    {$ifend}
     {$if declared(SSL_set_current_cert_introduced)}
     if LibVersion < SSL_set_current_cert_introduced then
     begin
       {$if declared(FC_SSL_set_current_cert)}
       SSL_set_current_cert := @FC_SSL_set_current_cert;
-      {$else}
-      {$if not defined(SSL_set_current_cert_allownil)}
-      SSL_set_current_cert := @ERR_SSL_set_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_current_cert_removed)}
@@ -10854,39 +10541,31 @@ begin
     begin
       {$if declared(_SSL_set_current_cert)}
       SSL_set_current_cert := @_SSL_set_current_cert;
-      {$else}
-      {$if not defined(SSL_set_current_cert_allownil)}
-      SSL_set_current_cert := @ERR_SSL_set_current_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_current_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_current_cert := @ERR_SSL_set_current_cert;
+    if FuncLoadError then
       AFailed.Add('SSL_set_current_cert');
-    end;
     {$ifend}
   end;
 
  
   SSL_set0_verify_cert_store := LoadLibFunction(ADllHandle, SSL_set0_verify_cert_store_procname);
-  FuncLoaded := assigned(SSL_set0_verify_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_verify_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_verify_cert_store_allownil)}
+    SSL_set0_verify_cert_store := @ERR_SSL_set0_verify_cert_store;
+    {$ifend}
     {$if declared(SSL_set0_verify_cert_store_introduced)}
     if LibVersion < SSL_set0_verify_cert_store_introduced then
     begin
       {$if declared(FC_SSL_set0_verify_cert_store)}
       SSL_set0_verify_cert_store := @FC_SSL_set0_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_set0_verify_cert_store_allownil)}
-      SSL_set0_verify_cert_store := @ERR_SSL_set0_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_verify_cert_store_removed)}
@@ -10894,39 +10573,31 @@ begin
     begin
       {$if declared(_SSL_set0_verify_cert_store)}
       SSL_set0_verify_cert_store := @_SSL_set0_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_set0_verify_cert_store_allownil)}
-      SSL_set0_verify_cert_store := @ERR_SSL_set0_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_verify_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_verify_cert_store := @ERR_SSL_set0_verify_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_verify_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_verify_cert_store := LoadLibFunction(ADllHandle, SSL_set1_verify_cert_store_procname);
-  FuncLoaded := assigned(SSL_set1_verify_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_verify_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_verify_cert_store_allownil)}
+    SSL_set1_verify_cert_store := @ERR_SSL_set1_verify_cert_store;
+    {$ifend}
     {$if declared(SSL_set1_verify_cert_store_introduced)}
     if LibVersion < SSL_set1_verify_cert_store_introduced then
     begin
       {$if declared(FC_SSL_set1_verify_cert_store)}
       SSL_set1_verify_cert_store := @FC_SSL_set1_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_set1_verify_cert_store_allownil)}
-      SSL_set1_verify_cert_store := @ERR_SSL_set1_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_verify_cert_store_removed)}
@@ -10934,39 +10605,31 @@ begin
     begin
       {$if declared(_SSL_set1_verify_cert_store)}
       SSL_set1_verify_cert_store := @_SSL_set1_verify_cert_store;
-      {$else}
-      {$if not defined(SSL_set1_verify_cert_store_allownil)}
-      SSL_set1_verify_cert_store := @ERR_SSL_set1_verify_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_verify_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_verify_cert_store := @ERR_SSL_set1_verify_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_verify_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_set0_chain_cert_store := LoadLibFunction(ADllHandle, SSL_set0_chain_cert_store_procname);
-  FuncLoaded := assigned(SSL_set0_chain_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_chain_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_chain_cert_store_allownil)}
+    SSL_set0_chain_cert_store := @ERR_SSL_set0_chain_cert_store;
+    {$ifend}
     {$if declared(SSL_set0_chain_cert_store_introduced)}
     if LibVersion < SSL_set0_chain_cert_store_introduced then
     begin
       {$if declared(FC_SSL_set0_chain_cert_store)}
       SSL_set0_chain_cert_store := @FC_SSL_set0_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_set0_chain_cert_store_allownil)}
-      SSL_set0_chain_cert_store := @ERR_SSL_set0_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_chain_cert_store_removed)}
@@ -10974,39 +10637,31 @@ begin
     begin
       {$if declared(_SSL_set0_chain_cert_store)}
       SSL_set0_chain_cert_store := @_SSL_set0_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_set0_chain_cert_store_allownil)}
-      SSL_set0_chain_cert_store := @ERR_SSL_set0_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_chain_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_chain_cert_store := @ERR_SSL_set0_chain_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_chain_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_chain_cert_store := LoadLibFunction(ADllHandle, SSL_set1_chain_cert_store_procname);
-  FuncLoaded := assigned(SSL_set1_chain_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_chain_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_chain_cert_store_allownil)}
+    SSL_set1_chain_cert_store := @ERR_SSL_set1_chain_cert_store;
+    {$ifend}
     {$if declared(SSL_set1_chain_cert_store_introduced)}
     if LibVersion < SSL_set1_chain_cert_store_introduced then
     begin
       {$if declared(FC_SSL_set1_chain_cert_store)}
       SSL_set1_chain_cert_store := @FC_SSL_set1_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_set1_chain_cert_store_allownil)}
-      SSL_set1_chain_cert_store := @ERR_SSL_set1_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_chain_cert_store_removed)}
@@ -11014,39 +10669,31 @@ begin
     begin
       {$if declared(_SSL_set1_chain_cert_store)}
       SSL_set1_chain_cert_store := @_SSL_set1_chain_cert_store;
-      {$else}
-      {$if not defined(SSL_set1_chain_cert_store_allownil)}
-      SSL_set1_chain_cert_store := @ERR_SSL_set1_chain_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_chain_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_chain_cert_store := @ERR_SSL_set1_chain_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_chain_cert_store');
-    end;
     {$ifend}
   end;
 
  
   SSL_get1_groups := LoadLibFunction(ADllHandle, SSL_get1_groups_procname);
-  FuncLoaded := assigned(SSL_get1_groups);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get1_groups);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get1_groups_allownil)}
+    SSL_get1_groups := @ERR_SSL_get1_groups;
+    {$ifend}
     {$if declared(SSL_get1_groups_introduced)}
     if LibVersion < SSL_get1_groups_introduced then
     begin
       {$if declared(FC_SSL_get1_groups)}
       SSL_get1_groups := @FC_SSL_get1_groups;
-      {$else}
-      {$if not defined(SSL_get1_groups_allownil)}
-      SSL_get1_groups := @ERR_SSL_get1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get1_groups_removed)}
@@ -11054,39 +10701,31 @@ begin
     begin
       {$if declared(_SSL_get1_groups)}
       SSL_get1_groups := @_SSL_get1_groups;
-      {$else}
-      {$if not defined(SSL_get1_groups_allownil)}
-      SSL_get1_groups := @ERR_SSL_get1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get1_groups_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get1_groups := @ERR_SSL_get1_groups;
+    if FuncLoadError then
       AFailed.Add('SSL_get1_groups');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_groups := LoadLibFunction(ADllHandle, SSL_CTX_set1_groups_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_groups);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_groups);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_groups_allownil)}
+    SSL_CTX_set1_groups := @ERR_SSL_CTX_set1_groups;
+    {$ifend}
     {$if declared(SSL_CTX_set1_groups_introduced)}
     if LibVersion < SSL_CTX_set1_groups_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_groups)}
       SSL_CTX_set1_groups := @FC_SSL_CTX_set1_groups;
-      {$else}
-      {$if not defined(SSL_CTX_set1_groups_allownil)}
-      SSL_CTX_set1_groups := @ERR_SSL_CTX_set1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_groups_removed)}
@@ -11094,39 +10733,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_groups)}
       SSL_CTX_set1_groups := @_SSL_CTX_set1_groups;
-      {$else}
-      {$if not defined(SSL_CTX_set1_groups_allownil)}
-      SSL_CTX_set1_groups := @ERR_SSL_CTX_set1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_groups_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_groups := @ERR_SSL_CTX_set1_groups;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_groups');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_groups_list := LoadLibFunction(ADllHandle, SSL_CTX_set1_groups_list_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_groups_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_groups_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_groups_list_allownil)}
+    SSL_CTX_set1_groups_list := @ERR_SSL_CTX_set1_groups_list;
+    {$ifend}
     {$if declared(SSL_CTX_set1_groups_list_introduced)}
     if LibVersion < SSL_CTX_set1_groups_list_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_groups_list)}
       SSL_CTX_set1_groups_list := @FC_SSL_CTX_set1_groups_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_groups_list_allownil)}
-      SSL_CTX_set1_groups_list := @ERR_SSL_CTX_set1_groups_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_groups_list_removed)}
@@ -11134,39 +10765,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_groups_list)}
       SSL_CTX_set1_groups_list := @_SSL_CTX_set1_groups_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_groups_list_allownil)}
-      SSL_CTX_set1_groups_list := @ERR_SSL_CTX_set1_groups_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_groups_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_groups_list := @ERR_SSL_CTX_set1_groups_list;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_groups_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_groups := LoadLibFunction(ADllHandle, SSL_set1_groups_procname);
-  FuncLoaded := assigned(SSL_set1_groups);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_groups);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_groups_allownil)}
+    SSL_set1_groups := @ERR_SSL_set1_groups;
+    {$ifend}
     {$if declared(SSL_set1_groups_introduced)}
     if LibVersion < SSL_set1_groups_introduced then
     begin
       {$if declared(FC_SSL_set1_groups)}
       SSL_set1_groups := @FC_SSL_set1_groups;
-      {$else}
-      {$if not defined(SSL_set1_groups_allownil)}
-      SSL_set1_groups := @ERR_SSL_set1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_groups_removed)}
@@ -11174,39 +10797,31 @@ begin
     begin
       {$if declared(_SSL_set1_groups)}
       SSL_set1_groups := @_SSL_set1_groups;
-      {$else}
-      {$if not defined(SSL_set1_groups_allownil)}
-      SSL_set1_groups := @ERR_SSL_set1_groups;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_groups_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_groups := @ERR_SSL_set1_groups;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_groups');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_groups_list := LoadLibFunction(ADllHandle, SSL_set1_groups_list_procname);
-  FuncLoaded := assigned(SSL_set1_groups_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_groups_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_groups_list_allownil)}
+    SSL_set1_groups_list := @ERR_SSL_set1_groups_list;
+    {$ifend}
     {$if declared(SSL_set1_groups_list_introduced)}
     if LibVersion < SSL_set1_groups_list_introduced then
     begin
       {$if declared(FC_SSL_set1_groups_list)}
       SSL_set1_groups_list := @FC_SSL_set1_groups_list;
-      {$else}
-      {$if not defined(SSL_set1_groups_list_allownil)}
-      SSL_set1_groups_list := @ERR_SSL_set1_groups_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_groups_list_removed)}
@@ -11214,39 +10829,31 @@ begin
     begin
       {$if declared(_SSL_set1_groups_list)}
       SSL_set1_groups_list := @_SSL_set1_groups_list;
-      {$else}
-      {$if not defined(SSL_set1_groups_list_allownil)}
-      SSL_set1_groups_list := @ERR_SSL_set1_groups_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_groups_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_groups_list := @ERR_SSL_set1_groups_list;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_groups_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_get_shared_group := LoadLibFunction(ADllHandle, SSL_get_shared_group_procname);
-  FuncLoaded := assigned(SSL_get_shared_group);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_shared_group);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_shared_group_allownil)}
+    SSL_get_shared_group := @ERR_SSL_get_shared_group;
+    {$ifend}
     {$if declared(SSL_get_shared_group_introduced)}
     if LibVersion < SSL_get_shared_group_introduced then
     begin
       {$if declared(FC_SSL_get_shared_group)}
       SSL_get_shared_group := @FC_SSL_get_shared_group;
-      {$else}
-      {$if not defined(SSL_get_shared_group_allownil)}
-      SSL_get_shared_group := @ERR_SSL_get_shared_group;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_shared_group_removed)}
@@ -11254,39 +10861,31 @@ begin
     begin
       {$if declared(_SSL_get_shared_group)}
       SSL_get_shared_group := @_SSL_get_shared_group;
-      {$else}
-      {$if not defined(SSL_get_shared_group_allownil)}
-      SSL_get_shared_group := @ERR_SSL_get_shared_group;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_shared_group_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_shared_group := @ERR_SSL_get_shared_group;
+    if FuncLoadError then
       AFailed.Add('SSL_get_shared_group');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_sigalgs := LoadLibFunction(ADllHandle, SSL_CTX_set1_sigalgs_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_sigalgs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_sigalgs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_sigalgs_allownil)}
+    SSL_CTX_set1_sigalgs := @ERR_SSL_CTX_set1_sigalgs;
+    {$ifend}
     {$if declared(SSL_CTX_set1_sigalgs_introduced)}
     if LibVersion < SSL_CTX_set1_sigalgs_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_sigalgs)}
       SSL_CTX_set1_sigalgs := @FC_SSL_CTX_set1_sigalgs;
-      {$else}
-      {$if not defined(SSL_CTX_set1_sigalgs_allownil)}
-      SSL_CTX_set1_sigalgs := @ERR_SSL_CTX_set1_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_sigalgs_removed)}
@@ -11294,39 +10893,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_sigalgs)}
       SSL_CTX_set1_sigalgs := @_SSL_CTX_set1_sigalgs;
-      {$else}
-      {$if not defined(SSL_CTX_set1_sigalgs_allownil)}
-      SSL_CTX_set1_sigalgs := @ERR_SSL_CTX_set1_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_sigalgs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_sigalgs := @ERR_SSL_CTX_set1_sigalgs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_sigalgs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_sigalgs_list := LoadLibFunction(ADllHandle, SSL_CTX_set1_sigalgs_list_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_sigalgs_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_sigalgs_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_sigalgs_list_allownil)}
+    SSL_CTX_set1_sigalgs_list := @ERR_SSL_CTX_set1_sigalgs_list;
+    {$ifend}
     {$if declared(SSL_CTX_set1_sigalgs_list_introduced)}
     if LibVersion < SSL_CTX_set1_sigalgs_list_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_sigalgs_list)}
       SSL_CTX_set1_sigalgs_list := @FC_SSL_CTX_set1_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_sigalgs_list_allownil)}
-      SSL_CTX_set1_sigalgs_list := @ERR_SSL_CTX_set1_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_sigalgs_list_removed)}
@@ -11334,39 +10925,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_sigalgs_list)}
       SSL_CTX_set1_sigalgs_list := @_SSL_CTX_set1_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_sigalgs_list_allownil)}
-      SSL_CTX_set1_sigalgs_list := @ERR_SSL_CTX_set1_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_sigalgs_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_sigalgs_list := @ERR_SSL_CTX_set1_sigalgs_list;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_sigalgs_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_sigalgs := LoadLibFunction(ADllHandle, SSL_set1_sigalgs_procname);
-  FuncLoaded := assigned(SSL_set1_sigalgs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_sigalgs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_sigalgs_allownil)}
+    SSL_set1_sigalgs := @ERR_SSL_set1_sigalgs;
+    {$ifend}
     {$if declared(SSL_set1_sigalgs_introduced)}
     if LibVersion < SSL_set1_sigalgs_introduced then
     begin
       {$if declared(FC_SSL_set1_sigalgs)}
       SSL_set1_sigalgs := @FC_SSL_set1_sigalgs;
-      {$else}
-      {$if not defined(SSL_set1_sigalgs_allownil)}
-      SSL_set1_sigalgs := @ERR_SSL_set1_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_sigalgs_removed)}
@@ -11374,39 +10957,31 @@ begin
     begin
       {$if declared(_SSL_set1_sigalgs)}
       SSL_set1_sigalgs := @_SSL_set1_sigalgs;
-      {$else}
-      {$if not defined(SSL_set1_sigalgs_allownil)}
-      SSL_set1_sigalgs := @ERR_SSL_set1_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_sigalgs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_sigalgs := @ERR_SSL_set1_sigalgs;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_sigalgs');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_sigalgs_list := LoadLibFunction(ADllHandle, SSL_set1_sigalgs_list_procname);
-  FuncLoaded := assigned(SSL_set1_sigalgs_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_sigalgs_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_sigalgs_list_allownil)}
+    SSL_set1_sigalgs_list := @ERR_SSL_set1_sigalgs_list;
+    {$ifend}
     {$if declared(SSL_set1_sigalgs_list_introduced)}
     if LibVersion < SSL_set1_sigalgs_list_introduced then
     begin
       {$if declared(FC_SSL_set1_sigalgs_list)}
       SSL_set1_sigalgs_list := @FC_SSL_set1_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_set1_sigalgs_list_allownil)}
-      SSL_set1_sigalgs_list := @ERR_SSL_set1_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_sigalgs_list_removed)}
@@ -11414,39 +10989,31 @@ begin
     begin
       {$if declared(_SSL_set1_sigalgs_list)}
       SSL_set1_sigalgs_list := @_SSL_set1_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_set1_sigalgs_list_allownil)}
-      SSL_set1_sigalgs_list := @ERR_SSL_set1_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_sigalgs_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_sigalgs_list := @ERR_SSL_set1_sigalgs_list;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_sigalgs_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_client_sigalgs := LoadLibFunction(ADllHandle, SSL_CTX_set1_client_sigalgs_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_client_sigalgs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_client_sigalgs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_client_sigalgs_allownil)}
+    SSL_CTX_set1_client_sigalgs := @ERR_SSL_CTX_set1_client_sigalgs;
+    {$ifend}
     {$if declared(SSL_CTX_set1_client_sigalgs_introduced)}
     if LibVersion < SSL_CTX_set1_client_sigalgs_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_client_sigalgs)}
       SSL_CTX_set1_client_sigalgs := @FC_SSL_CTX_set1_client_sigalgs;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_sigalgs_allownil)}
-      SSL_CTX_set1_client_sigalgs := @ERR_SSL_CTX_set1_client_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_client_sigalgs_removed)}
@@ -11454,39 +11021,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_client_sigalgs)}
       SSL_CTX_set1_client_sigalgs := @_SSL_CTX_set1_client_sigalgs;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_sigalgs_allownil)}
-      SSL_CTX_set1_client_sigalgs := @ERR_SSL_CTX_set1_client_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_client_sigalgs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_client_sigalgs := @ERR_SSL_CTX_set1_client_sigalgs;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_client_sigalgs');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_client_sigalgs_list := LoadLibFunction(ADllHandle, SSL_CTX_set1_client_sigalgs_list_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_client_sigalgs_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_client_sigalgs_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_client_sigalgs_list_allownil)}
+    SSL_CTX_set1_client_sigalgs_list := @ERR_SSL_CTX_set1_client_sigalgs_list;
+    {$ifend}
     {$if declared(SSL_CTX_set1_client_sigalgs_list_introduced)}
     if LibVersion < SSL_CTX_set1_client_sigalgs_list_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_client_sigalgs_list)}
       SSL_CTX_set1_client_sigalgs_list := @FC_SSL_CTX_set1_client_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_sigalgs_list_allownil)}
-      SSL_CTX_set1_client_sigalgs_list := @ERR_SSL_CTX_set1_client_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_client_sigalgs_list_removed)}
@@ -11494,39 +11053,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_client_sigalgs_list)}
       SSL_CTX_set1_client_sigalgs_list := @_SSL_CTX_set1_client_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_sigalgs_list_allownil)}
-      SSL_CTX_set1_client_sigalgs_list := @ERR_SSL_CTX_set1_client_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_client_sigalgs_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_client_sigalgs_list := @ERR_SSL_CTX_set1_client_sigalgs_list;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_client_sigalgs_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_client_sigalgs := LoadLibFunction(ADllHandle, SSL_set1_client_sigalgs_procname);
-  FuncLoaded := assigned(SSL_set1_client_sigalgs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_client_sigalgs);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_client_sigalgs_allownil)}
+    SSL_set1_client_sigalgs := @ERR_SSL_set1_client_sigalgs;
+    {$ifend}
     {$if declared(SSL_set1_client_sigalgs_introduced)}
     if LibVersion < SSL_set1_client_sigalgs_introduced then
     begin
       {$if declared(FC_SSL_set1_client_sigalgs)}
       SSL_set1_client_sigalgs := @FC_SSL_set1_client_sigalgs;
-      {$else}
-      {$if not defined(SSL_set1_client_sigalgs_allownil)}
-      SSL_set1_client_sigalgs := @ERR_SSL_set1_client_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_client_sigalgs_removed)}
@@ -11534,39 +11085,31 @@ begin
     begin
       {$if declared(_SSL_set1_client_sigalgs)}
       SSL_set1_client_sigalgs := @_SSL_set1_client_sigalgs;
-      {$else}
-      {$if not defined(SSL_set1_client_sigalgs_allownil)}
-      SSL_set1_client_sigalgs := @ERR_SSL_set1_client_sigalgs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_client_sigalgs_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_client_sigalgs := @ERR_SSL_set1_client_sigalgs;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_client_sigalgs');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_client_sigalgs_list := LoadLibFunction(ADllHandle, SSL_set1_client_sigalgs_list_procname);
-  FuncLoaded := assigned(SSL_set1_client_sigalgs_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_client_sigalgs_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_client_sigalgs_list_allownil)}
+    SSL_set1_client_sigalgs_list := @ERR_SSL_set1_client_sigalgs_list;
+    {$ifend}
     {$if declared(SSL_set1_client_sigalgs_list_introduced)}
     if LibVersion < SSL_set1_client_sigalgs_list_introduced then
     begin
       {$if declared(FC_SSL_set1_client_sigalgs_list)}
       SSL_set1_client_sigalgs_list := @FC_SSL_set1_client_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_set1_client_sigalgs_list_allownil)}
-      SSL_set1_client_sigalgs_list := @ERR_SSL_set1_client_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_client_sigalgs_list_removed)}
@@ -11574,39 +11117,31 @@ begin
     begin
       {$if declared(_SSL_set1_client_sigalgs_list)}
       SSL_set1_client_sigalgs_list := @_SSL_set1_client_sigalgs_list;
-      {$else}
-      {$if not defined(SSL_set1_client_sigalgs_list_allownil)}
-      SSL_set1_client_sigalgs_list := @ERR_SSL_set1_client_sigalgs_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_client_sigalgs_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_client_sigalgs_list := @ERR_SSL_set1_client_sigalgs_list;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_client_sigalgs_list');
-    end;
     {$ifend}
   end;
 
  
   SSL_get0_certificate_types := LoadLibFunction(ADllHandle, SSL_get0_certificate_types_procname);
-  FuncLoaded := assigned(SSL_get0_certificate_types);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_certificate_types);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_certificate_types_allownil)}
+    SSL_get0_certificate_types := @ERR_SSL_get0_certificate_types;
+    {$ifend}
     {$if declared(SSL_get0_certificate_types_introduced)}
     if LibVersion < SSL_get0_certificate_types_introduced then
     begin
       {$if declared(FC_SSL_get0_certificate_types)}
       SSL_get0_certificate_types := @FC_SSL_get0_certificate_types;
-      {$else}
-      {$if not defined(SSL_get0_certificate_types_allownil)}
-      SSL_get0_certificate_types := @ERR_SSL_get0_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_certificate_types_removed)}
@@ -11614,39 +11149,31 @@ begin
     begin
       {$if declared(_SSL_get0_certificate_types)}
       SSL_get0_certificate_types := @_SSL_get0_certificate_types;
-      {$else}
-      {$if not defined(SSL_get0_certificate_types_allownil)}
-      SSL_get0_certificate_types := @ERR_SSL_get0_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_certificate_types_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_certificate_types := @ERR_SSL_get0_certificate_types;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_certificate_types');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_set1_client_certificate_types := LoadLibFunction(ADllHandle, SSL_CTX_set1_client_certificate_types_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_client_certificate_types);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_client_certificate_types);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_client_certificate_types_allownil)}
+    SSL_CTX_set1_client_certificate_types := @ERR_SSL_CTX_set1_client_certificate_types;
+    {$ifend}
     {$if declared(SSL_CTX_set1_client_certificate_types_introduced)}
     if LibVersion < SSL_CTX_set1_client_certificate_types_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_client_certificate_types)}
       SSL_CTX_set1_client_certificate_types := @FC_SSL_CTX_set1_client_certificate_types;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_certificate_types_allownil)}
-      SSL_CTX_set1_client_certificate_types := @ERR_SSL_CTX_set1_client_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_client_certificate_types_removed)}
@@ -11654,39 +11181,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_client_certificate_types)}
       SSL_CTX_set1_client_certificate_types := @_SSL_CTX_set1_client_certificate_types;
-      {$else}
-      {$if not defined(SSL_CTX_set1_client_certificate_types_allownil)}
-      SSL_CTX_set1_client_certificate_types := @ERR_SSL_CTX_set1_client_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_client_certificate_types_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_client_certificate_types := @ERR_SSL_CTX_set1_client_certificate_types;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_client_certificate_types');
-    end;
     {$ifend}
   end;
 
  
   SSL_set1_client_certificate_types := LoadLibFunction(ADllHandle, SSL_set1_client_certificate_types_procname);
-  FuncLoaded := assigned(SSL_set1_client_certificate_types);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_client_certificate_types);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_client_certificate_types_allownil)}
+    SSL_set1_client_certificate_types := @ERR_SSL_set1_client_certificate_types;
+    {$ifend}
     {$if declared(SSL_set1_client_certificate_types_introduced)}
     if LibVersion < SSL_set1_client_certificate_types_introduced then
     begin
       {$if declared(FC_SSL_set1_client_certificate_types)}
       SSL_set1_client_certificate_types := @FC_SSL_set1_client_certificate_types;
-      {$else}
-      {$if not defined(SSL_set1_client_certificate_types_allownil)}
-      SSL_set1_client_certificate_types := @ERR_SSL_set1_client_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_client_certificate_types_removed)}
@@ -11694,39 +11213,31 @@ begin
     begin
       {$if declared(_SSL_set1_client_certificate_types)}
       SSL_set1_client_certificate_types := @_SSL_set1_client_certificate_types;
-      {$else}
-      {$if not defined(SSL_set1_client_certificate_types_allownil)}
-      SSL_set1_client_certificate_types := @ERR_SSL_set1_client_certificate_types;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_client_certificate_types_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_client_certificate_types := @ERR_SSL_set1_client_certificate_types;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_client_certificate_types');
-    end;
     {$ifend}
   end;
 
  
   SSL_get_signature_nid := LoadLibFunction(ADllHandle, SSL_get_signature_nid_procname);
-  FuncLoaded := assigned(SSL_get_signature_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_signature_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_signature_nid_allownil)}
+    SSL_get_signature_nid := @ERR_SSL_get_signature_nid;
+    {$ifend}
     {$if declared(SSL_get_signature_nid_introduced)}
     if LibVersion < SSL_get_signature_nid_introduced then
     begin
       {$if declared(FC_SSL_get_signature_nid)}
       SSL_get_signature_nid := @FC_SSL_get_signature_nid;
-      {$else}
-      {$if not defined(SSL_get_signature_nid_allownil)}
-      SSL_get_signature_nid := @ERR_SSL_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_signature_nid_removed)}
@@ -11734,39 +11245,31 @@ begin
     begin
       {$if declared(_SSL_get_signature_nid)}
       SSL_get_signature_nid := @_SSL_get_signature_nid;
-      {$else}
-      {$if not defined(SSL_get_signature_nid_allownil)}
-      SSL_get_signature_nid := @ERR_SSL_get_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_signature_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_signature_nid := @ERR_SSL_get_signature_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_get_signature_nid');
-    end;
     {$ifend}
   end;
 
  
   SSL_get_peer_signature_nid := LoadLibFunction(ADllHandle, SSL_get_peer_signature_nid_procname);
-  FuncLoaded := assigned(SSL_get_peer_signature_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_peer_signature_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_peer_signature_nid_allownil)}
+    SSL_get_peer_signature_nid := @ERR_SSL_get_peer_signature_nid;
+    {$ifend}
     {$if declared(SSL_get_peer_signature_nid_introduced)}
     if LibVersion < SSL_get_peer_signature_nid_introduced then
     begin
       {$if declared(FC_SSL_get_peer_signature_nid)}
       SSL_get_peer_signature_nid := @FC_SSL_get_peer_signature_nid;
-      {$else}
-      {$if not defined(SSL_get_peer_signature_nid_allownil)}
-      SSL_get_peer_signature_nid := @ERR_SSL_get_peer_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_peer_signature_nid_removed)}
@@ -11774,39 +11277,31 @@ begin
     begin
       {$if declared(_SSL_get_peer_signature_nid)}
       SSL_get_peer_signature_nid := @_SSL_get_peer_signature_nid;
-      {$else}
-      {$if not defined(SSL_get_peer_signature_nid_allownil)}
-      SSL_get_peer_signature_nid := @ERR_SSL_get_peer_signature_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_peer_signature_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_peer_signature_nid := @ERR_SSL_get_peer_signature_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_get_peer_signature_nid');
-    end;
     {$ifend}
   end;
 
  
   SSL_get_peer_tmp_key := LoadLibFunction(ADllHandle, SSL_get_peer_tmp_key_procname);
-  FuncLoaded := assigned(SSL_get_peer_tmp_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_peer_tmp_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_peer_tmp_key_allownil)}
+    SSL_get_peer_tmp_key := @ERR_SSL_get_peer_tmp_key;
+    {$ifend}
     {$if declared(SSL_get_peer_tmp_key_introduced)}
     if LibVersion < SSL_get_peer_tmp_key_introduced then
     begin
       {$if declared(FC_SSL_get_peer_tmp_key)}
       SSL_get_peer_tmp_key := @FC_SSL_get_peer_tmp_key;
-      {$else}
-      {$if not defined(SSL_get_peer_tmp_key_allownil)}
-      SSL_get_peer_tmp_key := @ERR_SSL_get_peer_tmp_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_peer_tmp_key_removed)}
@@ -11814,39 +11309,31 @@ begin
     begin
       {$if declared(_SSL_get_peer_tmp_key)}
       SSL_get_peer_tmp_key := @_SSL_get_peer_tmp_key;
-      {$else}
-      {$if not defined(SSL_get_peer_tmp_key_allownil)}
-      SSL_get_peer_tmp_key := @ERR_SSL_get_peer_tmp_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_peer_tmp_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_peer_tmp_key := @ERR_SSL_get_peer_tmp_key;
+    if FuncLoadError then
       AFailed.Add('SSL_get_peer_tmp_key');
-    end;
     {$ifend}
   end;
 
  
   SSL_get_tmp_key := LoadLibFunction(ADllHandle, SSL_get_tmp_key_procname);
-  FuncLoaded := assigned(SSL_get_tmp_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_tmp_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_tmp_key_allownil)}
+    SSL_get_tmp_key := @ERR_SSL_get_tmp_key;
+    {$ifend}
     {$if declared(SSL_get_tmp_key_introduced)}
     if LibVersion < SSL_get_tmp_key_introduced then
     begin
       {$if declared(FC_SSL_get_tmp_key)}
       SSL_get_tmp_key := @FC_SSL_get_tmp_key;
-      {$else}
-      {$if not defined(SSL_get_tmp_key_allownil)}
-      SSL_get_tmp_key := @ERR_SSL_get_tmp_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_tmp_key_removed)}
@@ -11854,39 +11341,31 @@ begin
     begin
       {$if declared(_SSL_get_tmp_key)}
       SSL_get_tmp_key := @_SSL_get_tmp_key;
-      {$else}
-      {$if not defined(SSL_get_tmp_key_allownil)}
-      SSL_get_tmp_key := @ERR_SSL_get_tmp_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_tmp_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_tmp_key := @ERR_SSL_get_tmp_key;
+    if FuncLoadError then
       AFailed.Add('SSL_get_tmp_key');
-    end;
     {$ifend}
   end;
 
  
   SSL_get0_raw_cipherlist := LoadLibFunction(ADllHandle, SSL_get0_raw_cipherlist_procname);
-  FuncLoaded := assigned(SSL_get0_raw_cipherlist);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_raw_cipherlist);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_raw_cipherlist_allownil)}
+    SSL_get0_raw_cipherlist := @ERR_SSL_get0_raw_cipherlist;
+    {$ifend}
     {$if declared(SSL_get0_raw_cipherlist_introduced)}
     if LibVersion < SSL_get0_raw_cipherlist_introduced then
     begin
       {$if declared(FC_SSL_get0_raw_cipherlist)}
       SSL_get0_raw_cipherlist := @FC_SSL_get0_raw_cipherlist;
-      {$else}
-      {$if not defined(SSL_get0_raw_cipherlist_allownil)}
-      SSL_get0_raw_cipherlist := @ERR_SSL_get0_raw_cipherlist;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_raw_cipherlist_removed)}
@@ -11894,39 +11373,31 @@ begin
     begin
       {$if declared(_SSL_get0_raw_cipherlist)}
       SSL_get0_raw_cipherlist := @_SSL_get0_raw_cipherlist;
-      {$else}
-      {$if not defined(SSL_get0_raw_cipherlist_allownil)}
-      SSL_get0_raw_cipherlist := @ERR_SSL_get0_raw_cipherlist;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_raw_cipherlist_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_raw_cipherlist := @ERR_SSL_get0_raw_cipherlist;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_raw_cipherlist');
-    end;
     {$ifend}
   end;
 
  
   SSL_get0_ec_point_formats := LoadLibFunction(ADllHandle, SSL_get0_ec_point_formats_procname);
-  FuncLoaded := assigned(SSL_get0_ec_point_formats);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_ec_point_formats);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_ec_point_formats_allownil)}
+    SSL_get0_ec_point_formats := @ERR_SSL_get0_ec_point_formats;
+    {$ifend}
     {$if declared(SSL_get0_ec_point_formats_introduced)}
     if LibVersion < SSL_get0_ec_point_formats_introduced then
     begin
       {$if declared(FC_SSL_get0_ec_point_formats)}
       SSL_get0_ec_point_formats := @FC_SSL_get0_ec_point_formats;
-      {$else}
-      {$if not defined(SSL_get0_ec_point_formats_allownil)}
-      SSL_get0_ec_point_formats := @ERR_SSL_get0_ec_point_formats;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_ec_point_formats_removed)}
@@ -11934,39 +11405,31 @@ begin
     begin
       {$if declared(_SSL_get0_ec_point_formats)}
       SSL_get0_ec_point_formats := @_SSL_get0_ec_point_formats;
-      {$else}
-      {$if not defined(SSL_get0_ec_point_formats_allownil)}
-      SSL_get0_ec_point_formats := @ERR_SSL_get0_ec_point_formats;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_ec_point_formats_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_ec_point_formats := @ERR_SSL_get0_ec_point_formats;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_ec_point_formats');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get_options := LoadLibFunction(ADllHandle, SSL_CTX_get_options_procname);
-  FuncLoaded := assigned(SSL_CTX_get_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_options_allownil)}
+    SSL_CTX_get_options := @ERR_SSL_CTX_get_options;
+    {$ifend}
     {$if declared(SSL_CTX_get_options_introduced)}
     if LibVersion < SSL_CTX_get_options_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_options)}
       SSL_CTX_get_options := @FC_SSL_CTX_get_options;
-      {$else}
-      {$if not defined(SSL_CTX_get_options_allownil)}
-      SSL_CTX_get_options := @ERR_SSL_CTX_get_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_options_removed)}
@@ -11974,39 +11437,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_options)}
       SSL_CTX_get_options := @_SSL_CTX_get_options;
-      {$else}
-      {$if not defined(SSL_CTX_get_options_allownil)}
-      SSL_CTX_get_options := @ERR_SSL_CTX_get_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_options := @ERR_SSL_CTX_get_options;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_options := LoadLibFunction(ADllHandle, SSL_get_options_procname);
-  FuncLoaded := assigned(SSL_get_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_options_allownil)}
+    SSL_get_options := @ERR_SSL_get_options;
+    {$ifend}
     {$if declared(SSL_get_options_introduced)}
     if LibVersion < SSL_get_options_introduced then
     begin
       {$if declared(FC_SSL_get_options)}
       SSL_get_options := @FC_SSL_get_options;
-      {$else}
-      {$if not defined(SSL_get_options_allownil)}
-      SSL_get_options := @ERR_SSL_get_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_options_removed)}
@@ -12014,39 +11469,31 @@ begin
     begin
       {$if declared(_SSL_get_options)}
       SSL_get_options := @_SSL_get_options;
-      {$else}
-      {$if not defined(SSL_get_options_allownil)}
-      SSL_get_options := @ERR_SSL_get_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_options := @ERR_SSL_get_options;
+    if FuncLoadError then
       AFailed.Add('SSL_get_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_clear_options := LoadLibFunction(ADllHandle, SSL_CTX_clear_options_procname);
-  FuncLoaded := assigned(SSL_CTX_clear_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_clear_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_clear_options_allownil)}
+    SSL_CTX_clear_options := @ERR_SSL_CTX_clear_options;
+    {$ifend}
     {$if declared(SSL_CTX_clear_options_introduced)}
     if LibVersion < SSL_CTX_clear_options_introduced then
     begin
       {$if declared(FC_SSL_CTX_clear_options)}
       SSL_CTX_clear_options := @FC_SSL_CTX_clear_options;
-      {$else}
-      {$if not defined(SSL_CTX_clear_options_allownil)}
-      SSL_CTX_clear_options := @ERR_SSL_CTX_clear_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_clear_options_removed)}
@@ -12054,39 +11501,31 @@ begin
     begin
       {$if declared(_SSL_CTX_clear_options)}
       SSL_CTX_clear_options := @_SSL_CTX_clear_options;
-      {$else}
-      {$if not defined(SSL_CTX_clear_options_allownil)}
-      SSL_CTX_clear_options := @ERR_SSL_CTX_clear_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_clear_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_clear_options := @ERR_SSL_CTX_clear_options;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_clear_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_clear_options := LoadLibFunction(ADllHandle, SSL_clear_options_procname);
-  FuncLoaded := assigned(SSL_clear_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_clear_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_clear_options_allownil)}
+    SSL_clear_options := @ERR_SSL_clear_options;
+    {$ifend}
     {$if declared(SSL_clear_options_introduced)}
     if LibVersion < SSL_clear_options_introduced then
     begin
       {$if declared(FC_SSL_clear_options)}
       SSL_clear_options := @FC_SSL_clear_options;
-      {$else}
-      {$if not defined(SSL_clear_options_allownil)}
-      SSL_clear_options := @ERR_SSL_clear_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_clear_options_removed)}
@@ -12094,39 +11533,31 @@ begin
     begin
       {$if declared(_SSL_clear_options)}
       SSL_clear_options := @_SSL_clear_options;
-      {$else}
-      {$if not defined(SSL_clear_options_allownil)}
-      SSL_clear_options := @ERR_SSL_clear_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_clear_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_clear_options := @ERR_SSL_clear_options;
+    if FuncLoadError then
       AFailed.Add('SSL_clear_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_options := LoadLibFunction(ADllHandle, SSL_CTX_set_options_procname);
-  FuncLoaded := assigned(SSL_CTX_set_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_options_allownil)}
+    SSL_CTX_set_options := @ERR_SSL_CTX_set_options;
+    {$ifend}
     {$if declared(SSL_CTX_set_options_introduced)}
     if LibVersion < SSL_CTX_set_options_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_options)}
       SSL_CTX_set_options := @FC_SSL_CTX_set_options;
-      {$else}
-      {$if not defined(SSL_CTX_set_options_allownil)}
-      SSL_CTX_set_options := @ERR_SSL_CTX_set_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_options_removed)}
@@ -12134,39 +11565,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_options)}
       SSL_CTX_set_options := @_SSL_CTX_set_options;
-      {$else}
-      {$if not defined(SSL_CTX_set_options_allownil)}
-      SSL_CTX_set_options := @ERR_SSL_CTX_set_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_options := @ERR_SSL_CTX_set_options;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_options := LoadLibFunction(ADllHandle, SSL_set_options_procname);
-  FuncLoaded := assigned(SSL_set_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_options);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_options_allownil)}
+    SSL_set_options := @ERR_SSL_set_options;
+    {$ifend}
     {$if declared(SSL_set_options_introduced)}
     if LibVersion < SSL_set_options_introduced then
     begin
       {$if declared(FC_SSL_set_options)}
       SSL_set_options := @FC_SSL_set_options;
-      {$else}
-      {$if not defined(SSL_set_options_allownil)}
-      SSL_set_options := @ERR_SSL_set_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_options_removed)}
@@ -12174,39 +11597,31 @@ begin
     begin
       {$if declared(_SSL_set_options)}
       SSL_set_options := @_SSL_set_options;
-      {$else}
-      {$if not defined(SSL_set_options_allownil)}
-      SSL_set_options := @ERR_SSL_set_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_options_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_options := @ERR_SSL_set_options;
+    if FuncLoadError then
       AFailed.Add('SSL_set_options');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_sess_set_new_cb := LoadLibFunction(ADllHandle, SSL_CTX_sess_set_new_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_set_new_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_set_new_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_set_new_cb_allownil)}
+    SSL_CTX_sess_set_new_cb := @ERR_SSL_CTX_sess_set_new_cb;
+    {$ifend}
     {$if declared(SSL_CTX_sess_set_new_cb_introduced)}
     if LibVersion < SSL_CTX_sess_set_new_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_set_new_cb)}
       SSL_CTX_sess_set_new_cb := @FC_SSL_CTX_sess_set_new_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_new_cb_allownil)}
-      SSL_CTX_sess_set_new_cb := @ERR_SSL_CTX_sess_set_new_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_set_new_cb_removed)}
@@ -12214,39 +11629,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_set_new_cb)}
       SSL_CTX_sess_set_new_cb := @_SSL_CTX_sess_set_new_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_new_cb_allownil)}
-      SSL_CTX_sess_set_new_cb := @ERR_SSL_CTX_sess_set_new_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_set_new_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_set_new_cb := @ERR_SSL_CTX_sess_set_new_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_set_new_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_sess_get_new_cb := LoadLibFunction(ADllHandle, SSL_CTX_sess_get_new_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_get_new_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_get_new_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_get_new_cb_allownil)}
+    SSL_CTX_sess_get_new_cb := @ERR_SSL_CTX_sess_get_new_cb;
+    {$ifend}
     {$if declared(SSL_CTX_sess_get_new_cb_introduced)}
     if LibVersion < SSL_CTX_sess_get_new_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_get_new_cb)}
       SSL_CTX_sess_get_new_cb := @FC_SSL_CTX_sess_get_new_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_new_cb_allownil)}
-      SSL_CTX_sess_get_new_cb := @ERR_SSL_CTX_sess_get_new_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_get_new_cb_removed)}
@@ -12254,39 +11661,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_get_new_cb)}
       SSL_CTX_sess_get_new_cb := @_SSL_CTX_sess_get_new_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_new_cb_allownil)}
-      SSL_CTX_sess_get_new_cb := @ERR_SSL_CTX_sess_get_new_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_get_new_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_get_new_cb := @ERR_SSL_CTX_sess_get_new_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_get_new_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_sess_set_remove_cb := LoadLibFunction(ADllHandle, SSL_CTX_sess_set_remove_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_set_remove_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_set_remove_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_set_remove_cb_allownil)}
+    SSL_CTX_sess_set_remove_cb := @ERR_SSL_CTX_sess_set_remove_cb;
+    {$ifend}
     {$if declared(SSL_CTX_sess_set_remove_cb_introduced)}
     if LibVersion < SSL_CTX_sess_set_remove_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_set_remove_cb)}
       SSL_CTX_sess_set_remove_cb := @FC_SSL_CTX_sess_set_remove_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_remove_cb_allownil)}
-      SSL_CTX_sess_set_remove_cb := @ERR_SSL_CTX_sess_set_remove_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_set_remove_cb_removed)}
@@ -12294,39 +11693,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_set_remove_cb)}
       SSL_CTX_sess_set_remove_cb := @_SSL_CTX_sess_set_remove_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_set_remove_cb_allownil)}
-      SSL_CTX_sess_set_remove_cb := @ERR_SSL_CTX_sess_set_remove_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_set_remove_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_set_remove_cb := @ERR_SSL_CTX_sess_set_remove_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_set_remove_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_sess_get_remove_cb := LoadLibFunction(ADllHandle, SSL_CTX_sess_get_remove_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_sess_get_remove_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_sess_get_remove_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_sess_get_remove_cb_allownil)}
+    SSL_CTX_sess_get_remove_cb := @ERR_SSL_CTX_sess_get_remove_cb;
+    {$ifend}
     {$if declared(SSL_CTX_sess_get_remove_cb_introduced)}
     if LibVersion < SSL_CTX_sess_get_remove_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_sess_get_remove_cb)}
       SSL_CTX_sess_get_remove_cb := @FC_SSL_CTX_sess_get_remove_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_remove_cb_allownil)}
-      SSL_CTX_sess_get_remove_cb := @ERR_SSL_CTX_sess_get_remove_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_sess_get_remove_cb_removed)}
@@ -12334,39 +11725,31 @@ begin
     begin
       {$if declared(_SSL_CTX_sess_get_remove_cb)}
       SSL_CTX_sess_get_remove_cb := @_SSL_CTX_sess_get_remove_cb;
-      {$else}
-      {$if not defined(SSL_CTX_sess_get_remove_cb_allownil)}
-      SSL_CTX_sess_get_remove_cb := @ERR_SSL_CTX_sess_get_remove_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_sess_get_remove_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_sess_get_remove_cb := @ERR_SSL_CTX_sess_get_remove_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_sess_get_remove_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_info_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_info_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_info_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_info_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_info_callback_allownil)}
+    SSL_CTX_set_info_callback := @ERR_SSL_CTX_set_info_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_info_callback_introduced)}
     if LibVersion < SSL_CTX_set_info_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_info_callback)}
       SSL_CTX_set_info_callback := @FC_SSL_CTX_set_info_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_info_callback_allownil)}
-      SSL_CTX_set_info_callback := @ERR_SSL_CTX_set_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_info_callback_removed)}
@@ -12374,39 +11757,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_info_callback)}
       SSL_CTX_set_info_callback := @_SSL_CTX_set_info_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_info_callback_allownil)}
-      SSL_CTX_set_info_callback := @ERR_SSL_CTX_set_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_info_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_info_callback := @ERR_SSL_CTX_set_info_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_info_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_info_callback := LoadLibFunction(ADllHandle, SSL_CTX_get_info_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_get_info_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_info_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_info_callback_allownil)}
+    SSL_CTX_get_info_callback := @ERR_SSL_CTX_get_info_callback;
+    {$ifend}
     {$if declared(SSL_CTX_get_info_callback_introduced)}
     if LibVersion < SSL_CTX_get_info_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_info_callback)}
       SSL_CTX_get_info_callback := @FC_SSL_CTX_get_info_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_info_callback_allownil)}
-      SSL_CTX_get_info_callback := @ERR_SSL_CTX_get_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_info_callback_removed)}
@@ -12414,39 +11789,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_info_callback)}
       SSL_CTX_get_info_callback := @_SSL_CTX_get_info_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_info_callback_allownil)}
-      SSL_CTX_get_info_callback := @ERR_SSL_CTX_get_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_info_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_info_callback := @ERR_SSL_CTX_get_info_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_info_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_client_cert_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_client_cert_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_client_cert_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_client_cert_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_client_cert_cb_allownil)}
+    SSL_CTX_set_client_cert_cb := @ERR_SSL_CTX_set_client_cert_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_client_cert_cb_introduced)}
     if LibVersion < SSL_CTX_set_client_cert_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_client_cert_cb)}
       SSL_CTX_set_client_cert_cb := @FC_SSL_CTX_set_client_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_cert_cb_allownil)}
-      SSL_CTX_set_client_cert_cb := @ERR_SSL_CTX_set_client_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_client_cert_cb_removed)}
@@ -12454,39 +11821,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_client_cert_cb)}
       SSL_CTX_set_client_cert_cb := @_SSL_CTX_set_client_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_cert_cb_allownil)}
-      SSL_CTX_set_client_cert_cb := @ERR_SSL_CTX_set_client_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_client_cert_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_client_cert_cb := @ERR_SSL_CTX_set_client_cert_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_client_cert_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_client_cert_cb := LoadLibFunction(ADllHandle, SSL_CTX_get_client_cert_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_get_client_cert_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_client_cert_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_client_cert_cb_allownil)}
+    SSL_CTX_get_client_cert_cb := @ERR_SSL_CTX_get_client_cert_cb;
+    {$ifend}
     {$if declared(SSL_CTX_get_client_cert_cb_introduced)}
     if LibVersion < SSL_CTX_get_client_cert_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_client_cert_cb)}
       SSL_CTX_get_client_cert_cb := @FC_SSL_CTX_get_client_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_get_client_cert_cb_allownil)}
-      SSL_CTX_get_client_cert_cb := @ERR_SSL_CTX_get_client_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_client_cert_cb_removed)}
@@ -12494,39 +11853,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_client_cert_cb)}
       SSL_CTX_get_client_cert_cb := @_SSL_CTX_get_client_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_get_client_cert_cb_allownil)}
-      SSL_CTX_get_client_cert_cb := @ERR_SSL_CTX_get_client_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_client_cert_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_client_cert_cb := @ERR_SSL_CTX_get_client_cert_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_client_cert_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_client_cert_engine := LoadLibFunction(ADllHandle, SSL_CTX_set_client_cert_engine_procname);
-  FuncLoaded := assigned(SSL_CTX_set_client_cert_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_client_cert_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_client_cert_engine_allownil)}
+    SSL_CTX_set_client_cert_engine := @ERR_SSL_CTX_set_client_cert_engine;
+    {$ifend}
     {$if declared(SSL_CTX_set_client_cert_engine_introduced)}
     if LibVersion < SSL_CTX_set_client_cert_engine_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_client_cert_engine)}
       SSL_CTX_set_client_cert_engine := @FC_SSL_CTX_set_client_cert_engine;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_cert_engine_allownil)}
-      SSL_CTX_set_client_cert_engine := @ERR_SSL_CTX_set_client_cert_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_client_cert_engine_removed)}
@@ -12534,39 +11885,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_client_cert_engine)}
       SSL_CTX_set_client_cert_engine := @_SSL_CTX_set_client_cert_engine;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_cert_engine_allownil)}
-      SSL_CTX_set_client_cert_engine := @ERR_SSL_CTX_set_client_cert_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_client_cert_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_client_cert_engine := @ERR_SSL_CTX_set_client_cert_engine;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_client_cert_engine');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cookie_generate_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_cookie_generate_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cookie_generate_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cookie_generate_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cookie_generate_cb_allownil)}
+    SSL_CTX_set_cookie_generate_cb := @ERR_SSL_CTX_set_cookie_generate_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_cookie_generate_cb_introduced)}
     if LibVersion < SSL_CTX_set_cookie_generate_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cookie_generate_cb)}
       SSL_CTX_set_cookie_generate_cb := @FC_SSL_CTX_set_cookie_generate_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cookie_generate_cb_allownil)}
-      SSL_CTX_set_cookie_generate_cb := @ERR_SSL_CTX_set_cookie_generate_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cookie_generate_cb_removed)}
@@ -12574,39 +11917,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cookie_generate_cb)}
       SSL_CTX_set_cookie_generate_cb := @_SSL_CTX_set_cookie_generate_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cookie_generate_cb_allownil)}
-      SSL_CTX_set_cookie_generate_cb := @ERR_SSL_CTX_set_cookie_generate_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cookie_generate_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cookie_generate_cb := @ERR_SSL_CTX_set_cookie_generate_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cookie_generate_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cookie_verify_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_cookie_verify_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cookie_verify_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cookie_verify_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cookie_verify_cb_allownil)}
+    SSL_CTX_set_cookie_verify_cb := @ERR_SSL_CTX_set_cookie_verify_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_cookie_verify_cb_introduced)}
     if LibVersion < SSL_CTX_set_cookie_verify_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cookie_verify_cb)}
       SSL_CTX_set_cookie_verify_cb := @FC_SSL_CTX_set_cookie_verify_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cookie_verify_cb_allownil)}
-      SSL_CTX_set_cookie_verify_cb := @ERR_SSL_CTX_set_cookie_verify_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cookie_verify_cb_removed)}
@@ -12614,39 +11949,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cookie_verify_cb)}
       SSL_CTX_set_cookie_verify_cb := @_SSL_CTX_set_cookie_verify_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cookie_verify_cb_allownil)}
-      SSL_CTX_set_cookie_verify_cb := @ERR_SSL_CTX_set_cookie_verify_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cookie_verify_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cookie_verify_cb := @ERR_SSL_CTX_set_cookie_verify_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cookie_verify_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_stateless_cookie_generate_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_stateless_cookie_generate_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_stateless_cookie_generate_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_stateless_cookie_generate_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_stateless_cookie_generate_cb_allownil)}
+    SSL_CTX_set_stateless_cookie_generate_cb := @ERR_SSL_CTX_set_stateless_cookie_generate_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_stateless_cookie_generate_cb_introduced)}
     if LibVersion < SSL_CTX_set_stateless_cookie_generate_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_stateless_cookie_generate_cb)}
       SSL_CTX_set_stateless_cookie_generate_cb := @FC_SSL_CTX_set_stateless_cookie_generate_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_stateless_cookie_generate_cb_allownil)}
-      SSL_CTX_set_stateless_cookie_generate_cb := @ERR_SSL_CTX_set_stateless_cookie_generate_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_stateless_cookie_generate_cb_removed)}
@@ -12654,39 +11981,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_stateless_cookie_generate_cb)}
       SSL_CTX_set_stateless_cookie_generate_cb := @_SSL_CTX_set_stateless_cookie_generate_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_stateless_cookie_generate_cb_allownil)}
-      SSL_CTX_set_stateless_cookie_generate_cb := @ERR_SSL_CTX_set_stateless_cookie_generate_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_stateless_cookie_generate_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_stateless_cookie_generate_cb := @ERR_SSL_CTX_set_stateless_cookie_generate_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_stateless_cookie_generate_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_stateless_cookie_verify_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_stateless_cookie_verify_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_stateless_cookie_verify_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_stateless_cookie_verify_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_stateless_cookie_verify_cb_allownil)}
+    SSL_CTX_set_stateless_cookie_verify_cb := @ERR_SSL_CTX_set_stateless_cookie_verify_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_stateless_cookie_verify_cb_introduced)}
     if LibVersion < SSL_CTX_set_stateless_cookie_verify_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_stateless_cookie_verify_cb)}
       SSL_CTX_set_stateless_cookie_verify_cb := @FC_SSL_CTX_set_stateless_cookie_verify_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_stateless_cookie_verify_cb_allownil)}
-      SSL_CTX_set_stateless_cookie_verify_cb := @ERR_SSL_CTX_set_stateless_cookie_verify_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_stateless_cookie_verify_cb_removed)}
@@ -12694,39 +12013,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_stateless_cookie_verify_cb)}
       SSL_CTX_set_stateless_cookie_verify_cb := @_SSL_CTX_set_stateless_cookie_verify_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_stateless_cookie_verify_cb_allownil)}
-      SSL_CTX_set_stateless_cookie_verify_cb := @ERR_SSL_CTX_set_stateless_cookie_verify_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_stateless_cookie_verify_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_stateless_cookie_verify_cb := @ERR_SSL_CTX_set_stateless_cookie_verify_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_stateless_cookie_verify_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_alpn_select_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_alpn_select_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_alpn_select_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_alpn_select_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_alpn_select_cb_allownil)}
+    SSL_CTX_set_alpn_select_cb := @ERR_SSL_CTX_set_alpn_select_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_alpn_select_cb_introduced)}
     if LibVersion < SSL_CTX_set_alpn_select_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_alpn_select_cb)}
       SSL_CTX_set_alpn_select_cb := @FC_SSL_CTX_set_alpn_select_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_alpn_select_cb_allownil)}
-      SSL_CTX_set_alpn_select_cb := @ERR_SSL_CTX_set_alpn_select_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_alpn_select_cb_removed)}
@@ -12734,39 +12045,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_alpn_select_cb)}
       SSL_CTX_set_alpn_select_cb := @_SSL_CTX_set_alpn_select_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_alpn_select_cb_allownil)}
-      SSL_CTX_set_alpn_select_cb := @ERR_SSL_CTX_set_alpn_select_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_alpn_select_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_alpn_select_cb := @ERR_SSL_CTX_set_alpn_select_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_alpn_select_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_get0_alpn_selected := LoadLibFunction(ADllHandle, SSL_get0_alpn_selected_procname);
-  FuncLoaded := assigned(SSL_get0_alpn_selected);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_alpn_selected);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_alpn_selected_allownil)}
+    SSL_get0_alpn_selected := @ERR_SSL_get0_alpn_selected;
+    {$ifend}
     {$if declared(SSL_get0_alpn_selected_introduced)}
     if LibVersion < SSL_get0_alpn_selected_introduced then
     begin
       {$if declared(FC_SSL_get0_alpn_selected)}
       SSL_get0_alpn_selected := @FC_SSL_get0_alpn_selected;
-      {$else}
-      {$if not defined(SSL_get0_alpn_selected_allownil)}
-      SSL_get0_alpn_selected := @ERR_SSL_get0_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_alpn_selected_removed)}
@@ -12774,39 +12077,31 @@ begin
     begin
       {$if declared(_SSL_get0_alpn_selected)}
       SSL_get0_alpn_selected := @_SSL_get0_alpn_selected;
-      {$else}
-      {$if not defined(SSL_get0_alpn_selected_allownil)}
-      SSL_get0_alpn_selected := @ERR_SSL_get0_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_alpn_selected_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_alpn_selected := @ERR_SSL_get0_alpn_selected;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_alpn_selected');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_psk_client_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_psk_client_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_psk_client_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_psk_client_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_psk_client_callback_allownil)}
+    SSL_CTX_set_psk_client_callback := @ERR_SSL_CTX_set_psk_client_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_psk_client_callback_introduced)}
     if LibVersion < SSL_CTX_set_psk_client_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_psk_client_callback)}
       SSL_CTX_set_psk_client_callback := @FC_SSL_CTX_set_psk_client_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_client_callback_allownil)}
-      SSL_CTX_set_psk_client_callback := @ERR_SSL_CTX_set_psk_client_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_psk_client_callback_removed)}
@@ -12814,39 +12109,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_psk_client_callback)}
       SSL_CTX_set_psk_client_callback := @_SSL_CTX_set_psk_client_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_client_callback_allownil)}
-      SSL_CTX_set_psk_client_callback := @ERR_SSL_CTX_set_psk_client_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_psk_client_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_psk_client_callback := @ERR_SSL_CTX_set_psk_client_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_psk_client_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_psk_client_callback := LoadLibFunction(ADllHandle, SSL_set_psk_client_callback_procname);
-  FuncLoaded := assigned(SSL_set_psk_client_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_psk_client_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_psk_client_callback_allownil)}
+    SSL_set_psk_client_callback := @ERR_SSL_set_psk_client_callback;
+    {$ifend}
     {$if declared(SSL_set_psk_client_callback_introduced)}
     if LibVersion < SSL_set_psk_client_callback_introduced then
     begin
       {$if declared(FC_SSL_set_psk_client_callback)}
       SSL_set_psk_client_callback := @FC_SSL_set_psk_client_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_client_callback_allownil)}
-      SSL_set_psk_client_callback := @ERR_SSL_set_psk_client_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_psk_client_callback_removed)}
@@ -12854,39 +12141,31 @@ begin
     begin
       {$if declared(_SSL_set_psk_client_callback)}
       SSL_set_psk_client_callback := @_SSL_set_psk_client_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_client_callback_allownil)}
-      SSL_set_psk_client_callback := @ERR_SSL_set_psk_client_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_psk_client_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_psk_client_callback := @ERR_SSL_set_psk_client_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_psk_client_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_psk_server_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_psk_server_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_psk_server_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_psk_server_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_psk_server_callback_allownil)}
+    SSL_CTX_set_psk_server_callback := @ERR_SSL_CTX_set_psk_server_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_psk_server_callback_introduced)}
     if LibVersion < SSL_CTX_set_psk_server_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_psk_server_callback)}
       SSL_CTX_set_psk_server_callback := @FC_SSL_CTX_set_psk_server_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_server_callback_allownil)}
-      SSL_CTX_set_psk_server_callback := @ERR_SSL_CTX_set_psk_server_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_psk_server_callback_removed)}
@@ -12894,39 +12173,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_psk_server_callback)}
       SSL_CTX_set_psk_server_callback := @_SSL_CTX_set_psk_server_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_server_callback_allownil)}
-      SSL_CTX_set_psk_server_callback := @ERR_SSL_CTX_set_psk_server_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_psk_server_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_psk_server_callback := @ERR_SSL_CTX_set_psk_server_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_psk_server_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_psk_server_callback := LoadLibFunction(ADllHandle, SSL_set_psk_server_callback_procname);
-  FuncLoaded := assigned(SSL_set_psk_server_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_psk_server_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_psk_server_callback_allownil)}
+    SSL_set_psk_server_callback := @ERR_SSL_set_psk_server_callback;
+    {$ifend}
     {$if declared(SSL_set_psk_server_callback_introduced)}
     if LibVersion < SSL_set_psk_server_callback_introduced then
     begin
       {$if declared(FC_SSL_set_psk_server_callback)}
       SSL_set_psk_server_callback := @FC_SSL_set_psk_server_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_server_callback_allownil)}
-      SSL_set_psk_server_callback := @ERR_SSL_set_psk_server_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_psk_server_callback_removed)}
@@ -12934,39 +12205,31 @@ begin
     begin
       {$if declared(_SSL_set_psk_server_callback)}
       SSL_set_psk_server_callback := @_SSL_set_psk_server_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_server_callback_allownil)}
-      SSL_set_psk_server_callback := @ERR_SSL_set_psk_server_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_psk_server_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_psk_server_callback := @ERR_SSL_set_psk_server_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_psk_server_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_psk_find_session_callback := LoadLibFunction(ADllHandle, SSL_set_psk_find_session_callback_procname);
-  FuncLoaded := assigned(SSL_set_psk_find_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_psk_find_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_psk_find_session_callback_allownil)}
+    SSL_set_psk_find_session_callback := @ERR_SSL_set_psk_find_session_callback;
+    {$ifend}
     {$if declared(SSL_set_psk_find_session_callback_introduced)}
     if LibVersion < SSL_set_psk_find_session_callback_introduced then
     begin
       {$if declared(FC_SSL_set_psk_find_session_callback)}
       SSL_set_psk_find_session_callback := @FC_SSL_set_psk_find_session_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_find_session_callback_allownil)}
-      SSL_set_psk_find_session_callback := @ERR_SSL_set_psk_find_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_psk_find_session_callback_removed)}
@@ -12974,39 +12237,31 @@ begin
     begin
       {$if declared(_SSL_set_psk_find_session_callback)}
       SSL_set_psk_find_session_callback := @_SSL_set_psk_find_session_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_find_session_callback_allownil)}
-      SSL_set_psk_find_session_callback := @ERR_SSL_set_psk_find_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_psk_find_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_psk_find_session_callback := @ERR_SSL_set_psk_find_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_psk_find_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_psk_find_session_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_psk_find_session_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_psk_find_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_psk_find_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_psk_find_session_callback_allownil)}
+    SSL_CTX_set_psk_find_session_callback := @ERR_SSL_CTX_set_psk_find_session_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_psk_find_session_callback_introduced)}
     if LibVersion < SSL_CTX_set_psk_find_session_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_psk_find_session_callback)}
       SSL_CTX_set_psk_find_session_callback := @FC_SSL_CTX_set_psk_find_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_find_session_callback_allownil)}
-      SSL_CTX_set_psk_find_session_callback := @ERR_SSL_CTX_set_psk_find_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_psk_find_session_callback_removed)}
@@ -13014,39 +12269,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_psk_find_session_callback)}
       SSL_CTX_set_psk_find_session_callback := @_SSL_CTX_set_psk_find_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_find_session_callback_allownil)}
-      SSL_CTX_set_psk_find_session_callback := @ERR_SSL_CTX_set_psk_find_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_psk_find_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_psk_find_session_callback := @ERR_SSL_CTX_set_psk_find_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_psk_find_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_psk_use_session_callback := LoadLibFunction(ADllHandle, SSL_set_psk_use_session_callback_procname);
-  FuncLoaded := assigned(SSL_set_psk_use_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_psk_use_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_psk_use_session_callback_allownil)}
+    SSL_set_psk_use_session_callback := @ERR_SSL_set_psk_use_session_callback;
+    {$ifend}
     {$if declared(SSL_set_psk_use_session_callback_introduced)}
     if LibVersion < SSL_set_psk_use_session_callback_introduced then
     begin
       {$if declared(FC_SSL_set_psk_use_session_callback)}
       SSL_set_psk_use_session_callback := @FC_SSL_set_psk_use_session_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_use_session_callback_allownil)}
-      SSL_set_psk_use_session_callback := @ERR_SSL_set_psk_use_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_psk_use_session_callback_removed)}
@@ -13054,39 +12301,31 @@ begin
     begin
       {$if declared(_SSL_set_psk_use_session_callback)}
       SSL_set_psk_use_session_callback := @_SSL_set_psk_use_session_callback;
-      {$else}
-      {$if not defined(SSL_set_psk_use_session_callback_allownil)}
-      SSL_set_psk_use_session_callback := @ERR_SSL_set_psk_use_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_psk_use_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_psk_use_session_callback := @ERR_SSL_set_psk_use_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_psk_use_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_psk_use_session_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_psk_use_session_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_psk_use_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_psk_use_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_psk_use_session_callback_allownil)}
+    SSL_CTX_set_psk_use_session_callback := @ERR_SSL_CTX_set_psk_use_session_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_psk_use_session_callback_introduced)}
     if LibVersion < SSL_CTX_set_psk_use_session_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_psk_use_session_callback)}
       SSL_CTX_set_psk_use_session_callback := @FC_SSL_CTX_set_psk_use_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_use_session_callback_allownil)}
-      SSL_CTX_set_psk_use_session_callback := @ERR_SSL_CTX_set_psk_use_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_psk_use_session_callback_removed)}
@@ -13094,39 +12333,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_psk_use_session_callback)}
       SSL_CTX_set_psk_use_session_callback := @_SSL_CTX_set_psk_use_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_psk_use_session_callback_allownil)}
-      SSL_CTX_set_psk_use_session_callback := @ERR_SSL_CTX_set_psk_use_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_psk_use_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_psk_use_session_callback := @ERR_SSL_CTX_set_psk_use_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_psk_use_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_keylog_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_keylog_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_keylog_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_keylog_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_keylog_callback_allownil)}
+    SSL_CTX_set_keylog_callback := @ERR_SSL_CTX_set_keylog_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_keylog_callback_introduced)}
     if LibVersion < SSL_CTX_set_keylog_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_keylog_callback)}
       SSL_CTX_set_keylog_callback := @FC_SSL_CTX_set_keylog_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_keylog_callback_allownil)}
-      SSL_CTX_set_keylog_callback := @ERR_SSL_CTX_set_keylog_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_keylog_callback_removed)}
@@ -13134,39 +12365,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_keylog_callback)}
       SSL_CTX_set_keylog_callback := @_SSL_CTX_set_keylog_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_keylog_callback_allownil)}
-      SSL_CTX_set_keylog_callback := @ERR_SSL_CTX_set_keylog_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_keylog_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_keylog_callback := @ERR_SSL_CTX_set_keylog_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_keylog_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_keylog_callback := LoadLibFunction(ADllHandle, SSL_CTX_get_keylog_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_get_keylog_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_keylog_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_keylog_callback_allownil)}
+    SSL_CTX_get_keylog_callback := @ERR_SSL_CTX_get_keylog_callback;
+    {$ifend}
     {$if declared(SSL_CTX_get_keylog_callback_introduced)}
     if LibVersion < SSL_CTX_get_keylog_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_keylog_callback)}
       SSL_CTX_get_keylog_callback := @FC_SSL_CTX_get_keylog_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_keylog_callback_allownil)}
-      SSL_CTX_get_keylog_callback := @ERR_SSL_CTX_get_keylog_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_keylog_callback_removed)}
@@ -13174,39 +12397,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_keylog_callback)}
       SSL_CTX_get_keylog_callback := @_SSL_CTX_get_keylog_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_keylog_callback_allownil)}
-      SSL_CTX_get_keylog_callback := @ERR_SSL_CTX_get_keylog_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_keylog_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_keylog_callback := @ERR_SSL_CTX_get_keylog_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_keylog_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_max_early_data := LoadLibFunction(ADllHandle, SSL_CTX_set_max_early_data_procname);
-  FuncLoaded := assigned(SSL_CTX_set_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_max_early_data_allownil)}
+    SSL_CTX_set_max_early_data := @ERR_SSL_CTX_set_max_early_data;
+    {$ifend}
     {$if declared(SSL_CTX_set_max_early_data_introduced)}
     if LibVersion < SSL_CTX_set_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_max_early_data)}
       SSL_CTX_set_max_early_data := @FC_SSL_CTX_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_max_early_data_allownil)}
-      SSL_CTX_set_max_early_data := @ERR_SSL_CTX_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_max_early_data_removed)}
@@ -13214,39 +12429,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_max_early_data)}
       SSL_CTX_set_max_early_data := @_SSL_CTX_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_max_early_data_allownil)}
-      SSL_CTX_set_max_early_data := @ERR_SSL_CTX_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_max_early_data := @ERR_SSL_CTX_set_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_max_early_data := LoadLibFunction(ADllHandle, SSL_CTX_get_max_early_data_procname);
-  FuncLoaded := assigned(SSL_CTX_get_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_max_early_data_allownil)}
+    SSL_CTX_get_max_early_data := @ERR_SSL_CTX_get_max_early_data;
+    {$ifend}
     {$if declared(SSL_CTX_get_max_early_data_introduced)}
     if LibVersion < SSL_CTX_get_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_max_early_data)}
       SSL_CTX_get_max_early_data := @FC_SSL_CTX_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_max_early_data_allownil)}
-      SSL_CTX_get_max_early_data := @ERR_SSL_CTX_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_max_early_data_removed)}
@@ -13254,39 +12461,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_max_early_data)}
       SSL_CTX_get_max_early_data := @_SSL_CTX_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_max_early_data_allownil)}
-      SSL_CTX_get_max_early_data := @ERR_SSL_CTX_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_max_early_data := @ERR_SSL_CTX_get_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_max_early_data := LoadLibFunction(ADllHandle, SSL_set_max_early_data_procname);
-  FuncLoaded := assigned(SSL_set_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_max_early_data_allownil)}
+    SSL_set_max_early_data := @ERR_SSL_set_max_early_data;
+    {$ifend}
     {$if declared(SSL_set_max_early_data_introduced)}
     if LibVersion < SSL_set_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_set_max_early_data)}
       SSL_set_max_early_data := @FC_SSL_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_set_max_early_data_allownil)}
-      SSL_set_max_early_data := @ERR_SSL_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_max_early_data_removed)}
@@ -13294,39 +12493,31 @@ begin
     begin
       {$if declared(_SSL_set_max_early_data)}
       SSL_set_max_early_data := @_SSL_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_set_max_early_data_allownil)}
-      SSL_set_max_early_data := @ERR_SSL_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_max_early_data := @ERR_SSL_set_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_set_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_max_early_data := LoadLibFunction(ADllHandle, SSL_get_max_early_data_procname);
-  FuncLoaded := assigned(SSL_get_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_max_early_data_allownil)}
+    SSL_get_max_early_data := @ERR_SSL_get_max_early_data;
+    {$ifend}
     {$if declared(SSL_get_max_early_data_introduced)}
     if LibVersion < SSL_get_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_get_max_early_data)}
       SSL_get_max_early_data := @FC_SSL_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_get_max_early_data_allownil)}
-      SSL_get_max_early_data := @ERR_SSL_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_max_early_data_removed)}
@@ -13334,39 +12525,31 @@ begin
     begin
       {$if declared(_SSL_get_max_early_data)}
       SSL_get_max_early_data := @_SSL_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_get_max_early_data_allownil)}
-      SSL_get_max_early_data := @ERR_SSL_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_max_early_data := @ERR_SSL_get_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_get_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_recv_max_early_data := LoadLibFunction(ADllHandle, SSL_CTX_set_recv_max_early_data_procname);
-  FuncLoaded := assigned(SSL_CTX_set_recv_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_recv_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_recv_max_early_data_allownil)}
+    SSL_CTX_set_recv_max_early_data := @ERR_SSL_CTX_set_recv_max_early_data;
+    {$ifend}
     {$if declared(SSL_CTX_set_recv_max_early_data_introduced)}
     if LibVersion < SSL_CTX_set_recv_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_recv_max_early_data)}
       SSL_CTX_set_recv_max_early_data := @FC_SSL_CTX_set_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_recv_max_early_data_allownil)}
-      SSL_CTX_set_recv_max_early_data := @ERR_SSL_CTX_set_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_recv_max_early_data_removed)}
@@ -13374,39 +12557,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_recv_max_early_data)}
       SSL_CTX_set_recv_max_early_data := @_SSL_CTX_set_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_recv_max_early_data_allownil)}
-      SSL_CTX_set_recv_max_early_data := @ERR_SSL_CTX_set_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_recv_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_recv_max_early_data := @ERR_SSL_CTX_set_recv_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_recv_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_recv_max_early_data := LoadLibFunction(ADllHandle, SSL_CTX_get_recv_max_early_data_procname);
-  FuncLoaded := assigned(SSL_CTX_get_recv_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_recv_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_recv_max_early_data_allownil)}
+    SSL_CTX_get_recv_max_early_data := @ERR_SSL_CTX_get_recv_max_early_data;
+    {$ifend}
     {$if declared(SSL_CTX_get_recv_max_early_data_introduced)}
     if LibVersion < SSL_CTX_get_recv_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_recv_max_early_data)}
       SSL_CTX_get_recv_max_early_data := @FC_SSL_CTX_get_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_recv_max_early_data_allownil)}
-      SSL_CTX_get_recv_max_early_data := @ERR_SSL_CTX_get_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_recv_max_early_data_removed)}
@@ -13414,39 +12589,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_recv_max_early_data)}
       SSL_CTX_get_recv_max_early_data := @_SSL_CTX_get_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_recv_max_early_data_allownil)}
-      SSL_CTX_get_recv_max_early_data := @ERR_SSL_CTX_get_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_recv_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_recv_max_early_data := @ERR_SSL_CTX_get_recv_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_recv_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_recv_max_early_data := LoadLibFunction(ADllHandle, SSL_set_recv_max_early_data_procname);
-  FuncLoaded := assigned(SSL_set_recv_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_recv_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_recv_max_early_data_allownil)}
+    SSL_set_recv_max_early_data := @ERR_SSL_set_recv_max_early_data;
+    {$ifend}
     {$if declared(SSL_set_recv_max_early_data_introduced)}
     if LibVersion < SSL_set_recv_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_set_recv_max_early_data)}
       SSL_set_recv_max_early_data := @FC_SSL_set_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_set_recv_max_early_data_allownil)}
-      SSL_set_recv_max_early_data := @ERR_SSL_set_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_recv_max_early_data_removed)}
@@ -13454,39 +12621,31 @@ begin
     begin
       {$if declared(_SSL_set_recv_max_early_data)}
       SSL_set_recv_max_early_data := @_SSL_set_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_set_recv_max_early_data_allownil)}
-      SSL_set_recv_max_early_data := @ERR_SSL_set_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_recv_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_recv_max_early_data := @ERR_SSL_set_recv_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_set_recv_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_recv_max_early_data := LoadLibFunction(ADllHandle, SSL_get_recv_max_early_data_procname);
-  FuncLoaded := assigned(SSL_get_recv_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_recv_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_recv_max_early_data_allownil)}
+    SSL_get_recv_max_early_data := @ERR_SSL_get_recv_max_early_data;
+    {$ifend}
     {$if declared(SSL_get_recv_max_early_data_introduced)}
     if LibVersion < SSL_get_recv_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_get_recv_max_early_data)}
       SSL_get_recv_max_early_data := @FC_SSL_get_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_get_recv_max_early_data_allownil)}
-      SSL_get_recv_max_early_data := @ERR_SSL_get_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_recv_max_early_data_removed)}
@@ -13494,39 +12653,31 @@ begin
     begin
       {$if declared(_SSL_get_recv_max_early_data)}
       SSL_get_recv_max_early_data := @_SSL_get_recv_max_early_data;
-      {$else}
-      {$if not defined(SSL_get_recv_max_early_data_allownil)}
-      SSL_get_recv_max_early_data := @ERR_SSL_get_recv_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_recv_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_recv_max_early_data := @ERR_SSL_get_recv_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_get_recv_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_app_data := LoadLibFunction(ADllHandle, SSL_get_app_data_procname);
-  FuncLoaded := assigned(SSL_get_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_app_data_allownil)}
+    SSL_get_app_data := @ERR_SSL_get_app_data;
+    {$ifend}
     {$if declared(SSL_get_app_data_introduced)}
     if LibVersion < SSL_get_app_data_introduced then
     begin
       {$if declared(FC_SSL_get_app_data)}
       SSL_get_app_data := @FC_SSL_get_app_data;
-      {$else}
-      {$if not defined(SSL_get_app_data_allownil)}
-      SSL_get_app_data := @ERR_SSL_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_app_data_removed)}
@@ -13534,39 +12685,31 @@ begin
     begin
       {$if declared(_SSL_get_app_data)}
       SSL_get_app_data := @_SSL_get_app_data;
-      {$else}
-      {$if not defined(SSL_get_app_data_allownil)}
-      SSL_get_app_data := @ERR_SSL_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_app_data := @ERR_SSL_get_app_data;
+    if FuncLoadError then
       AFailed.Add('SSL_get_app_data');
-    end;
     {$ifend}
   end;
 
   
   SSL_set_app_data := LoadLibFunction(ADllHandle, SSL_set_app_data_procname);
-  FuncLoaded := assigned(SSL_set_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_app_data_allownil)}
+    SSL_set_app_data := @ERR_SSL_set_app_data;
+    {$ifend}
     {$if declared(SSL_set_app_data_introduced)}
     if LibVersion < SSL_set_app_data_introduced then
     begin
       {$if declared(FC_SSL_set_app_data)}
       SSL_set_app_data := @FC_SSL_set_app_data;
-      {$else}
-      {$if not defined(SSL_set_app_data_allownil)}
-      SSL_set_app_data := @ERR_SSL_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_app_data_removed)}
@@ -13574,39 +12717,31 @@ begin
     begin
       {$if declared(_SSL_set_app_data)}
       SSL_set_app_data := @_SSL_set_app_data;
-      {$else}
-      {$if not defined(SSL_set_app_data_allownil)}
-      SSL_set_app_data := @ERR_SSL_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_app_data := @ERR_SSL_set_app_data;
+    if FuncLoadError then
       AFailed.Add('SSL_set_app_data');
-    end;
     {$ifend}
   end;
 
  
   SSL_in_init := LoadLibFunction(ADllHandle, SSL_in_init_procname);
-  FuncLoaded := assigned(SSL_in_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_in_init);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_in_init_allownil)}
+    SSL_in_init := @ERR_SSL_in_init;
+    {$ifend}
     {$if declared(SSL_in_init_introduced)}
     if LibVersion < SSL_in_init_introduced then
     begin
       {$if declared(FC_SSL_in_init)}
       SSL_in_init := @FC_SSL_in_init;
-      {$else}
-      {$if not defined(SSL_in_init_allownil)}
-      SSL_in_init := @ERR_SSL_in_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_in_init_removed)}
@@ -13614,39 +12749,31 @@ begin
     begin
       {$if declared(_SSL_in_init)}
       SSL_in_init := @_SSL_in_init;
-      {$else}
-      {$if not defined(SSL_in_init_allownil)}
-      SSL_in_init := @ERR_SSL_in_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_in_init_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_in_init := @ERR_SSL_in_init;
+    if FuncLoadError then
       AFailed.Add('SSL_in_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_in_before := LoadLibFunction(ADllHandle, SSL_in_before_procname);
-  FuncLoaded := assigned(SSL_in_before);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_in_before);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_in_before_allownil)}
+    SSL_in_before := @ERR_SSL_in_before;
+    {$ifend}
     {$if declared(SSL_in_before_introduced)}
     if LibVersion < SSL_in_before_introduced then
     begin
       {$if declared(FC_SSL_in_before)}
       SSL_in_before := @FC_SSL_in_before;
-      {$else}
-      {$if not defined(SSL_in_before_allownil)}
-      SSL_in_before := @ERR_SSL_in_before;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_in_before_removed)}
@@ -13654,39 +12781,31 @@ begin
     begin
       {$if declared(_SSL_in_before)}
       SSL_in_before := @_SSL_in_before;
-      {$else}
-      {$if not defined(SSL_in_before_allownil)}
-      SSL_in_before := @ERR_SSL_in_before;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_in_before_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_in_before := @ERR_SSL_in_before;
+    if FuncLoadError then
       AFailed.Add('SSL_in_before');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_is_init_finished := LoadLibFunction(ADllHandle, SSL_is_init_finished_procname);
-  FuncLoaded := assigned(SSL_is_init_finished);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_is_init_finished);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_is_init_finished_allownil)}
+    SSL_is_init_finished := @ERR_SSL_is_init_finished;
+    {$ifend}
     {$if declared(SSL_is_init_finished_introduced)}
     if LibVersion < SSL_is_init_finished_introduced then
     begin
       {$if declared(FC_SSL_is_init_finished)}
       SSL_is_init_finished := @FC_SSL_is_init_finished;
-      {$else}
-      {$if not defined(SSL_is_init_finished_allownil)}
-      SSL_is_init_finished := @ERR_SSL_is_init_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_is_init_finished_removed)}
@@ -13694,39 +12813,31 @@ begin
     begin
       {$if declared(_SSL_is_init_finished)}
       SSL_is_init_finished := @_SSL_is_init_finished;
-      {$else}
-      {$if not defined(SSL_is_init_finished_allownil)}
-      SSL_is_init_finished := @ERR_SSL_is_init_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_is_init_finished_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_is_init_finished := @ERR_SSL_is_init_finished;
+    if FuncLoadError then
       AFailed.Add('SSL_is_init_finished');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_finished := LoadLibFunction(ADllHandle, SSL_get_finished_procname);
-  FuncLoaded := assigned(SSL_get_finished);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_finished);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_finished_allownil)}
+    SSL_get_finished := @ERR_SSL_get_finished;
+    {$ifend}
     {$if declared(SSL_get_finished_introduced)}
     if LibVersion < SSL_get_finished_introduced then
     begin
       {$if declared(FC_SSL_get_finished)}
       SSL_get_finished := @FC_SSL_get_finished;
-      {$else}
-      {$if not defined(SSL_get_finished_allownil)}
-      SSL_get_finished := @ERR_SSL_get_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_finished_removed)}
@@ -13734,39 +12845,31 @@ begin
     begin
       {$if declared(_SSL_get_finished)}
       SSL_get_finished := @_SSL_get_finished;
-      {$else}
-      {$if not defined(SSL_get_finished_allownil)}
-      SSL_get_finished := @ERR_SSL_get_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_finished_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_finished := @ERR_SSL_get_finished;
+    if FuncLoadError then
       AFailed.Add('SSL_get_finished');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_peer_finished := LoadLibFunction(ADllHandle, SSL_get_peer_finished_procname);
-  FuncLoaded := assigned(SSL_get_peer_finished);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_peer_finished);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_peer_finished_allownil)}
+    SSL_get_peer_finished := @ERR_SSL_get_peer_finished;
+    {$ifend}
     {$if declared(SSL_get_peer_finished_introduced)}
     if LibVersion < SSL_get_peer_finished_introduced then
     begin
       {$if declared(FC_SSL_get_peer_finished)}
       SSL_get_peer_finished := @FC_SSL_get_peer_finished;
-      {$else}
-      {$if not defined(SSL_get_peer_finished_allownil)}
-      SSL_get_peer_finished := @ERR_SSL_get_peer_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_peer_finished_removed)}
@@ -13774,39 +12877,31 @@ begin
     begin
       {$if declared(_SSL_get_peer_finished)}
       SSL_get_peer_finished := @_SSL_get_peer_finished;
-      {$else}
-      {$if not defined(SSL_get_peer_finished_allownil)}
-      SSL_get_peer_finished := @ERR_SSL_get_peer_finished;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_peer_finished_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_peer_finished := @ERR_SSL_get_peer_finished;
+    if FuncLoadError then
       AFailed.Add('SSL_get_peer_finished');
-    end;
     {$ifend}
   end;
 
 
   SSLeay_add_ssl_algorithms := LoadLibFunction(ADllHandle, SSLeay_add_ssl_algorithms_procname);
-  FuncLoaded := assigned(SSLeay_add_ssl_algorithms);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLeay_add_ssl_algorithms);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLeay_add_ssl_algorithms_allownil)}
+    SSLeay_add_ssl_algorithms := @ERR_SSLeay_add_ssl_algorithms;
+    {$ifend}
     {$if declared(SSLeay_add_ssl_algorithms_introduced)}
     if LibVersion < SSLeay_add_ssl_algorithms_introduced then
     begin
       {$if declared(FC_SSLeay_add_ssl_algorithms)}
       SSLeay_add_ssl_algorithms := @FC_SSLeay_add_ssl_algorithms;
-      {$else}
-      {$if not defined(SSLeay_add_ssl_algorithms_allownil)}
-      SSLeay_add_ssl_algorithms := @ERR_SSLeay_add_ssl_algorithms;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLeay_add_ssl_algorithms_removed)}
@@ -13814,39 +12909,31 @@ begin
     begin
       {$if declared(_SSLeay_add_ssl_algorithms)}
       SSLeay_add_ssl_algorithms := @_SSLeay_add_ssl_algorithms;
-      {$else}
-      {$if not defined(SSLeay_add_ssl_algorithms_allownil)}
-      SSLeay_add_ssl_algorithms := @ERR_SSLeay_add_ssl_algorithms;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLeay_add_ssl_algorithms_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLeay_add_ssl_algorithms := @ERR_SSLeay_add_ssl_algorithms;
+    if FuncLoadError then
       AFailed.Add('SSLeay_add_ssl_algorithms');
-    end;
     {$ifend}
   end;
 
  
   BIO_f_ssl := LoadLibFunction(ADllHandle, BIO_f_ssl_procname);
-  FuncLoaded := assigned(BIO_f_ssl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_ssl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_ssl_allownil)}
+    BIO_f_ssl := @ERR_BIO_f_ssl;
+    {$ifend}
     {$if declared(BIO_f_ssl_introduced)}
     if LibVersion < BIO_f_ssl_introduced then
     begin
       {$if declared(FC_BIO_f_ssl)}
       BIO_f_ssl := @FC_BIO_f_ssl;
-      {$else}
-      {$if not defined(BIO_f_ssl_allownil)}
-      BIO_f_ssl := @ERR_BIO_f_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_ssl_removed)}
@@ -13854,39 +12941,31 @@ begin
     begin
       {$if declared(_BIO_f_ssl)}
       BIO_f_ssl := @_BIO_f_ssl;
-      {$else}
-      {$if not defined(BIO_f_ssl_allownil)}
-      BIO_f_ssl := @ERR_BIO_f_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_ssl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_ssl := @ERR_BIO_f_ssl;
+    if FuncLoadError then
       AFailed.Add('BIO_f_ssl');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_ssl := LoadLibFunction(ADllHandle, BIO_new_ssl_procname);
-  FuncLoaded := assigned(BIO_new_ssl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_ssl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_ssl_allownil)}
+    BIO_new_ssl := @ERR_BIO_new_ssl;
+    {$ifend}
     {$if declared(BIO_new_ssl_introduced)}
     if LibVersion < BIO_new_ssl_introduced then
     begin
       {$if declared(FC_BIO_new_ssl)}
       BIO_new_ssl := @FC_BIO_new_ssl;
-      {$else}
-      {$if not defined(BIO_new_ssl_allownil)}
-      BIO_new_ssl := @ERR_BIO_new_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_ssl_removed)}
@@ -13894,39 +12973,31 @@ begin
     begin
       {$if declared(_BIO_new_ssl)}
       BIO_new_ssl := @_BIO_new_ssl;
-      {$else}
-      {$if not defined(BIO_new_ssl_allownil)}
-      BIO_new_ssl := @ERR_BIO_new_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_ssl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_ssl := @ERR_BIO_new_ssl;
+    if FuncLoadError then
       AFailed.Add('BIO_new_ssl');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_ssl_connect := LoadLibFunction(ADllHandle, BIO_new_ssl_connect_procname);
-  FuncLoaded := assigned(BIO_new_ssl_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_ssl_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_ssl_connect_allownil)}
+    BIO_new_ssl_connect := @ERR_BIO_new_ssl_connect;
+    {$ifend}
     {$if declared(BIO_new_ssl_connect_introduced)}
     if LibVersion < BIO_new_ssl_connect_introduced then
     begin
       {$if declared(FC_BIO_new_ssl_connect)}
       BIO_new_ssl_connect := @FC_BIO_new_ssl_connect;
-      {$else}
-      {$if not defined(BIO_new_ssl_connect_allownil)}
-      BIO_new_ssl_connect := @ERR_BIO_new_ssl_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_ssl_connect_removed)}
@@ -13934,39 +13005,31 @@ begin
     begin
       {$if declared(_BIO_new_ssl_connect)}
       BIO_new_ssl_connect := @_BIO_new_ssl_connect;
-      {$else}
-      {$if not defined(BIO_new_ssl_connect_allownil)}
-      BIO_new_ssl_connect := @ERR_BIO_new_ssl_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_ssl_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_ssl_connect := @ERR_BIO_new_ssl_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_new_ssl_connect');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_buffer_ssl_connect := LoadLibFunction(ADllHandle, BIO_new_buffer_ssl_connect_procname);
-  FuncLoaded := assigned(BIO_new_buffer_ssl_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_buffer_ssl_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_buffer_ssl_connect_allownil)}
+    BIO_new_buffer_ssl_connect := @ERR_BIO_new_buffer_ssl_connect;
+    {$ifend}
     {$if declared(BIO_new_buffer_ssl_connect_introduced)}
     if LibVersion < BIO_new_buffer_ssl_connect_introduced then
     begin
       {$if declared(FC_BIO_new_buffer_ssl_connect)}
       BIO_new_buffer_ssl_connect := @FC_BIO_new_buffer_ssl_connect;
-      {$else}
-      {$if not defined(BIO_new_buffer_ssl_connect_allownil)}
-      BIO_new_buffer_ssl_connect := @ERR_BIO_new_buffer_ssl_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_buffer_ssl_connect_removed)}
@@ -13974,39 +13037,31 @@ begin
     begin
       {$if declared(_BIO_new_buffer_ssl_connect)}
       BIO_new_buffer_ssl_connect := @_BIO_new_buffer_ssl_connect;
-      {$else}
-      {$if not defined(BIO_new_buffer_ssl_connect_allownil)}
-      BIO_new_buffer_ssl_connect := @ERR_BIO_new_buffer_ssl_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_buffer_ssl_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_buffer_ssl_connect := @ERR_BIO_new_buffer_ssl_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_new_buffer_ssl_connect');
-    end;
     {$ifend}
   end;
 
 
   BIO_ssl_copy_session_id := LoadLibFunction(ADllHandle, BIO_ssl_copy_session_id_procname);
-  FuncLoaded := assigned(BIO_ssl_copy_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ssl_copy_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ssl_copy_session_id_allownil)}
+    BIO_ssl_copy_session_id := @ERR_BIO_ssl_copy_session_id;
+    {$ifend}
     {$if declared(BIO_ssl_copy_session_id_introduced)}
     if LibVersion < BIO_ssl_copy_session_id_introduced then
     begin
       {$if declared(FC_BIO_ssl_copy_session_id)}
       BIO_ssl_copy_session_id := @FC_BIO_ssl_copy_session_id;
-      {$else}
-      {$if not defined(BIO_ssl_copy_session_id_allownil)}
-      BIO_ssl_copy_session_id := @ERR_BIO_ssl_copy_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ssl_copy_session_id_removed)}
@@ -14014,39 +13069,31 @@ begin
     begin
       {$if declared(_BIO_ssl_copy_session_id)}
       BIO_ssl_copy_session_id := @_BIO_ssl_copy_session_id;
-      {$else}
-      {$if not defined(BIO_ssl_copy_session_id_allownil)}
-      BIO_ssl_copy_session_id := @ERR_BIO_ssl_copy_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ssl_copy_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ssl_copy_session_id := @ERR_BIO_ssl_copy_session_id;
+    if FuncLoadError then
       AFailed.Add('BIO_ssl_copy_session_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cipher_list := LoadLibFunction(ADllHandle, SSL_CTX_set_cipher_list_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cipher_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cipher_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cipher_list_allownil)}
+    SSL_CTX_set_cipher_list := @ERR_SSL_CTX_set_cipher_list;
+    {$ifend}
     {$if declared(SSL_CTX_set_cipher_list_introduced)}
     if LibVersion < SSL_CTX_set_cipher_list_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cipher_list)}
       SSL_CTX_set_cipher_list := @FC_SSL_CTX_set_cipher_list;
-      {$else}
-      {$if not defined(SSL_CTX_set_cipher_list_allownil)}
-      SSL_CTX_set_cipher_list := @ERR_SSL_CTX_set_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cipher_list_removed)}
@@ -14054,39 +13101,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cipher_list)}
       SSL_CTX_set_cipher_list := @_SSL_CTX_set_cipher_list;
-      {$else}
-      {$if not defined(SSL_CTX_set_cipher_list_allownil)}
-      SSL_CTX_set_cipher_list := @ERR_SSL_CTX_set_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cipher_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cipher_list := @ERR_SSL_CTX_set_cipher_list;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cipher_list');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_new := LoadLibFunction(ADllHandle, SSL_CTX_new_procname);
-  FuncLoaded := assigned(SSL_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_new_allownil)}
+    SSL_CTX_new := @ERR_SSL_CTX_new;
+    {$ifend}
     {$if declared(SSL_CTX_new_introduced)}
     if LibVersion < SSL_CTX_new_introduced then
     begin
       {$if declared(FC_SSL_CTX_new)}
       SSL_CTX_new := @FC_SSL_CTX_new;
-      {$else}
-      {$if not defined(SSL_CTX_new_allownil)}
-      SSL_CTX_new := @ERR_SSL_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_new_removed)}
@@ -14094,39 +13133,31 @@ begin
     begin
       {$if declared(_SSL_CTX_new)}
       SSL_CTX_new := @_SSL_CTX_new;
-      {$else}
-      {$if not defined(SSL_CTX_new_allownil)}
-      SSL_CTX_new := @ERR_SSL_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_new := @ERR_SSL_CTX_new;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_timeout := LoadLibFunction(ADllHandle, SSL_CTX_set_timeout_procname);
-  FuncLoaded := assigned(SSL_CTX_set_timeout);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_timeout);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_timeout_allownil)}
+    SSL_CTX_set_timeout := @ERR_SSL_CTX_set_timeout;
+    {$ifend}
     {$if declared(SSL_CTX_set_timeout_introduced)}
     if LibVersion < SSL_CTX_set_timeout_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_timeout)}
       SSL_CTX_set_timeout := @FC_SSL_CTX_set_timeout;
-      {$else}
-      {$if not defined(SSL_CTX_set_timeout_allownil)}
-      SSL_CTX_set_timeout := @ERR_SSL_CTX_set_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_timeout_removed)}
@@ -14134,39 +13165,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_timeout)}
       SSL_CTX_set_timeout := @_SSL_CTX_set_timeout;
-      {$else}
-      {$if not defined(SSL_CTX_set_timeout_allownil)}
-      SSL_CTX_set_timeout := @ERR_SSL_CTX_set_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_timeout_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_timeout := @ERR_SSL_CTX_set_timeout;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_timeout');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_timeout := LoadLibFunction(ADllHandle, SSL_CTX_get_timeout_procname);
-  FuncLoaded := assigned(SSL_CTX_get_timeout);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_timeout);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_timeout_allownil)}
+    SSL_CTX_get_timeout := @ERR_SSL_CTX_get_timeout;
+    {$ifend}
     {$if declared(SSL_CTX_get_timeout_introduced)}
     if LibVersion < SSL_CTX_get_timeout_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_timeout)}
       SSL_CTX_get_timeout := @FC_SSL_CTX_get_timeout;
-      {$else}
-      {$if not defined(SSL_CTX_get_timeout_allownil)}
-      SSL_CTX_get_timeout := @ERR_SSL_CTX_get_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_timeout_removed)}
@@ -14174,39 +13197,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_timeout)}
       SSL_CTX_get_timeout := @_SSL_CTX_get_timeout;
-      {$else}
-      {$if not defined(SSL_CTX_get_timeout_allownil)}
-      SSL_CTX_get_timeout := @ERR_SSL_CTX_get_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_timeout_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_timeout := @ERR_SSL_CTX_get_timeout;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_timeout');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_get_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_get_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_cert_store_allownil)}
+    SSL_CTX_get_cert_store := @ERR_SSL_CTX_get_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_get_cert_store_introduced)}
     if LibVersion < SSL_CTX_get_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_cert_store)}
       SSL_CTX_get_cert_store := @FC_SSL_CTX_get_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_get_cert_store_allownil)}
-      SSL_CTX_get_cert_store := @ERR_SSL_CTX_get_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_cert_store_removed)}
@@ -14214,39 +13229,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_cert_store)}
       SSL_CTX_get_cert_store := @_SSL_CTX_get_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_get_cert_store_allownil)}
-      SSL_CTX_get_cert_store := @ERR_SSL_CTX_get_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_cert_store := @ERR_SSL_CTX_get_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_cert_store');
-    end;
     {$ifend}
   end;
 
 
   SSL_want := LoadLibFunction(ADllHandle, SSL_want_procname);
-  FuncLoaded := assigned(SSL_want);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_want);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_want_allownil)}
+    SSL_want := @ERR_SSL_want;
+    {$ifend}
     {$if declared(SSL_want_introduced)}
     if LibVersion < SSL_want_introduced then
     begin
       {$if declared(FC_SSL_want)}
       SSL_want := @FC_SSL_want;
-      {$else}
-      {$if not defined(SSL_want_allownil)}
-      SSL_want := @ERR_SSL_want;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_want_removed)}
@@ -14254,39 +13261,31 @@ begin
     begin
       {$if declared(_SSL_want)}
       SSL_want := @_SSL_want;
-      {$else}
-      {$if not defined(SSL_want_allownil)}
-      SSL_want := @ERR_SSL_want;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_want_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_want := @ERR_SSL_want;
+    if FuncLoadError then
       AFailed.Add('SSL_want');
-    end;
     {$ifend}
   end;
 
 
   SSL_clear := LoadLibFunction(ADllHandle, SSL_clear_procname);
-  FuncLoaded := assigned(SSL_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_clear_allownil)}
+    SSL_clear := @ERR_SSL_clear;
+    {$ifend}
     {$if declared(SSL_clear_introduced)}
     if LibVersion < SSL_clear_introduced then
     begin
       {$if declared(FC_SSL_clear)}
       SSL_clear := @FC_SSL_clear;
-      {$else}
-      {$if not defined(SSL_clear_allownil)}
-      SSL_clear := @ERR_SSL_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_clear_removed)}
@@ -14294,39 +13293,31 @@ begin
     begin
       {$if declared(_SSL_clear)}
       SSL_clear := @_SSL_clear;
-      {$else}
-      {$if not defined(SSL_clear_allownil)}
-      SSL_clear := @ERR_SSL_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_clear := @ERR_SSL_clear;
+    if FuncLoadError then
       AFailed.Add('SSL_clear');
-    end;
     {$ifend}
   end;
 
 
   BIO_ssl_shutdown := LoadLibFunction(ADllHandle, BIO_ssl_shutdown_procname);
-  FuncLoaded := assigned(BIO_ssl_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ssl_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ssl_shutdown_allownil)}
+    BIO_ssl_shutdown := @ERR_BIO_ssl_shutdown;
+    {$ifend}
     {$if declared(BIO_ssl_shutdown_introduced)}
     if LibVersion < BIO_ssl_shutdown_introduced then
     begin
       {$if declared(FC_BIO_ssl_shutdown)}
       BIO_ssl_shutdown := @FC_BIO_ssl_shutdown;
-      {$else}
-      {$if not defined(BIO_ssl_shutdown_allownil)}
-      BIO_ssl_shutdown := @ERR_BIO_ssl_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ssl_shutdown_removed)}
@@ -14334,39 +13325,31 @@ begin
     begin
       {$if declared(_BIO_ssl_shutdown)}
       BIO_ssl_shutdown := @_BIO_ssl_shutdown;
-      {$else}
-      {$if not defined(BIO_ssl_shutdown_allownil)}
-      BIO_ssl_shutdown := @ERR_BIO_ssl_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ssl_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ssl_shutdown := @ERR_BIO_ssl_shutdown;
+    if FuncLoadError then
       AFailed.Add('BIO_ssl_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_up_ref := LoadLibFunction(ADllHandle, SSL_CTX_up_ref_procname);
-  FuncLoaded := assigned(SSL_CTX_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_up_ref_allownil)}
+    SSL_CTX_up_ref := @ERR_SSL_CTX_up_ref;
+    {$ifend}
     {$if declared(SSL_CTX_up_ref_introduced)}
     if LibVersion < SSL_CTX_up_ref_introduced then
     begin
       {$if declared(FC_SSL_CTX_up_ref)}
       SSL_CTX_up_ref := @FC_SSL_CTX_up_ref;
-      {$else}
-      {$if not defined(SSL_CTX_up_ref_allownil)}
-      SSL_CTX_up_ref := @ERR_SSL_CTX_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_up_ref_removed)}
@@ -14374,39 +13357,31 @@ begin
     begin
       {$if declared(_SSL_CTX_up_ref)}
       SSL_CTX_up_ref := @_SSL_CTX_up_ref;
-      {$else}
-      {$if not defined(SSL_CTX_up_ref_allownil)}
-      SSL_CTX_up_ref := @ERR_SSL_CTX_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_up_ref := @ERR_SSL_CTX_up_ref;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_free := LoadLibFunction(ADllHandle, SSL_CTX_free_procname);
-  FuncLoaded := assigned(SSL_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_free_allownil)}
+    SSL_CTX_free := @ERR_SSL_CTX_free;
+    {$ifend}
     {$if declared(SSL_CTX_free_introduced)}
     if LibVersion < SSL_CTX_free_introduced then
     begin
       {$if declared(FC_SSL_CTX_free)}
       SSL_CTX_free := @FC_SSL_CTX_free;
-      {$else}
-      {$if not defined(SSL_CTX_free_allownil)}
-      SSL_CTX_free := @ERR_SSL_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_free_removed)}
@@ -14414,39 +13389,31 @@ begin
     begin
       {$if declared(_SSL_CTX_free)}
       SSL_CTX_free := @_SSL_CTX_free;
-      {$else}
-      {$if not defined(SSL_CTX_free_allownil)}
-      SSL_CTX_free := @ERR_SSL_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_free := @ERR_SSL_CTX_free;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cert_store_allownil)}
+    SSL_CTX_set_cert_store := @ERR_SSL_CTX_set_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set_cert_store_introduced)}
     if LibVersion < SSL_CTX_set_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cert_store)}
       SSL_CTX_set_cert_store := @FC_SSL_CTX_set_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_store_allownil)}
-      SSL_CTX_set_cert_store := @ERR_SSL_CTX_set_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cert_store_removed)}
@@ -14454,39 +13421,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cert_store)}
       SSL_CTX_set_cert_store := @_SSL_CTX_set_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_store_allownil)}
-      SSL_CTX_set_cert_store := @ERR_SSL_CTX_set_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cert_store := @ERR_SSL_CTX_set_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cert_store');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set1_cert_store := LoadLibFunction(ADllHandle, SSL_CTX_set1_cert_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_cert_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_cert_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_cert_store_allownil)}
+    SSL_CTX_set1_cert_store := @ERR_SSL_CTX_set1_cert_store;
+    {$ifend}
     {$if declared(SSL_CTX_set1_cert_store_introduced)}
     if LibVersion < SSL_CTX_set1_cert_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_cert_store)}
       SSL_CTX_set1_cert_store := @FC_SSL_CTX_set1_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_cert_store_allownil)}
-      SSL_CTX_set1_cert_store := @ERR_SSL_CTX_set1_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_cert_store_removed)}
@@ -14494,39 +13453,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_cert_store)}
       SSL_CTX_set1_cert_store := @_SSL_CTX_set1_cert_store;
-      {$else}
-      {$if not defined(SSL_CTX_set1_cert_store_allownil)}
-      SSL_CTX_set1_cert_store := @ERR_SSL_CTX_set1_cert_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_cert_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_cert_store := @ERR_SSL_CTX_set1_cert_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_cert_store');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_flush_sessions := LoadLibFunction(ADllHandle, SSL_CTX_flush_sessions_procname);
-  FuncLoaded := assigned(SSL_CTX_flush_sessions);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_flush_sessions);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_flush_sessions_allownil)}
+    SSL_CTX_flush_sessions := @ERR_SSL_CTX_flush_sessions;
+    {$ifend}
     {$if declared(SSL_CTX_flush_sessions_introduced)}
     if LibVersion < SSL_CTX_flush_sessions_introduced then
     begin
       {$if declared(FC_SSL_CTX_flush_sessions)}
       SSL_CTX_flush_sessions := @FC_SSL_CTX_flush_sessions;
-      {$else}
-      {$if not defined(SSL_CTX_flush_sessions_allownil)}
-      SSL_CTX_flush_sessions := @ERR_SSL_CTX_flush_sessions;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_flush_sessions_removed)}
@@ -14534,39 +13485,31 @@ begin
     begin
       {$if declared(_SSL_CTX_flush_sessions)}
       SSL_CTX_flush_sessions := @_SSL_CTX_flush_sessions;
-      {$else}
-      {$if not defined(SSL_CTX_flush_sessions_allownil)}
-      SSL_CTX_flush_sessions := @ERR_SSL_CTX_flush_sessions;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_flush_sessions_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_flush_sessions := @ERR_SSL_CTX_flush_sessions;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_flush_sessions');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_current_cipher := LoadLibFunction(ADllHandle, SSL_get_current_cipher_procname);
-  FuncLoaded := assigned(SSL_get_current_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_current_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_current_cipher_allownil)}
+    SSL_get_current_cipher := @ERR_SSL_get_current_cipher;
+    {$ifend}
     {$if declared(SSL_get_current_cipher_introduced)}
     if LibVersion < SSL_get_current_cipher_introduced then
     begin
       {$if declared(FC_SSL_get_current_cipher)}
       SSL_get_current_cipher := @FC_SSL_get_current_cipher;
-      {$else}
-      {$if not defined(SSL_get_current_cipher_allownil)}
-      SSL_get_current_cipher := @ERR_SSL_get_current_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_current_cipher_removed)}
@@ -14574,39 +13517,31 @@ begin
     begin
       {$if declared(_SSL_get_current_cipher)}
       SSL_get_current_cipher := @_SSL_get_current_cipher;
-      {$else}
-      {$if not defined(SSL_get_current_cipher_allownil)}
-      SSL_get_current_cipher := @ERR_SSL_get_current_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_current_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_current_cipher := @ERR_SSL_get_current_cipher;
+    if FuncLoadError then
       AFailed.Add('SSL_get_current_cipher');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_pending_cipher := LoadLibFunction(ADllHandle, SSL_get_pending_cipher_procname);
-  FuncLoaded := assigned(SSL_get_pending_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_pending_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_pending_cipher_allownil)}
+    SSL_get_pending_cipher := @ERR_SSL_get_pending_cipher;
+    {$ifend}
     {$if declared(SSL_get_pending_cipher_introduced)}
     if LibVersion < SSL_get_pending_cipher_introduced then
     begin
       {$if declared(FC_SSL_get_pending_cipher)}
       SSL_get_pending_cipher := @FC_SSL_get_pending_cipher;
-      {$else}
-      {$if not defined(SSL_get_pending_cipher_allownil)}
-      SSL_get_pending_cipher := @ERR_SSL_get_pending_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_pending_cipher_removed)}
@@ -14614,39 +13549,31 @@ begin
     begin
       {$if declared(_SSL_get_pending_cipher)}
       SSL_get_pending_cipher := @_SSL_get_pending_cipher;
-      {$else}
-      {$if not defined(SSL_get_pending_cipher_allownil)}
-      SSL_get_pending_cipher := @ERR_SSL_get_pending_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_pending_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_pending_cipher := @ERR_SSL_get_pending_cipher;
+    if FuncLoadError then
       AFailed.Add('SSL_get_pending_cipher');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_bits := LoadLibFunction(ADllHandle, SSL_CIPHER_get_bits_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_bits_allownil)}
+    SSL_CIPHER_get_bits := @ERR_SSL_CIPHER_get_bits;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_bits_introduced)}
     if LibVersion < SSL_CIPHER_get_bits_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_bits)}
       SSL_CIPHER_get_bits := @FC_SSL_CIPHER_get_bits;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_bits_allownil)}
-      SSL_CIPHER_get_bits := @ERR_SSL_CIPHER_get_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_bits_removed)}
@@ -14654,39 +13581,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_bits)}
       SSL_CIPHER_get_bits := @_SSL_CIPHER_get_bits;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_bits_allownil)}
-      SSL_CIPHER_get_bits := @ERR_SSL_CIPHER_get_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_bits := @ERR_SSL_CIPHER_get_bits;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_bits');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_get_version := LoadLibFunction(ADllHandle, SSL_CIPHER_get_version_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_version_allownil)}
+    SSL_CIPHER_get_version := @ERR_SSL_CIPHER_get_version;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_version_introduced)}
     if LibVersion < SSL_CIPHER_get_version_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_version)}
       SSL_CIPHER_get_version := @FC_SSL_CIPHER_get_version;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_version_allownil)}
-      SSL_CIPHER_get_version := @ERR_SSL_CIPHER_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_version_removed)}
@@ -14694,39 +13613,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_version)}
       SSL_CIPHER_get_version := @_SSL_CIPHER_get_version;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_version_allownil)}
-      SSL_CIPHER_get_version := @ERR_SSL_CIPHER_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_version := @ERR_SSL_CIPHER_get_version;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_version');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_get_name := LoadLibFunction(ADllHandle, SSL_CIPHER_get_name_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_name);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_name_allownil)}
+    SSL_CIPHER_get_name := @ERR_SSL_CIPHER_get_name;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_name_introduced)}
     if LibVersion < SSL_CIPHER_get_name_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_name)}
       SSL_CIPHER_get_name := @FC_SSL_CIPHER_get_name;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_name_allownil)}
-      SSL_CIPHER_get_name := @ERR_SSL_CIPHER_get_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_name_removed)}
@@ -14734,39 +13645,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_name)}
       SSL_CIPHER_get_name := @_SSL_CIPHER_get_name;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_name_allownil)}
-      SSL_CIPHER_get_name := @ERR_SSL_CIPHER_get_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_name_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_name := @ERR_SSL_CIPHER_get_name;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_name');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_standard_name := LoadLibFunction(ADllHandle, SSL_CIPHER_standard_name_procname);
-  FuncLoaded := assigned(SSL_CIPHER_standard_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_standard_name);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_standard_name_allownil)}
+    SSL_CIPHER_standard_name := @ERR_SSL_CIPHER_standard_name;
+    {$ifend}
     {$if declared(SSL_CIPHER_standard_name_introduced)}
     if LibVersion < SSL_CIPHER_standard_name_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_standard_name)}
       SSL_CIPHER_standard_name := @FC_SSL_CIPHER_standard_name;
-      {$else}
-      {$if not defined(SSL_CIPHER_standard_name_allownil)}
-      SSL_CIPHER_standard_name := @ERR_SSL_CIPHER_standard_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_standard_name_removed)}
@@ -14774,39 +13677,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_standard_name)}
       SSL_CIPHER_standard_name := @_SSL_CIPHER_standard_name;
-      {$else}
-      {$if not defined(SSL_CIPHER_standard_name_allownil)}
-      SSL_CIPHER_standard_name := @ERR_SSL_CIPHER_standard_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_standard_name_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_standard_name := @ERR_SSL_CIPHER_standard_name;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_standard_name');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   OPENSSL_cipher_name := LoadLibFunction(ADllHandle, OPENSSL_cipher_name_procname);
-  FuncLoaded := assigned(OPENSSL_cipher_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_cipher_name);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_cipher_name_allownil)}
+    OPENSSL_cipher_name := @ERR_OPENSSL_cipher_name;
+    {$ifend}
     {$if declared(OPENSSL_cipher_name_introduced)}
     if LibVersion < OPENSSL_cipher_name_introduced then
     begin
       {$if declared(FC_OPENSSL_cipher_name)}
       OPENSSL_cipher_name := @FC_OPENSSL_cipher_name;
-      {$else}
-      {$if not defined(OPENSSL_cipher_name_allownil)}
-      OPENSSL_cipher_name := @ERR_OPENSSL_cipher_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_cipher_name_removed)}
@@ -14814,39 +13709,31 @@ begin
     begin
       {$if declared(_OPENSSL_cipher_name)}
       OPENSSL_cipher_name := @_OPENSSL_cipher_name;
-      {$else}
-      {$if not defined(OPENSSL_cipher_name_allownil)}
-      OPENSSL_cipher_name := @ERR_OPENSSL_cipher_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_cipher_name_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_cipher_name := @ERR_OPENSSL_cipher_name;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_cipher_name');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_id := LoadLibFunction(ADllHandle, SSL_CIPHER_get_id_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_id_allownil)}
+    SSL_CIPHER_get_id := @ERR_SSL_CIPHER_get_id;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_id_introduced)}
     if LibVersion < SSL_CIPHER_get_id_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_id)}
       SSL_CIPHER_get_id := @FC_SSL_CIPHER_get_id;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_id_allownil)}
-      SSL_CIPHER_get_id := @ERR_SSL_CIPHER_get_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_id_removed)}
@@ -14854,39 +13741,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_id)}
       SSL_CIPHER_get_id := @_SSL_CIPHER_get_id;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_id_allownil)}
-      SSL_CIPHER_get_id := @ERR_SSL_CIPHER_get_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_id := @ERR_SSL_CIPHER_get_id;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_get_protocol_id := LoadLibFunction(ADllHandle, SSL_CIPHER_get_protocol_id_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_protocol_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_protocol_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_protocol_id_allownil)}
+    SSL_CIPHER_get_protocol_id := @ERR_SSL_CIPHER_get_protocol_id;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_protocol_id_introduced)}
     if LibVersion < SSL_CIPHER_get_protocol_id_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_protocol_id)}
       SSL_CIPHER_get_protocol_id := @FC_SSL_CIPHER_get_protocol_id;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_protocol_id_allownil)}
-      SSL_CIPHER_get_protocol_id := @ERR_SSL_CIPHER_get_protocol_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_protocol_id_removed)}
@@ -14894,39 +13773,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_protocol_id)}
       SSL_CIPHER_get_protocol_id := @_SSL_CIPHER_get_protocol_id;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_protocol_id_allownil)}
-      SSL_CIPHER_get_protocol_id := @ERR_SSL_CIPHER_get_protocol_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_protocol_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_protocol_id := @ERR_SSL_CIPHER_get_protocol_id;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_protocol_id');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_kx_nid := LoadLibFunction(ADllHandle, SSL_CIPHER_get_kx_nid_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_kx_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_kx_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_kx_nid_allownil)}
+    SSL_CIPHER_get_kx_nid := @ERR_SSL_CIPHER_get_kx_nid;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_kx_nid_introduced)}
     if LibVersion < SSL_CIPHER_get_kx_nid_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_kx_nid)}
       SSL_CIPHER_get_kx_nid := @FC_SSL_CIPHER_get_kx_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_kx_nid_allownil)}
-      SSL_CIPHER_get_kx_nid := @ERR_SSL_CIPHER_get_kx_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_kx_nid_removed)}
@@ -14934,39 +13805,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_kx_nid)}
       SSL_CIPHER_get_kx_nid := @_SSL_CIPHER_get_kx_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_kx_nid_allownil)}
-      SSL_CIPHER_get_kx_nid := @ERR_SSL_CIPHER_get_kx_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_kx_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_kx_nid := @ERR_SSL_CIPHER_get_kx_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_kx_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_auth_nid := LoadLibFunction(ADllHandle, SSL_CIPHER_get_auth_nid_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_auth_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_auth_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_auth_nid_allownil)}
+    SSL_CIPHER_get_auth_nid := @ERR_SSL_CIPHER_get_auth_nid;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_auth_nid_introduced)}
     if LibVersion < SSL_CIPHER_get_auth_nid_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_auth_nid)}
       SSL_CIPHER_get_auth_nid := @FC_SSL_CIPHER_get_auth_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_auth_nid_allownil)}
-      SSL_CIPHER_get_auth_nid := @ERR_SSL_CIPHER_get_auth_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_auth_nid_removed)}
@@ -14974,39 +13837,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_auth_nid)}
       SSL_CIPHER_get_auth_nid := @_SSL_CIPHER_get_auth_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_auth_nid_allownil)}
-      SSL_CIPHER_get_auth_nid := @ERR_SSL_CIPHER_get_auth_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_auth_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_auth_nid := @ERR_SSL_CIPHER_get_auth_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_auth_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_handshake_digest := LoadLibFunction(ADllHandle, SSL_CIPHER_get_handshake_digest_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_handshake_digest);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_handshake_digest);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_handshake_digest_allownil)}
+    SSL_CIPHER_get_handshake_digest := @ERR_SSL_CIPHER_get_handshake_digest;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_handshake_digest_introduced)}
     if LibVersion < SSL_CIPHER_get_handshake_digest_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_handshake_digest)}
       SSL_CIPHER_get_handshake_digest := @FC_SSL_CIPHER_get_handshake_digest;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_handshake_digest_allownil)}
-      SSL_CIPHER_get_handshake_digest := @ERR_SSL_CIPHER_get_handshake_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_handshake_digest_removed)}
@@ -15014,39 +13869,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_handshake_digest)}
       SSL_CIPHER_get_handshake_digest := @_SSL_CIPHER_get_handshake_digest;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_handshake_digest_allownil)}
-      SSL_CIPHER_get_handshake_digest := @ERR_SSL_CIPHER_get_handshake_digest;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_handshake_digest_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_handshake_digest := @ERR_SSL_CIPHER_get_handshake_digest;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_handshake_digest');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_is_aead := LoadLibFunction(ADllHandle, SSL_CIPHER_is_aead_procname);
-  FuncLoaded := assigned(SSL_CIPHER_is_aead);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_is_aead);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_is_aead_allownil)}
+    SSL_CIPHER_is_aead := @ERR_SSL_CIPHER_is_aead;
+    {$ifend}
     {$if declared(SSL_CIPHER_is_aead_introduced)}
     if LibVersion < SSL_CIPHER_is_aead_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_is_aead)}
       SSL_CIPHER_is_aead := @FC_SSL_CIPHER_is_aead;
-      {$else}
-      {$if not defined(SSL_CIPHER_is_aead_allownil)}
-      SSL_CIPHER_is_aead := @ERR_SSL_CIPHER_is_aead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_is_aead_removed)}
@@ -15054,39 +13901,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_is_aead)}
       SSL_CIPHER_is_aead := @_SSL_CIPHER_is_aead;
-      {$else}
-      {$if not defined(SSL_CIPHER_is_aead_allownil)}
-      SSL_CIPHER_is_aead := @ERR_SSL_CIPHER_is_aead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_is_aead_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_is_aead := @ERR_SSL_CIPHER_is_aead;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_is_aead');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_fd := LoadLibFunction(ADllHandle, SSL_get_fd_procname);
-  FuncLoaded := assigned(SSL_get_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_fd_allownil)}
+    SSL_get_fd := @ERR_SSL_get_fd;
+    {$ifend}
     {$if declared(SSL_get_fd_introduced)}
     if LibVersion < SSL_get_fd_introduced then
     begin
       {$if declared(FC_SSL_get_fd)}
       SSL_get_fd := @FC_SSL_get_fd;
-      {$else}
-      {$if not defined(SSL_get_fd_allownil)}
-      SSL_get_fd := @ERR_SSL_get_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_fd_removed)}
@@ -15094,39 +13933,31 @@ begin
     begin
       {$if declared(_SSL_get_fd)}
       SSL_get_fd := @_SSL_get_fd;
-      {$else}
-      {$if not defined(SSL_get_fd_allownil)}
-      SSL_get_fd := @ERR_SSL_get_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_fd := @ERR_SSL_get_fd;
+    if FuncLoadError then
       AFailed.Add('SSL_get_fd');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_rfd := LoadLibFunction(ADllHandle, SSL_get_rfd_procname);
-  FuncLoaded := assigned(SSL_get_rfd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_rfd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_rfd_allownil)}
+    SSL_get_rfd := @ERR_SSL_get_rfd;
+    {$ifend}
     {$if declared(SSL_get_rfd_introduced)}
     if LibVersion < SSL_get_rfd_introduced then
     begin
       {$if declared(FC_SSL_get_rfd)}
       SSL_get_rfd := @FC_SSL_get_rfd;
-      {$else}
-      {$if not defined(SSL_get_rfd_allownil)}
-      SSL_get_rfd := @ERR_SSL_get_rfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_rfd_removed)}
@@ -15134,39 +13965,31 @@ begin
     begin
       {$if declared(_SSL_get_rfd)}
       SSL_get_rfd := @_SSL_get_rfd;
-      {$else}
-      {$if not defined(SSL_get_rfd_allownil)}
-      SSL_get_rfd := @ERR_SSL_get_rfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_rfd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_rfd := @ERR_SSL_get_rfd;
+    if FuncLoadError then
       AFailed.Add('SSL_get_rfd');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_wfd := LoadLibFunction(ADllHandle, SSL_get_wfd_procname);
-  FuncLoaded := assigned(SSL_get_wfd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_wfd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_wfd_allownil)}
+    SSL_get_wfd := @ERR_SSL_get_wfd;
+    {$ifend}
     {$if declared(SSL_get_wfd_introduced)}
     if LibVersion < SSL_get_wfd_introduced then
     begin
       {$if declared(FC_SSL_get_wfd)}
       SSL_get_wfd := @FC_SSL_get_wfd;
-      {$else}
-      {$if not defined(SSL_get_wfd_allownil)}
-      SSL_get_wfd := @ERR_SSL_get_wfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_wfd_removed)}
@@ -15174,39 +13997,31 @@ begin
     begin
       {$if declared(_SSL_get_wfd)}
       SSL_get_wfd := @_SSL_get_wfd;
-      {$else}
-      {$if not defined(SSL_get_wfd_allownil)}
-      SSL_get_wfd := @ERR_SSL_get_wfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_wfd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_wfd := @ERR_SSL_get_wfd;
+    if FuncLoadError then
       AFailed.Add('SSL_get_wfd');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_cipher_list := LoadLibFunction(ADllHandle, SSL_get_cipher_list_procname);
-  FuncLoaded := assigned(SSL_get_cipher_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_cipher_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_cipher_list_allownil)}
+    SSL_get_cipher_list := @ERR_SSL_get_cipher_list;
+    {$ifend}
     {$if declared(SSL_get_cipher_list_introduced)}
     if LibVersion < SSL_get_cipher_list_introduced then
     begin
       {$if declared(FC_SSL_get_cipher_list)}
       SSL_get_cipher_list := @FC_SSL_get_cipher_list;
-      {$else}
-      {$if not defined(SSL_get_cipher_list_allownil)}
-      SSL_get_cipher_list := @ERR_SSL_get_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_cipher_list_removed)}
@@ -15214,39 +14029,31 @@ begin
     begin
       {$if declared(_SSL_get_cipher_list)}
       SSL_get_cipher_list := @_SSL_get_cipher_list;
-      {$else}
-      {$if not defined(SSL_get_cipher_list_allownil)}
-      SSL_get_cipher_list := @ERR_SSL_get_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_cipher_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_cipher_list := @ERR_SSL_get_cipher_list;
+    if FuncLoadError then
       AFailed.Add('SSL_get_cipher_list');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_shared_ciphers := LoadLibFunction(ADllHandle, SSL_get_shared_ciphers_procname);
-  FuncLoaded := assigned(SSL_get_shared_ciphers);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_shared_ciphers);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_shared_ciphers_allownil)}
+    SSL_get_shared_ciphers := @ERR_SSL_get_shared_ciphers;
+    {$ifend}
     {$if declared(SSL_get_shared_ciphers_introduced)}
     if LibVersion < SSL_get_shared_ciphers_introduced then
     begin
       {$if declared(FC_SSL_get_shared_ciphers)}
       SSL_get_shared_ciphers := @FC_SSL_get_shared_ciphers;
-      {$else}
-      {$if not defined(SSL_get_shared_ciphers_allownil)}
-      SSL_get_shared_ciphers := @ERR_SSL_get_shared_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_shared_ciphers_removed)}
@@ -15254,39 +14061,31 @@ begin
     begin
       {$if declared(_SSL_get_shared_ciphers)}
       SSL_get_shared_ciphers := @_SSL_get_shared_ciphers;
-      {$else}
-      {$if not defined(SSL_get_shared_ciphers_allownil)}
-      SSL_get_shared_ciphers := @ERR_SSL_get_shared_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_shared_ciphers_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_shared_ciphers := @ERR_SSL_get_shared_ciphers;
+    if FuncLoadError then
       AFailed.Add('SSL_get_shared_ciphers');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_read_ahead := LoadLibFunction(ADllHandle, SSL_get_read_ahead_procname);
-  FuncLoaded := assigned(SSL_get_read_ahead);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_read_ahead);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_read_ahead_allownil)}
+    SSL_get_read_ahead := @ERR_SSL_get_read_ahead;
+    {$ifend}
     {$if declared(SSL_get_read_ahead_introduced)}
     if LibVersion < SSL_get_read_ahead_introduced then
     begin
       {$if declared(FC_SSL_get_read_ahead)}
       SSL_get_read_ahead := @FC_SSL_get_read_ahead;
-      {$else}
-      {$if not defined(SSL_get_read_ahead_allownil)}
-      SSL_get_read_ahead := @ERR_SSL_get_read_ahead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_read_ahead_removed)}
@@ -15294,39 +14093,31 @@ begin
     begin
       {$if declared(_SSL_get_read_ahead)}
       SSL_get_read_ahead := @_SSL_get_read_ahead;
-      {$else}
-      {$if not defined(SSL_get_read_ahead_allownil)}
-      SSL_get_read_ahead := @ERR_SSL_get_read_ahead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_read_ahead_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_read_ahead := @ERR_SSL_get_read_ahead;
+    if FuncLoadError then
       AFailed.Add('SSL_get_read_ahead');
-    end;
     {$ifend}
   end;
 
 
   SSL_pending := LoadLibFunction(ADllHandle, SSL_pending_procname);
-  FuncLoaded := assigned(SSL_pending);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_pending);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_pending_allownil)}
+    SSL_pending := @ERR_SSL_pending;
+    {$ifend}
     {$if declared(SSL_pending_introduced)}
     if LibVersion < SSL_pending_introduced then
     begin
       {$if declared(FC_SSL_pending)}
       SSL_pending := @FC_SSL_pending;
-      {$else}
-      {$if not defined(SSL_pending_allownil)}
-      SSL_pending := @ERR_SSL_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_pending_removed)}
@@ -15334,39 +14125,31 @@ begin
     begin
       {$if declared(_SSL_pending)}
       SSL_pending := @_SSL_pending;
-      {$else}
-      {$if not defined(SSL_pending_allownil)}
-      SSL_pending := @ERR_SSL_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_pending_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_pending := @ERR_SSL_pending;
+    if FuncLoadError then
       AFailed.Add('SSL_pending');
-    end;
     {$ifend}
   end;
 
 
   SSL_has_pending := LoadLibFunction(ADllHandle, SSL_has_pending_procname);
-  FuncLoaded := assigned(SSL_has_pending);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_has_pending);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_has_pending_allownil)}
+    SSL_has_pending := @ERR_SSL_has_pending;
+    {$ifend}
     {$if declared(SSL_has_pending_introduced)}
     if LibVersion < SSL_has_pending_introduced then
     begin
       {$if declared(FC_SSL_has_pending)}
       SSL_has_pending := @FC_SSL_has_pending;
-      {$else}
-      {$if not defined(SSL_has_pending_allownil)}
-      SSL_has_pending := @ERR_SSL_has_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_has_pending_removed)}
@@ -15374,39 +14157,31 @@ begin
     begin
       {$if declared(_SSL_has_pending)}
       SSL_has_pending := @_SSL_has_pending;
-      {$else}
-      {$if not defined(SSL_has_pending_allownil)}
-      SSL_has_pending := @ERR_SSL_has_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_has_pending_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_has_pending := @ERR_SSL_has_pending;
+    if FuncLoadError then
       AFailed.Add('SSL_has_pending');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_fd := LoadLibFunction(ADllHandle, SSL_set_fd_procname);
-  FuncLoaded := assigned(SSL_set_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_fd_allownil)}
+    SSL_set_fd := @ERR_SSL_set_fd;
+    {$ifend}
     {$if declared(SSL_set_fd_introduced)}
     if LibVersion < SSL_set_fd_introduced then
     begin
       {$if declared(FC_SSL_set_fd)}
       SSL_set_fd := @FC_SSL_set_fd;
-      {$else}
-      {$if not defined(SSL_set_fd_allownil)}
-      SSL_set_fd := @ERR_SSL_set_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_fd_removed)}
@@ -15414,39 +14189,31 @@ begin
     begin
       {$if declared(_SSL_set_fd)}
       SSL_set_fd := @_SSL_set_fd;
-      {$else}
-      {$if not defined(SSL_set_fd_allownil)}
-      SSL_set_fd := @ERR_SSL_set_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_fd := @ERR_SSL_set_fd;
+    if FuncLoadError then
       AFailed.Add('SSL_set_fd');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_rfd := LoadLibFunction(ADllHandle, SSL_set_rfd_procname);
-  FuncLoaded := assigned(SSL_set_rfd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_rfd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_rfd_allownil)}
+    SSL_set_rfd := @ERR_SSL_set_rfd;
+    {$ifend}
     {$if declared(SSL_set_rfd_introduced)}
     if LibVersion < SSL_set_rfd_introduced then
     begin
       {$if declared(FC_SSL_set_rfd)}
       SSL_set_rfd := @FC_SSL_set_rfd;
-      {$else}
-      {$if not defined(SSL_set_rfd_allownil)}
-      SSL_set_rfd := @ERR_SSL_set_rfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_rfd_removed)}
@@ -15454,39 +14221,31 @@ begin
     begin
       {$if declared(_SSL_set_rfd)}
       SSL_set_rfd := @_SSL_set_rfd;
-      {$else}
-      {$if not defined(SSL_set_rfd_allownil)}
-      SSL_set_rfd := @ERR_SSL_set_rfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_rfd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_rfd := @ERR_SSL_set_rfd;
+    if FuncLoadError then
       AFailed.Add('SSL_set_rfd');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_wfd := LoadLibFunction(ADllHandle, SSL_set_wfd_procname);
-  FuncLoaded := assigned(SSL_set_wfd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_wfd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_wfd_allownil)}
+    SSL_set_wfd := @ERR_SSL_set_wfd;
+    {$ifend}
     {$if declared(SSL_set_wfd_introduced)}
     if LibVersion < SSL_set_wfd_introduced then
     begin
       {$if declared(FC_SSL_set_wfd)}
       SSL_set_wfd := @FC_SSL_set_wfd;
-      {$else}
-      {$if not defined(SSL_set_wfd_allownil)}
-      SSL_set_wfd := @ERR_SSL_set_wfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_wfd_removed)}
@@ -15494,39 +14253,31 @@ begin
     begin
       {$if declared(_SSL_set_wfd)}
       SSL_set_wfd := @_SSL_set_wfd;
-      {$else}
-      {$if not defined(SSL_set_wfd_allownil)}
-      SSL_set_wfd := @ERR_SSL_set_wfd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_wfd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_wfd := @ERR_SSL_set_wfd;
+    if FuncLoadError then
       AFailed.Add('SSL_set_wfd');
-    end;
     {$ifend}
   end;
 
 
   SSL_set0_rbio := LoadLibFunction(ADllHandle, SSL_set0_rbio_procname);
-  FuncLoaded := assigned(SSL_set0_rbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_rbio);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_rbio_allownil)}
+    SSL_set0_rbio := @ERR_SSL_set0_rbio;
+    {$ifend}
     {$if declared(SSL_set0_rbio_introduced)}
     if LibVersion < SSL_set0_rbio_introduced then
     begin
       {$if declared(FC_SSL_set0_rbio)}
       SSL_set0_rbio := @FC_SSL_set0_rbio;
-      {$else}
-      {$if not defined(SSL_set0_rbio_allownil)}
-      SSL_set0_rbio := @ERR_SSL_set0_rbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_rbio_removed)}
@@ -15534,39 +14285,31 @@ begin
     begin
       {$if declared(_SSL_set0_rbio)}
       SSL_set0_rbio := @_SSL_set0_rbio;
-      {$else}
-      {$if not defined(SSL_set0_rbio_allownil)}
-      SSL_set0_rbio := @ERR_SSL_set0_rbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_rbio_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_rbio := @ERR_SSL_set0_rbio;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_rbio');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set0_wbio := LoadLibFunction(ADllHandle, SSL_set0_wbio_procname);
-  FuncLoaded := assigned(SSL_set0_wbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_wbio);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_wbio_allownil)}
+    SSL_set0_wbio := @ERR_SSL_set0_wbio;
+    {$ifend}
     {$if declared(SSL_set0_wbio_introduced)}
     if LibVersion < SSL_set0_wbio_introduced then
     begin
       {$if declared(FC_SSL_set0_wbio)}
       SSL_set0_wbio := @FC_SSL_set0_wbio;
-      {$else}
-      {$if not defined(SSL_set0_wbio_allownil)}
-      SSL_set0_wbio := @ERR_SSL_set0_wbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_wbio_removed)}
@@ -15574,39 +14317,31 @@ begin
     begin
       {$if declared(_SSL_set0_wbio)}
       SSL_set0_wbio := @_SSL_set0_wbio;
-      {$else}
-      {$if not defined(SSL_set0_wbio_allownil)}
-      SSL_set0_wbio := @ERR_SSL_set0_wbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_wbio_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_wbio := @ERR_SSL_set0_wbio;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_wbio');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_bio := LoadLibFunction(ADllHandle, SSL_set_bio_procname);
-  FuncLoaded := assigned(SSL_set_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_bio_allownil)}
+    SSL_set_bio := @ERR_SSL_set_bio;
+    {$ifend}
     {$if declared(SSL_set_bio_introduced)}
     if LibVersion < SSL_set_bio_introduced then
     begin
       {$if declared(FC_SSL_set_bio)}
       SSL_set_bio := @FC_SSL_set_bio;
-      {$else}
-      {$if not defined(SSL_set_bio_allownil)}
-      SSL_set_bio := @ERR_SSL_set_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_bio_removed)}
@@ -15614,39 +14349,31 @@ begin
     begin
       {$if declared(_SSL_set_bio)}
       SSL_set_bio := @_SSL_set_bio;
-      {$else}
-      {$if not defined(SSL_set_bio_allownil)}
-      SSL_set_bio := @ERR_SSL_set_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_bio := @ERR_SSL_set_bio;
+    if FuncLoadError then
       AFailed.Add('SSL_set_bio');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_rbio := LoadLibFunction(ADllHandle, SSL_get_rbio_procname);
-  FuncLoaded := assigned(SSL_get_rbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_rbio);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_rbio_allownil)}
+    SSL_get_rbio := @ERR_SSL_get_rbio;
+    {$ifend}
     {$if declared(SSL_get_rbio_introduced)}
     if LibVersion < SSL_get_rbio_introduced then
     begin
       {$if declared(FC_SSL_get_rbio)}
       SSL_get_rbio := @FC_SSL_get_rbio;
-      {$else}
-      {$if not defined(SSL_get_rbio_allownil)}
-      SSL_get_rbio := @ERR_SSL_get_rbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_rbio_removed)}
@@ -15654,39 +14381,31 @@ begin
     begin
       {$if declared(_SSL_get_rbio)}
       SSL_get_rbio := @_SSL_get_rbio;
-      {$else}
-      {$if not defined(SSL_get_rbio_allownil)}
-      SSL_get_rbio := @ERR_SSL_get_rbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_rbio_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_rbio := @ERR_SSL_get_rbio;
+    if FuncLoadError then
       AFailed.Add('SSL_get_rbio');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_wbio := LoadLibFunction(ADllHandle, SSL_get_wbio_procname);
-  FuncLoaded := assigned(SSL_get_wbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_wbio);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_wbio_allownil)}
+    SSL_get_wbio := @ERR_SSL_get_wbio;
+    {$ifend}
     {$if declared(SSL_get_wbio_introduced)}
     if LibVersion < SSL_get_wbio_introduced then
     begin
       {$if declared(FC_SSL_get_wbio)}
       SSL_get_wbio := @FC_SSL_get_wbio;
-      {$else}
-      {$if not defined(SSL_get_wbio_allownil)}
-      SSL_get_wbio := @ERR_SSL_get_wbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_wbio_removed)}
@@ -15694,39 +14413,31 @@ begin
     begin
       {$if declared(_SSL_get_wbio)}
       SSL_get_wbio := @_SSL_get_wbio;
-      {$else}
-      {$if not defined(SSL_get_wbio_allownil)}
-      SSL_get_wbio := @ERR_SSL_get_wbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_wbio_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_wbio := @ERR_SSL_get_wbio;
+    if FuncLoadError then
       AFailed.Add('SSL_get_wbio');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_cipher_list := LoadLibFunction(ADllHandle, SSL_set_cipher_list_procname);
-  FuncLoaded := assigned(SSL_set_cipher_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_cipher_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_cipher_list_allownil)}
+    SSL_set_cipher_list := @ERR_SSL_set_cipher_list;
+    {$ifend}
     {$if declared(SSL_set_cipher_list_introduced)}
     if LibVersion < SSL_set_cipher_list_introduced then
     begin
       {$if declared(FC_SSL_set_cipher_list)}
       SSL_set_cipher_list := @FC_SSL_set_cipher_list;
-      {$else}
-      {$if not defined(SSL_set_cipher_list_allownil)}
-      SSL_set_cipher_list := @ERR_SSL_set_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_cipher_list_removed)}
@@ -15734,39 +14445,31 @@ begin
     begin
       {$if declared(_SSL_set_cipher_list)}
       SSL_set_cipher_list := @_SSL_set_cipher_list;
-      {$else}
-      {$if not defined(SSL_set_cipher_list_allownil)}
-      SSL_set_cipher_list := @ERR_SSL_set_cipher_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_cipher_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_cipher_list := @ERR_SSL_set_cipher_list;
+    if FuncLoadError then
       AFailed.Add('SSL_set_cipher_list');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_ciphersuites := LoadLibFunction(ADllHandle, SSL_CTX_set_ciphersuites_procname);
-  FuncLoaded := assigned(SSL_CTX_set_ciphersuites);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_ciphersuites);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_ciphersuites_allownil)}
+    SSL_CTX_set_ciphersuites := @ERR_SSL_CTX_set_ciphersuites;
+    {$ifend}
     {$if declared(SSL_CTX_set_ciphersuites_introduced)}
     if LibVersion < SSL_CTX_set_ciphersuites_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_ciphersuites)}
       SSL_CTX_set_ciphersuites := @FC_SSL_CTX_set_ciphersuites;
-      {$else}
-      {$if not defined(SSL_CTX_set_ciphersuites_allownil)}
-      SSL_CTX_set_ciphersuites := @ERR_SSL_CTX_set_ciphersuites;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_ciphersuites_removed)}
@@ -15774,39 +14477,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_ciphersuites)}
       SSL_CTX_set_ciphersuites := @_SSL_CTX_set_ciphersuites;
-      {$else}
-      {$if not defined(SSL_CTX_set_ciphersuites_allownil)}
-      SSL_CTX_set_ciphersuites := @ERR_SSL_CTX_set_ciphersuites;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_ciphersuites_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_ciphersuites := @ERR_SSL_CTX_set_ciphersuites;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_ciphersuites');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_ciphersuites := LoadLibFunction(ADllHandle, SSL_set_ciphersuites_procname);
-  FuncLoaded := assigned(SSL_set_ciphersuites);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_ciphersuites);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_ciphersuites_allownil)}
+    SSL_set_ciphersuites := @ERR_SSL_set_ciphersuites;
+    {$ifend}
     {$if declared(SSL_set_ciphersuites_introduced)}
     if LibVersion < SSL_set_ciphersuites_introduced then
     begin
       {$if declared(FC_SSL_set_ciphersuites)}
       SSL_set_ciphersuites := @FC_SSL_set_ciphersuites;
-      {$else}
-      {$if not defined(SSL_set_ciphersuites_allownil)}
-      SSL_set_ciphersuites := @ERR_SSL_set_ciphersuites;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_ciphersuites_removed)}
@@ -15814,39 +14509,31 @@ begin
     begin
       {$if declared(_SSL_set_ciphersuites)}
       SSL_set_ciphersuites := @_SSL_set_ciphersuites;
-      {$else}
-      {$if not defined(SSL_set_ciphersuites_allownil)}
-      SSL_set_ciphersuites := @ERR_SSL_set_ciphersuites;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_ciphersuites_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_ciphersuites := @ERR_SSL_set_ciphersuites;
+    if FuncLoadError then
       AFailed.Add('SSL_set_ciphersuites');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_verify_mode := LoadLibFunction(ADllHandle, SSL_get_verify_mode_procname);
-  FuncLoaded := assigned(SSL_get_verify_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_verify_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_verify_mode_allownil)}
+    SSL_get_verify_mode := @ERR_SSL_get_verify_mode;
+    {$ifend}
     {$if declared(SSL_get_verify_mode_introduced)}
     if LibVersion < SSL_get_verify_mode_introduced then
     begin
       {$if declared(FC_SSL_get_verify_mode)}
       SSL_get_verify_mode := @FC_SSL_get_verify_mode;
-      {$else}
-      {$if not defined(SSL_get_verify_mode_allownil)}
-      SSL_get_verify_mode := @ERR_SSL_get_verify_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_verify_mode_removed)}
@@ -15854,39 +14541,31 @@ begin
     begin
       {$if declared(_SSL_get_verify_mode)}
       SSL_get_verify_mode := @_SSL_get_verify_mode;
-      {$else}
-      {$if not defined(SSL_get_verify_mode_allownil)}
-      SSL_get_verify_mode := @ERR_SSL_get_verify_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_verify_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_verify_mode := @ERR_SSL_get_verify_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_get_verify_mode');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_verify_depth := LoadLibFunction(ADllHandle, SSL_get_verify_depth_procname);
-  FuncLoaded := assigned(SSL_get_verify_depth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_verify_depth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_verify_depth_allownil)}
+    SSL_get_verify_depth := @ERR_SSL_get_verify_depth;
+    {$ifend}
     {$if declared(SSL_get_verify_depth_introduced)}
     if LibVersion < SSL_get_verify_depth_introduced then
     begin
       {$if declared(FC_SSL_get_verify_depth)}
       SSL_get_verify_depth := @FC_SSL_get_verify_depth;
-      {$else}
-      {$if not defined(SSL_get_verify_depth_allownil)}
-      SSL_get_verify_depth := @ERR_SSL_get_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_verify_depth_removed)}
@@ -15894,39 +14573,31 @@ begin
     begin
       {$if declared(_SSL_get_verify_depth)}
       SSL_get_verify_depth := @_SSL_get_verify_depth;
-      {$else}
-      {$if not defined(SSL_get_verify_depth_allownil)}
-      SSL_get_verify_depth := @ERR_SSL_get_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_verify_depth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_verify_depth := @ERR_SSL_get_verify_depth;
+    if FuncLoadError then
       AFailed.Add('SSL_get_verify_depth');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_verify_callback := LoadLibFunction(ADllHandle, SSL_get_verify_callback_procname);
-  FuncLoaded := assigned(SSL_get_verify_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_verify_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_verify_callback_allownil)}
+    SSL_get_verify_callback := @ERR_SSL_get_verify_callback;
+    {$ifend}
     {$if declared(SSL_get_verify_callback_introduced)}
     if LibVersion < SSL_get_verify_callback_introduced then
     begin
       {$if declared(FC_SSL_get_verify_callback)}
       SSL_get_verify_callback := @FC_SSL_get_verify_callback;
-      {$else}
-      {$if not defined(SSL_get_verify_callback_allownil)}
-      SSL_get_verify_callback := @ERR_SSL_get_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_verify_callback_removed)}
@@ -15934,39 +14605,31 @@ begin
     begin
       {$if declared(_SSL_get_verify_callback)}
       SSL_get_verify_callback := @_SSL_get_verify_callback;
-      {$else}
-      {$if not defined(SSL_get_verify_callback_allownil)}
-      SSL_get_verify_callback := @ERR_SSL_get_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_verify_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_verify_callback := @ERR_SSL_get_verify_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_get_verify_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_read_ahead := LoadLibFunction(ADllHandle, SSL_set_read_ahead_procname);
-  FuncLoaded := assigned(SSL_set_read_ahead);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_read_ahead);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_read_ahead_allownil)}
+    SSL_set_read_ahead := @ERR_SSL_set_read_ahead;
+    {$ifend}
     {$if declared(SSL_set_read_ahead_introduced)}
     if LibVersion < SSL_set_read_ahead_introduced then
     begin
       {$if declared(FC_SSL_set_read_ahead)}
       SSL_set_read_ahead := @FC_SSL_set_read_ahead;
-      {$else}
-      {$if not defined(SSL_set_read_ahead_allownil)}
-      SSL_set_read_ahead := @ERR_SSL_set_read_ahead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_read_ahead_removed)}
@@ -15974,39 +14637,31 @@ begin
     begin
       {$if declared(_SSL_set_read_ahead)}
       SSL_set_read_ahead := @_SSL_set_read_ahead;
-      {$else}
-      {$if not defined(SSL_set_read_ahead_allownil)}
-      SSL_set_read_ahead := @ERR_SSL_set_read_ahead;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_read_ahead_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_read_ahead := @ERR_SSL_set_read_ahead;
+    if FuncLoadError then
       AFailed.Add('SSL_set_read_ahead');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_verify := LoadLibFunction(ADllHandle, SSL_set_verify_procname);
-  FuncLoaded := assigned(SSL_set_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_verify_allownil)}
+    SSL_set_verify := @ERR_SSL_set_verify;
+    {$ifend}
     {$if declared(SSL_set_verify_introduced)}
     if LibVersion < SSL_set_verify_introduced then
     begin
       {$if declared(FC_SSL_set_verify)}
       SSL_set_verify := @FC_SSL_set_verify;
-      {$else}
-      {$if not defined(SSL_set_verify_allownil)}
-      SSL_set_verify := @ERR_SSL_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_verify_removed)}
@@ -16014,39 +14669,31 @@ begin
     begin
       {$if declared(_SSL_set_verify)}
       SSL_set_verify := @_SSL_set_verify;
-      {$else}
-      {$if not defined(SSL_set_verify_allownil)}
-      SSL_set_verify := @ERR_SSL_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_verify := @ERR_SSL_set_verify;
+    if FuncLoadError then
       AFailed.Add('SSL_set_verify');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_verify_depth := LoadLibFunction(ADllHandle, SSL_set_verify_depth_procname);
-  FuncLoaded := assigned(SSL_set_verify_depth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_verify_depth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_verify_depth_allownil)}
+    SSL_set_verify_depth := @ERR_SSL_set_verify_depth;
+    {$ifend}
     {$if declared(SSL_set_verify_depth_introduced)}
     if LibVersion < SSL_set_verify_depth_introduced then
     begin
       {$if declared(FC_SSL_set_verify_depth)}
       SSL_set_verify_depth := @FC_SSL_set_verify_depth;
-      {$else}
-      {$if not defined(SSL_set_verify_depth_allownil)}
-      SSL_set_verify_depth := @ERR_SSL_set_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_verify_depth_removed)}
@@ -16054,39 +14701,31 @@ begin
     begin
       {$if declared(_SSL_set_verify_depth)}
       SSL_set_verify_depth := @_SSL_set_verify_depth;
-      {$else}
-      {$if not defined(SSL_set_verify_depth_allownil)}
-      SSL_set_verify_depth := @ERR_SSL_set_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_verify_depth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_verify_depth := @ERR_SSL_set_verify_depth;
+    if FuncLoadError then
       AFailed.Add('SSL_set_verify_depth');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_RSAPrivateKey := LoadLibFunction(ADllHandle, SSL_use_RSAPrivateKey_procname);
-  FuncLoaded := assigned(SSL_use_RSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_RSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_RSAPrivateKey_allownil)}
+    SSL_use_RSAPrivateKey := @ERR_SSL_use_RSAPrivateKey;
+    {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_introduced)}
     if LibVersion < SSL_use_RSAPrivateKey_introduced then
     begin
       {$if declared(FC_SSL_use_RSAPrivateKey)}
       SSL_use_RSAPrivateKey := @FC_SSL_use_RSAPrivateKey;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_allownil)}
-      SSL_use_RSAPrivateKey := @ERR_SSL_use_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_removed)}
@@ -16094,39 +14733,31 @@ begin
     begin
       {$if declared(_SSL_use_RSAPrivateKey)}
       SSL_use_RSAPrivateKey := @_SSL_use_RSAPrivateKey;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_allownil)}
-      SSL_use_RSAPrivateKey := @ERR_SSL_use_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_RSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_RSAPrivateKey := @ERR_SSL_use_RSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('SSL_use_RSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_RSAPrivateKey_ASN1 := LoadLibFunction(ADllHandle, SSL_use_RSAPrivateKey_ASN1_procname);
-  FuncLoaded := assigned(SSL_use_RSAPrivateKey_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_RSAPrivateKey_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_RSAPrivateKey_ASN1_allownil)}
+    SSL_use_RSAPrivateKey_ASN1 := @ERR_SSL_use_RSAPrivateKey_ASN1;
+    {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_ASN1_introduced)}
     if LibVersion < SSL_use_RSAPrivateKey_ASN1_introduced then
     begin
       {$if declared(FC_SSL_use_RSAPrivateKey_ASN1)}
       SSL_use_RSAPrivateKey_ASN1 := @FC_SSL_use_RSAPrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_ASN1_allownil)}
-      SSL_use_RSAPrivateKey_ASN1 := @ERR_SSL_use_RSAPrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_ASN1_removed)}
@@ -16134,39 +14765,31 @@ begin
     begin
       {$if declared(_SSL_use_RSAPrivateKey_ASN1)}
       SSL_use_RSAPrivateKey_ASN1 := @_SSL_use_RSAPrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_ASN1_allownil)}
-      SSL_use_RSAPrivateKey_ASN1 := @ERR_SSL_use_RSAPrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_RSAPrivateKey_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_RSAPrivateKey_ASN1 := @ERR_SSL_use_RSAPrivateKey_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_use_RSAPrivateKey_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_PrivateKey := LoadLibFunction(ADllHandle, SSL_use_PrivateKey_procname);
-  FuncLoaded := assigned(SSL_use_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_PrivateKey_allownil)}
+    SSL_use_PrivateKey := @ERR_SSL_use_PrivateKey;
+    {$ifend}
     {$if declared(SSL_use_PrivateKey_introduced)}
     if LibVersion < SSL_use_PrivateKey_introduced then
     begin
       {$if declared(FC_SSL_use_PrivateKey)}
       SSL_use_PrivateKey := @FC_SSL_use_PrivateKey;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_allownil)}
-      SSL_use_PrivateKey := @ERR_SSL_use_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_PrivateKey_removed)}
@@ -16174,39 +14797,31 @@ begin
     begin
       {$if declared(_SSL_use_PrivateKey)}
       SSL_use_PrivateKey := @_SSL_use_PrivateKey;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_allownil)}
-      SSL_use_PrivateKey := @ERR_SSL_use_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_PrivateKey := @ERR_SSL_use_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('SSL_use_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_PrivateKey_ASN1 := LoadLibFunction(ADllHandle, SSL_use_PrivateKey_ASN1_procname);
-  FuncLoaded := assigned(SSL_use_PrivateKey_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_PrivateKey_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_PrivateKey_ASN1_allownil)}
+    SSL_use_PrivateKey_ASN1 := @ERR_SSL_use_PrivateKey_ASN1;
+    {$ifend}
     {$if declared(SSL_use_PrivateKey_ASN1_introduced)}
     if LibVersion < SSL_use_PrivateKey_ASN1_introduced then
     begin
       {$if declared(FC_SSL_use_PrivateKey_ASN1)}
       SSL_use_PrivateKey_ASN1 := @FC_SSL_use_PrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_ASN1_allownil)}
-      SSL_use_PrivateKey_ASN1 := @ERR_SSL_use_PrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_PrivateKey_ASN1_removed)}
@@ -16214,39 +14829,31 @@ begin
     begin
       {$if declared(_SSL_use_PrivateKey_ASN1)}
       SSL_use_PrivateKey_ASN1 := @_SSL_use_PrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_ASN1_allownil)}
-      SSL_use_PrivateKey_ASN1 := @ERR_SSL_use_PrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_PrivateKey_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_PrivateKey_ASN1 := @ERR_SSL_use_PrivateKey_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_use_PrivateKey_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_certificate := LoadLibFunction(ADllHandle, SSL_use_certificate_procname);
-  FuncLoaded := assigned(SSL_use_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_certificate_allownil)}
+    SSL_use_certificate := @ERR_SSL_use_certificate;
+    {$ifend}
     {$if declared(SSL_use_certificate_introduced)}
     if LibVersion < SSL_use_certificate_introduced then
     begin
       {$if declared(FC_SSL_use_certificate)}
       SSL_use_certificate := @FC_SSL_use_certificate;
-      {$else}
-      {$if not defined(SSL_use_certificate_allownil)}
-      SSL_use_certificate := @ERR_SSL_use_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_certificate_removed)}
@@ -16254,39 +14861,31 @@ begin
     begin
       {$if declared(_SSL_use_certificate)}
       SSL_use_certificate := @_SSL_use_certificate;
-      {$else}
-      {$if not defined(SSL_use_certificate_allownil)}
-      SSL_use_certificate := @ERR_SSL_use_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_certificate := @ERR_SSL_use_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_use_certificate');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_certificate_ASN1 := LoadLibFunction(ADllHandle, SSL_use_certificate_ASN1_procname);
-  FuncLoaded := assigned(SSL_use_certificate_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_certificate_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_certificate_ASN1_allownil)}
+    SSL_use_certificate_ASN1 := @ERR_SSL_use_certificate_ASN1;
+    {$ifend}
     {$if declared(SSL_use_certificate_ASN1_introduced)}
     if LibVersion < SSL_use_certificate_ASN1_introduced then
     begin
       {$if declared(FC_SSL_use_certificate_ASN1)}
       SSL_use_certificate_ASN1 := @FC_SSL_use_certificate_ASN1;
-      {$else}
-      {$if not defined(SSL_use_certificate_ASN1_allownil)}
-      SSL_use_certificate_ASN1 := @ERR_SSL_use_certificate_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_certificate_ASN1_removed)}
@@ -16294,39 +14893,31 @@ begin
     begin
       {$if declared(_SSL_use_certificate_ASN1)}
       SSL_use_certificate_ASN1 := @_SSL_use_certificate_ASN1;
-      {$else}
-      {$if not defined(SSL_use_certificate_ASN1_allownil)}
-      SSL_use_certificate_ASN1 := @ERR_SSL_use_certificate_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_certificate_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_certificate_ASN1 := @ERR_SSL_use_certificate_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_use_certificate_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_serverinfo := LoadLibFunction(ADllHandle, SSL_CTX_use_serverinfo_procname);
-  FuncLoaded := assigned(SSL_CTX_use_serverinfo);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_serverinfo);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_serverinfo_allownil)}
+    SSL_CTX_use_serverinfo := @ERR_SSL_CTX_use_serverinfo;
+    {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_introduced)}
     if LibVersion < SSL_CTX_use_serverinfo_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_serverinfo)}
       SSL_CTX_use_serverinfo := @FC_SSL_CTX_use_serverinfo;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_allownil)}
-      SSL_CTX_use_serverinfo := @ERR_SSL_CTX_use_serverinfo;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_removed)}
@@ -16334,39 +14925,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_serverinfo)}
       SSL_CTX_use_serverinfo := @_SSL_CTX_use_serverinfo;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_allownil)}
-      SSL_CTX_use_serverinfo := @ERR_SSL_CTX_use_serverinfo;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_serverinfo_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_serverinfo := @ERR_SSL_CTX_use_serverinfo;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_serverinfo');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_serverinfo_ex := LoadLibFunction(ADllHandle, SSL_CTX_use_serverinfo_ex_procname);
-  FuncLoaded := assigned(SSL_CTX_use_serverinfo_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_serverinfo_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_serverinfo_ex_allownil)}
+    SSL_CTX_use_serverinfo_ex := @ERR_SSL_CTX_use_serverinfo_ex;
+    {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_ex_introduced)}
     if LibVersion < SSL_CTX_use_serverinfo_ex_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_serverinfo_ex)}
       SSL_CTX_use_serverinfo_ex := @FC_SSL_CTX_use_serverinfo_ex;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_ex_allownil)}
-      SSL_CTX_use_serverinfo_ex := @ERR_SSL_CTX_use_serverinfo_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_ex_removed)}
@@ -16374,39 +14957,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_serverinfo_ex)}
       SSL_CTX_use_serverinfo_ex := @_SSL_CTX_use_serverinfo_ex;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_ex_allownil)}
-      SSL_CTX_use_serverinfo_ex := @ERR_SSL_CTX_use_serverinfo_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_serverinfo_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_serverinfo_ex := @ERR_SSL_CTX_use_serverinfo_ex;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_serverinfo_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_use_serverinfo_file := LoadLibFunction(ADllHandle, SSL_CTX_use_serverinfo_file_procname);
-  FuncLoaded := assigned(SSL_CTX_use_serverinfo_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_serverinfo_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_serverinfo_file_allownil)}
+    SSL_CTX_use_serverinfo_file := @ERR_SSL_CTX_use_serverinfo_file;
+    {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_file_introduced)}
     if LibVersion < SSL_CTX_use_serverinfo_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_serverinfo_file)}
       SSL_CTX_use_serverinfo_file := @FC_SSL_CTX_use_serverinfo_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_file_allownil)}
-      SSL_CTX_use_serverinfo_file := @ERR_SSL_CTX_use_serverinfo_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_serverinfo_file_removed)}
@@ -16414,39 +14989,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_serverinfo_file)}
       SSL_CTX_use_serverinfo_file := @_SSL_CTX_use_serverinfo_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_serverinfo_file_allownil)}
-      SSL_CTX_use_serverinfo_file := @ERR_SSL_CTX_use_serverinfo_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_serverinfo_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_serverinfo_file := @ERR_SSL_CTX_use_serverinfo_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_serverinfo_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_RSAPrivateKey_file := LoadLibFunction(ADllHandle, SSL_use_RSAPrivateKey_file_procname);
-  FuncLoaded := assigned(SSL_use_RSAPrivateKey_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_RSAPrivateKey_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_RSAPrivateKey_file_allownil)}
+    SSL_use_RSAPrivateKey_file := @ERR_SSL_use_RSAPrivateKey_file;
+    {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_file_introduced)}
     if LibVersion < SSL_use_RSAPrivateKey_file_introduced then
     begin
       {$if declared(FC_SSL_use_RSAPrivateKey_file)}
       SSL_use_RSAPrivateKey_file := @FC_SSL_use_RSAPrivateKey_file;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_file_allownil)}
-      SSL_use_RSAPrivateKey_file := @ERR_SSL_use_RSAPrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_RSAPrivateKey_file_removed)}
@@ -16454,39 +15021,31 @@ begin
     begin
       {$if declared(_SSL_use_RSAPrivateKey_file)}
       SSL_use_RSAPrivateKey_file := @_SSL_use_RSAPrivateKey_file;
-      {$else}
-      {$if not defined(SSL_use_RSAPrivateKey_file_allownil)}
-      SSL_use_RSAPrivateKey_file := @ERR_SSL_use_RSAPrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_RSAPrivateKey_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_RSAPrivateKey_file := @ERR_SSL_use_RSAPrivateKey_file;
+    if FuncLoadError then
       AFailed.Add('SSL_use_RSAPrivateKey_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_PrivateKey_file := LoadLibFunction(ADllHandle, SSL_use_PrivateKey_file_procname);
-  FuncLoaded := assigned(SSL_use_PrivateKey_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_PrivateKey_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_PrivateKey_file_allownil)}
+    SSL_use_PrivateKey_file := @ERR_SSL_use_PrivateKey_file;
+    {$ifend}
     {$if declared(SSL_use_PrivateKey_file_introduced)}
     if LibVersion < SSL_use_PrivateKey_file_introduced then
     begin
       {$if declared(FC_SSL_use_PrivateKey_file)}
       SSL_use_PrivateKey_file := @FC_SSL_use_PrivateKey_file;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_file_allownil)}
-      SSL_use_PrivateKey_file := @ERR_SSL_use_PrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_PrivateKey_file_removed)}
@@ -16494,39 +15053,31 @@ begin
     begin
       {$if declared(_SSL_use_PrivateKey_file)}
       SSL_use_PrivateKey_file := @_SSL_use_PrivateKey_file;
-      {$else}
-      {$if not defined(SSL_use_PrivateKey_file_allownil)}
-      SSL_use_PrivateKey_file := @ERR_SSL_use_PrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_PrivateKey_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_PrivateKey_file := @ERR_SSL_use_PrivateKey_file;
+    if FuncLoadError then
       AFailed.Add('SSL_use_PrivateKey_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_certificate_file := LoadLibFunction(ADllHandle, SSL_use_certificate_file_procname);
-  FuncLoaded := assigned(SSL_use_certificate_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_certificate_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_certificate_file_allownil)}
+    SSL_use_certificate_file := @ERR_SSL_use_certificate_file;
+    {$ifend}
     {$if declared(SSL_use_certificate_file_introduced)}
     if LibVersion < SSL_use_certificate_file_introduced then
     begin
       {$if declared(FC_SSL_use_certificate_file)}
       SSL_use_certificate_file := @FC_SSL_use_certificate_file;
-      {$else}
-      {$if not defined(SSL_use_certificate_file_allownil)}
-      SSL_use_certificate_file := @ERR_SSL_use_certificate_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_certificate_file_removed)}
@@ -16534,39 +15085,31 @@ begin
     begin
       {$if declared(_SSL_use_certificate_file)}
       SSL_use_certificate_file := @_SSL_use_certificate_file;
-      {$else}
-      {$if not defined(SSL_use_certificate_file_allownil)}
-      SSL_use_certificate_file := @ERR_SSL_use_certificate_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_certificate_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_certificate_file := @ERR_SSL_use_certificate_file;
+    if FuncLoadError then
       AFailed.Add('SSL_use_certificate_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_RSAPrivateKey_file := LoadLibFunction(ADllHandle, SSL_CTX_use_RSAPrivateKey_file_procname);
-  FuncLoaded := assigned(SSL_CTX_use_RSAPrivateKey_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_RSAPrivateKey_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_RSAPrivateKey_file_allownil)}
+    SSL_CTX_use_RSAPrivateKey_file := @ERR_SSL_CTX_use_RSAPrivateKey_file;
+    {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_file_introduced)}
     if LibVersion < SSL_CTX_use_RSAPrivateKey_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_RSAPrivateKey_file)}
       SSL_CTX_use_RSAPrivateKey_file := @FC_SSL_CTX_use_RSAPrivateKey_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_file_allownil)}
-      SSL_CTX_use_RSAPrivateKey_file := @ERR_SSL_CTX_use_RSAPrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_file_removed)}
@@ -16574,39 +15117,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_RSAPrivateKey_file)}
       SSL_CTX_use_RSAPrivateKey_file := @_SSL_CTX_use_RSAPrivateKey_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_file_allownil)}
-      SSL_CTX_use_RSAPrivateKey_file := @ERR_SSL_CTX_use_RSAPrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_RSAPrivateKey_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_RSAPrivateKey_file := @ERR_SSL_CTX_use_RSAPrivateKey_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_RSAPrivateKey_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_PrivateKey_file := LoadLibFunction(ADllHandle, SSL_CTX_use_PrivateKey_file_procname);
-  FuncLoaded := assigned(SSL_CTX_use_PrivateKey_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_PrivateKey_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_PrivateKey_file_allownil)}
+    SSL_CTX_use_PrivateKey_file := @ERR_SSL_CTX_use_PrivateKey_file;
+    {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_file_introduced)}
     if LibVersion < SSL_CTX_use_PrivateKey_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_PrivateKey_file)}
       SSL_CTX_use_PrivateKey_file := @FC_SSL_CTX_use_PrivateKey_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_file_allownil)}
-      SSL_CTX_use_PrivateKey_file := @ERR_SSL_CTX_use_PrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_file_removed)}
@@ -16614,39 +15149,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_PrivateKey_file)}
       SSL_CTX_use_PrivateKey_file := @_SSL_CTX_use_PrivateKey_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_file_allownil)}
-      SSL_CTX_use_PrivateKey_file := @ERR_SSL_CTX_use_PrivateKey_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_PrivateKey_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_PrivateKey_file := @ERR_SSL_CTX_use_PrivateKey_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_PrivateKey_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_certificate_file := LoadLibFunction(ADllHandle, SSL_CTX_use_certificate_file_procname);
-  FuncLoaded := assigned(SSL_CTX_use_certificate_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_certificate_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_certificate_file_allownil)}
+    SSL_CTX_use_certificate_file := @ERR_SSL_CTX_use_certificate_file;
+    {$ifend}
     {$if declared(SSL_CTX_use_certificate_file_introduced)}
     if LibVersion < SSL_CTX_use_certificate_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_certificate_file)}
       SSL_CTX_use_certificate_file := @FC_SSL_CTX_use_certificate_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_file_allownil)}
-      SSL_CTX_use_certificate_file := @ERR_SSL_CTX_use_certificate_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_certificate_file_removed)}
@@ -16654,39 +15181,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_certificate_file)}
       SSL_CTX_use_certificate_file := @_SSL_CTX_use_certificate_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_file_allownil)}
-      SSL_CTX_use_certificate_file := @ERR_SSL_CTX_use_certificate_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_certificate_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_certificate_file := @ERR_SSL_CTX_use_certificate_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_certificate_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_certificate_chain_file := LoadLibFunction(ADllHandle, SSL_CTX_use_certificate_chain_file_procname);
-  FuncLoaded := assigned(SSL_CTX_use_certificate_chain_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_certificate_chain_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_certificate_chain_file_allownil)}
+    SSL_CTX_use_certificate_chain_file := @ERR_SSL_CTX_use_certificate_chain_file;
+    {$ifend}
     {$if declared(SSL_CTX_use_certificate_chain_file_introduced)}
     if LibVersion < SSL_CTX_use_certificate_chain_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_certificate_chain_file)}
       SSL_CTX_use_certificate_chain_file := @FC_SSL_CTX_use_certificate_chain_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_chain_file_allownil)}
-      SSL_CTX_use_certificate_chain_file := @ERR_SSL_CTX_use_certificate_chain_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_certificate_chain_file_removed)}
@@ -16694,39 +15213,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_certificate_chain_file)}
       SSL_CTX_use_certificate_chain_file := @_SSL_CTX_use_certificate_chain_file;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_chain_file_allownil)}
-      SSL_CTX_use_certificate_chain_file := @ERR_SSL_CTX_use_certificate_chain_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_certificate_chain_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_certificate_chain_file := @ERR_SSL_CTX_use_certificate_chain_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_certificate_chain_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_use_certificate_chain_file := LoadLibFunction(ADllHandle, SSL_use_certificate_chain_file_procname);
-  FuncLoaded := assigned(SSL_use_certificate_chain_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_use_certificate_chain_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_use_certificate_chain_file_allownil)}
+    SSL_use_certificate_chain_file := @ERR_SSL_use_certificate_chain_file;
+    {$ifend}
     {$if declared(SSL_use_certificate_chain_file_introduced)}
     if LibVersion < SSL_use_certificate_chain_file_introduced then
     begin
       {$if declared(FC_SSL_use_certificate_chain_file)}
       SSL_use_certificate_chain_file := @FC_SSL_use_certificate_chain_file;
-      {$else}
-      {$if not defined(SSL_use_certificate_chain_file_allownil)}
-      SSL_use_certificate_chain_file := @ERR_SSL_use_certificate_chain_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_use_certificate_chain_file_removed)}
@@ -16734,39 +15245,31 @@ begin
     begin
       {$if declared(_SSL_use_certificate_chain_file)}
       SSL_use_certificate_chain_file := @_SSL_use_certificate_chain_file;
-      {$else}
-      {$if not defined(SSL_use_certificate_chain_file_allownil)}
-      SSL_use_certificate_chain_file := @ERR_SSL_use_certificate_chain_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_use_certificate_chain_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_use_certificate_chain_file := @ERR_SSL_use_certificate_chain_file;
+    if FuncLoadError then
       AFailed.Add('SSL_use_certificate_chain_file');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_load_client_CA_file := LoadLibFunction(ADllHandle, SSL_load_client_CA_file_procname);
-  FuncLoaded := assigned(SSL_load_client_CA_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_load_client_CA_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_load_client_CA_file_allownil)}
+    SSL_load_client_CA_file := @ERR_SSL_load_client_CA_file;
+    {$ifend}
     {$if declared(SSL_load_client_CA_file_introduced)}
     if LibVersion < SSL_load_client_CA_file_introduced then
     begin
       {$if declared(FC_SSL_load_client_CA_file)}
       SSL_load_client_CA_file := @FC_SSL_load_client_CA_file;
-      {$else}
-      {$if not defined(SSL_load_client_CA_file_allownil)}
-      SSL_load_client_CA_file := @ERR_SSL_load_client_CA_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_load_client_CA_file_removed)}
@@ -16774,39 +15277,31 @@ begin
     begin
       {$if declared(_SSL_load_client_CA_file)}
       SSL_load_client_CA_file := @_SSL_load_client_CA_file;
-      {$else}
-      {$if not defined(SSL_load_client_CA_file_allownil)}
-      SSL_load_client_CA_file := @ERR_SSL_load_client_CA_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_load_client_CA_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_load_client_CA_file := @ERR_SSL_load_client_CA_file;
+    if FuncLoadError then
       AFailed.Add('SSL_load_client_CA_file');
-    end;
     {$ifend}
   end;
 
 
   SSL_add_file_cert_subjects_to_stack := LoadLibFunction(ADllHandle, SSL_add_file_cert_subjects_to_stack_procname);
-  FuncLoaded := assigned(SSL_add_file_cert_subjects_to_stack);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add_file_cert_subjects_to_stack);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add_file_cert_subjects_to_stack_allownil)}
+    SSL_add_file_cert_subjects_to_stack := @ERR_SSL_add_file_cert_subjects_to_stack;
+    {$ifend}
     {$if declared(SSL_add_file_cert_subjects_to_stack_introduced)}
     if LibVersion < SSL_add_file_cert_subjects_to_stack_introduced then
     begin
       {$if declared(FC_SSL_add_file_cert_subjects_to_stack)}
       SSL_add_file_cert_subjects_to_stack := @FC_SSL_add_file_cert_subjects_to_stack;
-      {$else}
-      {$if not defined(SSL_add_file_cert_subjects_to_stack_allownil)}
-      SSL_add_file_cert_subjects_to_stack := @ERR_SSL_add_file_cert_subjects_to_stack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add_file_cert_subjects_to_stack_removed)}
@@ -16814,39 +15309,31 @@ begin
     begin
       {$if declared(_SSL_add_file_cert_subjects_to_stack)}
       SSL_add_file_cert_subjects_to_stack := @_SSL_add_file_cert_subjects_to_stack;
-      {$else}
-      {$if not defined(SSL_add_file_cert_subjects_to_stack_allownil)}
-      SSL_add_file_cert_subjects_to_stack := @ERR_SSL_add_file_cert_subjects_to_stack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add_file_cert_subjects_to_stack_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add_file_cert_subjects_to_stack := @ERR_SSL_add_file_cert_subjects_to_stack;
+    if FuncLoadError then
       AFailed.Add('SSL_add_file_cert_subjects_to_stack');
-    end;
     {$ifend}
   end;
 
 
   SSL_add_dir_cert_subjects_to_stack := LoadLibFunction(ADllHandle, SSL_add_dir_cert_subjects_to_stack_procname);
-  FuncLoaded := assigned(SSL_add_dir_cert_subjects_to_stack);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add_dir_cert_subjects_to_stack);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add_dir_cert_subjects_to_stack_allownil)}
+    SSL_add_dir_cert_subjects_to_stack := @ERR_SSL_add_dir_cert_subjects_to_stack;
+    {$ifend}
     {$if declared(SSL_add_dir_cert_subjects_to_stack_introduced)}
     if LibVersion < SSL_add_dir_cert_subjects_to_stack_introduced then
     begin
       {$if declared(FC_SSL_add_dir_cert_subjects_to_stack)}
       SSL_add_dir_cert_subjects_to_stack := @FC_SSL_add_dir_cert_subjects_to_stack;
-      {$else}
-      {$if not defined(SSL_add_dir_cert_subjects_to_stack_allownil)}
-      SSL_add_dir_cert_subjects_to_stack := @ERR_SSL_add_dir_cert_subjects_to_stack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add_dir_cert_subjects_to_stack_removed)}
@@ -16854,39 +15341,31 @@ begin
     begin
       {$if declared(_SSL_add_dir_cert_subjects_to_stack)}
       SSL_add_dir_cert_subjects_to_stack := @_SSL_add_dir_cert_subjects_to_stack;
-      {$else}
-      {$if not defined(SSL_add_dir_cert_subjects_to_stack_allownil)}
-      SSL_add_dir_cert_subjects_to_stack := @ERR_SSL_add_dir_cert_subjects_to_stack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add_dir_cert_subjects_to_stack_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add_dir_cert_subjects_to_stack := @ERR_SSL_add_dir_cert_subjects_to_stack;
+    if FuncLoadError then
       AFailed.Add('SSL_add_dir_cert_subjects_to_stack');
-    end;
     {$ifend}
   end;
 
 
   SSL_load_error_strings := LoadLibFunction(ADllHandle, SSL_load_error_strings_procname);
-  FuncLoaded := assigned(SSL_load_error_strings);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_load_error_strings);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_load_error_strings_allownil)}
+    SSL_load_error_strings := @ERR_SSL_load_error_strings;
+    {$ifend}
     {$if declared(SSL_load_error_strings_introduced)}
     if LibVersion < SSL_load_error_strings_introduced then
     begin
       {$if declared(FC_SSL_load_error_strings)}
       SSL_load_error_strings := @FC_SSL_load_error_strings;
-      {$else}
-      {$if not defined(SSL_load_error_strings_allownil)}
-      SSL_load_error_strings := @ERR_SSL_load_error_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_load_error_strings_removed)}
@@ -16894,39 +15373,31 @@ begin
     begin
       {$if declared(_SSL_load_error_strings)}
       SSL_load_error_strings := @_SSL_load_error_strings;
-      {$else}
-      {$if not defined(SSL_load_error_strings_allownil)}
-      SSL_load_error_strings := @ERR_SSL_load_error_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_load_error_strings_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_load_error_strings := @ERR_SSL_load_error_strings;
+    if FuncLoadError then
       AFailed.Add('SSL_load_error_strings');
-    end;
     {$ifend}
   end;
 
  
   SSL_state_string := LoadLibFunction(ADllHandle, SSL_state_string_procname);
-  FuncLoaded := assigned(SSL_state_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_state_string);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_state_string_allownil)}
+    SSL_state_string := @ERR_SSL_state_string;
+    {$ifend}
     {$if declared(SSL_state_string_introduced)}
     if LibVersion < SSL_state_string_introduced then
     begin
       {$if declared(FC_SSL_state_string)}
       SSL_state_string := @FC_SSL_state_string;
-      {$else}
-      {$if not defined(SSL_state_string_allownil)}
-      SSL_state_string := @ERR_SSL_state_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_state_string_removed)}
@@ -16934,39 +15405,31 @@ begin
     begin
       {$if declared(_SSL_state_string)}
       SSL_state_string := @_SSL_state_string;
-      {$else}
-      {$if not defined(SSL_state_string_allownil)}
-      SSL_state_string := @ERR_SSL_state_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_state_string_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_state_string := @ERR_SSL_state_string;
+    if FuncLoadError then
       AFailed.Add('SSL_state_string');
-    end;
     {$ifend}
   end;
 
 
   SSL_rstate_string := LoadLibFunction(ADllHandle, SSL_rstate_string_procname);
-  FuncLoaded := assigned(SSL_rstate_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_rstate_string);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_rstate_string_allownil)}
+    SSL_rstate_string := @ERR_SSL_rstate_string;
+    {$ifend}
     {$if declared(SSL_rstate_string_introduced)}
     if LibVersion < SSL_rstate_string_introduced then
     begin
       {$if declared(FC_SSL_rstate_string)}
       SSL_rstate_string := @FC_SSL_rstate_string;
-      {$else}
-      {$if not defined(SSL_rstate_string_allownil)}
-      SSL_rstate_string := @ERR_SSL_rstate_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_rstate_string_removed)}
@@ -16974,39 +15437,31 @@ begin
     begin
       {$if declared(_SSL_rstate_string)}
       SSL_rstate_string := @_SSL_rstate_string;
-      {$else}
-      {$if not defined(SSL_rstate_string_allownil)}
-      SSL_rstate_string := @ERR_SSL_rstate_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_rstate_string_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_rstate_string := @ERR_SSL_rstate_string;
+    if FuncLoadError then
       AFailed.Add('SSL_rstate_string');
-    end;
     {$ifend}
   end;
 
 
   SSL_state_string_long := LoadLibFunction(ADllHandle, SSL_state_string_long_procname);
-  FuncLoaded := assigned(SSL_state_string_long);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_state_string_long);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_state_string_long_allownil)}
+    SSL_state_string_long := @ERR_SSL_state_string_long;
+    {$ifend}
     {$if declared(SSL_state_string_long_introduced)}
     if LibVersion < SSL_state_string_long_introduced then
     begin
       {$if declared(FC_SSL_state_string_long)}
       SSL_state_string_long := @FC_SSL_state_string_long;
-      {$else}
-      {$if not defined(SSL_state_string_long_allownil)}
-      SSL_state_string_long := @ERR_SSL_state_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_state_string_long_removed)}
@@ -17014,39 +15469,31 @@ begin
     begin
       {$if declared(_SSL_state_string_long)}
       SSL_state_string_long := @_SSL_state_string_long;
-      {$else}
-      {$if not defined(SSL_state_string_long_allownil)}
-      SSL_state_string_long := @ERR_SSL_state_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_state_string_long_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_state_string_long := @ERR_SSL_state_string_long;
+    if FuncLoadError then
       AFailed.Add('SSL_state_string_long');
-    end;
     {$ifend}
   end;
 
 
   SSL_rstate_string_long := LoadLibFunction(ADllHandle, SSL_rstate_string_long_procname);
-  FuncLoaded := assigned(SSL_rstate_string_long);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_rstate_string_long);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_rstate_string_long_allownil)}
+    SSL_rstate_string_long := @ERR_SSL_rstate_string_long;
+    {$ifend}
     {$if declared(SSL_rstate_string_long_introduced)}
     if LibVersion < SSL_rstate_string_long_introduced then
     begin
       {$if declared(FC_SSL_rstate_string_long)}
       SSL_rstate_string_long := @FC_SSL_rstate_string_long;
-      {$else}
-      {$if not defined(SSL_rstate_string_long_allownil)}
-      SSL_rstate_string_long := @ERR_SSL_rstate_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_rstate_string_long_removed)}
@@ -17054,39 +15501,31 @@ begin
     begin
       {$if declared(_SSL_rstate_string_long)}
       SSL_rstate_string_long := @_SSL_rstate_string_long;
-      {$else}
-      {$if not defined(SSL_rstate_string_long_allownil)}
-      SSL_rstate_string_long := @ERR_SSL_rstate_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_rstate_string_long_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_rstate_string_long := @ERR_SSL_rstate_string_long;
+    if FuncLoadError then
       AFailed.Add('SSL_rstate_string_long');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get_time := LoadLibFunction(ADllHandle, SSL_SESSION_get_time_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_time);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_time);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_time_allownil)}
+    SSL_SESSION_get_time := @ERR_SSL_SESSION_get_time;
+    {$ifend}
     {$if declared(SSL_SESSION_get_time_introduced)}
     if LibVersion < SSL_SESSION_get_time_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_time)}
       SSL_SESSION_get_time := @FC_SSL_SESSION_get_time;
-      {$else}
-      {$if not defined(SSL_SESSION_get_time_allownil)}
-      SSL_SESSION_get_time := @ERR_SSL_SESSION_get_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_time_removed)}
@@ -17094,39 +15533,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_time)}
       SSL_SESSION_get_time := @_SSL_SESSION_get_time;
-      {$else}
-      {$if not defined(SSL_SESSION_get_time_allownil)}
-      SSL_SESSION_get_time := @ERR_SSL_SESSION_get_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_time_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_time := @ERR_SSL_SESSION_get_time;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_time');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_set_time := LoadLibFunction(ADllHandle, SSL_SESSION_set_time_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_time);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_time);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_time_allownil)}
+    SSL_SESSION_set_time := @ERR_SSL_SESSION_set_time;
+    {$ifend}
     {$if declared(SSL_SESSION_set_time_introduced)}
     if LibVersion < SSL_SESSION_set_time_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_time)}
       SSL_SESSION_set_time := @FC_SSL_SESSION_set_time;
-      {$else}
-      {$if not defined(SSL_SESSION_set_time_allownil)}
-      SSL_SESSION_set_time := @ERR_SSL_SESSION_set_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_time_removed)}
@@ -17134,39 +15565,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_time)}
       SSL_SESSION_set_time := @_SSL_SESSION_set_time;
-      {$else}
-      {$if not defined(SSL_SESSION_set_time_allownil)}
-      SSL_SESSION_set_time := @ERR_SSL_SESSION_set_time;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_time_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_time := @ERR_SSL_SESSION_set_time;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_time');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get_timeout := LoadLibFunction(ADllHandle, SSL_SESSION_get_timeout_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_timeout);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_timeout);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_timeout_allownil)}
+    SSL_SESSION_get_timeout := @ERR_SSL_SESSION_get_timeout;
+    {$ifend}
     {$if declared(SSL_SESSION_get_timeout_introduced)}
     if LibVersion < SSL_SESSION_get_timeout_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_timeout)}
       SSL_SESSION_get_timeout := @FC_SSL_SESSION_get_timeout;
-      {$else}
-      {$if not defined(SSL_SESSION_get_timeout_allownil)}
-      SSL_SESSION_get_timeout := @ERR_SSL_SESSION_get_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_timeout_removed)}
@@ -17174,39 +15597,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_timeout)}
       SSL_SESSION_get_timeout := @_SSL_SESSION_get_timeout;
-      {$else}
-      {$if not defined(SSL_SESSION_get_timeout_allownil)}
-      SSL_SESSION_get_timeout := @ERR_SSL_SESSION_get_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_timeout_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_timeout := @ERR_SSL_SESSION_get_timeout;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_timeout');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_set_timeout := LoadLibFunction(ADllHandle, SSL_SESSION_set_timeout_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_timeout);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_timeout);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_timeout_allownil)}
+    SSL_SESSION_set_timeout := @ERR_SSL_SESSION_set_timeout;
+    {$ifend}
     {$if declared(SSL_SESSION_set_timeout_introduced)}
     if LibVersion < SSL_SESSION_set_timeout_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_timeout)}
       SSL_SESSION_set_timeout := @FC_SSL_SESSION_set_timeout;
-      {$else}
-      {$if not defined(SSL_SESSION_set_timeout_allownil)}
-      SSL_SESSION_set_timeout := @ERR_SSL_SESSION_set_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_timeout_removed)}
@@ -17214,39 +15629,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_timeout)}
       SSL_SESSION_set_timeout := @_SSL_SESSION_set_timeout;
-      {$else}
-      {$if not defined(SSL_SESSION_set_timeout_allownil)}
-      SSL_SESSION_set_timeout := @ERR_SSL_SESSION_set_timeout;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_timeout_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_timeout := @ERR_SSL_SESSION_set_timeout;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_timeout');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get_protocol_version := LoadLibFunction(ADllHandle, SSL_SESSION_get_protocol_version_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_protocol_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_protocol_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_protocol_version_allownil)}
+    SSL_SESSION_get_protocol_version := @ERR_SSL_SESSION_get_protocol_version;
+    {$ifend}
     {$if declared(SSL_SESSION_get_protocol_version_introduced)}
     if LibVersion < SSL_SESSION_get_protocol_version_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_protocol_version)}
       SSL_SESSION_get_protocol_version := @FC_SSL_SESSION_get_protocol_version;
-      {$else}
-      {$if not defined(SSL_SESSION_get_protocol_version_allownil)}
-      SSL_SESSION_get_protocol_version := @ERR_SSL_SESSION_get_protocol_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_protocol_version_removed)}
@@ -17254,39 +15661,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_protocol_version)}
       SSL_SESSION_get_protocol_version := @_SSL_SESSION_get_protocol_version;
-      {$else}
-      {$if not defined(SSL_SESSION_get_protocol_version_allownil)}
-      SSL_SESSION_get_protocol_version := @ERR_SSL_SESSION_get_protocol_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_protocol_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_protocol_version := @ERR_SSL_SESSION_get_protocol_version;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_protocol_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set_protocol_version := LoadLibFunction(ADllHandle, SSL_SESSION_set_protocol_version_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_protocol_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_protocol_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_protocol_version_allownil)}
+    SSL_SESSION_set_protocol_version := @ERR_SSL_SESSION_set_protocol_version;
+    {$ifend}
     {$if declared(SSL_SESSION_set_protocol_version_introduced)}
     if LibVersion < SSL_SESSION_set_protocol_version_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_protocol_version)}
       SSL_SESSION_set_protocol_version := @FC_SSL_SESSION_set_protocol_version;
-      {$else}
-      {$if not defined(SSL_SESSION_set_protocol_version_allownil)}
-      SSL_SESSION_set_protocol_version := @ERR_SSL_SESSION_set_protocol_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_protocol_version_removed)}
@@ -17294,39 +15693,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_protocol_version)}
       SSL_SESSION_set_protocol_version := @_SSL_SESSION_set_protocol_version;
-      {$else}
-      {$if not defined(SSL_SESSION_set_protocol_version_allownil)}
-      SSL_SESSION_set_protocol_version := @ERR_SSL_SESSION_set_protocol_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_protocol_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_protocol_version := @ERR_SSL_SESSION_set_protocol_version;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_protocol_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get0_hostname := LoadLibFunction(ADllHandle, SSL_SESSION_get0_hostname_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_hostname);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_hostname);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_hostname_allownil)}
+    SSL_SESSION_get0_hostname := @ERR_SSL_SESSION_get0_hostname;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_hostname_introduced)}
     if LibVersion < SSL_SESSION_get0_hostname_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_hostname)}
       SSL_SESSION_get0_hostname := @FC_SSL_SESSION_get0_hostname;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_hostname_allownil)}
-      SSL_SESSION_get0_hostname := @ERR_SSL_SESSION_get0_hostname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_hostname_removed)}
@@ -17334,39 +15725,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_hostname)}
       SSL_SESSION_get0_hostname := @_SSL_SESSION_get0_hostname;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_hostname_allownil)}
-      SSL_SESSION_get0_hostname := @ERR_SSL_SESSION_get0_hostname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_hostname_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_hostname := @ERR_SSL_SESSION_get0_hostname;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_hostname');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set1_hostname := LoadLibFunction(ADllHandle, SSL_SESSION_set1_hostname_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_hostname);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_hostname);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_hostname_allownil)}
+    SSL_SESSION_set1_hostname := @ERR_SSL_SESSION_set1_hostname;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_hostname_introduced)}
     if LibVersion < SSL_SESSION_set1_hostname_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_hostname)}
       SSL_SESSION_set1_hostname := @FC_SSL_SESSION_set1_hostname;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_hostname_allownil)}
-      SSL_SESSION_set1_hostname := @ERR_SSL_SESSION_set1_hostname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_hostname_removed)}
@@ -17374,39 +15757,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_hostname)}
       SSL_SESSION_set1_hostname := @_SSL_SESSION_set1_hostname;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_hostname_allownil)}
-      SSL_SESSION_set1_hostname := @ERR_SSL_SESSION_set1_hostname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_hostname_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_hostname := @ERR_SSL_SESSION_set1_hostname;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_hostname');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get0_alpn_selected := LoadLibFunction(ADllHandle, SSL_SESSION_get0_alpn_selected_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_alpn_selected);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_alpn_selected);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_alpn_selected_allownil)}
+    SSL_SESSION_get0_alpn_selected := @ERR_SSL_SESSION_get0_alpn_selected;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_alpn_selected_introduced)}
     if LibVersion < SSL_SESSION_get0_alpn_selected_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_alpn_selected)}
       SSL_SESSION_get0_alpn_selected := @FC_SSL_SESSION_get0_alpn_selected;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_alpn_selected_allownil)}
-      SSL_SESSION_get0_alpn_selected := @ERR_SSL_SESSION_get0_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_alpn_selected_removed)}
@@ -17414,39 +15789,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_alpn_selected)}
       SSL_SESSION_get0_alpn_selected := @_SSL_SESSION_get0_alpn_selected;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_alpn_selected_allownil)}
-      SSL_SESSION_get0_alpn_selected := @ERR_SSL_SESSION_get0_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_alpn_selected_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_alpn_selected := @ERR_SSL_SESSION_get0_alpn_selected;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_alpn_selected');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set1_alpn_selected := LoadLibFunction(ADllHandle, SSL_SESSION_set1_alpn_selected_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_alpn_selected);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_alpn_selected);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_alpn_selected_allownil)}
+    SSL_SESSION_set1_alpn_selected := @ERR_SSL_SESSION_set1_alpn_selected;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_alpn_selected_introduced)}
     if LibVersion < SSL_SESSION_set1_alpn_selected_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_alpn_selected)}
       SSL_SESSION_set1_alpn_selected := @FC_SSL_SESSION_set1_alpn_selected;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_alpn_selected_allownil)}
-      SSL_SESSION_set1_alpn_selected := @ERR_SSL_SESSION_set1_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_alpn_selected_removed)}
@@ -17454,39 +15821,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_alpn_selected)}
       SSL_SESSION_set1_alpn_selected := @_SSL_SESSION_set1_alpn_selected;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_alpn_selected_allownil)}
-      SSL_SESSION_set1_alpn_selected := @ERR_SSL_SESSION_set1_alpn_selected;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_alpn_selected_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_alpn_selected := @ERR_SSL_SESSION_set1_alpn_selected;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_alpn_selected');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get0_cipher := LoadLibFunction(ADllHandle, SSL_SESSION_get0_cipher_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_cipher_allownil)}
+    SSL_SESSION_get0_cipher := @ERR_SSL_SESSION_get0_cipher;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_cipher_introduced)}
     if LibVersion < SSL_SESSION_get0_cipher_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_cipher)}
       SSL_SESSION_get0_cipher := @FC_SSL_SESSION_get0_cipher;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_cipher_allownil)}
-      SSL_SESSION_get0_cipher := @ERR_SSL_SESSION_get0_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_cipher_removed)}
@@ -17494,39 +15853,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_cipher)}
       SSL_SESSION_get0_cipher := @_SSL_SESSION_get0_cipher;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_cipher_allownil)}
-      SSL_SESSION_get0_cipher := @ERR_SSL_SESSION_get0_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_cipher := @ERR_SSL_SESSION_get0_cipher;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_cipher');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set_cipher := LoadLibFunction(ADllHandle, SSL_SESSION_set_cipher_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_cipher);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_cipher);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_cipher_allownil)}
+    SSL_SESSION_set_cipher := @ERR_SSL_SESSION_set_cipher;
+    {$ifend}
     {$if declared(SSL_SESSION_set_cipher_introduced)}
     if LibVersion < SSL_SESSION_set_cipher_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_cipher)}
       SSL_SESSION_set_cipher := @FC_SSL_SESSION_set_cipher;
-      {$else}
-      {$if not defined(SSL_SESSION_set_cipher_allownil)}
-      SSL_SESSION_set_cipher := @ERR_SSL_SESSION_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_cipher_removed)}
@@ -17534,39 +15885,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_cipher)}
       SSL_SESSION_set_cipher := @_SSL_SESSION_set_cipher;
-      {$else}
-      {$if not defined(SSL_SESSION_set_cipher_allownil)}
-      SSL_SESSION_set_cipher := @ERR_SSL_SESSION_set_cipher;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_cipher_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_cipher := @ERR_SSL_SESSION_set_cipher;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_cipher');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_has_ticket := LoadLibFunction(ADllHandle, SSL_SESSION_has_ticket_procname);
-  FuncLoaded := assigned(SSL_SESSION_has_ticket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_has_ticket);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_has_ticket_allownil)}
+    SSL_SESSION_has_ticket := @ERR_SSL_SESSION_has_ticket;
+    {$ifend}
     {$if declared(SSL_SESSION_has_ticket_introduced)}
     if LibVersion < SSL_SESSION_has_ticket_introduced then
     begin
       {$if declared(FC_SSL_SESSION_has_ticket)}
       SSL_SESSION_has_ticket := @FC_SSL_SESSION_has_ticket;
-      {$else}
-      {$if not defined(SSL_SESSION_has_ticket_allownil)}
-      SSL_SESSION_has_ticket := @ERR_SSL_SESSION_has_ticket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_has_ticket_removed)}
@@ -17574,39 +15917,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_has_ticket)}
       SSL_SESSION_has_ticket := @_SSL_SESSION_has_ticket;
-      {$else}
-      {$if not defined(SSL_SESSION_has_ticket_allownil)}
-      SSL_SESSION_has_ticket := @ERR_SSL_SESSION_has_ticket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_has_ticket_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_has_ticket := @ERR_SSL_SESSION_has_ticket;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_has_ticket');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_ticket_lifetime_hint := LoadLibFunction(ADllHandle, SSL_SESSION_get_ticket_lifetime_hint_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_ticket_lifetime_hint);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_ticket_lifetime_hint);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_ticket_lifetime_hint_allownil)}
+    SSL_SESSION_get_ticket_lifetime_hint := @ERR_SSL_SESSION_get_ticket_lifetime_hint;
+    {$ifend}
     {$if declared(SSL_SESSION_get_ticket_lifetime_hint_introduced)}
     if LibVersion < SSL_SESSION_get_ticket_lifetime_hint_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_ticket_lifetime_hint)}
       SSL_SESSION_get_ticket_lifetime_hint := @FC_SSL_SESSION_get_ticket_lifetime_hint;
-      {$else}
-      {$if not defined(SSL_SESSION_get_ticket_lifetime_hint_allownil)}
-      SSL_SESSION_get_ticket_lifetime_hint := @ERR_SSL_SESSION_get_ticket_lifetime_hint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_ticket_lifetime_hint_removed)}
@@ -17614,39 +15949,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_ticket_lifetime_hint)}
       SSL_SESSION_get_ticket_lifetime_hint := @_SSL_SESSION_get_ticket_lifetime_hint;
-      {$else}
-      {$if not defined(SSL_SESSION_get_ticket_lifetime_hint_allownil)}
-      SSL_SESSION_get_ticket_lifetime_hint := @ERR_SSL_SESSION_get_ticket_lifetime_hint;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_ticket_lifetime_hint_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_ticket_lifetime_hint := @ERR_SSL_SESSION_get_ticket_lifetime_hint;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_ticket_lifetime_hint');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get0_ticket := LoadLibFunction(ADllHandle, SSL_SESSION_get0_ticket_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_ticket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_ticket);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_ticket_allownil)}
+    SSL_SESSION_get0_ticket := @ERR_SSL_SESSION_get0_ticket;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_ticket_introduced)}
     if LibVersion < SSL_SESSION_get0_ticket_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_ticket)}
       SSL_SESSION_get0_ticket := @FC_SSL_SESSION_get0_ticket;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_ticket_allownil)}
-      SSL_SESSION_get0_ticket := @ERR_SSL_SESSION_get0_ticket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_ticket_removed)}
@@ -17654,39 +15981,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_ticket)}
       SSL_SESSION_get0_ticket := @_SSL_SESSION_get0_ticket;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_ticket_allownil)}
-      SSL_SESSION_get0_ticket := @ERR_SSL_SESSION_get0_ticket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_ticket_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_ticket := @ERR_SSL_SESSION_get0_ticket;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_ticket');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_max_early_data := LoadLibFunction(ADllHandle, SSL_SESSION_get_max_early_data_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_max_early_data_allownil)}
+    SSL_SESSION_get_max_early_data := @ERR_SSL_SESSION_get_max_early_data;
+    {$ifend}
     {$if declared(SSL_SESSION_get_max_early_data_introduced)}
     if LibVersion < SSL_SESSION_get_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_max_early_data)}
       SSL_SESSION_get_max_early_data := @FC_SSL_SESSION_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_SESSION_get_max_early_data_allownil)}
-      SSL_SESSION_get_max_early_data := @ERR_SSL_SESSION_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_max_early_data_removed)}
@@ -17694,39 +16013,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_max_early_data)}
       SSL_SESSION_get_max_early_data := @_SSL_SESSION_get_max_early_data;
-      {$else}
-      {$if not defined(SSL_SESSION_get_max_early_data_allownil)}
-      SSL_SESSION_get_max_early_data := @ERR_SSL_SESSION_get_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_max_early_data := @ERR_SSL_SESSION_get_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set_max_early_data := LoadLibFunction(ADllHandle, SSL_SESSION_set_max_early_data_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_max_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_max_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_max_early_data_allownil)}
+    SSL_SESSION_set_max_early_data := @ERR_SSL_SESSION_set_max_early_data;
+    {$ifend}
     {$if declared(SSL_SESSION_set_max_early_data_introduced)}
     if LibVersion < SSL_SESSION_set_max_early_data_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_max_early_data)}
       SSL_SESSION_set_max_early_data := @FC_SSL_SESSION_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_SESSION_set_max_early_data_allownil)}
-      SSL_SESSION_set_max_early_data := @ERR_SSL_SESSION_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_max_early_data_removed)}
@@ -17734,39 +16045,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_max_early_data)}
       SSL_SESSION_set_max_early_data := @_SSL_SESSION_set_max_early_data;
-      {$else}
-      {$if not defined(SSL_SESSION_set_max_early_data_allownil)}
-      SSL_SESSION_set_max_early_data := @ERR_SSL_SESSION_set_max_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_max_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_max_early_data := @ERR_SSL_SESSION_set_max_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_max_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_copy_session_id := LoadLibFunction(ADllHandle, SSL_copy_session_id_procname);
-  FuncLoaded := assigned(SSL_copy_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_copy_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_copy_session_id_allownil)}
+    SSL_copy_session_id := @ERR_SSL_copy_session_id;
+    {$ifend}
     {$if declared(SSL_copy_session_id_introduced)}
     if LibVersion < SSL_copy_session_id_introduced then
     begin
       {$if declared(FC_SSL_copy_session_id)}
       SSL_copy_session_id := @FC_SSL_copy_session_id;
-      {$else}
-      {$if not defined(SSL_copy_session_id_allownil)}
-      SSL_copy_session_id := @ERR_SSL_copy_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_copy_session_id_removed)}
@@ -17774,39 +16077,31 @@ begin
     begin
       {$if declared(_SSL_copy_session_id)}
       SSL_copy_session_id := @_SSL_copy_session_id;
-      {$else}
-      {$if not defined(SSL_copy_session_id_allownil)}
-      SSL_copy_session_id := @ERR_SSL_copy_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_copy_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_copy_session_id := @ERR_SSL_copy_session_id;
+    if FuncLoadError then
       AFailed.Add('SSL_copy_session_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get0_peer := LoadLibFunction(ADllHandle, SSL_SESSION_get0_peer_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_peer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_peer);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_peer_allownil)}
+    SSL_SESSION_get0_peer := @ERR_SSL_SESSION_get0_peer;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_peer_introduced)}
     if LibVersion < SSL_SESSION_get0_peer_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_peer)}
       SSL_SESSION_get0_peer := @FC_SSL_SESSION_get0_peer;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_peer_allownil)}
-      SSL_SESSION_get0_peer := @ERR_SSL_SESSION_get0_peer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_peer_removed)}
@@ -17814,39 +16109,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_peer)}
       SSL_SESSION_get0_peer := @_SSL_SESSION_get0_peer;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_peer_allownil)}
-      SSL_SESSION_get0_peer := @ERR_SSL_SESSION_get0_peer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_peer_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_peer := @ERR_SSL_SESSION_get0_peer;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_peer');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_set1_id_context := LoadLibFunction(ADllHandle, SSL_SESSION_set1_id_context_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_id_context);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_id_context);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_id_context_allownil)}
+    SSL_SESSION_set1_id_context := @ERR_SSL_SESSION_set1_id_context;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_id_context_introduced)}
     if LibVersion < SSL_SESSION_set1_id_context_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_id_context)}
       SSL_SESSION_set1_id_context := @FC_SSL_SESSION_set1_id_context;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_id_context_allownil)}
-      SSL_SESSION_set1_id_context := @ERR_SSL_SESSION_set1_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_id_context_removed)}
@@ -17854,39 +16141,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_id_context)}
       SSL_SESSION_set1_id_context := @_SSL_SESSION_set1_id_context;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_id_context_allownil)}
-      SSL_SESSION_set1_id_context := @ERR_SSL_SESSION_set1_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_id_context_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_id_context := @ERR_SSL_SESSION_set1_id_context;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_id_context');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_set1_id := LoadLibFunction(ADllHandle, SSL_SESSION_set1_id_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_id_allownil)}
+    SSL_SESSION_set1_id := @ERR_SSL_SESSION_set1_id;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_id_introduced)}
     if LibVersion < SSL_SESSION_set1_id_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_id)}
       SSL_SESSION_set1_id := @FC_SSL_SESSION_set1_id;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_id_allownil)}
-      SSL_SESSION_set1_id := @ERR_SSL_SESSION_set1_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_id_removed)}
@@ -17894,39 +16173,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_id)}
       SSL_SESSION_set1_id := @_SSL_SESSION_set1_id;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_id_allownil)}
-      SSL_SESSION_set1_id := @ERR_SSL_SESSION_set1_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_id := @ERR_SSL_SESSION_set1_id;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_id');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_is_resumable := LoadLibFunction(ADllHandle, SSL_SESSION_is_resumable_procname);
-  FuncLoaded := assigned(SSL_SESSION_is_resumable);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_is_resumable);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_is_resumable_allownil)}
+    SSL_SESSION_is_resumable := @ERR_SSL_SESSION_is_resumable;
+    {$ifend}
     {$if declared(SSL_SESSION_is_resumable_introduced)}
     if LibVersion < SSL_SESSION_is_resumable_introduced then
     begin
       {$if declared(FC_SSL_SESSION_is_resumable)}
       SSL_SESSION_is_resumable := @FC_SSL_SESSION_is_resumable;
-      {$else}
-      {$if not defined(SSL_SESSION_is_resumable_allownil)}
-      SSL_SESSION_is_resumable := @ERR_SSL_SESSION_is_resumable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_is_resumable_removed)}
@@ -17934,39 +16205,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_is_resumable)}
       SSL_SESSION_is_resumable := @_SSL_SESSION_is_resumable;
-      {$else}
-      {$if not defined(SSL_SESSION_is_resumable_allownil)}
-      SSL_SESSION_is_resumable := @ERR_SSL_SESSION_is_resumable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_is_resumable_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_is_resumable := @ERR_SSL_SESSION_is_resumable;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_is_resumable');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_new := LoadLibFunction(ADllHandle, SSL_SESSION_new_procname);
-  FuncLoaded := assigned(SSL_SESSION_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_new);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_new_allownil)}
+    SSL_SESSION_new := @ERR_SSL_SESSION_new;
+    {$ifend}
     {$if declared(SSL_SESSION_new_introduced)}
     if LibVersion < SSL_SESSION_new_introduced then
     begin
       {$if declared(FC_SSL_SESSION_new)}
       SSL_SESSION_new := @FC_SSL_SESSION_new;
-      {$else}
-      {$if not defined(SSL_SESSION_new_allownil)}
-      SSL_SESSION_new := @ERR_SSL_SESSION_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_new_removed)}
@@ -17974,39 +16237,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_new)}
       SSL_SESSION_new := @_SSL_SESSION_new;
-      {$else}
-      {$if not defined(SSL_SESSION_new_allownil)}
-      SSL_SESSION_new := @ERR_SSL_SESSION_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_new_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_new := @ERR_SSL_SESSION_new;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_new');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_dup := LoadLibFunction(ADllHandle, SSL_SESSION_dup_procname);
-  FuncLoaded := assigned(SSL_SESSION_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_dup_allownil)}
+    SSL_SESSION_dup := @ERR_SSL_SESSION_dup;
+    {$ifend}
     {$if declared(SSL_SESSION_dup_introduced)}
     if LibVersion < SSL_SESSION_dup_introduced then
     begin
       {$if declared(FC_SSL_SESSION_dup)}
       SSL_SESSION_dup := @FC_SSL_SESSION_dup;
-      {$else}
-      {$if not defined(SSL_SESSION_dup_allownil)}
-      SSL_SESSION_dup := @ERR_SSL_SESSION_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_dup_removed)}
@@ -18014,39 +16269,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_dup)}
       SSL_SESSION_dup := @_SSL_SESSION_dup;
-      {$else}
-      {$if not defined(SSL_SESSION_dup_allownil)}
-      SSL_SESSION_dup := @ERR_SSL_SESSION_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_dup := @ERR_SSL_SESSION_dup;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_dup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_id := LoadLibFunction(ADllHandle, SSL_SESSION_get_id_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_id_allownil)}
+    SSL_SESSION_get_id := @ERR_SSL_SESSION_get_id;
+    {$ifend}
     {$if declared(SSL_SESSION_get_id_introduced)}
     if LibVersion < SSL_SESSION_get_id_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_id)}
       SSL_SESSION_get_id := @FC_SSL_SESSION_get_id;
-      {$else}
-      {$if not defined(SSL_SESSION_get_id_allownil)}
-      SSL_SESSION_get_id := @ERR_SSL_SESSION_get_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_id_removed)}
@@ -18054,39 +16301,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_id)}
       SSL_SESSION_get_id := @_SSL_SESSION_get_id;
-      {$else}
-      {$if not defined(SSL_SESSION_get_id_allownil)}
-      SSL_SESSION_get_id := @ERR_SSL_SESSION_get_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_id := @ERR_SSL_SESSION_get_id;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get0_id_context := LoadLibFunction(ADllHandle, SSL_SESSION_get0_id_context_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_id_context);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_id_context);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_id_context_allownil)}
+    SSL_SESSION_get0_id_context := @ERR_SSL_SESSION_get0_id_context;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_id_context_introduced)}
     if LibVersion < SSL_SESSION_get0_id_context_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_id_context)}
       SSL_SESSION_get0_id_context := @FC_SSL_SESSION_get0_id_context;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_id_context_allownil)}
-      SSL_SESSION_get0_id_context := @ERR_SSL_SESSION_get0_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_id_context_removed)}
@@ -18094,39 +16333,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_id_context)}
       SSL_SESSION_get0_id_context := @_SSL_SESSION_get0_id_context;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_id_context_allownil)}
-      SSL_SESSION_get0_id_context := @ERR_SSL_SESSION_get0_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_id_context_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_id_context := @ERR_SSL_SESSION_get0_id_context;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_id_context');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_compress_id := LoadLibFunction(ADllHandle, SSL_SESSION_get_compress_id_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_compress_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_compress_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_compress_id_allownil)}
+    SSL_SESSION_get_compress_id := @ERR_SSL_SESSION_get_compress_id;
+    {$ifend}
     {$if declared(SSL_SESSION_get_compress_id_introduced)}
     if LibVersion < SSL_SESSION_get_compress_id_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_compress_id)}
       SSL_SESSION_get_compress_id := @FC_SSL_SESSION_get_compress_id;
-      {$else}
-      {$if not defined(SSL_SESSION_get_compress_id_allownil)}
-      SSL_SESSION_get_compress_id := @ERR_SSL_SESSION_get_compress_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_compress_id_removed)}
@@ -18134,39 +16365,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_compress_id)}
       SSL_SESSION_get_compress_id := @_SSL_SESSION_get_compress_id;
-      {$else}
-      {$if not defined(SSL_SESSION_get_compress_id_allownil)}
-      SSL_SESSION_get_compress_id := @ERR_SSL_SESSION_get_compress_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_compress_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_compress_id := @ERR_SSL_SESSION_get_compress_id;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_compress_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_print := LoadLibFunction(ADllHandle, SSL_SESSION_print_procname);
-  FuncLoaded := assigned(SSL_SESSION_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_print);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_print_allownil)}
+    SSL_SESSION_print := @ERR_SSL_SESSION_print;
+    {$ifend}
     {$if declared(SSL_SESSION_print_introduced)}
     if LibVersion < SSL_SESSION_print_introduced then
     begin
       {$if declared(FC_SSL_SESSION_print)}
       SSL_SESSION_print := @FC_SSL_SESSION_print;
-      {$else}
-      {$if not defined(SSL_SESSION_print_allownil)}
-      SSL_SESSION_print := @ERR_SSL_SESSION_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_print_removed)}
@@ -18174,39 +16397,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_print)}
       SSL_SESSION_print := @_SSL_SESSION_print;
-      {$else}
-      {$if not defined(SSL_SESSION_print_allownil)}
-      SSL_SESSION_print := @ERR_SSL_SESSION_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_print_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_print := @ERR_SSL_SESSION_print;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_print');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_print_keylog := LoadLibFunction(ADllHandle, SSL_SESSION_print_keylog_procname);
-  FuncLoaded := assigned(SSL_SESSION_print_keylog);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_print_keylog);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_print_keylog_allownil)}
+    SSL_SESSION_print_keylog := @ERR_SSL_SESSION_print_keylog;
+    {$ifend}
     {$if declared(SSL_SESSION_print_keylog_introduced)}
     if LibVersion < SSL_SESSION_print_keylog_introduced then
     begin
       {$if declared(FC_SSL_SESSION_print_keylog)}
       SSL_SESSION_print_keylog := @FC_SSL_SESSION_print_keylog;
-      {$else}
-      {$if not defined(SSL_SESSION_print_keylog_allownil)}
-      SSL_SESSION_print_keylog := @ERR_SSL_SESSION_print_keylog;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_print_keylog_removed)}
@@ -18214,39 +16429,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_print_keylog)}
       SSL_SESSION_print_keylog := @_SSL_SESSION_print_keylog;
-      {$else}
-      {$if not defined(SSL_SESSION_print_keylog_allownil)}
-      SSL_SESSION_print_keylog := @ERR_SSL_SESSION_print_keylog;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_print_keylog_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_print_keylog := @ERR_SSL_SESSION_print_keylog;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_print_keylog');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_up_ref := LoadLibFunction(ADllHandle, SSL_SESSION_up_ref_procname);
-  FuncLoaded := assigned(SSL_SESSION_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_up_ref_allownil)}
+    SSL_SESSION_up_ref := @ERR_SSL_SESSION_up_ref;
+    {$ifend}
     {$if declared(SSL_SESSION_up_ref_introduced)}
     if LibVersion < SSL_SESSION_up_ref_introduced then
     begin
       {$if declared(FC_SSL_SESSION_up_ref)}
       SSL_SESSION_up_ref := @FC_SSL_SESSION_up_ref;
-      {$else}
-      {$if not defined(SSL_SESSION_up_ref_allownil)}
-      SSL_SESSION_up_ref := @ERR_SSL_SESSION_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_up_ref_removed)}
@@ -18254,39 +16461,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_up_ref)}
       SSL_SESSION_up_ref := @_SSL_SESSION_up_ref;
-      {$else}
-      {$if not defined(SSL_SESSION_up_ref_allownil)}
-      SSL_SESSION_up_ref := @ERR_SSL_SESSION_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_up_ref := @ERR_SSL_SESSION_up_ref;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_free := LoadLibFunction(ADllHandle, SSL_SESSION_free_procname);
-  FuncLoaded := assigned(SSL_SESSION_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_free);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_free_allownil)}
+    SSL_SESSION_free := @ERR_SSL_SESSION_free;
+    {$ifend}
     {$if declared(SSL_SESSION_free_introduced)}
     if LibVersion < SSL_SESSION_free_introduced then
     begin
       {$if declared(FC_SSL_SESSION_free)}
       SSL_SESSION_free := @FC_SSL_SESSION_free;
-      {$else}
-      {$if not defined(SSL_SESSION_free_allownil)}
-      SSL_SESSION_free := @ERR_SSL_SESSION_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_free_removed)}
@@ -18294,39 +16493,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_free)}
       SSL_SESSION_free := @_SSL_SESSION_free;
-      {$else}
-      {$if not defined(SSL_SESSION_free_allownil)}
-      SSL_SESSION_free := @ERR_SSL_SESSION_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_free_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_free := @ERR_SSL_SESSION_free;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_free');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_session := LoadLibFunction(ADllHandle, SSL_set_session_procname);
-  FuncLoaded := assigned(SSL_set_session);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_session);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_session_allownil)}
+    SSL_set_session := @ERR_SSL_set_session;
+    {$ifend}
     {$if declared(SSL_set_session_introduced)}
     if LibVersion < SSL_set_session_introduced then
     begin
       {$if declared(FC_SSL_set_session)}
       SSL_set_session := @FC_SSL_set_session;
-      {$else}
-      {$if not defined(SSL_set_session_allownil)}
-      SSL_set_session := @ERR_SSL_set_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_session_removed)}
@@ -18334,39 +16525,31 @@ begin
     begin
       {$if declared(_SSL_set_session)}
       SSL_set_session := @_SSL_set_session;
-      {$else}
-      {$if not defined(SSL_set_session_allownil)}
-      SSL_set_session := @ERR_SSL_set_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_session_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_session := @ERR_SSL_set_session;
+    if FuncLoadError then
       AFailed.Add('SSL_set_session');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_add_session := LoadLibFunction(ADllHandle, SSL_CTX_add_session_procname);
-  FuncLoaded := assigned(SSL_CTX_add_session);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_add_session);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_add_session_allownil)}
+    SSL_CTX_add_session := @ERR_SSL_CTX_add_session;
+    {$ifend}
     {$if declared(SSL_CTX_add_session_introduced)}
     if LibVersion < SSL_CTX_add_session_introduced then
     begin
       {$if declared(FC_SSL_CTX_add_session)}
       SSL_CTX_add_session := @FC_SSL_CTX_add_session;
-      {$else}
-      {$if not defined(SSL_CTX_add_session_allownil)}
-      SSL_CTX_add_session := @ERR_SSL_CTX_add_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_add_session_removed)}
@@ -18374,39 +16557,31 @@ begin
     begin
       {$if declared(_SSL_CTX_add_session)}
       SSL_CTX_add_session := @_SSL_CTX_add_session;
-      {$else}
-      {$if not defined(SSL_CTX_add_session_allownil)}
-      SSL_CTX_add_session := @ERR_SSL_CTX_add_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_add_session_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_add_session := @ERR_SSL_CTX_add_session;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_add_session');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_remove_session := LoadLibFunction(ADllHandle, SSL_CTX_remove_session_procname);
-  FuncLoaded := assigned(SSL_CTX_remove_session);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_remove_session);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_remove_session_allownil)}
+    SSL_CTX_remove_session := @ERR_SSL_CTX_remove_session;
+    {$ifend}
     {$if declared(SSL_CTX_remove_session_introduced)}
     if LibVersion < SSL_CTX_remove_session_introduced then
     begin
       {$if declared(FC_SSL_CTX_remove_session)}
       SSL_CTX_remove_session := @FC_SSL_CTX_remove_session;
-      {$else}
-      {$if not defined(SSL_CTX_remove_session_allownil)}
-      SSL_CTX_remove_session := @ERR_SSL_CTX_remove_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_remove_session_removed)}
@@ -18414,39 +16589,31 @@ begin
     begin
       {$if declared(_SSL_CTX_remove_session)}
       SSL_CTX_remove_session := @_SSL_CTX_remove_session;
-      {$else}
-      {$if not defined(SSL_CTX_remove_session_allownil)}
-      SSL_CTX_remove_session := @ERR_SSL_CTX_remove_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_remove_session_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_remove_session := @ERR_SSL_CTX_remove_session;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_remove_session');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_generate_session_id := LoadLibFunction(ADllHandle, SSL_CTX_set_generate_session_id_procname);
-  FuncLoaded := assigned(SSL_CTX_set_generate_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_generate_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_generate_session_id_allownil)}
+    SSL_CTX_set_generate_session_id := @ERR_SSL_CTX_set_generate_session_id;
+    {$ifend}
     {$if declared(SSL_CTX_set_generate_session_id_introduced)}
     if LibVersion < SSL_CTX_set_generate_session_id_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_generate_session_id)}
       SSL_CTX_set_generate_session_id := @FC_SSL_CTX_set_generate_session_id;
-      {$else}
-      {$if not defined(SSL_CTX_set_generate_session_id_allownil)}
-      SSL_CTX_set_generate_session_id := @ERR_SSL_CTX_set_generate_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_generate_session_id_removed)}
@@ -18454,39 +16621,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_generate_session_id)}
       SSL_CTX_set_generate_session_id := @_SSL_CTX_set_generate_session_id;
-      {$else}
-      {$if not defined(SSL_CTX_set_generate_session_id_allownil)}
-      SSL_CTX_set_generate_session_id := @ERR_SSL_CTX_set_generate_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_generate_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_generate_session_id := @ERR_SSL_CTX_set_generate_session_id;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_generate_session_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_generate_session_id := LoadLibFunction(ADllHandle, SSL_set_generate_session_id_procname);
-  FuncLoaded := assigned(SSL_set_generate_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_generate_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_generate_session_id_allownil)}
+    SSL_set_generate_session_id := @ERR_SSL_set_generate_session_id;
+    {$ifend}
     {$if declared(SSL_set_generate_session_id_introduced)}
     if LibVersion < SSL_set_generate_session_id_introduced then
     begin
       {$if declared(FC_SSL_set_generate_session_id)}
       SSL_set_generate_session_id := @FC_SSL_set_generate_session_id;
-      {$else}
-      {$if not defined(SSL_set_generate_session_id_allownil)}
-      SSL_set_generate_session_id := @ERR_SSL_set_generate_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_generate_session_id_removed)}
@@ -18494,39 +16653,31 @@ begin
     begin
       {$if declared(_SSL_set_generate_session_id)}
       SSL_set_generate_session_id := @_SSL_set_generate_session_id;
-      {$else}
-      {$if not defined(SSL_set_generate_session_id_allownil)}
-      SSL_set_generate_session_id := @ERR_SSL_set_generate_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_generate_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_generate_session_id := @ERR_SSL_set_generate_session_id;
+    if FuncLoadError then
       AFailed.Add('SSL_set_generate_session_id');
-    end;
     {$ifend}
   end;
 
 
   SSL_has_matching_session_id := LoadLibFunction(ADllHandle, SSL_has_matching_session_id_procname);
-  FuncLoaded := assigned(SSL_has_matching_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_has_matching_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_has_matching_session_id_allownil)}
+    SSL_has_matching_session_id := @ERR_SSL_has_matching_session_id;
+    {$ifend}
     {$if declared(SSL_has_matching_session_id_introduced)}
     if LibVersion < SSL_has_matching_session_id_introduced then
     begin
       {$if declared(FC_SSL_has_matching_session_id)}
       SSL_has_matching_session_id := @FC_SSL_has_matching_session_id;
-      {$else}
-      {$if not defined(SSL_has_matching_session_id_allownil)}
-      SSL_has_matching_session_id := @ERR_SSL_has_matching_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_has_matching_session_id_removed)}
@@ -18534,39 +16685,31 @@ begin
     begin
       {$if declared(_SSL_has_matching_session_id)}
       SSL_has_matching_session_id := @_SSL_has_matching_session_id;
-      {$else}
-      {$if not defined(SSL_has_matching_session_id_allownil)}
-      SSL_has_matching_session_id := @ERR_SSL_has_matching_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_has_matching_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_has_matching_session_id := @ERR_SSL_has_matching_session_id;
+    if FuncLoadError then
       AFailed.Add('SSL_has_matching_session_id');
-    end;
     {$ifend}
   end;
 
 
   d2i_SSL_SESSION := LoadLibFunction(ADllHandle, d2i_SSL_SESSION_procname);
-  FuncLoaded := assigned(d2i_SSL_SESSION);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_SSL_SESSION);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_SSL_SESSION_allownil)}
+    d2i_SSL_SESSION := @ERR_d2i_SSL_SESSION;
+    {$ifend}
     {$if declared(d2i_SSL_SESSION_introduced)}
     if LibVersion < d2i_SSL_SESSION_introduced then
     begin
       {$if declared(FC_d2i_SSL_SESSION)}
       d2i_SSL_SESSION := @FC_d2i_SSL_SESSION;
-      {$else}
-      {$if not defined(d2i_SSL_SESSION_allownil)}
-      d2i_SSL_SESSION := @ERR_d2i_SSL_SESSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_SSL_SESSION_removed)}
@@ -18574,39 +16717,31 @@ begin
     begin
       {$if declared(_d2i_SSL_SESSION)}
       d2i_SSL_SESSION := @_d2i_SSL_SESSION;
-      {$else}
-      {$if not defined(d2i_SSL_SESSION_allownil)}
-      d2i_SSL_SESSION := @ERR_d2i_SSL_SESSION;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_SSL_SESSION_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_SSL_SESSION := @ERR_d2i_SSL_SESSION;
+    if FuncLoadError then
       AFailed.Add('d2i_SSL_SESSION');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_peer_certificate := LoadLibFunction(ADllHandle, SSL_get_peer_certificate_procname);
-  FuncLoaded := assigned(SSL_get_peer_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_peer_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_peer_certificate_allownil)}
+    SSL_get_peer_certificate := @ERR_SSL_get_peer_certificate;
+    {$ifend}
     {$if declared(SSL_get_peer_certificate_introduced)}
     if LibVersion < SSL_get_peer_certificate_introduced then
     begin
       {$if declared(FC_SSL_get_peer_certificate)}
       SSL_get_peer_certificate := @FC_SSL_get_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get_peer_certificate_allownil)}
-      SSL_get_peer_certificate := @ERR_SSL_get_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_peer_certificate_removed)}
@@ -18614,39 +16749,31 @@ begin
     begin
       {$if declared(_SSL_get_peer_certificate)}
       SSL_get_peer_certificate := @_SSL_get_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get_peer_certificate_allownil)}
-      SSL_get_peer_certificate := @ERR_SSL_get_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_peer_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_peer_certificate := @ERR_SSL_get_peer_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_get_peer_certificate');
-    end;
     {$ifend}
   end;
 
  
   SSL_CTX_get_verify_mode := LoadLibFunction(ADllHandle, SSL_CTX_get_verify_mode_procname);
-  FuncLoaded := assigned(SSL_CTX_get_verify_mode);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_verify_mode);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_verify_mode_allownil)}
+    SSL_CTX_get_verify_mode := @ERR_SSL_CTX_get_verify_mode;
+    {$ifend}
     {$if declared(SSL_CTX_get_verify_mode_introduced)}
     if LibVersion < SSL_CTX_get_verify_mode_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_verify_mode)}
       SSL_CTX_get_verify_mode := @FC_SSL_CTX_get_verify_mode;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_mode_allownil)}
-      SSL_CTX_get_verify_mode := @ERR_SSL_CTX_get_verify_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_verify_mode_removed)}
@@ -18654,39 +16781,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_verify_mode)}
       SSL_CTX_get_verify_mode := @_SSL_CTX_get_verify_mode;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_mode_allownil)}
-      SSL_CTX_get_verify_mode := @ERR_SSL_CTX_get_verify_mode;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_verify_mode_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_verify_mode := @ERR_SSL_CTX_get_verify_mode;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_verify_mode');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_verify_depth := LoadLibFunction(ADllHandle, SSL_CTX_get_verify_depth_procname);
-  FuncLoaded := assigned(SSL_CTX_get_verify_depth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_verify_depth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_verify_depth_allownil)}
+    SSL_CTX_get_verify_depth := @ERR_SSL_CTX_get_verify_depth;
+    {$ifend}
     {$if declared(SSL_CTX_get_verify_depth_introduced)}
     if LibVersion < SSL_CTX_get_verify_depth_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_verify_depth)}
       SSL_CTX_get_verify_depth := @FC_SSL_CTX_get_verify_depth;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_depth_allownil)}
-      SSL_CTX_get_verify_depth := @ERR_SSL_CTX_get_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_verify_depth_removed)}
@@ -18694,39 +16813,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_verify_depth)}
       SSL_CTX_get_verify_depth := @_SSL_CTX_get_verify_depth;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_depth_allownil)}
-      SSL_CTX_get_verify_depth := @ERR_SSL_CTX_get_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_verify_depth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_verify_depth := @ERR_SSL_CTX_get_verify_depth;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_verify_depth');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_verify_callback := LoadLibFunction(ADllHandle, SSL_CTX_get_verify_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_get_verify_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_verify_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_verify_callback_allownil)}
+    SSL_CTX_get_verify_callback := @ERR_SSL_CTX_get_verify_callback;
+    {$ifend}
     {$if declared(SSL_CTX_get_verify_callback_introduced)}
     if LibVersion < SSL_CTX_get_verify_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_verify_callback)}
       SSL_CTX_get_verify_callback := @FC_SSL_CTX_get_verify_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_callback_allownil)}
-      SSL_CTX_get_verify_callback := @ERR_SSL_CTX_get_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_verify_callback_removed)}
@@ -18734,39 +16845,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_verify_callback)}
       SSL_CTX_get_verify_callback := @_SSL_CTX_get_verify_callback;
-      {$else}
-      {$if not defined(SSL_CTX_get_verify_callback_allownil)}
-      SSL_CTX_get_verify_callback := @ERR_SSL_CTX_get_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_verify_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_verify_callback := @ERR_SSL_CTX_get_verify_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_verify_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_verify := LoadLibFunction(ADllHandle, SSL_CTX_set_verify_procname);
-  FuncLoaded := assigned(SSL_CTX_set_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_verify_allownil)}
+    SSL_CTX_set_verify := @ERR_SSL_CTX_set_verify;
+    {$ifend}
     {$if declared(SSL_CTX_set_verify_introduced)}
     if LibVersion < SSL_CTX_set_verify_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_verify)}
       SSL_CTX_set_verify := @FC_SSL_CTX_set_verify;
-      {$else}
-      {$if not defined(SSL_CTX_set_verify_allownil)}
-      SSL_CTX_set_verify := @ERR_SSL_CTX_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_verify_removed)}
@@ -18774,39 +16877,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_verify)}
       SSL_CTX_set_verify := @_SSL_CTX_set_verify;
-      {$else}
-      {$if not defined(SSL_CTX_set_verify_allownil)}
-      SSL_CTX_set_verify := @ERR_SSL_CTX_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_verify := @ERR_SSL_CTX_set_verify;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_verify');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_verify_depth := LoadLibFunction(ADllHandle, SSL_CTX_set_verify_depth_procname);
-  FuncLoaded := assigned(SSL_CTX_set_verify_depth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_verify_depth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_verify_depth_allownil)}
+    SSL_CTX_set_verify_depth := @ERR_SSL_CTX_set_verify_depth;
+    {$ifend}
     {$if declared(SSL_CTX_set_verify_depth_introduced)}
     if LibVersion < SSL_CTX_set_verify_depth_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_verify_depth)}
       SSL_CTX_set_verify_depth := @FC_SSL_CTX_set_verify_depth;
-      {$else}
-      {$if not defined(SSL_CTX_set_verify_depth_allownil)}
-      SSL_CTX_set_verify_depth := @ERR_SSL_CTX_set_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_verify_depth_removed)}
@@ -18814,39 +16909,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_verify_depth)}
       SSL_CTX_set_verify_depth := @_SSL_CTX_set_verify_depth;
-      {$else}
-      {$if not defined(SSL_CTX_set_verify_depth_allownil)}
-      SSL_CTX_set_verify_depth := @ERR_SSL_CTX_set_verify_depth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_verify_depth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_verify_depth := @ERR_SSL_CTX_set_verify_depth;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_verify_depth');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cert_verify_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_cert_verify_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cert_verify_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cert_verify_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cert_verify_callback_allownil)}
+    SSL_CTX_set_cert_verify_callback := @ERR_SSL_CTX_set_cert_verify_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_cert_verify_callback_introduced)}
     if LibVersion < SSL_CTX_set_cert_verify_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cert_verify_callback)}
       SSL_CTX_set_cert_verify_callback := @FC_SSL_CTX_set_cert_verify_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_verify_callback_allownil)}
-      SSL_CTX_set_cert_verify_callback := @ERR_SSL_CTX_set_cert_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cert_verify_callback_removed)}
@@ -18854,39 +16941,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cert_verify_callback)}
       SSL_CTX_set_cert_verify_callback := @_SSL_CTX_set_cert_verify_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_verify_callback_allownil)}
-      SSL_CTX_set_cert_verify_callback := @ERR_SSL_CTX_set_cert_verify_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cert_verify_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cert_verify_callback := @ERR_SSL_CTX_set_cert_verify_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cert_verify_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_cert_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_cert_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_cert_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_cert_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_cert_cb_allownil)}
+    SSL_CTX_set_cert_cb := @ERR_SSL_CTX_set_cert_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_cert_cb_introduced)}
     if LibVersion < SSL_CTX_set_cert_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_cert_cb)}
       SSL_CTX_set_cert_cb := @FC_SSL_CTX_set_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_cb_allownil)}
-      SSL_CTX_set_cert_cb := @ERR_SSL_CTX_set_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_cert_cb_removed)}
@@ -18894,39 +16973,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_cert_cb)}
       SSL_CTX_set_cert_cb := @_SSL_CTX_set_cert_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_cert_cb_allownil)}
-      SSL_CTX_set_cert_cb := @ERR_SSL_CTX_set_cert_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_cert_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_cert_cb := @ERR_SSL_CTX_set_cert_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_cert_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_RSAPrivateKey := LoadLibFunction(ADllHandle, SSL_CTX_use_RSAPrivateKey_procname);
-  FuncLoaded := assigned(SSL_CTX_use_RSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_RSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_RSAPrivateKey_allownil)}
+    SSL_CTX_use_RSAPrivateKey := @ERR_SSL_CTX_use_RSAPrivateKey;
+    {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_introduced)}
     if LibVersion < SSL_CTX_use_RSAPrivateKey_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_RSAPrivateKey)}
       SSL_CTX_use_RSAPrivateKey := @FC_SSL_CTX_use_RSAPrivateKey;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_allownil)}
-      SSL_CTX_use_RSAPrivateKey := @ERR_SSL_CTX_use_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_removed)}
@@ -18934,39 +17005,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_RSAPrivateKey)}
       SSL_CTX_use_RSAPrivateKey := @_SSL_CTX_use_RSAPrivateKey;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_allownil)}
-      SSL_CTX_use_RSAPrivateKey := @ERR_SSL_CTX_use_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_RSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_RSAPrivateKey := @ERR_SSL_CTX_use_RSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_RSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_RSAPrivateKey_ASN1 := LoadLibFunction(ADllHandle, SSL_CTX_use_RSAPrivateKey_ASN1_procname);
-  FuncLoaded := assigned(SSL_CTX_use_RSAPrivateKey_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_RSAPrivateKey_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_RSAPrivateKey_ASN1_allownil)}
+    SSL_CTX_use_RSAPrivateKey_ASN1 := @ERR_SSL_CTX_use_RSAPrivateKey_ASN1;
+    {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_ASN1_introduced)}
     if LibVersion < SSL_CTX_use_RSAPrivateKey_ASN1_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_RSAPrivateKey_ASN1)}
       SSL_CTX_use_RSAPrivateKey_ASN1 := @FC_SSL_CTX_use_RSAPrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_ASN1_allownil)}
-      SSL_CTX_use_RSAPrivateKey_ASN1 := @ERR_SSL_CTX_use_RSAPrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_RSAPrivateKey_ASN1_removed)}
@@ -18974,39 +17037,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_RSAPrivateKey_ASN1)}
       SSL_CTX_use_RSAPrivateKey_ASN1 := @_SSL_CTX_use_RSAPrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_RSAPrivateKey_ASN1_allownil)}
-      SSL_CTX_use_RSAPrivateKey_ASN1 := @ERR_SSL_CTX_use_RSAPrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_RSAPrivateKey_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_RSAPrivateKey_ASN1 := @ERR_SSL_CTX_use_RSAPrivateKey_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_RSAPrivateKey_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_PrivateKey := LoadLibFunction(ADllHandle, SSL_CTX_use_PrivateKey_procname);
-  FuncLoaded := assigned(SSL_CTX_use_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_PrivateKey_allownil)}
+    SSL_CTX_use_PrivateKey := @ERR_SSL_CTX_use_PrivateKey;
+    {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_introduced)}
     if LibVersion < SSL_CTX_use_PrivateKey_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_PrivateKey)}
       SSL_CTX_use_PrivateKey := @FC_SSL_CTX_use_PrivateKey;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_allownil)}
-      SSL_CTX_use_PrivateKey := @ERR_SSL_CTX_use_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_removed)}
@@ -19014,39 +17069,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_PrivateKey)}
       SSL_CTX_use_PrivateKey := @_SSL_CTX_use_PrivateKey;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_allownil)}
-      SSL_CTX_use_PrivateKey := @ERR_SSL_CTX_use_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_PrivateKey := @ERR_SSL_CTX_use_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_PrivateKey_ASN1 := LoadLibFunction(ADllHandle, SSL_CTX_use_PrivateKey_ASN1_procname);
-  FuncLoaded := assigned(SSL_CTX_use_PrivateKey_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_PrivateKey_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_PrivateKey_ASN1_allownil)}
+    SSL_CTX_use_PrivateKey_ASN1 := @ERR_SSL_CTX_use_PrivateKey_ASN1;
+    {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_ASN1_introduced)}
     if LibVersion < SSL_CTX_use_PrivateKey_ASN1_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_PrivateKey_ASN1)}
       SSL_CTX_use_PrivateKey_ASN1 := @FC_SSL_CTX_use_PrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_ASN1_allownil)}
-      SSL_CTX_use_PrivateKey_ASN1 := @ERR_SSL_CTX_use_PrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_PrivateKey_ASN1_removed)}
@@ -19054,39 +17101,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_PrivateKey_ASN1)}
       SSL_CTX_use_PrivateKey_ASN1 := @_SSL_CTX_use_PrivateKey_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_PrivateKey_ASN1_allownil)}
-      SSL_CTX_use_PrivateKey_ASN1 := @ERR_SSL_CTX_use_PrivateKey_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_PrivateKey_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_PrivateKey_ASN1 := @ERR_SSL_CTX_use_PrivateKey_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_PrivateKey_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_certificate := LoadLibFunction(ADllHandle, SSL_CTX_use_certificate_procname);
-  FuncLoaded := assigned(SSL_CTX_use_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_certificate_allownil)}
+    SSL_CTX_use_certificate := @ERR_SSL_CTX_use_certificate;
+    {$ifend}
     {$if declared(SSL_CTX_use_certificate_introduced)}
     if LibVersion < SSL_CTX_use_certificate_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_certificate)}
       SSL_CTX_use_certificate := @FC_SSL_CTX_use_certificate;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_allownil)}
-      SSL_CTX_use_certificate := @ERR_SSL_CTX_use_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_certificate_removed)}
@@ -19094,39 +17133,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_certificate)}
       SSL_CTX_use_certificate := @_SSL_CTX_use_certificate;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_allownil)}
-      SSL_CTX_use_certificate := @ERR_SSL_CTX_use_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_certificate := @ERR_SSL_CTX_use_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_certificate');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_use_certificate_ASN1 := LoadLibFunction(ADllHandle, SSL_CTX_use_certificate_ASN1_procname);
-  FuncLoaded := assigned(SSL_CTX_use_certificate_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_use_certificate_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_use_certificate_ASN1_allownil)}
+    SSL_CTX_use_certificate_ASN1 := @ERR_SSL_CTX_use_certificate_ASN1;
+    {$ifend}
     {$if declared(SSL_CTX_use_certificate_ASN1_introduced)}
     if LibVersion < SSL_CTX_use_certificate_ASN1_introduced then
     begin
       {$if declared(FC_SSL_CTX_use_certificate_ASN1)}
       SSL_CTX_use_certificate_ASN1 := @FC_SSL_CTX_use_certificate_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_ASN1_allownil)}
-      SSL_CTX_use_certificate_ASN1 := @ERR_SSL_CTX_use_certificate_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_use_certificate_ASN1_removed)}
@@ -19134,39 +17165,31 @@ begin
     begin
       {$if declared(_SSL_CTX_use_certificate_ASN1)}
       SSL_CTX_use_certificate_ASN1 := @_SSL_CTX_use_certificate_ASN1;
-      {$else}
-      {$if not defined(SSL_CTX_use_certificate_ASN1_allownil)}
-      SSL_CTX_use_certificate_ASN1 := @ERR_SSL_CTX_use_certificate_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_use_certificate_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_use_certificate_ASN1 := @ERR_SSL_CTX_use_certificate_ASN1;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_use_certificate_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_default_passwd_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_default_passwd_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_passwd_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_passwd_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_passwd_cb_allownil)}
+    SSL_CTX_set_default_passwd_cb := @ERR_SSL_CTX_set_default_passwd_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_passwd_cb_introduced)}
     if LibVersion < SSL_CTX_set_default_passwd_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_passwd_cb)}
       SSL_CTX_set_default_passwd_cb := @FC_SSL_CTX_set_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_passwd_cb_allownil)}
-      SSL_CTX_set_default_passwd_cb := @ERR_SSL_CTX_set_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_passwd_cb_removed)}
@@ -19174,39 +17197,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_passwd_cb)}
       SSL_CTX_set_default_passwd_cb := @_SSL_CTX_set_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_passwd_cb_allownil)}
-      SSL_CTX_set_default_passwd_cb := @ERR_SSL_CTX_set_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_passwd_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_passwd_cb := @ERR_SSL_CTX_set_default_passwd_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_passwd_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_default_passwd_cb_userdata := LoadLibFunction(ADllHandle, SSL_CTX_set_default_passwd_cb_userdata_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_passwd_cb_userdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_passwd_cb_userdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_passwd_cb_userdata_allownil)}
+    SSL_CTX_set_default_passwd_cb_userdata := @ERR_SSL_CTX_set_default_passwd_cb_userdata;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_passwd_cb_userdata_introduced)}
     if LibVersion < SSL_CTX_set_default_passwd_cb_userdata_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_passwd_cb_userdata)}
       SSL_CTX_set_default_passwd_cb_userdata := @FC_SSL_CTX_set_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_passwd_cb_userdata_allownil)}
-      SSL_CTX_set_default_passwd_cb_userdata := @ERR_SSL_CTX_set_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_passwd_cb_userdata_removed)}
@@ -19214,39 +17229,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_passwd_cb_userdata)}
       SSL_CTX_set_default_passwd_cb_userdata := @_SSL_CTX_set_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_passwd_cb_userdata_allownil)}
-      SSL_CTX_set_default_passwd_cb_userdata := @ERR_SSL_CTX_set_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_passwd_cb_userdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_passwd_cb_userdata := @ERR_SSL_CTX_set_default_passwd_cb_userdata;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_passwd_cb_userdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_default_passwd_cb := LoadLibFunction(ADllHandle, SSL_CTX_get_default_passwd_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_get_default_passwd_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_default_passwd_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_default_passwd_cb_allownil)}
+    SSL_CTX_get_default_passwd_cb := @ERR_SSL_CTX_get_default_passwd_cb;
+    {$ifend}
     {$if declared(SSL_CTX_get_default_passwd_cb_introduced)}
     if LibVersion < SSL_CTX_get_default_passwd_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_default_passwd_cb)}
       SSL_CTX_get_default_passwd_cb := @FC_SSL_CTX_get_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_CTX_get_default_passwd_cb_allownil)}
-      SSL_CTX_get_default_passwd_cb := @ERR_SSL_CTX_get_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_default_passwd_cb_removed)}
@@ -19254,39 +17261,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_default_passwd_cb)}
       SSL_CTX_get_default_passwd_cb := @_SSL_CTX_get_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_CTX_get_default_passwd_cb_allownil)}
-      SSL_CTX_get_default_passwd_cb := @ERR_SSL_CTX_get_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_default_passwd_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_default_passwd_cb := @ERR_SSL_CTX_get_default_passwd_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_default_passwd_cb');
-    end;
     {$ifend}
   end;
 
   {introduced 1.1.0}
   SSL_CTX_get_default_passwd_cb_userdata := LoadLibFunction(ADllHandle, SSL_CTX_get_default_passwd_cb_userdata_procname);
-  FuncLoaded := assigned(SSL_CTX_get_default_passwd_cb_userdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_default_passwd_cb_userdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_default_passwd_cb_userdata_allownil)}
+    SSL_CTX_get_default_passwd_cb_userdata := @ERR_SSL_CTX_get_default_passwd_cb_userdata;
+    {$ifend}
     {$if declared(SSL_CTX_get_default_passwd_cb_userdata_introduced)}
     if LibVersion < SSL_CTX_get_default_passwd_cb_userdata_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_default_passwd_cb_userdata)}
       SSL_CTX_get_default_passwd_cb_userdata := @FC_SSL_CTX_get_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_CTX_get_default_passwd_cb_userdata_allownil)}
-      SSL_CTX_get_default_passwd_cb_userdata := @ERR_SSL_CTX_get_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_default_passwd_cb_userdata_removed)}
@@ -19294,39 +17293,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_default_passwd_cb_userdata)}
       SSL_CTX_get_default_passwd_cb_userdata := @_SSL_CTX_get_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_CTX_get_default_passwd_cb_userdata_allownil)}
-      SSL_CTX_get_default_passwd_cb_userdata := @ERR_SSL_CTX_get_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_default_passwd_cb_userdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_default_passwd_cb_userdata := @ERR_SSL_CTX_get_default_passwd_cb_userdata;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_default_passwd_cb_userdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_default_passwd_cb := LoadLibFunction(ADllHandle, SSL_set_default_passwd_cb_procname);
-  FuncLoaded := assigned(SSL_set_default_passwd_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_default_passwd_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_default_passwd_cb_allownil)}
+    SSL_set_default_passwd_cb := @ERR_SSL_set_default_passwd_cb;
+    {$ifend}
     {$if declared(SSL_set_default_passwd_cb_introduced)}
     if LibVersion < SSL_set_default_passwd_cb_introduced then
     begin
       {$if declared(FC_SSL_set_default_passwd_cb)}
       SSL_set_default_passwd_cb := @FC_SSL_set_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_set_default_passwd_cb_allownil)}
-      SSL_set_default_passwd_cb := @ERR_SSL_set_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_default_passwd_cb_removed)}
@@ -19334,39 +17325,31 @@ begin
     begin
       {$if declared(_SSL_set_default_passwd_cb)}
       SSL_set_default_passwd_cb := @_SSL_set_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_set_default_passwd_cb_allownil)}
-      SSL_set_default_passwd_cb := @ERR_SSL_set_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_default_passwd_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_default_passwd_cb := @ERR_SSL_set_default_passwd_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_set_default_passwd_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_default_passwd_cb_userdata := LoadLibFunction(ADllHandle, SSL_set_default_passwd_cb_userdata_procname);
-  FuncLoaded := assigned(SSL_set_default_passwd_cb_userdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_default_passwd_cb_userdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_default_passwd_cb_userdata_allownil)}
+    SSL_set_default_passwd_cb_userdata := @ERR_SSL_set_default_passwd_cb_userdata;
+    {$ifend}
     {$if declared(SSL_set_default_passwd_cb_userdata_introduced)}
     if LibVersion < SSL_set_default_passwd_cb_userdata_introduced then
     begin
       {$if declared(FC_SSL_set_default_passwd_cb_userdata)}
       SSL_set_default_passwd_cb_userdata := @FC_SSL_set_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_set_default_passwd_cb_userdata_allownil)}
-      SSL_set_default_passwd_cb_userdata := @ERR_SSL_set_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_default_passwd_cb_userdata_removed)}
@@ -19374,39 +17357,31 @@ begin
     begin
       {$if declared(_SSL_set_default_passwd_cb_userdata)}
       SSL_set_default_passwd_cb_userdata := @_SSL_set_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_set_default_passwd_cb_userdata_allownil)}
-      SSL_set_default_passwd_cb_userdata := @ERR_SSL_set_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_default_passwd_cb_userdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_default_passwd_cb_userdata := @ERR_SSL_set_default_passwd_cb_userdata;
+    if FuncLoadError then
       AFailed.Add('SSL_set_default_passwd_cb_userdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_default_passwd_cb := LoadLibFunction(ADllHandle, SSL_get_default_passwd_cb_procname);
-  FuncLoaded := assigned(SSL_get_default_passwd_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_default_passwd_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_default_passwd_cb_allownil)}
+    SSL_get_default_passwd_cb := @ERR_SSL_get_default_passwd_cb;
+    {$ifend}
     {$if declared(SSL_get_default_passwd_cb_introduced)}
     if LibVersion < SSL_get_default_passwd_cb_introduced then
     begin
       {$if declared(FC_SSL_get_default_passwd_cb)}
       SSL_get_default_passwd_cb := @FC_SSL_get_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_get_default_passwd_cb_allownil)}
-      SSL_get_default_passwd_cb := @ERR_SSL_get_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_default_passwd_cb_removed)}
@@ -19414,39 +17389,31 @@ begin
     begin
       {$if declared(_SSL_get_default_passwd_cb)}
       SSL_get_default_passwd_cb := @_SSL_get_default_passwd_cb;
-      {$else}
-      {$if not defined(SSL_get_default_passwd_cb_allownil)}
-      SSL_get_default_passwd_cb := @ERR_SSL_get_default_passwd_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_default_passwd_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_default_passwd_cb := @ERR_SSL_get_default_passwd_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_get_default_passwd_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_default_passwd_cb_userdata := LoadLibFunction(ADllHandle, SSL_get_default_passwd_cb_userdata_procname);
-  FuncLoaded := assigned(SSL_get_default_passwd_cb_userdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_default_passwd_cb_userdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_default_passwd_cb_userdata_allownil)}
+    SSL_get_default_passwd_cb_userdata := @ERR_SSL_get_default_passwd_cb_userdata;
+    {$ifend}
     {$if declared(SSL_get_default_passwd_cb_userdata_introduced)}
     if LibVersion < SSL_get_default_passwd_cb_userdata_introduced then
     begin
       {$if declared(FC_SSL_get_default_passwd_cb_userdata)}
       SSL_get_default_passwd_cb_userdata := @FC_SSL_get_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_get_default_passwd_cb_userdata_allownil)}
-      SSL_get_default_passwd_cb_userdata := @ERR_SSL_get_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_default_passwd_cb_userdata_removed)}
@@ -19454,39 +17421,31 @@ begin
     begin
       {$if declared(_SSL_get_default_passwd_cb_userdata)}
       SSL_get_default_passwd_cb_userdata := @_SSL_get_default_passwd_cb_userdata;
-      {$else}
-      {$if not defined(SSL_get_default_passwd_cb_userdata_allownil)}
-      SSL_get_default_passwd_cb_userdata := @ERR_SSL_get_default_passwd_cb_userdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_default_passwd_cb_userdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_default_passwd_cb_userdata := @ERR_SSL_get_default_passwd_cb_userdata;
+    if FuncLoadError then
       AFailed.Add('SSL_get_default_passwd_cb_userdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_check_private_key := LoadLibFunction(ADllHandle, SSL_CTX_check_private_key_procname);
-  FuncLoaded := assigned(SSL_CTX_check_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_check_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_check_private_key_allownil)}
+    SSL_CTX_check_private_key := @ERR_SSL_CTX_check_private_key;
+    {$ifend}
     {$if declared(SSL_CTX_check_private_key_introduced)}
     if LibVersion < SSL_CTX_check_private_key_introduced then
     begin
       {$if declared(FC_SSL_CTX_check_private_key)}
       SSL_CTX_check_private_key := @FC_SSL_CTX_check_private_key;
-      {$else}
-      {$if not defined(SSL_CTX_check_private_key_allownil)}
-      SSL_CTX_check_private_key := @ERR_SSL_CTX_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_check_private_key_removed)}
@@ -19494,39 +17453,31 @@ begin
     begin
       {$if declared(_SSL_CTX_check_private_key)}
       SSL_CTX_check_private_key := @_SSL_CTX_check_private_key;
-      {$else}
-      {$if not defined(SSL_CTX_check_private_key_allownil)}
-      SSL_CTX_check_private_key := @ERR_SSL_CTX_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_check_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_check_private_key := @ERR_SSL_CTX_check_private_key;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_check_private_key');
-    end;
     {$ifend}
   end;
 
 
   SSL_check_private_key := LoadLibFunction(ADllHandle, SSL_check_private_key_procname);
-  FuncLoaded := assigned(SSL_check_private_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_check_private_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_check_private_key_allownil)}
+    SSL_check_private_key := @ERR_SSL_check_private_key;
+    {$ifend}
     {$if declared(SSL_check_private_key_introduced)}
     if LibVersion < SSL_check_private_key_introduced then
     begin
       {$if declared(FC_SSL_check_private_key)}
       SSL_check_private_key := @FC_SSL_check_private_key;
-      {$else}
-      {$if not defined(SSL_check_private_key_allownil)}
-      SSL_check_private_key := @ERR_SSL_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_check_private_key_removed)}
@@ -19534,39 +17485,31 @@ begin
     begin
       {$if declared(_SSL_check_private_key)}
       SSL_check_private_key := @_SSL_check_private_key;
-      {$else}
-      {$if not defined(SSL_check_private_key_allownil)}
-      SSL_check_private_key := @ERR_SSL_check_private_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_check_private_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_check_private_key := @ERR_SSL_check_private_key;
+    if FuncLoadError then
       AFailed.Add('SSL_check_private_key');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_session_id_context := LoadLibFunction(ADllHandle, SSL_CTX_set_session_id_context_procname);
-  FuncLoaded := assigned(SSL_CTX_set_session_id_context);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_session_id_context);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_session_id_context_allownil)}
+    SSL_CTX_set_session_id_context := @ERR_SSL_CTX_set_session_id_context;
+    {$ifend}
     {$if declared(SSL_CTX_set_session_id_context_introduced)}
     if LibVersion < SSL_CTX_set_session_id_context_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_session_id_context)}
       SSL_CTX_set_session_id_context := @FC_SSL_CTX_set_session_id_context;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_id_context_allownil)}
-      SSL_CTX_set_session_id_context := @ERR_SSL_CTX_set_session_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_session_id_context_removed)}
@@ -19574,39 +17517,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_session_id_context)}
       SSL_CTX_set_session_id_context := @_SSL_CTX_set_session_id_context;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_id_context_allownil)}
-      SSL_CTX_set_session_id_context := @ERR_SSL_CTX_set_session_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_session_id_context_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_session_id_context := @ERR_SSL_CTX_set_session_id_context;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_session_id_context');
-    end;
     {$ifend}
   end;
 
 
   SSL_new := LoadLibFunction(ADllHandle, SSL_new_procname);
-  FuncLoaded := assigned(SSL_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_new);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_new_allownil)}
+    SSL_new := @ERR_SSL_new;
+    {$ifend}
     {$if declared(SSL_new_introduced)}
     if LibVersion < SSL_new_introduced then
     begin
       {$if declared(FC_SSL_new)}
       SSL_new := @FC_SSL_new;
-      {$else}
-      {$if not defined(SSL_new_allownil)}
-      SSL_new := @ERR_SSL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_new_removed)}
@@ -19614,39 +17549,31 @@ begin
     begin
       {$if declared(_SSL_new)}
       SSL_new := @_SSL_new;
-      {$else}
-      {$if not defined(SSL_new_allownil)}
-      SSL_new := @ERR_SSL_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_new_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_new := @ERR_SSL_new;
+    if FuncLoadError then
       AFailed.Add('SSL_new');
-    end;
     {$ifend}
   end;
 
 
   SSL_up_ref := LoadLibFunction(ADllHandle, SSL_up_ref_procname);
-  FuncLoaded := assigned(SSL_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_up_ref_allownil)}
+    SSL_up_ref := @ERR_SSL_up_ref;
+    {$ifend}
     {$if declared(SSL_up_ref_introduced)}
     if LibVersion < SSL_up_ref_introduced then
     begin
       {$if declared(FC_SSL_up_ref)}
       SSL_up_ref := @FC_SSL_up_ref;
-      {$else}
-      {$if not defined(SSL_up_ref_allownil)}
-      SSL_up_ref := @ERR_SSL_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_up_ref_removed)}
@@ -19654,39 +17581,31 @@ begin
     begin
       {$if declared(_SSL_up_ref)}
       SSL_up_ref := @_SSL_up_ref;
-      {$else}
-      {$if not defined(SSL_up_ref_allownil)}
-      SSL_up_ref := @ERR_SSL_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_up_ref := @ERR_SSL_up_ref;
+    if FuncLoadError then
       AFailed.Add('SSL_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_is_dtls := LoadLibFunction(ADllHandle, SSL_is_dtls_procname);
-  FuncLoaded := assigned(SSL_is_dtls);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_is_dtls);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_is_dtls_allownil)}
+    SSL_is_dtls := @ERR_SSL_is_dtls;
+    {$ifend}
     {$if declared(SSL_is_dtls_introduced)}
     if LibVersion < SSL_is_dtls_introduced then
     begin
       {$if declared(FC_SSL_is_dtls)}
       SSL_is_dtls := @FC_SSL_is_dtls;
-      {$else}
-      {$if not defined(SSL_is_dtls_allownil)}
-      SSL_is_dtls := @ERR_SSL_is_dtls;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_is_dtls_removed)}
@@ -19694,39 +17613,31 @@ begin
     begin
       {$if declared(_SSL_is_dtls)}
       SSL_is_dtls := @_SSL_is_dtls;
-      {$else}
-      {$if not defined(SSL_is_dtls_allownil)}
-      SSL_is_dtls := @ERR_SSL_is_dtls;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_is_dtls_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_is_dtls := @ERR_SSL_is_dtls;
+    if FuncLoadError then
       AFailed.Add('SSL_is_dtls');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_session_id_context := LoadLibFunction(ADllHandle, SSL_set_session_id_context_procname);
-  FuncLoaded := assigned(SSL_set_session_id_context);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_session_id_context);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_session_id_context_allownil)}
+    SSL_set_session_id_context := @ERR_SSL_set_session_id_context;
+    {$ifend}
     {$if declared(SSL_set_session_id_context_introduced)}
     if LibVersion < SSL_set_session_id_context_introduced then
     begin
       {$if declared(FC_SSL_set_session_id_context)}
       SSL_set_session_id_context := @FC_SSL_set_session_id_context;
-      {$else}
-      {$if not defined(SSL_set_session_id_context_allownil)}
-      SSL_set_session_id_context := @ERR_SSL_set_session_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_session_id_context_removed)}
@@ -19734,39 +17645,31 @@ begin
     begin
       {$if declared(_SSL_set_session_id_context)}
       SSL_set_session_id_context := @_SSL_set_session_id_context;
-      {$else}
-      {$if not defined(SSL_set_session_id_context_allownil)}
-      SSL_set_session_id_context := @ERR_SSL_set_session_id_context;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_session_id_context_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_session_id_context := @ERR_SSL_set_session_id_context;
+    if FuncLoadError then
       AFailed.Add('SSL_set_session_id_context');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_purpose := LoadLibFunction(ADllHandle, SSL_CTX_set_purpose_procname);
-  FuncLoaded := assigned(SSL_CTX_set_purpose);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_purpose);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_purpose_allownil)}
+    SSL_CTX_set_purpose := @ERR_SSL_CTX_set_purpose;
+    {$ifend}
     {$if declared(SSL_CTX_set_purpose_introduced)}
     if LibVersion < SSL_CTX_set_purpose_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_purpose)}
       SSL_CTX_set_purpose := @FC_SSL_CTX_set_purpose;
-      {$else}
-      {$if not defined(SSL_CTX_set_purpose_allownil)}
-      SSL_CTX_set_purpose := @ERR_SSL_CTX_set_purpose;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_purpose_removed)}
@@ -19774,39 +17677,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_purpose)}
       SSL_CTX_set_purpose := @_SSL_CTX_set_purpose;
-      {$else}
-      {$if not defined(SSL_CTX_set_purpose_allownil)}
-      SSL_CTX_set_purpose := @ERR_SSL_CTX_set_purpose;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_purpose_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_purpose := @ERR_SSL_CTX_set_purpose;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_purpose');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_purpose := LoadLibFunction(ADllHandle, SSL_set_purpose_procname);
-  FuncLoaded := assigned(SSL_set_purpose);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_purpose);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_purpose_allownil)}
+    SSL_set_purpose := @ERR_SSL_set_purpose;
+    {$ifend}
     {$if declared(SSL_set_purpose_introduced)}
     if LibVersion < SSL_set_purpose_introduced then
     begin
       {$if declared(FC_SSL_set_purpose)}
       SSL_set_purpose := @FC_SSL_set_purpose;
-      {$else}
-      {$if not defined(SSL_set_purpose_allownil)}
-      SSL_set_purpose := @ERR_SSL_set_purpose;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_purpose_removed)}
@@ -19814,39 +17709,31 @@ begin
     begin
       {$if declared(_SSL_set_purpose)}
       SSL_set_purpose := @_SSL_set_purpose;
-      {$else}
-      {$if not defined(SSL_set_purpose_allownil)}
-      SSL_set_purpose := @ERR_SSL_set_purpose;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_purpose_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_purpose := @ERR_SSL_set_purpose;
+    if FuncLoadError then
       AFailed.Add('SSL_set_purpose');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_trust := LoadLibFunction(ADllHandle, SSL_CTX_set_trust_procname);
-  FuncLoaded := assigned(SSL_CTX_set_trust);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_trust);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_trust_allownil)}
+    SSL_CTX_set_trust := @ERR_SSL_CTX_set_trust;
+    {$ifend}
     {$if declared(SSL_CTX_set_trust_introduced)}
     if LibVersion < SSL_CTX_set_trust_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_trust)}
       SSL_CTX_set_trust := @FC_SSL_CTX_set_trust;
-      {$else}
-      {$if not defined(SSL_CTX_set_trust_allownil)}
-      SSL_CTX_set_trust := @ERR_SSL_CTX_set_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_trust_removed)}
@@ -19854,39 +17741,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_trust)}
       SSL_CTX_set_trust := @_SSL_CTX_set_trust;
-      {$else}
-      {$if not defined(SSL_CTX_set_trust_allownil)}
-      SSL_CTX_set_trust := @ERR_SSL_CTX_set_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_trust_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_trust := @ERR_SSL_CTX_set_trust;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_trust');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_trust := LoadLibFunction(ADllHandle, SSL_set_trust_procname);
-  FuncLoaded := assigned(SSL_set_trust);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_trust);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_trust_allownil)}
+    SSL_set_trust := @ERR_SSL_set_trust;
+    {$ifend}
     {$if declared(SSL_set_trust_introduced)}
     if LibVersion < SSL_set_trust_introduced then
     begin
       {$if declared(FC_SSL_set_trust)}
       SSL_set_trust := @FC_SSL_set_trust;
-      {$else}
-      {$if not defined(SSL_set_trust_allownil)}
-      SSL_set_trust := @ERR_SSL_set_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_trust_removed)}
@@ -19894,39 +17773,31 @@ begin
     begin
       {$if declared(_SSL_set_trust)}
       SSL_set_trust := @_SSL_set_trust;
-      {$else}
-      {$if not defined(SSL_set_trust_allownil)}
-      SSL_set_trust := @ERR_SSL_set_trust;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_trust_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_trust := @ERR_SSL_set_trust;
+    if FuncLoadError then
       AFailed.Add('SSL_set_trust');
-    end;
     {$ifend}
   end;
 
 
   SSL_set1_host := LoadLibFunction(ADllHandle, SSL_set1_host_procname);
-  FuncLoaded := assigned(SSL_set1_host);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_host);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_host_allownil)}
+    SSL_set1_host := @ERR_SSL_set1_host;
+    {$ifend}
     {$if declared(SSL_set1_host_introduced)}
     if LibVersion < SSL_set1_host_introduced then
     begin
       {$if declared(FC_SSL_set1_host)}
       SSL_set1_host := @FC_SSL_set1_host;
-      {$else}
-      {$if not defined(SSL_set1_host_allownil)}
-      SSL_set1_host := @ERR_SSL_set1_host;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_host_removed)}
@@ -19934,39 +17805,31 @@ begin
     begin
       {$if declared(_SSL_set1_host)}
       SSL_set1_host := @_SSL_set1_host;
-      {$else}
-      {$if not defined(SSL_set1_host_allownil)}
-      SSL_set1_host := @ERR_SSL_set1_host;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_host_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_host := @ERR_SSL_set1_host;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_host');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_add1_host := LoadLibFunction(ADllHandle, SSL_add1_host_procname);
-  FuncLoaded := assigned(SSL_add1_host);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add1_host);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add1_host_allownil)}
+    SSL_add1_host := @ERR_SSL_add1_host;
+    {$ifend}
     {$if declared(SSL_add1_host_introduced)}
     if LibVersion < SSL_add1_host_introduced then
     begin
       {$if declared(FC_SSL_add1_host)}
       SSL_add1_host := @FC_SSL_add1_host;
-      {$else}
-      {$if not defined(SSL_add1_host_allownil)}
-      SSL_add1_host := @ERR_SSL_add1_host;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add1_host_removed)}
@@ -19974,39 +17837,31 @@ begin
     begin
       {$if declared(_SSL_add1_host)}
       SSL_add1_host := @_SSL_add1_host;
-      {$else}
-      {$if not defined(SSL_add1_host_allownil)}
-      SSL_add1_host := @ERR_SSL_add1_host;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add1_host_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add1_host := @ERR_SSL_add1_host;
+    if FuncLoadError then
       AFailed.Add('SSL_add1_host');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get0_peername := LoadLibFunction(ADllHandle, SSL_get0_peername_procname);
-  FuncLoaded := assigned(SSL_get0_peername);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_peername);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_peername_allownil)}
+    SSL_get0_peername := @ERR_SSL_get0_peername;
+    {$ifend}
     {$if declared(SSL_get0_peername_introduced)}
     if LibVersion < SSL_get0_peername_introduced then
     begin
       {$if declared(FC_SSL_get0_peername)}
       SSL_get0_peername := @FC_SSL_get0_peername;
-      {$else}
-      {$if not defined(SSL_get0_peername_allownil)}
-      SSL_get0_peername := @ERR_SSL_get0_peername;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_peername_removed)}
@@ -20014,39 +17869,31 @@ begin
     begin
       {$if declared(_SSL_get0_peername)}
       SSL_get0_peername := @_SSL_get0_peername;
-      {$else}
-      {$if not defined(SSL_get0_peername_allownil)}
-      SSL_get0_peername := @ERR_SSL_get0_peername;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_peername_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_peername := @ERR_SSL_get0_peername;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_peername');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_hostflags := LoadLibFunction(ADllHandle, SSL_set_hostflags_procname);
-  FuncLoaded := assigned(SSL_set_hostflags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_hostflags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_hostflags_allownil)}
+    SSL_set_hostflags := @ERR_SSL_set_hostflags;
+    {$ifend}
     {$if declared(SSL_set_hostflags_introduced)}
     if LibVersion < SSL_set_hostflags_introduced then
     begin
       {$if declared(FC_SSL_set_hostflags)}
       SSL_set_hostflags := @FC_SSL_set_hostflags;
-      {$else}
-      {$if not defined(SSL_set_hostflags_allownil)}
-      SSL_set_hostflags := @ERR_SSL_set_hostflags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_hostflags_removed)}
@@ -20054,39 +17901,31 @@ begin
     begin
       {$if declared(_SSL_set_hostflags)}
       SSL_set_hostflags := @_SSL_set_hostflags;
-      {$else}
-      {$if not defined(SSL_set_hostflags_allownil)}
-      SSL_set_hostflags := @ERR_SSL_set_hostflags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_hostflags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_hostflags := @ERR_SSL_set_hostflags;
+    if FuncLoadError then
       AFailed.Add('SSL_set_hostflags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_dane_enable := LoadLibFunction(ADllHandle, SSL_CTX_dane_enable_procname);
-  FuncLoaded := assigned(SSL_CTX_dane_enable);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_dane_enable);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_dane_enable_allownil)}
+    SSL_CTX_dane_enable := @ERR_SSL_CTX_dane_enable;
+    {$ifend}
     {$if declared(SSL_CTX_dane_enable_introduced)}
     if LibVersion < SSL_CTX_dane_enable_introduced then
     begin
       {$if declared(FC_SSL_CTX_dane_enable)}
       SSL_CTX_dane_enable := @FC_SSL_CTX_dane_enable;
-      {$else}
-      {$if not defined(SSL_CTX_dane_enable_allownil)}
-      SSL_CTX_dane_enable := @ERR_SSL_CTX_dane_enable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_dane_enable_removed)}
@@ -20094,39 +17933,31 @@ begin
     begin
       {$if declared(_SSL_CTX_dane_enable)}
       SSL_CTX_dane_enable := @_SSL_CTX_dane_enable;
-      {$else}
-      {$if not defined(SSL_CTX_dane_enable_allownil)}
-      SSL_CTX_dane_enable := @ERR_SSL_CTX_dane_enable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_dane_enable_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_dane_enable := @ERR_SSL_CTX_dane_enable;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_dane_enable');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_dane_mtype_set := LoadLibFunction(ADllHandle, SSL_CTX_dane_mtype_set_procname);
-  FuncLoaded := assigned(SSL_CTX_dane_mtype_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_dane_mtype_set);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_dane_mtype_set_allownil)}
+    SSL_CTX_dane_mtype_set := @ERR_SSL_CTX_dane_mtype_set;
+    {$ifend}
     {$if declared(SSL_CTX_dane_mtype_set_introduced)}
     if LibVersion < SSL_CTX_dane_mtype_set_introduced then
     begin
       {$if declared(FC_SSL_CTX_dane_mtype_set)}
       SSL_CTX_dane_mtype_set := @FC_SSL_CTX_dane_mtype_set;
-      {$else}
-      {$if not defined(SSL_CTX_dane_mtype_set_allownil)}
-      SSL_CTX_dane_mtype_set := @ERR_SSL_CTX_dane_mtype_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_dane_mtype_set_removed)}
@@ -20134,39 +17965,31 @@ begin
     begin
       {$if declared(_SSL_CTX_dane_mtype_set)}
       SSL_CTX_dane_mtype_set := @_SSL_CTX_dane_mtype_set;
-      {$else}
-      {$if not defined(SSL_CTX_dane_mtype_set_allownil)}
-      SSL_CTX_dane_mtype_set := @ERR_SSL_CTX_dane_mtype_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_dane_mtype_set_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_dane_mtype_set := @ERR_SSL_CTX_dane_mtype_set;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_dane_mtype_set');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_dane_enable := LoadLibFunction(ADllHandle, SSL_dane_enable_procname);
-  FuncLoaded := assigned(SSL_dane_enable);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_dane_enable);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_dane_enable_allownil)}
+    SSL_dane_enable := @ERR_SSL_dane_enable;
+    {$ifend}
     {$if declared(SSL_dane_enable_introduced)}
     if LibVersion < SSL_dane_enable_introduced then
     begin
       {$if declared(FC_SSL_dane_enable)}
       SSL_dane_enable := @FC_SSL_dane_enable;
-      {$else}
-      {$if not defined(SSL_dane_enable_allownil)}
-      SSL_dane_enable := @ERR_SSL_dane_enable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_dane_enable_removed)}
@@ -20174,39 +17997,31 @@ begin
     begin
       {$if declared(_SSL_dane_enable)}
       SSL_dane_enable := @_SSL_dane_enable;
-      {$else}
-      {$if not defined(SSL_dane_enable_allownil)}
-      SSL_dane_enable := @ERR_SSL_dane_enable;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_dane_enable_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_dane_enable := @ERR_SSL_dane_enable;
+    if FuncLoadError then
       AFailed.Add('SSL_dane_enable');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_dane_tlsa_add := LoadLibFunction(ADllHandle, SSL_dane_tlsa_add_procname);
-  FuncLoaded := assigned(SSL_dane_tlsa_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_dane_tlsa_add);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_dane_tlsa_add_allownil)}
+    SSL_dane_tlsa_add := @ERR_SSL_dane_tlsa_add;
+    {$ifend}
     {$if declared(SSL_dane_tlsa_add_introduced)}
     if LibVersion < SSL_dane_tlsa_add_introduced then
     begin
       {$if declared(FC_SSL_dane_tlsa_add)}
       SSL_dane_tlsa_add := @FC_SSL_dane_tlsa_add;
-      {$else}
-      {$if not defined(SSL_dane_tlsa_add_allownil)}
-      SSL_dane_tlsa_add := @ERR_SSL_dane_tlsa_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_dane_tlsa_add_removed)}
@@ -20214,39 +18029,31 @@ begin
     begin
       {$if declared(_SSL_dane_tlsa_add)}
       SSL_dane_tlsa_add := @_SSL_dane_tlsa_add;
-      {$else}
-      {$if not defined(SSL_dane_tlsa_add_allownil)}
-      SSL_dane_tlsa_add := @ERR_SSL_dane_tlsa_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_dane_tlsa_add_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_dane_tlsa_add := @ERR_SSL_dane_tlsa_add;
+    if FuncLoadError then
       AFailed.Add('SSL_dane_tlsa_add');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get0_dane_authority := LoadLibFunction(ADllHandle, SSL_get0_dane_authority_procname);
-  FuncLoaded := assigned(SSL_get0_dane_authority);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_dane_authority);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_dane_authority_allownil)}
+    SSL_get0_dane_authority := @ERR_SSL_get0_dane_authority;
+    {$ifend}
     {$if declared(SSL_get0_dane_authority_introduced)}
     if LibVersion < SSL_get0_dane_authority_introduced then
     begin
       {$if declared(FC_SSL_get0_dane_authority)}
       SSL_get0_dane_authority := @FC_SSL_get0_dane_authority;
-      {$else}
-      {$if not defined(SSL_get0_dane_authority_allownil)}
-      SSL_get0_dane_authority := @ERR_SSL_get0_dane_authority;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_dane_authority_removed)}
@@ -20254,39 +18061,31 @@ begin
     begin
       {$if declared(_SSL_get0_dane_authority)}
       SSL_get0_dane_authority := @_SSL_get0_dane_authority;
-      {$else}
-      {$if not defined(SSL_get0_dane_authority_allownil)}
-      SSL_get0_dane_authority := @ERR_SSL_get0_dane_authority;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_dane_authority_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_dane_authority := @ERR_SSL_get0_dane_authority;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_dane_authority');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get0_dane_tlsa := LoadLibFunction(ADllHandle, SSL_get0_dane_tlsa_procname);
-  FuncLoaded := assigned(SSL_get0_dane_tlsa);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_dane_tlsa);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_dane_tlsa_allownil)}
+    SSL_get0_dane_tlsa := @ERR_SSL_get0_dane_tlsa;
+    {$ifend}
     {$if declared(SSL_get0_dane_tlsa_introduced)}
     if LibVersion < SSL_get0_dane_tlsa_introduced then
     begin
       {$if declared(FC_SSL_get0_dane_tlsa)}
       SSL_get0_dane_tlsa := @FC_SSL_get0_dane_tlsa;
-      {$else}
-      {$if not defined(SSL_get0_dane_tlsa_allownil)}
-      SSL_get0_dane_tlsa := @ERR_SSL_get0_dane_tlsa;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_dane_tlsa_removed)}
@@ -20294,39 +18093,31 @@ begin
     begin
       {$if declared(_SSL_get0_dane_tlsa)}
       SSL_get0_dane_tlsa := @_SSL_get0_dane_tlsa;
-      {$else}
-      {$if not defined(SSL_get0_dane_tlsa_allownil)}
-      SSL_get0_dane_tlsa := @ERR_SSL_get0_dane_tlsa;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_dane_tlsa_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_dane_tlsa := @ERR_SSL_get0_dane_tlsa;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_dane_tlsa');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get0_dane := LoadLibFunction(ADllHandle, SSL_get0_dane_procname);
-  FuncLoaded := assigned(SSL_get0_dane);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_dane);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_dane_allownil)}
+    SSL_get0_dane := @ERR_SSL_get0_dane;
+    {$ifend}
     {$if declared(SSL_get0_dane_introduced)}
     if LibVersion < SSL_get0_dane_introduced then
     begin
       {$if declared(FC_SSL_get0_dane)}
       SSL_get0_dane := @FC_SSL_get0_dane;
-      {$else}
-      {$if not defined(SSL_get0_dane_allownil)}
-      SSL_get0_dane := @ERR_SSL_get0_dane;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_dane_removed)}
@@ -20334,39 +18125,31 @@ begin
     begin
       {$if declared(_SSL_get0_dane)}
       SSL_get0_dane := @_SSL_get0_dane;
-      {$else}
-      {$if not defined(SSL_get0_dane_allownil)}
-      SSL_get0_dane := @ERR_SSL_get0_dane;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_dane_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_dane := @ERR_SSL_get0_dane;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_dane');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_dane_set_flags := LoadLibFunction(ADllHandle, SSL_CTX_dane_set_flags_procname);
-  FuncLoaded := assigned(SSL_CTX_dane_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_dane_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_dane_set_flags_allownil)}
+    SSL_CTX_dane_set_flags := @ERR_SSL_CTX_dane_set_flags;
+    {$ifend}
     {$if declared(SSL_CTX_dane_set_flags_introduced)}
     if LibVersion < SSL_CTX_dane_set_flags_introduced then
     begin
       {$if declared(FC_SSL_CTX_dane_set_flags)}
       SSL_CTX_dane_set_flags := @FC_SSL_CTX_dane_set_flags;
-      {$else}
-      {$if not defined(SSL_CTX_dane_set_flags_allownil)}
-      SSL_CTX_dane_set_flags := @ERR_SSL_CTX_dane_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_dane_set_flags_removed)}
@@ -20374,39 +18157,31 @@ begin
     begin
       {$if declared(_SSL_CTX_dane_set_flags)}
       SSL_CTX_dane_set_flags := @_SSL_CTX_dane_set_flags;
-      {$else}
-      {$if not defined(SSL_CTX_dane_set_flags_allownil)}
-      SSL_CTX_dane_set_flags := @ERR_SSL_CTX_dane_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_dane_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_dane_set_flags := @ERR_SSL_CTX_dane_set_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_dane_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_dane_clear_flags := LoadLibFunction(ADllHandle, SSL_CTX_dane_clear_flags_procname);
-  FuncLoaded := assigned(SSL_CTX_dane_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_dane_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_dane_clear_flags_allownil)}
+    SSL_CTX_dane_clear_flags := @ERR_SSL_CTX_dane_clear_flags;
+    {$ifend}
     {$if declared(SSL_CTX_dane_clear_flags_introduced)}
     if LibVersion < SSL_CTX_dane_clear_flags_introduced then
     begin
       {$if declared(FC_SSL_CTX_dane_clear_flags)}
       SSL_CTX_dane_clear_flags := @FC_SSL_CTX_dane_clear_flags;
-      {$else}
-      {$if not defined(SSL_CTX_dane_clear_flags_allownil)}
-      SSL_CTX_dane_clear_flags := @ERR_SSL_CTX_dane_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_dane_clear_flags_removed)}
@@ -20414,39 +18189,31 @@ begin
     begin
       {$if declared(_SSL_CTX_dane_clear_flags)}
       SSL_CTX_dane_clear_flags := @_SSL_CTX_dane_clear_flags;
-      {$else}
-      {$if not defined(SSL_CTX_dane_clear_flags_allownil)}
-      SSL_CTX_dane_clear_flags := @ERR_SSL_CTX_dane_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_dane_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_dane_clear_flags := @ERR_SSL_CTX_dane_clear_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_dane_clear_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_dane_set_flags := LoadLibFunction(ADllHandle, SSL_dane_set_flags_procname);
-  FuncLoaded := assigned(SSL_dane_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_dane_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_dane_set_flags_allownil)}
+    SSL_dane_set_flags := @ERR_SSL_dane_set_flags;
+    {$ifend}
     {$if declared(SSL_dane_set_flags_introduced)}
     if LibVersion < SSL_dane_set_flags_introduced then
     begin
       {$if declared(FC_SSL_dane_set_flags)}
       SSL_dane_set_flags := @FC_SSL_dane_set_flags;
-      {$else}
-      {$if not defined(SSL_dane_set_flags_allownil)}
-      SSL_dane_set_flags := @ERR_SSL_dane_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_dane_set_flags_removed)}
@@ -20454,39 +18221,31 @@ begin
     begin
       {$if declared(_SSL_dane_set_flags)}
       SSL_dane_set_flags := @_SSL_dane_set_flags;
-      {$else}
-      {$if not defined(SSL_dane_set_flags_allownil)}
-      SSL_dane_set_flags := @ERR_SSL_dane_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_dane_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_dane_set_flags := @ERR_SSL_dane_set_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_dane_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_dane_clear_flags := LoadLibFunction(ADllHandle, SSL_dane_clear_flags_procname);
-  FuncLoaded := assigned(SSL_dane_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_dane_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_dane_clear_flags_allownil)}
+    SSL_dane_clear_flags := @ERR_SSL_dane_clear_flags;
+    {$ifend}
     {$if declared(SSL_dane_clear_flags_introduced)}
     if LibVersion < SSL_dane_clear_flags_introduced then
     begin
       {$if declared(FC_SSL_dane_clear_flags)}
       SSL_dane_clear_flags := @FC_SSL_dane_clear_flags;
-      {$else}
-      {$if not defined(SSL_dane_clear_flags_allownil)}
-      SSL_dane_clear_flags := @ERR_SSL_dane_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_dane_clear_flags_removed)}
@@ -20494,39 +18253,31 @@ begin
     begin
       {$if declared(_SSL_dane_clear_flags)}
       SSL_dane_clear_flags := @_SSL_dane_clear_flags;
-      {$else}
-      {$if not defined(SSL_dane_clear_flags_allownil)}
-      SSL_dane_clear_flags := @ERR_SSL_dane_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_dane_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_dane_clear_flags := @ERR_SSL_dane_clear_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_dane_clear_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set1_param := LoadLibFunction(ADllHandle, SSL_CTX_set1_param_procname);
-  FuncLoaded := assigned(SSL_CTX_set1_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set1_param);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set1_param_allownil)}
+    SSL_CTX_set1_param := @ERR_SSL_CTX_set1_param;
+    {$ifend}
     {$if declared(SSL_CTX_set1_param_introduced)}
     if LibVersion < SSL_CTX_set1_param_introduced then
     begin
       {$if declared(FC_SSL_CTX_set1_param)}
       SSL_CTX_set1_param := @FC_SSL_CTX_set1_param;
-      {$else}
-      {$if not defined(SSL_CTX_set1_param_allownil)}
-      SSL_CTX_set1_param := @ERR_SSL_CTX_set1_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set1_param_removed)}
@@ -20534,39 +18285,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set1_param)}
       SSL_CTX_set1_param := @_SSL_CTX_set1_param;
-      {$else}
-      {$if not defined(SSL_CTX_set1_param_allownil)}
-      SSL_CTX_set1_param := @ERR_SSL_CTX_set1_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set1_param_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set1_param := @ERR_SSL_CTX_set1_param;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set1_param');
-    end;
     {$ifend}
   end;
 
 
   SSL_set1_param := LoadLibFunction(ADllHandle, SSL_set1_param_procname);
-  FuncLoaded := assigned(SSL_set1_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set1_param);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set1_param_allownil)}
+    SSL_set1_param := @ERR_SSL_set1_param;
+    {$ifend}
     {$if declared(SSL_set1_param_introduced)}
     if LibVersion < SSL_set1_param_introduced then
     begin
       {$if declared(FC_SSL_set1_param)}
       SSL_set1_param := @FC_SSL_set1_param;
-      {$else}
-      {$if not defined(SSL_set1_param_allownil)}
-      SSL_set1_param := @ERR_SSL_set1_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set1_param_removed)}
@@ -20574,39 +18317,31 @@ begin
     begin
       {$if declared(_SSL_set1_param)}
       SSL_set1_param := @_SSL_set1_param;
-      {$else}
-      {$if not defined(SSL_set1_param_allownil)}
-      SSL_set1_param := @ERR_SSL_set1_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set1_param_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set1_param := @ERR_SSL_set1_param;
+    if FuncLoadError then
       AFailed.Add('SSL_set1_param');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get0_param := LoadLibFunction(ADllHandle, SSL_CTX_get0_param_procname);
-  FuncLoaded := assigned(SSL_CTX_get0_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get0_param);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get0_param_allownil)}
+    SSL_CTX_get0_param := @ERR_SSL_CTX_get0_param;
+    {$ifend}
     {$if declared(SSL_CTX_get0_param_introduced)}
     if LibVersion < SSL_CTX_get0_param_introduced then
     begin
       {$if declared(FC_SSL_CTX_get0_param)}
       SSL_CTX_get0_param := @FC_SSL_CTX_get0_param;
-      {$else}
-      {$if not defined(SSL_CTX_get0_param_allownil)}
-      SSL_CTX_get0_param := @ERR_SSL_CTX_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get0_param_removed)}
@@ -20614,39 +18349,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get0_param)}
       SSL_CTX_get0_param := @_SSL_CTX_get0_param;
-      {$else}
-      {$if not defined(SSL_CTX_get0_param_allownil)}
-      SSL_CTX_get0_param := @ERR_SSL_CTX_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get0_param_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get0_param := @ERR_SSL_CTX_get0_param;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get0_param');
-    end;
     {$ifend}
   end;
 
 
   SSL_get0_param := LoadLibFunction(ADllHandle, SSL_get0_param_procname);
-  FuncLoaded := assigned(SSL_get0_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_param);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_param_allownil)}
+    SSL_get0_param := @ERR_SSL_get0_param;
+    {$ifend}
     {$if declared(SSL_get0_param_introduced)}
     if LibVersion < SSL_get0_param_introduced then
     begin
       {$if declared(FC_SSL_get0_param)}
       SSL_get0_param := @FC_SSL_get0_param;
-      {$else}
-      {$if not defined(SSL_get0_param_allownil)}
-      SSL_get0_param := @ERR_SSL_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_param_removed)}
@@ -20654,39 +18381,31 @@ begin
     begin
       {$if declared(_SSL_get0_param)}
       SSL_get0_param := @_SSL_get0_param;
-      {$else}
-      {$if not defined(SSL_get0_param_allownil)}
-      SSL_get0_param := @ERR_SSL_get0_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_param_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_param := @ERR_SSL_get0_param;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_param');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_username := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_username_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_username);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_username);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_username_allownil)}
+    SSL_CTX_set_srp_username := @ERR_SSL_CTX_set_srp_username;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_username_introduced)}
     if LibVersion < SSL_CTX_set_srp_username_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_username)}
       SSL_CTX_set_srp_username := @FC_SSL_CTX_set_srp_username;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_username_allownil)}
-      SSL_CTX_set_srp_username := @ERR_SSL_CTX_set_srp_username;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_username_removed)}
@@ -20694,39 +18413,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_username)}
       SSL_CTX_set_srp_username := @_SSL_CTX_set_srp_username;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_username_allownil)}
-      SSL_CTX_set_srp_username := @ERR_SSL_CTX_set_srp_username;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_username_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_username := @ERR_SSL_CTX_set_srp_username;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_username');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_password := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_password_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_password);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_password);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_password_allownil)}
+    SSL_CTX_set_srp_password := @ERR_SSL_CTX_set_srp_password;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_password_introduced)}
     if LibVersion < SSL_CTX_set_srp_password_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_password)}
       SSL_CTX_set_srp_password := @FC_SSL_CTX_set_srp_password;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_password_allownil)}
-      SSL_CTX_set_srp_password := @ERR_SSL_CTX_set_srp_password;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_password_removed)}
@@ -20734,39 +18445,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_password)}
       SSL_CTX_set_srp_password := @_SSL_CTX_set_srp_password;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_password_allownil)}
-      SSL_CTX_set_srp_password := @ERR_SSL_CTX_set_srp_password;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_password_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_password := @ERR_SSL_CTX_set_srp_password;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_password');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_strength := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_strength_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_strength);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_strength);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_strength_allownil)}
+    SSL_CTX_set_srp_strength := @ERR_SSL_CTX_set_srp_strength;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_strength_introduced)}
     if LibVersion < SSL_CTX_set_srp_strength_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_strength)}
       SSL_CTX_set_srp_strength := @FC_SSL_CTX_set_srp_strength;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_strength_allownil)}
-      SSL_CTX_set_srp_strength := @ERR_SSL_CTX_set_srp_strength;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_strength_removed)}
@@ -20774,39 +18477,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_strength)}
       SSL_CTX_set_srp_strength := @_SSL_CTX_set_srp_strength;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_strength_allownil)}
-      SSL_CTX_set_srp_strength := @ERR_SSL_CTX_set_srp_strength;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_strength_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_strength := @ERR_SSL_CTX_set_srp_strength;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_strength');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_client_pwd_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_client_pwd_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_client_pwd_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_client_pwd_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_client_pwd_callback_allownil)}
+    SSL_CTX_set_srp_client_pwd_callback := @ERR_SSL_CTX_set_srp_client_pwd_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_client_pwd_callback_introduced)}
     if LibVersion < SSL_CTX_set_srp_client_pwd_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_client_pwd_callback)}
       SSL_CTX_set_srp_client_pwd_callback := @FC_SSL_CTX_set_srp_client_pwd_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_client_pwd_callback_allownil)}
-      SSL_CTX_set_srp_client_pwd_callback := @ERR_SSL_CTX_set_srp_client_pwd_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_client_pwd_callback_removed)}
@@ -20814,39 +18509,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_client_pwd_callback)}
       SSL_CTX_set_srp_client_pwd_callback := @_SSL_CTX_set_srp_client_pwd_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_client_pwd_callback_allownil)}
-      SSL_CTX_set_srp_client_pwd_callback := @ERR_SSL_CTX_set_srp_client_pwd_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_client_pwd_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_client_pwd_callback := @ERR_SSL_CTX_set_srp_client_pwd_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_client_pwd_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_verify_param_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_verify_param_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_verify_param_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_verify_param_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_verify_param_callback_allownil)}
+    SSL_CTX_set_srp_verify_param_callback := @ERR_SSL_CTX_set_srp_verify_param_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_verify_param_callback_introduced)}
     if LibVersion < SSL_CTX_set_srp_verify_param_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_verify_param_callback)}
       SSL_CTX_set_srp_verify_param_callback := @FC_SSL_CTX_set_srp_verify_param_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_verify_param_callback_allownil)}
-      SSL_CTX_set_srp_verify_param_callback := @ERR_SSL_CTX_set_srp_verify_param_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_verify_param_callback_removed)}
@@ -20854,39 +18541,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_verify_param_callback)}
       SSL_CTX_set_srp_verify_param_callback := @_SSL_CTX_set_srp_verify_param_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_verify_param_callback_allownil)}
-      SSL_CTX_set_srp_verify_param_callback := @ERR_SSL_CTX_set_srp_verify_param_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_verify_param_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_verify_param_callback := @ERR_SSL_CTX_set_srp_verify_param_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_verify_param_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_username_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_username_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_username_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_username_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_username_callback_allownil)}
+    SSL_CTX_set_srp_username_callback := @ERR_SSL_CTX_set_srp_username_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_username_callback_introduced)}
     if LibVersion < SSL_CTX_set_srp_username_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_username_callback)}
       SSL_CTX_set_srp_username_callback := @FC_SSL_CTX_set_srp_username_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_username_callback_allownil)}
-      SSL_CTX_set_srp_username_callback := @ERR_SSL_CTX_set_srp_username_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_username_callback_removed)}
@@ -20894,39 +18573,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_username_callback)}
       SSL_CTX_set_srp_username_callback := @_SSL_CTX_set_srp_username_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_username_callback_allownil)}
-      SSL_CTX_set_srp_username_callback := @ERR_SSL_CTX_set_srp_username_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_username_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_username_callback := @ERR_SSL_CTX_set_srp_username_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_username_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_srp_cb_arg := LoadLibFunction(ADllHandle, SSL_CTX_set_srp_cb_arg_procname);
-  FuncLoaded := assigned(SSL_CTX_set_srp_cb_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_srp_cb_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_srp_cb_arg_allownil)}
+    SSL_CTX_set_srp_cb_arg := @ERR_SSL_CTX_set_srp_cb_arg;
+    {$ifend}
     {$if declared(SSL_CTX_set_srp_cb_arg_introduced)}
     if LibVersion < SSL_CTX_set_srp_cb_arg_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_srp_cb_arg)}
       SSL_CTX_set_srp_cb_arg := @FC_SSL_CTX_set_srp_cb_arg;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_cb_arg_allownil)}
-      SSL_CTX_set_srp_cb_arg := @ERR_SSL_CTX_set_srp_cb_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_srp_cb_arg_removed)}
@@ -20934,39 +18605,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_srp_cb_arg)}
       SSL_CTX_set_srp_cb_arg := @_SSL_CTX_set_srp_cb_arg;
-      {$else}
-      {$if not defined(SSL_CTX_set_srp_cb_arg_allownil)}
-      SSL_CTX_set_srp_cb_arg := @ERR_SSL_CTX_set_srp_cb_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_srp_cb_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_srp_cb_arg := @ERR_SSL_CTX_set_srp_cb_arg;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_srp_cb_arg');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_srp_server_param := LoadLibFunction(ADllHandle, SSL_set_srp_server_param_procname);
-  FuncLoaded := assigned(SSL_set_srp_server_param);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_srp_server_param);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_srp_server_param_allownil)}
+    SSL_set_srp_server_param := @ERR_SSL_set_srp_server_param;
+    {$ifend}
     {$if declared(SSL_set_srp_server_param_introduced)}
     if LibVersion < SSL_set_srp_server_param_introduced then
     begin
       {$if declared(FC_SSL_set_srp_server_param)}
       SSL_set_srp_server_param := @FC_SSL_set_srp_server_param;
-      {$else}
-      {$if not defined(SSL_set_srp_server_param_allownil)}
-      SSL_set_srp_server_param := @ERR_SSL_set_srp_server_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_srp_server_param_removed)}
@@ -20974,39 +18637,31 @@ begin
     begin
       {$if declared(_SSL_set_srp_server_param)}
       SSL_set_srp_server_param := @_SSL_set_srp_server_param;
-      {$else}
-      {$if not defined(SSL_set_srp_server_param_allownil)}
-      SSL_set_srp_server_param := @ERR_SSL_set_srp_server_param;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_srp_server_param_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_srp_server_param := @ERR_SSL_set_srp_server_param;
+    if FuncLoadError then
       AFailed.Add('SSL_set_srp_server_param');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_srp_server_param_pw := LoadLibFunction(ADllHandle, SSL_set_srp_server_param_pw_procname);
-  FuncLoaded := assigned(SSL_set_srp_server_param_pw);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_srp_server_param_pw);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_srp_server_param_pw_allownil)}
+    SSL_set_srp_server_param_pw := @ERR_SSL_set_srp_server_param_pw;
+    {$ifend}
     {$if declared(SSL_set_srp_server_param_pw_introduced)}
     if LibVersion < SSL_set_srp_server_param_pw_introduced then
     begin
       {$if declared(FC_SSL_set_srp_server_param_pw)}
       SSL_set_srp_server_param_pw := @FC_SSL_set_srp_server_param_pw;
-      {$else}
-      {$if not defined(SSL_set_srp_server_param_pw_allownil)}
-      SSL_set_srp_server_param_pw := @ERR_SSL_set_srp_server_param_pw;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_srp_server_param_pw_removed)}
@@ -21014,39 +18669,31 @@ begin
     begin
       {$if declared(_SSL_set_srp_server_param_pw)}
       SSL_set_srp_server_param_pw := @_SSL_set_srp_server_param_pw;
-      {$else}
-      {$if not defined(SSL_set_srp_server_param_pw_allownil)}
-      SSL_set_srp_server_param_pw := @ERR_SSL_set_srp_server_param_pw;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_srp_server_param_pw_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_srp_server_param_pw := @ERR_SSL_set_srp_server_param_pw;
+    if FuncLoadError then
       AFailed.Add('SSL_set_srp_server_param_pw');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_client_hello_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_client_hello_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_client_hello_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_client_hello_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_client_hello_cb_allownil)}
+    SSL_CTX_set_client_hello_cb := @ERR_SSL_CTX_set_client_hello_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_client_hello_cb_introduced)}
     if LibVersion < SSL_CTX_set_client_hello_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_client_hello_cb)}
       SSL_CTX_set_client_hello_cb := @FC_SSL_CTX_set_client_hello_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_hello_cb_allownil)}
-      SSL_CTX_set_client_hello_cb := @ERR_SSL_CTX_set_client_hello_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_client_hello_cb_removed)}
@@ -21054,39 +18701,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_client_hello_cb)}
       SSL_CTX_set_client_hello_cb := @_SSL_CTX_set_client_hello_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_hello_cb_allownil)}
-      SSL_CTX_set_client_hello_cb := @ERR_SSL_CTX_set_client_hello_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_client_hello_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_client_hello_cb := @ERR_SSL_CTX_set_client_hello_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_client_hello_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_isv2 := LoadLibFunction(ADllHandle, SSL_client_hello_isv2_procname);
-  FuncLoaded := assigned(SSL_client_hello_isv2);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_isv2);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_isv2_allownil)}
+    SSL_client_hello_isv2 := @ERR_SSL_client_hello_isv2;
+    {$ifend}
     {$if declared(SSL_client_hello_isv2_introduced)}
     if LibVersion < SSL_client_hello_isv2_introduced then
     begin
       {$if declared(FC_SSL_client_hello_isv2)}
       SSL_client_hello_isv2 := @FC_SSL_client_hello_isv2;
-      {$else}
-      {$if not defined(SSL_client_hello_isv2_allownil)}
-      SSL_client_hello_isv2 := @ERR_SSL_client_hello_isv2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_isv2_removed)}
@@ -21094,39 +18733,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_isv2)}
       SSL_client_hello_isv2 := @_SSL_client_hello_isv2;
-      {$else}
-      {$if not defined(SSL_client_hello_isv2_allownil)}
-      SSL_client_hello_isv2 := @ERR_SSL_client_hello_isv2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_isv2_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_isv2 := @ERR_SSL_client_hello_isv2;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_isv2');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_legacy_version := LoadLibFunction(ADllHandle, SSL_client_hello_get0_legacy_version_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_legacy_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_legacy_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_legacy_version_allownil)}
+    SSL_client_hello_get0_legacy_version := @ERR_SSL_client_hello_get0_legacy_version;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_legacy_version_introduced)}
     if LibVersion < SSL_client_hello_get0_legacy_version_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_legacy_version)}
       SSL_client_hello_get0_legacy_version := @FC_SSL_client_hello_get0_legacy_version;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_legacy_version_allownil)}
-      SSL_client_hello_get0_legacy_version := @ERR_SSL_client_hello_get0_legacy_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_legacy_version_removed)}
@@ -21134,39 +18765,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_legacy_version)}
       SSL_client_hello_get0_legacy_version := @_SSL_client_hello_get0_legacy_version;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_legacy_version_allownil)}
-      SSL_client_hello_get0_legacy_version := @ERR_SSL_client_hello_get0_legacy_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_legacy_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_legacy_version := @ERR_SSL_client_hello_get0_legacy_version;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_legacy_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_random := LoadLibFunction(ADllHandle, SSL_client_hello_get0_random_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_random);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_random);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_random_allownil)}
+    SSL_client_hello_get0_random := @ERR_SSL_client_hello_get0_random;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_random_introduced)}
     if LibVersion < SSL_client_hello_get0_random_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_random)}
       SSL_client_hello_get0_random := @FC_SSL_client_hello_get0_random;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_random_allownil)}
-      SSL_client_hello_get0_random := @ERR_SSL_client_hello_get0_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_random_removed)}
@@ -21174,39 +18797,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_random)}
       SSL_client_hello_get0_random := @_SSL_client_hello_get0_random;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_random_allownil)}
-      SSL_client_hello_get0_random := @ERR_SSL_client_hello_get0_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_random_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_random := @ERR_SSL_client_hello_get0_random;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_random');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_session_id := LoadLibFunction(ADllHandle, SSL_client_hello_get0_session_id_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_session_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_session_id);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_session_id_allownil)}
+    SSL_client_hello_get0_session_id := @ERR_SSL_client_hello_get0_session_id;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_session_id_introduced)}
     if LibVersion < SSL_client_hello_get0_session_id_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_session_id)}
       SSL_client_hello_get0_session_id := @FC_SSL_client_hello_get0_session_id;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_session_id_allownil)}
-      SSL_client_hello_get0_session_id := @ERR_SSL_client_hello_get0_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_session_id_removed)}
@@ -21214,39 +18829,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_session_id)}
       SSL_client_hello_get0_session_id := @_SSL_client_hello_get0_session_id;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_session_id_allownil)}
-      SSL_client_hello_get0_session_id := @ERR_SSL_client_hello_get0_session_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_session_id_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_session_id := @ERR_SSL_client_hello_get0_session_id;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_session_id');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_ciphers := LoadLibFunction(ADllHandle, SSL_client_hello_get0_ciphers_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_ciphers);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_ciphers);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_ciphers_allownil)}
+    SSL_client_hello_get0_ciphers := @ERR_SSL_client_hello_get0_ciphers;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_ciphers_introduced)}
     if LibVersion < SSL_client_hello_get0_ciphers_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_ciphers)}
       SSL_client_hello_get0_ciphers := @FC_SSL_client_hello_get0_ciphers;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_ciphers_allownil)}
-      SSL_client_hello_get0_ciphers := @ERR_SSL_client_hello_get0_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_ciphers_removed)}
@@ -21254,39 +18861,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_ciphers)}
       SSL_client_hello_get0_ciphers := @_SSL_client_hello_get0_ciphers;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_ciphers_allownil)}
-      SSL_client_hello_get0_ciphers := @ERR_SSL_client_hello_get0_ciphers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_ciphers_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_ciphers := @ERR_SSL_client_hello_get0_ciphers;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_ciphers');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_compression_methods := LoadLibFunction(ADllHandle, SSL_client_hello_get0_compression_methods_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_compression_methods);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_compression_methods);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_compression_methods_allownil)}
+    SSL_client_hello_get0_compression_methods := @ERR_SSL_client_hello_get0_compression_methods;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_compression_methods_introduced)}
     if LibVersion < SSL_client_hello_get0_compression_methods_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_compression_methods)}
       SSL_client_hello_get0_compression_methods := @FC_SSL_client_hello_get0_compression_methods;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_compression_methods_allownil)}
-      SSL_client_hello_get0_compression_methods := @ERR_SSL_client_hello_get0_compression_methods;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_compression_methods_removed)}
@@ -21294,39 +18893,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_compression_methods)}
       SSL_client_hello_get0_compression_methods := @_SSL_client_hello_get0_compression_methods;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_compression_methods_allownil)}
-      SSL_client_hello_get0_compression_methods := @ERR_SSL_client_hello_get0_compression_methods;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_compression_methods_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_compression_methods := @ERR_SSL_client_hello_get0_compression_methods;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_compression_methods');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get1_extensions_present := LoadLibFunction(ADllHandle, SSL_client_hello_get1_extensions_present_procname);
-  FuncLoaded := assigned(SSL_client_hello_get1_extensions_present);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get1_extensions_present);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get1_extensions_present_allownil)}
+    SSL_client_hello_get1_extensions_present := @ERR_SSL_client_hello_get1_extensions_present;
+    {$ifend}
     {$if declared(SSL_client_hello_get1_extensions_present_introduced)}
     if LibVersion < SSL_client_hello_get1_extensions_present_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get1_extensions_present)}
       SSL_client_hello_get1_extensions_present := @FC_SSL_client_hello_get1_extensions_present;
-      {$else}
-      {$if not defined(SSL_client_hello_get1_extensions_present_allownil)}
-      SSL_client_hello_get1_extensions_present := @ERR_SSL_client_hello_get1_extensions_present;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get1_extensions_present_removed)}
@@ -21334,39 +18925,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get1_extensions_present)}
       SSL_client_hello_get1_extensions_present := @_SSL_client_hello_get1_extensions_present;
-      {$else}
-      {$if not defined(SSL_client_hello_get1_extensions_present_allownil)}
-      SSL_client_hello_get1_extensions_present := @ERR_SSL_client_hello_get1_extensions_present;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get1_extensions_present_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get1_extensions_present := @ERR_SSL_client_hello_get1_extensions_present;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get1_extensions_present');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_client_hello_get0_ext := LoadLibFunction(ADllHandle, SSL_client_hello_get0_ext_procname);
-  FuncLoaded := assigned(SSL_client_hello_get0_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_hello_get0_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_hello_get0_ext_allownil)}
+    SSL_client_hello_get0_ext := @ERR_SSL_client_hello_get0_ext;
+    {$ifend}
     {$if declared(SSL_client_hello_get0_ext_introduced)}
     if LibVersion < SSL_client_hello_get0_ext_introduced then
     begin
       {$if declared(FC_SSL_client_hello_get0_ext)}
       SSL_client_hello_get0_ext := @FC_SSL_client_hello_get0_ext;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_ext_allownil)}
-      SSL_client_hello_get0_ext := @ERR_SSL_client_hello_get0_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_hello_get0_ext_removed)}
@@ -21374,39 +18957,31 @@ begin
     begin
       {$if declared(_SSL_client_hello_get0_ext)}
       SSL_client_hello_get0_ext := @_SSL_client_hello_get0_ext;
-      {$else}
-      {$if not defined(SSL_client_hello_get0_ext_allownil)}
-      SSL_client_hello_get0_ext := @ERR_SSL_client_hello_get0_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_hello_get0_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_hello_get0_ext := @ERR_SSL_client_hello_get0_ext;
+    if FuncLoadError then
       AFailed.Add('SSL_client_hello_get0_ext');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_certs_clear := LoadLibFunction(ADllHandle, SSL_certs_clear_procname);
-  FuncLoaded := assigned(SSL_certs_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_certs_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_certs_clear_allownil)}
+    SSL_certs_clear := @ERR_SSL_certs_clear;
+    {$ifend}
     {$if declared(SSL_certs_clear_introduced)}
     if LibVersion < SSL_certs_clear_introduced then
     begin
       {$if declared(FC_SSL_certs_clear)}
       SSL_certs_clear := @FC_SSL_certs_clear;
-      {$else}
-      {$if not defined(SSL_certs_clear_allownil)}
-      SSL_certs_clear := @ERR_SSL_certs_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_certs_clear_removed)}
@@ -21414,39 +18989,31 @@ begin
     begin
       {$if declared(_SSL_certs_clear)}
       SSL_certs_clear := @_SSL_certs_clear;
-      {$else}
-      {$if not defined(SSL_certs_clear_allownil)}
-      SSL_certs_clear := @ERR_SSL_certs_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_certs_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_certs_clear := @ERR_SSL_certs_clear;
+    if FuncLoadError then
       AFailed.Add('SSL_certs_clear');
-    end;
     {$ifend}
   end;
 
 
   SSL_free := LoadLibFunction(ADllHandle, SSL_free_procname);
-  FuncLoaded := assigned(SSL_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_free);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_free_allownil)}
+    SSL_free := @ERR_SSL_free;
+    {$ifend}
     {$if declared(SSL_free_introduced)}
     if LibVersion < SSL_free_introduced then
     begin
       {$if declared(FC_SSL_free)}
       SSL_free := @FC_SSL_free;
-      {$else}
-      {$if not defined(SSL_free_allownil)}
-      SSL_free := @ERR_SSL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_free_removed)}
@@ -21454,39 +19021,31 @@ begin
     begin
       {$if declared(_SSL_free)}
       SSL_free := @_SSL_free;
-      {$else}
-      {$if not defined(SSL_free_allownil)}
-      SSL_free := @ERR_SSL_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_free_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_free := @ERR_SSL_free;
+    if FuncLoadError then
       AFailed.Add('SSL_free');
-    end;
     {$ifend}
   end;
 
 
   SSL_waiting_for_async := LoadLibFunction(ADllHandle, SSL_waiting_for_async_procname);
-  FuncLoaded := assigned(SSL_waiting_for_async);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_waiting_for_async);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_waiting_for_async_allownil)}
+    SSL_waiting_for_async := @ERR_SSL_waiting_for_async;
+    {$ifend}
     {$if declared(SSL_waiting_for_async_introduced)}
     if LibVersion < SSL_waiting_for_async_introduced then
     begin
       {$if declared(FC_SSL_waiting_for_async)}
       SSL_waiting_for_async := @FC_SSL_waiting_for_async;
-      {$else}
-      {$if not defined(SSL_waiting_for_async_allownil)}
-      SSL_waiting_for_async := @ERR_SSL_waiting_for_async;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_waiting_for_async_removed)}
@@ -21494,39 +19053,31 @@ begin
     begin
       {$if declared(_SSL_waiting_for_async)}
       SSL_waiting_for_async := @_SSL_waiting_for_async;
-      {$else}
-      {$if not defined(SSL_waiting_for_async_allownil)}
-      SSL_waiting_for_async := @ERR_SSL_waiting_for_async;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_waiting_for_async_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_waiting_for_async := @ERR_SSL_waiting_for_async;
+    if FuncLoadError then
       AFailed.Add('SSL_waiting_for_async');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_all_async_fds := LoadLibFunction(ADllHandle, SSL_get_all_async_fds_procname);
-  FuncLoaded := assigned(SSL_get_all_async_fds);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_all_async_fds);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_all_async_fds_allownil)}
+    SSL_get_all_async_fds := @ERR_SSL_get_all_async_fds;
+    {$ifend}
     {$if declared(SSL_get_all_async_fds_introduced)}
     if LibVersion < SSL_get_all_async_fds_introduced then
     begin
       {$if declared(FC_SSL_get_all_async_fds)}
       SSL_get_all_async_fds := @FC_SSL_get_all_async_fds;
-      {$else}
-      {$if not defined(SSL_get_all_async_fds_allownil)}
-      SSL_get_all_async_fds := @ERR_SSL_get_all_async_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_all_async_fds_removed)}
@@ -21534,39 +19085,31 @@ begin
     begin
       {$if declared(_SSL_get_all_async_fds)}
       SSL_get_all_async_fds := @_SSL_get_all_async_fds;
-      {$else}
-      {$if not defined(SSL_get_all_async_fds_allownil)}
-      SSL_get_all_async_fds := @ERR_SSL_get_all_async_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_all_async_fds_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_all_async_fds := @ERR_SSL_get_all_async_fds;
+    if FuncLoadError then
       AFailed.Add('SSL_get_all_async_fds');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_changed_async_fds := LoadLibFunction(ADllHandle, SSL_get_changed_async_fds_procname);
-  FuncLoaded := assigned(SSL_get_changed_async_fds);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_changed_async_fds);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_changed_async_fds_allownil)}
+    SSL_get_changed_async_fds := @ERR_SSL_get_changed_async_fds;
+    {$ifend}
     {$if declared(SSL_get_changed_async_fds_introduced)}
     if LibVersion < SSL_get_changed_async_fds_introduced then
     begin
       {$if declared(FC_SSL_get_changed_async_fds)}
       SSL_get_changed_async_fds := @FC_SSL_get_changed_async_fds;
-      {$else}
-      {$if not defined(SSL_get_changed_async_fds_allownil)}
-      SSL_get_changed_async_fds := @ERR_SSL_get_changed_async_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_changed_async_fds_removed)}
@@ -21574,39 +19117,31 @@ begin
     begin
       {$if declared(_SSL_get_changed_async_fds)}
       SSL_get_changed_async_fds := @_SSL_get_changed_async_fds;
-      {$else}
-      {$if not defined(SSL_get_changed_async_fds_allownil)}
-      SSL_get_changed_async_fds := @ERR_SSL_get_changed_async_fds;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_changed_async_fds_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_changed_async_fds := @ERR_SSL_get_changed_async_fds;
+    if FuncLoadError then
       AFailed.Add('SSL_get_changed_async_fds');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_accept := LoadLibFunction(ADllHandle, SSL_accept_procname);
-  FuncLoaded := assigned(SSL_accept);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_accept);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_accept_allownil)}
+    SSL_accept := @ERR_SSL_accept;
+    {$ifend}
     {$if declared(SSL_accept_introduced)}
     if LibVersion < SSL_accept_introduced then
     begin
       {$if declared(FC_SSL_accept)}
       SSL_accept := @FC_SSL_accept;
-      {$else}
-      {$if not defined(SSL_accept_allownil)}
-      SSL_accept := @ERR_SSL_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_accept_removed)}
@@ -21614,39 +19149,31 @@ begin
     begin
       {$if declared(_SSL_accept)}
       SSL_accept := @_SSL_accept;
-      {$else}
-      {$if not defined(SSL_accept_allownil)}
-      SSL_accept := @ERR_SSL_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_accept_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_accept := @ERR_SSL_accept;
+    if FuncLoadError then
       AFailed.Add('SSL_accept');
-    end;
     {$ifend}
   end;
 
 
   SSL_stateless := LoadLibFunction(ADllHandle, SSL_stateless_procname);
-  FuncLoaded := assigned(SSL_stateless);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_stateless);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_stateless_allownil)}
+    SSL_stateless := @ERR_SSL_stateless;
+    {$ifend}
     {$if declared(SSL_stateless_introduced)}
     if LibVersion < SSL_stateless_introduced then
     begin
       {$if declared(FC_SSL_stateless)}
       SSL_stateless := @FC_SSL_stateless;
-      {$else}
-      {$if not defined(SSL_stateless_allownil)}
-      SSL_stateless := @ERR_SSL_stateless;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_stateless_removed)}
@@ -21654,39 +19181,31 @@ begin
     begin
       {$if declared(_SSL_stateless)}
       SSL_stateless := @_SSL_stateless;
-      {$else}
-      {$if not defined(SSL_stateless_allownil)}
-      SSL_stateless := @ERR_SSL_stateless;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_stateless_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_stateless := @ERR_SSL_stateless;
+    if FuncLoadError then
       AFailed.Add('SSL_stateless');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_connect := LoadLibFunction(ADllHandle, SSL_connect_procname);
-  FuncLoaded := assigned(SSL_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_connect_allownil)}
+    SSL_connect := @ERR_SSL_connect;
+    {$ifend}
     {$if declared(SSL_connect_introduced)}
     if LibVersion < SSL_connect_introduced then
     begin
       {$if declared(FC_SSL_connect)}
       SSL_connect := @FC_SSL_connect;
-      {$else}
-      {$if not defined(SSL_connect_allownil)}
-      SSL_connect := @ERR_SSL_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_connect_removed)}
@@ -21694,39 +19213,31 @@ begin
     begin
       {$if declared(_SSL_connect)}
       SSL_connect := @_SSL_connect;
-      {$else}
-      {$if not defined(SSL_connect_allownil)}
-      SSL_connect := @ERR_SSL_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_connect := @ERR_SSL_connect;
+    if FuncLoadError then
       AFailed.Add('SSL_connect');
-    end;
     {$ifend}
   end;
 
 
   SSL_read := LoadLibFunction(ADllHandle, SSL_read_procname);
-  FuncLoaded := assigned(SSL_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_read);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_read_allownil)}
+    SSL_read := @ERR_SSL_read;
+    {$ifend}
     {$if declared(SSL_read_introduced)}
     if LibVersion < SSL_read_introduced then
     begin
       {$if declared(FC_SSL_read)}
       SSL_read := @FC_SSL_read;
-      {$else}
-      {$if not defined(SSL_read_allownil)}
-      SSL_read := @ERR_SSL_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_read_removed)}
@@ -21734,39 +19245,31 @@ begin
     begin
       {$if declared(_SSL_read)}
       SSL_read := @_SSL_read;
-      {$else}
-      {$if not defined(SSL_read_allownil)}
-      SSL_read := @ERR_SSL_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_read_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_read := @ERR_SSL_read;
+    if FuncLoadError then
       AFailed.Add('SSL_read');
-    end;
     {$ifend}
   end;
 
 
   SSL_read_ex := LoadLibFunction(ADllHandle, SSL_read_ex_procname);
-  FuncLoaded := assigned(SSL_read_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_read_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_read_ex_allownil)}
+    SSL_read_ex := @ERR_SSL_read_ex;
+    {$ifend}
     {$if declared(SSL_read_ex_introduced)}
     if LibVersion < SSL_read_ex_introduced then
     begin
       {$if declared(FC_SSL_read_ex)}
       SSL_read_ex := @FC_SSL_read_ex;
-      {$else}
-      {$if not defined(SSL_read_ex_allownil)}
-      SSL_read_ex := @ERR_SSL_read_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_read_ex_removed)}
@@ -21774,39 +19277,31 @@ begin
     begin
       {$if declared(_SSL_read_ex)}
       SSL_read_ex := @_SSL_read_ex;
-      {$else}
-      {$if not defined(SSL_read_ex_allownil)}
-      SSL_read_ex := @ERR_SSL_read_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_read_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_read_ex := @ERR_SSL_read_ex;
+    if FuncLoadError then
       AFailed.Add('SSL_read_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_read_early_data := LoadLibFunction(ADllHandle, SSL_read_early_data_procname);
-  FuncLoaded := assigned(SSL_read_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_read_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_read_early_data_allownil)}
+    SSL_read_early_data := @ERR_SSL_read_early_data;
+    {$ifend}
     {$if declared(SSL_read_early_data_introduced)}
     if LibVersion < SSL_read_early_data_introduced then
     begin
       {$if declared(FC_SSL_read_early_data)}
       SSL_read_early_data := @FC_SSL_read_early_data;
-      {$else}
-      {$if not defined(SSL_read_early_data_allownil)}
-      SSL_read_early_data := @ERR_SSL_read_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_read_early_data_removed)}
@@ -21814,39 +19309,31 @@ begin
     begin
       {$if declared(_SSL_read_early_data)}
       SSL_read_early_data := @_SSL_read_early_data;
-      {$else}
-      {$if not defined(SSL_read_early_data_allownil)}
-      SSL_read_early_data := @ERR_SSL_read_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_read_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_read_early_data := @ERR_SSL_read_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_read_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_peek := LoadLibFunction(ADllHandle, SSL_peek_procname);
-  FuncLoaded := assigned(SSL_peek);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_peek);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_peek_allownil)}
+    SSL_peek := @ERR_SSL_peek;
+    {$ifend}
     {$if declared(SSL_peek_introduced)}
     if LibVersion < SSL_peek_introduced then
     begin
       {$if declared(FC_SSL_peek)}
       SSL_peek := @FC_SSL_peek;
-      {$else}
-      {$if not defined(SSL_peek_allownil)}
-      SSL_peek := @ERR_SSL_peek;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_peek_removed)}
@@ -21854,39 +19341,31 @@ begin
     begin
       {$if declared(_SSL_peek)}
       SSL_peek := @_SSL_peek;
-      {$else}
-      {$if not defined(SSL_peek_allownil)}
-      SSL_peek := @ERR_SSL_peek;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_peek_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_peek := @ERR_SSL_peek;
+    if FuncLoadError then
       AFailed.Add('SSL_peek');
-    end;
     {$ifend}
   end;
 
 
   SSL_peek_ex := LoadLibFunction(ADllHandle, SSL_peek_ex_procname);
-  FuncLoaded := assigned(SSL_peek_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_peek_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_peek_ex_allownil)}
+    SSL_peek_ex := @ERR_SSL_peek_ex;
+    {$ifend}
     {$if declared(SSL_peek_ex_introduced)}
     if LibVersion < SSL_peek_ex_introduced then
     begin
       {$if declared(FC_SSL_peek_ex)}
       SSL_peek_ex := @FC_SSL_peek_ex;
-      {$else}
-      {$if not defined(SSL_peek_ex_allownil)}
-      SSL_peek_ex := @ERR_SSL_peek_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_peek_ex_removed)}
@@ -21894,39 +19373,31 @@ begin
     begin
       {$if declared(_SSL_peek_ex)}
       SSL_peek_ex := @_SSL_peek_ex;
-      {$else}
-      {$if not defined(SSL_peek_ex_allownil)}
-      SSL_peek_ex := @ERR_SSL_peek_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_peek_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_peek_ex := @ERR_SSL_peek_ex;
+    if FuncLoadError then
       AFailed.Add('SSL_peek_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_write := LoadLibFunction(ADllHandle, SSL_write_procname);
-  FuncLoaded := assigned(SSL_write);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_write);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_write_allownil)}
+    SSL_write := @ERR_SSL_write;
+    {$ifend}
     {$if declared(SSL_write_introduced)}
     if LibVersion < SSL_write_introduced then
     begin
       {$if declared(FC_SSL_write)}
       SSL_write := @FC_SSL_write;
-      {$else}
-      {$if not defined(SSL_write_allownil)}
-      SSL_write := @ERR_SSL_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_write_removed)}
@@ -21934,39 +19405,31 @@ begin
     begin
       {$if declared(_SSL_write)}
       SSL_write := @_SSL_write;
-      {$else}
-      {$if not defined(SSL_write_allownil)}
-      SSL_write := @ERR_SSL_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_write_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_write := @ERR_SSL_write;
+    if FuncLoadError then
       AFailed.Add('SSL_write');
-    end;
     {$ifend}
   end;
 
 
   SSL_write_ex := LoadLibFunction(ADllHandle, SSL_write_ex_procname);
-  FuncLoaded := assigned(SSL_write_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_write_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_write_ex_allownil)}
+    SSL_write_ex := @ERR_SSL_write_ex;
+    {$ifend}
     {$if declared(SSL_write_ex_introduced)}
     if LibVersion < SSL_write_ex_introduced then
     begin
       {$if declared(FC_SSL_write_ex)}
       SSL_write_ex := @FC_SSL_write_ex;
-      {$else}
-      {$if not defined(SSL_write_ex_allownil)}
-      SSL_write_ex := @ERR_SSL_write_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_write_ex_removed)}
@@ -21974,39 +19437,31 @@ begin
     begin
       {$if declared(_SSL_write_ex)}
       SSL_write_ex := @_SSL_write_ex;
-      {$else}
-      {$if not defined(SSL_write_ex_allownil)}
-      SSL_write_ex := @ERR_SSL_write_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_write_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_write_ex := @ERR_SSL_write_ex;
+    if FuncLoadError then
       AFailed.Add('SSL_write_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_write_early_data := LoadLibFunction(ADllHandle, SSL_write_early_data_procname);
-  FuncLoaded := assigned(SSL_write_early_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_write_early_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_write_early_data_allownil)}
+    SSL_write_early_data := @ERR_SSL_write_early_data;
+    {$ifend}
     {$if declared(SSL_write_early_data_introduced)}
     if LibVersion < SSL_write_early_data_introduced then
     begin
       {$if declared(FC_SSL_write_early_data)}
       SSL_write_early_data := @FC_SSL_write_early_data;
-      {$else}
-      {$if not defined(SSL_write_early_data_allownil)}
-      SSL_write_early_data := @ERR_SSL_write_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_write_early_data_removed)}
@@ -22014,39 +19469,31 @@ begin
     begin
       {$if declared(_SSL_write_early_data)}
       SSL_write_early_data := @_SSL_write_early_data;
-      {$else}
-      {$if not defined(SSL_write_early_data_allownil)}
-      SSL_write_early_data := @ERR_SSL_write_early_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_write_early_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_write_early_data := @ERR_SSL_write_early_data;
+    if FuncLoadError then
       AFailed.Add('SSL_write_early_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_callback_ctrl := LoadLibFunction(ADllHandle, SSL_callback_ctrl_procname);
-  FuncLoaded := assigned(SSL_callback_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_callback_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_callback_ctrl_allownil)}
+    SSL_callback_ctrl := @ERR_SSL_callback_ctrl;
+    {$ifend}
     {$if declared(SSL_callback_ctrl_introduced)}
     if LibVersion < SSL_callback_ctrl_introduced then
     begin
       {$if declared(FC_SSL_callback_ctrl)}
       SSL_callback_ctrl := @FC_SSL_callback_ctrl;
-      {$else}
-      {$if not defined(SSL_callback_ctrl_allownil)}
-      SSL_callback_ctrl := @ERR_SSL_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_callback_ctrl_removed)}
@@ -22054,39 +19501,31 @@ begin
     begin
       {$if declared(_SSL_callback_ctrl)}
       SSL_callback_ctrl := @_SSL_callback_ctrl;
-      {$else}
-      {$if not defined(SSL_callback_ctrl_allownil)}
-      SSL_callback_ctrl := @ERR_SSL_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_callback_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_callback_ctrl := @ERR_SSL_callback_ctrl;
+    if FuncLoadError then
       AFailed.Add('SSL_callback_ctrl');
-    end;
     {$ifend}
   end;
 
 
   SSL_ctrl := LoadLibFunction(ADllHandle, SSL_ctrl_procname);
-  FuncLoaded := assigned(SSL_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_ctrl_allownil)}
+    SSL_ctrl := @ERR_SSL_ctrl;
+    {$ifend}
     {$if declared(SSL_ctrl_introduced)}
     if LibVersion < SSL_ctrl_introduced then
     begin
       {$if declared(FC_SSL_ctrl)}
       SSL_ctrl := @FC_SSL_ctrl;
-      {$else}
-      {$if not defined(SSL_ctrl_allownil)}
-      SSL_ctrl := @ERR_SSL_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_ctrl_removed)}
@@ -22094,39 +19533,31 @@ begin
     begin
       {$if declared(_SSL_ctrl)}
       SSL_ctrl := @_SSL_ctrl;
-      {$else}
-      {$if not defined(SSL_ctrl_allownil)}
-      SSL_ctrl := @ERR_SSL_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_ctrl := @ERR_SSL_ctrl;
+    if FuncLoadError then
       AFailed.Add('SSL_ctrl');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_ctrl := LoadLibFunction(ADllHandle, SSL_CTX_ctrl_procname);
-  FuncLoaded := assigned(SSL_CTX_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_ctrl_allownil)}
+    SSL_CTX_ctrl := @ERR_SSL_CTX_ctrl;
+    {$ifend}
     {$if declared(SSL_CTX_ctrl_introduced)}
     if LibVersion < SSL_CTX_ctrl_introduced then
     begin
       {$if declared(FC_SSL_CTX_ctrl)}
       SSL_CTX_ctrl := @FC_SSL_CTX_ctrl;
-      {$else}
-      {$if not defined(SSL_CTX_ctrl_allownil)}
-      SSL_CTX_ctrl := @ERR_SSL_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_ctrl_removed)}
@@ -22134,39 +19565,31 @@ begin
     begin
       {$if declared(_SSL_CTX_ctrl)}
       SSL_CTX_ctrl := @_SSL_CTX_ctrl;
-      {$else}
-      {$if not defined(SSL_CTX_ctrl_allownil)}
-      SSL_CTX_ctrl := @ERR_SSL_CTX_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_ctrl := @ERR_SSL_CTX_ctrl;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_ctrl');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_callback_ctrl := LoadLibFunction(ADllHandle, SSL_CTX_callback_ctrl_procname);
-  FuncLoaded := assigned(SSL_CTX_callback_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_callback_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_callback_ctrl_allownil)}
+    SSL_CTX_callback_ctrl := @ERR_SSL_CTX_callback_ctrl;
+    {$ifend}
     {$if declared(SSL_CTX_callback_ctrl_introduced)}
     if LibVersion < SSL_CTX_callback_ctrl_introduced then
     begin
       {$if declared(FC_SSL_CTX_callback_ctrl)}
       SSL_CTX_callback_ctrl := @FC_SSL_CTX_callback_ctrl;
-      {$else}
-      {$if not defined(SSL_CTX_callback_ctrl_allownil)}
-      SSL_CTX_callback_ctrl := @ERR_SSL_CTX_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_callback_ctrl_removed)}
@@ -22174,39 +19597,31 @@ begin
     begin
       {$if declared(_SSL_CTX_callback_ctrl)}
       SSL_CTX_callback_ctrl := @_SSL_CTX_callback_ctrl;
-      {$else}
-      {$if not defined(SSL_CTX_callback_ctrl_allownil)}
-      SSL_CTX_callback_ctrl := @ERR_SSL_CTX_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_callback_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_callback_ctrl := @ERR_SSL_CTX_callback_ctrl;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_callback_ctrl');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_early_data_status := LoadLibFunction(ADllHandle, SSL_get_early_data_status_procname);
-  FuncLoaded := assigned(SSL_get_early_data_status);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_early_data_status);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_early_data_status_allownil)}
+    SSL_get_early_data_status := @ERR_SSL_get_early_data_status;
+    {$ifend}
     {$if declared(SSL_get_early_data_status_introduced)}
     if LibVersion < SSL_get_early_data_status_introduced then
     begin
       {$if declared(FC_SSL_get_early_data_status)}
       SSL_get_early_data_status := @FC_SSL_get_early_data_status;
-      {$else}
-      {$if not defined(SSL_get_early_data_status_allownil)}
-      SSL_get_early_data_status := @ERR_SSL_get_early_data_status;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_early_data_status_removed)}
@@ -22214,39 +19629,31 @@ begin
     begin
       {$if declared(_SSL_get_early_data_status)}
       SSL_get_early_data_status := @_SSL_get_early_data_status;
-      {$else}
-      {$if not defined(SSL_get_early_data_status_allownil)}
-      SSL_get_early_data_status := @ERR_SSL_get_early_data_status;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_early_data_status_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_early_data_status := @ERR_SSL_get_early_data_status;
+    if FuncLoadError then
       AFailed.Add('SSL_get_early_data_status');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_error := LoadLibFunction(ADllHandle, SSL_get_error_procname);
-  FuncLoaded := assigned(SSL_get_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_error);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_error_allownil)}
+    SSL_get_error := @ERR_SSL_get_error;
+    {$ifend}
     {$if declared(SSL_get_error_introduced)}
     if LibVersion < SSL_get_error_introduced then
     begin
       {$if declared(FC_SSL_get_error)}
       SSL_get_error := @FC_SSL_get_error;
-      {$else}
-      {$if not defined(SSL_get_error_allownil)}
-      SSL_get_error := @ERR_SSL_get_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_error_removed)}
@@ -22254,39 +19661,31 @@ begin
     begin
       {$if declared(_SSL_get_error)}
       SSL_get_error := @_SSL_get_error;
-      {$else}
-      {$if not defined(SSL_get_error_allownil)}
-      SSL_get_error := @ERR_SSL_get_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_error_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_error := @ERR_SSL_get_error;
+    if FuncLoadError then
       AFailed.Add('SSL_get_error');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_version := LoadLibFunction(ADllHandle, SSL_get_version_procname);
-  FuncLoaded := assigned(SSL_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_version_allownil)}
+    SSL_get_version := @ERR_SSL_get_version;
+    {$ifend}
     {$if declared(SSL_get_version_introduced)}
     if LibVersion < SSL_get_version_introduced then
     begin
       {$if declared(FC_SSL_get_version)}
       SSL_get_version := @FC_SSL_get_version;
-      {$else}
-      {$if not defined(SSL_get_version_allownil)}
-      SSL_get_version := @ERR_SSL_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_version_removed)}
@@ -22294,39 +19693,31 @@ begin
     begin
       {$if declared(_SSL_get_version)}
       SSL_get_version := @_SSL_get_version;
-      {$else}
-      {$if not defined(SSL_get_version_allownil)}
-      SSL_get_version := @ERR_SSL_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_version := @ERR_SSL_get_version;
+    if FuncLoadError then
       AFailed.Add('SSL_get_version');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_ssl_version := LoadLibFunction(ADllHandle, SSL_CTX_set_ssl_version_procname);
-  FuncLoaded := assigned(SSL_CTX_set_ssl_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_ssl_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_ssl_version_allownil)}
+    SSL_CTX_set_ssl_version := @ERR_SSL_CTX_set_ssl_version;
+    {$ifend}
     {$if declared(SSL_CTX_set_ssl_version_introduced)}
     if LibVersion < SSL_CTX_set_ssl_version_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_ssl_version)}
       SSL_CTX_set_ssl_version := @FC_SSL_CTX_set_ssl_version;
-      {$else}
-      {$if not defined(SSL_CTX_set_ssl_version_allownil)}
-      SSL_CTX_set_ssl_version := @ERR_SSL_CTX_set_ssl_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_ssl_version_removed)}
@@ -22334,39 +19725,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_ssl_version)}
       SSL_CTX_set_ssl_version := @_SSL_CTX_set_ssl_version;
-      {$else}
-      {$if not defined(SSL_CTX_set_ssl_version_allownil)}
-      SSL_CTX_set_ssl_version := @ERR_SSL_CTX_set_ssl_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_ssl_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_ssl_version := @ERR_SSL_CTX_set_ssl_version;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_ssl_version');
-    end;
     {$ifend}
   end;
 
 
   TLS_method := LoadLibFunction(ADllHandle, TLS_method_procname);
-  FuncLoaded := assigned(TLS_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLS_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLS_method_allownil)}
+    TLS_method := @ERR_TLS_method;
+    {$ifend}
     {$if declared(TLS_method_introduced)}
     if LibVersion < TLS_method_introduced then
     begin
       {$if declared(FC_TLS_method)}
       TLS_method := @FC_TLS_method;
-      {$else}
-      {$if not defined(TLS_method_allownil)}
-      TLS_method := @ERR_TLS_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLS_method_removed)}
@@ -22374,39 +19757,31 @@ begin
     begin
       {$if declared(_TLS_method)}
       TLS_method := @_TLS_method;
-      {$else}
-      {$if not defined(TLS_method_allownil)}
-      TLS_method := @ERR_TLS_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLS_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLS_method := @ERR_TLS_method;
+    if FuncLoadError then
       AFailed.Add('TLS_method');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   TLS_server_method := LoadLibFunction(ADllHandle, TLS_server_method_procname);
-  FuncLoaded := assigned(TLS_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLS_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLS_server_method_allownil)}
+    TLS_server_method := @ERR_TLS_server_method;
+    {$ifend}
     {$if declared(TLS_server_method_introduced)}
     if LibVersion < TLS_server_method_introduced then
     begin
       {$if declared(FC_TLS_server_method)}
       TLS_server_method := @FC_TLS_server_method;
-      {$else}
-      {$if not defined(TLS_server_method_allownil)}
-      TLS_server_method := @ERR_TLS_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLS_server_method_removed)}
@@ -22414,39 +19789,31 @@ begin
     begin
       {$if declared(_TLS_server_method)}
       TLS_server_method := @_TLS_server_method;
-      {$else}
-      {$if not defined(TLS_server_method_allownil)}
-      TLS_server_method := @ERR_TLS_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLS_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLS_server_method := @ERR_TLS_server_method;
+    if FuncLoadError then
       AFailed.Add('TLS_server_method');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   TLS_client_method := LoadLibFunction(ADllHandle, TLS_client_method_procname);
-  FuncLoaded := assigned(TLS_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLS_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLS_client_method_allownil)}
+    TLS_client_method := @ERR_TLS_client_method;
+    {$ifend}
     {$if declared(TLS_client_method_introduced)}
     if LibVersion < TLS_client_method_introduced then
     begin
       {$if declared(FC_TLS_client_method)}
       TLS_client_method := @FC_TLS_client_method;
-      {$else}
-      {$if not defined(TLS_client_method_allownil)}
-      TLS_client_method := @ERR_TLS_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLS_client_method_removed)}
@@ -22454,39 +19821,31 @@ begin
     begin
       {$if declared(_TLS_client_method)}
       TLS_client_method := @_TLS_client_method;
-      {$else}
-      {$if not defined(TLS_client_method_allownil)}
-      TLS_client_method := @ERR_TLS_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLS_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLS_client_method := @ERR_TLS_client_method;
+    if FuncLoadError then
       AFailed.Add('TLS_client_method');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_key_update := LoadLibFunction(ADllHandle, SSL_key_update_procname);
-  FuncLoaded := assigned(SSL_key_update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_key_update);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_key_update_allownil)}
+    SSL_key_update := @ERR_SSL_key_update;
+    {$ifend}
     {$if declared(SSL_key_update_introduced)}
     if LibVersion < SSL_key_update_introduced then
     begin
       {$if declared(FC_SSL_key_update)}
       SSL_key_update := @FC_SSL_key_update;
-      {$else}
-      {$if not defined(SSL_key_update_allownil)}
-      SSL_key_update := @ERR_SSL_key_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_key_update_removed)}
@@ -22494,39 +19853,31 @@ begin
     begin
       {$if declared(_SSL_key_update)}
       SSL_key_update := @_SSL_key_update;
-      {$else}
-      {$if not defined(SSL_key_update_allownil)}
-      SSL_key_update := @ERR_SSL_key_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_key_update_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_key_update := @ERR_SSL_key_update;
+    if FuncLoadError then
       AFailed.Add('SSL_key_update');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_key_update_type := LoadLibFunction(ADllHandle, SSL_get_key_update_type_procname);
-  FuncLoaded := assigned(SSL_get_key_update_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_key_update_type);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_key_update_type_allownil)}
+    SSL_get_key_update_type := @ERR_SSL_get_key_update_type;
+    {$ifend}
     {$if declared(SSL_get_key_update_type_introduced)}
     if LibVersion < SSL_get_key_update_type_introduced then
     begin
       {$if declared(FC_SSL_get_key_update_type)}
       SSL_get_key_update_type := @FC_SSL_get_key_update_type;
-      {$else}
-      {$if not defined(SSL_get_key_update_type_allownil)}
-      SSL_get_key_update_type := @ERR_SSL_get_key_update_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_key_update_type_removed)}
@@ -22534,39 +19885,31 @@ begin
     begin
       {$if declared(_SSL_get_key_update_type)}
       SSL_get_key_update_type := @_SSL_get_key_update_type;
-      {$else}
-      {$if not defined(SSL_get_key_update_type_allownil)}
-      SSL_get_key_update_type := @ERR_SSL_get_key_update_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_key_update_type_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_key_update_type := @ERR_SSL_get_key_update_type;
+    if FuncLoadError then
       AFailed.Add('SSL_get_key_update_type');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_renegotiate := LoadLibFunction(ADllHandle, SSL_renegotiate_procname);
-  FuncLoaded := assigned(SSL_renegotiate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_renegotiate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_renegotiate_allownil)}
+    SSL_renegotiate := @ERR_SSL_renegotiate;
+    {$ifend}
     {$if declared(SSL_renegotiate_introduced)}
     if LibVersion < SSL_renegotiate_introduced then
     begin
       {$if declared(FC_SSL_renegotiate)}
       SSL_renegotiate := @FC_SSL_renegotiate;
-      {$else}
-      {$if not defined(SSL_renegotiate_allownil)}
-      SSL_renegotiate := @ERR_SSL_renegotiate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_renegotiate_removed)}
@@ -22574,39 +19917,31 @@ begin
     begin
       {$if declared(_SSL_renegotiate)}
       SSL_renegotiate := @_SSL_renegotiate;
-      {$else}
-      {$if not defined(SSL_renegotiate_allownil)}
-      SSL_renegotiate := @ERR_SSL_renegotiate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_renegotiate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_renegotiate := @ERR_SSL_renegotiate;
+    if FuncLoadError then
       AFailed.Add('SSL_renegotiate');
-    end;
     {$ifend}
   end;
 
 
   SSL_renegotiate_abbreviated := LoadLibFunction(ADllHandle, SSL_renegotiate_abbreviated_procname);
-  FuncLoaded := assigned(SSL_renegotiate_abbreviated);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_renegotiate_abbreviated);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_renegotiate_abbreviated_allownil)}
+    SSL_renegotiate_abbreviated := @ERR_SSL_renegotiate_abbreviated;
+    {$ifend}
     {$if declared(SSL_renegotiate_abbreviated_introduced)}
     if LibVersion < SSL_renegotiate_abbreviated_introduced then
     begin
       {$if declared(FC_SSL_renegotiate_abbreviated)}
       SSL_renegotiate_abbreviated := @FC_SSL_renegotiate_abbreviated;
-      {$else}
-      {$if not defined(SSL_renegotiate_abbreviated_allownil)}
-      SSL_renegotiate_abbreviated := @ERR_SSL_renegotiate_abbreviated;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_renegotiate_abbreviated_removed)}
@@ -22614,39 +19949,31 @@ begin
     begin
       {$if declared(_SSL_renegotiate_abbreviated)}
       SSL_renegotiate_abbreviated := @_SSL_renegotiate_abbreviated;
-      {$else}
-      {$if not defined(SSL_renegotiate_abbreviated_allownil)}
-      SSL_renegotiate_abbreviated := @ERR_SSL_renegotiate_abbreviated;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_renegotiate_abbreviated_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_renegotiate_abbreviated := @ERR_SSL_renegotiate_abbreviated;
+    if FuncLoadError then
       AFailed.Add('SSL_renegotiate_abbreviated');
-    end;
     {$ifend}
   end;
 
 
   SSL_shutdown := LoadLibFunction(ADllHandle, SSL_shutdown_procname);
-  FuncLoaded := assigned(SSL_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_shutdown_allownil)}
+    SSL_shutdown := @ERR_SSL_shutdown;
+    {$ifend}
     {$if declared(SSL_shutdown_introduced)}
     if LibVersion < SSL_shutdown_introduced then
     begin
       {$if declared(FC_SSL_shutdown)}
       SSL_shutdown := @FC_SSL_shutdown;
-      {$else}
-      {$if not defined(SSL_shutdown_allownil)}
-      SSL_shutdown := @ERR_SSL_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_shutdown_removed)}
@@ -22654,39 +19981,31 @@ begin
     begin
       {$if declared(_SSL_shutdown)}
       SSL_shutdown := @_SSL_shutdown;
-      {$else}
-      {$if not defined(SSL_shutdown_allownil)}
-      SSL_shutdown := @ERR_SSL_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_shutdown := @ERR_SSL_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_post_handshake_auth := LoadLibFunction(ADllHandle, SSL_CTX_set_post_handshake_auth_procname);
-  FuncLoaded := assigned(SSL_CTX_set_post_handshake_auth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_post_handshake_auth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_post_handshake_auth_allownil)}
+    SSL_CTX_set_post_handshake_auth := @ERR_SSL_CTX_set_post_handshake_auth;
+    {$ifend}
     {$if declared(SSL_CTX_set_post_handshake_auth_introduced)}
     if LibVersion < SSL_CTX_set_post_handshake_auth_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_post_handshake_auth)}
       SSL_CTX_set_post_handshake_auth := @FC_SSL_CTX_set_post_handshake_auth;
-      {$else}
-      {$if not defined(SSL_CTX_set_post_handshake_auth_allownil)}
-      SSL_CTX_set_post_handshake_auth := @ERR_SSL_CTX_set_post_handshake_auth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_post_handshake_auth_removed)}
@@ -22694,39 +20013,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_post_handshake_auth)}
       SSL_CTX_set_post_handshake_auth := @_SSL_CTX_set_post_handshake_auth;
-      {$else}
-      {$if not defined(SSL_CTX_set_post_handshake_auth_allownil)}
-      SSL_CTX_set_post_handshake_auth := @ERR_SSL_CTX_set_post_handshake_auth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_post_handshake_auth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_post_handshake_auth := @ERR_SSL_CTX_set_post_handshake_auth;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_post_handshake_auth');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_post_handshake_auth := LoadLibFunction(ADllHandle, SSL_set_post_handshake_auth_procname);
-  FuncLoaded := assigned(SSL_set_post_handshake_auth);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_post_handshake_auth);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_post_handshake_auth_allownil)}
+    SSL_set_post_handshake_auth := @ERR_SSL_set_post_handshake_auth;
+    {$ifend}
     {$if declared(SSL_set_post_handshake_auth_introduced)}
     if LibVersion < SSL_set_post_handshake_auth_introduced then
     begin
       {$if declared(FC_SSL_set_post_handshake_auth)}
       SSL_set_post_handshake_auth := @FC_SSL_set_post_handshake_auth;
-      {$else}
-      {$if not defined(SSL_set_post_handshake_auth_allownil)}
-      SSL_set_post_handshake_auth := @ERR_SSL_set_post_handshake_auth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_post_handshake_auth_removed)}
@@ -22734,39 +20045,31 @@ begin
     begin
       {$if declared(_SSL_set_post_handshake_auth)}
       SSL_set_post_handshake_auth := @_SSL_set_post_handshake_auth;
-      {$else}
-      {$if not defined(SSL_set_post_handshake_auth_allownil)}
-      SSL_set_post_handshake_auth := @ERR_SSL_set_post_handshake_auth;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_post_handshake_auth_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_post_handshake_auth := @ERR_SSL_set_post_handshake_auth;
+    if FuncLoadError then
       AFailed.Add('SSL_set_post_handshake_auth');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_renegotiate_pending := LoadLibFunction(ADllHandle, SSL_renegotiate_pending_procname);
-  FuncLoaded := assigned(SSL_renegotiate_pending);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_renegotiate_pending);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_renegotiate_pending_allownil)}
+    SSL_renegotiate_pending := @ERR_SSL_renegotiate_pending;
+    {$ifend}
     {$if declared(SSL_renegotiate_pending_introduced)}
     if LibVersion < SSL_renegotiate_pending_introduced then
     begin
       {$if declared(FC_SSL_renegotiate_pending)}
       SSL_renegotiate_pending := @FC_SSL_renegotiate_pending;
-      {$else}
-      {$if not defined(SSL_renegotiate_pending_allownil)}
-      SSL_renegotiate_pending := @ERR_SSL_renegotiate_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_renegotiate_pending_removed)}
@@ -22774,39 +20077,31 @@ begin
     begin
       {$if declared(_SSL_renegotiate_pending)}
       SSL_renegotiate_pending := @_SSL_renegotiate_pending;
-      {$else}
-      {$if not defined(SSL_renegotiate_pending_allownil)}
-      SSL_renegotiate_pending := @ERR_SSL_renegotiate_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_renegotiate_pending_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_renegotiate_pending := @ERR_SSL_renegotiate_pending;
+    if FuncLoadError then
       AFailed.Add('SSL_renegotiate_pending');
-    end;
     {$ifend}
   end;
 
 
   SSL_verify_client_post_handshake := LoadLibFunction(ADllHandle, SSL_verify_client_post_handshake_procname);
-  FuncLoaded := assigned(SSL_verify_client_post_handshake);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_verify_client_post_handshake);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_verify_client_post_handshake_allownil)}
+    SSL_verify_client_post_handshake := @ERR_SSL_verify_client_post_handshake;
+    {$ifend}
     {$if declared(SSL_verify_client_post_handshake_introduced)}
     if LibVersion < SSL_verify_client_post_handshake_introduced then
     begin
       {$if declared(FC_SSL_verify_client_post_handshake)}
       SSL_verify_client_post_handshake := @FC_SSL_verify_client_post_handshake;
-      {$else}
-      {$if not defined(SSL_verify_client_post_handshake_allownil)}
-      SSL_verify_client_post_handshake := @ERR_SSL_verify_client_post_handshake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_verify_client_post_handshake_removed)}
@@ -22814,39 +20109,31 @@ begin
     begin
       {$if declared(_SSL_verify_client_post_handshake)}
       SSL_verify_client_post_handshake := @_SSL_verify_client_post_handshake;
-      {$else}
-      {$if not defined(SSL_verify_client_post_handshake_allownil)}
-      SSL_verify_client_post_handshake := @ERR_SSL_verify_client_post_handshake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_verify_client_post_handshake_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_verify_client_post_handshake := @ERR_SSL_verify_client_post_handshake;
+    if FuncLoadError then
       AFailed.Add('SSL_verify_client_post_handshake');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_ssl_method := LoadLibFunction(ADllHandle, SSL_CTX_get_ssl_method_procname);
-  FuncLoaded := assigned(SSL_CTX_get_ssl_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_ssl_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_ssl_method_allownil)}
+    SSL_CTX_get_ssl_method := @ERR_SSL_CTX_get_ssl_method;
+    {$ifend}
     {$if declared(SSL_CTX_get_ssl_method_introduced)}
     if LibVersion < SSL_CTX_get_ssl_method_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_ssl_method)}
       SSL_CTX_get_ssl_method := @FC_SSL_CTX_get_ssl_method;
-      {$else}
-      {$if not defined(SSL_CTX_get_ssl_method_allownil)}
-      SSL_CTX_get_ssl_method := @ERR_SSL_CTX_get_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_ssl_method_removed)}
@@ -22854,39 +20141,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_ssl_method)}
       SSL_CTX_get_ssl_method := @_SSL_CTX_get_ssl_method;
-      {$else}
-      {$if not defined(SSL_CTX_get_ssl_method_allownil)}
-      SSL_CTX_get_ssl_method := @ERR_SSL_CTX_get_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_ssl_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_ssl_method := @ERR_SSL_CTX_get_ssl_method;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_ssl_method');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_ssl_method := LoadLibFunction(ADllHandle, SSL_get_ssl_method_procname);
-  FuncLoaded := assigned(SSL_get_ssl_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_ssl_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_ssl_method_allownil)}
+    SSL_get_ssl_method := @ERR_SSL_get_ssl_method;
+    {$ifend}
     {$if declared(SSL_get_ssl_method_introduced)}
     if LibVersion < SSL_get_ssl_method_introduced then
     begin
       {$if declared(FC_SSL_get_ssl_method)}
       SSL_get_ssl_method := @FC_SSL_get_ssl_method;
-      {$else}
-      {$if not defined(SSL_get_ssl_method_allownil)}
-      SSL_get_ssl_method := @ERR_SSL_get_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_ssl_method_removed)}
@@ -22894,39 +20173,31 @@ begin
     begin
       {$if declared(_SSL_get_ssl_method)}
       SSL_get_ssl_method := @_SSL_get_ssl_method;
-      {$else}
-      {$if not defined(SSL_get_ssl_method_allownil)}
-      SSL_get_ssl_method := @ERR_SSL_get_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_ssl_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_ssl_method := @ERR_SSL_get_ssl_method;
+    if FuncLoadError then
       AFailed.Add('SSL_get_ssl_method');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_ssl_method := LoadLibFunction(ADllHandle, SSL_set_ssl_method_procname);
-  FuncLoaded := assigned(SSL_set_ssl_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_ssl_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_ssl_method_allownil)}
+    SSL_set_ssl_method := @ERR_SSL_set_ssl_method;
+    {$ifend}
     {$if declared(SSL_set_ssl_method_introduced)}
     if LibVersion < SSL_set_ssl_method_introduced then
     begin
       {$if declared(FC_SSL_set_ssl_method)}
       SSL_set_ssl_method := @FC_SSL_set_ssl_method;
-      {$else}
-      {$if not defined(SSL_set_ssl_method_allownil)}
-      SSL_set_ssl_method := @ERR_SSL_set_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_ssl_method_removed)}
@@ -22934,39 +20205,31 @@ begin
     begin
       {$if declared(_SSL_set_ssl_method)}
       SSL_set_ssl_method := @_SSL_set_ssl_method;
-      {$else}
-      {$if not defined(SSL_set_ssl_method_allownil)}
-      SSL_set_ssl_method := @ERR_SSL_set_ssl_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_ssl_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_ssl_method := @ERR_SSL_set_ssl_method;
+    if FuncLoadError then
       AFailed.Add('SSL_set_ssl_method');
-    end;
     {$ifend}
   end;
 
 
   SSL_alert_type_string_long := LoadLibFunction(ADllHandle, SSL_alert_type_string_long_procname);
-  FuncLoaded := assigned(SSL_alert_type_string_long);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_alert_type_string_long);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_alert_type_string_long_allownil)}
+    SSL_alert_type_string_long := @ERR_SSL_alert_type_string_long;
+    {$ifend}
     {$if declared(SSL_alert_type_string_long_introduced)}
     if LibVersion < SSL_alert_type_string_long_introduced then
     begin
       {$if declared(FC_SSL_alert_type_string_long)}
       SSL_alert_type_string_long := @FC_SSL_alert_type_string_long;
-      {$else}
-      {$if not defined(SSL_alert_type_string_long_allownil)}
-      SSL_alert_type_string_long := @ERR_SSL_alert_type_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_alert_type_string_long_removed)}
@@ -22974,39 +20237,31 @@ begin
     begin
       {$if declared(_SSL_alert_type_string_long)}
       SSL_alert_type_string_long := @_SSL_alert_type_string_long;
-      {$else}
-      {$if not defined(SSL_alert_type_string_long_allownil)}
-      SSL_alert_type_string_long := @ERR_SSL_alert_type_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_alert_type_string_long_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_alert_type_string_long := @ERR_SSL_alert_type_string_long;
+    if FuncLoadError then
       AFailed.Add('SSL_alert_type_string_long');
-    end;
     {$ifend}
   end;
 
 
   SSL_alert_type_string := LoadLibFunction(ADllHandle, SSL_alert_type_string_procname);
-  FuncLoaded := assigned(SSL_alert_type_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_alert_type_string);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_alert_type_string_allownil)}
+    SSL_alert_type_string := @ERR_SSL_alert_type_string;
+    {$ifend}
     {$if declared(SSL_alert_type_string_introduced)}
     if LibVersion < SSL_alert_type_string_introduced then
     begin
       {$if declared(FC_SSL_alert_type_string)}
       SSL_alert_type_string := @FC_SSL_alert_type_string;
-      {$else}
-      {$if not defined(SSL_alert_type_string_allownil)}
-      SSL_alert_type_string := @ERR_SSL_alert_type_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_alert_type_string_removed)}
@@ -23014,39 +20269,31 @@ begin
     begin
       {$if declared(_SSL_alert_type_string)}
       SSL_alert_type_string := @_SSL_alert_type_string;
-      {$else}
-      {$if not defined(SSL_alert_type_string_allownil)}
-      SSL_alert_type_string := @ERR_SSL_alert_type_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_alert_type_string_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_alert_type_string := @ERR_SSL_alert_type_string;
+    if FuncLoadError then
       AFailed.Add('SSL_alert_type_string');
-    end;
     {$ifend}
   end;
 
 
   SSL_alert_desc_string_long := LoadLibFunction(ADllHandle, SSL_alert_desc_string_long_procname);
-  FuncLoaded := assigned(SSL_alert_desc_string_long);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_alert_desc_string_long);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_alert_desc_string_long_allownil)}
+    SSL_alert_desc_string_long := @ERR_SSL_alert_desc_string_long;
+    {$ifend}
     {$if declared(SSL_alert_desc_string_long_introduced)}
     if LibVersion < SSL_alert_desc_string_long_introduced then
     begin
       {$if declared(FC_SSL_alert_desc_string_long)}
       SSL_alert_desc_string_long := @FC_SSL_alert_desc_string_long;
-      {$else}
-      {$if not defined(SSL_alert_desc_string_long_allownil)}
-      SSL_alert_desc_string_long := @ERR_SSL_alert_desc_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_alert_desc_string_long_removed)}
@@ -23054,39 +20301,31 @@ begin
     begin
       {$if declared(_SSL_alert_desc_string_long)}
       SSL_alert_desc_string_long := @_SSL_alert_desc_string_long;
-      {$else}
-      {$if not defined(SSL_alert_desc_string_long_allownil)}
-      SSL_alert_desc_string_long := @ERR_SSL_alert_desc_string_long;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_alert_desc_string_long_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_alert_desc_string_long := @ERR_SSL_alert_desc_string_long;
+    if FuncLoadError then
       AFailed.Add('SSL_alert_desc_string_long');
-    end;
     {$ifend}
   end;
 
 
   SSL_alert_desc_string := LoadLibFunction(ADllHandle, SSL_alert_desc_string_procname);
-  FuncLoaded := assigned(SSL_alert_desc_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_alert_desc_string);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_alert_desc_string_allownil)}
+    SSL_alert_desc_string := @ERR_SSL_alert_desc_string;
+    {$ifend}
     {$if declared(SSL_alert_desc_string_introduced)}
     if LibVersion < SSL_alert_desc_string_introduced then
     begin
       {$if declared(FC_SSL_alert_desc_string)}
       SSL_alert_desc_string := @FC_SSL_alert_desc_string;
-      {$else}
-      {$if not defined(SSL_alert_desc_string_allownil)}
-      SSL_alert_desc_string := @ERR_SSL_alert_desc_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_alert_desc_string_removed)}
@@ -23094,39 +20333,31 @@ begin
     begin
       {$if declared(_SSL_alert_desc_string)}
       SSL_alert_desc_string := @_SSL_alert_desc_string;
-      {$else}
-      {$if not defined(SSL_alert_desc_string_allownil)}
-      SSL_alert_desc_string := @ERR_SSL_alert_desc_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_alert_desc_string_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_alert_desc_string := @ERR_SSL_alert_desc_string;
+    if FuncLoadError then
       AFailed.Add('SSL_alert_desc_string');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_client_CA_list := LoadLibFunction(ADllHandle, SSL_CTX_set_client_CA_list_procname);
-  FuncLoaded := assigned(SSL_CTX_set_client_CA_list);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_client_CA_list);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_client_CA_list_allownil)}
+    SSL_CTX_set_client_CA_list := @ERR_SSL_CTX_set_client_CA_list;
+    {$ifend}
     {$if declared(SSL_CTX_set_client_CA_list_introduced)}
     if LibVersion < SSL_CTX_set_client_CA_list_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_client_CA_list)}
       SSL_CTX_set_client_CA_list := @FC_SSL_CTX_set_client_CA_list;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_CA_list_allownil)}
-      SSL_CTX_set_client_CA_list := @ERR_SSL_CTX_set_client_CA_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_client_CA_list_removed)}
@@ -23134,39 +20365,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_client_CA_list)}
       SSL_CTX_set_client_CA_list := @_SSL_CTX_set_client_CA_list;
-      {$else}
-      {$if not defined(SSL_CTX_set_client_CA_list_allownil)}
-      SSL_CTX_set_client_CA_list := @ERR_SSL_CTX_set_client_CA_list;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_client_CA_list_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_client_CA_list := @ERR_SSL_CTX_set_client_CA_list;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_client_CA_list');
-    end;
     {$ifend}
   end;
 
 
   SSL_add_client_CA := LoadLibFunction(ADllHandle, SSL_add_client_CA_procname);
-  FuncLoaded := assigned(SSL_add_client_CA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add_client_CA);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add_client_CA_allownil)}
+    SSL_add_client_CA := @ERR_SSL_add_client_CA;
+    {$ifend}
     {$if declared(SSL_add_client_CA_introduced)}
     if LibVersion < SSL_add_client_CA_introduced then
     begin
       {$if declared(FC_SSL_add_client_CA)}
       SSL_add_client_CA := @FC_SSL_add_client_CA;
-      {$else}
-      {$if not defined(SSL_add_client_CA_allownil)}
-      SSL_add_client_CA := @ERR_SSL_add_client_CA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add_client_CA_removed)}
@@ -23174,39 +20397,31 @@ begin
     begin
       {$if declared(_SSL_add_client_CA)}
       SSL_add_client_CA := @_SSL_add_client_CA;
-      {$else}
-      {$if not defined(SSL_add_client_CA_allownil)}
-      SSL_add_client_CA := @ERR_SSL_add_client_CA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add_client_CA_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add_client_CA := @ERR_SSL_add_client_CA;
+    if FuncLoadError then
       AFailed.Add('SSL_add_client_CA');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_add_client_CA := LoadLibFunction(ADllHandle, SSL_CTX_add_client_CA_procname);
-  FuncLoaded := assigned(SSL_CTX_add_client_CA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_add_client_CA);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_add_client_CA_allownil)}
+    SSL_CTX_add_client_CA := @ERR_SSL_CTX_add_client_CA;
+    {$ifend}
     {$if declared(SSL_CTX_add_client_CA_introduced)}
     if LibVersion < SSL_CTX_add_client_CA_introduced then
     begin
       {$if declared(FC_SSL_CTX_add_client_CA)}
       SSL_CTX_add_client_CA := @FC_SSL_CTX_add_client_CA;
-      {$else}
-      {$if not defined(SSL_CTX_add_client_CA_allownil)}
-      SSL_CTX_add_client_CA := @ERR_SSL_CTX_add_client_CA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_add_client_CA_removed)}
@@ -23214,39 +20429,31 @@ begin
     begin
       {$if declared(_SSL_CTX_add_client_CA)}
       SSL_CTX_add_client_CA := @_SSL_CTX_add_client_CA;
-      {$else}
-      {$if not defined(SSL_CTX_add_client_CA_allownil)}
-      SSL_CTX_add_client_CA := @ERR_SSL_CTX_add_client_CA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_add_client_CA_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_add_client_CA := @ERR_SSL_CTX_add_client_CA;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_add_client_CA');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_connect_state := LoadLibFunction(ADllHandle, SSL_set_connect_state_procname);
-  FuncLoaded := assigned(SSL_set_connect_state);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_connect_state);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_connect_state_allownil)}
+    SSL_set_connect_state := @ERR_SSL_set_connect_state;
+    {$ifend}
     {$if declared(SSL_set_connect_state_introduced)}
     if LibVersion < SSL_set_connect_state_introduced then
     begin
       {$if declared(FC_SSL_set_connect_state)}
       SSL_set_connect_state := @FC_SSL_set_connect_state;
-      {$else}
-      {$if not defined(SSL_set_connect_state_allownil)}
-      SSL_set_connect_state := @ERR_SSL_set_connect_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_connect_state_removed)}
@@ -23254,39 +20461,31 @@ begin
     begin
       {$if declared(_SSL_set_connect_state)}
       SSL_set_connect_state := @_SSL_set_connect_state;
-      {$else}
-      {$if not defined(SSL_set_connect_state_allownil)}
-      SSL_set_connect_state := @ERR_SSL_set_connect_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_connect_state_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_connect_state := @ERR_SSL_set_connect_state;
+    if FuncLoadError then
       AFailed.Add('SSL_set_connect_state');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_accept_state := LoadLibFunction(ADllHandle, SSL_set_accept_state_procname);
-  FuncLoaded := assigned(SSL_set_accept_state);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_accept_state);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_accept_state_allownil)}
+    SSL_set_accept_state := @ERR_SSL_set_accept_state;
+    {$ifend}
     {$if declared(SSL_set_accept_state_introduced)}
     if LibVersion < SSL_set_accept_state_introduced then
     begin
       {$if declared(FC_SSL_set_accept_state)}
       SSL_set_accept_state := @FC_SSL_set_accept_state;
-      {$else}
-      {$if not defined(SSL_set_accept_state_allownil)}
-      SSL_set_accept_state := @ERR_SSL_set_accept_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_accept_state_removed)}
@@ -23294,39 +20493,31 @@ begin
     begin
       {$if declared(_SSL_set_accept_state)}
       SSL_set_accept_state := @_SSL_set_accept_state;
-      {$else}
-      {$if not defined(SSL_set_accept_state_allownil)}
-      SSL_set_accept_state := @ERR_SSL_set_accept_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_accept_state_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_accept_state := @ERR_SSL_set_accept_state;
+    if FuncLoadError then
       AFailed.Add('SSL_set_accept_state');
-    end;
     {$ifend}
   end;
 
 
   SSL_library_init := LoadLibFunction(ADllHandle, SSL_library_init_procname);
-  FuncLoaded := assigned(SSL_library_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_library_init);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_library_init_allownil)}
+    SSL_library_init := @ERR_SSL_library_init;
+    {$ifend}
     {$if declared(SSL_library_init_introduced)}
     if LibVersion < SSL_library_init_introduced then
     begin
       {$if declared(FC_SSL_library_init)}
       SSL_library_init := @FC_SSL_library_init;
-      {$else}
-      {$if not defined(SSL_library_init_allownil)}
-      SSL_library_init := @ERR_SSL_library_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_library_init_removed)}
@@ -23334,39 +20525,31 @@ begin
     begin
       {$if declared(_SSL_library_init)}
       SSL_library_init := @_SSL_library_init;
-      {$else}
-      {$if not defined(SSL_library_init_allownil)}
-      SSL_library_init := @ERR_SSL_library_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_library_init_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_library_init := @ERR_SSL_library_init;
+    if FuncLoadError then
       AFailed.Add('SSL_library_init');
-    end;
     {$ifend}
   end;
 
  
   SSL_CIPHER_description := LoadLibFunction(ADllHandle, SSL_CIPHER_description_procname);
-  FuncLoaded := assigned(SSL_CIPHER_description);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_description);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_description_allownil)}
+    SSL_CIPHER_description := @ERR_SSL_CIPHER_description;
+    {$ifend}
     {$if declared(SSL_CIPHER_description_introduced)}
     if LibVersion < SSL_CIPHER_description_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_description)}
       SSL_CIPHER_description := @FC_SSL_CIPHER_description;
-      {$else}
-      {$if not defined(SSL_CIPHER_description_allownil)}
-      SSL_CIPHER_description := @ERR_SSL_CIPHER_description;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_description_removed)}
@@ -23374,39 +20557,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_description)}
       SSL_CIPHER_description := @_SSL_CIPHER_description;
-      {$else}
-      {$if not defined(SSL_CIPHER_description_allownil)}
-      SSL_CIPHER_description := @ERR_SSL_CIPHER_description;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_description_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_description := @ERR_SSL_CIPHER_description;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_description');
-    end;
     {$ifend}
   end;
 
 
   SSL_dup := LoadLibFunction(ADllHandle, SSL_dup_procname);
-  FuncLoaded := assigned(SSL_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_dup_allownil)}
+    SSL_dup := @ERR_SSL_dup;
+    {$ifend}
     {$if declared(SSL_dup_introduced)}
     if LibVersion < SSL_dup_introduced then
     begin
       {$if declared(FC_SSL_dup)}
       SSL_dup := @FC_SSL_dup;
-      {$else}
-      {$if not defined(SSL_dup_allownil)}
-      SSL_dup := @ERR_SSL_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_dup_removed)}
@@ -23414,39 +20589,31 @@ begin
     begin
       {$if declared(_SSL_dup)}
       SSL_dup := @_SSL_dup;
-      {$else}
-      {$if not defined(SSL_dup_allownil)}
-      SSL_dup := @ERR_SSL_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_dup := @ERR_SSL_dup;
+    if FuncLoadError then
       AFailed.Add('SSL_dup');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_certificate := LoadLibFunction(ADllHandle, SSL_get_certificate_procname);
-  FuncLoaded := assigned(SSL_get_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_certificate_allownil)}
+    SSL_get_certificate := @ERR_SSL_get_certificate;
+    {$ifend}
     {$if declared(SSL_get_certificate_introduced)}
     if LibVersion < SSL_get_certificate_introduced then
     begin
       {$if declared(FC_SSL_get_certificate)}
       SSL_get_certificate := @FC_SSL_get_certificate;
-      {$else}
-      {$if not defined(SSL_get_certificate_allownil)}
-      SSL_get_certificate := @ERR_SSL_get_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_certificate_removed)}
@@ -23454,39 +20621,31 @@ begin
     begin
       {$if declared(_SSL_get_certificate)}
       SSL_get_certificate := @_SSL_get_certificate;
-      {$else}
-      {$if not defined(SSL_get_certificate_allownil)}
-      SSL_get_certificate := @ERR_SSL_get_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_certificate := @ERR_SSL_get_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_get_certificate');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_privatekey := LoadLibFunction(ADllHandle, SSL_get_privatekey_procname);
-  FuncLoaded := assigned(SSL_get_privatekey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_privatekey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_privatekey_allownil)}
+    SSL_get_privatekey := @ERR_SSL_get_privatekey;
+    {$ifend}
     {$if declared(SSL_get_privatekey_introduced)}
     if LibVersion < SSL_get_privatekey_introduced then
     begin
       {$if declared(FC_SSL_get_privatekey)}
       SSL_get_privatekey := @FC_SSL_get_privatekey;
-      {$else}
-      {$if not defined(SSL_get_privatekey_allownil)}
-      SSL_get_privatekey := @ERR_SSL_get_privatekey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_privatekey_removed)}
@@ -23494,39 +20653,31 @@ begin
     begin
       {$if declared(_SSL_get_privatekey)}
       SSL_get_privatekey := @_SSL_get_privatekey;
-      {$else}
-      {$if not defined(SSL_get_privatekey_allownil)}
-      SSL_get_privatekey := @ERR_SSL_get_privatekey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_privatekey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_privatekey := @ERR_SSL_get_privatekey;
+    if FuncLoadError then
       AFailed.Add('SSL_get_privatekey');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get0_certificate := LoadLibFunction(ADllHandle, SSL_CTX_get0_certificate_procname);
-  FuncLoaded := assigned(SSL_CTX_get0_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get0_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get0_certificate_allownil)}
+    SSL_CTX_get0_certificate := @ERR_SSL_CTX_get0_certificate;
+    {$ifend}
     {$if declared(SSL_CTX_get0_certificate_introduced)}
     if LibVersion < SSL_CTX_get0_certificate_introduced then
     begin
       {$if declared(FC_SSL_CTX_get0_certificate)}
       SSL_CTX_get0_certificate := @FC_SSL_CTX_get0_certificate;
-      {$else}
-      {$if not defined(SSL_CTX_get0_certificate_allownil)}
-      SSL_CTX_get0_certificate := @ERR_SSL_CTX_get0_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get0_certificate_removed)}
@@ -23534,39 +20685,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get0_certificate)}
       SSL_CTX_get0_certificate := @_SSL_CTX_get0_certificate;
-      {$else}
-      {$if not defined(SSL_CTX_get0_certificate_allownil)}
-      SSL_CTX_get0_certificate := @ERR_SSL_CTX_get0_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get0_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get0_certificate := @ERR_SSL_CTX_get0_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get0_certificate');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get0_privatekey := LoadLibFunction(ADllHandle, SSL_CTX_get0_privatekey_procname);
-  FuncLoaded := assigned(SSL_CTX_get0_privatekey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get0_privatekey);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get0_privatekey_allownil)}
+    SSL_CTX_get0_privatekey := @ERR_SSL_CTX_get0_privatekey;
+    {$ifend}
     {$if declared(SSL_CTX_get0_privatekey_introduced)}
     if LibVersion < SSL_CTX_get0_privatekey_introduced then
     begin
       {$if declared(FC_SSL_CTX_get0_privatekey)}
       SSL_CTX_get0_privatekey := @FC_SSL_CTX_get0_privatekey;
-      {$else}
-      {$if not defined(SSL_CTX_get0_privatekey_allownil)}
-      SSL_CTX_get0_privatekey := @ERR_SSL_CTX_get0_privatekey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get0_privatekey_removed)}
@@ -23574,39 +20717,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get0_privatekey)}
       SSL_CTX_get0_privatekey := @_SSL_CTX_get0_privatekey;
-      {$else}
-      {$if not defined(SSL_CTX_get0_privatekey_allownil)}
-      SSL_CTX_get0_privatekey := @ERR_SSL_CTX_get0_privatekey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get0_privatekey_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get0_privatekey := @ERR_SSL_CTX_get0_privatekey;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get0_privatekey');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_quiet_shutdown := LoadLibFunction(ADllHandle, SSL_CTX_set_quiet_shutdown_procname);
-  FuncLoaded := assigned(SSL_CTX_set_quiet_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_quiet_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_quiet_shutdown_allownil)}
+    SSL_CTX_set_quiet_shutdown := @ERR_SSL_CTX_set_quiet_shutdown;
+    {$ifend}
     {$if declared(SSL_CTX_set_quiet_shutdown_introduced)}
     if LibVersion < SSL_CTX_set_quiet_shutdown_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_quiet_shutdown)}
       SSL_CTX_set_quiet_shutdown := @FC_SSL_CTX_set_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_CTX_set_quiet_shutdown_allownil)}
-      SSL_CTX_set_quiet_shutdown := @ERR_SSL_CTX_set_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_quiet_shutdown_removed)}
@@ -23614,39 +20749,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_quiet_shutdown)}
       SSL_CTX_set_quiet_shutdown := @_SSL_CTX_set_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_CTX_set_quiet_shutdown_allownil)}
-      SSL_CTX_set_quiet_shutdown := @ERR_SSL_CTX_set_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_quiet_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_quiet_shutdown := @ERR_SSL_CTX_set_quiet_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_quiet_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_quiet_shutdown := LoadLibFunction(ADllHandle, SSL_CTX_get_quiet_shutdown_procname);
-  FuncLoaded := assigned(SSL_CTX_get_quiet_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_quiet_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_quiet_shutdown_allownil)}
+    SSL_CTX_get_quiet_shutdown := @ERR_SSL_CTX_get_quiet_shutdown;
+    {$ifend}
     {$if declared(SSL_CTX_get_quiet_shutdown_introduced)}
     if LibVersion < SSL_CTX_get_quiet_shutdown_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_quiet_shutdown)}
       SSL_CTX_get_quiet_shutdown := @FC_SSL_CTX_get_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_CTX_get_quiet_shutdown_allownil)}
-      SSL_CTX_get_quiet_shutdown := @ERR_SSL_CTX_get_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_quiet_shutdown_removed)}
@@ -23654,39 +20781,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_quiet_shutdown)}
       SSL_CTX_get_quiet_shutdown := @_SSL_CTX_get_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_CTX_get_quiet_shutdown_allownil)}
-      SSL_CTX_get_quiet_shutdown := @ERR_SSL_CTX_get_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_quiet_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_quiet_shutdown := @ERR_SSL_CTX_get_quiet_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_quiet_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_quiet_shutdown := LoadLibFunction(ADllHandle, SSL_set_quiet_shutdown_procname);
-  FuncLoaded := assigned(SSL_set_quiet_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_quiet_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_quiet_shutdown_allownil)}
+    SSL_set_quiet_shutdown := @ERR_SSL_set_quiet_shutdown;
+    {$ifend}
     {$if declared(SSL_set_quiet_shutdown_introduced)}
     if LibVersion < SSL_set_quiet_shutdown_introduced then
     begin
       {$if declared(FC_SSL_set_quiet_shutdown)}
       SSL_set_quiet_shutdown := @FC_SSL_set_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_set_quiet_shutdown_allownil)}
-      SSL_set_quiet_shutdown := @ERR_SSL_set_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_quiet_shutdown_removed)}
@@ -23694,39 +20813,31 @@ begin
     begin
       {$if declared(_SSL_set_quiet_shutdown)}
       SSL_set_quiet_shutdown := @_SSL_set_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_set_quiet_shutdown_allownil)}
-      SSL_set_quiet_shutdown := @ERR_SSL_set_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_quiet_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_quiet_shutdown := @ERR_SSL_set_quiet_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_set_quiet_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_quiet_shutdown := LoadLibFunction(ADllHandle, SSL_get_quiet_shutdown_procname);
-  FuncLoaded := assigned(SSL_get_quiet_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_quiet_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_quiet_shutdown_allownil)}
+    SSL_get_quiet_shutdown := @ERR_SSL_get_quiet_shutdown;
+    {$ifend}
     {$if declared(SSL_get_quiet_shutdown_introduced)}
     if LibVersion < SSL_get_quiet_shutdown_introduced then
     begin
       {$if declared(FC_SSL_get_quiet_shutdown)}
       SSL_get_quiet_shutdown := @FC_SSL_get_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_get_quiet_shutdown_allownil)}
-      SSL_get_quiet_shutdown := @ERR_SSL_get_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_quiet_shutdown_removed)}
@@ -23734,39 +20845,31 @@ begin
     begin
       {$if declared(_SSL_get_quiet_shutdown)}
       SSL_get_quiet_shutdown := @_SSL_get_quiet_shutdown;
-      {$else}
-      {$if not defined(SSL_get_quiet_shutdown_allownil)}
-      SSL_get_quiet_shutdown := @ERR_SSL_get_quiet_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_quiet_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_quiet_shutdown := @ERR_SSL_get_quiet_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_get_quiet_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_shutdown := LoadLibFunction(ADllHandle, SSL_set_shutdown_procname);
-  FuncLoaded := assigned(SSL_set_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_shutdown_allownil)}
+    SSL_set_shutdown := @ERR_SSL_set_shutdown;
+    {$ifend}
     {$if declared(SSL_set_shutdown_introduced)}
     if LibVersion < SSL_set_shutdown_introduced then
     begin
       {$if declared(FC_SSL_set_shutdown)}
       SSL_set_shutdown := @FC_SSL_set_shutdown;
-      {$else}
-      {$if not defined(SSL_set_shutdown_allownil)}
-      SSL_set_shutdown := @ERR_SSL_set_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_shutdown_removed)}
@@ -23774,39 +20877,31 @@ begin
     begin
       {$if declared(_SSL_set_shutdown)}
       SSL_set_shutdown := @_SSL_set_shutdown;
-      {$else}
-      {$if not defined(SSL_set_shutdown_allownil)}
-      SSL_set_shutdown := @ERR_SSL_set_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_shutdown := @ERR_SSL_set_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_set_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_shutdown := LoadLibFunction(ADllHandle, SSL_get_shutdown_procname);
-  FuncLoaded := assigned(SSL_get_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_shutdown_allownil)}
+    SSL_get_shutdown := @ERR_SSL_get_shutdown;
+    {$ifend}
     {$if declared(SSL_get_shutdown_introduced)}
     if LibVersion < SSL_get_shutdown_introduced then
     begin
       {$if declared(FC_SSL_get_shutdown)}
       SSL_get_shutdown := @FC_SSL_get_shutdown;
-      {$else}
-      {$if not defined(SSL_get_shutdown_allownil)}
-      SSL_get_shutdown := @ERR_SSL_get_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_shutdown_removed)}
@@ -23814,39 +20909,31 @@ begin
     begin
       {$if declared(_SSL_get_shutdown)}
       SSL_get_shutdown := @_SSL_get_shutdown;
-      {$else}
-      {$if not defined(SSL_get_shutdown_allownil)}
-      SSL_get_shutdown := @ERR_SSL_get_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_shutdown := @ERR_SSL_get_shutdown;
+    if FuncLoadError then
       AFailed.Add('SSL_get_shutdown');
-    end;
     {$ifend}
   end;
 
 
   SSL_version := LoadLibFunction(ADllHandle, SSL_version_procname);
-  FuncLoaded := assigned(SSL_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_version_allownil)}
+    SSL_version := @ERR_SSL_version;
+    {$ifend}
     {$if declared(SSL_version_introduced)}
     if LibVersion < SSL_version_introduced then
     begin
       {$if declared(FC_SSL_version)}
       SSL_version := @FC_SSL_version;
-      {$else}
-      {$if not defined(SSL_version_allownil)}
-      SSL_version := @ERR_SSL_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_version_removed)}
@@ -23854,39 +20941,31 @@ begin
     begin
       {$if declared(_SSL_version)}
       SSL_version := @_SSL_version;
-      {$else}
-      {$if not defined(SSL_version_allownil)}
-      SSL_version := @ERR_SSL_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_version := @ERR_SSL_version;
+    if FuncLoadError then
       AFailed.Add('SSL_version');
-    end;
     {$ifend}
   end;
 
 
   SSL_client_version := LoadLibFunction(ADllHandle, SSL_client_version_procname);
-  FuncLoaded := assigned(SSL_client_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_client_version);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_client_version_allownil)}
+    SSL_client_version := @ERR_SSL_client_version;
+    {$ifend}
     {$if declared(SSL_client_version_introduced)}
     if LibVersion < SSL_client_version_introduced then
     begin
       {$if declared(FC_SSL_client_version)}
       SSL_client_version := @FC_SSL_client_version;
-      {$else}
-      {$if not defined(SSL_client_version_allownil)}
-      SSL_client_version := @ERR_SSL_client_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_client_version_removed)}
@@ -23894,39 +20973,31 @@ begin
     begin
       {$if declared(_SSL_client_version)}
       SSL_client_version := @_SSL_client_version;
-      {$else}
-      {$if not defined(SSL_client_version_allownil)}
-      SSL_client_version := @ERR_SSL_client_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_client_version_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_client_version := @ERR_SSL_client_version;
+    if FuncLoadError then
       AFailed.Add('SSL_client_version');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_default_verify_paths := LoadLibFunction(ADllHandle, SSL_CTX_set_default_verify_paths_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_verify_paths);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_verify_paths);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_verify_paths_allownil)}
+    SSL_CTX_set_default_verify_paths := @ERR_SSL_CTX_set_default_verify_paths;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_verify_paths_introduced)}
     if LibVersion < SSL_CTX_set_default_verify_paths_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_verify_paths)}
       SSL_CTX_set_default_verify_paths := @FC_SSL_CTX_set_default_verify_paths;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_paths_allownil)}
-      SSL_CTX_set_default_verify_paths := @ERR_SSL_CTX_set_default_verify_paths;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_verify_paths_removed)}
@@ -23934,39 +21005,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_verify_paths)}
       SSL_CTX_set_default_verify_paths := @_SSL_CTX_set_default_verify_paths;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_paths_allownil)}
-      SSL_CTX_set_default_verify_paths := @ERR_SSL_CTX_set_default_verify_paths;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_verify_paths_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_verify_paths := @ERR_SSL_CTX_set_default_verify_paths;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_verify_paths');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_default_verify_dir := LoadLibFunction(ADllHandle, SSL_CTX_set_default_verify_dir_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_verify_dir);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_verify_dir);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_verify_dir_allownil)}
+    SSL_CTX_set_default_verify_dir := @ERR_SSL_CTX_set_default_verify_dir;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_verify_dir_introduced)}
     if LibVersion < SSL_CTX_set_default_verify_dir_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_verify_dir)}
       SSL_CTX_set_default_verify_dir := @FC_SSL_CTX_set_default_verify_dir;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_dir_allownil)}
-      SSL_CTX_set_default_verify_dir := @ERR_SSL_CTX_set_default_verify_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_verify_dir_removed)}
@@ -23974,39 +21037,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_verify_dir)}
       SSL_CTX_set_default_verify_dir := @_SSL_CTX_set_default_verify_dir;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_dir_allownil)}
-      SSL_CTX_set_default_verify_dir := @ERR_SSL_CTX_set_default_verify_dir;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_verify_dir_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_verify_dir := @ERR_SSL_CTX_set_default_verify_dir;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_verify_dir');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_default_verify_file := LoadLibFunction(ADllHandle, SSL_CTX_set_default_verify_file_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_verify_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_verify_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_verify_file_allownil)}
+    SSL_CTX_set_default_verify_file := @ERR_SSL_CTX_set_default_verify_file;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_verify_file_introduced)}
     if LibVersion < SSL_CTX_set_default_verify_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_verify_file)}
       SSL_CTX_set_default_verify_file := @FC_SSL_CTX_set_default_verify_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_file_allownil)}
-      SSL_CTX_set_default_verify_file := @ERR_SSL_CTX_set_default_verify_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_verify_file_removed)}
@@ -24014,39 +21069,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_verify_file)}
       SSL_CTX_set_default_verify_file := @_SSL_CTX_set_default_verify_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_verify_file_allownil)}
-      SSL_CTX_set_default_verify_file := @ERR_SSL_CTX_set_default_verify_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_verify_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_verify_file := @ERR_SSL_CTX_set_default_verify_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_verify_file');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_load_verify_locations := LoadLibFunction(ADllHandle, SSL_CTX_load_verify_locations_procname);
-  FuncLoaded := assigned(SSL_CTX_load_verify_locations);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_load_verify_locations);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_load_verify_locations_allownil)}
+    SSL_CTX_load_verify_locations := @ERR_SSL_CTX_load_verify_locations;
+    {$ifend}
     {$if declared(SSL_CTX_load_verify_locations_introduced)}
     if LibVersion < SSL_CTX_load_verify_locations_introduced then
     begin
       {$if declared(FC_SSL_CTX_load_verify_locations)}
       SSL_CTX_load_verify_locations := @FC_SSL_CTX_load_verify_locations;
-      {$else}
-      {$if not defined(SSL_CTX_load_verify_locations_allownil)}
-      SSL_CTX_load_verify_locations := @ERR_SSL_CTX_load_verify_locations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_load_verify_locations_removed)}
@@ -24054,39 +21101,31 @@ begin
     begin
       {$if declared(_SSL_CTX_load_verify_locations)}
       SSL_CTX_load_verify_locations := @_SSL_CTX_load_verify_locations;
-      {$else}
-      {$if not defined(SSL_CTX_load_verify_locations_allownil)}
-      SSL_CTX_load_verify_locations := @ERR_SSL_CTX_load_verify_locations;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_load_verify_locations_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_load_verify_locations := @ERR_SSL_CTX_load_verify_locations;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_load_verify_locations');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_session := LoadLibFunction(ADllHandle, SSL_get_session_procname);
-  FuncLoaded := assigned(SSL_get_session);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_session);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_session_allownil)}
+    SSL_get_session := @ERR_SSL_get_session;
+    {$ifend}
     {$if declared(SSL_get_session_introduced)}
     if LibVersion < SSL_get_session_introduced then
     begin
       {$if declared(FC_SSL_get_session)}
       SSL_get_session := @FC_SSL_get_session;
-      {$else}
-      {$if not defined(SSL_get_session_allownil)}
-      SSL_get_session := @ERR_SSL_get_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_session_removed)}
@@ -24094,39 +21133,31 @@ begin
     begin
       {$if declared(_SSL_get_session)}
       SSL_get_session := @_SSL_get_session;
-      {$else}
-      {$if not defined(SSL_get_session_allownil)}
-      SSL_get_session := @ERR_SSL_get_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_session_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_session := @ERR_SSL_get_session;
+    if FuncLoadError then
       AFailed.Add('SSL_get_session');
-    end;
     {$ifend}
   end;
 
 
   SSL_get1_session := LoadLibFunction(ADllHandle, SSL_get1_session_procname);
-  FuncLoaded := assigned(SSL_get1_session);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get1_session);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get1_session_allownil)}
+    SSL_get1_session := @ERR_SSL_get1_session;
+    {$ifend}
     {$if declared(SSL_get1_session_introduced)}
     if LibVersion < SSL_get1_session_introduced then
     begin
       {$if declared(FC_SSL_get1_session)}
       SSL_get1_session := @FC_SSL_get1_session;
-      {$else}
-      {$if not defined(SSL_get1_session_allownil)}
-      SSL_get1_session := @ERR_SSL_get1_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get1_session_removed)}
@@ -24134,39 +21165,31 @@ begin
     begin
       {$if declared(_SSL_get1_session)}
       SSL_get1_session := @_SSL_get1_session;
-      {$else}
-      {$if not defined(SSL_get1_session_allownil)}
-      SSL_get1_session := @ERR_SSL_get1_session;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get1_session_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get1_session := @ERR_SSL_get1_session;
+    if FuncLoadError then
       AFailed.Add('SSL_get1_session');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_SSL_CTX := LoadLibFunction(ADllHandle, SSL_get_SSL_CTX_procname);
-  FuncLoaded := assigned(SSL_get_SSL_CTX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_SSL_CTX);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_SSL_CTX_allownil)}
+    SSL_get_SSL_CTX := @ERR_SSL_get_SSL_CTX;
+    {$ifend}
     {$if declared(SSL_get_SSL_CTX_introduced)}
     if LibVersion < SSL_get_SSL_CTX_introduced then
     begin
       {$if declared(FC_SSL_get_SSL_CTX)}
       SSL_get_SSL_CTX := @FC_SSL_get_SSL_CTX;
-      {$else}
-      {$if not defined(SSL_get_SSL_CTX_allownil)}
-      SSL_get_SSL_CTX := @ERR_SSL_get_SSL_CTX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_SSL_CTX_removed)}
@@ -24174,39 +21197,31 @@ begin
     begin
       {$if declared(_SSL_get_SSL_CTX)}
       SSL_get_SSL_CTX := @_SSL_get_SSL_CTX;
-      {$else}
-      {$if not defined(SSL_get_SSL_CTX_allownil)}
-      SSL_get_SSL_CTX := @ERR_SSL_get_SSL_CTX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_SSL_CTX_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_SSL_CTX := @ERR_SSL_get_SSL_CTX;
+    if FuncLoadError then
       AFailed.Add('SSL_get_SSL_CTX');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_SSL_CTX := LoadLibFunction(ADllHandle, SSL_set_SSL_CTX_procname);
-  FuncLoaded := assigned(SSL_set_SSL_CTX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_SSL_CTX);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_SSL_CTX_allownil)}
+    SSL_set_SSL_CTX := @ERR_SSL_set_SSL_CTX;
+    {$ifend}
     {$if declared(SSL_set_SSL_CTX_introduced)}
     if LibVersion < SSL_set_SSL_CTX_introduced then
     begin
       {$if declared(FC_SSL_set_SSL_CTX)}
       SSL_set_SSL_CTX := @FC_SSL_set_SSL_CTX;
-      {$else}
-      {$if not defined(SSL_set_SSL_CTX_allownil)}
-      SSL_set_SSL_CTX := @ERR_SSL_set_SSL_CTX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_SSL_CTX_removed)}
@@ -24214,39 +21229,31 @@ begin
     begin
       {$if declared(_SSL_set_SSL_CTX)}
       SSL_set_SSL_CTX := @_SSL_set_SSL_CTX;
-      {$else}
-      {$if not defined(SSL_set_SSL_CTX_allownil)}
-      SSL_set_SSL_CTX := @ERR_SSL_set_SSL_CTX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_SSL_CTX_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_SSL_CTX := @ERR_SSL_set_SSL_CTX;
+    if FuncLoadError then
       AFailed.Add('SSL_set_SSL_CTX');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_info_callback := LoadLibFunction(ADllHandle, SSL_set_info_callback_procname);
-  FuncLoaded := assigned(SSL_set_info_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_info_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_info_callback_allownil)}
+    SSL_set_info_callback := @ERR_SSL_set_info_callback;
+    {$ifend}
     {$if declared(SSL_set_info_callback_introduced)}
     if LibVersion < SSL_set_info_callback_introduced then
     begin
       {$if declared(FC_SSL_set_info_callback)}
       SSL_set_info_callback := @FC_SSL_set_info_callback;
-      {$else}
-      {$if not defined(SSL_set_info_callback_allownil)}
-      SSL_set_info_callback := @ERR_SSL_set_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_info_callback_removed)}
@@ -24254,39 +21261,31 @@ begin
     begin
       {$if declared(_SSL_set_info_callback)}
       SSL_set_info_callback := @_SSL_set_info_callback;
-      {$else}
-      {$if not defined(SSL_set_info_callback_allownil)}
-      SSL_set_info_callback := @ERR_SSL_set_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_info_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_info_callback := @ERR_SSL_set_info_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_info_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_info_callback := LoadLibFunction(ADllHandle, SSL_get_info_callback_procname);
-  FuncLoaded := assigned(SSL_get_info_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_info_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_info_callback_allownil)}
+    SSL_get_info_callback := @ERR_SSL_get_info_callback;
+    {$ifend}
     {$if declared(SSL_get_info_callback_introduced)}
     if LibVersion < SSL_get_info_callback_introduced then
     begin
       {$if declared(FC_SSL_get_info_callback)}
       SSL_get_info_callback := @FC_SSL_get_info_callback;
-      {$else}
-      {$if not defined(SSL_get_info_callback_allownil)}
-      SSL_get_info_callback := @ERR_SSL_get_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_info_callback_removed)}
@@ -24294,39 +21293,31 @@ begin
     begin
       {$if declared(_SSL_get_info_callback)}
       SSL_get_info_callback := @_SSL_get_info_callback;
-      {$else}
-      {$if not defined(SSL_get_info_callback_allownil)}
-      SSL_get_info_callback := @ERR_SSL_get_info_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_info_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_info_callback := @ERR_SSL_get_info_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_get_info_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_state := LoadLibFunction(ADllHandle, SSL_get_state_procname);
-  FuncLoaded := assigned(SSL_get_state);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_state);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_state_allownil)}
+    SSL_get_state := @ERR_SSL_get_state;
+    {$ifend}
     {$if declared(SSL_get_state_introduced)}
     if LibVersion < SSL_get_state_introduced then
     begin
       {$if declared(FC_SSL_get_state)}
       SSL_get_state := @FC_SSL_get_state;
-      {$else}
-      {$if not defined(SSL_get_state_allownil)}
-      SSL_get_state := @ERR_SSL_get_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_state_removed)}
@@ -24334,39 +21325,31 @@ begin
     begin
       {$if declared(_SSL_get_state)}
       SSL_get_state := @_SSL_get_state;
-      {$else}
-      {$if not defined(SSL_get_state_allownil)}
-      SSL_get_state := @ERR_SSL_get_state;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_state_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_state := @ERR_SSL_get_state;
+    if FuncLoadError then
       AFailed.Add('SSL_get_state');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_verify_result := LoadLibFunction(ADllHandle, SSL_set_verify_result_procname);
-  FuncLoaded := assigned(SSL_set_verify_result);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_verify_result);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_verify_result_allownil)}
+    SSL_set_verify_result := @ERR_SSL_set_verify_result;
+    {$ifend}
     {$if declared(SSL_set_verify_result_introduced)}
     if LibVersion < SSL_set_verify_result_introduced then
     begin
       {$if declared(FC_SSL_set_verify_result)}
       SSL_set_verify_result := @FC_SSL_set_verify_result;
-      {$else}
-      {$if not defined(SSL_set_verify_result_allownil)}
-      SSL_set_verify_result := @ERR_SSL_set_verify_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_verify_result_removed)}
@@ -24374,39 +21357,31 @@ begin
     begin
       {$if declared(_SSL_set_verify_result)}
       SSL_set_verify_result := @_SSL_set_verify_result;
-      {$else}
-      {$if not defined(SSL_set_verify_result_allownil)}
-      SSL_set_verify_result := @ERR_SSL_set_verify_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_verify_result_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_verify_result := @ERR_SSL_set_verify_result;
+    if FuncLoadError then
       AFailed.Add('SSL_set_verify_result');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_verify_result := LoadLibFunction(ADllHandle, SSL_get_verify_result_procname);
-  FuncLoaded := assigned(SSL_get_verify_result);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_verify_result);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_verify_result_allownil)}
+    SSL_get_verify_result := @ERR_SSL_get_verify_result;
+    {$ifend}
     {$if declared(SSL_get_verify_result_introduced)}
     if LibVersion < SSL_get_verify_result_introduced then
     begin
       {$if declared(FC_SSL_get_verify_result)}
       SSL_get_verify_result := @FC_SSL_get_verify_result;
-      {$else}
-      {$if not defined(SSL_get_verify_result_allownil)}
-      SSL_get_verify_result := @ERR_SSL_get_verify_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_verify_result_removed)}
@@ -24414,39 +21389,31 @@ begin
     begin
       {$if declared(_SSL_get_verify_result)}
       SSL_get_verify_result := @_SSL_get_verify_result;
-      {$else}
-      {$if not defined(SSL_get_verify_result_allownil)}
-      SSL_get_verify_result := @ERR_SSL_get_verify_result;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_verify_result_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_verify_result := @ERR_SSL_get_verify_result;
+    if FuncLoadError then
       AFailed.Add('SSL_get_verify_result');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_client_random := LoadLibFunction(ADllHandle, SSL_get_client_random_procname);
-  FuncLoaded := assigned(SSL_get_client_random);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_client_random);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_client_random_allownil)}
+    SSL_get_client_random := @ERR_SSL_get_client_random;
+    {$ifend}
     {$if declared(SSL_get_client_random_introduced)}
     if LibVersion < SSL_get_client_random_introduced then
     begin
       {$if declared(FC_SSL_get_client_random)}
       SSL_get_client_random := @FC_SSL_get_client_random;
-      {$else}
-      {$if not defined(SSL_get_client_random_allownil)}
-      SSL_get_client_random := @ERR_SSL_get_client_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_client_random_removed)}
@@ -24454,39 +21421,31 @@ begin
     begin
       {$if declared(_SSL_get_client_random)}
       SSL_get_client_random := @_SSL_get_client_random;
-      {$else}
-      {$if not defined(SSL_get_client_random_allownil)}
-      SSL_get_client_random := @ERR_SSL_get_client_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_client_random_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_client_random := @ERR_SSL_get_client_random;
+    if FuncLoadError then
       AFailed.Add('SSL_get_client_random');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_server_random := LoadLibFunction(ADllHandle, SSL_get_server_random_procname);
-  FuncLoaded := assigned(SSL_get_server_random);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_server_random);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_server_random_allownil)}
+    SSL_get_server_random := @ERR_SSL_get_server_random;
+    {$ifend}
     {$if declared(SSL_get_server_random_introduced)}
     if LibVersion < SSL_get_server_random_introduced then
     begin
       {$if declared(FC_SSL_get_server_random)}
       SSL_get_server_random := @FC_SSL_get_server_random;
-      {$else}
-      {$if not defined(SSL_get_server_random_allownil)}
-      SSL_get_server_random := @ERR_SSL_get_server_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_server_random_removed)}
@@ -24494,39 +21453,31 @@ begin
     begin
       {$if declared(_SSL_get_server_random)}
       SSL_get_server_random := @_SSL_get_server_random;
-      {$else}
-      {$if not defined(SSL_get_server_random_allownil)}
-      SSL_get_server_random := @ERR_SSL_get_server_random;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_server_random_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_server_random := @ERR_SSL_get_server_random;
+    if FuncLoadError then
       AFailed.Add('SSL_get_server_random');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_master_key := LoadLibFunction(ADllHandle, SSL_SESSION_get_master_key_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_master_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_master_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_master_key_allownil)}
+    SSL_SESSION_get_master_key := @ERR_SSL_SESSION_get_master_key;
+    {$ifend}
     {$if declared(SSL_SESSION_get_master_key_introduced)}
     if LibVersion < SSL_SESSION_get_master_key_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_master_key)}
       SSL_SESSION_get_master_key := @FC_SSL_SESSION_get_master_key;
-      {$else}
-      {$if not defined(SSL_SESSION_get_master_key_allownil)}
-      SSL_SESSION_get_master_key := @ERR_SSL_SESSION_get_master_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_master_key_removed)}
@@ -24534,39 +21485,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_master_key)}
       SSL_SESSION_get_master_key := @_SSL_SESSION_get_master_key;
-      {$else}
-      {$if not defined(SSL_SESSION_get_master_key_allownil)}
-      SSL_SESSION_get_master_key := @ERR_SSL_SESSION_get_master_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_master_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_master_key := @ERR_SSL_SESSION_get_master_key;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_master_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set1_master_key := LoadLibFunction(ADllHandle, SSL_SESSION_set1_master_key_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_master_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_master_key);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_master_key_allownil)}
+    SSL_SESSION_set1_master_key := @ERR_SSL_SESSION_set1_master_key;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_master_key_introduced)}
     if LibVersion < SSL_SESSION_set1_master_key_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_master_key)}
       SSL_SESSION_set1_master_key := @FC_SSL_SESSION_set1_master_key;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_master_key_allownil)}
-      SSL_SESSION_set1_master_key := @ERR_SSL_SESSION_set1_master_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_master_key_removed)}
@@ -24574,39 +21517,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_master_key)}
       SSL_SESSION_set1_master_key := @_SSL_SESSION_set1_master_key;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_master_key_allownil)}
-      SSL_SESSION_set1_master_key := @ERR_SSL_SESSION_set1_master_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_master_key_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_master_key := @ERR_SSL_SESSION_set1_master_key;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_master_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get_max_fragment_length := LoadLibFunction(ADllHandle, SSL_SESSION_get_max_fragment_length_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_max_fragment_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_max_fragment_length);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_max_fragment_length_allownil)}
+    SSL_SESSION_get_max_fragment_length := @ERR_SSL_SESSION_get_max_fragment_length;
+    {$ifend}
     {$if declared(SSL_SESSION_get_max_fragment_length_introduced)}
     if LibVersion < SSL_SESSION_get_max_fragment_length_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_max_fragment_length)}
       SSL_SESSION_get_max_fragment_length := @FC_SSL_SESSION_get_max_fragment_length;
-      {$else}
-      {$if not defined(SSL_SESSION_get_max_fragment_length_allownil)}
-      SSL_SESSION_get_max_fragment_length := @ERR_SSL_SESSION_get_max_fragment_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_max_fragment_length_removed)}
@@ -24614,39 +21549,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_max_fragment_length)}
       SSL_SESSION_get_max_fragment_length := @_SSL_SESSION_get_max_fragment_length;
-      {$else}
-      {$if not defined(SSL_SESSION_get_max_fragment_length_allownil)}
-      SSL_SESSION_get_max_fragment_length := @ERR_SSL_SESSION_get_max_fragment_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_max_fragment_length_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_max_fragment_length := @ERR_SSL_SESSION_get_max_fragment_length;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_max_fragment_length');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_ex_data := LoadLibFunction(ADllHandle, SSL_set_ex_data_procname);
-  FuncLoaded := assigned(SSL_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_ex_data_allownil)}
+    SSL_set_ex_data := @ERR_SSL_set_ex_data;
+    {$ifend}
     {$if declared(SSL_set_ex_data_introduced)}
     if LibVersion < SSL_set_ex_data_introduced then
     begin
       {$if declared(FC_SSL_set_ex_data)}
       SSL_set_ex_data := @FC_SSL_set_ex_data;
-      {$else}
-      {$if not defined(SSL_set_ex_data_allownil)}
-      SSL_set_ex_data := @ERR_SSL_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_ex_data_removed)}
@@ -24654,39 +21581,31 @@ begin
     begin
       {$if declared(_SSL_set_ex_data)}
       SSL_set_ex_data := @_SSL_set_ex_data;
-      {$else}
-      {$if not defined(SSL_set_ex_data_allownil)}
-      SSL_set_ex_data := @ERR_SSL_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_ex_data := @ERR_SSL_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_ex_data := LoadLibFunction(ADllHandle, SSL_get_ex_data_procname);
-  FuncLoaded := assigned(SSL_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_ex_data_allownil)}
+    SSL_get_ex_data := @ERR_SSL_get_ex_data;
+    {$ifend}
     {$if declared(SSL_get_ex_data_introduced)}
     if LibVersion < SSL_get_ex_data_introduced then
     begin
       {$if declared(FC_SSL_get_ex_data)}
       SSL_get_ex_data := @FC_SSL_get_ex_data;
-      {$else}
-      {$if not defined(SSL_get_ex_data_allownil)}
-      SSL_get_ex_data := @ERR_SSL_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_ex_data_removed)}
@@ -24694,39 +21613,31 @@ begin
     begin
       {$if declared(_SSL_get_ex_data)}
       SSL_get_ex_data := @_SSL_get_ex_data;
-      {$else}
-      {$if not defined(SSL_get_ex_data_allownil)}
-      SSL_get_ex_data := @ERR_SSL_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_ex_data := @ERR_SSL_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_set_ex_data := LoadLibFunction(ADllHandle, SSL_SESSION_set_ex_data_procname);
-  FuncLoaded := assigned(SSL_SESSION_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set_ex_data_allownil)}
+    SSL_SESSION_set_ex_data := @ERR_SSL_SESSION_set_ex_data;
+    {$ifend}
     {$if declared(SSL_SESSION_set_ex_data_introduced)}
     if LibVersion < SSL_SESSION_set_ex_data_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set_ex_data)}
       SSL_SESSION_set_ex_data := @FC_SSL_SESSION_set_ex_data;
-      {$else}
-      {$if not defined(SSL_SESSION_set_ex_data_allownil)}
-      SSL_SESSION_set_ex_data := @ERR_SSL_SESSION_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set_ex_data_removed)}
@@ -24734,39 +21645,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set_ex_data)}
       SSL_SESSION_set_ex_data := @_SSL_SESSION_set_ex_data;
-      {$else}
-      {$if not defined(SSL_SESSION_set_ex_data_allownil)}
-      SSL_SESSION_set_ex_data := @ERR_SSL_SESSION_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set_ex_data := @ERR_SSL_SESSION_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_SESSION_get_ex_data := LoadLibFunction(ADllHandle, SSL_SESSION_get_ex_data_procname);
-  FuncLoaded := assigned(SSL_SESSION_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get_ex_data_allownil)}
+    SSL_SESSION_get_ex_data := @ERR_SSL_SESSION_get_ex_data;
+    {$ifend}
     {$if declared(SSL_SESSION_get_ex_data_introduced)}
     if LibVersion < SSL_SESSION_get_ex_data_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get_ex_data)}
       SSL_SESSION_get_ex_data := @FC_SSL_SESSION_get_ex_data;
-      {$else}
-      {$if not defined(SSL_SESSION_get_ex_data_allownil)}
-      SSL_SESSION_get_ex_data := @ERR_SSL_SESSION_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get_ex_data_removed)}
@@ -24774,39 +21677,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get_ex_data)}
       SSL_SESSION_get_ex_data := @_SSL_SESSION_get_ex_data;
-      {$else}
-      {$if not defined(SSL_SESSION_get_ex_data_allownil)}
-      SSL_SESSION_get_ex_data := @ERR_SSL_SESSION_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get_ex_data := @ERR_SSL_SESSION_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_ex_data := LoadLibFunction(ADllHandle, SSL_CTX_set_ex_data_procname);
-  FuncLoaded := assigned(SSL_CTX_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_ex_data_allownil)}
+    SSL_CTX_set_ex_data := @ERR_SSL_CTX_set_ex_data;
+    {$ifend}
     {$if declared(SSL_CTX_set_ex_data_introduced)}
     if LibVersion < SSL_CTX_set_ex_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_ex_data)}
       SSL_CTX_set_ex_data := @FC_SSL_CTX_set_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_ex_data_allownil)}
-      SSL_CTX_set_ex_data := @ERR_SSL_CTX_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_ex_data_removed)}
@@ -24814,39 +21709,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_ex_data)}
       SSL_CTX_set_ex_data := @_SSL_CTX_set_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_set_ex_data_allownil)}
-      SSL_CTX_set_ex_data := @ERR_SSL_CTX_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_ex_data := @ERR_SSL_CTX_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_get_ex_data := LoadLibFunction(ADllHandle, SSL_CTX_get_ex_data_procname);
-  FuncLoaded := assigned(SSL_CTX_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_ex_data_allownil)}
+    SSL_CTX_get_ex_data := @ERR_SSL_CTX_get_ex_data;
+    {$ifend}
     {$if declared(SSL_CTX_get_ex_data_introduced)}
     if LibVersion < SSL_CTX_get_ex_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_ex_data)}
       SSL_CTX_get_ex_data := @FC_SSL_CTX_get_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_ex_data_allownil)}
-      SSL_CTX_get_ex_data := @ERR_SSL_CTX_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_ex_data_removed)}
@@ -24854,39 +21741,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_ex_data)}
       SSL_CTX_get_ex_data := @_SSL_CTX_get_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_get_ex_data_allownil)}
-      SSL_CTX_get_ex_data := @ERR_SSL_CTX_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_ex_data := @ERR_SSL_CTX_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_ex_data_X509_STORE_CTX_idx := LoadLibFunction(ADllHandle, SSL_get_ex_data_X509_STORE_CTX_idx_procname);
-  FuncLoaded := assigned(SSL_get_ex_data_X509_STORE_CTX_idx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_ex_data_X509_STORE_CTX_idx);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_ex_data_X509_STORE_CTX_idx_allownil)}
+    SSL_get_ex_data_X509_STORE_CTX_idx := @ERR_SSL_get_ex_data_X509_STORE_CTX_idx;
+    {$ifend}
     {$if declared(SSL_get_ex_data_X509_STORE_CTX_idx_introduced)}
     if LibVersion < SSL_get_ex_data_X509_STORE_CTX_idx_introduced then
     begin
       {$if declared(FC_SSL_get_ex_data_X509_STORE_CTX_idx)}
       SSL_get_ex_data_X509_STORE_CTX_idx := @FC_SSL_get_ex_data_X509_STORE_CTX_idx;
-      {$else}
-      {$if not defined(SSL_get_ex_data_X509_STORE_CTX_idx_allownil)}
-      SSL_get_ex_data_X509_STORE_CTX_idx := @ERR_SSL_get_ex_data_X509_STORE_CTX_idx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_ex_data_X509_STORE_CTX_idx_removed)}
@@ -24894,39 +21773,31 @@ begin
     begin
       {$if declared(_SSL_get_ex_data_X509_STORE_CTX_idx)}
       SSL_get_ex_data_X509_STORE_CTX_idx := @_SSL_get_ex_data_X509_STORE_CTX_idx;
-      {$else}
-      {$if not defined(SSL_get_ex_data_X509_STORE_CTX_idx_allownil)}
-      SSL_get_ex_data_X509_STORE_CTX_idx := @ERR_SSL_get_ex_data_X509_STORE_CTX_idx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_ex_data_X509_STORE_CTX_idx_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_ex_data_X509_STORE_CTX_idx := @ERR_SSL_get_ex_data_X509_STORE_CTX_idx;
+    if FuncLoadError then
       AFailed.Add('SSL_get_ex_data_X509_STORE_CTX_idx');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_default_read_buffer_len := LoadLibFunction(ADllHandle, SSL_CTX_set_default_read_buffer_len_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_read_buffer_len);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_read_buffer_len);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_read_buffer_len_allownil)}
+    SSL_CTX_set_default_read_buffer_len := @ERR_SSL_CTX_set_default_read_buffer_len;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_read_buffer_len_introduced)}
     if LibVersion < SSL_CTX_set_default_read_buffer_len_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_read_buffer_len)}
       SSL_CTX_set_default_read_buffer_len := @FC_SSL_CTX_set_default_read_buffer_len;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_read_buffer_len_allownil)}
-      SSL_CTX_set_default_read_buffer_len := @ERR_SSL_CTX_set_default_read_buffer_len;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_read_buffer_len_removed)}
@@ -24934,39 +21805,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_read_buffer_len)}
       SSL_CTX_set_default_read_buffer_len := @_SSL_CTX_set_default_read_buffer_len;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_read_buffer_len_allownil)}
-      SSL_CTX_set_default_read_buffer_len := @ERR_SSL_CTX_set_default_read_buffer_len;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_read_buffer_len_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_read_buffer_len := @ERR_SSL_CTX_set_default_read_buffer_len;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_read_buffer_len');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_default_read_buffer_len := LoadLibFunction(ADllHandle, SSL_set_default_read_buffer_len_procname);
-  FuncLoaded := assigned(SSL_set_default_read_buffer_len);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_default_read_buffer_len);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_default_read_buffer_len_allownil)}
+    SSL_set_default_read_buffer_len := @ERR_SSL_set_default_read_buffer_len;
+    {$ifend}
     {$if declared(SSL_set_default_read_buffer_len_introduced)}
     if LibVersion < SSL_set_default_read_buffer_len_introduced then
     begin
       {$if declared(FC_SSL_set_default_read_buffer_len)}
       SSL_set_default_read_buffer_len := @FC_SSL_set_default_read_buffer_len;
-      {$else}
-      {$if not defined(SSL_set_default_read_buffer_len_allownil)}
-      SSL_set_default_read_buffer_len := @ERR_SSL_set_default_read_buffer_len;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_default_read_buffer_len_removed)}
@@ -24974,39 +21837,31 @@ begin
     begin
       {$if declared(_SSL_set_default_read_buffer_len)}
       SSL_set_default_read_buffer_len := @_SSL_set_default_read_buffer_len;
-      {$else}
-      {$if not defined(SSL_set_default_read_buffer_len_allownil)}
-      SSL_set_default_read_buffer_len := @ERR_SSL_set_default_read_buffer_len;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_default_read_buffer_len_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_default_read_buffer_len := @ERR_SSL_set_default_read_buffer_len;
+    if FuncLoadError then
       AFailed.Add('SSL_set_default_read_buffer_len');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_tmp_dh_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_tmp_dh_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_tmp_dh_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_tmp_dh_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_tmp_dh_callback_allownil)}
+    SSL_CTX_set_tmp_dh_callback := @ERR_SSL_CTX_set_tmp_dh_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_tmp_dh_callback_introduced)}
     if LibVersion < SSL_CTX_set_tmp_dh_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_tmp_dh_callback)}
       SSL_CTX_set_tmp_dh_callback := @FC_SSL_CTX_set_tmp_dh_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_dh_callback_allownil)}
-      SSL_CTX_set_tmp_dh_callback := @ERR_SSL_CTX_set_tmp_dh_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_tmp_dh_callback_removed)}
@@ -25014,39 +21869,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_tmp_dh_callback)}
       SSL_CTX_set_tmp_dh_callback := @_SSL_CTX_set_tmp_dh_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_tmp_dh_callback_allownil)}
-      SSL_CTX_set_tmp_dh_callback := @ERR_SSL_CTX_set_tmp_dh_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_tmp_dh_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_tmp_dh_callback := @ERR_SSL_CTX_set_tmp_dh_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_tmp_dh_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_tmp_dh_callback := LoadLibFunction(ADllHandle, SSL_set_tmp_dh_callback_procname);
-  FuncLoaded := assigned(SSL_set_tmp_dh_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_tmp_dh_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_tmp_dh_callback_allownil)}
+    SSL_set_tmp_dh_callback := @ERR_SSL_set_tmp_dh_callback;
+    {$ifend}
     {$if declared(SSL_set_tmp_dh_callback_introduced)}
     if LibVersion < SSL_set_tmp_dh_callback_introduced then
     begin
       {$if declared(FC_SSL_set_tmp_dh_callback)}
       SSL_set_tmp_dh_callback := @FC_SSL_set_tmp_dh_callback;
-      {$else}
-      {$if not defined(SSL_set_tmp_dh_callback_allownil)}
-      SSL_set_tmp_dh_callback := @ERR_SSL_set_tmp_dh_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_tmp_dh_callback_removed)}
@@ -25054,39 +21901,31 @@ begin
     begin
       {$if declared(_SSL_set_tmp_dh_callback)}
       SSL_set_tmp_dh_callback := @_SSL_set_tmp_dh_callback;
-      {$else}
-      {$if not defined(SSL_set_tmp_dh_callback_allownil)}
-      SSL_set_tmp_dh_callback := @ERR_SSL_set_tmp_dh_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_tmp_dh_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_tmp_dh_callback := @ERR_SSL_set_tmp_dh_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_tmp_dh_callback');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_find := LoadLibFunction(ADllHandle, SSL_CIPHER_find_procname);
-  FuncLoaded := assigned(SSL_CIPHER_find);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_find);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_find_allownil)}
+    SSL_CIPHER_find := @ERR_SSL_CIPHER_find;
+    {$ifend}
     {$if declared(SSL_CIPHER_find_introduced)}
     if LibVersion < SSL_CIPHER_find_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_find)}
       SSL_CIPHER_find := @FC_SSL_CIPHER_find;
-      {$else}
-      {$if not defined(SSL_CIPHER_find_allownil)}
-      SSL_CIPHER_find := @ERR_SSL_CIPHER_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_find_removed)}
@@ -25094,39 +21933,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_find)}
       SSL_CIPHER_find := @_SSL_CIPHER_find;
-      {$else}
-      {$if not defined(SSL_CIPHER_find_allownil)}
-      SSL_CIPHER_find := @ERR_SSL_CIPHER_find;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_find_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_find := @ERR_SSL_CIPHER_find;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_find');
-    end;
     {$ifend}
   end;
 
 
   SSL_CIPHER_get_cipher_nid := LoadLibFunction(ADllHandle, SSL_CIPHER_get_cipher_nid_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_cipher_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_cipher_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_cipher_nid_allownil)}
+    SSL_CIPHER_get_cipher_nid := @ERR_SSL_CIPHER_get_cipher_nid;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_cipher_nid_introduced)}
     if LibVersion < SSL_CIPHER_get_cipher_nid_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_cipher_nid)}
       SSL_CIPHER_get_cipher_nid := @FC_SSL_CIPHER_get_cipher_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_cipher_nid_allownil)}
-      SSL_CIPHER_get_cipher_nid := @ERR_SSL_CIPHER_get_cipher_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_cipher_nid_removed)}
@@ -25134,39 +21965,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_cipher_nid)}
       SSL_CIPHER_get_cipher_nid := @_SSL_CIPHER_get_cipher_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_cipher_nid_allownil)}
-      SSL_CIPHER_get_cipher_nid := @ERR_SSL_CIPHER_get_cipher_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_cipher_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_cipher_nid := @ERR_SSL_CIPHER_get_cipher_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_cipher_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CIPHER_get_digest_nid := LoadLibFunction(ADllHandle, SSL_CIPHER_get_digest_nid_procname);
-  FuncLoaded := assigned(SSL_CIPHER_get_digest_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CIPHER_get_digest_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CIPHER_get_digest_nid_allownil)}
+    SSL_CIPHER_get_digest_nid := @ERR_SSL_CIPHER_get_digest_nid;
+    {$ifend}
     {$if declared(SSL_CIPHER_get_digest_nid_introduced)}
     if LibVersion < SSL_CIPHER_get_digest_nid_introduced then
     begin
       {$if declared(FC_SSL_CIPHER_get_digest_nid)}
       SSL_CIPHER_get_digest_nid := @FC_SSL_CIPHER_get_digest_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_digest_nid_allownil)}
-      SSL_CIPHER_get_digest_nid := @ERR_SSL_CIPHER_get_digest_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CIPHER_get_digest_nid_removed)}
@@ -25174,39 +21997,31 @@ begin
     begin
       {$if declared(_SSL_CIPHER_get_digest_nid)}
       SSL_CIPHER_get_digest_nid := @_SSL_CIPHER_get_digest_nid;
-      {$else}
-      {$if not defined(SSL_CIPHER_get_digest_nid_allownil)}
-      SSL_CIPHER_get_digest_nid := @ERR_SSL_CIPHER_get_digest_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CIPHER_get_digest_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CIPHER_get_digest_nid := @ERR_SSL_CIPHER_get_digest_nid;
+    if FuncLoadError then
       AFailed.Add('SSL_CIPHER_get_digest_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_session_ticket_ext := LoadLibFunction(ADllHandle, SSL_set_session_ticket_ext_procname);
-  FuncLoaded := assigned(SSL_set_session_ticket_ext);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_session_ticket_ext);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_session_ticket_ext_allownil)}
+    SSL_set_session_ticket_ext := @ERR_SSL_set_session_ticket_ext;
+    {$ifend}
     {$if declared(SSL_set_session_ticket_ext_introduced)}
     if LibVersion < SSL_set_session_ticket_ext_introduced then
     begin
       {$if declared(FC_SSL_set_session_ticket_ext)}
       SSL_set_session_ticket_ext := @FC_SSL_set_session_ticket_ext;
-      {$else}
-      {$if not defined(SSL_set_session_ticket_ext_allownil)}
-      SSL_set_session_ticket_ext := @ERR_SSL_set_session_ticket_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_session_ticket_ext_removed)}
@@ -25214,39 +22029,31 @@ begin
     begin
       {$if declared(_SSL_set_session_ticket_ext)}
       SSL_set_session_ticket_ext := @_SSL_set_session_ticket_ext;
-      {$else}
-      {$if not defined(SSL_set_session_ticket_ext_allownil)}
-      SSL_set_session_ticket_ext := @ERR_SSL_set_session_ticket_ext;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_session_ticket_ext_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_session_ticket_ext := @ERR_SSL_set_session_ticket_ext;
+    if FuncLoadError then
       AFailed.Add('SSL_set_session_ticket_ext');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_session_ticket_ext_cb := LoadLibFunction(ADllHandle, SSL_set_session_ticket_ext_cb_procname);
-  FuncLoaded := assigned(SSL_set_session_ticket_ext_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_session_ticket_ext_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_session_ticket_ext_cb_allownil)}
+    SSL_set_session_ticket_ext_cb := @ERR_SSL_set_session_ticket_ext_cb;
+    {$ifend}
     {$if declared(SSL_set_session_ticket_ext_cb_introduced)}
     if LibVersion < SSL_set_session_ticket_ext_cb_introduced then
     begin
       {$if declared(FC_SSL_set_session_ticket_ext_cb)}
       SSL_set_session_ticket_ext_cb := @FC_SSL_set_session_ticket_ext_cb;
-      {$else}
-      {$if not defined(SSL_set_session_ticket_ext_cb_allownil)}
-      SSL_set_session_ticket_ext_cb := @ERR_SSL_set_session_ticket_ext_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_session_ticket_ext_cb_removed)}
@@ -25254,39 +22061,31 @@ begin
     begin
       {$if declared(_SSL_set_session_ticket_ext_cb)}
       SSL_set_session_ticket_ext_cb := @_SSL_set_session_ticket_ext_cb;
-      {$else}
-      {$if not defined(SSL_set_session_ticket_ext_cb_allownil)}
-      SSL_set_session_ticket_ext_cb := @ERR_SSL_set_session_ticket_ext_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_session_ticket_ext_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_session_ticket_ext_cb := @ERR_SSL_set_session_ticket_ext_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_set_session_ticket_ext_cb');
-    end;
     {$ifend}
   end;
 
 
   SSL_CTX_set_not_resumable_session_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_not_resumable_session_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_not_resumable_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_not_resumable_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_not_resumable_session_callback_allownil)}
+    SSL_CTX_set_not_resumable_session_callback := @ERR_SSL_CTX_set_not_resumable_session_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_not_resumable_session_callback_introduced)}
     if LibVersion < SSL_CTX_set_not_resumable_session_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_not_resumable_session_callback)}
       SSL_CTX_set_not_resumable_session_callback := @FC_SSL_CTX_set_not_resumable_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_not_resumable_session_callback_allownil)}
-      SSL_CTX_set_not_resumable_session_callback := @ERR_SSL_CTX_set_not_resumable_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_not_resumable_session_callback_removed)}
@@ -25294,39 +22093,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_not_resumable_session_callback)}
       SSL_CTX_set_not_resumable_session_callback := @_SSL_CTX_set_not_resumable_session_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_not_resumable_session_callback_allownil)}
-      SSL_CTX_set_not_resumable_session_callback := @ERR_SSL_CTX_set_not_resumable_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_not_resumable_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_not_resumable_session_callback := @ERR_SSL_CTX_set_not_resumable_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_not_resumable_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_not_resumable_session_callback := LoadLibFunction(ADllHandle, SSL_set_not_resumable_session_callback_procname);
-  FuncLoaded := assigned(SSL_set_not_resumable_session_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_not_resumable_session_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_not_resumable_session_callback_allownil)}
+    SSL_set_not_resumable_session_callback := @ERR_SSL_set_not_resumable_session_callback;
+    {$ifend}
     {$if declared(SSL_set_not_resumable_session_callback_introduced)}
     if LibVersion < SSL_set_not_resumable_session_callback_introduced then
     begin
       {$if declared(FC_SSL_set_not_resumable_session_callback)}
       SSL_set_not_resumable_session_callback := @FC_SSL_set_not_resumable_session_callback;
-      {$else}
-      {$if not defined(SSL_set_not_resumable_session_callback_allownil)}
-      SSL_set_not_resumable_session_callback := @ERR_SSL_set_not_resumable_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_not_resumable_session_callback_removed)}
@@ -25334,39 +22125,31 @@ begin
     begin
       {$if declared(_SSL_set_not_resumable_session_callback)}
       SSL_set_not_resumable_session_callback := @_SSL_set_not_resumable_session_callback;
-      {$else}
-      {$if not defined(SSL_set_not_resumable_session_callback_allownil)}
-      SSL_set_not_resumable_session_callback := @ERR_SSL_set_not_resumable_session_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_not_resumable_session_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_not_resumable_session_callback := @ERR_SSL_set_not_resumable_session_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_not_resumable_session_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_record_padding_callback := LoadLibFunction(ADllHandle, SSL_CTX_set_record_padding_callback_procname);
-  FuncLoaded := assigned(SSL_CTX_set_record_padding_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_record_padding_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_record_padding_callback_allownil)}
+    SSL_CTX_set_record_padding_callback := @ERR_SSL_CTX_set_record_padding_callback;
+    {$ifend}
     {$if declared(SSL_CTX_set_record_padding_callback_introduced)}
     if LibVersion < SSL_CTX_set_record_padding_callback_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_record_padding_callback)}
       SSL_CTX_set_record_padding_callback := @FC_SSL_CTX_set_record_padding_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_record_padding_callback_allownil)}
-      SSL_CTX_set_record_padding_callback := @ERR_SSL_CTX_set_record_padding_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_record_padding_callback_removed)}
@@ -25374,39 +22157,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_record_padding_callback)}
       SSL_CTX_set_record_padding_callback := @_SSL_CTX_set_record_padding_callback;
-      {$else}
-      {$if not defined(SSL_CTX_set_record_padding_callback_allownil)}
-      SSL_CTX_set_record_padding_callback := @ERR_SSL_CTX_set_record_padding_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_record_padding_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_record_padding_callback := @ERR_SSL_CTX_set_record_padding_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_record_padding_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_record_padding_callback_arg := LoadLibFunction(ADllHandle, SSL_CTX_set_record_padding_callback_arg_procname);
-  FuncLoaded := assigned(SSL_CTX_set_record_padding_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_record_padding_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_record_padding_callback_arg_allownil)}
+    SSL_CTX_set_record_padding_callback_arg := @ERR_SSL_CTX_set_record_padding_callback_arg;
+    {$ifend}
     {$if declared(SSL_CTX_set_record_padding_callback_arg_introduced)}
     if LibVersion < SSL_CTX_set_record_padding_callback_arg_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_record_padding_callback_arg)}
       SSL_CTX_set_record_padding_callback_arg := @FC_SSL_CTX_set_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_CTX_set_record_padding_callback_arg_allownil)}
-      SSL_CTX_set_record_padding_callback_arg := @ERR_SSL_CTX_set_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_record_padding_callback_arg_removed)}
@@ -25414,39 +22189,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_record_padding_callback_arg)}
       SSL_CTX_set_record_padding_callback_arg := @_SSL_CTX_set_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_CTX_set_record_padding_callback_arg_allownil)}
-      SSL_CTX_set_record_padding_callback_arg := @ERR_SSL_CTX_set_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_record_padding_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_record_padding_callback_arg := @ERR_SSL_CTX_set_record_padding_callback_arg;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_record_padding_callback_arg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_record_padding_callback_arg := LoadLibFunction(ADllHandle, SSL_CTX_get_record_padding_callback_arg_procname);
-  FuncLoaded := assigned(SSL_CTX_get_record_padding_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_record_padding_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_record_padding_callback_arg_allownil)}
+    SSL_CTX_get_record_padding_callback_arg := @ERR_SSL_CTX_get_record_padding_callback_arg;
+    {$ifend}
     {$if declared(SSL_CTX_get_record_padding_callback_arg_introduced)}
     if LibVersion < SSL_CTX_get_record_padding_callback_arg_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_record_padding_callback_arg)}
       SSL_CTX_get_record_padding_callback_arg := @FC_SSL_CTX_get_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_CTX_get_record_padding_callback_arg_allownil)}
-      SSL_CTX_get_record_padding_callback_arg := @ERR_SSL_CTX_get_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_record_padding_callback_arg_removed)}
@@ -25454,39 +22221,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_record_padding_callback_arg)}
       SSL_CTX_get_record_padding_callback_arg := @_SSL_CTX_get_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_CTX_get_record_padding_callback_arg_allownil)}
-      SSL_CTX_get_record_padding_callback_arg := @ERR_SSL_CTX_get_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_record_padding_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_record_padding_callback_arg := @ERR_SSL_CTX_get_record_padding_callback_arg;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_record_padding_callback_arg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_block_padding := LoadLibFunction(ADllHandle, SSL_CTX_set_block_padding_procname);
-  FuncLoaded := assigned(SSL_CTX_set_block_padding);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_block_padding);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_block_padding_allownil)}
+    SSL_CTX_set_block_padding := @ERR_SSL_CTX_set_block_padding;
+    {$ifend}
     {$if declared(SSL_CTX_set_block_padding_introduced)}
     if LibVersion < SSL_CTX_set_block_padding_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_block_padding)}
       SSL_CTX_set_block_padding := @FC_SSL_CTX_set_block_padding;
-      {$else}
-      {$if not defined(SSL_CTX_set_block_padding_allownil)}
-      SSL_CTX_set_block_padding := @ERR_SSL_CTX_set_block_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_block_padding_removed)}
@@ -25494,39 +22253,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_block_padding)}
       SSL_CTX_set_block_padding := @_SSL_CTX_set_block_padding;
-      {$else}
-      {$if not defined(SSL_CTX_set_block_padding_allownil)}
-      SSL_CTX_set_block_padding := @ERR_SSL_CTX_set_block_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_block_padding_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_block_padding := @ERR_SSL_CTX_set_block_padding;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_block_padding');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_record_padding_callback := LoadLibFunction(ADllHandle, SSL_set_record_padding_callback_procname);
-  FuncLoaded := assigned(SSL_set_record_padding_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_record_padding_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_record_padding_callback_allownil)}
+    SSL_set_record_padding_callback := @ERR_SSL_set_record_padding_callback;
+    {$ifend}
     {$if declared(SSL_set_record_padding_callback_introduced)}
     if LibVersion < SSL_set_record_padding_callback_introduced then
     begin
       {$if declared(FC_SSL_set_record_padding_callback)}
       SSL_set_record_padding_callback := @FC_SSL_set_record_padding_callback;
-      {$else}
-      {$if not defined(SSL_set_record_padding_callback_allownil)}
-      SSL_set_record_padding_callback := @ERR_SSL_set_record_padding_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_record_padding_callback_removed)}
@@ -25534,39 +22285,31 @@ begin
     begin
       {$if declared(_SSL_set_record_padding_callback)}
       SSL_set_record_padding_callback := @_SSL_set_record_padding_callback;
-      {$else}
-      {$if not defined(SSL_set_record_padding_callback_allownil)}
-      SSL_set_record_padding_callback := @ERR_SSL_set_record_padding_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_record_padding_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_record_padding_callback := @ERR_SSL_set_record_padding_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_record_padding_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_record_padding_callback_arg := LoadLibFunction(ADllHandle, SSL_set_record_padding_callback_arg_procname);
-  FuncLoaded := assigned(SSL_set_record_padding_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_record_padding_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_record_padding_callback_arg_allownil)}
+    SSL_set_record_padding_callback_arg := @ERR_SSL_set_record_padding_callback_arg;
+    {$ifend}
     {$if declared(SSL_set_record_padding_callback_arg_introduced)}
     if LibVersion < SSL_set_record_padding_callback_arg_introduced then
     begin
       {$if declared(FC_SSL_set_record_padding_callback_arg)}
       SSL_set_record_padding_callback_arg := @FC_SSL_set_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_set_record_padding_callback_arg_allownil)}
-      SSL_set_record_padding_callback_arg := @ERR_SSL_set_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_record_padding_callback_arg_removed)}
@@ -25574,39 +22317,31 @@ begin
     begin
       {$if declared(_SSL_set_record_padding_callback_arg)}
       SSL_set_record_padding_callback_arg := @_SSL_set_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_set_record_padding_callback_arg_allownil)}
-      SSL_set_record_padding_callback_arg := @ERR_SSL_set_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_record_padding_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_record_padding_callback_arg := @ERR_SSL_set_record_padding_callback_arg;
+    if FuncLoadError then
       AFailed.Add('SSL_set_record_padding_callback_arg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_record_padding_callback_arg := LoadLibFunction(ADllHandle, SSL_get_record_padding_callback_arg_procname);
-  FuncLoaded := assigned(SSL_get_record_padding_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_record_padding_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_record_padding_callback_arg_allownil)}
+    SSL_get_record_padding_callback_arg := @ERR_SSL_get_record_padding_callback_arg;
+    {$ifend}
     {$if declared(SSL_get_record_padding_callback_arg_introduced)}
     if LibVersion < SSL_get_record_padding_callback_arg_introduced then
     begin
       {$if declared(FC_SSL_get_record_padding_callback_arg)}
       SSL_get_record_padding_callback_arg := @FC_SSL_get_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_get_record_padding_callback_arg_allownil)}
-      SSL_get_record_padding_callback_arg := @ERR_SSL_get_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_record_padding_callback_arg_removed)}
@@ -25614,39 +22349,31 @@ begin
     begin
       {$if declared(_SSL_get_record_padding_callback_arg)}
       SSL_get_record_padding_callback_arg := @_SSL_get_record_padding_callback_arg;
-      {$else}
-      {$if not defined(SSL_get_record_padding_callback_arg_allownil)}
-      SSL_get_record_padding_callback_arg := @ERR_SSL_get_record_padding_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_record_padding_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_record_padding_callback_arg := @ERR_SSL_get_record_padding_callback_arg;
+    if FuncLoadError then
       AFailed.Add('SSL_get_record_padding_callback_arg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_block_padding := LoadLibFunction(ADllHandle, SSL_set_block_padding_procname);
-  FuncLoaded := assigned(SSL_set_block_padding);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_block_padding);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_block_padding_allownil)}
+    SSL_set_block_padding := @ERR_SSL_set_block_padding;
+    {$ifend}
     {$if declared(SSL_set_block_padding_introduced)}
     if LibVersion < SSL_set_block_padding_introduced then
     begin
       {$if declared(FC_SSL_set_block_padding)}
       SSL_set_block_padding := @FC_SSL_set_block_padding;
-      {$else}
-      {$if not defined(SSL_set_block_padding_allownil)}
-      SSL_set_block_padding := @ERR_SSL_set_block_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_block_padding_removed)}
@@ -25654,39 +22381,31 @@ begin
     begin
       {$if declared(_SSL_set_block_padding)}
       SSL_set_block_padding := @_SSL_set_block_padding;
-      {$else}
-      {$if not defined(SSL_set_block_padding_allownil)}
-      SSL_set_block_padding := @ERR_SSL_set_block_padding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_block_padding_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_block_padding := @ERR_SSL_set_block_padding;
+    if FuncLoadError then
       AFailed.Add('SSL_set_block_padding');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_num_tickets := LoadLibFunction(ADllHandle, SSL_set_num_tickets_procname);
-  FuncLoaded := assigned(SSL_set_num_tickets);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_num_tickets);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_num_tickets_allownil)}
+    SSL_set_num_tickets := @ERR_SSL_set_num_tickets;
+    {$ifend}
     {$if declared(SSL_set_num_tickets_introduced)}
     if LibVersion < SSL_set_num_tickets_introduced then
     begin
       {$if declared(FC_SSL_set_num_tickets)}
       SSL_set_num_tickets := @FC_SSL_set_num_tickets;
-      {$else}
-      {$if not defined(SSL_set_num_tickets_allownil)}
-      SSL_set_num_tickets := @ERR_SSL_set_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_num_tickets_removed)}
@@ -25694,39 +22413,31 @@ begin
     begin
       {$if declared(_SSL_set_num_tickets)}
       SSL_set_num_tickets := @_SSL_set_num_tickets;
-      {$else}
-      {$if not defined(SSL_set_num_tickets_allownil)}
-      SSL_set_num_tickets := @ERR_SSL_set_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_num_tickets_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_num_tickets := @ERR_SSL_set_num_tickets;
+    if FuncLoadError then
       AFailed.Add('SSL_set_num_tickets');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_num_tickets := LoadLibFunction(ADllHandle, SSL_get_num_tickets_procname);
-  FuncLoaded := assigned(SSL_get_num_tickets);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_num_tickets);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_num_tickets_allownil)}
+    SSL_get_num_tickets := @ERR_SSL_get_num_tickets;
+    {$ifend}
     {$if declared(SSL_get_num_tickets_introduced)}
     if LibVersion < SSL_get_num_tickets_introduced then
     begin
       {$if declared(FC_SSL_get_num_tickets)}
       SSL_get_num_tickets := @FC_SSL_get_num_tickets;
-      {$else}
-      {$if not defined(SSL_get_num_tickets_allownil)}
-      SSL_get_num_tickets := @ERR_SSL_get_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_num_tickets_removed)}
@@ -25734,39 +22445,31 @@ begin
     begin
       {$if declared(_SSL_get_num_tickets)}
       SSL_get_num_tickets := @_SSL_get_num_tickets;
-      {$else}
-      {$if not defined(SSL_get_num_tickets_allownil)}
-      SSL_get_num_tickets := @ERR_SSL_get_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_num_tickets_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_num_tickets := @ERR_SSL_get_num_tickets;
+    if FuncLoadError then
       AFailed.Add('SSL_get_num_tickets');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_num_tickets := LoadLibFunction(ADllHandle, SSL_CTX_set_num_tickets_procname);
-  FuncLoaded := assigned(SSL_CTX_set_num_tickets);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_num_tickets);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_num_tickets_allownil)}
+    SSL_CTX_set_num_tickets := @ERR_SSL_CTX_set_num_tickets;
+    {$ifend}
     {$if declared(SSL_CTX_set_num_tickets_introduced)}
     if LibVersion < SSL_CTX_set_num_tickets_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_num_tickets)}
       SSL_CTX_set_num_tickets := @FC_SSL_CTX_set_num_tickets;
-      {$else}
-      {$if not defined(SSL_CTX_set_num_tickets_allownil)}
-      SSL_CTX_set_num_tickets := @ERR_SSL_CTX_set_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_num_tickets_removed)}
@@ -25774,39 +22477,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_num_tickets)}
       SSL_CTX_set_num_tickets := @_SSL_CTX_set_num_tickets;
-      {$else}
-      {$if not defined(SSL_CTX_set_num_tickets_allownil)}
-      SSL_CTX_set_num_tickets := @ERR_SSL_CTX_set_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_num_tickets_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_num_tickets := @ERR_SSL_CTX_set_num_tickets;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_num_tickets');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_num_tickets := LoadLibFunction(ADllHandle, SSL_CTX_get_num_tickets_procname);
-  FuncLoaded := assigned(SSL_CTX_get_num_tickets);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_num_tickets);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_num_tickets_allownil)}
+    SSL_CTX_get_num_tickets := @ERR_SSL_CTX_get_num_tickets;
+    {$ifend}
     {$if declared(SSL_CTX_get_num_tickets_introduced)}
     if LibVersion < SSL_CTX_get_num_tickets_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_num_tickets)}
       SSL_CTX_get_num_tickets := @FC_SSL_CTX_get_num_tickets;
-      {$else}
-      {$if not defined(SSL_CTX_get_num_tickets_allownil)}
-      SSL_CTX_get_num_tickets := @ERR_SSL_CTX_get_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_num_tickets_removed)}
@@ -25814,39 +22509,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_num_tickets)}
       SSL_CTX_get_num_tickets := @_SSL_CTX_get_num_tickets;
-      {$else}
-      {$if not defined(SSL_CTX_get_num_tickets_allownil)}
-      SSL_CTX_get_num_tickets := @ERR_SSL_CTX_get_num_tickets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_num_tickets_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_num_tickets := @ERR_SSL_CTX_get_num_tickets;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_num_tickets');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_session_reused := LoadLibFunction(ADllHandle, SSL_session_reused_procname);
-  FuncLoaded := assigned(SSL_session_reused);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_session_reused);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_session_reused_allownil)}
+    SSL_session_reused := @ERR_SSL_session_reused;
+    {$ifend}
     {$if declared(SSL_session_reused_introduced)}
     if LibVersion < SSL_session_reused_introduced then
     begin
       {$if declared(FC_SSL_session_reused)}
       SSL_session_reused := @FC_SSL_session_reused;
-      {$else}
-      {$if not defined(SSL_session_reused_allownil)}
-      SSL_session_reused := @ERR_SSL_session_reused;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_session_reused_removed)}
@@ -25854,39 +22541,31 @@ begin
     begin
       {$if declared(_SSL_session_reused)}
       SSL_session_reused := @_SSL_session_reused;
-      {$else}
-      {$if not defined(SSL_session_reused_allownil)}
-      SSL_session_reused := @ERR_SSL_session_reused;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_session_reused_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_session_reused := @ERR_SSL_session_reused;
+    if FuncLoadError then
       AFailed.Add('SSL_session_reused');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_is_server := LoadLibFunction(ADllHandle, SSL_is_server_procname);
-  FuncLoaded := assigned(SSL_is_server);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_is_server);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_is_server_allownil)}
+    SSL_is_server := @ERR_SSL_is_server;
+    {$ifend}
     {$if declared(SSL_is_server_introduced)}
     if LibVersion < SSL_is_server_introduced then
     begin
       {$if declared(FC_SSL_is_server)}
       SSL_is_server := @FC_SSL_is_server;
-      {$else}
-      {$if not defined(SSL_is_server_allownil)}
-      SSL_is_server := @ERR_SSL_is_server;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_is_server_removed)}
@@ -25894,39 +22573,31 @@ begin
     begin
       {$if declared(_SSL_is_server)}
       SSL_is_server := @_SSL_is_server;
-      {$else}
-      {$if not defined(SSL_is_server_allownil)}
-      SSL_is_server := @ERR_SSL_is_server;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_is_server_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_is_server := @ERR_SSL_is_server;
+    if FuncLoadError then
       AFailed.Add('SSL_is_server');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_new := LoadLibFunction(ADllHandle, SSL_CONF_CTX_new_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_new_allownil)}
+    SSL_CONF_CTX_new := @ERR_SSL_CONF_CTX_new;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_new_introduced)}
     if LibVersion < SSL_CONF_CTX_new_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_new)}
       SSL_CONF_CTX_new := @FC_SSL_CONF_CTX_new;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_new_allownil)}
-      SSL_CONF_CTX_new := @ERR_SSL_CONF_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_new_removed)}
@@ -25934,39 +22605,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_new)}
       SSL_CONF_CTX_new := @_SSL_CONF_CTX_new;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_new_allownil)}
-      SSL_CONF_CTX_new := @ERR_SSL_CONF_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_new := @ERR_SSL_CONF_CTX_new;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_finish := LoadLibFunction(ADllHandle, SSL_CONF_CTX_finish_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_finish_allownil)}
+    SSL_CONF_CTX_finish := @ERR_SSL_CONF_CTX_finish;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_finish_introduced)}
     if LibVersion < SSL_CONF_CTX_finish_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_finish)}
       SSL_CONF_CTX_finish := @FC_SSL_CONF_CTX_finish;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_finish_allownil)}
-      SSL_CONF_CTX_finish := @ERR_SSL_CONF_CTX_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_finish_removed)}
@@ -25974,39 +22637,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_finish)}
       SSL_CONF_CTX_finish := @_SSL_CONF_CTX_finish;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_finish_allownil)}
-      SSL_CONF_CTX_finish := @ERR_SSL_CONF_CTX_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_finish := @ERR_SSL_CONF_CTX_finish;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_finish');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_free := LoadLibFunction(ADllHandle, SSL_CONF_CTX_free_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_free_allownil)}
+    SSL_CONF_CTX_free := @ERR_SSL_CONF_CTX_free;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_free_introduced)}
     if LibVersion < SSL_CONF_CTX_free_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_free)}
       SSL_CONF_CTX_free := @FC_SSL_CONF_CTX_free;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_free_allownil)}
-      SSL_CONF_CTX_free := @ERR_SSL_CONF_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_free_removed)}
@@ -26014,39 +22669,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_free)}
       SSL_CONF_CTX_free := @_SSL_CONF_CTX_free;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_free_allownil)}
-      SSL_CONF_CTX_free := @ERR_SSL_CONF_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_free := @ERR_SSL_CONF_CTX_free;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_set_flags := LoadLibFunction(ADllHandle, SSL_CONF_CTX_set_flags_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_set_flags_allownil)}
+    SSL_CONF_CTX_set_flags := @ERR_SSL_CONF_CTX_set_flags;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_set_flags_introduced)}
     if LibVersion < SSL_CONF_CTX_set_flags_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_set_flags)}
       SSL_CONF_CTX_set_flags := @FC_SSL_CONF_CTX_set_flags;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_flags_allownil)}
-      SSL_CONF_CTX_set_flags := @ERR_SSL_CONF_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_set_flags_removed)}
@@ -26054,39 +22701,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_set_flags)}
       SSL_CONF_CTX_set_flags := @_SSL_CONF_CTX_set_flags;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_flags_allownil)}
-      SSL_CONF_CTX_set_flags := @ERR_SSL_CONF_CTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_set_flags := @ERR_SSL_CONF_CTX_set_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_set_flags');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_clear_flags := LoadLibFunction(ADllHandle, SSL_CONF_CTX_clear_flags_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_clear_flags_allownil)}
+    SSL_CONF_CTX_clear_flags := @ERR_SSL_CONF_CTX_clear_flags;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_clear_flags_introduced)}
     if LibVersion < SSL_CONF_CTX_clear_flags_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_clear_flags)}
       SSL_CONF_CTX_clear_flags := @FC_SSL_CONF_CTX_clear_flags;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_clear_flags_allownil)}
-      SSL_CONF_CTX_clear_flags := @ERR_SSL_CONF_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_clear_flags_removed)}
@@ -26094,39 +22733,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_clear_flags)}
       SSL_CONF_CTX_clear_flags := @_SSL_CONF_CTX_clear_flags;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_clear_flags_allownil)}
-      SSL_CONF_CTX_clear_flags := @ERR_SSL_CONF_CTX_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_clear_flags := @ERR_SSL_CONF_CTX_clear_flags;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_set1_prefix := LoadLibFunction(ADllHandle, SSL_CONF_CTX_set1_prefix_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_set1_prefix);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_set1_prefix);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_set1_prefix_allownil)}
+    SSL_CONF_CTX_set1_prefix := @ERR_SSL_CONF_CTX_set1_prefix;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_set1_prefix_introduced)}
     if LibVersion < SSL_CONF_CTX_set1_prefix_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_set1_prefix)}
       SSL_CONF_CTX_set1_prefix := @FC_SSL_CONF_CTX_set1_prefix;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set1_prefix_allownil)}
-      SSL_CONF_CTX_set1_prefix := @ERR_SSL_CONF_CTX_set1_prefix;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_set1_prefix_removed)}
@@ -26134,39 +22765,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_set1_prefix)}
       SSL_CONF_CTX_set1_prefix := @_SSL_CONF_CTX_set1_prefix;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set1_prefix_allownil)}
-      SSL_CONF_CTX_set1_prefix := @ERR_SSL_CONF_CTX_set1_prefix;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_set1_prefix_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_set1_prefix := @ERR_SSL_CONF_CTX_set1_prefix;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_set1_prefix');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_cmd := LoadLibFunction(ADllHandle, SSL_CONF_cmd_procname);
-  FuncLoaded := assigned(SSL_CONF_cmd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_cmd);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_cmd_allownil)}
+    SSL_CONF_cmd := @ERR_SSL_CONF_cmd;
+    {$ifend}
     {$if declared(SSL_CONF_cmd_introduced)}
     if LibVersion < SSL_CONF_cmd_introduced then
     begin
       {$if declared(FC_SSL_CONF_cmd)}
       SSL_CONF_cmd := @FC_SSL_CONF_cmd;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_allownil)}
-      SSL_CONF_cmd := @ERR_SSL_CONF_cmd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_cmd_removed)}
@@ -26174,39 +22797,31 @@ begin
     begin
       {$if declared(_SSL_CONF_cmd)}
       SSL_CONF_cmd := @_SSL_CONF_cmd;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_allownil)}
-      SSL_CONF_cmd := @ERR_SSL_CONF_cmd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_cmd_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_cmd := @ERR_SSL_CONF_cmd;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_cmd');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_cmd_argv := LoadLibFunction(ADllHandle, SSL_CONF_cmd_argv_procname);
-  FuncLoaded := assigned(SSL_CONF_cmd_argv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_cmd_argv);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_cmd_argv_allownil)}
+    SSL_CONF_cmd_argv := @ERR_SSL_CONF_cmd_argv;
+    {$ifend}
     {$if declared(SSL_CONF_cmd_argv_introduced)}
     if LibVersion < SSL_CONF_cmd_argv_introduced then
     begin
       {$if declared(FC_SSL_CONF_cmd_argv)}
       SSL_CONF_cmd_argv := @FC_SSL_CONF_cmd_argv;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_argv_allownil)}
-      SSL_CONF_cmd_argv := @ERR_SSL_CONF_cmd_argv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_cmd_argv_removed)}
@@ -26214,39 +22829,31 @@ begin
     begin
       {$if declared(_SSL_CONF_cmd_argv)}
       SSL_CONF_cmd_argv := @_SSL_CONF_cmd_argv;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_argv_allownil)}
-      SSL_CONF_cmd_argv := @ERR_SSL_CONF_cmd_argv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_cmd_argv_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_cmd_argv := @ERR_SSL_CONF_cmd_argv;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_cmd_argv');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_cmd_value_type := LoadLibFunction(ADllHandle, SSL_CONF_cmd_value_type_procname);
-  FuncLoaded := assigned(SSL_CONF_cmd_value_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_cmd_value_type);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_cmd_value_type_allownil)}
+    SSL_CONF_cmd_value_type := @ERR_SSL_CONF_cmd_value_type;
+    {$ifend}
     {$if declared(SSL_CONF_cmd_value_type_introduced)}
     if LibVersion < SSL_CONF_cmd_value_type_introduced then
     begin
       {$if declared(FC_SSL_CONF_cmd_value_type)}
       SSL_CONF_cmd_value_type := @FC_SSL_CONF_cmd_value_type;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_value_type_allownil)}
-      SSL_CONF_cmd_value_type := @ERR_SSL_CONF_cmd_value_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_cmd_value_type_removed)}
@@ -26254,39 +22861,31 @@ begin
     begin
       {$if declared(_SSL_CONF_cmd_value_type)}
       SSL_CONF_cmd_value_type := @_SSL_CONF_cmd_value_type;
-      {$else}
-      {$if not defined(SSL_CONF_cmd_value_type_allownil)}
-      SSL_CONF_cmd_value_type := @ERR_SSL_CONF_cmd_value_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_cmd_value_type_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_cmd_value_type := @ERR_SSL_CONF_cmd_value_type;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_cmd_value_type');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_set_ssl := LoadLibFunction(ADllHandle, SSL_CONF_CTX_set_ssl_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_set_ssl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_set_ssl);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_set_ssl_allownil)}
+    SSL_CONF_CTX_set_ssl := @ERR_SSL_CONF_CTX_set_ssl;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_set_ssl_introduced)}
     if LibVersion < SSL_CONF_CTX_set_ssl_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_set_ssl)}
       SSL_CONF_CTX_set_ssl := @FC_SSL_CONF_CTX_set_ssl;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_ssl_allownil)}
-      SSL_CONF_CTX_set_ssl := @ERR_SSL_CONF_CTX_set_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_set_ssl_removed)}
@@ -26294,39 +22893,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_set_ssl)}
       SSL_CONF_CTX_set_ssl := @_SSL_CONF_CTX_set_ssl;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_ssl_allownil)}
-      SSL_CONF_CTX_set_ssl := @ERR_SSL_CONF_CTX_set_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_set_ssl_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_set_ssl := @ERR_SSL_CONF_CTX_set_ssl;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_set_ssl');
-    end;
     {$ifend}
   end;
 
 
   SSL_CONF_CTX_set_ssl_ctx := LoadLibFunction(ADllHandle, SSL_CONF_CTX_set_ssl_ctx_procname);
-  FuncLoaded := assigned(SSL_CONF_CTX_set_ssl_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CONF_CTX_set_ssl_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CONF_CTX_set_ssl_ctx_allownil)}
+    SSL_CONF_CTX_set_ssl_ctx := @ERR_SSL_CONF_CTX_set_ssl_ctx;
+    {$ifend}
     {$if declared(SSL_CONF_CTX_set_ssl_ctx_introduced)}
     if LibVersion < SSL_CONF_CTX_set_ssl_ctx_introduced then
     begin
       {$if declared(FC_SSL_CONF_CTX_set_ssl_ctx)}
       SSL_CONF_CTX_set_ssl_ctx := @FC_SSL_CONF_CTX_set_ssl_ctx;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_ssl_ctx_allownil)}
-      SSL_CONF_CTX_set_ssl_ctx := @ERR_SSL_CONF_CTX_set_ssl_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CONF_CTX_set_ssl_ctx_removed)}
@@ -26334,39 +22925,31 @@ begin
     begin
       {$if declared(_SSL_CONF_CTX_set_ssl_ctx)}
       SSL_CONF_CTX_set_ssl_ctx := @_SSL_CONF_CTX_set_ssl_ctx;
-      {$else}
-      {$if not defined(SSL_CONF_CTX_set_ssl_ctx_allownil)}
-      SSL_CONF_CTX_set_ssl_ctx := @ERR_SSL_CONF_CTX_set_ssl_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CONF_CTX_set_ssl_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CONF_CTX_set_ssl_ctx := @ERR_SSL_CONF_CTX_set_ssl_ctx;
+    if FuncLoadError then
       AFailed.Add('SSL_CONF_CTX_set_ssl_ctx');
-    end;
     {$ifend}
   end;
 
 
   SSL_add_ssl_module := LoadLibFunction(ADllHandle, SSL_add_ssl_module_procname);
-  FuncLoaded := assigned(SSL_add_ssl_module);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_add_ssl_module);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_add_ssl_module_allownil)}
+    SSL_add_ssl_module := @ERR_SSL_add_ssl_module;
+    {$ifend}
     {$if declared(SSL_add_ssl_module_introduced)}
     if LibVersion < SSL_add_ssl_module_introduced then
     begin
       {$if declared(FC_SSL_add_ssl_module)}
       SSL_add_ssl_module := @FC_SSL_add_ssl_module;
-      {$else}
-      {$if not defined(SSL_add_ssl_module_allownil)}
-      SSL_add_ssl_module := @ERR_SSL_add_ssl_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_add_ssl_module_removed)}
@@ -26374,39 +22957,31 @@ begin
     begin
       {$if declared(_SSL_add_ssl_module)}
       SSL_add_ssl_module := @_SSL_add_ssl_module;
-      {$else}
-      {$if not defined(SSL_add_ssl_module_allownil)}
-      SSL_add_ssl_module := @ERR_SSL_add_ssl_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_add_ssl_module_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_add_ssl_module := @ERR_SSL_add_ssl_module;
+    if FuncLoadError then
       AFailed.Add('SSL_add_ssl_module');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_config := LoadLibFunction(ADllHandle, SSL_config_procname);
-  FuncLoaded := assigned(SSL_config);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_config);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_config_allownil)}
+    SSL_config := @ERR_SSL_config;
+    {$ifend}
     {$if declared(SSL_config_introduced)}
     if LibVersion < SSL_config_introduced then
     begin
       {$if declared(FC_SSL_config)}
       SSL_config := @FC_SSL_config;
-      {$else}
-      {$if not defined(SSL_config_allownil)}
-      SSL_config := @ERR_SSL_config;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_config_removed)}
@@ -26414,39 +22989,31 @@ begin
     begin
       {$if declared(_SSL_config)}
       SSL_config := @_SSL_config;
-      {$else}
-      {$if not defined(SSL_config_allownil)}
-      SSL_config := @ERR_SSL_config;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_config_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_config := @ERR_SSL_config;
+    if FuncLoadError then
       AFailed.Add('SSL_config');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_config := LoadLibFunction(ADllHandle, SSL_CTX_config_procname);
-  FuncLoaded := assigned(SSL_CTX_config);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_config);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_config_allownil)}
+    SSL_CTX_config := @ERR_SSL_CTX_config;
+    {$ifend}
     {$if declared(SSL_CTX_config_introduced)}
     if LibVersion < SSL_CTX_config_introduced then
     begin
       {$if declared(FC_SSL_CTX_config)}
       SSL_CTX_config := @FC_SSL_CTX_config;
-      {$else}
-      {$if not defined(SSL_CTX_config_allownil)}
-      SSL_CTX_config := @ERR_SSL_CTX_config;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_config_removed)}
@@ -26454,39 +23021,31 @@ begin
     begin
       {$if declared(_SSL_CTX_config)}
       SSL_CTX_config := @_SSL_CTX_config;
-      {$else}
-      {$if not defined(SSL_CTX_config_allownil)}
-      SSL_CTX_config := @ERR_SSL_CTX_config;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_config_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_config := @ERR_SSL_CTX_config;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_config');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DTLSv1_listen := LoadLibFunction(ADllHandle, DTLSv1_listen_procname);
-  FuncLoaded := assigned(DTLSv1_listen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DTLSv1_listen);
+  if FuncLoadError then
   begin
+    {$if not defined(DTLSv1_listen_allownil)}
+    DTLSv1_listen := @ERR_DTLSv1_listen;
+    {$ifend}
     {$if declared(DTLSv1_listen_introduced)}
     if LibVersion < DTLSv1_listen_introduced then
     begin
       {$if declared(FC_DTLSv1_listen)}
       DTLSv1_listen := @FC_DTLSv1_listen;
-      {$else}
-      {$if not defined(DTLSv1_listen_allownil)}
-      DTLSv1_listen := @ERR_DTLSv1_listen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DTLSv1_listen_removed)}
@@ -26494,39 +23053,31 @@ begin
     begin
       {$if declared(_DTLSv1_listen)}
       DTLSv1_listen := @_DTLSv1_listen;
-      {$else}
-      {$if not defined(DTLSv1_listen_allownil)}
-      DTLSv1_listen := @ERR_DTLSv1_listen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DTLSv1_listen_allownil)}
-    if not FuncLoaded then
-    begin
-      DTLSv1_listen := @ERR_DTLSv1_listen;
+    if FuncLoadError then
       AFailed.Add('DTLSv1_listen');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_enable_ct := LoadLibFunction(ADllHandle, SSL_enable_ct_procname);
-  FuncLoaded := assigned(SSL_enable_ct);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_enable_ct);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_enable_ct_allownil)}
+    SSL_enable_ct := @ERR_SSL_enable_ct;
+    {$ifend}
     {$if declared(SSL_enable_ct_introduced)}
     if LibVersion < SSL_enable_ct_introduced then
     begin
       {$if declared(FC_SSL_enable_ct)}
       SSL_enable_ct := @FC_SSL_enable_ct;
-      {$else}
-      {$if not defined(SSL_enable_ct_allownil)}
-      SSL_enable_ct := @ERR_SSL_enable_ct;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_enable_ct_removed)}
@@ -26534,39 +23085,31 @@ begin
     begin
       {$if declared(_SSL_enable_ct)}
       SSL_enable_ct := @_SSL_enable_ct;
-      {$else}
-      {$if not defined(SSL_enable_ct_allownil)}
-      SSL_enable_ct := @ERR_SSL_enable_ct;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_enable_ct_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_enable_ct := @ERR_SSL_enable_ct;
+    if FuncLoadError then
       AFailed.Add('SSL_enable_ct');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_enable_ct := LoadLibFunction(ADllHandle, SSL_CTX_enable_ct_procname);
-  FuncLoaded := assigned(SSL_CTX_enable_ct);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_enable_ct);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_enable_ct_allownil)}
+    SSL_CTX_enable_ct := @ERR_SSL_CTX_enable_ct;
+    {$ifend}
     {$if declared(SSL_CTX_enable_ct_introduced)}
     if LibVersion < SSL_CTX_enable_ct_introduced then
     begin
       {$if declared(FC_SSL_CTX_enable_ct)}
       SSL_CTX_enable_ct := @FC_SSL_CTX_enable_ct;
-      {$else}
-      {$if not defined(SSL_CTX_enable_ct_allownil)}
-      SSL_CTX_enable_ct := @ERR_SSL_CTX_enable_ct;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_enable_ct_removed)}
@@ -26574,39 +23117,31 @@ begin
     begin
       {$if declared(_SSL_CTX_enable_ct)}
       SSL_CTX_enable_ct := @_SSL_CTX_enable_ct;
-      {$else}
-      {$if not defined(SSL_CTX_enable_ct_allownil)}
-      SSL_CTX_enable_ct := @ERR_SSL_CTX_enable_ct;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_enable_ct_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_enable_ct := @ERR_SSL_CTX_enable_ct;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_enable_ct');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_ct_is_enabled := LoadLibFunction(ADllHandle, SSL_ct_is_enabled_procname);
-  FuncLoaded := assigned(SSL_ct_is_enabled);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_ct_is_enabled);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_ct_is_enabled_allownil)}
+    SSL_ct_is_enabled := @ERR_SSL_ct_is_enabled;
+    {$ifend}
     {$if declared(SSL_ct_is_enabled_introduced)}
     if LibVersion < SSL_ct_is_enabled_introduced then
     begin
       {$if declared(FC_SSL_ct_is_enabled)}
       SSL_ct_is_enabled := @FC_SSL_ct_is_enabled;
-      {$else}
-      {$if not defined(SSL_ct_is_enabled_allownil)}
-      SSL_ct_is_enabled := @ERR_SSL_ct_is_enabled;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_ct_is_enabled_removed)}
@@ -26614,39 +23149,31 @@ begin
     begin
       {$if declared(_SSL_ct_is_enabled)}
       SSL_ct_is_enabled := @_SSL_ct_is_enabled;
-      {$else}
-      {$if not defined(SSL_ct_is_enabled_allownil)}
-      SSL_ct_is_enabled := @ERR_SSL_ct_is_enabled;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_ct_is_enabled_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_ct_is_enabled := @ERR_SSL_ct_is_enabled;
+    if FuncLoadError then
       AFailed.Add('SSL_ct_is_enabled');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_ct_is_enabled := LoadLibFunction(ADllHandle, SSL_CTX_ct_is_enabled_procname);
-  FuncLoaded := assigned(SSL_CTX_ct_is_enabled);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_ct_is_enabled);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_ct_is_enabled_allownil)}
+    SSL_CTX_ct_is_enabled := @ERR_SSL_CTX_ct_is_enabled;
+    {$ifend}
     {$if declared(SSL_CTX_ct_is_enabled_introduced)}
     if LibVersion < SSL_CTX_ct_is_enabled_introduced then
     begin
       {$if declared(FC_SSL_CTX_ct_is_enabled)}
       SSL_CTX_ct_is_enabled := @FC_SSL_CTX_ct_is_enabled;
-      {$else}
-      {$if not defined(SSL_CTX_ct_is_enabled_allownil)}
-      SSL_CTX_ct_is_enabled := @ERR_SSL_CTX_ct_is_enabled;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_ct_is_enabled_removed)}
@@ -26654,39 +23181,31 @@ begin
     begin
       {$if declared(_SSL_CTX_ct_is_enabled)}
       SSL_CTX_ct_is_enabled := @_SSL_CTX_ct_is_enabled;
-      {$else}
-      {$if not defined(SSL_CTX_ct_is_enabled_allownil)}
-      SSL_CTX_ct_is_enabled := @ERR_SSL_CTX_ct_is_enabled;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_ct_is_enabled_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_ct_is_enabled := @ERR_SSL_CTX_ct_is_enabled;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_ct_is_enabled');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_default_ctlog_list_file := LoadLibFunction(ADllHandle, SSL_CTX_set_default_ctlog_list_file_procname);
-  FuncLoaded := assigned(SSL_CTX_set_default_ctlog_list_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_default_ctlog_list_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_default_ctlog_list_file_allownil)}
+    SSL_CTX_set_default_ctlog_list_file := @ERR_SSL_CTX_set_default_ctlog_list_file;
+    {$ifend}
     {$if declared(SSL_CTX_set_default_ctlog_list_file_introduced)}
     if LibVersion < SSL_CTX_set_default_ctlog_list_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_default_ctlog_list_file)}
       SSL_CTX_set_default_ctlog_list_file := @FC_SSL_CTX_set_default_ctlog_list_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_ctlog_list_file_allownil)}
-      SSL_CTX_set_default_ctlog_list_file := @ERR_SSL_CTX_set_default_ctlog_list_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_default_ctlog_list_file_removed)}
@@ -26694,39 +23213,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_default_ctlog_list_file)}
       SSL_CTX_set_default_ctlog_list_file := @_SSL_CTX_set_default_ctlog_list_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_default_ctlog_list_file_allownil)}
-      SSL_CTX_set_default_ctlog_list_file := @ERR_SSL_CTX_set_default_ctlog_list_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_default_ctlog_list_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_default_ctlog_list_file := @ERR_SSL_CTX_set_default_ctlog_list_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_default_ctlog_list_file');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_ctlog_list_file := LoadLibFunction(ADllHandle, SSL_CTX_set_ctlog_list_file_procname);
-  FuncLoaded := assigned(SSL_CTX_set_ctlog_list_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_ctlog_list_file);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_ctlog_list_file_allownil)}
+    SSL_CTX_set_ctlog_list_file := @ERR_SSL_CTX_set_ctlog_list_file;
+    {$ifend}
     {$if declared(SSL_CTX_set_ctlog_list_file_introduced)}
     if LibVersion < SSL_CTX_set_ctlog_list_file_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_ctlog_list_file)}
       SSL_CTX_set_ctlog_list_file := @FC_SSL_CTX_set_ctlog_list_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_ctlog_list_file_allownil)}
-      SSL_CTX_set_ctlog_list_file := @ERR_SSL_CTX_set_ctlog_list_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_ctlog_list_file_removed)}
@@ -26734,39 +23245,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_ctlog_list_file)}
       SSL_CTX_set_ctlog_list_file := @_SSL_CTX_set_ctlog_list_file;
-      {$else}
-      {$if not defined(SSL_CTX_set_ctlog_list_file_allownil)}
-      SSL_CTX_set_ctlog_list_file := @ERR_SSL_CTX_set_ctlog_list_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_ctlog_list_file_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_ctlog_list_file := @ERR_SSL_CTX_set_ctlog_list_file;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_ctlog_list_file');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set0_ctlog_store := LoadLibFunction(ADllHandle, SSL_CTX_set0_ctlog_store_procname);
-  FuncLoaded := assigned(SSL_CTX_set0_ctlog_store);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set0_ctlog_store);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set0_ctlog_store_allownil)}
+    SSL_CTX_set0_ctlog_store := @ERR_SSL_CTX_set0_ctlog_store;
+    {$ifend}
     {$if declared(SSL_CTX_set0_ctlog_store_introduced)}
     if LibVersion < SSL_CTX_set0_ctlog_store_introduced then
     begin
       {$if declared(FC_SSL_CTX_set0_ctlog_store)}
       SSL_CTX_set0_ctlog_store := @FC_SSL_CTX_set0_ctlog_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_ctlog_store_allownil)}
-      SSL_CTX_set0_ctlog_store := @ERR_SSL_CTX_set0_ctlog_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set0_ctlog_store_removed)}
@@ -26774,39 +23277,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set0_ctlog_store)}
       SSL_CTX_set0_ctlog_store := @_SSL_CTX_set0_ctlog_store;
-      {$else}
-      {$if not defined(SSL_CTX_set0_ctlog_store_allownil)}
-      SSL_CTX_set0_ctlog_store := @ERR_SSL_CTX_set0_ctlog_store;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set0_ctlog_store_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set0_ctlog_store := @ERR_SSL_CTX_set0_ctlog_store;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set0_ctlog_store');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_security_level := LoadLibFunction(ADllHandle, SSL_set_security_level_procname);
-  FuncLoaded := assigned(SSL_set_security_level);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_security_level);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_security_level_allownil)}
+    SSL_set_security_level := @ERR_SSL_set_security_level;
+    {$ifend}
     {$if declared(SSL_set_security_level_introduced)}
     if LibVersion < SSL_set_security_level_introduced then
     begin
       {$if declared(FC_SSL_set_security_level)}
       SSL_set_security_level := @FC_SSL_set_security_level;
-      {$else}
-      {$if not defined(SSL_set_security_level_allownil)}
-      SSL_set_security_level := @ERR_SSL_set_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_security_level_removed)}
@@ -26814,39 +23309,31 @@ begin
     begin
       {$if declared(_SSL_set_security_level)}
       SSL_set_security_level := @_SSL_set_security_level;
-      {$else}
-      {$if not defined(SSL_set_security_level_allownil)}
-      SSL_set_security_level := @ERR_SSL_set_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_security_level_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_security_level := @ERR_SSL_set_security_level;
+    if FuncLoadError then
       AFailed.Add('SSL_set_security_level');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_security_callback := LoadLibFunction(ADllHandle, SSL_set_security_callback_procname);
-  FuncLoaded := assigned(SSL_set_security_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_security_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_security_callback_allownil)}
+    SSL_set_security_callback := @ERR_SSL_set_security_callback;
+    {$ifend}
     {$if declared(SSL_set_security_callback_introduced)}
     if LibVersion < SSL_set_security_callback_introduced then
     begin
       {$if declared(FC_SSL_set_security_callback)}
       SSL_set_security_callback := @FC_SSL_set_security_callback;
-      {$else}
-      {$if not defined(SSL_set_security_callback_allownil)}
-      SSL_set_security_callback := @ERR_SSL_set_security_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_security_callback_removed)}
@@ -26854,39 +23341,31 @@ begin
     begin
       {$if declared(_SSL_set_security_callback)}
       SSL_set_security_callback := @_SSL_set_security_callback;
-      {$else}
-      {$if not defined(SSL_set_security_callback_allownil)}
-      SSL_set_security_callback := @ERR_SSL_set_security_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_security_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_security_callback := @ERR_SSL_set_security_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_set_security_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get_security_callback := LoadLibFunction(ADllHandle, SSL_get_security_callback_procname);
-  FuncLoaded := assigned(SSL_get_security_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_security_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_security_callback_allownil)}
+    SSL_get_security_callback := @ERR_SSL_get_security_callback;
+    {$ifend}
     {$if declared(SSL_get_security_callback_introduced)}
     if LibVersion < SSL_get_security_callback_introduced then
     begin
       {$if declared(FC_SSL_get_security_callback)}
       SSL_get_security_callback := @FC_SSL_get_security_callback;
-      {$else}
-      {$if not defined(SSL_get_security_callback_allownil)}
-      SSL_get_security_callback := @ERR_SSL_get_security_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_security_callback_removed)}
@@ -26894,39 +23373,31 @@ begin
     begin
       {$if declared(_SSL_get_security_callback)}
       SSL_get_security_callback := @_SSL_get_security_callback;
-      {$else}
-      {$if not defined(SSL_get_security_callback_allownil)}
-      SSL_get_security_callback := @ERR_SSL_get_security_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_security_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_security_callback := @ERR_SSL_get_security_callback;
+    if FuncLoadError then
       AFailed.Add('SSL_get_security_callback');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set0_security_ex_data := LoadLibFunction(ADllHandle, SSL_set0_security_ex_data_procname);
-  FuncLoaded := assigned(SSL_set0_security_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set0_security_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set0_security_ex_data_allownil)}
+    SSL_set0_security_ex_data := @ERR_SSL_set0_security_ex_data;
+    {$ifend}
     {$if declared(SSL_set0_security_ex_data_introduced)}
     if LibVersion < SSL_set0_security_ex_data_introduced then
     begin
       {$if declared(FC_SSL_set0_security_ex_data)}
       SSL_set0_security_ex_data := @FC_SSL_set0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_set0_security_ex_data_allownil)}
-      SSL_set0_security_ex_data := @ERR_SSL_set0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set0_security_ex_data_removed)}
@@ -26934,39 +23405,31 @@ begin
     begin
       {$if declared(_SSL_set0_security_ex_data)}
       SSL_set0_security_ex_data := @_SSL_set0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_set0_security_ex_data_allownil)}
-      SSL_set0_security_ex_data := @ERR_SSL_set0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set0_security_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set0_security_ex_data := @ERR_SSL_set0_security_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_set0_security_ex_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_get0_security_ex_data := LoadLibFunction(ADllHandle, SSL_get0_security_ex_data_procname);
-  FuncLoaded := assigned(SSL_get0_security_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_security_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_security_ex_data_allownil)}
+    SSL_get0_security_ex_data := @ERR_SSL_get0_security_ex_data;
+    {$ifend}
     {$if declared(SSL_get0_security_ex_data_introduced)}
     if LibVersion < SSL_get0_security_ex_data_introduced then
     begin
       {$if declared(FC_SSL_get0_security_ex_data)}
       SSL_get0_security_ex_data := @FC_SSL_get0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_get0_security_ex_data_allownil)}
-      SSL_get0_security_ex_data := @ERR_SSL_get0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_security_ex_data_removed)}
@@ -26974,39 +23437,31 @@ begin
     begin
       {$if declared(_SSL_get0_security_ex_data)}
       SSL_get0_security_ex_data := @_SSL_get0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_get0_security_ex_data_allownil)}
-      SSL_get0_security_ex_data := @ERR_SSL_get0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_security_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_security_ex_data := @ERR_SSL_get0_security_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_security_ex_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_security_level := LoadLibFunction(ADllHandle, SSL_CTX_set_security_level_procname);
-  FuncLoaded := assigned(SSL_CTX_set_security_level);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_security_level);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_security_level_allownil)}
+    SSL_CTX_set_security_level := @ERR_SSL_CTX_set_security_level;
+    {$ifend}
     {$if declared(SSL_CTX_set_security_level_introduced)}
     if LibVersion < SSL_CTX_set_security_level_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_security_level)}
       SSL_CTX_set_security_level := @FC_SSL_CTX_set_security_level;
-      {$else}
-      {$if not defined(SSL_CTX_set_security_level_allownil)}
-      SSL_CTX_set_security_level := @ERR_SSL_CTX_set_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_security_level_removed)}
@@ -27014,39 +23469,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_security_level)}
       SSL_CTX_set_security_level := @_SSL_CTX_set_security_level;
-      {$else}
-      {$if not defined(SSL_CTX_set_security_level_allownil)}
-      SSL_CTX_set_security_level := @ERR_SSL_CTX_set_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_security_level_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_security_level := @ERR_SSL_CTX_set_security_level;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_security_level');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get_security_level := LoadLibFunction(ADllHandle, SSL_CTX_get_security_level_procname);
-  FuncLoaded := assigned(SSL_CTX_get_security_level);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get_security_level);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get_security_level_allownil)}
+    SSL_CTX_get_security_level := @ERR_SSL_CTX_get_security_level;
+    {$ifend}
     {$if declared(SSL_CTX_get_security_level_introduced)}
     if LibVersion < SSL_CTX_get_security_level_introduced then
     begin
       {$if declared(FC_SSL_CTX_get_security_level)}
       SSL_CTX_get_security_level := @FC_SSL_CTX_get_security_level;
-      {$else}
-      {$if not defined(SSL_CTX_get_security_level_allownil)}
-      SSL_CTX_get_security_level := @ERR_SSL_CTX_get_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get_security_level_removed)}
@@ -27054,39 +23501,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get_security_level)}
       SSL_CTX_get_security_level := @_SSL_CTX_get_security_level;
-      {$else}
-      {$if not defined(SSL_CTX_get_security_level_allownil)}
-      SSL_CTX_get_security_level := @ERR_SSL_CTX_get_security_level;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get_security_level_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get_security_level := @ERR_SSL_CTX_get_security_level;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get_security_level');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_get0_security_ex_data := LoadLibFunction(ADllHandle, SSL_CTX_get0_security_ex_data_procname);
-  FuncLoaded := assigned(SSL_CTX_get0_security_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_get0_security_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_get0_security_ex_data_allownil)}
+    SSL_CTX_get0_security_ex_data := @ERR_SSL_CTX_get0_security_ex_data;
+    {$ifend}
     {$if declared(SSL_CTX_get0_security_ex_data_introduced)}
     if LibVersion < SSL_CTX_get0_security_ex_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_get0_security_ex_data)}
       SSL_CTX_get0_security_ex_data := @FC_SSL_CTX_get0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_get0_security_ex_data_allownil)}
-      SSL_CTX_get0_security_ex_data := @ERR_SSL_CTX_get0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_get0_security_ex_data_removed)}
@@ -27094,39 +23533,31 @@ begin
     begin
       {$if declared(_SSL_CTX_get0_security_ex_data)}
       SSL_CTX_get0_security_ex_data := @_SSL_CTX_get0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_get0_security_ex_data_allownil)}
-      SSL_CTX_get0_security_ex_data := @ERR_SSL_CTX_get0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_get0_security_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_get0_security_ex_data := @ERR_SSL_CTX_get0_security_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_get0_security_ex_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set0_security_ex_data := LoadLibFunction(ADllHandle, SSL_CTX_set0_security_ex_data_procname);
-  FuncLoaded := assigned(SSL_CTX_set0_security_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set0_security_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set0_security_ex_data_allownil)}
+    SSL_CTX_set0_security_ex_data := @ERR_SSL_CTX_set0_security_ex_data;
+    {$ifend}
     {$if declared(SSL_CTX_set0_security_ex_data_introduced)}
     if LibVersion < SSL_CTX_set0_security_ex_data_introduced then
     begin
       {$if declared(FC_SSL_CTX_set0_security_ex_data)}
       SSL_CTX_set0_security_ex_data := @FC_SSL_CTX_set0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_set0_security_ex_data_allownil)}
-      SSL_CTX_set0_security_ex_data := @ERR_SSL_CTX_set0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set0_security_ex_data_removed)}
@@ -27134,39 +23565,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set0_security_ex_data)}
       SSL_CTX_set0_security_ex_data := @_SSL_CTX_set0_security_ex_data;
-      {$else}
-      {$if not defined(SSL_CTX_set0_security_ex_data_allownil)}
-      SSL_CTX_set0_security_ex_data := @ERR_SSL_CTX_set0_security_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set0_security_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set0_security_ex_data := @ERR_SSL_CTX_set0_security_ex_data;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set0_security_ex_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   OPENSSL_init_ssl := LoadLibFunction(ADllHandle, OPENSSL_init_ssl_procname);
-  FuncLoaded := assigned(OPENSSL_init_ssl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_init_ssl);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_init_ssl_allownil)}
+    OPENSSL_init_ssl := @ERR_OPENSSL_init_ssl;
+    {$ifend}
     {$if declared(OPENSSL_init_ssl_introduced)}
     if LibVersion < OPENSSL_init_ssl_introduced then
     begin
       {$if declared(FC_OPENSSL_init_ssl)}
       OPENSSL_init_ssl := @FC_OPENSSL_init_ssl;
-      {$else}
-      {$if not defined(OPENSSL_init_ssl_allownil)}
-      OPENSSL_init_ssl := @ERR_OPENSSL_init_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_init_ssl_removed)}
@@ -27174,39 +23597,31 @@ begin
     begin
       {$if declared(_OPENSSL_init_ssl)}
       OPENSSL_init_ssl := @_OPENSSL_init_ssl;
-      {$else}
-      {$if not defined(OPENSSL_init_ssl_allownil)}
-      OPENSSL_init_ssl := @ERR_OPENSSL_init_ssl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_init_ssl_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_init_ssl := @ERR_OPENSSL_init_ssl;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_init_ssl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_free_buffers := LoadLibFunction(ADllHandle, SSL_free_buffers_procname);
-  FuncLoaded := assigned(SSL_free_buffers);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_free_buffers);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_free_buffers_allownil)}
+    SSL_free_buffers := @ERR_SSL_free_buffers;
+    {$ifend}
     {$if declared(SSL_free_buffers_introduced)}
     if LibVersion < SSL_free_buffers_introduced then
     begin
       {$if declared(FC_SSL_free_buffers)}
       SSL_free_buffers := @FC_SSL_free_buffers;
-      {$else}
-      {$if not defined(SSL_free_buffers_allownil)}
-      SSL_free_buffers := @ERR_SSL_free_buffers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_free_buffers_removed)}
@@ -27214,39 +23629,31 @@ begin
     begin
       {$if declared(_SSL_free_buffers)}
       SSL_free_buffers := @_SSL_free_buffers;
-      {$else}
-      {$if not defined(SSL_free_buffers_allownil)}
-      SSL_free_buffers := @ERR_SSL_free_buffers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_free_buffers_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_free_buffers := @ERR_SSL_free_buffers;
+    if FuncLoadError then
       AFailed.Add('SSL_free_buffers');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_alloc_buffers := LoadLibFunction(ADllHandle, SSL_alloc_buffers_procname);
-  FuncLoaded := assigned(SSL_alloc_buffers);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_alloc_buffers);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_alloc_buffers_allownil)}
+    SSL_alloc_buffers := @ERR_SSL_alloc_buffers;
+    {$ifend}
     {$if declared(SSL_alloc_buffers_introduced)}
     if LibVersion < SSL_alloc_buffers_introduced then
     begin
       {$if declared(FC_SSL_alloc_buffers)}
       SSL_alloc_buffers := @FC_SSL_alloc_buffers;
-      {$else}
-      {$if not defined(SSL_alloc_buffers_allownil)}
-      SSL_alloc_buffers := @ERR_SSL_alloc_buffers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_alloc_buffers_removed)}
@@ -27254,39 +23661,31 @@ begin
     begin
       {$if declared(_SSL_alloc_buffers)}
       SSL_alloc_buffers := @_SSL_alloc_buffers;
-      {$else}
-      {$if not defined(SSL_alloc_buffers_allownil)}
-      SSL_alloc_buffers := @ERR_SSL_alloc_buffers;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_alloc_buffers_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_alloc_buffers := @ERR_SSL_alloc_buffers;
+    if FuncLoadError then
       AFailed.Add('SSL_alloc_buffers');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_session_ticket_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_session_ticket_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_session_ticket_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_session_ticket_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_session_ticket_cb_allownil)}
+    SSL_CTX_set_session_ticket_cb := @ERR_SSL_CTX_set_session_ticket_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_session_ticket_cb_introduced)}
     if LibVersion < SSL_CTX_set_session_ticket_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_session_ticket_cb)}
       SSL_CTX_set_session_ticket_cb := @FC_SSL_CTX_set_session_ticket_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_ticket_cb_allownil)}
-      SSL_CTX_set_session_ticket_cb := @ERR_SSL_CTX_set_session_ticket_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_session_ticket_cb_removed)}
@@ -27294,39 +23693,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_session_ticket_cb)}
       SSL_CTX_set_session_ticket_cb := @_SSL_CTX_set_session_ticket_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_session_ticket_cb_allownil)}
-      SSL_CTX_set_session_ticket_cb := @ERR_SSL_CTX_set_session_ticket_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_session_ticket_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_session_ticket_cb := @ERR_SSL_CTX_set_session_ticket_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_session_ticket_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_set1_ticket_appdata := LoadLibFunction(ADllHandle, SSL_SESSION_set1_ticket_appdata_procname);
-  FuncLoaded := assigned(SSL_SESSION_set1_ticket_appdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_set1_ticket_appdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_set1_ticket_appdata_allownil)}
+    SSL_SESSION_set1_ticket_appdata := @ERR_SSL_SESSION_set1_ticket_appdata;
+    {$ifend}
     {$if declared(SSL_SESSION_set1_ticket_appdata_introduced)}
     if LibVersion < SSL_SESSION_set1_ticket_appdata_introduced then
     begin
       {$if declared(FC_SSL_SESSION_set1_ticket_appdata)}
       SSL_SESSION_set1_ticket_appdata := @FC_SSL_SESSION_set1_ticket_appdata;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_ticket_appdata_allownil)}
-      SSL_SESSION_set1_ticket_appdata := @ERR_SSL_SESSION_set1_ticket_appdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_set1_ticket_appdata_removed)}
@@ -27334,39 +23725,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_set1_ticket_appdata)}
       SSL_SESSION_set1_ticket_appdata := @_SSL_SESSION_set1_ticket_appdata;
-      {$else}
-      {$if not defined(SSL_SESSION_set1_ticket_appdata_allownil)}
-      SSL_SESSION_set1_ticket_appdata := @ERR_SSL_SESSION_set1_ticket_appdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_set1_ticket_appdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_set1_ticket_appdata := @ERR_SSL_SESSION_set1_ticket_appdata;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_set1_ticket_appdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_SESSION_get0_ticket_appdata := LoadLibFunction(ADllHandle, SSL_SESSION_get0_ticket_appdata_procname);
-  FuncLoaded := assigned(SSL_SESSION_get0_ticket_appdata);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_SESSION_get0_ticket_appdata);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_SESSION_get0_ticket_appdata_allownil)}
+    SSL_SESSION_get0_ticket_appdata := @ERR_SSL_SESSION_get0_ticket_appdata;
+    {$ifend}
     {$if declared(SSL_SESSION_get0_ticket_appdata_introduced)}
     if LibVersion < SSL_SESSION_get0_ticket_appdata_introduced then
     begin
       {$if declared(FC_SSL_SESSION_get0_ticket_appdata)}
       SSL_SESSION_get0_ticket_appdata := @FC_SSL_SESSION_get0_ticket_appdata;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_ticket_appdata_allownil)}
-      SSL_SESSION_get0_ticket_appdata := @ERR_SSL_SESSION_get0_ticket_appdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_SESSION_get0_ticket_appdata_removed)}
@@ -27374,39 +23757,31 @@ begin
     begin
       {$if declared(_SSL_SESSION_get0_ticket_appdata)}
       SSL_SESSION_get0_ticket_appdata := @_SSL_SESSION_get0_ticket_appdata;
-      {$else}
-      {$if not defined(SSL_SESSION_get0_ticket_appdata_allownil)}
-      SSL_SESSION_get0_ticket_appdata := @ERR_SSL_SESSION_get0_ticket_appdata;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_SESSION_get0_ticket_appdata_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_SESSION_get0_ticket_appdata := @ERR_SSL_SESSION_get0_ticket_appdata;
+    if FuncLoadError then
       AFailed.Add('SSL_SESSION_get0_ticket_appdata');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DTLS_set_timer_cb := LoadLibFunction(ADllHandle, DTLS_set_timer_cb_procname);
-  FuncLoaded := assigned(DTLS_set_timer_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DTLS_set_timer_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(DTLS_set_timer_cb_allownil)}
+    DTLS_set_timer_cb := @ERR_DTLS_set_timer_cb;
+    {$ifend}
     {$if declared(DTLS_set_timer_cb_introduced)}
     if LibVersion < DTLS_set_timer_cb_introduced then
     begin
       {$if declared(FC_DTLS_set_timer_cb)}
       DTLS_set_timer_cb := @FC_DTLS_set_timer_cb;
-      {$else}
-      {$if not defined(DTLS_set_timer_cb_allownil)}
-      DTLS_set_timer_cb := @ERR_DTLS_set_timer_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DTLS_set_timer_cb_removed)}
@@ -27414,39 +23789,31 @@ begin
     begin
       {$if declared(_DTLS_set_timer_cb)}
       DTLS_set_timer_cb := @_DTLS_set_timer_cb;
-      {$else}
-      {$if not defined(DTLS_set_timer_cb_allownil)}
-      DTLS_set_timer_cb := @ERR_DTLS_set_timer_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DTLS_set_timer_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      DTLS_set_timer_cb := @ERR_DTLS_set_timer_cb;
+    if FuncLoadError then
       AFailed.Add('DTLS_set_timer_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_CTX_set_allow_early_data_cb := LoadLibFunction(ADllHandle, SSL_CTX_set_allow_early_data_cb_procname);
-  FuncLoaded := assigned(SSL_CTX_set_allow_early_data_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_allow_early_data_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_allow_early_data_cb_allownil)}
+    SSL_CTX_set_allow_early_data_cb := @ERR_SSL_CTX_set_allow_early_data_cb;
+    {$ifend}
     {$if declared(SSL_CTX_set_allow_early_data_cb_introduced)}
     if LibVersion < SSL_CTX_set_allow_early_data_cb_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_allow_early_data_cb)}
       SSL_CTX_set_allow_early_data_cb := @FC_SSL_CTX_set_allow_early_data_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_allow_early_data_cb_allownil)}
-      SSL_CTX_set_allow_early_data_cb := @ERR_SSL_CTX_set_allow_early_data_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_allow_early_data_cb_removed)}
@@ -27454,39 +23821,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_allow_early_data_cb)}
       SSL_CTX_set_allow_early_data_cb := @_SSL_CTX_set_allow_early_data_cb;
-      {$else}
-      {$if not defined(SSL_CTX_set_allow_early_data_cb_allownil)}
-      SSL_CTX_set_allow_early_data_cb := @ERR_SSL_CTX_set_allow_early_data_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_allow_early_data_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_allow_early_data_cb := @ERR_SSL_CTX_set_allow_early_data_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_allow_early_data_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSL_set_allow_early_data_cb := LoadLibFunction(ADllHandle, SSL_set_allow_early_data_cb_procname);
-  FuncLoaded := assigned(SSL_set_allow_early_data_cb);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_allow_early_data_cb);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_allow_early_data_cb_allownil)}
+    SSL_set_allow_early_data_cb := @ERR_SSL_set_allow_early_data_cb;
+    {$ifend}
     {$if declared(SSL_set_allow_early_data_cb_introduced)}
     if LibVersion < SSL_set_allow_early_data_cb_introduced then
     begin
       {$if declared(FC_SSL_set_allow_early_data_cb)}
       SSL_set_allow_early_data_cb := @FC_SSL_set_allow_early_data_cb;
-      {$else}
-      {$if not defined(SSL_set_allow_early_data_cb_allownil)}
-      SSL_set_allow_early_data_cb := @ERR_SSL_set_allow_early_data_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_allow_early_data_cb_removed)}
@@ -27494,39 +23853,31 @@ begin
     begin
       {$if declared(_SSL_set_allow_early_data_cb)}
       SSL_set_allow_early_data_cb := @_SSL_set_allow_early_data_cb;
-      {$else}
-      {$if not defined(SSL_set_allow_early_data_cb_allownil)}
-      SSL_set_allow_early_data_cb := @ERR_SSL_set_allow_early_data_cb;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_allow_early_data_cb_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_allow_early_data_cb := @ERR_SSL_set_allow_early_data_cb;
+    if FuncLoadError then
       AFailed.Add('SSL_set_allow_early_data_cb');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   SSLv2_method := LoadLibFunction(ADllHandle, SSLv2_method_procname);
-  FuncLoaded := assigned(SSLv2_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv2_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv2_method_allownil)}
+    SSLv2_method := @ERR_SSLv2_method;
+    {$ifend}
     {$if declared(SSLv2_method_introduced)}
     if LibVersion < SSLv2_method_introduced then
     begin
       {$if declared(FC_SSLv2_method)}
       SSLv2_method := @FC_SSLv2_method;
-      {$else}
-      {$if not defined(SSLv2_method_allownil)}
-      SSLv2_method := @ERR_SSLv2_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv2_method_removed)}
@@ -27534,39 +23885,31 @@ begin
     begin
       {$if declared(_SSLv2_method)}
       SSLv2_method := @_SSLv2_method;
-      {$else}
-      {$if not defined(SSLv2_method_allownil)}
-      SSLv2_method := @ERR_SSLv2_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv2_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv2_method := @ERR_SSLv2_method;
+    if FuncLoadError then
       AFailed.Add('SSLv2_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv2
   SSLv2_server_method := LoadLibFunction(ADllHandle, SSLv2_server_method_procname);
-  FuncLoaded := assigned(SSLv2_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv2_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv2_server_method_allownil)}
+    SSLv2_server_method := @ERR_SSLv2_server_method;
+    {$ifend}
     {$if declared(SSLv2_server_method_introduced)}
     if LibVersion < SSLv2_server_method_introduced then
     begin
       {$if declared(FC_SSLv2_server_method)}
       SSLv2_server_method := @FC_SSLv2_server_method;
-      {$else}
-      {$if not defined(SSLv2_server_method_allownil)}
-      SSLv2_server_method := @ERR_SSLv2_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv2_server_method_removed)}
@@ -27574,39 +23917,31 @@ begin
     begin
       {$if declared(_SSLv2_server_method)}
       SSLv2_server_method := @_SSLv2_server_method;
-      {$else}
-      {$if not defined(SSLv2_server_method_allownil)}
-      SSLv2_server_method := @ERR_SSLv2_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv2_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv2_server_method := @ERR_SSLv2_server_method;
+    if FuncLoadError then
       AFailed.Add('SSLv2_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv2
   SSLv2_client_method := LoadLibFunction(ADllHandle, SSLv2_client_method_procname);
-  FuncLoaded := assigned(SSLv2_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv2_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv2_client_method_allownil)}
+    SSLv2_client_method := @ERR_SSLv2_client_method;
+    {$ifend}
     {$if declared(SSLv2_client_method_introduced)}
     if LibVersion < SSLv2_client_method_introduced then
     begin
       {$if declared(FC_SSLv2_client_method)}
       SSLv2_client_method := @FC_SSLv2_client_method;
-      {$else}
-      {$if not defined(SSLv2_client_method_allownil)}
-      SSLv2_client_method := @ERR_SSLv2_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv2_client_method_removed)}
@@ -27614,39 +23949,31 @@ begin
     begin
       {$if declared(_SSLv2_client_method)}
       SSLv2_client_method := @_SSLv2_client_method;
-      {$else}
-      {$if not defined(SSLv2_client_method_allownil)}
-      SSLv2_client_method := @ERR_SSLv2_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv2_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv2_client_method := @ERR_SSLv2_client_method;
+    if FuncLoadError then
       AFailed.Add('SSLv2_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv2
   SSLv3_method := LoadLibFunction(ADllHandle, SSLv3_method_procname);
-  FuncLoaded := assigned(SSLv3_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv3_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv3_method_allownil)}
+    SSLv3_method := @ERR_SSLv3_method;
+    {$ifend}
     {$if declared(SSLv3_method_introduced)}
     if LibVersion < SSLv3_method_introduced then
     begin
       {$if declared(FC_SSLv3_method)}
       SSLv3_method := @FC_SSLv3_method;
-      {$else}
-      {$if not defined(SSLv3_method_allownil)}
-      SSLv3_method := @ERR_SSLv3_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv3_method_removed)}
@@ -27654,39 +23981,31 @@ begin
     begin
       {$if declared(_SSLv3_method)}
       SSLv3_method := @_SSLv3_method;
-      {$else}
-      {$if not defined(SSLv3_method_allownil)}
-      SSLv3_method := @ERR_SSLv3_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv3_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv3_method := @ERR_SSLv3_method;
+    if FuncLoadError then
       AFailed.Add('SSLv3_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3
   SSLv3_server_method := LoadLibFunction(ADllHandle, SSLv3_server_method_procname);
-  FuncLoaded := assigned(SSLv3_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv3_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv3_server_method_allownil)}
+    SSLv3_server_method := @ERR_SSLv3_server_method;
+    {$ifend}
     {$if declared(SSLv3_server_method_introduced)}
     if LibVersion < SSLv3_server_method_introduced then
     begin
       {$if declared(FC_SSLv3_server_method)}
       SSLv3_server_method := @FC_SSLv3_server_method;
-      {$else}
-      {$if not defined(SSLv3_server_method_allownil)}
-      SSLv3_server_method := @ERR_SSLv3_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv3_server_method_removed)}
@@ -27694,39 +24013,31 @@ begin
     begin
       {$if declared(_SSLv3_server_method)}
       SSLv3_server_method := @_SSLv3_server_method;
-      {$else}
-      {$if not defined(SSLv3_server_method_allownil)}
-      SSLv3_server_method := @ERR_SSLv3_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv3_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv3_server_method := @ERR_SSLv3_server_method;
+    if FuncLoadError then
       AFailed.Add('SSLv3_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3
   SSLv3_client_method := LoadLibFunction(ADllHandle, SSLv3_client_method_procname);
-  FuncLoaded := assigned(SSLv3_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv3_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv3_client_method_allownil)}
+    SSLv3_client_method := @ERR_SSLv3_client_method;
+    {$ifend}
     {$if declared(SSLv3_client_method_introduced)}
     if LibVersion < SSLv3_client_method_introduced then
     begin
       {$if declared(FC_SSLv3_client_method)}
       SSLv3_client_method := @FC_SSLv3_client_method;
-      {$else}
-      {$if not defined(SSLv3_client_method_allownil)}
-      SSLv3_client_method := @ERR_SSLv3_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv3_client_method_removed)}
@@ -27734,39 +24045,31 @@ begin
     begin
       {$if declared(_SSLv3_client_method)}
       SSLv3_client_method := @_SSLv3_client_method;
-      {$else}
-      {$if not defined(SSLv3_client_method_allownil)}
-      SSLv3_client_method := @ERR_SSLv3_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv3_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv3_client_method := @ERR_SSLv3_client_method;
+    if FuncLoadError then
       AFailed.Add('SSLv3_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3
   SSLv23_method := LoadLibFunction(ADllHandle, SSLv23_method_procname);
-  FuncLoaded := assigned(SSLv23_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv23_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv23_method_allownil)}
+    SSLv23_method := @ERR_SSLv23_method;
+    {$ifend}
     {$if declared(SSLv23_method_introduced)}
     if LibVersion < SSLv23_method_introduced then
     begin
       {$if declared(FC_SSLv23_method)}
       SSLv23_method := @FC_SSLv23_method;
-      {$else}
-      {$if not defined(SSLv23_method_allownil)}
-      SSLv23_method := @ERR_SSLv23_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv23_method_removed)}
@@ -27774,39 +24077,31 @@ begin
     begin
       {$if declared(_SSLv23_method)}
       SSLv23_method := @_SSLv23_method;
-      {$else}
-      {$if not defined(SSLv23_method_allownil)}
-      SSLv23_method := @ERR_SSLv23_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv23_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv23_method := @ERR_SSLv23_method;
+    if FuncLoadError then
       AFailed.Add('SSLv23_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3 but can rollback to v2
   SSLv23_server_method := LoadLibFunction(ADllHandle, SSLv23_server_method_procname);
-  FuncLoaded := assigned(SSLv23_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv23_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv23_server_method_allownil)}
+    SSLv23_server_method := @ERR_SSLv23_server_method;
+    {$ifend}
     {$if declared(SSLv23_server_method_introduced)}
     if LibVersion < SSLv23_server_method_introduced then
     begin
       {$if declared(FC_SSLv23_server_method)}
       SSLv23_server_method := @FC_SSLv23_server_method;
-      {$else}
-      {$if not defined(SSLv23_server_method_allownil)}
-      SSLv23_server_method := @ERR_SSLv23_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv23_server_method_removed)}
@@ -27814,39 +24109,31 @@ begin
     begin
       {$if declared(_SSLv23_server_method)}
       SSLv23_server_method := @_SSLv23_server_method;
-      {$else}
-      {$if not defined(SSLv23_server_method_allownil)}
-      SSLv23_server_method := @ERR_SSLv23_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv23_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv23_server_method := @ERR_SSLv23_server_method;
+    if FuncLoadError then
       AFailed.Add('SSLv23_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3 but can rollback to v2
   SSLv23_client_method := LoadLibFunction(ADllHandle, SSLv23_client_method_procname);
-  FuncLoaded := assigned(SSLv23_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSLv23_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(SSLv23_client_method_allownil)}
+    SSLv23_client_method := @ERR_SSLv23_client_method;
+    {$ifend}
     {$if declared(SSLv23_client_method_introduced)}
     if LibVersion < SSLv23_client_method_introduced then
     begin
       {$if declared(FC_SSLv23_client_method)}
       SSLv23_client_method := @FC_SSLv23_client_method;
-      {$else}
-      {$if not defined(SSLv23_client_method_allownil)}
-      SSLv23_client_method := @ERR_SSLv23_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSLv23_client_method_removed)}
@@ -27854,39 +24141,31 @@ begin
     begin
       {$if declared(_SSLv23_client_method)}
       SSLv23_client_method := @_SSLv23_client_method;
-      {$else}
-      {$if not defined(SSLv23_client_method_allownil)}
-      SSLv23_client_method := @ERR_SSLv23_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSLv23_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      SSLv23_client_method := @ERR_SSLv23_client_method;
+    if FuncLoadError then
       AFailed.Add('SSLv23_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // SSLv3 but can rollback to v2
   TLSv1_method := LoadLibFunction(ADllHandle, TLSv1_method_procname);
-  FuncLoaded := assigned(TLSv1_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_method_allownil)}
+    TLSv1_method := @ERR_TLSv1_method;
+    {$ifend}
     {$if declared(TLSv1_method_introduced)}
     if LibVersion < TLSv1_method_introduced then
     begin
       {$if declared(FC_TLSv1_method)}
       TLSv1_method := @FC_TLSv1_method;
-      {$else}
-      {$if not defined(TLSv1_method_allownil)}
-      TLSv1_method := @ERR_TLSv1_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_method_removed)}
@@ -27894,39 +24173,31 @@ begin
     begin
       {$if declared(_TLSv1_method)}
       TLSv1_method := @_TLSv1_method;
-      {$else}
-      {$if not defined(TLSv1_method_allownil)}
-      TLSv1_method := @ERR_TLSv1_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_method := @ERR_TLSv1_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // TLSv1.0
   TLSv1_server_method := LoadLibFunction(ADllHandle, TLSv1_server_method_procname);
-  FuncLoaded := assigned(TLSv1_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_server_method_allownil)}
+    TLSv1_server_method := @ERR_TLSv1_server_method;
+    {$ifend}
     {$if declared(TLSv1_server_method_introduced)}
     if LibVersion < TLSv1_server_method_introduced then
     begin
       {$if declared(FC_TLSv1_server_method)}
       TLSv1_server_method := @FC_TLSv1_server_method;
-      {$else}
-      {$if not defined(TLSv1_server_method_allownil)}
-      TLSv1_server_method := @ERR_TLSv1_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_server_method_removed)}
@@ -27934,39 +24205,31 @@ begin
     begin
       {$if declared(_TLSv1_server_method)}
       TLSv1_server_method := @_TLSv1_server_method;
-      {$else}
-      {$if not defined(TLSv1_server_method_allownil)}
-      TLSv1_server_method := @ERR_TLSv1_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_server_method := @ERR_TLSv1_server_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // TLSv1.0
   TLSv1_client_method := LoadLibFunction(ADllHandle, TLSv1_client_method_procname);
-  FuncLoaded := assigned(TLSv1_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_client_method_allownil)}
+    TLSv1_client_method := @ERR_TLSv1_client_method;
+    {$ifend}
     {$if declared(TLSv1_client_method_introduced)}
     if LibVersion < TLSv1_client_method_introduced then
     begin
       {$if declared(FC_TLSv1_client_method)}
       TLSv1_client_method := @FC_TLSv1_client_method;
-      {$else}
-      {$if not defined(TLSv1_client_method_allownil)}
-      TLSv1_client_method := @ERR_TLSv1_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_client_method_removed)}
@@ -27974,39 +24237,31 @@ begin
     begin
       {$if declared(_TLSv1_client_method)}
       TLSv1_client_method := @_TLSv1_client_method;
-      {$else}
-      {$if not defined(TLSv1_client_method_allownil)}
-      TLSv1_client_method := @ERR_TLSv1_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_client_method := @ERR_TLSv1_client_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} // TLSv1.0
   TLSv1_1_method := LoadLibFunction(ADllHandle, TLSv1_1_method_procname);
-  FuncLoaded := assigned(TLSv1_1_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_1_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_1_method_allownil)}
+    TLSv1_1_method := @ERR_TLSv1_1_method;
+    {$ifend}
     {$if declared(TLSv1_1_method_introduced)}
     if LibVersion < TLSv1_1_method_introduced then
     begin
       {$if declared(FC_TLSv1_1_method)}
       TLSv1_1_method := @FC_TLSv1_1_method;
-      {$else}
-      {$if not defined(TLSv1_1_method_allownil)}
-      TLSv1_1_method := @ERR_TLSv1_1_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_1_method_removed)}
@@ -28014,39 +24269,31 @@ begin
     begin
       {$if declared(_TLSv1_1_method)}
       TLSv1_1_method := @_TLSv1_1_method;
-      {$else}
-      {$if not defined(TLSv1_1_method_allownil)}
-      TLSv1_1_method := @ERR_TLSv1_1_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_1_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_1_method := @ERR_TLSv1_1_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_1_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} //TLS1.1
   TLSv1_1_server_method := LoadLibFunction(ADllHandle, TLSv1_1_server_method_procname);
-  FuncLoaded := assigned(TLSv1_1_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_1_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_1_server_method_allownil)}
+    TLSv1_1_server_method := @ERR_TLSv1_1_server_method;
+    {$ifend}
     {$if declared(TLSv1_1_server_method_introduced)}
     if LibVersion < TLSv1_1_server_method_introduced then
     begin
       {$if declared(FC_TLSv1_1_server_method)}
       TLSv1_1_server_method := @FC_TLSv1_1_server_method;
-      {$else}
-      {$if not defined(TLSv1_1_server_method_allownil)}
-      TLSv1_1_server_method := @ERR_TLSv1_1_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_1_server_method_removed)}
@@ -28054,39 +24301,31 @@ begin
     begin
       {$if declared(_TLSv1_1_server_method)}
       TLSv1_1_server_method := @_TLSv1_1_server_method;
-      {$else}
-      {$if not defined(TLSv1_1_server_method_allownil)}
-      TLSv1_1_server_method := @ERR_TLSv1_1_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_1_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_1_server_method := @ERR_TLSv1_1_server_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_1_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} //TLS1.1
   TLSv1_1_client_method := LoadLibFunction(ADllHandle, TLSv1_1_client_method_procname);
-  FuncLoaded := assigned(TLSv1_1_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_1_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_1_client_method_allownil)}
+    TLSv1_1_client_method := @ERR_TLSv1_1_client_method;
+    {$ifend}
     {$if declared(TLSv1_1_client_method_introduced)}
     if LibVersion < TLSv1_1_client_method_introduced then
     begin
       {$if declared(FC_TLSv1_1_client_method)}
       TLSv1_1_client_method := @FC_TLSv1_1_client_method;
-      {$else}
-      {$if not defined(TLSv1_1_client_method_allownil)}
-      TLSv1_1_client_method := @ERR_TLSv1_1_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_1_client_method_removed)}
@@ -28094,39 +24333,31 @@ begin
     begin
       {$if declared(_TLSv1_1_client_method)}
       TLSv1_1_client_method := @_TLSv1_1_client_method;
-      {$else}
-      {$if not defined(TLSv1_1_client_method_allownil)}
-      TLSv1_1_client_method := @ERR_TLSv1_1_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_1_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_1_client_method := @ERR_TLSv1_1_client_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_1_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil} //TLS1.1
   TLSv1_2_method := LoadLibFunction(ADllHandle, TLSv1_2_method_procname);
-  FuncLoaded := assigned(TLSv1_2_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_2_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_2_method_allownil)}
+    TLSv1_2_method := @ERR_TLSv1_2_method;
+    {$ifend}
     {$if declared(TLSv1_2_method_introduced)}
     if LibVersion < TLSv1_2_method_introduced then
     begin
       {$if declared(FC_TLSv1_2_method)}
       TLSv1_2_method := @FC_TLSv1_2_method;
-      {$else}
-      {$if not defined(TLSv1_2_method_allownil)}
-      TLSv1_2_method := @ERR_TLSv1_2_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_2_method_removed)}
@@ -28134,39 +24365,31 @@ begin
     begin
       {$if declared(_TLSv1_2_method)}
       TLSv1_2_method := @_TLSv1_2_method;
-      {$else}
-      {$if not defined(TLSv1_2_method_allownil)}
-      TLSv1_2_method := @ERR_TLSv1_2_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_2_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_2_method := @ERR_TLSv1_2_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_2_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}		// TLSv1.2
   TLSv1_2_server_method := LoadLibFunction(ADllHandle, TLSv1_2_server_method_procname);
-  FuncLoaded := assigned(TLSv1_2_server_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_2_server_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_2_server_method_allownil)}
+    TLSv1_2_server_method := @ERR_TLSv1_2_server_method;
+    {$ifend}
     {$if declared(TLSv1_2_server_method_introduced)}
     if LibVersion < TLSv1_2_server_method_introduced then
     begin
       {$if declared(FC_TLSv1_2_server_method)}
       TLSv1_2_server_method := @FC_TLSv1_2_server_method;
-      {$else}
-      {$if not defined(TLSv1_2_server_method_allownil)}
-      TLSv1_2_server_method := @ERR_TLSv1_2_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_2_server_method_removed)}
@@ -28174,39 +24397,31 @@ begin
     begin
       {$if declared(_TLSv1_2_server_method)}
       TLSv1_2_server_method := @_TLSv1_2_server_method;
-      {$else}
-      {$if not defined(TLSv1_2_server_method_allownil)}
-      TLSv1_2_server_method := @ERR_TLSv1_2_server_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_2_server_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_2_server_method := @ERR_TLSv1_2_server_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_2_server_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}	// TLSv1.2 
   TLSv1_2_client_method := LoadLibFunction(ADllHandle, TLSv1_2_client_method_procname);
-  FuncLoaded := assigned(TLSv1_2_client_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TLSv1_2_client_method);
+  if FuncLoadError then
   begin
+    {$if not defined(TLSv1_2_client_method_allownil)}
+    TLSv1_2_client_method := @ERR_TLSv1_2_client_method;
+    {$ifend}
     {$if declared(TLSv1_2_client_method_introduced)}
     if LibVersion < TLSv1_2_client_method_introduced then
     begin
       {$if declared(FC_TLSv1_2_client_method)}
       TLSv1_2_client_method := @FC_TLSv1_2_client_method;
-      {$else}
-      {$if not defined(TLSv1_2_client_method_allownil)}
-      TLSv1_2_client_method := @ERR_TLSv1_2_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TLSv1_2_client_method_removed)}
@@ -28214,39 +24429,31 @@ begin
     begin
       {$if declared(_TLSv1_2_client_method)}
       TLSv1_2_client_method := @_TLSv1_2_client_method;
-      {$else}
-      {$if not defined(TLSv1_2_client_method_allownil)}
-      TLSv1_2_client_method := @ERR_TLSv1_2_client_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TLSv1_2_client_method_allownil)}
-    if not FuncLoaded then
-    begin
-      TLSv1_2_client_method := @ERR_TLSv1_2_client_method;
+    if FuncLoadError then
       AFailed.Add('TLSv1_2_client_method');
-    end;
     {$ifend}
   end;
 
  {removed 1.1.0 allow_nil}	// TLSv1.2
   SSL_get0_peer_certificate := LoadLibFunction(ADllHandle, SSL_get0_peer_certificate_procname);
-  FuncLoaded := assigned(SSL_get0_peer_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get0_peer_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get0_peer_certificate_allownil)}
+    SSL_get0_peer_certificate := @ERR_SSL_get0_peer_certificate;
+    {$ifend}
     {$if declared(SSL_get0_peer_certificate_introduced)}
     if LibVersion < SSL_get0_peer_certificate_introduced then
     begin
       {$if declared(FC_SSL_get0_peer_certificate)}
       SSL_get0_peer_certificate := @FC_SSL_get0_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get0_peer_certificate_allownil)}
-      SSL_get0_peer_certificate := @ERR_SSL_get0_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get0_peer_certificate_removed)}
@@ -28254,39 +24461,31 @@ begin
     begin
       {$if declared(_SSL_get0_peer_certificate)}
       SSL_get0_peer_certificate := @_SSL_get0_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get0_peer_certificate_allownil)}
-      SSL_get0_peer_certificate := @ERR_SSL_get0_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get0_peer_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get0_peer_certificate := @ERR_SSL_get0_peer_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_get0_peer_certificate');
-    end;
     {$ifend}
   end;
 
  {introduced 3.3.0}
   SSL_get1_peer_certificate := LoadLibFunction(ADllHandle, SSL_get1_peer_certificate_procname);
-  FuncLoaded := assigned(SSL_get1_peer_certificate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get1_peer_certificate);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get1_peer_certificate_allownil)}
+    SSL_get1_peer_certificate := @ERR_SSL_get1_peer_certificate;
+    {$ifend}
     {$if declared(SSL_get1_peer_certificate_introduced)}
     if LibVersion < SSL_get1_peer_certificate_introduced then
     begin
       {$if declared(FC_SSL_get1_peer_certificate)}
       SSL_get1_peer_certificate := @FC_SSL_get1_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get1_peer_certificate_allownil)}
-      SSL_get1_peer_certificate := @ERR_SSL_get1_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get1_peer_certificate_removed)}
@@ -28294,20 +24493,13 @@ begin
     begin
       {$if declared(_SSL_get1_peer_certificate)}
       SSL_get1_peer_certificate := @_SSL_get1_peer_certificate;
-      {$else}
-      {$if not defined(SSL_get1_peer_certificate_allownil)}
-      SSL_get1_peer_certificate := @ERR_SSL_get1_peer_certificate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get1_peer_certificate_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get1_peer_certificate := @ERR_SSL_get1_peer_certificate;
+    if FuncLoadError then
       AFailed.Add('SSL_get1_peer_certificate');
-    end;
     {$ifend}
   end;
 

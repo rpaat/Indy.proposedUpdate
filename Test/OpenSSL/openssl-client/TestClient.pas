@@ -282,7 +282,7 @@ var i: integer;
     {$ENDIF}
 
     writeln('Using ',OpenSSLVersion, ', OpenSSLDir: ', OpenSSLDir);
-    if assigned(GetOpenSSLLoader) then
+    if GetOpenSSLLoader <> nil then
     with GetOpenSSLLoader.FailedToLoad do
     if Count > 0 then
     begin

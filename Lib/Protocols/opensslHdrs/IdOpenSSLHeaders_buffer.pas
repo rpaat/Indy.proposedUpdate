@@ -149,24 +149,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   BUF_MEM_new := LoadLibFunction(ADllHandle, BUF_MEM_new_procname);
-  FuncLoaded := assigned(BUF_MEM_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_MEM_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_MEM_new_allownil)}
+    BUF_MEM_new := @ERR_BUF_MEM_new;
+    {$ifend}
     {$if declared(BUF_MEM_new_introduced)}
     if LibVersion < BUF_MEM_new_introduced then
     begin
       {$if declared(FC_BUF_MEM_new)}
       BUF_MEM_new := @FC_BUF_MEM_new;
-      {$else}
-      {$if not defined(BUF_MEM_new_allownil)}
-      BUF_MEM_new := @ERR_BUF_MEM_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_MEM_new_removed)}
@@ -174,39 +173,31 @@ begin
     begin
       {$if declared(_BUF_MEM_new)}
       BUF_MEM_new := @_BUF_MEM_new;
-      {$else}
-      {$if not defined(BUF_MEM_new_allownil)}
-      BUF_MEM_new := @ERR_BUF_MEM_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_MEM_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_MEM_new := @ERR_BUF_MEM_new;
+    if FuncLoadError then
       AFailed.Add('BUF_MEM_new');
-    end;
     {$ifend}
   end;
 
 
   BUF_MEM_new_ex := LoadLibFunction(ADllHandle, BUF_MEM_new_ex_procname);
-  FuncLoaded := assigned(BUF_MEM_new_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_MEM_new_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_MEM_new_ex_allownil)}
+    BUF_MEM_new_ex := @ERR_BUF_MEM_new_ex;
+    {$ifend}
     {$if declared(BUF_MEM_new_ex_introduced)}
     if LibVersion < BUF_MEM_new_ex_introduced then
     begin
       {$if declared(FC_BUF_MEM_new_ex)}
       BUF_MEM_new_ex := @FC_BUF_MEM_new_ex;
-      {$else}
-      {$if not defined(BUF_MEM_new_ex_allownil)}
-      BUF_MEM_new_ex := @ERR_BUF_MEM_new_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_MEM_new_ex_removed)}
@@ -214,39 +205,31 @@ begin
     begin
       {$if declared(_BUF_MEM_new_ex)}
       BUF_MEM_new_ex := @_BUF_MEM_new_ex;
-      {$else}
-      {$if not defined(BUF_MEM_new_ex_allownil)}
-      BUF_MEM_new_ex := @ERR_BUF_MEM_new_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_MEM_new_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_MEM_new_ex := @ERR_BUF_MEM_new_ex;
+    if FuncLoadError then
       AFailed.Add('BUF_MEM_new_ex');
-    end;
     {$ifend}
   end;
 
 
   BUF_MEM_free := LoadLibFunction(ADllHandle, BUF_MEM_free_procname);
-  FuncLoaded := assigned(BUF_MEM_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_MEM_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_MEM_free_allownil)}
+    BUF_MEM_free := @ERR_BUF_MEM_free;
+    {$ifend}
     {$if declared(BUF_MEM_free_introduced)}
     if LibVersion < BUF_MEM_free_introduced then
     begin
       {$if declared(FC_BUF_MEM_free)}
       BUF_MEM_free := @FC_BUF_MEM_free;
-      {$else}
-      {$if not defined(BUF_MEM_free_allownil)}
-      BUF_MEM_free := @ERR_BUF_MEM_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_MEM_free_removed)}
@@ -254,39 +237,31 @@ begin
     begin
       {$if declared(_BUF_MEM_free)}
       BUF_MEM_free := @_BUF_MEM_free;
-      {$else}
-      {$if not defined(BUF_MEM_free_allownil)}
-      BUF_MEM_free := @ERR_BUF_MEM_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_MEM_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_MEM_free := @ERR_BUF_MEM_free;
+    if FuncLoadError then
       AFailed.Add('BUF_MEM_free');
-    end;
     {$ifend}
   end;
 
 
   BUF_MEM_grow := LoadLibFunction(ADllHandle, BUF_MEM_grow_procname);
-  FuncLoaded := assigned(BUF_MEM_grow);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_MEM_grow);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_MEM_grow_allownil)}
+    BUF_MEM_grow := @ERR_BUF_MEM_grow;
+    {$ifend}
     {$if declared(BUF_MEM_grow_introduced)}
     if LibVersion < BUF_MEM_grow_introduced then
     begin
       {$if declared(FC_BUF_MEM_grow)}
       BUF_MEM_grow := @FC_BUF_MEM_grow;
-      {$else}
-      {$if not defined(BUF_MEM_grow_allownil)}
-      BUF_MEM_grow := @ERR_BUF_MEM_grow;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_MEM_grow_removed)}
@@ -294,39 +269,31 @@ begin
     begin
       {$if declared(_BUF_MEM_grow)}
       BUF_MEM_grow := @_BUF_MEM_grow;
-      {$else}
-      {$if not defined(BUF_MEM_grow_allownil)}
-      BUF_MEM_grow := @ERR_BUF_MEM_grow;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_MEM_grow_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_MEM_grow := @ERR_BUF_MEM_grow;
+    if FuncLoadError then
       AFailed.Add('BUF_MEM_grow');
-    end;
     {$ifend}
   end;
 
 
   BUF_MEM_grow_clean := LoadLibFunction(ADllHandle, BUF_MEM_grow_clean_procname);
-  FuncLoaded := assigned(BUF_MEM_grow_clean);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_MEM_grow_clean);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_MEM_grow_clean_allownil)}
+    BUF_MEM_grow_clean := @ERR_BUF_MEM_grow_clean;
+    {$ifend}
     {$if declared(BUF_MEM_grow_clean_introduced)}
     if LibVersion < BUF_MEM_grow_clean_introduced then
     begin
       {$if declared(FC_BUF_MEM_grow_clean)}
       BUF_MEM_grow_clean := @FC_BUF_MEM_grow_clean;
-      {$else}
-      {$if not defined(BUF_MEM_grow_clean_allownil)}
-      BUF_MEM_grow_clean := @ERR_BUF_MEM_grow_clean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_MEM_grow_clean_removed)}
@@ -334,39 +301,31 @@ begin
     begin
       {$if declared(_BUF_MEM_grow_clean)}
       BUF_MEM_grow_clean := @_BUF_MEM_grow_clean;
-      {$else}
-      {$if not defined(BUF_MEM_grow_clean_allownil)}
-      BUF_MEM_grow_clean := @ERR_BUF_MEM_grow_clean;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_MEM_grow_clean_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_MEM_grow_clean := @ERR_BUF_MEM_grow_clean;
+    if FuncLoadError then
       AFailed.Add('BUF_MEM_grow_clean');
-    end;
     {$ifend}
   end;
 
 
   BUF_reverse := LoadLibFunction(ADllHandle, BUF_reverse_procname);
-  FuncLoaded := assigned(BUF_reverse);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BUF_reverse);
+  if FuncLoadError then
   begin
+    {$if not defined(BUF_reverse_allownil)}
+    BUF_reverse := @ERR_BUF_reverse;
+    {$ifend}
     {$if declared(BUF_reverse_introduced)}
     if LibVersion < BUF_reverse_introduced then
     begin
       {$if declared(FC_BUF_reverse)}
       BUF_reverse := @FC_BUF_reverse;
-      {$else}
-      {$if not defined(BUF_reverse_allownil)}
-      BUF_reverse := @ERR_BUF_reverse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BUF_reverse_removed)}
@@ -374,20 +333,13 @@ begin
     begin
       {$if declared(_BUF_reverse)}
       BUF_reverse := @_BUF_reverse;
-      {$else}
-      {$if not defined(BUF_reverse_allownil)}
-      BUF_reverse := @ERR_BUF_reverse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BUF_reverse_allownil)}
-    if not FuncLoaded then
-    begin
-      BUF_reverse := @ERR_BUF_reverse;
+    if FuncLoadError then
       AFailed.Add('BUF_reverse');
-    end;
     {$ifend}
   end;
 

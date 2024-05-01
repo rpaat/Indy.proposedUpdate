@@ -968,24 +968,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   PKCS12_mac_present := LoadLibFunction(ADllHandle, PKCS12_mac_present_procname);
-  FuncLoaded := assigned(PKCS12_mac_present);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_mac_present);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_mac_present_allownil)}
+    PKCS12_mac_present := @ERR_PKCS12_mac_present;
+    {$ifend}
     {$if declared(PKCS12_mac_present_introduced)}
     if LibVersion < PKCS12_mac_present_introduced then
     begin
       {$if declared(FC_PKCS12_mac_present)}
       PKCS12_mac_present := @FC_PKCS12_mac_present;
-      {$else}
-      {$if not defined(PKCS12_mac_present_allownil)}
-      PKCS12_mac_present := @ERR_PKCS12_mac_present;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_mac_present_removed)}
@@ -993,39 +992,31 @@ begin
     begin
       {$if declared(_PKCS12_mac_present)}
       PKCS12_mac_present := @_PKCS12_mac_present;
-      {$else}
-      {$if not defined(PKCS12_mac_present_allownil)}
-      PKCS12_mac_present := @ERR_PKCS12_mac_present;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_mac_present_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_mac_present := @ERR_PKCS12_mac_present;
+    if FuncLoadError then
       AFailed.Add('PKCS12_mac_present');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_get0_mac := LoadLibFunction(ADllHandle, PKCS12_get0_mac_procname);
-  FuncLoaded := assigned(PKCS12_get0_mac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_get0_mac);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_get0_mac_allownil)}
+    PKCS12_get0_mac := @ERR_PKCS12_get0_mac;
+    {$ifend}
     {$if declared(PKCS12_get0_mac_introduced)}
     if LibVersion < PKCS12_get0_mac_introduced then
     begin
       {$if declared(FC_PKCS12_get0_mac)}
       PKCS12_get0_mac := @FC_PKCS12_get0_mac;
-      {$else}
-      {$if not defined(PKCS12_get0_mac_allownil)}
-      PKCS12_get0_mac := @ERR_PKCS12_get0_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_get0_mac_removed)}
@@ -1033,39 +1024,31 @@ begin
     begin
       {$if declared(_PKCS12_get0_mac)}
       PKCS12_get0_mac := @_PKCS12_get0_mac;
-      {$else}
-      {$if not defined(PKCS12_get0_mac_allownil)}
-      PKCS12_get0_mac := @ERR_PKCS12_get0_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_get0_mac_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_get0_mac := @ERR_PKCS12_get0_mac;
+    if FuncLoadError then
       AFailed.Add('PKCS12_get0_mac');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get0_attr := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get0_attr_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get0_attr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get0_attr);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get0_attr_allownil)}
+    PKCS12_SAFEBAG_get0_attr := @ERR_PKCS12_SAFEBAG_get0_attr;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_attr_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get0_attr_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get0_attr)}
       PKCS12_SAFEBAG_get0_attr := @FC_PKCS12_SAFEBAG_get0_attr;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_attr_allownil)}
-      PKCS12_SAFEBAG_get0_attr := @ERR_PKCS12_SAFEBAG_get0_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_attr_removed)}
@@ -1073,39 +1056,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get0_attr)}
       PKCS12_SAFEBAG_get0_attr := @_PKCS12_SAFEBAG_get0_attr;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_attr_allownil)}
-      PKCS12_SAFEBAG_get0_attr := @ERR_PKCS12_SAFEBAG_get0_attr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get0_attr_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get0_attr := @ERR_PKCS12_SAFEBAG_get0_attr;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get0_attr');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get0_type := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get0_type_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get0_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get0_type);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get0_type_allownil)}
+    PKCS12_SAFEBAG_get0_type := @ERR_PKCS12_SAFEBAG_get0_type;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_type_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get0_type_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get0_type)}
       PKCS12_SAFEBAG_get0_type := @FC_PKCS12_SAFEBAG_get0_type;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_type_allownil)}
-      PKCS12_SAFEBAG_get0_type := @ERR_PKCS12_SAFEBAG_get0_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_type_removed)}
@@ -1113,39 +1088,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get0_type)}
       PKCS12_SAFEBAG_get0_type := @_PKCS12_SAFEBAG_get0_type;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_type_allownil)}
-      PKCS12_SAFEBAG_get0_type := @ERR_PKCS12_SAFEBAG_get0_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get0_type_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get0_type := @ERR_PKCS12_SAFEBAG_get0_type;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get0_type');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get_nid := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get_nid_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get_nid_allownil)}
+    PKCS12_SAFEBAG_get_nid := @ERR_PKCS12_SAFEBAG_get_nid;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get_nid_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get_nid_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get_nid)}
       PKCS12_SAFEBAG_get_nid := @FC_PKCS12_SAFEBAG_get_nid;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get_nid_allownil)}
-      PKCS12_SAFEBAG_get_nid := @ERR_PKCS12_SAFEBAG_get_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get_nid_removed)}
@@ -1153,39 +1120,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get_nid)}
       PKCS12_SAFEBAG_get_nid := @_PKCS12_SAFEBAG_get_nid;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get_nid_allownil)}
-      PKCS12_SAFEBAG_get_nid := @ERR_PKCS12_SAFEBAG_get_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get_nid := @ERR_PKCS12_SAFEBAG_get_nid;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get_bag_nid := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get_bag_nid_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get_bag_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get_bag_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get_bag_nid_allownil)}
+    PKCS12_SAFEBAG_get_bag_nid := @ERR_PKCS12_SAFEBAG_get_bag_nid;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get_bag_nid_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get_bag_nid_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get_bag_nid)}
       PKCS12_SAFEBAG_get_bag_nid := @FC_PKCS12_SAFEBAG_get_bag_nid;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get_bag_nid_allownil)}
-      PKCS12_SAFEBAG_get_bag_nid := @ERR_PKCS12_SAFEBAG_get_bag_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get_bag_nid_removed)}
@@ -1193,39 +1152,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get_bag_nid)}
       PKCS12_SAFEBAG_get_bag_nid := @_PKCS12_SAFEBAG_get_bag_nid;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get_bag_nid_allownil)}
-      PKCS12_SAFEBAG_get_bag_nid := @ERR_PKCS12_SAFEBAG_get_bag_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get_bag_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get_bag_nid := @ERR_PKCS12_SAFEBAG_get_bag_nid;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get_bag_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get1_cert := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get1_cert_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get1_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get1_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get1_cert_allownil)}
+    PKCS12_SAFEBAG_get1_cert := @ERR_PKCS12_SAFEBAG_get1_cert;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get1_cert_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get1_cert_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get1_cert)}
       PKCS12_SAFEBAG_get1_cert := @FC_PKCS12_SAFEBAG_get1_cert;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get1_cert_allownil)}
-      PKCS12_SAFEBAG_get1_cert := @ERR_PKCS12_SAFEBAG_get1_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get1_cert_removed)}
@@ -1233,39 +1184,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get1_cert)}
       PKCS12_SAFEBAG_get1_cert := @_PKCS12_SAFEBAG_get1_cert;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get1_cert_allownil)}
-      PKCS12_SAFEBAG_get1_cert := @ERR_PKCS12_SAFEBAG_get1_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get1_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get1_cert := @ERR_PKCS12_SAFEBAG_get1_cert;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get1_cert');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get1_crl := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get1_crl_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get1_crl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get1_crl);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get1_crl_allownil)}
+    PKCS12_SAFEBAG_get1_crl := @ERR_PKCS12_SAFEBAG_get1_crl;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get1_crl_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get1_crl_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get1_crl)}
       PKCS12_SAFEBAG_get1_crl := @FC_PKCS12_SAFEBAG_get1_crl;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get1_crl_allownil)}
-      PKCS12_SAFEBAG_get1_crl := @ERR_PKCS12_SAFEBAG_get1_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get1_crl_removed)}
@@ -1273,39 +1216,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get1_crl)}
       PKCS12_SAFEBAG_get1_crl := @_PKCS12_SAFEBAG_get1_crl;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get1_crl_allownil)}
-      PKCS12_SAFEBAG_get1_crl := @ERR_PKCS12_SAFEBAG_get1_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get1_crl_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get1_crl := @ERR_PKCS12_SAFEBAG_get1_crl;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get1_crl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get0_p8inf := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get0_p8inf_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get0_p8inf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get0_p8inf);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get0_p8inf_allownil)}
+    PKCS12_SAFEBAG_get0_p8inf := @ERR_PKCS12_SAFEBAG_get0_p8inf;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_p8inf_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get0_p8inf_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get0_p8inf)}
       PKCS12_SAFEBAG_get0_p8inf := @FC_PKCS12_SAFEBAG_get0_p8inf;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_p8inf_allownil)}
-      PKCS12_SAFEBAG_get0_p8inf := @ERR_PKCS12_SAFEBAG_get0_p8inf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_p8inf_removed)}
@@ -1313,39 +1248,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get0_p8inf)}
       PKCS12_SAFEBAG_get0_p8inf := @_PKCS12_SAFEBAG_get0_p8inf;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_p8inf_allownil)}
-      PKCS12_SAFEBAG_get0_p8inf := @ERR_PKCS12_SAFEBAG_get0_p8inf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get0_p8inf_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get0_p8inf := @ERR_PKCS12_SAFEBAG_get0_p8inf;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get0_p8inf');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_get0_pkcs8 := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_get0_pkcs8_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_get0_pkcs8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_get0_pkcs8);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_get0_pkcs8_allownil)}
+    PKCS12_SAFEBAG_get0_pkcs8 := @ERR_PKCS12_SAFEBAG_get0_pkcs8;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_pkcs8_introduced)}
     if LibVersion < PKCS12_SAFEBAG_get0_pkcs8_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_get0_pkcs8)}
       PKCS12_SAFEBAG_get0_pkcs8 := @FC_PKCS12_SAFEBAG_get0_pkcs8;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_pkcs8_allownil)}
-      PKCS12_SAFEBAG_get0_pkcs8 := @ERR_PKCS12_SAFEBAG_get0_pkcs8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_get0_pkcs8_removed)}
@@ -1353,39 +1280,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_get0_pkcs8)}
       PKCS12_SAFEBAG_get0_pkcs8 := @_PKCS12_SAFEBAG_get0_pkcs8;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_get0_pkcs8_allownil)}
-      PKCS12_SAFEBAG_get0_pkcs8 := @ERR_PKCS12_SAFEBAG_get0_pkcs8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_get0_pkcs8_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_get0_pkcs8 := @ERR_PKCS12_SAFEBAG_get0_pkcs8;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_get0_pkcs8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_create_cert := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_create_cert_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_create_cert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_create_cert);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_create_cert_allownil)}
+    PKCS12_SAFEBAG_create_cert := @ERR_PKCS12_SAFEBAG_create_cert;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_cert_introduced)}
     if LibVersion < PKCS12_SAFEBAG_create_cert_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_create_cert)}
       PKCS12_SAFEBAG_create_cert := @FC_PKCS12_SAFEBAG_create_cert;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_cert_allownil)}
-      PKCS12_SAFEBAG_create_cert := @ERR_PKCS12_SAFEBAG_create_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_cert_removed)}
@@ -1393,39 +1312,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_create_cert)}
       PKCS12_SAFEBAG_create_cert := @_PKCS12_SAFEBAG_create_cert;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_cert_allownil)}
-      PKCS12_SAFEBAG_create_cert := @ERR_PKCS12_SAFEBAG_create_cert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_create_cert_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_create_cert := @ERR_PKCS12_SAFEBAG_create_cert;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_create_cert');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_create_crl := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_create_crl_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_create_crl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_create_crl);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_create_crl_allownil)}
+    PKCS12_SAFEBAG_create_crl := @ERR_PKCS12_SAFEBAG_create_crl;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_crl_introduced)}
     if LibVersion < PKCS12_SAFEBAG_create_crl_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_create_crl)}
       PKCS12_SAFEBAG_create_crl := @FC_PKCS12_SAFEBAG_create_crl;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_crl_allownil)}
-      PKCS12_SAFEBAG_create_crl := @ERR_PKCS12_SAFEBAG_create_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_crl_removed)}
@@ -1433,39 +1344,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_create_crl)}
       PKCS12_SAFEBAG_create_crl := @_PKCS12_SAFEBAG_create_crl;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_crl_allownil)}
-      PKCS12_SAFEBAG_create_crl := @ERR_PKCS12_SAFEBAG_create_crl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_create_crl_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_create_crl := @ERR_PKCS12_SAFEBAG_create_crl;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_create_crl');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_create0_p8inf := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_create0_p8inf_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_create0_p8inf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_create0_p8inf);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_create0_p8inf_allownil)}
+    PKCS12_SAFEBAG_create0_p8inf := @ERR_PKCS12_SAFEBAG_create0_p8inf;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_create0_p8inf_introduced)}
     if LibVersion < PKCS12_SAFEBAG_create0_p8inf_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_create0_p8inf)}
       PKCS12_SAFEBAG_create0_p8inf := @FC_PKCS12_SAFEBAG_create0_p8inf;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create0_p8inf_allownil)}
-      PKCS12_SAFEBAG_create0_p8inf := @ERR_PKCS12_SAFEBAG_create0_p8inf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_create0_p8inf_removed)}
@@ -1473,39 +1376,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_create0_p8inf)}
       PKCS12_SAFEBAG_create0_p8inf := @_PKCS12_SAFEBAG_create0_p8inf;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create0_p8inf_allownil)}
-      PKCS12_SAFEBAG_create0_p8inf := @ERR_PKCS12_SAFEBAG_create0_p8inf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_create0_p8inf_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_create0_p8inf := @ERR_PKCS12_SAFEBAG_create0_p8inf;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_create0_p8inf');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_create0_pkcs8 := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_create0_pkcs8_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_create0_pkcs8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_create0_pkcs8);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_create0_pkcs8_allownil)}
+    PKCS12_SAFEBAG_create0_pkcs8 := @ERR_PKCS12_SAFEBAG_create0_pkcs8;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_create0_pkcs8_introduced)}
     if LibVersion < PKCS12_SAFEBAG_create0_pkcs8_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_create0_pkcs8)}
       PKCS12_SAFEBAG_create0_pkcs8 := @FC_PKCS12_SAFEBAG_create0_pkcs8;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create0_pkcs8_allownil)}
-      PKCS12_SAFEBAG_create0_pkcs8 := @ERR_PKCS12_SAFEBAG_create0_pkcs8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_create0_pkcs8_removed)}
@@ -1513,39 +1408,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_create0_pkcs8)}
       PKCS12_SAFEBAG_create0_pkcs8 := @_PKCS12_SAFEBAG_create0_pkcs8;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create0_pkcs8_allownil)}
-      PKCS12_SAFEBAG_create0_pkcs8 := @ERR_PKCS12_SAFEBAG_create0_pkcs8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_create0_pkcs8_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_create0_pkcs8 := @ERR_PKCS12_SAFEBAG_create0_pkcs8;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_create0_pkcs8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_SAFEBAG_create_pkcs8_encrypt := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_create_pkcs8_encrypt_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_create_pkcs8_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_create_pkcs8_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_create_pkcs8_encrypt_allownil)}
+    PKCS12_SAFEBAG_create_pkcs8_encrypt := @ERR_PKCS12_SAFEBAG_create_pkcs8_encrypt;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_pkcs8_encrypt_introduced)}
     if LibVersion < PKCS12_SAFEBAG_create_pkcs8_encrypt_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_create_pkcs8_encrypt)}
       PKCS12_SAFEBAG_create_pkcs8_encrypt := @FC_PKCS12_SAFEBAG_create_pkcs8_encrypt;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_pkcs8_encrypt_allownil)}
-      PKCS12_SAFEBAG_create_pkcs8_encrypt := @ERR_PKCS12_SAFEBAG_create_pkcs8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_create_pkcs8_encrypt_removed)}
@@ -1553,39 +1440,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_create_pkcs8_encrypt)}
       PKCS12_SAFEBAG_create_pkcs8_encrypt := @_PKCS12_SAFEBAG_create_pkcs8_encrypt;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_create_pkcs8_encrypt_allownil)}
-      PKCS12_SAFEBAG_create_pkcs8_encrypt := @ERR_PKCS12_SAFEBAG_create_pkcs8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_create_pkcs8_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_create_pkcs8_encrypt := @ERR_PKCS12_SAFEBAG_create_pkcs8_encrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_create_pkcs8_encrypt');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_item_pack_safebag := LoadLibFunction(ADllHandle, PKCS12_item_pack_safebag_procname);
-  FuncLoaded := assigned(PKCS12_item_pack_safebag);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_item_pack_safebag);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_item_pack_safebag_allownil)}
+    PKCS12_item_pack_safebag := @ERR_PKCS12_item_pack_safebag;
+    {$ifend}
     {$if declared(PKCS12_item_pack_safebag_introduced)}
     if LibVersion < PKCS12_item_pack_safebag_introduced then
     begin
       {$if declared(FC_PKCS12_item_pack_safebag)}
       PKCS12_item_pack_safebag := @FC_PKCS12_item_pack_safebag;
-      {$else}
-      {$if not defined(PKCS12_item_pack_safebag_allownil)}
-      PKCS12_item_pack_safebag := @ERR_PKCS12_item_pack_safebag;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_item_pack_safebag_removed)}
@@ -1593,39 +1472,31 @@ begin
     begin
       {$if declared(_PKCS12_item_pack_safebag)}
       PKCS12_item_pack_safebag := @_PKCS12_item_pack_safebag;
-      {$else}
-      {$if not defined(PKCS12_item_pack_safebag_allownil)}
-      PKCS12_item_pack_safebag := @ERR_PKCS12_item_pack_safebag;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_item_pack_safebag_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_item_pack_safebag := @ERR_PKCS12_item_pack_safebag;
+    if FuncLoadError then
       AFailed.Add('PKCS12_item_pack_safebag');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_decrypt := LoadLibFunction(ADllHandle, PKCS8_decrypt_procname);
-  FuncLoaded := assigned(PKCS8_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_decrypt_allownil)}
+    PKCS8_decrypt := @ERR_PKCS8_decrypt;
+    {$ifend}
     {$if declared(PKCS8_decrypt_introduced)}
     if LibVersion < PKCS8_decrypt_introduced then
     begin
       {$if declared(FC_PKCS8_decrypt)}
       PKCS8_decrypt := @FC_PKCS8_decrypt;
-      {$else}
-      {$if not defined(PKCS8_decrypt_allownil)}
-      PKCS8_decrypt := @ERR_PKCS8_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_decrypt_removed)}
@@ -1633,39 +1504,31 @@ begin
     begin
       {$if declared(_PKCS8_decrypt)}
       PKCS8_decrypt := @_PKCS8_decrypt;
-      {$else}
-      {$if not defined(PKCS8_decrypt_allownil)}
-      PKCS8_decrypt := @ERR_PKCS8_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_decrypt := @ERR_PKCS8_decrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS8_decrypt');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_decrypt_skey := LoadLibFunction(ADllHandle, PKCS12_decrypt_skey_procname);
-  FuncLoaded := assigned(PKCS12_decrypt_skey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_decrypt_skey);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_decrypt_skey_allownil)}
+    PKCS12_decrypt_skey := @ERR_PKCS12_decrypt_skey;
+    {$ifend}
     {$if declared(PKCS12_decrypt_skey_introduced)}
     if LibVersion < PKCS12_decrypt_skey_introduced then
     begin
       {$if declared(FC_PKCS12_decrypt_skey)}
       PKCS12_decrypt_skey := @FC_PKCS12_decrypt_skey;
-      {$else}
-      {$if not defined(PKCS12_decrypt_skey_allownil)}
-      PKCS12_decrypt_skey := @ERR_PKCS12_decrypt_skey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_decrypt_skey_removed)}
@@ -1673,39 +1536,31 @@ begin
     begin
       {$if declared(_PKCS12_decrypt_skey)}
       PKCS12_decrypt_skey := @_PKCS12_decrypt_skey;
-      {$else}
-      {$if not defined(PKCS12_decrypt_skey_allownil)}
-      PKCS12_decrypt_skey := @ERR_PKCS12_decrypt_skey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_decrypt_skey_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_decrypt_skey := @ERR_PKCS12_decrypt_skey;
+    if FuncLoadError then
       AFailed.Add('PKCS12_decrypt_skey');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_encrypt := LoadLibFunction(ADllHandle, PKCS8_encrypt_procname);
-  FuncLoaded := assigned(PKCS8_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_encrypt_allownil)}
+    PKCS8_encrypt := @ERR_PKCS8_encrypt;
+    {$ifend}
     {$if declared(PKCS8_encrypt_introduced)}
     if LibVersion < PKCS8_encrypt_introduced then
     begin
       {$if declared(FC_PKCS8_encrypt)}
       PKCS8_encrypt := @FC_PKCS8_encrypt;
-      {$else}
-      {$if not defined(PKCS8_encrypt_allownil)}
-      PKCS8_encrypt := @ERR_PKCS8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_encrypt_removed)}
@@ -1713,39 +1568,31 @@ begin
     begin
       {$if declared(_PKCS8_encrypt)}
       PKCS8_encrypt := @_PKCS8_encrypt;
-      {$else}
-      {$if not defined(PKCS8_encrypt_allownil)}
-      PKCS8_encrypt := @ERR_PKCS8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_encrypt := @ERR_PKCS8_encrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS8_encrypt');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_set0_pbe := LoadLibFunction(ADllHandle, PKCS8_set0_pbe_procname);
-  FuncLoaded := assigned(PKCS8_set0_pbe);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_set0_pbe);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_set0_pbe_allownil)}
+    PKCS8_set0_pbe := @ERR_PKCS8_set0_pbe;
+    {$ifend}
     {$if declared(PKCS8_set0_pbe_introduced)}
     if LibVersion < PKCS8_set0_pbe_introduced then
     begin
       {$if declared(FC_PKCS8_set0_pbe)}
       PKCS8_set0_pbe := @FC_PKCS8_set0_pbe;
-      {$else}
-      {$if not defined(PKCS8_set0_pbe_allownil)}
-      PKCS8_set0_pbe := @ERR_PKCS8_set0_pbe;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_set0_pbe_removed)}
@@ -1753,39 +1600,31 @@ begin
     begin
       {$if declared(_PKCS8_set0_pbe)}
       PKCS8_set0_pbe := @_PKCS8_set0_pbe;
-      {$else}
-      {$if not defined(PKCS8_set0_pbe_allownil)}
-      PKCS8_set0_pbe := @ERR_PKCS8_set0_pbe;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_set0_pbe_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_set0_pbe := @ERR_PKCS8_set0_pbe;
+    if FuncLoadError then
       AFailed.Add('PKCS8_set0_pbe');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_add_localkeyid := LoadLibFunction(ADllHandle, PKCS12_add_localkeyid_procname);
-  FuncLoaded := assigned(PKCS12_add_localkeyid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_add_localkeyid);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_add_localkeyid_allownil)}
+    PKCS12_add_localkeyid := @ERR_PKCS12_add_localkeyid;
+    {$ifend}
     {$if declared(PKCS12_add_localkeyid_introduced)}
     if LibVersion < PKCS12_add_localkeyid_introduced then
     begin
       {$if declared(FC_PKCS12_add_localkeyid)}
       PKCS12_add_localkeyid := @FC_PKCS12_add_localkeyid;
-      {$else}
-      {$if not defined(PKCS12_add_localkeyid_allownil)}
-      PKCS12_add_localkeyid := @ERR_PKCS12_add_localkeyid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_add_localkeyid_removed)}
@@ -1793,39 +1632,31 @@ begin
     begin
       {$if declared(_PKCS12_add_localkeyid)}
       PKCS12_add_localkeyid := @_PKCS12_add_localkeyid;
-      {$else}
-      {$if not defined(PKCS12_add_localkeyid_allownil)}
-      PKCS12_add_localkeyid := @ERR_PKCS12_add_localkeyid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_add_localkeyid_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_add_localkeyid := @ERR_PKCS12_add_localkeyid;
+    if FuncLoadError then
       AFailed.Add('PKCS12_add_localkeyid');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_add_friendlyname_asc := LoadLibFunction(ADllHandle, PKCS12_add_friendlyname_asc_procname);
-  FuncLoaded := assigned(PKCS12_add_friendlyname_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_add_friendlyname_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_add_friendlyname_asc_allownil)}
+    PKCS12_add_friendlyname_asc := @ERR_PKCS12_add_friendlyname_asc;
+    {$ifend}
     {$if declared(PKCS12_add_friendlyname_asc_introduced)}
     if LibVersion < PKCS12_add_friendlyname_asc_introduced then
     begin
       {$if declared(FC_PKCS12_add_friendlyname_asc)}
       PKCS12_add_friendlyname_asc := @FC_PKCS12_add_friendlyname_asc;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_asc_allownil)}
-      PKCS12_add_friendlyname_asc := @ERR_PKCS12_add_friendlyname_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_add_friendlyname_asc_removed)}
@@ -1833,39 +1664,31 @@ begin
     begin
       {$if declared(_PKCS12_add_friendlyname_asc)}
       PKCS12_add_friendlyname_asc := @_PKCS12_add_friendlyname_asc;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_asc_allownil)}
-      PKCS12_add_friendlyname_asc := @ERR_PKCS12_add_friendlyname_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_add_friendlyname_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_add_friendlyname_asc := @ERR_PKCS12_add_friendlyname_asc;
+    if FuncLoadError then
       AFailed.Add('PKCS12_add_friendlyname_asc');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_add_friendlyname_utf8 := LoadLibFunction(ADllHandle, PKCS12_add_friendlyname_utf8_procname);
-  FuncLoaded := assigned(PKCS12_add_friendlyname_utf8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_add_friendlyname_utf8);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_add_friendlyname_utf8_allownil)}
+    PKCS12_add_friendlyname_utf8 := @ERR_PKCS12_add_friendlyname_utf8;
+    {$ifend}
     {$if declared(PKCS12_add_friendlyname_utf8_introduced)}
     if LibVersion < PKCS12_add_friendlyname_utf8_introduced then
     begin
       {$if declared(FC_PKCS12_add_friendlyname_utf8)}
       PKCS12_add_friendlyname_utf8 := @FC_PKCS12_add_friendlyname_utf8;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_utf8_allownil)}
-      PKCS12_add_friendlyname_utf8 := @ERR_PKCS12_add_friendlyname_utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_add_friendlyname_utf8_removed)}
@@ -1873,39 +1696,31 @@ begin
     begin
       {$if declared(_PKCS12_add_friendlyname_utf8)}
       PKCS12_add_friendlyname_utf8 := @_PKCS12_add_friendlyname_utf8;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_utf8_allownil)}
-      PKCS12_add_friendlyname_utf8 := @ERR_PKCS12_add_friendlyname_utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_add_friendlyname_utf8_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_add_friendlyname_utf8 := @ERR_PKCS12_add_friendlyname_utf8;
+    if FuncLoadError then
       AFailed.Add('PKCS12_add_friendlyname_utf8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_add_CSPName_asc := LoadLibFunction(ADllHandle, PKCS12_add_CSPName_asc_procname);
-  FuncLoaded := assigned(PKCS12_add_CSPName_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_add_CSPName_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_add_CSPName_asc_allownil)}
+    PKCS12_add_CSPName_asc := @ERR_PKCS12_add_CSPName_asc;
+    {$ifend}
     {$if declared(PKCS12_add_CSPName_asc_introduced)}
     if LibVersion < PKCS12_add_CSPName_asc_introduced then
     begin
       {$if declared(FC_PKCS12_add_CSPName_asc)}
       PKCS12_add_CSPName_asc := @FC_PKCS12_add_CSPName_asc;
-      {$else}
-      {$if not defined(PKCS12_add_CSPName_asc_allownil)}
-      PKCS12_add_CSPName_asc := @ERR_PKCS12_add_CSPName_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_add_CSPName_asc_removed)}
@@ -1913,39 +1728,31 @@ begin
     begin
       {$if declared(_PKCS12_add_CSPName_asc)}
       PKCS12_add_CSPName_asc := @_PKCS12_add_CSPName_asc;
-      {$else}
-      {$if not defined(PKCS12_add_CSPName_asc_allownil)}
-      PKCS12_add_CSPName_asc := @ERR_PKCS12_add_CSPName_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_add_CSPName_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_add_CSPName_asc := @ERR_PKCS12_add_CSPName_asc;
+    if FuncLoadError then
       AFailed.Add('PKCS12_add_CSPName_asc');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_add_friendlyname_uni := LoadLibFunction(ADllHandle, PKCS12_add_friendlyname_uni_procname);
-  FuncLoaded := assigned(PKCS12_add_friendlyname_uni);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_add_friendlyname_uni);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_add_friendlyname_uni_allownil)}
+    PKCS12_add_friendlyname_uni := @ERR_PKCS12_add_friendlyname_uni;
+    {$ifend}
     {$if declared(PKCS12_add_friendlyname_uni_introduced)}
     if LibVersion < PKCS12_add_friendlyname_uni_introduced then
     begin
       {$if declared(FC_PKCS12_add_friendlyname_uni)}
       PKCS12_add_friendlyname_uni := @FC_PKCS12_add_friendlyname_uni;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_uni_allownil)}
-      PKCS12_add_friendlyname_uni := @ERR_PKCS12_add_friendlyname_uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_add_friendlyname_uni_removed)}
@@ -1953,39 +1760,31 @@ begin
     begin
       {$if declared(_PKCS12_add_friendlyname_uni)}
       PKCS12_add_friendlyname_uni := @_PKCS12_add_friendlyname_uni;
-      {$else}
-      {$if not defined(PKCS12_add_friendlyname_uni_allownil)}
-      PKCS12_add_friendlyname_uni := @ERR_PKCS12_add_friendlyname_uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_add_friendlyname_uni_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_add_friendlyname_uni := @ERR_PKCS12_add_friendlyname_uni;
+    if FuncLoadError then
       AFailed.Add('PKCS12_add_friendlyname_uni');
-    end;
     {$ifend}
   end;
 
 
   PKCS8_add_keyusage := LoadLibFunction(ADllHandle, PKCS8_add_keyusage_procname);
-  FuncLoaded := assigned(PKCS8_add_keyusage);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS8_add_keyusage);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS8_add_keyusage_allownil)}
+    PKCS8_add_keyusage := @ERR_PKCS8_add_keyusage;
+    {$ifend}
     {$if declared(PKCS8_add_keyusage_introduced)}
     if LibVersion < PKCS8_add_keyusage_introduced then
     begin
       {$if declared(FC_PKCS8_add_keyusage)}
       PKCS8_add_keyusage := @FC_PKCS8_add_keyusage;
-      {$else}
-      {$if not defined(PKCS8_add_keyusage_allownil)}
-      PKCS8_add_keyusage := @ERR_PKCS8_add_keyusage;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS8_add_keyusage_removed)}
@@ -1993,39 +1792,31 @@ begin
     begin
       {$if declared(_PKCS8_add_keyusage)}
       PKCS8_add_keyusage := @_PKCS8_add_keyusage;
-      {$else}
-      {$if not defined(PKCS8_add_keyusage_allownil)}
-      PKCS8_add_keyusage := @ERR_PKCS8_add_keyusage;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS8_add_keyusage_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS8_add_keyusage := @ERR_PKCS8_add_keyusage;
+    if FuncLoadError then
       AFailed.Add('PKCS8_add_keyusage');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_get_friendlyname := LoadLibFunction(ADllHandle, PKCS12_get_friendlyname_procname);
-  FuncLoaded := assigned(PKCS12_get_friendlyname);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_get_friendlyname);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_get_friendlyname_allownil)}
+    PKCS12_get_friendlyname := @ERR_PKCS12_get_friendlyname;
+    {$ifend}
     {$if declared(PKCS12_get_friendlyname_introduced)}
     if LibVersion < PKCS12_get_friendlyname_introduced then
     begin
       {$if declared(FC_PKCS12_get_friendlyname)}
       PKCS12_get_friendlyname := @FC_PKCS12_get_friendlyname;
-      {$else}
-      {$if not defined(PKCS12_get_friendlyname_allownil)}
-      PKCS12_get_friendlyname := @ERR_PKCS12_get_friendlyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_get_friendlyname_removed)}
@@ -2033,39 +1824,31 @@ begin
     begin
       {$if declared(_PKCS12_get_friendlyname)}
       PKCS12_get_friendlyname := @_PKCS12_get_friendlyname;
-      {$else}
-      {$if not defined(PKCS12_get_friendlyname_allownil)}
-      PKCS12_get_friendlyname := @ERR_PKCS12_get_friendlyname;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_get_friendlyname_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_get_friendlyname := @ERR_PKCS12_get_friendlyname;
+    if FuncLoadError then
       AFailed.Add('PKCS12_get_friendlyname');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_pbe_crypt := LoadLibFunction(ADllHandle, PKCS12_pbe_crypt_procname);
-  FuncLoaded := assigned(PKCS12_pbe_crypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_pbe_crypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_pbe_crypt_allownil)}
+    PKCS12_pbe_crypt := @ERR_PKCS12_pbe_crypt;
+    {$ifend}
     {$if declared(PKCS12_pbe_crypt_introduced)}
     if LibVersion < PKCS12_pbe_crypt_introduced then
     begin
       {$if declared(FC_PKCS12_pbe_crypt)}
       PKCS12_pbe_crypt := @FC_PKCS12_pbe_crypt;
-      {$else}
-      {$if not defined(PKCS12_pbe_crypt_allownil)}
-      PKCS12_pbe_crypt := @ERR_PKCS12_pbe_crypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_pbe_crypt_removed)}
@@ -2073,39 +1856,31 @@ begin
     begin
       {$if declared(_PKCS12_pbe_crypt)}
       PKCS12_pbe_crypt := @_PKCS12_pbe_crypt;
-      {$else}
-      {$if not defined(PKCS12_pbe_crypt_allownil)}
-      PKCS12_pbe_crypt := @ERR_PKCS12_pbe_crypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_pbe_crypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_pbe_crypt := @ERR_PKCS12_pbe_crypt;
+    if FuncLoadError then
       AFailed.Add('PKCS12_pbe_crypt');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_item_decrypt_d2i := LoadLibFunction(ADllHandle, PKCS12_item_decrypt_d2i_procname);
-  FuncLoaded := assigned(PKCS12_item_decrypt_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_item_decrypt_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_item_decrypt_d2i_allownil)}
+    PKCS12_item_decrypt_d2i := @ERR_PKCS12_item_decrypt_d2i;
+    {$ifend}
     {$if declared(PKCS12_item_decrypt_d2i_introduced)}
     if LibVersion < PKCS12_item_decrypt_d2i_introduced then
     begin
       {$if declared(FC_PKCS12_item_decrypt_d2i)}
       PKCS12_item_decrypt_d2i := @FC_PKCS12_item_decrypt_d2i;
-      {$else}
-      {$if not defined(PKCS12_item_decrypt_d2i_allownil)}
-      PKCS12_item_decrypt_d2i := @ERR_PKCS12_item_decrypt_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_item_decrypt_d2i_removed)}
@@ -2113,39 +1888,31 @@ begin
     begin
       {$if declared(_PKCS12_item_decrypt_d2i)}
       PKCS12_item_decrypt_d2i := @_PKCS12_item_decrypt_d2i;
-      {$else}
-      {$if not defined(PKCS12_item_decrypt_d2i_allownil)}
-      PKCS12_item_decrypt_d2i := @ERR_PKCS12_item_decrypt_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_item_decrypt_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_item_decrypt_d2i := @ERR_PKCS12_item_decrypt_d2i;
+    if FuncLoadError then
       AFailed.Add('PKCS12_item_decrypt_d2i');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_item_i2d_encrypt := LoadLibFunction(ADllHandle, PKCS12_item_i2d_encrypt_procname);
-  FuncLoaded := assigned(PKCS12_item_i2d_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_item_i2d_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_item_i2d_encrypt_allownil)}
+    PKCS12_item_i2d_encrypt := @ERR_PKCS12_item_i2d_encrypt;
+    {$ifend}
     {$if declared(PKCS12_item_i2d_encrypt_introduced)}
     if LibVersion < PKCS12_item_i2d_encrypt_introduced then
     begin
       {$if declared(FC_PKCS12_item_i2d_encrypt)}
       PKCS12_item_i2d_encrypt := @FC_PKCS12_item_i2d_encrypt;
-      {$else}
-      {$if not defined(PKCS12_item_i2d_encrypt_allownil)}
-      PKCS12_item_i2d_encrypt := @ERR_PKCS12_item_i2d_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_item_i2d_encrypt_removed)}
@@ -2153,39 +1920,31 @@ begin
     begin
       {$if declared(_PKCS12_item_i2d_encrypt)}
       PKCS12_item_i2d_encrypt := @_PKCS12_item_i2d_encrypt;
-      {$else}
-      {$if not defined(PKCS12_item_i2d_encrypt_allownil)}
-      PKCS12_item_i2d_encrypt := @ERR_PKCS12_item_i2d_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_item_i2d_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_item_i2d_encrypt := @ERR_PKCS12_item_i2d_encrypt;
+    if FuncLoadError then
       AFailed.Add('PKCS12_item_i2d_encrypt');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_init := LoadLibFunction(ADllHandle, PKCS12_init_procname);
-  FuncLoaded := assigned(PKCS12_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_init);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_init_allownil)}
+    PKCS12_init := @ERR_PKCS12_init;
+    {$ifend}
     {$if declared(PKCS12_init_introduced)}
     if LibVersion < PKCS12_init_introduced then
     begin
       {$if declared(FC_PKCS12_init)}
       PKCS12_init := @FC_PKCS12_init;
-      {$else}
-      {$if not defined(PKCS12_init_allownil)}
-      PKCS12_init := @ERR_PKCS12_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_init_removed)}
@@ -2193,39 +1952,31 @@ begin
     begin
       {$if declared(_PKCS12_init)}
       PKCS12_init := @_PKCS12_init;
-      {$else}
-      {$if not defined(PKCS12_init_allownil)}
-      PKCS12_init := @ERR_PKCS12_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_init_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_init := @ERR_PKCS12_init;
+    if FuncLoadError then
       AFailed.Add('PKCS12_init');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_key_gen_asc := LoadLibFunction(ADllHandle, PKCS12_key_gen_asc_procname);
-  FuncLoaded := assigned(PKCS12_key_gen_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_key_gen_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_key_gen_asc_allownil)}
+    PKCS12_key_gen_asc := @ERR_PKCS12_key_gen_asc;
+    {$ifend}
     {$if declared(PKCS12_key_gen_asc_introduced)}
     if LibVersion < PKCS12_key_gen_asc_introduced then
     begin
       {$if declared(FC_PKCS12_key_gen_asc)}
       PKCS12_key_gen_asc := @FC_PKCS12_key_gen_asc;
-      {$else}
-      {$if not defined(PKCS12_key_gen_asc_allownil)}
-      PKCS12_key_gen_asc := @ERR_PKCS12_key_gen_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_key_gen_asc_removed)}
@@ -2233,39 +1984,31 @@ begin
     begin
       {$if declared(_PKCS12_key_gen_asc)}
       PKCS12_key_gen_asc := @_PKCS12_key_gen_asc;
-      {$else}
-      {$if not defined(PKCS12_key_gen_asc_allownil)}
-      PKCS12_key_gen_asc := @ERR_PKCS12_key_gen_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_key_gen_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_key_gen_asc := @ERR_PKCS12_key_gen_asc;
+    if FuncLoadError then
       AFailed.Add('PKCS12_key_gen_asc');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_key_gen_uni := LoadLibFunction(ADllHandle, PKCS12_key_gen_uni_procname);
-  FuncLoaded := assigned(PKCS12_key_gen_uni);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_key_gen_uni);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_key_gen_uni_allownil)}
+    PKCS12_key_gen_uni := @ERR_PKCS12_key_gen_uni;
+    {$ifend}
     {$if declared(PKCS12_key_gen_uni_introduced)}
     if LibVersion < PKCS12_key_gen_uni_introduced then
     begin
       {$if declared(FC_PKCS12_key_gen_uni)}
       PKCS12_key_gen_uni := @FC_PKCS12_key_gen_uni;
-      {$else}
-      {$if not defined(PKCS12_key_gen_uni_allownil)}
-      PKCS12_key_gen_uni := @ERR_PKCS12_key_gen_uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_key_gen_uni_removed)}
@@ -2273,39 +2016,31 @@ begin
     begin
       {$if declared(_PKCS12_key_gen_uni)}
       PKCS12_key_gen_uni := @_PKCS12_key_gen_uni;
-      {$else}
-      {$if not defined(PKCS12_key_gen_uni_allownil)}
-      PKCS12_key_gen_uni := @ERR_PKCS12_key_gen_uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_key_gen_uni_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_key_gen_uni := @ERR_PKCS12_key_gen_uni;
+    if FuncLoadError then
       AFailed.Add('PKCS12_key_gen_uni');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_key_gen_utf8 := LoadLibFunction(ADllHandle, PKCS12_key_gen_utf8_procname);
-  FuncLoaded := assigned(PKCS12_key_gen_utf8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_key_gen_utf8);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_key_gen_utf8_allownil)}
+    PKCS12_key_gen_utf8 := @ERR_PKCS12_key_gen_utf8;
+    {$ifend}
     {$if declared(PKCS12_key_gen_utf8_introduced)}
     if LibVersion < PKCS12_key_gen_utf8_introduced then
     begin
       {$if declared(FC_PKCS12_key_gen_utf8)}
       PKCS12_key_gen_utf8 := @FC_PKCS12_key_gen_utf8;
-      {$else}
-      {$if not defined(PKCS12_key_gen_utf8_allownil)}
-      PKCS12_key_gen_utf8 := @ERR_PKCS12_key_gen_utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_key_gen_utf8_removed)}
@@ -2313,39 +2048,31 @@ begin
     begin
       {$if declared(_PKCS12_key_gen_utf8)}
       PKCS12_key_gen_utf8 := @_PKCS12_key_gen_utf8;
-      {$else}
-      {$if not defined(PKCS12_key_gen_utf8_allownil)}
-      PKCS12_key_gen_utf8 := @ERR_PKCS12_key_gen_utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_key_gen_utf8_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_key_gen_utf8 := @ERR_PKCS12_key_gen_utf8;
+    if FuncLoadError then
       AFailed.Add('PKCS12_key_gen_utf8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_PBE_keyivgen := LoadLibFunction(ADllHandle, PKCS12_PBE_keyivgen_procname);
-  FuncLoaded := assigned(PKCS12_PBE_keyivgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_PBE_keyivgen);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_PBE_keyivgen_allownil)}
+    PKCS12_PBE_keyivgen := @ERR_PKCS12_PBE_keyivgen;
+    {$ifend}
     {$if declared(PKCS12_PBE_keyivgen_introduced)}
     if LibVersion < PKCS12_PBE_keyivgen_introduced then
     begin
       {$if declared(FC_PKCS12_PBE_keyivgen)}
       PKCS12_PBE_keyivgen := @FC_PKCS12_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS12_PBE_keyivgen_allownil)}
-      PKCS12_PBE_keyivgen := @ERR_PKCS12_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_PBE_keyivgen_removed)}
@@ -2353,39 +2080,31 @@ begin
     begin
       {$if declared(_PKCS12_PBE_keyivgen)}
       PKCS12_PBE_keyivgen := @_PKCS12_PBE_keyivgen;
-      {$else}
-      {$if not defined(PKCS12_PBE_keyivgen_allownil)}
-      PKCS12_PBE_keyivgen := @ERR_PKCS12_PBE_keyivgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_PBE_keyivgen_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_PBE_keyivgen := @ERR_PKCS12_PBE_keyivgen;
+    if FuncLoadError then
       AFailed.Add('PKCS12_PBE_keyivgen');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_gen_mac := LoadLibFunction(ADllHandle, PKCS12_gen_mac_procname);
-  FuncLoaded := assigned(PKCS12_gen_mac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_gen_mac);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_gen_mac_allownil)}
+    PKCS12_gen_mac := @ERR_PKCS12_gen_mac;
+    {$ifend}
     {$if declared(PKCS12_gen_mac_introduced)}
     if LibVersion < PKCS12_gen_mac_introduced then
     begin
       {$if declared(FC_PKCS12_gen_mac)}
       PKCS12_gen_mac := @FC_PKCS12_gen_mac;
-      {$else}
-      {$if not defined(PKCS12_gen_mac_allownil)}
-      PKCS12_gen_mac := @ERR_PKCS12_gen_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_gen_mac_removed)}
@@ -2393,39 +2112,31 @@ begin
     begin
       {$if declared(_PKCS12_gen_mac)}
       PKCS12_gen_mac := @_PKCS12_gen_mac;
-      {$else}
-      {$if not defined(PKCS12_gen_mac_allownil)}
-      PKCS12_gen_mac := @ERR_PKCS12_gen_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_gen_mac_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_gen_mac := @ERR_PKCS12_gen_mac;
+    if FuncLoadError then
       AFailed.Add('PKCS12_gen_mac');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_verify_mac := LoadLibFunction(ADllHandle, PKCS12_verify_mac_procname);
-  FuncLoaded := assigned(PKCS12_verify_mac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_verify_mac);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_verify_mac_allownil)}
+    PKCS12_verify_mac := @ERR_PKCS12_verify_mac;
+    {$ifend}
     {$if declared(PKCS12_verify_mac_introduced)}
     if LibVersion < PKCS12_verify_mac_introduced then
     begin
       {$if declared(FC_PKCS12_verify_mac)}
       PKCS12_verify_mac := @FC_PKCS12_verify_mac;
-      {$else}
-      {$if not defined(PKCS12_verify_mac_allownil)}
-      PKCS12_verify_mac := @ERR_PKCS12_verify_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_verify_mac_removed)}
@@ -2433,39 +2144,31 @@ begin
     begin
       {$if declared(_PKCS12_verify_mac)}
       PKCS12_verify_mac := @_PKCS12_verify_mac;
-      {$else}
-      {$if not defined(PKCS12_verify_mac_allownil)}
-      PKCS12_verify_mac := @ERR_PKCS12_verify_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_verify_mac_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_verify_mac := @ERR_PKCS12_verify_mac;
+    if FuncLoadError then
       AFailed.Add('PKCS12_verify_mac');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_set_mac := LoadLibFunction(ADllHandle, PKCS12_set_mac_procname);
-  FuncLoaded := assigned(PKCS12_set_mac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_set_mac);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_set_mac_allownil)}
+    PKCS12_set_mac := @ERR_PKCS12_set_mac;
+    {$ifend}
     {$if declared(PKCS12_set_mac_introduced)}
     if LibVersion < PKCS12_set_mac_introduced then
     begin
       {$if declared(FC_PKCS12_set_mac)}
       PKCS12_set_mac := @FC_PKCS12_set_mac;
-      {$else}
-      {$if not defined(PKCS12_set_mac_allownil)}
-      PKCS12_set_mac := @ERR_PKCS12_set_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_set_mac_removed)}
@@ -2473,39 +2176,31 @@ begin
     begin
       {$if declared(_PKCS12_set_mac)}
       PKCS12_set_mac := @_PKCS12_set_mac;
-      {$else}
-      {$if not defined(PKCS12_set_mac_allownil)}
-      PKCS12_set_mac := @ERR_PKCS12_set_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_set_mac_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_set_mac := @ERR_PKCS12_set_mac;
+    if FuncLoadError then
       AFailed.Add('PKCS12_set_mac');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_setup_mac := LoadLibFunction(ADllHandle, PKCS12_setup_mac_procname);
-  FuncLoaded := assigned(PKCS12_setup_mac);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_setup_mac);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_setup_mac_allownil)}
+    PKCS12_setup_mac := @ERR_PKCS12_setup_mac;
+    {$ifend}
     {$if declared(PKCS12_setup_mac_introduced)}
     if LibVersion < PKCS12_setup_mac_introduced then
     begin
       {$if declared(FC_PKCS12_setup_mac)}
       PKCS12_setup_mac := @FC_PKCS12_setup_mac;
-      {$else}
-      {$if not defined(PKCS12_setup_mac_allownil)}
-      PKCS12_setup_mac := @ERR_PKCS12_setup_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_setup_mac_removed)}
@@ -2513,39 +2208,31 @@ begin
     begin
       {$if declared(_PKCS12_setup_mac)}
       PKCS12_setup_mac := @_PKCS12_setup_mac;
-      {$else}
-      {$if not defined(PKCS12_setup_mac_allownil)}
-      PKCS12_setup_mac := @ERR_PKCS12_setup_mac;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_setup_mac_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_setup_mac := @ERR_PKCS12_setup_mac;
+    if FuncLoadError then
       AFailed.Add('PKCS12_setup_mac');
-    end;
     {$ifend}
   end;
 
 
   OPENSSL_asc2uni := LoadLibFunction(ADllHandle, OPENSSL_asc2uni_procname);
-  FuncLoaded := assigned(OPENSSL_asc2uni);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_asc2uni);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_asc2uni_allownil)}
+    OPENSSL_asc2uni := @ERR_OPENSSL_asc2uni;
+    {$ifend}
     {$if declared(OPENSSL_asc2uni_introduced)}
     if LibVersion < OPENSSL_asc2uni_introduced then
     begin
       {$if declared(FC_OPENSSL_asc2uni)}
       OPENSSL_asc2uni := @FC_OPENSSL_asc2uni;
-      {$else}
-      {$if not defined(OPENSSL_asc2uni_allownil)}
-      OPENSSL_asc2uni := @ERR_OPENSSL_asc2uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_asc2uni_removed)}
@@ -2553,39 +2240,31 @@ begin
     begin
       {$if declared(_OPENSSL_asc2uni)}
       OPENSSL_asc2uni := @_OPENSSL_asc2uni;
-      {$else}
-      {$if not defined(OPENSSL_asc2uni_allownil)}
-      OPENSSL_asc2uni := @ERR_OPENSSL_asc2uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_asc2uni_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_asc2uni := @ERR_OPENSSL_asc2uni;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_asc2uni');
-    end;
     {$ifend}
   end;
 
 
   OPENSSL_uni2asc := LoadLibFunction(ADllHandle, OPENSSL_uni2asc_procname);
-  FuncLoaded := assigned(OPENSSL_uni2asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_uni2asc);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_uni2asc_allownil)}
+    OPENSSL_uni2asc := @ERR_OPENSSL_uni2asc;
+    {$ifend}
     {$if declared(OPENSSL_uni2asc_introduced)}
     if LibVersion < OPENSSL_uni2asc_introduced then
     begin
       {$if declared(FC_OPENSSL_uni2asc)}
       OPENSSL_uni2asc := @FC_OPENSSL_uni2asc;
-      {$else}
-      {$if not defined(OPENSSL_uni2asc_allownil)}
-      OPENSSL_uni2asc := @ERR_OPENSSL_uni2asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_uni2asc_removed)}
@@ -2593,39 +2272,31 @@ begin
     begin
       {$if declared(_OPENSSL_uni2asc)}
       OPENSSL_uni2asc := @_OPENSSL_uni2asc;
-      {$else}
-      {$if not defined(OPENSSL_uni2asc_allownil)}
-      OPENSSL_uni2asc := @ERR_OPENSSL_uni2asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_uni2asc_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_uni2asc := @ERR_OPENSSL_uni2asc;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_uni2asc');
-    end;
     {$ifend}
   end;
 
 
   OPENSSL_utf82uni := LoadLibFunction(ADllHandle, OPENSSL_utf82uni_procname);
-  FuncLoaded := assigned(OPENSSL_utf82uni);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_utf82uni);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_utf82uni_allownil)}
+    OPENSSL_utf82uni := @ERR_OPENSSL_utf82uni;
+    {$ifend}
     {$if declared(OPENSSL_utf82uni_introduced)}
     if LibVersion < OPENSSL_utf82uni_introduced then
     begin
       {$if declared(FC_OPENSSL_utf82uni)}
       OPENSSL_utf82uni := @FC_OPENSSL_utf82uni;
-      {$else}
-      {$if not defined(OPENSSL_utf82uni_allownil)}
-      OPENSSL_utf82uni := @ERR_OPENSSL_utf82uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_utf82uni_removed)}
@@ -2633,39 +2304,31 @@ begin
     begin
       {$if declared(_OPENSSL_utf82uni)}
       OPENSSL_utf82uni := @_OPENSSL_utf82uni;
-      {$else}
-      {$if not defined(OPENSSL_utf82uni_allownil)}
-      OPENSSL_utf82uni := @ERR_OPENSSL_utf82uni;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_utf82uni_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_utf82uni := @ERR_OPENSSL_utf82uni;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_utf82uni');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   OPENSSL_uni2utf8 := LoadLibFunction(ADllHandle, OPENSSL_uni2utf8_procname);
-  FuncLoaded := assigned(OPENSSL_uni2utf8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OPENSSL_uni2utf8);
+  if FuncLoadError then
   begin
+    {$if not defined(OPENSSL_uni2utf8_allownil)}
+    OPENSSL_uni2utf8 := @ERR_OPENSSL_uni2utf8;
+    {$ifend}
     {$if declared(OPENSSL_uni2utf8_introduced)}
     if LibVersion < OPENSSL_uni2utf8_introduced then
     begin
       {$if declared(FC_OPENSSL_uni2utf8)}
       OPENSSL_uni2utf8 := @FC_OPENSSL_uni2utf8;
-      {$else}
-      {$if not defined(OPENSSL_uni2utf8_allownil)}
-      OPENSSL_uni2utf8 := @ERR_OPENSSL_uni2utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OPENSSL_uni2utf8_removed)}
@@ -2673,39 +2336,31 @@ begin
     begin
       {$if declared(_OPENSSL_uni2utf8)}
       OPENSSL_uni2utf8 := @_OPENSSL_uni2utf8;
-      {$else}
-      {$if not defined(OPENSSL_uni2utf8_allownil)}
-      OPENSSL_uni2utf8 := @ERR_OPENSSL_uni2utf8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OPENSSL_uni2utf8_allownil)}
-    if not FuncLoaded then
-    begin
-      OPENSSL_uni2utf8 := @ERR_OPENSSL_uni2utf8;
+    if FuncLoadError then
       AFailed.Add('OPENSSL_uni2utf8');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PKCS12_new := LoadLibFunction(ADllHandle, PKCS12_new_procname);
-  FuncLoaded := assigned(PKCS12_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_new);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_new_allownil)}
+    PKCS12_new := @ERR_PKCS12_new;
+    {$ifend}
     {$if declared(PKCS12_new_introduced)}
     if LibVersion < PKCS12_new_introduced then
     begin
       {$if declared(FC_PKCS12_new)}
       PKCS12_new := @FC_PKCS12_new;
-      {$else}
-      {$if not defined(PKCS12_new_allownil)}
-      PKCS12_new := @ERR_PKCS12_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_new_removed)}
@@ -2713,39 +2368,31 @@ begin
     begin
       {$if declared(_PKCS12_new)}
       PKCS12_new := @_PKCS12_new;
-      {$else}
-      {$if not defined(PKCS12_new_allownil)}
-      PKCS12_new := @ERR_PKCS12_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_new_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_new := @ERR_PKCS12_new;
+    if FuncLoadError then
       AFailed.Add('PKCS12_new');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_free := LoadLibFunction(ADllHandle, PKCS12_free_procname);
-  FuncLoaded := assigned(PKCS12_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_free);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_free_allownil)}
+    PKCS12_free := @ERR_PKCS12_free;
+    {$ifend}
     {$if declared(PKCS12_free_introduced)}
     if LibVersion < PKCS12_free_introduced then
     begin
       {$if declared(FC_PKCS12_free)}
       PKCS12_free := @FC_PKCS12_free;
-      {$else}
-      {$if not defined(PKCS12_free_allownil)}
-      PKCS12_free := @ERR_PKCS12_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_free_removed)}
@@ -2753,39 +2400,31 @@ begin
     begin
       {$if declared(_PKCS12_free)}
       PKCS12_free := @_PKCS12_free;
-      {$else}
-      {$if not defined(PKCS12_free_allownil)}
-      PKCS12_free := @ERR_PKCS12_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_free_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_free := @ERR_PKCS12_free;
+    if FuncLoadError then
       AFailed.Add('PKCS12_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS12 := LoadLibFunction(ADllHandle, d2i_PKCS12_procname);
-  FuncLoaded := assigned(d2i_PKCS12);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS12);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS12_allownil)}
+    d2i_PKCS12 := @ERR_d2i_PKCS12;
+    {$ifend}
     {$if declared(d2i_PKCS12_introduced)}
     if LibVersion < d2i_PKCS12_introduced then
     begin
       {$if declared(FC_d2i_PKCS12)}
       d2i_PKCS12 := @FC_d2i_PKCS12;
-      {$else}
-      {$if not defined(d2i_PKCS12_allownil)}
-      d2i_PKCS12 := @ERR_d2i_PKCS12;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS12_removed)}
@@ -2793,39 +2432,31 @@ begin
     begin
       {$if declared(_d2i_PKCS12)}
       d2i_PKCS12 := @_d2i_PKCS12;
-      {$else}
-      {$if not defined(d2i_PKCS12_allownil)}
-      d2i_PKCS12 := @ERR_d2i_PKCS12;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS12_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS12 := @ERR_d2i_PKCS12;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS12');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS12 := LoadLibFunction(ADllHandle, i2d_PKCS12_procname);
-  FuncLoaded := assigned(i2d_PKCS12);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS12);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS12_allownil)}
+    i2d_PKCS12 := @ERR_i2d_PKCS12;
+    {$ifend}
     {$if declared(i2d_PKCS12_introduced)}
     if LibVersion < i2d_PKCS12_introduced then
     begin
       {$if declared(FC_i2d_PKCS12)}
       i2d_PKCS12 := @FC_i2d_PKCS12;
-      {$else}
-      {$if not defined(i2d_PKCS12_allownil)}
-      i2d_PKCS12 := @ERR_i2d_PKCS12;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS12_removed)}
@@ -2833,39 +2464,31 @@ begin
     begin
       {$if declared(_i2d_PKCS12)}
       i2d_PKCS12 := @_i2d_PKCS12;
-      {$else}
-      {$if not defined(i2d_PKCS12_allownil)}
-      i2d_PKCS12 := @ERR_i2d_PKCS12;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS12_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS12 := @ERR_i2d_PKCS12;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS12');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_it := LoadLibFunction(ADllHandle, PKCS12_it_procname);
-  FuncLoaded := assigned(PKCS12_it);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_it);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_it_allownil)}
+    PKCS12_it := @ERR_PKCS12_it;
+    {$ifend}
     {$if declared(PKCS12_it_introduced)}
     if LibVersion < PKCS12_it_introduced then
     begin
       {$if declared(FC_PKCS12_it)}
       PKCS12_it := @FC_PKCS12_it;
-      {$else}
-      {$if not defined(PKCS12_it_allownil)}
-      PKCS12_it := @ERR_PKCS12_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_it_removed)}
@@ -2873,39 +2496,31 @@ begin
     begin
       {$if declared(_PKCS12_it)}
       PKCS12_it := @_PKCS12_it;
-      {$else}
-      {$if not defined(PKCS12_it_allownil)}
-      PKCS12_it := @ERR_PKCS12_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_it_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_it := @ERR_PKCS12_it;
+    if FuncLoadError then
       AFailed.Add('PKCS12_it');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_MAC_DATA_new := LoadLibFunction(ADllHandle, PKCS12_MAC_DATA_new_procname);
-  FuncLoaded := assigned(PKCS12_MAC_DATA_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_MAC_DATA_new);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_MAC_DATA_new_allownil)}
+    PKCS12_MAC_DATA_new := @ERR_PKCS12_MAC_DATA_new;
+    {$ifend}
     {$if declared(PKCS12_MAC_DATA_new_introduced)}
     if LibVersion < PKCS12_MAC_DATA_new_introduced then
     begin
       {$if declared(FC_PKCS12_MAC_DATA_new)}
       PKCS12_MAC_DATA_new := @FC_PKCS12_MAC_DATA_new;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_new_allownil)}
-      PKCS12_MAC_DATA_new := @ERR_PKCS12_MAC_DATA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_MAC_DATA_new_removed)}
@@ -2913,39 +2528,31 @@ begin
     begin
       {$if declared(_PKCS12_MAC_DATA_new)}
       PKCS12_MAC_DATA_new := @_PKCS12_MAC_DATA_new;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_new_allownil)}
-      PKCS12_MAC_DATA_new := @ERR_PKCS12_MAC_DATA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_MAC_DATA_new_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_MAC_DATA_new := @ERR_PKCS12_MAC_DATA_new;
+    if FuncLoadError then
       AFailed.Add('PKCS12_MAC_DATA_new');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_MAC_DATA_free := LoadLibFunction(ADllHandle, PKCS12_MAC_DATA_free_procname);
-  FuncLoaded := assigned(PKCS12_MAC_DATA_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_MAC_DATA_free);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_MAC_DATA_free_allownil)}
+    PKCS12_MAC_DATA_free := @ERR_PKCS12_MAC_DATA_free;
+    {$ifend}
     {$if declared(PKCS12_MAC_DATA_free_introduced)}
     if LibVersion < PKCS12_MAC_DATA_free_introduced then
     begin
       {$if declared(FC_PKCS12_MAC_DATA_free)}
       PKCS12_MAC_DATA_free := @FC_PKCS12_MAC_DATA_free;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_free_allownil)}
-      PKCS12_MAC_DATA_free := @ERR_PKCS12_MAC_DATA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_MAC_DATA_free_removed)}
@@ -2953,39 +2560,31 @@ begin
     begin
       {$if declared(_PKCS12_MAC_DATA_free)}
       PKCS12_MAC_DATA_free := @_PKCS12_MAC_DATA_free;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_free_allownil)}
-      PKCS12_MAC_DATA_free := @ERR_PKCS12_MAC_DATA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_MAC_DATA_free_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_MAC_DATA_free := @ERR_PKCS12_MAC_DATA_free;
+    if FuncLoadError then
       AFailed.Add('PKCS12_MAC_DATA_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS12_MAC_DATA := LoadLibFunction(ADllHandle, d2i_PKCS12_MAC_DATA_procname);
-  FuncLoaded := assigned(d2i_PKCS12_MAC_DATA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS12_MAC_DATA);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS12_MAC_DATA_allownil)}
+    d2i_PKCS12_MAC_DATA := @ERR_d2i_PKCS12_MAC_DATA;
+    {$ifend}
     {$if declared(d2i_PKCS12_MAC_DATA_introduced)}
     if LibVersion < d2i_PKCS12_MAC_DATA_introduced then
     begin
       {$if declared(FC_d2i_PKCS12_MAC_DATA)}
       d2i_PKCS12_MAC_DATA := @FC_d2i_PKCS12_MAC_DATA;
-      {$else}
-      {$if not defined(d2i_PKCS12_MAC_DATA_allownil)}
-      d2i_PKCS12_MAC_DATA := @ERR_d2i_PKCS12_MAC_DATA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS12_MAC_DATA_removed)}
@@ -2993,39 +2592,31 @@ begin
     begin
       {$if declared(_d2i_PKCS12_MAC_DATA)}
       d2i_PKCS12_MAC_DATA := @_d2i_PKCS12_MAC_DATA;
-      {$else}
-      {$if not defined(d2i_PKCS12_MAC_DATA_allownil)}
-      d2i_PKCS12_MAC_DATA := @ERR_d2i_PKCS12_MAC_DATA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS12_MAC_DATA_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS12_MAC_DATA := @ERR_d2i_PKCS12_MAC_DATA;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS12_MAC_DATA');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS12_MAC_DATA := LoadLibFunction(ADllHandle, i2d_PKCS12_MAC_DATA_procname);
-  FuncLoaded := assigned(i2d_PKCS12_MAC_DATA);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS12_MAC_DATA);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS12_MAC_DATA_allownil)}
+    i2d_PKCS12_MAC_DATA := @ERR_i2d_PKCS12_MAC_DATA;
+    {$ifend}
     {$if declared(i2d_PKCS12_MAC_DATA_introduced)}
     if LibVersion < i2d_PKCS12_MAC_DATA_introduced then
     begin
       {$if declared(FC_i2d_PKCS12_MAC_DATA)}
       i2d_PKCS12_MAC_DATA := @FC_i2d_PKCS12_MAC_DATA;
-      {$else}
-      {$if not defined(i2d_PKCS12_MAC_DATA_allownil)}
-      i2d_PKCS12_MAC_DATA := @ERR_i2d_PKCS12_MAC_DATA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS12_MAC_DATA_removed)}
@@ -3033,39 +2624,31 @@ begin
     begin
       {$if declared(_i2d_PKCS12_MAC_DATA)}
       i2d_PKCS12_MAC_DATA := @_i2d_PKCS12_MAC_DATA;
-      {$else}
-      {$if not defined(i2d_PKCS12_MAC_DATA_allownil)}
-      i2d_PKCS12_MAC_DATA := @ERR_i2d_PKCS12_MAC_DATA;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS12_MAC_DATA_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS12_MAC_DATA := @ERR_i2d_PKCS12_MAC_DATA;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS12_MAC_DATA');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_MAC_DATA_it := LoadLibFunction(ADllHandle, PKCS12_MAC_DATA_it_procname);
-  FuncLoaded := assigned(PKCS12_MAC_DATA_it);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_MAC_DATA_it);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_MAC_DATA_it_allownil)}
+    PKCS12_MAC_DATA_it := @ERR_PKCS12_MAC_DATA_it;
+    {$ifend}
     {$if declared(PKCS12_MAC_DATA_it_introduced)}
     if LibVersion < PKCS12_MAC_DATA_it_introduced then
     begin
       {$if declared(FC_PKCS12_MAC_DATA_it)}
       PKCS12_MAC_DATA_it := @FC_PKCS12_MAC_DATA_it;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_it_allownil)}
-      PKCS12_MAC_DATA_it := @ERR_PKCS12_MAC_DATA_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_MAC_DATA_it_removed)}
@@ -3073,39 +2656,31 @@ begin
     begin
       {$if declared(_PKCS12_MAC_DATA_it)}
       PKCS12_MAC_DATA_it := @_PKCS12_MAC_DATA_it;
-      {$else}
-      {$if not defined(PKCS12_MAC_DATA_it_allownil)}
-      PKCS12_MAC_DATA_it := @ERR_PKCS12_MAC_DATA_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_MAC_DATA_it_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_MAC_DATA_it := @ERR_PKCS12_MAC_DATA_it;
+    if FuncLoadError then
       AFailed.Add('PKCS12_MAC_DATA_it');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_SAFEBAG_new := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_new_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_new);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_new_allownil)}
+    PKCS12_SAFEBAG_new := @ERR_PKCS12_SAFEBAG_new;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_new_introduced)}
     if LibVersion < PKCS12_SAFEBAG_new_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_new)}
       PKCS12_SAFEBAG_new := @FC_PKCS12_SAFEBAG_new;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_new_allownil)}
-      PKCS12_SAFEBAG_new := @ERR_PKCS12_SAFEBAG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_new_removed)}
@@ -3113,39 +2688,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_new)}
       PKCS12_SAFEBAG_new := @_PKCS12_SAFEBAG_new;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_new_allownil)}
-      PKCS12_SAFEBAG_new := @ERR_PKCS12_SAFEBAG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_new_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_new := @ERR_PKCS12_SAFEBAG_new;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_new');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_SAFEBAG_free := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_free_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_free);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_free_allownil)}
+    PKCS12_SAFEBAG_free := @ERR_PKCS12_SAFEBAG_free;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_free_introduced)}
     if LibVersion < PKCS12_SAFEBAG_free_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_free)}
       PKCS12_SAFEBAG_free := @FC_PKCS12_SAFEBAG_free;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_free_allownil)}
-      PKCS12_SAFEBAG_free := @ERR_PKCS12_SAFEBAG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_free_removed)}
@@ -3153,39 +2720,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_free)}
       PKCS12_SAFEBAG_free := @_PKCS12_SAFEBAG_free;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_free_allownil)}
-      PKCS12_SAFEBAG_free := @ERR_PKCS12_SAFEBAG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_free_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_free := @ERR_PKCS12_SAFEBAG_free;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS12_SAFEBAG := LoadLibFunction(ADllHandle, d2i_PKCS12_SAFEBAG_procname);
-  FuncLoaded := assigned(d2i_PKCS12_SAFEBAG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS12_SAFEBAG);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS12_SAFEBAG_allownil)}
+    d2i_PKCS12_SAFEBAG := @ERR_d2i_PKCS12_SAFEBAG;
+    {$ifend}
     {$if declared(d2i_PKCS12_SAFEBAG_introduced)}
     if LibVersion < d2i_PKCS12_SAFEBAG_introduced then
     begin
       {$if declared(FC_d2i_PKCS12_SAFEBAG)}
       d2i_PKCS12_SAFEBAG := @FC_d2i_PKCS12_SAFEBAG;
-      {$else}
-      {$if not defined(d2i_PKCS12_SAFEBAG_allownil)}
-      d2i_PKCS12_SAFEBAG := @ERR_d2i_PKCS12_SAFEBAG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS12_SAFEBAG_removed)}
@@ -3193,39 +2752,31 @@ begin
     begin
       {$if declared(_d2i_PKCS12_SAFEBAG)}
       d2i_PKCS12_SAFEBAG := @_d2i_PKCS12_SAFEBAG;
-      {$else}
-      {$if not defined(d2i_PKCS12_SAFEBAG_allownil)}
-      d2i_PKCS12_SAFEBAG := @ERR_d2i_PKCS12_SAFEBAG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS12_SAFEBAG_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS12_SAFEBAG := @ERR_d2i_PKCS12_SAFEBAG;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS12_SAFEBAG');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS12_SAFEBAG := LoadLibFunction(ADllHandle, i2d_PKCS12_SAFEBAG_procname);
-  FuncLoaded := assigned(i2d_PKCS12_SAFEBAG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS12_SAFEBAG);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS12_SAFEBAG_allownil)}
+    i2d_PKCS12_SAFEBAG := @ERR_i2d_PKCS12_SAFEBAG;
+    {$ifend}
     {$if declared(i2d_PKCS12_SAFEBAG_introduced)}
     if LibVersion < i2d_PKCS12_SAFEBAG_introduced then
     begin
       {$if declared(FC_i2d_PKCS12_SAFEBAG)}
       i2d_PKCS12_SAFEBAG := @FC_i2d_PKCS12_SAFEBAG;
-      {$else}
-      {$if not defined(i2d_PKCS12_SAFEBAG_allownil)}
-      i2d_PKCS12_SAFEBAG := @ERR_i2d_PKCS12_SAFEBAG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS12_SAFEBAG_removed)}
@@ -3233,39 +2784,31 @@ begin
     begin
       {$if declared(_i2d_PKCS12_SAFEBAG)}
       i2d_PKCS12_SAFEBAG := @_i2d_PKCS12_SAFEBAG;
-      {$else}
-      {$if not defined(i2d_PKCS12_SAFEBAG_allownil)}
-      i2d_PKCS12_SAFEBAG := @ERR_i2d_PKCS12_SAFEBAG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS12_SAFEBAG_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS12_SAFEBAG := @ERR_i2d_PKCS12_SAFEBAG;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS12_SAFEBAG');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_SAFEBAG_it := LoadLibFunction(ADllHandle, PKCS12_SAFEBAG_it_procname);
-  FuncLoaded := assigned(PKCS12_SAFEBAG_it);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_SAFEBAG_it);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_SAFEBAG_it_allownil)}
+    PKCS12_SAFEBAG_it := @ERR_PKCS12_SAFEBAG_it;
+    {$ifend}
     {$if declared(PKCS12_SAFEBAG_it_introduced)}
     if LibVersion < PKCS12_SAFEBAG_it_introduced then
     begin
       {$if declared(FC_PKCS12_SAFEBAG_it)}
       PKCS12_SAFEBAG_it := @FC_PKCS12_SAFEBAG_it;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_it_allownil)}
-      PKCS12_SAFEBAG_it := @ERR_PKCS12_SAFEBAG_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_SAFEBAG_it_removed)}
@@ -3273,39 +2816,31 @@ begin
     begin
       {$if declared(_PKCS12_SAFEBAG_it)}
       PKCS12_SAFEBAG_it := @_PKCS12_SAFEBAG_it;
-      {$else}
-      {$if not defined(PKCS12_SAFEBAG_it_allownil)}
-      PKCS12_SAFEBAG_it := @ERR_PKCS12_SAFEBAG_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_SAFEBAG_it_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_SAFEBAG_it := @ERR_PKCS12_SAFEBAG_it;
+    if FuncLoadError then
       AFailed.Add('PKCS12_SAFEBAG_it');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_BAGS_new := LoadLibFunction(ADllHandle, PKCS12_BAGS_new_procname);
-  FuncLoaded := assigned(PKCS12_BAGS_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_BAGS_new);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_BAGS_new_allownil)}
+    PKCS12_BAGS_new := @ERR_PKCS12_BAGS_new;
+    {$ifend}
     {$if declared(PKCS12_BAGS_new_introduced)}
     if LibVersion < PKCS12_BAGS_new_introduced then
     begin
       {$if declared(FC_PKCS12_BAGS_new)}
       PKCS12_BAGS_new := @FC_PKCS12_BAGS_new;
-      {$else}
-      {$if not defined(PKCS12_BAGS_new_allownil)}
-      PKCS12_BAGS_new := @ERR_PKCS12_BAGS_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_BAGS_new_removed)}
@@ -3313,39 +2848,31 @@ begin
     begin
       {$if declared(_PKCS12_BAGS_new)}
       PKCS12_BAGS_new := @_PKCS12_BAGS_new;
-      {$else}
-      {$if not defined(PKCS12_BAGS_new_allownil)}
-      PKCS12_BAGS_new := @ERR_PKCS12_BAGS_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_BAGS_new_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_BAGS_new := @ERR_PKCS12_BAGS_new;
+    if FuncLoadError then
       AFailed.Add('PKCS12_BAGS_new');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_BAGS_free := LoadLibFunction(ADllHandle, PKCS12_BAGS_free_procname);
-  FuncLoaded := assigned(PKCS12_BAGS_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_BAGS_free);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_BAGS_free_allownil)}
+    PKCS12_BAGS_free := @ERR_PKCS12_BAGS_free;
+    {$ifend}
     {$if declared(PKCS12_BAGS_free_introduced)}
     if LibVersion < PKCS12_BAGS_free_introduced then
     begin
       {$if declared(FC_PKCS12_BAGS_free)}
       PKCS12_BAGS_free := @FC_PKCS12_BAGS_free;
-      {$else}
-      {$if not defined(PKCS12_BAGS_free_allownil)}
-      PKCS12_BAGS_free := @ERR_PKCS12_BAGS_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_BAGS_free_removed)}
@@ -3353,39 +2880,31 @@ begin
     begin
       {$if declared(_PKCS12_BAGS_free)}
       PKCS12_BAGS_free := @_PKCS12_BAGS_free;
-      {$else}
-      {$if not defined(PKCS12_BAGS_free_allownil)}
-      PKCS12_BAGS_free := @ERR_PKCS12_BAGS_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_BAGS_free_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_BAGS_free := @ERR_PKCS12_BAGS_free;
+    if FuncLoadError then
       AFailed.Add('PKCS12_BAGS_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS12_BAGS := LoadLibFunction(ADllHandle, d2i_PKCS12_BAGS_procname);
-  FuncLoaded := assigned(d2i_PKCS12_BAGS);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS12_BAGS);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS12_BAGS_allownil)}
+    d2i_PKCS12_BAGS := @ERR_d2i_PKCS12_BAGS;
+    {$ifend}
     {$if declared(d2i_PKCS12_BAGS_introduced)}
     if LibVersion < d2i_PKCS12_BAGS_introduced then
     begin
       {$if declared(FC_d2i_PKCS12_BAGS)}
       d2i_PKCS12_BAGS := @FC_d2i_PKCS12_BAGS;
-      {$else}
-      {$if not defined(d2i_PKCS12_BAGS_allownil)}
-      d2i_PKCS12_BAGS := @ERR_d2i_PKCS12_BAGS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS12_BAGS_removed)}
@@ -3393,39 +2912,31 @@ begin
     begin
       {$if declared(_d2i_PKCS12_BAGS)}
       d2i_PKCS12_BAGS := @_d2i_PKCS12_BAGS;
-      {$else}
-      {$if not defined(d2i_PKCS12_BAGS_allownil)}
-      d2i_PKCS12_BAGS := @ERR_d2i_PKCS12_BAGS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS12_BAGS_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS12_BAGS := @ERR_d2i_PKCS12_BAGS;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS12_BAGS');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS12_BAGS := LoadLibFunction(ADllHandle, i2d_PKCS12_BAGS_procname);
-  FuncLoaded := assigned(i2d_PKCS12_BAGS);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS12_BAGS);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS12_BAGS_allownil)}
+    i2d_PKCS12_BAGS := @ERR_i2d_PKCS12_BAGS;
+    {$ifend}
     {$if declared(i2d_PKCS12_BAGS_introduced)}
     if LibVersion < i2d_PKCS12_BAGS_introduced then
     begin
       {$if declared(FC_i2d_PKCS12_BAGS)}
       i2d_PKCS12_BAGS := @FC_i2d_PKCS12_BAGS;
-      {$else}
-      {$if not defined(i2d_PKCS12_BAGS_allownil)}
-      i2d_PKCS12_BAGS := @ERR_i2d_PKCS12_BAGS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS12_BAGS_removed)}
@@ -3433,39 +2944,31 @@ begin
     begin
       {$if declared(_i2d_PKCS12_BAGS)}
       i2d_PKCS12_BAGS := @_i2d_PKCS12_BAGS;
-      {$else}
-      {$if not defined(i2d_PKCS12_BAGS_allownil)}
-      i2d_PKCS12_BAGS := @ERR_i2d_PKCS12_BAGS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS12_BAGS_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS12_BAGS := @ERR_i2d_PKCS12_BAGS;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS12_BAGS');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_BAGS_it := LoadLibFunction(ADllHandle, PKCS12_BAGS_it_procname);
-  FuncLoaded := assigned(PKCS12_BAGS_it);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_BAGS_it);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_BAGS_it_allownil)}
+    PKCS12_BAGS_it := @ERR_PKCS12_BAGS_it;
+    {$ifend}
     {$if declared(PKCS12_BAGS_it_introduced)}
     if LibVersion < PKCS12_BAGS_it_introduced then
     begin
       {$if declared(FC_PKCS12_BAGS_it)}
       PKCS12_BAGS_it := @FC_PKCS12_BAGS_it;
-      {$else}
-      {$if not defined(PKCS12_BAGS_it_allownil)}
-      PKCS12_BAGS_it := @ERR_PKCS12_BAGS_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_BAGS_it_removed)}
@@ -3473,39 +2976,31 @@ begin
     begin
       {$if declared(_PKCS12_BAGS_it)}
       PKCS12_BAGS_it := @_PKCS12_BAGS_it;
-      {$else}
-      {$if not defined(PKCS12_BAGS_it_allownil)}
-      PKCS12_BAGS_it := @ERR_PKCS12_BAGS_it;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_BAGS_it_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_BAGS_it := @ERR_PKCS12_BAGS_it;
+    if FuncLoadError then
       AFailed.Add('PKCS12_BAGS_it');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_PBE_add := LoadLibFunction(ADllHandle, PKCS12_PBE_add_procname);
-  FuncLoaded := assigned(PKCS12_PBE_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_PBE_add);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_PBE_add_allownil)}
+    PKCS12_PBE_add := @ERR_PKCS12_PBE_add;
+    {$ifend}
     {$if declared(PKCS12_PBE_add_introduced)}
     if LibVersion < PKCS12_PBE_add_introduced then
     begin
       {$if declared(FC_PKCS12_PBE_add)}
       PKCS12_PBE_add := @FC_PKCS12_PBE_add;
-      {$else}
-      {$if not defined(PKCS12_PBE_add_allownil)}
-      PKCS12_PBE_add := @ERR_PKCS12_PBE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_PBE_add_removed)}
@@ -3513,39 +3008,31 @@ begin
     begin
       {$if declared(_PKCS12_PBE_add)}
       PKCS12_PBE_add := @_PKCS12_PBE_add;
-      {$else}
-      {$if not defined(PKCS12_PBE_add_allownil)}
-      PKCS12_PBE_add := @ERR_PKCS12_PBE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_PBE_add_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_PBE_add := @ERR_PKCS12_PBE_add;
+    if FuncLoadError then
       AFailed.Add('PKCS12_PBE_add');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_parse := LoadLibFunction(ADllHandle, PKCS12_parse_procname);
-  FuncLoaded := assigned(PKCS12_parse);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_parse);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_parse_allownil)}
+    PKCS12_parse := @ERR_PKCS12_parse;
+    {$ifend}
     {$if declared(PKCS12_parse_introduced)}
     if LibVersion < PKCS12_parse_introduced then
     begin
       {$if declared(FC_PKCS12_parse)}
       PKCS12_parse := @FC_PKCS12_parse;
-      {$else}
-      {$if not defined(PKCS12_parse_allownil)}
-      PKCS12_parse := @ERR_PKCS12_parse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_parse_removed)}
@@ -3553,39 +3040,31 @@ begin
     begin
       {$if declared(_PKCS12_parse)}
       PKCS12_parse := @_PKCS12_parse;
-      {$else}
-      {$if not defined(PKCS12_parse_allownil)}
-      PKCS12_parse := @ERR_PKCS12_parse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_parse_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_parse := @ERR_PKCS12_parse;
+    if FuncLoadError then
       AFailed.Add('PKCS12_parse');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_create := LoadLibFunction(ADllHandle, PKCS12_create_procname);
-  FuncLoaded := assigned(PKCS12_create);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_create);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_create_allownil)}
+    PKCS12_create := @ERR_PKCS12_create;
+    {$ifend}
     {$if declared(PKCS12_create_introduced)}
     if LibVersion < PKCS12_create_introduced then
     begin
       {$if declared(FC_PKCS12_create)}
       PKCS12_create := @FC_PKCS12_create;
-      {$else}
-      {$if not defined(PKCS12_create_allownil)}
-      PKCS12_create := @ERR_PKCS12_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_create_removed)}
@@ -3593,39 +3072,31 @@ begin
     begin
       {$if declared(_PKCS12_create)}
       PKCS12_create := @_PKCS12_create;
-      {$else}
-      {$if not defined(PKCS12_create_allownil)}
-      PKCS12_create := @ERR_PKCS12_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_create_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_create := @ERR_PKCS12_create;
+    if FuncLoadError then
       AFailed.Add('PKCS12_create');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS12_bio := LoadLibFunction(ADllHandle, i2d_PKCS12_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS12_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS12_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS12_bio_allownil)}
+    i2d_PKCS12_bio := @ERR_i2d_PKCS12_bio;
+    {$ifend}
     {$if declared(i2d_PKCS12_bio_introduced)}
     if LibVersion < i2d_PKCS12_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS12_bio)}
       i2d_PKCS12_bio := @FC_i2d_PKCS12_bio;
-      {$else}
-      {$if not defined(i2d_PKCS12_bio_allownil)}
-      i2d_PKCS12_bio := @ERR_i2d_PKCS12_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS12_bio_removed)}
@@ -3633,39 +3104,31 @@ begin
     begin
       {$if declared(_i2d_PKCS12_bio)}
       i2d_PKCS12_bio := @_i2d_PKCS12_bio;
-      {$else}
-      {$if not defined(i2d_PKCS12_bio_allownil)}
-      i2d_PKCS12_bio := @ERR_i2d_PKCS12_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS12_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS12_bio := @ERR_i2d_PKCS12_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS12_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS12_bio := LoadLibFunction(ADllHandle, d2i_PKCS12_bio_procname);
-  FuncLoaded := assigned(d2i_PKCS12_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS12_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS12_bio_allownil)}
+    d2i_PKCS12_bio := @ERR_d2i_PKCS12_bio;
+    {$ifend}
     {$if declared(d2i_PKCS12_bio_introduced)}
     if LibVersion < d2i_PKCS12_bio_introduced then
     begin
       {$if declared(FC_d2i_PKCS12_bio)}
       d2i_PKCS12_bio := @FC_d2i_PKCS12_bio;
-      {$else}
-      {$if not defined(d2i_PKCS12_bio_allownil)}
-      d2i_PKCS12_bio := @ERR_d2i_PKCS12_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS12_bio_removed)}
@@ -3673,39 +3136,31 @@ begin
     begin
       {$if declared(_d2i_PKCS12_bio)}
       d2i_PKCS12_bio := @_d2i_PKCS12_bio;
-      {$else}
-      {$if not defined(d2i_PKCS12_bio_allownil)}
-      d2i_PKCS12_bio := @ERR_d2i_PKCS12_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS12_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS12_bio := @ERR_d2i_PKCS12_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS12_bio');
-    end;
     {$ifend}
   end;
 
 
   PKCS12_newpass := LoadLibFunction(ADllHandle, PKCS12_newpass_procname);
-  FuncLoaded := assigned(PKCS12_newpass);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS12_newpass);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS12_newpass_allownil)}
+    PKCS12_newpass := @ERR_PKCS12_newpass;
+    {$ifend}
     {$if declared(PKCS12_newpass_introduced)}
     if LibVersion < PKCS12_newpass_introduced then
     begin
       {$if declared(FC_PKCS12_newpass)}
       PKCS12_newpass := @FC_PKCS12_newpass;
-      {$else}
-      {$if not defined(PKCS12_newpass_allownil)}
-      PKCS12_newpass := @ERR_PKCS12_newpass;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS12_newpass_removed)}
@@ -3713,20 +3168,13 @@ begin
     begin
       {$if declared(_PKCS12_newpass)}
       PKCS12_newpass := @_PKCS12_newpass;
-      {$else}
-      {$if not defined(PKCS12_newpass_allownil)}
-      PKCS12_newpass := @ERR_PKCS12_newpass;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS12_newpass_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS12_newpass := @ERR_PKCS12_newpass;
+    if FuncLoadError then
       AFailed.Add('PKCS12_newpass');
-    end;
     {$ifend}
   end;
 

@@ -189,24 +189,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   BF_set_key := LoadLibFunction(ADllHandle, BF_set_key_procname);
-  FuncLoaded := assigned(BF_set_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_set_key);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_set_key_allownil)}
+    BF_set_key := @ERR_BF_set_key;
+    {$ifend}
     {$if declared(BF_set_key_introduced)}
     if LibVersion < BF_set_key_introduced then
     begin
       {$if declared(FC_BF_set_key)}
       BF_set_key := @FC_BF_set_key;
-      {$else}
-      {$if not defined(BF_set_key_allownil)}
-      BF_set_key := @ERR_BF_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_set_key_removed)}
@@ -214,39 +213,31 @@ begin
     begin
       {$if declared(_BF_set_key)}
       BF_set_key := @_BF_set_key;
-      {$else}
-      {$if not defined(BF_set_key_allownil)}
-      BF_set_key := @ERR_BF_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_set_key_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_set_key := @ERR_BF_set_key;
+    if FuncLoadError then
       AFailed.Add('BF_set_key');
-    end;
     {$ifend}
   end;
 
 
   BF_encrypt := LoadLibFunction(ADllHandle, BF_encrypt_procname);
-  FuncLoaded := assigned(BF_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_encrypt_allownil)}
+    BF_encrypt := @ERR_BF_encrypt;
+    {$ifend}
     {$if declared(BF_encrypt_introduced)}
     if LibVersion < BF_encrypt_introduced then
     begin
       {$if declared(FC_BF_encrypt)}
       BF_encrypt := @FC_BF_encrypt;
-      {$else}
-      {$if not defined(BF_encrypt_allownil)}
-      BF_encrypt := @ERR_BF_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_encrypt_removed)}
@@ -254,39 +245,31 @@ begin
     begin
       {$if declared(_BF_encrypt)}
       BF_encrypt := @_BF_encrypt;
-      {$else}
-      {$if not defined(BF_encrypt_allownil)}
-      BF_encrypt := @ERR_BF_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_encrypt := @ERR_BF_encrypt;
+    if FuncLoadError then
       AFailed.Add('BF_encrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_decrypt := LoadLibFunction(ADllHandle, BF_decrypt_procname);
-  FuncLoaded := assigned(BF_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_decrypt_allownil)}
+    BF_decrypt := @ERR_BF_decrypt;
+    {$ifend}
     {$if declared(BF_decrypt_introduced)}
     if LibVersion < BF_decrypt_introduced then
     begin
       {$if declared(FC_BF_decrypt)}
       BF_decrypt := @FC_BF_decrypt;
-      {$else}
-      {$if not defined(BF_decrypt_allownil)}
-      BF_decrypt := @ERR_BF_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_decrypt_removed)}
@@ -294,39 +277,31 @@ begin
     begin
       {$if declared(_BF_decrypt)}
       BF_decrypt := @_BF_decrypt;
-      {$else}
-      {$if not defined(BF_decrypt_allownil)}
-      BF_decrypt := @ERR_BF_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_decrypt := @ERR_BF_decrypt;
+    if FuncLoadError then
       AFailed.Add('BF_decrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_ecb_encrypt := LoadLibFunction(ADllHandle, BF_ecb_encrypt_procname);
-  FuncLoaded := assigned(BF_ecb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_ecb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_ecb_encrypt_allownil)}
+    BF_ecb_encrypt := @ERR_BF_ecb_encrypt;
+    {$ifend}
     {$if declared(BF_ecb_encrypt_introduced)}
     if LibVersion < BF_ecb_encrypt_introduced then
     begin
       {$if declared(FC_BF_ecb_encrypt)}
       BF_ecb_encrypt := @FC_BF_ecb_encrypt;
-      {$else}
-      {$if not defined(BF_ecb_encrypt_allownil)}
-      BF_ecb_encrypt := @ERR_BF_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_ecb_encrypt_removed)}
@@ -334,39 +309,31 @@ begin
     begin
       {$if declared(_BF_ecb_encrypt)}
       BF_ecb_encrypt := @_BF_ecb_encrypt;
-      {$else}
-      {$if not defined(BF_ecb_encrypt_allownil)}
-      BF_ecb_encrypt := @ERR_BF_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_ecb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_ecb_encrypt := @ERR_BF_ecb_encrypt;
+    if FuncLoadError then
       AFailed.Add('BF_ecb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_cbc_encrypt := LoadLibFunction(ADllHandle, BF_cbc_encrypt_procname);
-  FuncLoaded := assigned(BF_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_cbc_encrypt_allownil)}
+    BF_cbc_encrypt := @ERR_BF_cbc_encrypt;
+    {$ifend}
     {$if declared(BF_cbc_encrypt_introduced)}
     if LibVersion < BF_cbc_encrypt_introduced then
     begin
       {$if declared(FC_BF_cbc_encrypt)}
       BF_cbc_encrypt := @FC_BF_cbc_encrypt;
-      {$else}
-      {$if not defined(BF_cbc_encrypt_allownil)}
-      BF_cbc_encrypt := @ERR_BF_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_cbc_encrypt_removed)}
@@ -374,39 +341,31 @@ begin
     begin
       {$if declared(_BF_cbc_encrypt)}
       BF_cbc_encrypt := @_BF_cbc_encrypt;
-      {$else}
-      {$if not defined(BF_cbc_encrypt_allownil)}
-      BF_cbc_encrypt := @ERR_BF_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_cbc_encrypt := @ERR_BF_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('BF_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_cfb64_encrypt := LoadLibFunction(ADllHandle, BF_cfb64_encrypt_procname);
-  FuncLoaded := assigned(BF_cfb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_cfb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_cfb64_encrypt_allownil)}
+    BF_cfb64_encrypt := @ERR_BF_cfb64_encrypt;
+    {$ifend}
     {$if declared(BF_cfb64_encrypt_introduced)}
     if LibVersion < BF_cfb64_encrypt_introduced then
     begin
       {$if declared(FC_BF_cfb64_encrypt)}
       BF_cfb64_encrypt := @FC_BF_cfb64_encrypt;
-      {$else}
-      {$if not defined(BF_cfb64_encrypt_allownil)}
-      BF_cfb64_encrypt := @ERR_BF_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_cfb64_encrypt_removed)}
@@ -414,39 +373,31 @@ begin
     begin
       {$if declared(_BF_cfb64_encrypt)}
       BF_cfb64_encrypt := @_BF_cfb64_encrypt;
-      {$else}
-      {$if not defined(BF_cfb64_encrypt_allownil)}
-      BF_cfb64_encrypt := @ERR_BF_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_cfb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_cfb64_encrypt := @ERR_BF_cfb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('BF_cfb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_ofb64_encrypt := LoadLibFunction(ADllHandle, BF_ofb64_encrypt_procname);
-  FuncLoaded := assigned(BF_ofb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_ofb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_ofb64_encrypt_allownil)}
+    BF_ofb64_encrypt := @ERR_BF_ofb64_encrypt;
+    {$ifend}
     {$if declared(BF_ofb64_encrypt_introduced)}
     if LibVersion < BF_ofb64_encrypt_introduced then
     begin
       {$if declared(FC_BF_ofb64_encrypt)}
       BF_ofb64_encrypt := @FC_BF_ofb64_encrypt;
-      {$else}
-      {$if not defined(BF_ofb64_encrypt_allownil)}
-      BF_ofb64_encrypt := @ERR_BF_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_ofb64_encrypt_removed)}
@@ -454,39 +405,31 @@ begin
     begin
       {$if declared(_BF_ofb64_encrypt)}
       BF_ofb64_encrypt := @_BF_ofb64_encrypt;
-      {$else}
-      {$if not defined(BF_ofb64_encrypt_allownil)}
-      BF_ofb64_encrypt := @ERR_BF_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_ofb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_ofb64_encrypt := @ERR_BF_ofb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('BF_ofb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   BF_options := LoadLibFunction(ADllHandle, BF_options_procname);
-  FuncLoaded := assigned(BF_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BF_options);
+  if FuncLoadError then
   begin
+    {$if not defined(BF_options_allownil)}
+    BF_options := @ERR_BF_options;
+    {$ifend}
     {$if declared(BF_options_introduced)}
     if LibVersion < BF_options_introduced then
     begin
       {$if declared(FC_BF_options)}
       BF_options := @FC_BF_options;
-      {$else}
-      {$if not defined(BF_options_allownil)}
-      BF_options := @ERR_BF_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BF_options_removed)}
@@ -494,20 +437,13 @@ begin
     begin
       {$if declared(_BF_options)}
       BF_options := @_BF_options;
-      {$else}
-      {$if not defined(BF_options_allownil)}
-      BF_options := @ERR_BF_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BF_options_allownil)}
-    if not FuncLoaded then
-    begin
-      BF_options := @ERR_BF_options;
+    if FuncLoadError then
       AFailed.Add('BF_options');
-    end;
     {$ifend}
   end;
 

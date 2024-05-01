@@ -1010,24 +1010,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   DSAparams_dup := LoadLibFunction(ADllHandle, DSAparams_dup_procname);
-  FuncLoaded := assigned(DSAparams_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSAparams_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(DSAparams_dup_allownil)}
+    DSAparams_dup := @ERR_DSAparams_dup;
+    {$ifend}
     {$if declared(DSAparams_dup_introduced)}
     if LibVersion < DSAparams_dup_introduced then
     begin
       {$if declared(FC_DSAparams_dup)}
       DSAparams_dup := @FC_DSAparams_dup;
-      {$else}
-      {$if not defined(DSAparams_dup_allownil)}
-      DSAparams_dup := @ERR_DSAparams_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSAparams_dup_removed)}
@@ -1035,39 +1034,31 @@ begin
     begin
       {$if declared(_DSAparams_dup)}
       DSAparams_dup := @_DSAparams_dup;
-      {$else}
-      {$if not defined(DSAparams_dup_allownil)}
-      DSAparams_dup := @ERR_DSAparams_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSAparams_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      DSAparams_dup := @ERR_DSAparams_dup;
+    if FuncLoadError then
       AFailed.Add('DSAparams_dup');
-    end;
     {$ifend}
   end;
 
 
   DSA_SIG_new := LoadLibFunction(ADllHandle, DSA_SIG_new_procname);
-  FuncLoaded := assigned(DSA_SIG_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_SIG_new);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_SIG_new_allownil)}
+    DSA_SIG_new := @ERR_DSA_SIG_new;
+    {$ifend}
     {$if declared(DSA_SIG_new_introduced)}
     if LibVersion < DSA_SIG_new_introduced then
     begin
       {$if declared(FC_DSA_SIG_new)}
       DSA_SIG_new := @FC_DSA_SIG_new;
-      {$else}
-      {$if not defined(DSA_SIG_new_allownil)}
-      DSA_SIG_new := @ERR_DSA_SIG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_SIG_new_removed)}
@@ -1075,39 +1066,31 @@ begin
     begin
       {$if declared(_DSA_SIG_new)}
       DSA_SIG_new := @_DSA_SIG_new;
-      {$else}
-      {$if not defined(DSA_SIG_new_allownil)}
-      DSA_SIG_new := @ERR_DSA_SIG_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_SIG_new_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_SIG_new := @ERR_DSA_SIG_new;
+    if FuncLoadError then
       AFailed.Add('DSA_SIG_new');
-    end;
     {$ifend}
   end;
 
 
   DSA_SIG_free := LoadLibFunction(ADllHandle, DSA_SIG_free_procname);
-  FuncLoaded := assigned(DSA_SIG_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_SIG_free);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_SIG_free_allownil)}
+    DSA_SIG_free := @ERR_DSA_SIG_free;
+    {$ifend}
     {$if declared(DSA_SIG_free_introduced)}
     if LibVersion < DSA_SIG_free_introduced then
     begin
       {$if declared(FC_DSA_SIG_free)}
       DSA_SIG_free := @FC_DSA_SIG_free;
-      {$else}
-      {$if not defined(DSA_SIG_free_allownil)}
-      DSA_SIG_free := @ERR_DSA_SIG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_SIG_free_removed)}
@@ -1115,39 +1098,31 @@ begin
     begin
       {$if declared(_DSA_SIG_free)}
       DSA_SIG_free := @_DSA_SIG_free;
-      {$else}
-      {$if not defined(DSA_SIG_free_allownil)}
-      DSA_SIG_free := @ERR_DSA_SIG_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_SIG_free_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_SIG_free := @ERR_DSA_SIG_free;
+    if FuncLoadError then
       AFailed.Add('DSA_SIG_free');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSA_SIG := LoadLibFunction(ADllHandle, i2d_DSA_SIG_procname);
-  FuncLoaded := assigned(i2d_DSA_SIG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSA_SIG);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSA_SIG_allownil)}
+    i2d_DSA_SIG := @ERR_i2d_DSA_SIG;
+    {$ifend}
     {$if declared(i2d_DSA_SIG_introduced)}
     if LibVersion < i2d_DSA_SIG_introduced then
     begin
       {$if declared(FC_i2d_DSA_SIG)}
       i2d_DSA_SIG := @FC_i2d_DSA_SIG;
-      {$else}
-      {$if not defined(i2d_DSA_SIG_allownil)}
-      i2d_DSA_SIG := @ERR_i2d_DSA_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSA_SIG_removed)}
@@ -1155,39 +1130,31 @@ begin
     begin
       {$if declared(_i2d_DSA_SIG)}
       i2d_DSA_SIG := @_i2d_DSA_SIG;
-      {$else}
-      {$if not defined(i2d_DSA_SIG_allownil)}
-      i2d_DSA_SIG := @ERR_i2d_DSA_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSA_SIG_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSA_SIG := @ERR_i2d_DSA_SIG;
+    if FuncLoadError then
       AFailed.Add('i2d_DSA_SIG');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSA_SIG := LoadLibFunction(ADllHandle, d2i_DSA_SIG_procname);
-  FuncLoaded := assigned(d2i_DSA_SIG);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSA_SIG);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSA_SIG_allownil)}
+    d2i_DSA_SIG := @ERR_d2i_DSA_SIG;
+    {$ifend}
     {$if declared(d2i_DSA_SIG_introduced)}
     if LibVersion < d2i_DSA_SIG_introduced then
     begin
       {$if declared(FC_d2i_DSA_SIG)}
       d2i_DSA_SIG := @FC_d2i_DSA_SIG;
-      {$else}
-      {$if not defined(d2i_DSA_SIG_allownil)}
-      d2i_DSA_SIG := @ERR_d2i_DSA_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSA_SIG_removed)}
@@ -1195,39 +1162,31 @@ begin
     begin
       {$if declared(_d2i_DSA_SIG)}
       d2i_DSA_SIG := @_d2i_DSA_SIG;
-      {$else}
-      {$if not defined(d2i_DSA_SIG_allownil)}
-      d2i_DSA_SIG := @ERR_d2i_DSA_SIG;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSA_SIG_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSA_SIG := @ERR_d2i_DSA_SIG;
+    if FuncLoadError then
       AFailed.Add('d2i_DSA_SIG');
-    end;
     {$ifend}
   end;
 
 
   DSA_SIG_get0 := LoadLibFunction(ADllHandle, DSA_SIG_get0_procname);
-  FuncLoaded := assigned(DSA_SIG_get0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_SIG_get0);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_SIG_get0_allownil)}
+    DSA_SIG_get0 := @ERR_DSA_SIG_get0;
+    {$ifend}
     {$if declared(DSA_SIG_get0_introduced)}
     if LibVersion < DSA_SIG_get0_introduced then
     begin
       {$if declared(FC_DSA_SIG_get0)}
       DSA_SIG_get0 := @FC_DSA_SIG_get0;
-      {$else}
-      {$if not defined(DSA_SIG_get0_allownil)}
-      DSA_SIG_get0 := @ERR_DSA_SIG_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_SIG_get0_removed)}
@@ -1235,39 +1194,31 @@ begin
     begin
       {$if declared(_DSA_SIG_get0)}
       DSA_SIG_get0 := @_DSA_SIG_get0;
-      {$else}
-      {$if not defined(DSA_SIG_get0_allownil)}
-      DSA_SIG_get0 := @ERR_DSA_SIG_get0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_SIG_get0_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_SIG_get0 := @ERR_DSA_SIG_get0;
+    if FuncLoadError then
       AFailed.Add('DSA_SIG_get0');
-    end;
     {$ifend}
   end;
 
 
   DSA_SIG_set0 := LoadLibFunction(ADllHandle, DSA_SIG_set0_procname);
-  FuncLoaded := assigned(DSA_SIG_set0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_SIG_set0);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_SIG_set0_allownil)}
+    DSA_SIG_set0 := @ERR_DSA_SIG_set0;
+    {$ifend}
     {$if declared(DSA_SIG_set0_introduced)}
     if LibVersion < DSA_SIG_set0_introduced then
     begin
       {$if declared(FC_DSA_SIG_set0)}
       DSA_SIG_set0 := @FC_DSA_SIG_set0;
-      {$else}
-      {$if not defined(DSA_SIG_set0_allownil)}
-      DSA_SIG_set0 := @ERR_DSA_SIG_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_SIG_set0_removed)}
@@ -1275,39 +1226,31 @@ begin
     begin
       {$if declared(_DSA_SIG_set0)}
       DSA_SIG_set0 := @_DSA_SIG_set0;
-      {$else}
-      {$if not defined(DSA_SIG_set0_allownil)}
-      DSA_SIG_set0 := @ERR_DSA_SIG_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_SIG_set0_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_SIG_set0 := @ERR_DSA_SIG_set0;
+    if FuncLoadError then
       AFailed.Add('DSA_SIG_set0');
-    end;
     {$ifend}
   end;
 
 
   DSA_do_sign := LoadLibFunction(ADllHandle, DSA_do_sign_procname);
-  FuncLoaded := assigned(DSA_do_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_do_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_do_sign_allownil)}
+    DSA_do_sign := @ERR_DSA_do_sign;
+    {$ifend}
     {$if declared(DSA_do_sign_introduced)}
     if LibVersion < DSA_do_sign_introduced then
     begin
       {$if declared(FC_DSA_do_sign)}
       DSA_do_sign := @FC_DSA_do_sign;
-      {$else}
-      {$if not defined(DSA_do_sign_allownil)}
-      DSA_do_sign := @ERR_DSA_do_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_do_sign_removed)}
@@ -1315,39 +1258,31 @@ begin
     begin
       {$if declared(_DSA_do_sign)}
       DSA_do_sign := @_DSA_do_sign;
-      {$else}
-      {$if not defined(DSA_do_sign_allownil)}
-      DSA_do_sign := @ERR_DSA_do_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_do_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_do_sign := @ERR_DSA_do_sign;
+    if FuncLoadError then
       AFailed.Add('DSA_do_sign');
-    end;
     {$ifend}
   end;
 
 
   DSA_do_verify := LoadLibFunction(ADllHandle, DSA_do_verify_procname);
-  FuncLoaded := assigned(DSA_do_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_do_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_do_verify_allownil)}
+    DSA_do_verify := @ERR_DSA_do_verify;
+    {$ifend}
     {$if declared(DSA_do_verify_introduced)}
     if LibVersion < DSA_do_verify_introduced then
     begin
       {$if declared(FC_DSA_do_verify)}
       DSA_do_verify := @FC_DSA_do_verify;
-      {$else}
-      {$if not defined(DSA_do_verify_allownil)}
-      DSA_do_verify := @ERR_DSA_do_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_do_verify_removed)}
@@ -1355,39 +1290,31 @@ begin
     begin
       {$if declared(_DSA_do_verify)}
       DSA_do_verify := @_DSA_do_verify;
-      {$else}
-      {$if not defined(DSA_do_verify_allownil)}
-      DSA_do_verify := @ERR_DSA_do_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_do_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_do_verify := @ERR_DSA_do_verify;
+    if FuncLoadError then
       AFailed.Add('DSA_do_verify');
-    end;
     {$ifend}
   end;
 
 
   DSA_OpenSSL := LoadLibFunction(ADllHandle, DSA_OpenSSL_procname);
-  FuncLoaded := assigned(DSA_OpenSSL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_OpenSSL);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_OpenSSL_allownil)}
+    DSA_OpenSSL := @ERR_DSA_OpenSSL;
+    {$ifend}
     {$if declared(DSA_OpenSSL_introduced)}
     if LibVersion < DSA_OpenSSL_introduced then
     begin
       {$if declared(FC_DSA_OpenSSL)}
       DSA_OpenSSL := @FC_DSA_OpenSSL;
-      {$else}
-      {$if not defined(DSA_OpenSSL_allownil)}
-      DSA_OpenSSL := @ERR_DSA_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_OpenSSL_removed)}
@@ -1395,39 +1322,31 @@ begin
     begin
       {$if declared(_DSA_OpenSSL)}
       DSA_OpenSSL := @_DSA_OpenSSL;
-      {$else}
-      {$if not defined(DSA_OpenSSL_allownil)}
-      DSA_OpenSSL := @ERR_DSA_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_OpenSSL_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_OpenSSL := @ERR_DSA_OpenSSL;
+    if FuncLoadError then
       AFailed.Add('DSA_OpenSSL');
-    end;
     {$ifend}
   end;
 
 
   DSA_set_default_method := LoadLibFunction(ADllHandle, DSA_set_default_method_procname);
-  FuncLoaded := assigned(DSA_set_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set_default_method_allownil)}
+    DSA_set_default_method := @ERR_DSA_set_default_method;
+    {$ifend}
     {$if declared(DSA_set_default_method_introduced)}
     if LibVersion < DSA_set_default_method_introduced then
     begin
       {$if declared(FC_DSA_set_default_method)}
       DSA_set_default_method := @FC_DSA_set_default_method;
-      {$else}
-      {$if not defined(DSA_set_default_method_allownil)}
-      DSA_set_default_method := @ERR_DSA_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set_default_method_removed)}
@@ -1435,39 +1354,31 @@ begin
     begin
       {$if declared(_DSA_set_default_method)}
       DSA_set_default_method := @_DSA_set_default_method;
-      {$else}
-      {$if not defined(DSA_set_default_method_allownil)}
-      DSA_set_default_method := @ERR_DSA_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set_default_method := @ERR_DSA_set_default_method;
+    if FuncLoadError then
       AFailed.Add('DSA_set_default_method');
-    end;
     {$ifend}
   end;
 
 
   DSA_get_default_method := LoadLibFunction(ADllHandle, DSA_get_default_method_procname);
-  FuncLoaded := assigned(DSA_get_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get_default_method_allownil)}
+    DSA_get_default_method := @ERR_DSA_get_default_method;
+    {$ifend}
     {$if declared(DSA_get_default_method_introduced)}
     if LibVersion < DSA_get_default_method_introduced then
     begin
       {$if declared(FC_DSA_get_default_method)}
       DSA_get_default_method := @FC_DSA_get_default_method;
-      {$else}
-      {$if not defined(DSA_get_default_method_allownil)}
-      DSA_get_default_method := @ERR_DSA_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get_default_method_removed)}
@@ -1475,39 +1386,31 @@ begin
     begin
       {$if declared(_DSA_get_default_method)}
       DSA_get_default_method := @_DSA_get_default_method;
-      {$else}
-      {$if not defined(DSA_get_default_method_allownil)}
-      DSA_get_default_method := @ERR_DSA_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get_default_method := @ERR_DSA_get_default_method;
+    if FuncLoadError then
       AFailed.Add('DSA_get_default_method');
-    end;
     {$ifend}
   end;
 
 
   DSA_set_method := LoadLibFunction(ADllHandle, DSA_set_method_procname);
-  FuncLoaded := assigned(DSA_set_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set_method_allownil)}
+    DSA_set_method := @ERR_DSA_set_method;
+    {$ifend}
     {$if declared(DSA_set_method_introduced)}
     if LibVersion < DSA_set_method_introduced then
     begin
       {$if declared(FC_DSA_set_method)}
       DSA_set_method := @FC_DSA_set_method;
-      {$else}
-      {$if not defined(DSA_set_method_allownil)}
-      DSA_set_method := @ERR_DSA_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set_method_removed)}
@@ -1515,39 +1418,31 @@ begin
     begin
       {$if declared(_DSA_set_method)}
       DSA_set_method := @_DSA_set_method;
-      {$else}
-      {$if not defined(DSA_set_method_allownil)}
-      DSA_set_method := @ERR_DSA_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set_method := @ERR_DSA_set_method;
+    if FuncLoadError then
       AFailed.Add('DSA_set_method');
-    end;
     {$ifend}
   end;
 
 
   DSA_get_method := LoadLibFunction(ADllHandle, DSA_get_method_procname);
-  FuncLoaded := assigned(DSA_get_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get_method_allownil)}
+    DSA_get_method := @ERR_DSA_get_method;
+    {$ifend}
     {$if declared(DSA_get_method_introduced)}
     if LibVersion < DSA_get_method_introduced then
     begin
       {$if declared(FC_DSA_get_method)}
       DSA_get_method := @FC_DSA_get_method;
-      {$else}
-      {$if not defined(DSA_get_method_allownil)}
-      DSA_get_method := @ERR_DSA_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get_method_removed)}
@@ -1555,39 +1450,31 @@ begin
     begin
       {$if declared(_DSA_get_method)}
       DSA_get_method := @_DSA_get_method;
-      {$else}
-      {$if not defined(DSA_get_method_allownil)}
-      DSA_get_method := @ERR_DSA_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get_method := @ERR_DSA_get_method;
+    if FuncLoadError then
       AFailed.Add('DSA_get_method');
-    end;
     {$ifend}
   end;
 
 
   DSA_new := LoadLibFunction(ADllHandle, DSA_new_procname);
-  FuncLoaded := assigned(DSA_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_new);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_new_allownil)}
+    DSA_new := @ERR_DSA_new;
+    {$ifend}
     {$if declared(DSA_new_introduced)}
     if LibVersion < DSA_new_introduced then
     begin
       {$if declared(FC_DSA_new)}
       DSA_new := @FC_DSA_new;
-      {$else}
-      {$if not defined(DSA_new_allownil)}
-      DSA_new := @ERR_DSA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_new_removed)}
@@ -1595,39 +1482,31 @@ begin
     begin
       {$if declared(_DSA_new)}
       DSA_new := @_DSA_new;
-      {$else}
-      {$if not defined(DSA_new_allownil)}
-      DSA_new := @ERR_DSA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_new_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_new := @ERR_DSA_new;
+    if FuncLoadError then
       AFailed.Add('DSA_new');
-    end;
     {$ifend}
   end;
 
 
   DSA_new_method := LoadLibFunction(ADllHandle, DSA_new_method_procname);
-  FuncLoaded := assigned(DSA_new_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_new_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_new_method_allownil)}
+    DSA_new_method := @ERR_DSA_new_method;
+    {$ifend}
     {$if declared(DSA_new_method_introduced)}
     if LibVersion < DSA_new_method_introduced then
     begin
       {$if declared(FC_DSA_new_method)}
       DSA_new_method := @FC_DSA_new_method;
-      {$else}
-      {$if not defined(DSA_new_method_allownil)}
-      DSA_new_method := @ERR_DSA_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_new_method_removed)}
@@ -1635,39 +1514,31 @@ begin
     begin
       {$if declared(_DSA_new_method)}
       DSA_new_method := @_DSA_new_method;
-      {$else}
-      {$if not defined(DSA_new_method_allownil)}
-      DSA_new_method := @ERR_DSA_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_new_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_new_method := @ERR_DSA_new_method;
+    if FuncLoadError then
       AFailed.Add('DSA_new_method');
-    end;
     {$ifend}
   end;
 
 
   DSA_free := LoadLibFunction(ADllHandle, DSA_free_procname);
-  FuncLoaded := assigned(DSA_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_free);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_free_allownil)}
+    DSA_free := @ERR_DSA_free;
+    {$ifend}
     {$if declared(DSA_free_introduced)}
     if LibVersion < DSA_free_introduced then
     begin
       {$if declared(FC_DSA_free)}
       DSA_free := @FC_DSA_free;
-      {$else}
-      {$if not defined(DSA_free_allownil)}
-      DSA_free := @ERR_DSA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_free_removed)}
@@ -1675,39 +1546,31 @@ begin
     begin
       {$if declared(_DSA_free)}
       DSA_free := @_DSA_free;
-      {$else}
-      {$if not defined(DSA_free_allownil)}
-      DSA_free := @ERR_DSA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_free_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_free := @ERR_DSA_free;
+    if FuncLoadError then
       AFailed.Add('DSA_free');
-    end;
     {$ifend}
   end;
 
 
   DSA_up_ref := LoadLibFunction(ADllHandle, DSA_up_ref_procname);
-  FuncLoaded := assigned(DSA_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_up_ref_allownil)}
+    DSA_up_ref := @ERR_DSA_up_ref;
+    {$ifend}
     {$if declared(DSA_up_ref_introduced)}
     if LibVersion < DSA_up_ref_introduced then
     begin
       {$if declared(FC_DSA_up_ref)}
       DSA_up_ref := @FC_DSA_up_ref;
-      {$else}
-      {$if not defined(DSA_up_ref_allownil)}
-      DSA_up_ref := @ERR_DSA_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_up_ref_removed)}
@@ -1715,39 +1578,31 @@ begin
     begin
       {$if declared(_DSA_up_ref)}
       DSA_up_ref := @_DSA_up_ref;
-      {$else}
-      {$if not defined(DSA_up_ref_allownil)}
-      DSA_up_ref := @ERR_DSA_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_up_ref := @ERR_DSA_up_ref;
+    if FuncLoadError then
       AFailed.Add('DSA_up_ref');
-    end;
     {$ifend}
   end;
 
 
   DSA_size := LoadLibFunction(ADllHandle, DSA_size_procname);
-  FuncLoaded := assigned(DSA_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_size);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_size_allownil)}
+    DSA_size := @ERR_DSA_size;
+    {$ifend}
     {$if declared(DSA_size_introduced)}
     if LibVersion < DSA_size_introduced then
     begin
       {$if declared(FC_DSA_size)}
       DSA_size := @FC_DSA_size;
-      {$else}
-      {$if not defined(DSA_size_allownil)}
-      DSA_size := @ERR_DSA_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_size_removed)}
@@ -1755,39 +1610,31 @@ begin
     begin
       {$if declared(_DSA_size)}
       DSA_size := @_DSA_size;
-      {$else}
-      {$if not defined(DSA_size_allownil)}
-      DSA_size := @ERR_DSA_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_size_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_size := @ERR_DSA_size;
+    if FuncLoadError then
       AFailed.Add('DSA_size');
-    end;
     {$ifend}
   end;
 
 
   DSA_bits := LoadLibFunction(ADllHandle, DSA_bits_procname);
-  FuncLoaded := assigned(DSA_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_bits_allownil)}
+    DSA_bits := @ERR_DSA_bits;
+    {$ifend}
     {$if declared(DSA_bits_introduced)}
     if LibVersion < DSA_bits_introduced then
     begin
       {$if declared(FC_DSA_bits)}
       DSA_bits := @FC_DSA_bits;
-      {$else}
-      {$if not defined(DSA_bits_allownil)}
-      DSA_bits := @ERR_DSA_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_bits_removed)}
@@ -1795,39 +1642,31 @@ begin
     begin
       {$if declared(_DSA_bits)}
       DSA_bits := @_DSA_bits;
-      {$else}
-      {$if not defined(DSA_bits_allownil)}
-      DSA_bits := @ERR_DSA_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_bits := @ERR_DSA_bits;
+    if FuncLoadError then
       AFailed.Add('DSA_bits');
-    end;
     {$ifend}
   end;
 
 
   DSA_security_bits := LoadLibFunction(ADllHandle, DSA_security_bits_procname);
-  FuncLoaded := assigned(DSA_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_security_bits_allownil)}
+    DSA_security_bits := @ERR_DSA_security_bits;
+    {$ifend}
     {$if declared(DSA_security_bits_introduced)}
     if LibVersion < DSA_security_bits_introduced then
     begin
       {$if declared(FC_DSA_security_bits)}
       DSA_security_bits := @FC_DSA_security_bits;
-      {$else}
-      {$if not defined(DSA_security_bits_allownil)}
-      DSA_security_bits := @ERR_DSA_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_security_bits_removed)}
@@ -1835,39 +1674,31 @@ begin
     begin
       {$if declared(_DSA_security_bits)}
       DSA_security_bits := @_DSA_security_bits;
-      {$else}
-      {$if not defined(DSA_security_bits_allownil)}
-      DSA_security_bits := @ERR_DSA_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_security_bits := @ERR_DSA_security_bits;
+    if FuncLoadError then
       AFailed.Add('DSA_security_bits');
-    end;
     {$ifend}
   end;
 
 
   DSA_sign := LoadLibFunction(ADllHandle, DSA_sign_procname);
-  FuncLoaded := assigned(DSA_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_sign_allownil)}
+    DSA_sign := @ERR_DSA_sign;
+    {$ifend}
     {$if declared(DSA_sign_introduced)}
     if LibVersion < DSA_sign_introduced then
     begin
       {$if declared(FC_DSA_sign)}
       DSA_sign := @FC_DSA_sign;
-      {$else}
-      {$if not defined(DSA_sign_allownil)}
-      DSA_sign := @ERR_DSA_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_sign_removed)}
@@ -1875,39 +1706,31 @@ begin
     begin
       {$if declared(_DSA_sign)}
       DSA_sign := @_DSA_sign;
-      {$else}
-      {$if not defined(DSA_sign_allownil)}
-      DSA_sign := @ERR_DSA_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_sign := @ERR_DSA_sign;
+    if FuncLoadError then
       AFailed.Add('DSA_sign');
-    end;
     {$ifend}
   end;
 
 
   DSA_verify := LoadLibFunction(ADllHandle, DSA_verify_procname);
-  FuncLoaded := assigned(DSA_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_verify_allownil)}
+    DSA_verify := @ERR_DSA_verify;
+    {$ifend}
     {$if declared(DSA_verify_introduced)}
     if LibVersion < DSA_verify_introduced then
     begin
       {$if declared(FC_DSA_verify)}
       DSA_verify := @FC_DSA_verify;
-      {$else}
-      {$if not defined(DSA_verify_allownil)}
-      DSA_verify := @ERR_DSA_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_verify_removed)}
@@ -1915,39 +1738,31 @@ begin
     begin
       {$if declared(_DSA_verify)}
       DSA_verify := @_DSA_verify;
-      {$else}
-      {$if not defined(DSA_verify_allownil)}
-      DSA_verify := @ERR_DSA_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_verify := @ERR_DSA_verify;
+    if FuncLoadError then
       AFailed.Add('DSA_verify');
-    end;
     {$ifend}
   end;
 
 
   DSA_set_ex_data := LoadLibFunction(ADllHandle, DSA_set_ex_data_procname);
-  FuncLoaded := assigned(DSA_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set_ex_data_allownil)}
+    DSA_set_ex_data := @ERR_DSA_set_ex_data;
+    {$ifend}
     {$if declared(DSA_set_ex_data_introduced)}
     if LibVersion < DSA_set_ex_data_introduced then
     begin
       {$if declared(FC_DSA_set_ex_data)}
       DSA_set_ex_data := @FC_DSA_set_ex_data;
-      {$else}
-      {$if not defined(DSA_set_ex_data_allownil)}
-      DSA_set_ex_data := @ERR_DSA_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set_ex_data_removed)}
@@ -1955,39 +1770,31 @@ begin
     begin
       {$if declared(_DSA_set_ex_data)}
       DSA_set_ex_data := @_DSA_set_ex_data;
-      {$else}
-      {$if not defined(DSA_set_ex_data_allownil)}
-      DSA_set_ex_data := @ERR_DSA_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set_ex_data := @ERR_DSA_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('DSA_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   DSA_get_ex_data := LoadLibFunction(ADllHandle, DSA_get_ex_data_procname);
-  FuncLoaded := assigned(DSA_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get_ex_data_allownil)}
+    DSA_get_ex_data := @ERR_DSA_get_ex_data;
+    {$ifend}
     {$if declared(DSA_get_ex_data_introduced)}
     if LibVersion < DSA_get_ex_data_introduced then
     begin
       {$if declared(FC_DSA_get_ex_data)}
       DSA_get_ex_data := @FC_DSA_get_ex_data;
-      {$else}
-      {$if not defined(DSA_get_ex_data_allownil)}
-      DSA_get_ex_data := @ERR_DSA_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get_ex_data_removed)}
@@ -1995,39 +1802,31 @@ begin
     begin
       {$if declared(_DSA_get_ex_data)}
       DSA_get_ex_data := @_DSA_get_ex_data;
-      {$else}
-      {$if not defined(DSA_get_ex_data_allownil)}
-      DSA_get_ex_data := @ERR_DSA_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get_ex_data := @ERR_DSA_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('DSA_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSAPublicKey := LoadLibFunction(ADllHandle, d2i_DSAPublicKey_procname);
-  FuncLoaded := assigned(d2i_DSAPublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSAPublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSAPublicKey_allownil)}
+    d2i_DSAPublicKey := @ERR_d2i_DSAPublicKey;
+    {$ifend}
     {$if declared(d2i_DSAPublicKey_introduced)}
     if LibVersion < d2i_DSAPublicKey_introduced then
     begin
       {$if declared(FC_d2i_DSAPublicKey)}
       d2i_DSAPublicKey := @FC_d2i_DSAPublicKey;
-      {$else}
-      {$if not defined(d2i_DSAPublicKey_allownil)}
-      d2i_DSAPublicKey := @ERR_d2i_DSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSAPublicKey_removed)}
@@ -2035,39 +1834,31 @@ begin
     begin
       {$if declared(_d2i_DSAPublicKey)}
       d2i_DSAPublicKey := @_d2i_DSAPublicKey;
-      {$else}
-      {$if not defined(d2i_DSAPublicKey_allownil)}
-      d2i_DSAPublicKey := @ERR_d2i_DSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSAPublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSAPublicKey := @ERR_d2i_DSAPublicKey;
+    if FuncLoadError then
       AFailed.Add('d2i_DSAPublicKey');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSAPrivateKey := LoadLibFunction(ADllHandle, d2i_DSAPrivateKey_procname);
-  FuncLoaded := assigned(d2i_DSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSAPrivateKey_allownil)}
+    d2i_DSAPrivateKey := @ERR_d2i_DSAPrivateKey;
+    {$ifend}
     {$if declared(d2i_DSAPrivateKey_introduced)}
     if LibVersion < d2i_DSAPrivateKey_introduced then
     begin
       {$if declared(FC_d2i_DSAPrivateKey)}
       d2i_DSAPrivateKey := @FC_d2i_DSAPrivateKey;
-      {$else}
-      {$if not defined(d2i_DSAPrivateKey_allownil)}
-      d2i_DSAPrivateKey := @ERR_d2i_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSAPrivateKey_removed)}
@@ -2075,39 +1866,31 @@ begin
     begin
       {$if declared(_d2i_DSAPrivateKey)}
       d2i_DSAPrivateKey := @_d2i_DSAPrivateKey;
-      {$else}
-      {$if not defined(d2i_DSAPrivateKey_allownil)}
-      d2i_DSAPrivateKey := @ERR_d2i_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSAPrivateKey := @ERR_d2i_DSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('d2i_DSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   d2i_DSAparams := LoadLibFunction(ADllHandle, d2i_DSAparams_procname);
-  FuncLoaded := assigned(d2i_DSAparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DSAparams);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DSAparams_allownil)}
+    d2i_DSAparams := @ERR_d2i_DSAparams;
+    {$ifend}
     {$if declared(d2i_DSAparams_introduced)}
     if LibVersion < d2i_DSAparams_introduced then
     begin
       {$if declared(FC_d2i_DSAparams)}
       d2i_DSAparams := @FC_d2i_DSAparams;
-      {$else}
-      {$if not defined(d2i_DSAparams_allownil)}
-      d2i_DSAparams := @ERR_d2i_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DSAparams_removed)}
@@ -2115,39 +1898,31 @@ begin
     begin
       {$if declared(_d2i_DSAparams)}
       d2i_DSAparams := @_d2i_DSAparams;
-      {$else}
-      {$if not defined(d2i_DSAparams_allownil)}
-      d2i_DSAparams := @ERR_d2i_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DSAparams_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DSAparams := @ERR_d2i_DSAparams;
+    if FuncLoadError then
       AFailed.Add('d2i_DSAparams');
-    end;
     {$ifend}
   end;
 
 
   DSA_generate_parameters_ex := LoadLibFunction(ADllHandle, DSA_generate_parameters_ex_procname);
-  FuncLoaded := assigned(DSA_generate_parameters_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_generate_parameters_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_generate_parameters_ex_allownil)}
+    DSA_generate_parameters_ex := @ERR_DSA_generate_parameters_ex;
+    {$ifend}
     {$if declared(DSA_generate_parameters_ex_introduced)}
     if LibVersion < DSA_generate_parameters_ex_introduced then
     begin
       {$if declared(FC_DSA_generate_parameters_ex)}
       DSA_generate_parameters_ex := @FC_DSA_generate_parameters_ex;
-      {$else}
-      {$if not defined(DSA_generate_parameters_ex_allownil)}
-      DSA_generate_parameters_ex := @ERR_DSA_generate_parameters_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_generate_parameters_ex_removed)}
@@ -2155,39 +1930,31 @@ begin
     begin
       {$if declared(_DSA_generate_parameters_ex)}
       DSA_generate_parameters_ex := @_DSA_generate_parameters_ex;
-      {$else}
-      {$if not defined(DSA_generate_parameters_ex_allownil)}
-      DSA_generate_parameters_ex := @ERR_DSA_generate_parameters_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_generate_parameters_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_generate_parameters_ex := @ERR_DSA_generate_parameters_ex;
+    if FuncLoadError then
       AFailed.Add('DSA_generate_parameters_ex');
-    end;
     {$ifend}
   end;
 
 
   DSA_generate_key := LoadLibFunction(ADllHandle, DSA_generate_key_procname);
-  FuncLoaded := assigned(DSA_generate_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_generate_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_generate_key_allownil)}
+    DSA_generate_key := @ERR_DSA_generate_key;
+    {$ifend}
     {$if declared(DSA_generate_key_introduced)}
     if LibVersion < DSA_generate_key_introduced then
     begin
       {$if declared(FC_DSA_generate_key)}
       DSA_generate_key := @FC_DSA_generate_key;
-      {$else}
-      {$if not defined(DSA_generate_key_allownil)}
-      DSA_generate_key := @ERR_DSA_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_generate_key_removed)}
@@ -2195,39 +1962,31 @@ begin
     begin
       {$if declared(_DSA_generate_key)}
       DSA_generate_key := @_DSA_generate_key;
-      {$else}
-      {$if not defined(DSA_generate_key_allownil)}
-      DSA_generate_key := @ERR_DSA_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_generate_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_generate_key := @ERR_DSA_generate_key;
+    if FuncLoadError then
       AFailed.Add('DSA_generate_key');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSAPublicKey := LoadLibFunction(ADllHandle, i2d_DSAPublicKey_procname);
-  FuncLoaded := assigned(i2d_DSAPublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSAPublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSAPublicKey_allownil)}
+    i2d_DSAPublicKey := @ERR_i2d_DSAPublicKey;
+    {$ifend}
     {$if declared(i2d_DSAPublicKey_introduced)}
     if LibVersion < i2d_DSAPublicKey_introduced then
     begin
       {$if declared(FC_i2d_DSAPublicKey)}
       i2d_DSAPublicKey := @FC_i2d_DSAPublicKey;
-      {$else}
-      {$if not defined(i2d_DSAPublicKey_allownil)}
-      i2d_DSAPublicKey := @ERR_i2d_DSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSAPublicKey_removed)}
@@ -2235,39 +1994,31 @@ begin
     begin
       {$if declared(_i2d_DSAPublicKey)}
       i2d_DSAPublicKey := @_i2d_DSAPublicKey;
-      {$else}
-      {$if not defined(i2d_DSAPublicKey_allownil)}
-      i2d_DSAPublicKey := @ERR_i2d_DSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSAPublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSAPublicKey := @ERR_i2d_DSAPublicKey;
+    if FuncLoadError then
       AFailed.Add('i2d_DSAPublicKey');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSAPrivateKey := LoadLibFunction(ADllHandle, i2d_DSAPrivateKey_procname);
-  FuncLoaded := assigned(i2d_DSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSAPrivateKey_allownil)}
+    i2d_DSAPrivateKey := @ERR_i2d_DSAPrivateKey;
+    {$ifend}
     {$if declared(i2d_DSAPrivateKey_introduced)}
     if LibVersion < i2d_DSAPrivateKey_introduced then
     begin
       {$if declared(FC_i2d_DSAPrivateKey)}
       i2d_DSAPrivateKey := @FC_i2d_DSAPrivateKey;
-      {$else}
-      {$if not defined(i2d_DSAPrivateKey_allownil)}
-      i2d_DSAPrivateKey := @ERR_i2d_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSAPrivateKey_removed)}
@@ -2275,39 +2026,31 @@ begin
     begin
       {$if declared(_i2d_DSAPrivateKey)}
       i2d_DSAPrivateKey := @_i2d_DSAPrivateKey;
-      {$else}
-      {$if not defined(i2d_DSAPrivateKey_allownil)}
-      i2d_DSAPrivateKey := @ERR_i2d_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSAPrivateKey := @ERR_i2d_DSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('i2d_DSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   i2d_DSAparams := LoadLibFunction(ADllHandle, i2d_DSAparams_procname);
-  FuncLoaded := assigned(i2d_DSAparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DSAparams);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DSAparams_allownil)}
+    i2d_DSAparams := @ERR_i2d_DSAparams;
+    {$ifend}
     {$if declared(i2d_DSAparams_introduced)}
     if LibVersion < i2d_DSAparams_introduced then
     begin
       {$if declared(FC_i2d_DSAparams)}
       i2d_DSAparams := @FC_i2d_DSAparams;
-      {$else}
-      {$if not defined(i2d_DSAparams_allownil)}
-      i2d_DSAparams := @ERR_i2d_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DSAparams_removed)}
@@ -2315,39 +2058,31 @@ begin
     begin
       {$if declared(_i2d_DSAparams)}
       i2d_DSAparams := @_i2d_DSAparams;
-      {$else}
-      {$if not defined(i2d_DSAparams_allownil)}
-      i2d_DSAparams := @ERR_i2d_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DSAparams_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DSAparams := @ERR_i2d_DSAparams;
+    if FuncLoadError then
       AFailed.Add('i2d_DSAparams');
-    end;
     {$ifend}
   end;
 
 
   DSAparams_print := LoadLibFunction(ADllHandle, DSAparams_print_procname);
-  FuncLoaded := assigned(DSAparams_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSAparams_print);
+  if FuncLoadError then
   begin
+    {$if not defined(DSAparams_print_allownil)}
+    DSAparams_print := @ERR_DSAparams_print;
+    {$ifend}
     {$if declared(DSAparams_print_introduced)}
     if LibVersion < DSAparams_print_introduced then
     begin
       {$if declared(FC_DSAparams_print)}
       DSAparams_print := @FC_DSAparams_print;
-      {$else}
-      {$if not defined(DSAparams_print_allownil)}
-      DSAparams_print := @ERR_DSAparams_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSAparams_print_removed)}
@@ -2355,39 +2090,31 @@ begin
     begin
       {$if declared(_DSAparams_print)}
       DSAparams_print := @_DSAparams_print;
-      {$else}
-      {$if not defined(DSAparams_print_allownil)}
-      DSAparams_print := @ERR_DSAparams_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSAparams_print_allownil)}
-    if not FuncLoaded then
-    begin
-      DSAparams_print := @ERR_DSAparams_print;
+    if FuncLoadError then
       AFailed.Add('DSAparams_print');
-    end;
     {$ifend}
   end;
 
 
   DSA_print := LoadLibFunction(ADllHandle, DSA_print_procname);
-  FuncLoaded := assigned(DSA_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_print);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_print_allownil)}
+    DSA_print := @ERR_DSA_print;
+    {$ifend}
     {$if declared(DSA_print_introduced)}
     if LibVersion < DSA_print_introduced then
     begin
       {$if declared(FC_DSA_print)}
       DSA_print := @FC_DSA_print;
-      {$else}
-      {$if not defined(DSA_print_allownil)}
-      DSA_print := @ERR_DSA_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_print_removed)}
@@ -2395,39 +2122,31 @@ begin
     begin
       {$if declared(_DSA_print)}
       DSA_print := @_DSA_print;
-      {$else}
-      {$if not defined(DSA_print_allownil)}
-      DSA_print := @ERR_DSA_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_print_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_print := @ERR_DSA_print;
+    if FuncLoadError then
       AFailed.Add('DSA_print');
-    end;
     {$ifend}
   end;
 
 
   DSA_dup_DH := LoadLibFunction(ADllHandle, DSA_dup_DH_procname);
-  FuncLoaded := assigned(DSA_dup_DH);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_dup_DH);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_dup_DH_allownil)}
+    DSA_dup_DH := @ERR_DSA_dup_DH;
+    {$ifend}
     {$if declared(DSA_dup_DH_introduced)}
     if LibVersion < DSA_dup_DH_introduced then
     begin
       {$if declared(FC_DSA_dup_DH)}
       DSA_dup_DH := @FC_DSA_dup_DH;
-      {$else}
-      {$if not defined(DSA_dup_DH_allownil)}
-      DSA_dup_DH := @ERR_DSA_dup_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_dup_DH_removed)}
@@ -2435,39 +2154,31 @@ begin
     begin
       {$if declared(_DSA_dup_DH)}
       DSA_dup_DH := @_DSA_dup_DH;
-      {$else}
-      {$if not defined(DSA_dup_DH_allownil)}
-      DSA_dup_DH := @ERR_DSA_dup_DH;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_dup_DH_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_dup_DH := @ERR_DSA_dup_DH;
+    if FuncLoadError then
       AFailed.Add('DSA_dup_DH');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_pqg := LoadLibFunction(ADllHandle, DSA_get0_pqg_procname);
-  FuncLoaded := assigned(DSA_get0_pqg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_pqg);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_pqg_allownil)}
+    DSA_get0_pqg := @ERR_DSA_get0_pqg;
+    {$ifend}
     {$if declared(DSA_get0_pqg_introduced)}
     if LibVersion < DSA_get0_pqg_introduced then
     begin
       {$if declared(FC_DSA_get0_pqg)}
       DSA_get0_pqg := @FC_DSA_get0_pqg;
-      {$else}
-      {$if not defined(DSA_get0_pqg_allownil)}
-      DSA_get0_pqg := @ERR_DSA_get0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_pqg_removed)}
@@ -2475,39 +2186,31 @@ begin
     begin
       {$if declared(_DSA_get0_pqg)}
       DSA_get0_pqg := @_DSA_get0_pqg;
-      {$else}
-      {$if not defined(DSA_get0_pqg_allownil)}
-      DSA_get0_pqg := @ERR_DSA_get0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_pqg_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_pqg := @ERR_DSA_get0_pqg;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_pqg');
-    end;
     {$ifend}
   end;
 
 
   DSA_set0_pqg := LoadLibFunction(ADllHandle, DSA_set0_pqg_procname);
-  FuncLoaded := assigned(DSA_set0_pqg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set0_pqg);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set0_pqg_allownil)}
+    DSA_set0_pqg := @ERR_DSA_set0_pqg;
+    {$ifend}
     {$if declared(DSA_set0_pqg_introduced)}
     if LibVersion < DSA_set0_pqg_introduced then
     begin
       {$if declared(FC_DSA_set0_pqg)}
       DSA_set0_pqg := @FC_DSA_set0_pqg;
-      {$else}
-      {$if not defined(DSA_set0_pqg_allownil)}
-      DSA_set0_pqg := @ERR_DSA_set0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set0_pqg_removed)}
@@ -2515,39 +2218,31 @@ begin
     begin
       {$if declared(_DSA_set0_pqg)}
       DSA_set0_pqg := @_DSA_set0_pqg;
-      {$else}
-      {$if not defined(DSA_set0_pqg_allownil)}
-      DSA_set0_pqg := @ERR_DSA_set0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set0_pqg_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set0_pqg := @ERR_DSA_set0_pqg;
+    if FuncLoadError then
       AFailed.Add('DSA_set0_pqg');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_key := LoadLibFunction(ADllHandle, DSA_get0_key_procname);
-  FuncLoaded := assigned(DSA_get0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_key_allownil)}
+    DSA_get0_key := @ERR_DSA_get0_key;
+    {$ifend}
     {$if declared(DSA_get0_key_introduced)}
     if LibVersion < DSA_get0_key_introduced then
     begin
       {$if declared(FC_DSA_get0_key)}
       DSA_get0_key := @FC_DSA_get0_key;
-      {$else}
-      {$if not defined(DSA_get0_key_allownil)}
-      DSA_get0_key := @ERR_DSA_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_key_removed)}
@@ -2555,39 +2250,31 @@ begin
     begin
       {$if declared(_DSA_get0_key)}
       DSA_get0_key := @_DSA_get0_key;
-      {$else}
-      {$if not defined(DSA_get0_key_allownil)}
-      DSA_get0_key := @ERR_DSA_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_key := @ERR_DSA_get0_key;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_key');
-    end;
     {$ifend}
   end;
 
 
   DSA_set0_key := LoadLibFunction(ADllHandle, DSA_set0_key_procname);
-  FuncLoaded := assigned(DSA_set0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set0_key_allownil)}
+    DSA_set0_key := @ERR_DSA_set0_key;
+    {$ifend}
     {$if declared(DSA_set0_key_introduced)}
     if LibVersion < DSA_set0_key_introduced then
     begin
       {$if declared(FC_DSA_set0_key)}
       DSA_set0_key := @FC_DSA_set0_key;
-      {$else}
-      {$if not defined(DSA_set0_key_allownil)}
-      DSA_set0_key := @ERR_DSA_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set0_key_removed)}
@@ -2595,39 +2282,31 @@ begin
     begin
       {$if declared(_DSA_set0_key)}
       DSA_set0_key := @_DSA_set0_key;
-      {$else}
-      {$if not defined(DSA_set0_key_allownil)}
-      DSA_set0_key := @ERR_DSA_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set0_key := @ERR_DSA_set0_key;
+    if FuncLoadError then
       AFailed.Add('DSA_set0_key');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_p := LoadLibFunction(ADllHandle, DSA_get0_p_procname);
-  FuncLoaded := assigned(DSA_get0_p);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_p);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_p_allownil)}
+    DSA_get0_p := @ERR_DSA_get0_p;
+    {$ifend}
     {$if declared(DSA_get0_p_introduced)}
     if LibVersion < DSA_get0_p_introduced then
     begin
       {$if declared(FC_DSA_get0_p)}
       DSA_get0_p := @FC_DSA_get0_p;
-      {$else}
-      {$if not defined(DSA_get0_p_allownil)}
-      DSA_get0_p := @ERR_DSA_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_p_removed)}
@@ -2635,39 +2314,31 @@ begin
     begin
       {$if declared(_DSA_get0_p)}
       DSA_get0_p := @_DSA_get0_p;
-      {$else}
-      {$if not defined(DSA_get0_p_allownil)}
-      DSA_get0_p := @ERR_DSA_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_p_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_p := @ERR_DSA_get0_p;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_p');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_q := LoadLibFunction(ADllHandle, DSA_get0_q_procname);
-  FuncLoaded := assigned(DSA_get0_q);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_q);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_q_allownil)}
+    DSA_get0_q := @ERR_DSA_get0_q;
+    {$ifend}
     {$if declared(DSA_get0_q_introduced)}
     if LibVersion < DSA_get0_q_introduced then
     begin
       {$if declared(FC_DSA_get0_q)}
       DSA_get0_q := @FC_DSA_get0_q;
-      {$else}
-      {$if not defined(DSA_get0_q_allownil)}
-      DSA_get0_q := @ERR_DSA_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_q_removed)}
@@ -2675,39 +2346,31 @@ begin
     begin
       {$if declared(_DSA_get0_q)}
       DSA_get0_q := @_DSA_get0_q;
-      {$else}
-      {$if not defined(DSA_get0_q_allownil)}
-      DSA_get0_q := @ERR_DSA_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_q_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_q := @ERR_DSA_get0_q;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_q');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_g := LoadLibFunction(ADllHandle, DSA_get0_g_procname);
-  FuncLoaded := assigned(DSA_get0_g);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_g);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_g_allownil)}
+    DSA_get0_g := @ERR_DSA_get0_g;
+    {$ifend}
     {$if declared(DSA_get0_g_introduced)}
     if LibVersion < DSA_get0_g_introduced then
     begin
       {$if declared(FC_DSA_get0_g)}
       DSA_get0_g := @FC_DSA_get0_g;
-      {$else}
-      {$if not defined(DSA_get0_g_allownil)}
-      DSA_get0_g := @ERR_DSA_get0_g;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_g_removed)}
@@ -2715,39 +2378,31 @@ begin
     begin
       {$if declared(_DSA_get0_g)}
       DSA_get0_g := @_DSA_get0_g;
-      {$else}
-      {$if not defined(DSA_get0_g_allownil)}
-      DSA_get0_g := @ERR_DSA_get0_g;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_g_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_g := @ERR_DSA_get0_g;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_g');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_pub_key := LoadLibFunction(ADllHandle, DSA_get0_pub_key_procname);
-  FuncLoaded := assigned(DSA_get0_pub_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_pub_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_pub_key_allownil)}
+    DSA_get0_pub_key := @ERR_DSA_get0_pub_key;
+    {$ifend}
     {$if declared(DSA_get0_pub_key_introduced)}
     if LibVersion < DSA_get0_pub_key_introduced then
     begin
       {$if declared(FC_DSA_get0_pub_key)}
       DSA_get0_pub_key := @FC_DSA_get0_pub_key;
-      {$else}
-      {$if not defined(DSA_get0_pub_key_allownil)}
-      DSA_get0_pub_key := @ERR_DSA_get0_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_pub_key_removed)}
@@ -2755,39 +2410,31 @@ begin
     begin
       {$if declared(_DSA_get0_pub_key)}
       DSA_get0_pub_key := @_DSA_get0_pub_key;
-      {$else}
-      {$if not defined(DSA_get0_pub_key_allownil)}
-      DSA_get0_pub_key := @ERR_DSA_get0_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_pub_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_pub_key := @ERR_DSA_get0_pub_key;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_pub_key');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_priv_key := LoadLibFunction(ADllHandle, DSA_get0_priv_key_procname);
-  FuncLoaded := assigned(DSA_get0_priv_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_priv_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_priv_key_allownil)}
+    DSA_get0_priv_key := @ERR_DSA_get0_priv_key;
+    {$ifend}
     {$if declared(DSA_get0_priv_key_introduced)}
     if LibVersion < DSA_get0_priv_key_introduced then
     begin
       {$if declared(FC_DSA_get0_priv_key)}
       DSA_get0_priv_key := @FC_DSA_get0_priv_key;
-      {$else}
-      {$if not defined(DSA_get0_priv_key_allownil)}
-      DSA_get0_priv_key := @ERR_DSA_get0_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_priv_key_removed)}
@@ -2795,39 +2442,31 @@ begin
     begin
       {$if declared(_DSA_get0_priv_key)}
       DSA_get0_priv_key := @_DSA_get0_priv_key;
-      {$else}
-      {$if not defined(DSA_get0_priv_key_allownil)}
-      DSA_get0_priv_key := @ERR_DSA_get0_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_priv_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_priv_key := @ERR_DSA_get0_priv_key;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_priv_key');
-    end;
     {$ifend}
   end;
 
 
   DSA_clear_flags := LoadLibFunction(ADllHandle, DSA_clear_flags_procname);
-  FuncLoaded := assigned(DSA_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_clear_flags_allownil)}
+    DSA_clear_flags := @ERR_DSA_clear_flags;
+    {$ifend}
     {$if declared(DSA_clear_flags_introduced)}
     if LibVersion < DSA_clear_flags_introduced then
     begin
       {$if declared(FC_DSA_clear_flags)}
       DSA_clear_flags := @FC_DSA_clear_flags;
-      {$else}
-      {$if not defined(DSA_clear_flags_allownil)}
-      DSA_clear_flags := @ERR_DSA_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_clear_flags_removed)}
@@ -2835,39 +2474,31 @@ begin
     begin
       {$if declared(_DSA_clear_flags)}
       DSA_clear_flags := @_DSA_clear_flags;
-      {$else}
-      {$if not defined(DSA_clear_flags_allownil)}
-      DSA_clear_flags := @ERR_DSA_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_clear_flags := @ERR_DSA_clear_flags;
+    if FuncLoadError then
       AFailed.Add('DSA_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   DSA_test_flags := LoadLibFunction(ADllHandle, DSA_test_flags_procname);
-  FuncLoaded := assigned(DSA_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_test_flags_allownil)}
+    DSA_test_flags := @ERR_DSA_test_flags;
+    {$ifend}
     {$if declared(DSA_test_flags_introduced)}
     if LibVersion < DSA_test_flags_introduced then
     begin
       {$if declared(FC_DSA_test_flags)}
       DSA_test_flags := @FC_DSA_test_flags;
-      {$else}
-      {$if not defined(DSA_test_flags_allownil)}
-      DSA_test_flags := @ERR_DSA_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_test_flags_removed)}
@@ -2875,39 +2506,31 @@ begin
     begin
       {$if declared(_DSA_test_flags)}
       DSA_test_flags := @_DSA_test_flags;
-      {$else}
-      {$if not defined(DSA_test_flags_allownil)}
-      DSA_test_flags := @ERR_DSA_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_test_flags := @ERR_DSA_test_flags;
+    if FuncLoadError then
       AFailed.Add('DSA_test_flags');
-    end;
     {$ifend}
   end;
 
 
   DSA_set_flags := LoadLibFunction(ADllHandle, DSA_set_flags_procname);
-  FuncLoaded := assigned(DSA_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_set_flags_allownil)}
+    DSA_set_flags := @ERR_DSA_set_flags;
+    {$ifend}
     {$if declared(DSA_set_flags_introduced)}
     if LibVersion < DSA_set_flags_introduced then
     begin
       {$if declared(FC_DSA_set_flags)}
       DSA_set_flags := @FC_DSA_set_flags;
-      {$else}
-      {$if not defined(DSA_set_flags_allownil)}
-      DSA_set_flags := @ERR_DSA_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_set_flags_removed)}
@@ -2915,39 +2538,31 @@ begin
     begin
       {$if declared(_DSA_set_flags)}
       DSA_set_flags := @_DSA_set_flags;
-      {$else}
-      {$if not defined(DSA_set_flags_allownil)}
-      DSA_set_flags := @ERR_DSA_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_set_flags := @ERR_DSA_set_flags;
+    if FuncLoadError then
       AFailed.Add('DSA_set_flags');
-    end;
     {$ifend}
   end;
 
 
   DSA_get0_engine := LoadLibFunction(ADllHandle, DSA_get0_engine_procname);
-  FuncLoaded := assigned(DSA_get0_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_get0_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_get0_engine_allownil)}
+    DSA_get0_engine := @ERR_DSA_get0_engine;
+    {$ifend}
     {$if declared(DSA_get0_engine_introduced)}
     if LibVersion < DSA_get0_engine_introduced then
     begin
       {$if declared(FC_DSA_get0_engine)}
       DSA_get0_engine := @FC_DSA_get0_engine;
-      {$else}
-      {$if not defined(DSA_get0_engine_allownil)}
-      DSA_get0_engine := @ERR_DSA_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_get0_engine_removed)}
@@ -2955,39 +2570,31 @@ begin
     begin
       {$if declared(_DSA_get0_engine)}
       DSA_get0_engine := @_DSA_get0_engine;
-      {$else}
-      {$if not defined(DSA_get0_engine_allownil)}
-      DSA_get0_engine := @ERR_DSA_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_get0_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_get0_engine := @ERR_DSA_get0_engine;
+    if FuncLoadError then
       AFailed.Add('DSA_get0_engine');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_new := LoadLibFunction(ADllHandle, DSA_meth_new_procname);
-  FuncLoaded := assigned(DSA_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_new_allownil)}
+    DSA_meth_new := @ERR_DSA_meth_new;
+    {$ifend}
     {$if declared(DSA_meth_new_introduced)}
     if LibVersion < DSA_meth_new_introduced then
     begin
       {$if declared(FC_DSA_meth_new)}
       DSA_meth_new := @FC_DSA_meth_new;
-      {$else}
-      {$if not defined(DSA_meth_new_allownil)}
-      DSA_meth_new := @ERR_DSA_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_new_removed)}
@@ -2995,39 +2602,31 @@ begin
     begin
       {$if declared(_DSA_meth_new)}
       DSA_meth_new := @_DSA_meth_new;
-      {$else}
-      {$if not defined(DSA_meth_new_allownil)}
-      DSA_meth_new := @ERR_DSA_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_new := @ERR_DSA_meth_new;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_new');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_free := LoadLibFunction(ADllHandle, DSA_meth_free_procname);
-  FuncLoaded := assigned(DSA_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_free_allownil)}
+    DSA_meth_free := @ERR_DSA_meth_free;
+    {$ifend}
     {$if declared(DSA_meth_free_introduced)}
     if LibVersion < DSA_meth_free_introduced then
     begin
       {$if declared(FC_DSA_meth_free)}
       DSA_meth_free := @FC_DSA_meth_free;
-      {$else}
-      {$if not defined(DSA_meth_free_allownil)}
-      DSA_meth_free := @ERR_DSA_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_free_removed)}
@@ -3035,39 +2634,31 @@ begin
     begin
       {$if declared(_DSA_meth_free)}
       DSA_meth_free := @_DSA_meth_free;
-      {$else}
-      {$if not defined(DSA_meth_free_allownil)}
-      DSA_meth_free := @ERR_DSA_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_free := @ERR_DSA_meth_free;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_free');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_dup := LoadLibFunction(ADllHandle, DSA_meth_dup_procname);
-  FuncLoaded := assigned(DSA_meth_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_dup_allownil)}
+    DSA_meth_dup := @ERR_DSA_meth_dup;
+    {$ifend}
     {$if declared(DSA_meth_dup_introduced)}
     if LibVersion < DSA_meth_dup_introduced then
     begin
       {$if declared(FC_DSA_meth_dup)}
       DSA_meth_dup := @FC_DSA_meth_dup;
-      {$else}
-      {$if not defined(DSA_meth_dup_allownil)}
-      DSA_meth_dup := @ERR_DSA_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_dup_removed)}
@@ -3075,39 +2666,31 @@ begin
     begin
       {$if declared(_DSA_meth_dup)}
       DSA_meth_dup := @_DSA_meth_dup;
-      {$else}
-      {$if not defined(DSA_meth_dup_allownil)}
-      DSA_meth_dup := @ERR_DSA_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_dup := @ERR_DSA_meth_dup;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_dup');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get0_name := LoadLibFunction(ADllHandle, DSA_meth_get0_name_procname);
-  FuncLoaded := assigned(DSA_meth_get0_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get0_name);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get0_name_allownil)}
+    DSA_meth_get0_name := @ERR_DSA_meth_get0_name;
+    {$ifend}
     {$if declared(DSA_meth_get0_name_introduced)}
     if LibVersion < DSA_meth_get0_name_introduced then
     begin
       {$if declared(FC_DSA_meth_get0_name)}
       DSA_meth_get0_name := @FC_DSA_meth_get0_name;
-      {$else}
-      {$if not defined(DSA_meth_get0_name_allownil)}
-      DSA_meth_get0_name := @ERR_DSA_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get0_name_removed)}
@@ -3115,39 +2698,31 @@ begin
     begin
       {$if declared(_DSA_meth_get0_name)}
       DSA_meth_get0_name := @_DSA_meth_get0_name;
-      {$else}
-      {$if not defined(DSA_meth_get0_name_allownil)}
-      DSA_meth_get0_name := @ERR_DSA_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get0_name_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get0_name := @ERR_DSA_meth_get0_name;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get0_name');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set1_name := LoadLibFunction(ADllHandle, DSA_meth_set1_name_procname);
-  FuncLoaded := assigned(DSA_meth_set1_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set1_name);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set1_name_allownil)}
+    DSA_meth_set1_name := @ERR_DSA_meth_set1_name;
+    {$ifend}
     {$if declared(DSA_meth_set1_name_introduced)}
     if LibVersion < DSA_meth_set1_name_introduced then
     begin
       {$if declared(FC_DSA_meth_set1_name)}
       DSA_meth_set1_name := @FC_DSA_meth_set1_name;
-      {$else}
-      {$if not defined(DSA_meth_set1_name_allownil)}
-      DSA_meth_set1_name := @ERR_DSA_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set1_name_removed)}
@@ -3155,39 +2730,31 @@ begin
     begin
       {$if declared(_DSA_meth_set1_name)}
       DSA_meth_set1_name := @_DSA_meth_set1_name;
-      {$else}
-      {$if not defined(DSA_meth_set1_name_allownil)}
-      DSA_meth_set1_name := @ERR_DSA_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set1_name_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set1_name := @ERR_DSA_meth_set1_name;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set1_name');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_flags := LoadLibFunction(ADllHandle, DSA_meth_get_flags_procname);
-  FuncLoaded := assigned(DSA_meth_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_flags_allownil)}
+    DSA_meth_get_flags := @ERR_DSA_meth_get_flags;
+    {$ifend}
     {$if declared(DSA_meth_get_flags_introduced)}
     if LibVersion < DSA_meth_get_flags_introduced then
     begin
       {$if declared(FC_DSA_meth_get_flags)}
       DSA_meth_get_flags := @FC_DSA_meth_get_flags;
-      {$else}
-      {$if not defined(DSA_meth_get_flags_allownil)}
-      DSA_meth_get_flags := @ERR_DSA_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_flags_removed)}
@@ -3195,39 +2762,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_flags)}
       DSA_meth_get_flags := @_DSA_meth_get_flags;
-      {$else}
-      {$if not defined(DSA_meth_get_flags_allownil)}
-      DSA_meth_get_flags := @ERR_DSA_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_flags := @ERR_DSA_meth_get_flags;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_flags');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_flags := LoadLibFunction(ADllHandle, DSA_meth_set_flags_procname);
-  FuncLoaded := assigned(DSA_meth_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_flags_allownil)}
+    DSA_meth_set_flags := @ERR_DSA_meth_set_flags;
+    {$ifend}
     {$if declared(DSA_meth_set_flags_introduced)}
     if LibVersion < DSA_meth_set_flags_introduced then
     begin
       {$if declared(FC_DSA_meth_set_flags)}
       DSA_meth_set_flags := @FC_DSA_meth_set_flags;
-      {$else}
-      {$if not defined(DSA_meth_set_flags_allownil)}
-      DSA_meth_set_flags := @ERR_DSA_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_flags_removed)}
@@ -3235,39 +2794,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_flags)}
       DSA_meth_set_flags := @_DSA_meth_set_flags;
-      {$else}
-      {$if not defined(DSA_meth_set_flags_allownil)}
-      DSA_meth_set_flags := @ERR_DSA_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_flags := @ERR_DSA_meth_set_flags;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_flags');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get0_app_data := LoadLibFunction(ADllHandle, DSA_meth_get0_app_data_procname);
-  FuncLoaded := assigned(DSA_meth_get0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get0_app_data_allownil)}
+    DSA_meth_get0_app_data := @ERR_DSA_meth_get0_app_data;
+    {$ifend}
     {$if declared(DSA_meth_get0_app_data_introduced)}
     if LibVersion < DSA_meth_get0_app_data_introduced then
     begin
       {$if declared(FC_DSA_meth_get0_app_data)}
       DSA_meth_get0_app_data := @FC_DSA_meth_get0_app_data;
-      {$else}
-      {$if not defined(DSA_meth_get0_app_data_allownil)}
-      DSA_meth_get0_app_data := @ERR_DSA_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get0_app_data_removed)}
@@ -3275,39 +2826,31 @@ begin
     begin
       {$if declared(_DSA_meth_get0_app_data)}
       DSA_meth_get0_app_data := @_DSA_meth_get0_app_data;
-      {$else}
-      {$if not defined(DSA_meth_get0_app_data_allownil)}
-      DSA_meth_get0_app_data := @ERR_DSA_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get0_app_data := @ERR_DSA_meth_get0_app_data;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get0_app_data');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set0_app_data := LoadLibFunction(ADllHandle, DSA_meth_set0_app_data_procname);
-  FuncLoaded := assigned(DSA_meth_set0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set0_app_data_allownil)}
+    DSA_meth_set0_app_data := @ERR_DSA_meth_set0_app_data;
+    {$ifend}
     {$if declared(DSA_meth_set0_app_data_introduced)}
     if LibVersion < DSA_meth_set0_app_data_introduced then
     begin
       {$if declared(FC_DSA_meth_set0_app_data)}
       DSA_meth_set0_app_data := @FC_DSA_meth_set0_app_data;
-      {$else}
-      {$if not defined(DSA_meth_set0_app_data_allownil)}
-      DSA_meth_set0_app_data := @ERR_DSA_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set0_app_data_removed)}
@@ -3315,39 +2858,31 @@ begin
     begin
       {$if declared(_DSA_meth_set0_app_data)}
       DSA_meth_set0_app_data := @_DSA_meth_set0_app_data;
-      {$else}
-      {$if not defined(DSA_meth_set0_app_data_allownil)}
-      DSA_meth_set0_app_data := @ERR_DSA_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set0_app_data := @ERR_DSA_meth_set0_app_data;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set0_app_data');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_sign := LoadLibFunction(ADllHandle, DSA_meth_get_sign_procname);
-  FuncLoaded := assigned(DSA_meth_get_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_sign_allownil)}
+    DSA_meth_get_sign := @ERR_DSA_meth_get_sign;
+    {$ifend}
     {$if declared(DSA_meth_get_sign_introduced)}
     if LibVersion < DSA_meth_get_sign_introduced then
     begin
       {$if declared(FC_DSA_meth_get_sign)}
       DSA_meth_get_sign := @FC_DSA_meth_get_sign;
-      {$else}
-      {$if not defined(DSA_meth_get_sign_allownil)}
-      DSA_meth_get_sign := @ERR_DSA_meth_get_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_sign_removed)}
@@ -3355,39 +2890,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_sign)}
       DSA_meth_get_sign := @_DSA_meth_get_sign;
-      {$else}
-      {$if not defined(DSA_meth_get_sign_allownil)}
-      DSA_meth_get_sign := @ERR_DSA_meth_get_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_sign := @ERR_DSA_meth_get_sign;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_sign');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_sign := LoadLibFunction(ADllHandle, DSA_meth_set_sign_procname);
-  FuncLoaded := assigned(DSA_meth_set_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_sign_allownil)}
+    DSA_meth_set_sign := @ERR_DSA_meth_set_sign;
+    {$ifend}
     {$if declared(DSA_meth_set_sign_introduced)}
     if LibVersion < DSA_meth_set_sign_introduced then
     begin
       {$if declared(FC_DSA_meth_set_sign)}
       DSA_meth_set_sign := @FC_DSA_meth_set_sign;
-      {$else}
-      {$if not defined(DSA_meth_set_sign_allownil)}
-      DSA_meth_set_sign := @ERR_DSA_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_sign_removed)}
@@ -3395,39 +2922,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_sign)}
       DSA_meth_set_sign := @_DSA_meth_set_sign;
-      {$else}
-      {$if not defined(DSA_meth_set_sign_allownil)}
-      DSA_meth_set_sign := @ERR_DSA_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_sign := @ERR_DSA_meth_set_sign;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_sign');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_sign_setup := LoadLibFunction(ADllHandle, DSA_meth_get_sign_setup_procname);
-  FuncLoaded := assigned(DSA_meth_get_sign_setup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_sign_setup);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_sign_setup_allownil)}
+    DSA_meth_get_sign_setup := @ERR_DSA_meth_get_sign_setup;
+    {$ifend}
     {$if declared(DSA_meth_get_sign_setup_introduced)}
     if LibVersion < DSA_meth_get_sign_setup_introduced then
     begin
       {$if declared(FC_DSA_meth_get_sign_setup)}
       DSA_meth_get_sign_setup := @FC_DSA_meth_get_sign_setup;
-      {$else}
-      {$if not defined(DSA_meth_get_sign_setup_allownil)}
-      DSA_meth_get_sign_setup := @ERR_DSA_meth_get_sign_setup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_sign_setup_removed)}
@@ -3435,39 +2954,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_sign_setup)}
       DSA_meth_get_sign_setup := @_DSA_meth_get_sign_setup;
-      {$else}
-      {$if not defined(DSA_meth_get_sign_setup_allownil)}
-      DSA_meth_get_sign_setup := @ERR_DSA_meth_get_sign_setup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_sign_setup_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_sign_setup := @ERR_DSA_meth_get_sign_setup;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_sign_setup');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_sign_setup := LoadLibFunction(ADllHandle, DSA_meth_set_sign_setup_procname);
-  FuncLoaded := assigned(DSA_meth_set_sign_setup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_sign_setup);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_sign_setup_allownil)}
+    DSA_meth_set_sign_setup := @ERR_DSA_meth_set_sign_setup;
+    {$ifend}
     {$if declared(DSA_meth_set_sign_setup_introduced)}
     if LibVersion < DSA_meth_set_sign_setup_introduced then
     begin
       {$if declared(FC_DSA_meth_set_sign_setup)}
       DSA_meth_set_sign_setup := @FC_DSA_meth_set_sign_setup;
-      {$else}
-      {$if not defined(DSA_meth_set_sign_setup_allownil)}
-      DSA_meth_set_sign_setup := @ERR_DSA_meth_set_sign_setup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_sign_setup_removed)}
@@ -3475,39 +2986,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_sign_setup)}
       DSA_meth_set_sign_setup := @_DSA_meth_set_sign_setup;
-      {$else}
-      {$if not defined(DSA_meth_set_sign_setup_allownil)}
-      DSA_meth_set_sign_setup := @ERR_DSA_meth_set_sign_setup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_sign_setup_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_sign_setup := @ERR_DSA_meth_set_sign_setup;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_sign_setup');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_verify := LoadLibFunction(ADllHandle, DSA_meth_get_verify_procname);
-  FuncLoaded := assigned(DSA_meth_get_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_verify_allownil)}
+    DSA_meth_get_verify := @ERR_DSA_meth_get_verify;
+    {$ifend}
     {$if declared(DSA_meth_get_verify_introduced)}
     if LibVersion < DSA_meth_get_verify_introduced then
     begin
       {$if declared(FC_DSA_meth_get_verify)}
       DSA_meth_get_verify := @FC_DSA_meth_get_verify;
-      {$else}
-      {$if not defined(DSA_meth_get_verify_allownil)}
-      DSA_meth_get_verify := @ERR_DSA_meth_get_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_verify_removed)}
@@ -3515,39 +3018,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_verify)}
       DSA_meth_get_verify := @_DSA_meth_get_verify;
-      {$else}
-      {$if not defined(DSA_meth_get_verify_allownil)}
-      DSA_meth_get_verify := @ERR_DSA_meth_get_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_verify := @ERR_DSA_meth_get_verify;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_verify');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_verify := LoadLibFunction(ADllHandle, DSA_meth_set_verify_procname);
-  FuncLoaded := assigned(DSA_meth_set_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_verify_allownil)}
+    DSA_meth_set_verify := @ERR_DSA_meth_set_verify;
+    {$ifend}
     {$if declared(DSA_meth_set_verify_introduced)}
     if LibVersion < DSA_meth_set_verify_introduced then
     begin
       {$if declared(FC_DSA_meth_set_verify)}
       DSA_meth_set_verify := @FC_DSA_meth_set_verify;
-      {$else}
-      {$if not defined(DSA_meth_set_verify_allownil)}
-      DSA_meth_set_verify := @ERR_DSA_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_verify_removed)}
@@ -3555,39 +3050,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_verify)}
       DSA_meth_set_verify := @_DSA_meth_set_verify;
-      {$else}
-      {$if not defined(DSA_meth_set_verify_allownil)}
-      DSA_meth_set_verify := @ERR_DSA_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_verify := @ERR_DSA_meth_set_verify;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_verify');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_mod_exp := LoadLibFunction(ADllHandle, DSA_meth_get_mod_exp_procname);
-  FuncLoaded := assigned(DSA_meth_get_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_mod_exp_allownil)}
+    DSA_meth_get_mod_exp := @ERR_DSA_meth_get_mod_exp;
+    {$ifend}
     {$if declared(DSA_meth_get_mod_exp_introduced)}
     if LibVersion < DSA_meth_get_mod_exp_introduced then
     begin
       {$if declared(FC_DSA_meth_get_mod_exp)}
       DSA_meth_get_mod_exp := @FC_DSA_meth_get_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_get_mod_exp_allownil)}
-      DSA_meth_get_mod_exp := @ERR_DSA_meth_get_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_mod_exp_removed)}
@@ -3595,39 +3082,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_mod_exp)}
       DSA_meth_get_mod_exp := @_DSA_meth_get_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_get_mod_exp_allownil)}
-      DSA_meth_get_mod_exp := @ERR_DSA_meth_get_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_mod_exp := @ERR_DSA_meth_get_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_mod_exp := LoadLibFunction(ADllHandle, DSA_meth_set_mod_exp_procname);
-  FuncLoaded := assigned(DSA_meth_set_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_mod_exp_allownil)}
+    DSA_meth_set_mod_exp := @ERR_DSA_meth_set_mod_exp;
+    {$ifend}
     {$if declared(DSA_meth_set_mod_exp_introduced)}
     if LibVersion < DSA_meth_set_mod_exp_introduced then
     begin
       {$if declared(FC_DSA_meth_set_mod_exp)}
       DSA_meth_set_mod_exp := @FC_DSA_meth_set_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_set_mod_exp_allownil)}
-      DSA_meth_set_mod_exp := @ERR_DSA_meth_set_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_mod_exp_removed)}
@@ -3635,39 +3114,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_mod_exp)}
       DSA_meth_set_mod_exp := @_DSA_meth_set_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_set_mod_exp_allownil)}
-      DSA_meth_set_mod_exp := @ERR_DSA_meth_set_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_mod_exp := @ERR_DSA_meth_set_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_bn_mod_exp := LoadLibFunction(ADllHandle, DSA_meth_get_bn_mod_exp_procname);
-  FuncLoaded := assigned(DSA_meth_get_bn_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_bn_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_bn_mod_exp_allownil)}
+    DSA_meth_get_bn_mod_exp := @ERR_DSA_meth_get_bn_mod_exp;
+    {$ifend}
     {$if declared(DSA_meth_get_bn_mod_exp_introduced)}
     if LibVersion < DSA_meth_get_bn_mod_exp_introduced then
     begin
       {$if declared(FC_DSA_meth_get_bn_mod_exp)}
       DSA_meth_get_bn_mod_exp := @FC_DSA_meth_get_bn_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_get_bn_mod_exp_allownil)}
-      DSA_meth_get_bn_mod_exp := @ERR_DSA_meth_get_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_bn_mod_exp_removed)}
@@ -3675,39 +3146,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_bn_mod_exp)}
       DSA_meth_get_bn_mod_exp := @_DSA_meth_get_bn_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_get_bn_mod_exp_allownil)}
-      DSA_meth_get_bn_mod_exp := @ERR_DSA_meth_get_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_bn_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_bn_mod_exp := @ERR_DSA_meth_get_bn_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_bn_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_bn_mod_exp := LoadLibFunction(ADllHandle, DSA_meth_set_bn_mod_exp_procname);
-  FuncLoaded := assigned(DSA_meth_set_bn_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_bn_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_bn_mod_exp_allownil)}
+    DSA_meth_set_bn_mod_exp := @ERR_DSA_meth_set_bn_mod_exp;
+    {$ifend}
     {$if declared(DSA_meth_set_bn_mod_exp_introduced)}
     if LibVersion < DSA_meth_set_bn_mod_exp_introduced then
     begin
       {$if declared(FC_DSA_meth_set_bn_mod_exp)}
       DSA_meth_set_bn_mod_exp := @FC_DSA_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_set_bn_mod_exp_allownil)}
-      DSA_meth_set_bn_mod_exp := @ERR_DSA_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_bn_mod_exp_removed)}
@@ -3715,39 +3178,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_bn_mod_exp)}
       DSA_meth_set_bn_mod_exp := @_DSA_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(DSA_meth_set_bn_mod_exp_allownil)}
-      DSA_meth_set_bn_mod_exp := @ERR_DSA_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_bn_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_bn_mod_exp := @ERR_DSA_meth_set_bn_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_bn_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_init := LoadLibFunction(ADllHandle, DSA_meth_get_init_procname);
-  FuncLoaded := assigned(DSA_meth_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_init_allownil)}
+    DSA_meth_get_init := @ERR_DSA_meth_get_init;
+    {$ifend}
     {$if declared(DSA_meth_get_init_introduced)}
     if LibVersion < DSA_meth_get_init_introduced then
     begin
       {$if declared(FC_DSA_meth_get_init)}
       DSA_meth_get_init := @FC_DSA_meth_get_init;
-      {$else}
-      {$if not defined(DSA_meth_get_init_allownil)}
-      DSA_meth_get_init := @ERR_DSA_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_init_removed)}
@@ -3755,39 +3210,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_init)}
       DSA_meth_get_init := @_DSA_meth_get_init;
-      {$else}
-      {$if not defined(DSA_meth_get_init_allownil)}
-      DSA_meth_get_init := @ERR_DSA_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_init := @ERR_DSA_meth_get_init;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_init');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_init := LoadLibFunction(ADllHandle, DSA_meth_set_init_procname);
-  FuncLoaded := assigned(DSA_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_init_allownil)}
+    DSA_meth_set_init := @ERR_DSA_meth_set_init;
+    {$ifend}
     {$if declared(DSA_meth_set_init_introduced)}
     if LibVersion < DSA_meth_set_init_introduced then
     begin
       {$if declared(FC_DSA_meth_set_init)}
       DSA_meth_set_init := @FC_DSA_meth_set_init;
-      {$else}
-      {$if not defined(DSA_meth_set_init_allownil)}
-      DSA_meth_set_init := @ERR_DSA_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_init_removed)}
@@ -3795,39 +3242,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_init)}
       DSA_meth_set_init := @_DSA_meth_set_init;
-      {$else}
-      {$if not defined(DSA_meth_set_init_allownil)}
-      DSA_meth_set_init := @ERR_DSA_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_init := @ERR_DSA_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_init');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_finish := LoadLibFunction(ADllHandle, DSA_meth_get_finish_procname);
-  FuncLoaded := assigned(DSA_meth_get_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_finish_allownil)}
+    DSA_meth_get_finish := @ERR_DSA_meth_get_finish;
+    {$ifend}
     {$if declared(DSA_meth_get_finish_introduced)}
     if LibVersion < DSA_meth_get_finish_introduced then
     begin
       {$if declared(FC_DSA_meth_get_finish)}
       DSA_meth_get_finish := @FC_DSA_meth_get_finish;
-      {$else}
-      {$if not defined(DSA_meth_get_finish_allownil)}
-      DSA_meth_get_finish := @ERR_DSA_meth_get_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_finish_removed)}
@@ -3835,39 +3274,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_finish)}
       DSA_meth_get_finish := @_DSA_meth_get_finish;
-      {$else}
-      {$if not defined(DSA_meth_get_finish_allownil)}
-      DSA_meth_get_finish := @ERR_DSA_meth_get_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_finish := @ERR_DSA_meth_get_finish;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_finish');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_finish := LoadLibFunction(ADllHandle, DSA_meth_set_finish_procname);
-  FuncLoaded := assigned(DSA_meth_set_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_finish_allownil)}
+    DSA_meth_set_finish := @ERR_DSA_meth_set_finish;
+    {$ifend}
     {$if declared(DSA_meth_set_finish_introduced)}
     if LibVersion < DSA_meth_set_finish_introduced then
     begin
       {$if declared(FC_DSA_meth_set_finish)}
       DSA_meth_set_finish := @FC_DSA_meth_set_finish;
-      {$else}
-      {$if not defined(DSA_meth_set_finish_allownil)}
-      DSA_meth_set_finish := @ERR_DSA_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_finish_removed)}
@@ -3875,39 +3306,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_finish)}
       DSA_meth_set_finish := @_DSA_meth_set_finish;
-      {$else}
-      {$if not defined(DSA_meth_set_finish_allownil)}
-      DSA_meth_set_finish := @ERR_DSA_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_finish := @ERR_DSA_meth_set_finish;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_finish');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_paramgen := LoadLibFunction(ADllHandle, DSA_meth_get_paramgen_procname);
-  FuncLoaded := assigned(DSA_meth_get_paramgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_paramgen);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_paramgen_allownil)}
+    DSA_meth_get_paramgen := @ERR_DSA_meth_get_paramgen;
+    {$ifend}
     {$if declared(DSA_meth_get_paramgen_introduced)}
     if LibVersion < DSA_meth_get_paramgen_introduced then
     begin
       {$if declared(FC_DSA_meth_get_paramgen)}
       DSA_meth_get_paramgen := @FC_DSA_meth_get_paramgen;
-      {$else}
-      {$if not defined(DSA_meth_get_paramgen_allownil)}
-      DSA_meth_get_paramgen := @ERR_DSA_meth_get_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_paramgen_removed)}
@@ -3915,39 +3338,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_paramgen)}
       DSA_meth_get_paramgen := @_DSA_meth_get_paramgen;
-      {$else}
-      {$if not defined(DSA_meth_get_paramgen_allownil)}
-      DSA_meth_get_paramgen := @ERR_DSA_meth_get_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_paramgen_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_paramgen := @ERR_DSA_meth_get_paramgen;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_paramgen');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_paramgen := LoadLibFunction(ADllHandle, DSA_meth_set_paramgen_procname);
-  FuncLoaded := assigned(DSA_meth_set_paramgen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_paramgen);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_paramgen_allownil)}
+    DSA_meth_set_paramgen := @ERR_DSA_meth_set_paramgen;
+    {$ifend}
     {$if declared(DSA_meth_set_paramgen_introduced)}
     if LibVersion < DSA_meth_set_paramgen_introduced then
     begin
       {$if declared(FC_DSA_meth_set_paramgen)}
       DSA_meth_set_paramgen := @FC_DSA_meth_set_paramgen;
-      {$else}
-      {$if not defined(DSA_meth_set_paramgen_allownil)}
-      DSA_meth_set_paramgen := @ERR_DSA_meth_set_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_paramgen_removed)}
@@ -3955,39 +3370,31 @@ begin
     begin
       {$if declared(_DSA_meth_set_paramgen)}
       DSA_meth_set_paramgen := @_DSA_meth_set_paramgen;
-      {$else}
-      {$if not defined(DSA_meth_set_paramgen_allownil)}
-      DSA_meth_set_paramgen := @ERR_DSA_meth_set_paramgen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_paramgen_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_paramgen := @ERR_DSA_meth_set_paramgen;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_paramgen');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_get_keygen := LoadLibFunction(ADllHandle, DSA_meth_get_keygen_procname);
-  FuncLoaded := assigned(DSA_meth_get_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_get_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_get_keygen_allownil)}
+    DSA_meth_get_keygen := @ERR_DSA_meth_get_keygen;
+    {$ifend}
     {$if declared(DSA_meth_get_keygen_introduced)}
     if LibVersion < DSA_meth_get_keygen_introduced then
     begin
       {$if declared(FC_DSA_meth_get_keygen)}
       DSA_meth_get_keygen := @FC_DSA_meth_get_keygen;
-      {$else}
-      {$if not defined(DSA_meth_get_keygen_allownil)}
-      DSA_meth_get_keygen := @ERR_DSA_meth_get_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_get_keygen_removed)}
@@ -3995,39 +3402,31 @@ begin
     begin
       {$if declared(_DSA_meth_get_keygen)}
       DSA_meth_get_keygen := @_DSA_meth_get_keygen;
-      {$else}
-      {$if not defined(DSA_meth_get_keygen_allownil)}
-      DSA_meth_get_keygen := @ERR_DSA_meth_get_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_get_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_get_keygen := @ERR_DSA_meth_get_keygen;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_get_keygen');
-    end;
     {$ifend}
   end;
 
 
   DSA_meth_set_keygen := LoadLibFunction(ADllHandle, DSA_meth_set_keygen_procname);
-  FuncLoaded := assigned(DSA_meth_set_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DSA_meth_set_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(DSA_meth_set_keygen_allownil)}
+    DSA_meth_set_keygen := @ERR_DSA_meth_set_keygen;
+    {$ifend}
     {$if declared(DSA_meth_set_keygen_introduced)}
     if LibVersion < DSA_meth_set_keygen_introduced then
     begin
       {$if declared(FC_DSA_meth_set_keygen)}
       DSA_meth_set_keygen := @FC_DSA_meth_set_keygen;
-      {$else}
-      {$if not defined(DSA_meth_set_keygen_allownil)}
-      DSA_meth_set_keygen := @ERR_DSA_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DSA_meth_set_keygen_removed)}
@@ -4035,20 +3434,13 @@ begin
     begin
       {$if declared(_DSA_meth_set_keygen)}
       DSA_meth_set_keygen := @_DSA_meth_set_keygen;
-      {$else}
-      {$if not defined(DSA_meth_set_keygen_allownil)}
-      DSA_meth_set_keygen := @ERR_DSA_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DSA_meth_set_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      DSA_meth_set_keygen := @ERR_DSA_meth_set_keygen;
+    if FuncLoadError then
       AFailed.Add('DSA_meth_set_keygen');
-    end;
     {$ifend}
   end;
 

@@ -1576,24 +1576,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   RSA_new := LoadLibFunction(ADllHandle, RSA_new_procname);
-  FuncLoaded := assigned(RSA_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_new);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_new_allownil)}
+    RSA_new := @ERR_RSA_new;
+    {$ifend}
     {$if declared(RSA_new_introduced)}
     if LibVersion < RSA_new_introduced then
     begin
       {$if declared(FC_RSA_new)}
       RSA_new := @FC_RSA_new;
-      {$else}
-      {$if not defined(RSA_new_allownil)}
-      RSA_new := @ERR_RSA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_new_removed)}
@@ -1601,39 +1600,31 @@ begin
     begin
       {$if declared(_RSA_new)}
       RSA_new := @_RSA_new;
-      {$else}
-      {$if not defined(RSA_new_allownil)}
-      RSA_new := @ERR_RSA_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_new_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_new := @ERR_RSA_new;
+    if FuncLoadError then
       AFailed.Add('RSA_new');
-    end;
     {$ifend}
   end;
 
 
   RSA_new_method := LoadLibFunction(ADllHandle, RSA_new_method_procname);
-  FuncLoaded := assigned(RSA_new_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_new_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_new_method_allownil)}
+    RSA_new_method := @ERR_RSA_new_method;
+    {$ifend}
     {$if declared(RSA_new_method_introduced)}
     if LibVersion < RSA_new_method_introduced then
     begin
       {$if declared(FC_RSA_new_method)}
       RSA_new_method := @FC_RSA_new_method;
-      {$else}
-      {$if not defined(RSA_new_method_allownil)}
-      RSA_new_method := @ERR_RSA_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_new_method_removed)}
@@ -1641,39 +1632,31 @@ begin
     begin
       {$if declared(_RSA_new_method)}
       RSA_new_method := @_RSA_new_method;
-      {$else}
-      {$if not defined(RSA_new_method_allownil)}
-      RSA_new_method := @ERR_RSA_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_new_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_new_method := @ERR_RSA_new_method;
+    if FuncLoadError then
       AFailed.Add('RSA_new_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_bits := LoadLibFunction(ADllHandle, RSA_bits_procname);
-  FuncLoaded := assigned(RSA_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_bits_allownil)}
+    RSA_bits := @ERR_RSA_bits;
+    {$ifend}
     {$if declared(RSA_bits_introduced)}
     if LibVersion < RSA_bits_introduced then
     begin
       {$if declared(FC_RSA_bits)}
       RSA_bits := @FC_RSA_bits;
-      {$else}
-      {$if not defined(RSA_bits_allownil)}
-      RSA_bits := @ERR_RSA_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_bits_removed)}
@@ -1681,39 +1664,31 @@ begin
     begin
       {$if declared(_RSA_bits)}
       RSA_bits := @_RSA_bits;
-      {$else}
-      {$if not defined(RSA_bits_allownil)}
-      RSA_bits := @ERR_RSA_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_bits := @ERR_RSA_bits;
+    if FuncLoadError then
       AFailed.Add('RSA_bits');
-    end;
     {$ifend}
   end;
 
 
   RSA_size := LoadLibFunction(ADllHandle, RSA_size_procname);
-  FuncLoaded := assigned(RSA_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_size);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_size_allownil)}
+    RSA_size := @ERR_RSA_size;
+    {$ifend}
     {$if declared(RSA_size_introduced)}
     if LibVersion < RSA_size_introduced then
     begin
       {$if declared(FC_RSA_size)}
       RSA_size := @FC_RSA_size;
-      {$else}
-      {$if not defined(RSA_size_allownil)}
-      RSA_size := @ERR_RSA_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_size_removed)}
@@ -1721,39 +1696,31 @@ begin
     begin
       {$if declared(_RSA_size)}
       RSA_size := @_RSA_size;
-      {$else}
-      {$if not defined(RSA_size_allownil)}
-      RSA_size := @ERR_RSA_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_size_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_size := @ERR_RSA_size;
+    if FuncLoadError then
       AFailed.Add('RSA_size');
-    end;
     {$ifend}
   end;
 
 
   RSA_security_bits := LoadLibFunction(ADllHandle, RSA_security_bits_procname);
-  FuncLoaded := assigned(RSA_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_security_bits_allownil)}
+    RSA_security_bits := @ERR_RSA_security_bits;
+    {$ifend}
     {$if declared(RSA_security_bits_introduced)}
     if LibVersion < RSA_security_bits_introduced then
     begin
       {$if declared(FC_RSA_security_bits)}
       RSA_security_bits := @FC_RSA_security_bits;
-      {$else}
-      {$if not defined(RSA_security_bits_allownil)}
-      RSA_security_bits := @ERR_RSA_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_security_bits_removed)}
@@ -1761,39 +1728,31 @@ begin
     begin
       {$if declared(_RSA_security_bits)}
       RSA_security_bits := @_RSA_security_bits;
-      {$else}
-      {$if not defined(RSA_security_bits_allownil)}
-      RSA_security_bits := @ERR_RSA_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_security_bits := @ERR_RSA_security_bits;
+    if FuncLoadError then
       AFailed.Add('RSA_security_bits');
-    end;
     {$ifend}
   end;
 
 
   RSA_set0_key := LoadLibFunction(ADllHandle, RSA_set0_key_procname);
-  FuncLoaded := assigned(RSA_set0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set0_key_allownil)}
+    RSA_set0_key := @ERR_RSA_set0_key;
+    {$ifend}
     {$if declared(RSA_set0_key_introduced)}
     if LibVersion < RSA_set0_key_introduced then
     begin
       {$if declared(FC_RSA_set0_key)}
       RSA_set0_key := @FC_RSA_set0_key;
-      {$else}
-      {$if not defined(RSA_set0_key_allownil)}
-      RSA_set0_key := @ERR_RSA_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set0_key_removed)}
@@ -1801,39 +1760,31 @@ begin
     begin
       {$if declared(_RSA_set0_key)}
       RSA_set0_key := @_RSA_set0_key;
-      {$else}
-      {$if not defined(RSA_set0_key_allownil)}
-      RSA_set0_key := @ERR_RSA_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set0_key := @ERR_RSA_set0_key;
+    if FuncLoadError then
       AFailed.Add('RSA_set0_key');
-    end;
     {$ifend}
   end;
 
 
   RSA_set0_factors := LoadLibFunction(ADllHandle, RSA_set0_factors_procname);
-  FuncLoaded := assigned(RSA_set0_factors);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set0_factors);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set0_factors_allownil)}
+    RSA_set0_factors := @ERR_RSA_set0_factors;
+    {$ifend}
     {$if declared(RSA_set0_factors_introduced)}
     if LibVersion < RSA_set0_factors_introduced then
     begin
       {$if declared(FC_RSA_set0_factors)}
       RSA_set0_factors := @FC_RSA_set0_factors;
-      {$else}
-      {$if not defined(RSA_set0_factors_allownil)}
-      RSA_set0_factors := @ERR_RSA_set0_factors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set0_factors_removed)}
@@ -1841,39 +1792,31 @@ begin
     begin
       {$if declared(_RSA_set0_factors)}
       RSA_set0_factors := @_RSA_set0_factors;
-      {$else}
-      {$if not defined(RSA_set0_factors_allownil)}
-      RSA_set0_factors := @ERR_RSA_set0_factors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set0_factors_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set0_factors := @ERR_RSA_set0_factors;
+    if FuncLoadError then
       AFailed.Add('RSA_set0_factors');
-    end;
     {$ifend}
   end;
 
 
   RSA_set0_crt_params := LoadLibFunction(ADllHandle, RSA_set0_crt_params_procname);
-  FuncLoaded := assigned(RSA_set0_crt_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set0_crt_params);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set0_crt_params_allownil)}
+    RSA_set0_crt_params := @ERR_RSA_set0_crt_params;
+    {$ifend}
     {$if declared(RSA_set0_crt_params_introduced)}
     if LibVersion < RSA_set0_crt_params_introduced then
     begin
       {$if declared(FC_RSA_set0_crt_params)}
       RSA_set0_crt_params := @FC_RSA_set0_crt_params;
-      {$else}
-      {$if not defined(RSA_set0_crt_params_allownil)}
-      RSA_set0_crt_params := @ERR_RSA_set0_crt_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set0_crt_params_removed)}
@@ -1881,39 +1824,31 @@ begin
     begin
       {$if declared(_RSA_set0_crt_params)}
       RSA_set0_crt_params := @_RSA_set0_crt_params;
-      {$else}
-      {$if not defined(RSA_set0_crt_params_allownil)}
-      RSA_set0_crt_params := @ERR_RSA_set0_crt_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set0_crt_params_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set0_crt_params := @ERR_RSA_set0_crt_params;
+    if FuncLoadError then
       AFailed.Add('RSA_set0_crt_params');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_key := LoadLibFunction(ADllHandle, RSA_get0_key_procname);
-  FuncLoaded := assigned(RSA_get0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_key_allownil)}
+    RSA_get0_key := @ERR_RSA_get0_key;
+    {$ifend}
     {$if declared(RSA_get0_key_introduced)}
     if LibVersion < RSA_get0_key_introduced then
     begin
       {$if declared(FC_RSA_get0_key)}
       RSA_get0_key := @FC_RSA_get0_key;
-      {$else}
-      {$if not defined(RSA_get0_key_allownil)}
-      RSA_get0_key := @ERR_RSA_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_key_removed)}
@@ -1921,39 +1856,31 @@ begin
     begin
       {$if declared(_RSA_get0_key)}
       RSA_get0_key := @_RSA_get0_key;
-      {$else}
-      {$if not defined(RSA_get0_key_allownil)}
-      RSA_get0_key := @ERR_RSA_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_key := @ERR_RSA_get0_key;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_key');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_factors := LoadLibFunction(ADllHandle, RSA_get0_factors_procname);
-  FuncLoaded := assigned(RSA_get0_factors);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_factors);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_factors_allownil)}
+    RSA_get0_factors := @ERR_RSA_get0_factors;
+    {$ifend}
     {$if declared(RSA_get0_factors_introduced)}
     if LibVersion < RSA_get0_factors_introduced then
     begin
       {$if declared(FC_RSA_get0_factors)}
       RSA_get0_factors := @FC_RSA_get0_factors;
-      {$else}
-      {$if not defined(RSA_get0_factors_allownil)}
-      RSA_get0_factors := @ERR_RSA_get0_factors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_factors_removed)}
@@ -1961,39 +1888,31 @@ begin
     begin
       {$if declared(_RSA_get0_factors)}
       RSA_get0_factors := @_RSA_get0_factors;
-      {$else}
-      {$if not defined(RSA_get0_factors_allownil)}
-      RSA_get0_factors := @ERR_RSA_get0_factors;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_factors_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_factors := @ERR_RSA_get0_factors;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_factors');
-    end;
     {$ifend}
   end;
 
 
   RSA_get_multi_prime_extra_count := LoadLibFunction(ADllHandle, RSA_get_multi_prime_extra_count_procname);
-  FuncLoaded := assigned(RSA_get_multi_prime_extra_count);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get_multi_prime_extra_count);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get_multi_prime_extra_count_allownil)}
+    RSA_get_multi_prime_extra_count := @ERR_RSA_get_multi_prime_extra_count;
+    {$ifend}
     {$if declared(RSA_get_multi_prime_extra_count_introduced)}
     if LibVersion < RSA_get_multi_prime_extra_count_introduced then
     begin
       {$if declared(FC_RSA_get_multi_prime_extra_count)}
       RSA_get_multi_prime_extra_count := @FC_RSA_get_multi_prime_extra_count;
-      {$else}
-      {$if not defined(RSA_get_multi_prime_extra_count_allownil)}
-      RSA_get_multi_prime_extra_count := @ERR_RSA_get_multi_prime_extra_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get_multi_prime_extra_count_removed)}
@@ -2001,39 +1920,31 @@ begin
     begin
       {$if declared(_RSA_get_multi_prime_extra_count)}
       RSA_get_multi_prime_extra_count := @_RSA_get_multi_prime_extra_count;
-      {$else}
-      {$if not defined(RSA_get_multi_prime_extra_count_allownil)}
-      RSA_get_multi_prime_extra_count := @ERR_RSA_get_multi_prime_extra_count;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get_multi_prime_extra_count_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get_multi_prime_extra_count := @ERR_RSA_get_multi_prime_extra_count;
+    if FuncLoadError then
       AFailed.Add('RSA_get_multi_prime_extra_count');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_crt_params := LoadLibFunction(ADllHandle, RSA_get0_crt_params_procname);
-  FuncLoaded := assigned(RSA_get0_crt_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_crt_params);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_crt_params_allownil)}
+    RSA_get0_crt_params := @ERR_RSA_get0_crt_params;
+    {$ifend}
     {$if declared(RSA_get0_crt_params_introduced)}
     if LibVersion < RSA_get0_crt_params_introduced then
     begin
       {$if declared(FC_RSA_get0_crt_params)}
       RSA_get0_crt_params := @FC_RSA_get0_crt_params;
-      {$else}
-      {$if not defined(RSA_get0_crt_params_allownil)}
-      RSA_get0_crt_params := @ERR_RSA_get0_crt_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_crt_params_removed)}
@@ -2041,39 +1952,31 @@ begin
     begin
       {$if declared(_RSA_get0_crt_params)}
       RSA_get0_crt_params := @_RSA_get0_crt_params;
-      {$else}
-      {$if not defined(RSA_get0_crt_params_allownil)}
-      RSA_get0_crt_params := @ERR_RSA_get0_crt_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_crt_params_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_crt_params := @ERR_RSA_get0_crt_params;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_crt_params');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_n := LoadLibFunction(ADllHandle, RSA_get0_n_procname);
-  FuncLoaded := assigned(RSA_get0_n);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_n);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_n_allownil)}
+    RSA_get0_n := @ERR_RSA_get0_n;
+    {$ifend}
     {$if declared(RSA_get0_n_introduced)}
     if LibVersion < RSA_get0_n_introduced then
     begin
       {$if declared(FC_RSA_get0_n)}
       RSA_get0_n := @FC_RSA_get0_n;
-      {$else}
-      {$if not defined(RSA_get0_n_allownil)}
-      RSA_get0_n := @ERR_RSA_get0_n;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_n_removed)}
@@ -2081,39 +1984,31 @@ begin
     begin
       {$if declared(_RSA_get0_n)}
       RSA_get0_n := @_RSA_get0_n;
-      {$else}
-      {$if not defined(RSA_get0_n_allownil)}
-      RSA_get0_n := @ERR_RSA_get0_n;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_n_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_n := @ERR_RSA_get0_n;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_n');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_e := LoadLibFunction(ADllHandle, RSA_get0_e_procname);
-  FuncLoaded := assigned(RSA_get0_e);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_e);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_e_allownil)}
+    RSA_get0_e := @ERR_RSA_get0_e;
+    {$ifend}
     {$if declared(RSA_get0_e_introduced)}
     if LibVersion < RSA_get0_e_introduced then
     begin
       {$if declared(FC_RSA_get0_e)}
       RSA_get0_e := @FC_RSA_get0_e;
-      {$else}
-      {$if not defined(RSA_get0_e_allownil)}
-      RSA_get0_e := @ERR_RSA_get0_e;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_e_removed)}
@@ -2121,39 +2016,31 @@ begin
     begin
       {$if declared(_RSA_get0_e)}
       RSA_get0_e := @_RSA_get0_e;
-      {$else}
-      {$if not defined(RSA_get0_e_allownil)}
-      RSA_get0_e := @ERR_RSA_get0_e;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_e_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_e := @ERR_RSA_get0_e;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_e');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_d := LoadLibFunction(ADllHandle, RSA_get0_d_procname);
-  FuncLoaded := assigned(RSA_get0_d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_d);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_d_allownil)}
+    RSA_get0_d := @ERR_RSA_get0_d;
+    {$ifend}
     {$if declared(RSA_get0_d_introduced)}
     if LibVersion < RSA_get0_d_introduced then
     begin
       {$if declared(FC_RSA_get0_d)}
       RSA_get0_d := @FC_RSA_get0_d;
-      {$else}
-      {$if not defined(RSA_get0_d_allownil)}
-      RSA_get0_d := @ERR_RSA_get0_d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_d_removed)}
@@ -2161,39 +2048,31 @@ begin
     begin
       {$if declared(_RSA_get0_d)}
       RSA_get0_d := @_RSA_get0_d;
-      {$else}
-      {$if not defined(RSA_get0_d_allownil)}
-      RSA_get0_d := @ERR_RSA_get0_d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_d_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_d := @ERR_RSA_get0_d;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_d');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_p := LoadLibFunction(ADllHandle, RSA_get0_p_procname);
-  FuncLoaded := assigned(RSA_get0_p);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_p);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_p_allownil)}
+    RSA_get0_p := @ERR_RSA_get0_p;
+    {$ifend}
     {$if declared(RSA_get0_p_introduced)}
     if LibVersion < RSA_get0_p_introduced then
     begin
       {$if declared(FC_RSA_get0_p)}
       RSA_get0_p := @FC_RSA_get0_p;
-      {$else}
-      {$if not defined(RSA_get0_p_allownil)}
-      RSA_get0_p := @ERR_RSA_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_p_removed)}
@@ -2201,39 +2080,31 @@ begin
     begin
       {$if declared(_RSA_get0_p)}
       RSA_get0_p := @_RSA_get0_p;
-      {$else}
-      {$if not defined(RSA_get0_p_allownil)}
-      RSA_get0_p := @ERR_RSA_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_p_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_p := @ERR_RSA_get0_p;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_p');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_q := LoadLibFunction(ADllHandle, RSA_get0_q_procname);
-  FuncLoaded := assigned(RSA_get0_q);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_q);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_q_allownil)}
+    RSA_get0_q := @ERR_RSA_get0_q;
+    {$ifend}
     {$if declared(RSA_get0_q_introduced)}
     if LibVersion < RSA_get0_q_introduced then
     begin
       {$if declared(FC_RSA_get0_q)}
       RSA_get0_q := @FC_RSA_get0_q;
-      {$else}
-      {$if not defined(RSA_get0_q_allownil)}
-      RSA_get0_q := @ERR_RSA_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_q_removed)}
@@ -2241,39 +2112,31 @@ begin
     begin
       {$if declared(_RSA_get0_q)}
       RSA_get0_q := @_RSA_get0_q;
-      {$else}
-      {$if not defined(RSA_get0_q_allownil)}
-      RSA_get0_q := @ERR_RSA_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_q_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_q := @ERR_RSA_get0_q;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_q');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_dmp1 := LoadLibFunction(ADllHandle, RSA_get0_dmp1_procname);
-  FuncLoaded := assigned(RSA_get0_dmp1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_dmp1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_dmp1_allownil)}
+    RSA_get0_dmp1 := @ERR_RSA_get0_dmp1;
+    {$ifend}
     {$if declared(RSA_get0_dmp1_introduced)}
     if LibVersion < RSA_get0_dmp1_introduced then
     begin
       {$if declared(FC_RSA_get0_dmp1)}
       RSA_get0_dmp1 := @FC_RSA_get0_dmp1;
-      {$else}
-      {$if not defined(RSA_get0_dmp1_allownil)}
-      RSA_get0_dmp1 := @ERR_RSA_get0_dmp1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_dmp1_removed)}
@@ -2281,39 +2144,31 @@ begin
     begin
       {$if declared(_RSA_get0_dmp1)}
       RSA_get0_dmp1 := @_RSA_get0_dmp1;
-      {$else}
-      {$if not defined(RSA_get0_dmp1_allownil)}
-      RSA_get0_dmp1 := @ERR_RSA_get0_dmp1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_dmp1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_dmp1 := @ERR_RSA_get0_dmp1;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_dmp1');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_dmq1 := LoadLibFunction(ADllHandle, RSA_get0_dmq1_procname);
-  FuncLoaded := assigned(RSA_get0_dmq1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_dmq1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_dmq1_allownil)}
+    RSA_get0_dmq1 := @ERR_RSA_get0_dmq1;
+    {$ifend}
     {$if declared(RSA_get0_dmq1_introduced)}
     if LibVersion < RSA_get0_dmq1_introduced then
     begin
       {$if declared(FC_RSA_get0_dmq1)}
       RSA_get0_dmq1 := @FC_RSA_get0_dmq1;
-      {$else}
-      {$if not defined(RSA_get0_dmq1_allownil)}
-      RSA_get0_dmq1 := @ERR_RSA_get0_dmq1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_dmq1_removed)}
@@ -2321,39 +2176,31 @@ begin
     begin
       {$if declared(_RSA_get0_dmq1)}
       RSA_get0_dmq1 := @_RSA_get0_dmq1;
-      {$else}
-      {$if not defined(RSA_get0_dmq1_allownil)}
-      RSA_get0_dmq1 := @ERR_RSA_get0_dmq1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_dmq1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_dmq1 := @ERR_RSA_get0_dmq1;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_dmq1');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_iqmp := LoadLibFunction(ADllHandle, RSA_get0_iqmp_procname);
-  FuncLoaded := assigned(RSA_get0_iqmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_iqmp);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_iqmp_allownil)}
+    RSA_get0_iqmp := @ERR_RSA_get0_iqmp;
+    {$ifend}
     {$if declared(RSA_get0_iqmp_introduced)}
     if LibVersion < RSA_get0_iqmp_introduced then
     begin
       {$if declared(FC_RSA_get0_iqmp)}
       RSA_get0_iqmp := @FC_RSA_get0_iqmp;
-      {$else}
-      {$if not defined(RSA_get0_iqmp_allownil)}
-      RSA_get0_iqmp := @ERR_RSA_get0_iqmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_iqmp_removed)}
@@ -2361,39 +2208,31 @@ begin
     begin
       {$if declared(_RSA_get0_iqmp)}
       RSA_get0_iqmp := @_RSA_get0_iqmp;
-      {$else}
-      {$if not defined(RSA_get0_iqmp_allownil)}
-      RSA_get0_iqmp := @ERR_RSA_get0_iqmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_iqmp_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_iqmp := @ERR_RSA_get0_iqmp;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_iqmp');
-    end;
     {$ifend}
   end;
 
 
   RSA_clear_flags := LoadLibFunction(ADllHandle, RSA_clear_flags_procname);
-  FuncLoaded := assigned(RSA_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_clear_flags_allownil)}
+    RSA_clear_flags := @ERR_RSA_clear_flags;
+    {$ifend}
     {$if declared(RSA_clear_flags_introduced)}
     if LibVersion < RSA_clear_flags_introduced then
     begin
       {$if declared(FC_RSA_clear_flags)}
       RSA_clear_flags := @FC_RSA_clear_flags;
-      {$else}
-      {$if not defined(RSA_clear_flags_allownil)}
-      RSA_clear_flags := @ERR_RSA_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_clear_flags_removed)}
@@ -2401,39 +2240,31 @@ begin
     begin
       {$if declared(_RSA_clear_flags)}
       RSA_clear_flags := @_RSA_clear_flags;
-      {$else}
-      {$if not defined(RSA_clear_flags_allownil)}
-      RSA_clear_flags := @ERR_RSA_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_clear_flags := @ERR_RSA_clear_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_test_flags := LoadLibFunction(ADllHandle, RSA_test_flags_procname);
-  FuncLoaded := assigned(RSA_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_test_flags_allownil)}
+    RSA_test_flags := @ERR_RSA_test_flags;
+    {$ifend}
     {$if declared(RSA_test_flags_introduced)}
     if LibVersion < RSA_test_flags_introduced then
     begin
       {$if declared(FC_RSA_test_flags)}
       RSA_test_flags := @FC_RSA_test_flags;
-      {$else}
-      {$if not defined(RSA_test_flags_allownil)}
-      RSA_test_flags := @ERR_RSA_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_test_flags_removed)}
@@ -2441,39 +2272,31 @@ begin
     begin
       {$if declared(_RSA_test_flags)}
       RSA_test_flags := @_RSA_test_flags;
-      {$else}
-      {$if not defined(RSA_test_flags_allownil)}
-      RSA_test_flags := @ERR_RSA_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_test_flags := @ERR_RSA_test_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_test_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_set_flags := LoadLibFunction(ADllHandle, RSA_set_flags_procname);
-  FuncLoaded := assigned(RSA_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set_flags_allownil)}
+    RSA_set_flags := @ERR_RSA_set_flags;
+    {$ifend}
     {$if declared(RSA_set_flags_introduced)}
     if LibVersion < RSA_set_flags_introduced then
     begin
       {$if declared(FC_RSA_set_flags)}
       RSA_set_flags := @FC_RSA_set_flags;
-      {$else}
-      {$if not defined(RSA_set_flags_allownil)}
-      RSA_set_flags := @ERR_RSA_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set_flags_removed)}
@@ -2481,39 +2304,31 @@ begin
     begin
       {$if declared(_RSA_set_flags)}
       RSA_set_flags := @_RSA_set_flags;
-      {$else}
-      {$if not defined(RSA_set_flags_allownil)}
-      RSA_set_flags := @ERR_RSA_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set_flags := @ERR_RSA_set_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_set_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_get_version := LoadLibFunction(ADllHandle, RSA_get_version_procname);
-  FuncLoaded := assigned(RSA_get_version);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get_version);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get_version_allownil)}
+    RSA_get_version := @ERR_RSA_get_version;
+    {$ifend}
     {$if declared(RSA_get_version_introduced)}
     if LibVersion < RSA_get_version_introduced then
     begin
       {$if declared(FC_RSA_get_version)}
       RSA_get_version := @FC_RSA_get_version;
-      {$else}
-      {$if not defined(RSA_get_version_allownil)}
-      RSA_get_version := @ERR_RSA_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get_version_removed)}
@@ -2521,39 +2336,31 @@ begin
     begin
       {$if declared(_RSA_get_version)}
       RSA_get_version := @_RSA_get_version;
-      {$else}
-      {$if not defined(RSA_get_version_allownil)}
-      RSA_get_version := @ERR_RSA_get_version;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get_version_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get_version := @ERR_RSA_get_version;
+    if FuncLoadError then
       AFailed.Add('RSA_get_version');
-    end;
     {$ifend}
   end;
 
 
   RSA_get0_engine := LoadLibFunction(ADllHandle, RSA_get0_engine_procname);
-  FuncLoaded := assigned(RSA_get0_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get0_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get0_engine_allownil)}
+    RSA_get0_engine := @ERR_RSA_get0_engine;
+    {$ifend}
     {$if declared(RSA_get0_engine_introduced)}
     if LibVersion < RSA_get0_engine_introduced then
     begin
       {$if declared(FC_RSA_get0_engine)}
       RSA_get0_engine := @FC_RSA_get0_engine;
-      {$else}
-      {$if not defined(RSA_get0_engine_allownil)}
-      RSA_get0_engine := @ERR_RSA_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get0_engine_removed)}
@@ -2561,39 +2368,31 @@ begin
     begin
       {$if declared(_RSA_get0_engine)}
       RSA_get0_engine := @_RSA_get0_engine;
-      {$else}
-      {$if not defined(RSA_get0_engine_allownil)}
-      RSA_get0_engine := @ERR_RSA_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get0_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get0_engine := @ERR_RSA_get0_engine;
+    if FuncLoadError then
       AFailed.Add('RSA_get0_engine');
-    end;
     {$ifend}
   end;
 
 
   RSA_generate_key_ex := LoadLibFunction(ADllHandle, RSA_generate_key_ex_procname);
-  FuncLoaded := assigned(RSA_generate_key_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_generate_key_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_generate_key_ex_allownil)}
+    RSA_generate_key_ex := @ERR_RSA_generate_key_ex;
+    {$ifend}
     {$if declared(RSA_generate_key_ex_introduced)}
     if LibVersion < RSA_generate_key_ex_introduced then
     begin
       {$if declared(FC_RSA_generate_key_ex)}
       RSA_generate_key_ex := @FC_RSA_generate_key_ex;
-      {$else}
-      {$if not defined(RSA_generate_key_ex_allownil)}
-      RSA_generate_key_ex := @ERR_RSA_generate_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_generate_key_ex_removed)}
@@ -2601,39 +2400,31 @@ begin
     begin
       {$if declared(_RSA_generate_key_ex)}
       RSA_generate_key_ex := @_RSA_generate_key_ex;
-      {$else}
-      {$if not defined(RSA_generate_key_ex_allownil)}
-      RSA_generate_key_ex := @ERR_RSA_generate_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_generate_key_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_generate_key_ex := @ERR_RSA_generate_key_ex;
+    if FuncLoadError then
       AFailed.Add('RSA_generate_key_ex');
-    end;
     {$ifend}
   end;
 
 
   RSA_generate_multi_prime_key := LoadLibFunction(ADllHandle, RSA_generate_multi_prime_key_procname);
-  FuncLoaded := assigned(RSA_generate_multi_prime_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_generate_multi_prime_key);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_generate_multi_prime_key_allownil)}
+    RSA_generate_multi_prime_key := @ERR_RSA_generate_multi_prime_key;
+    {$ifend}
     {$if declared(RSA_generate_multi_prime_key_introduced)}
     if LibVersion < RSA_generate_multi_prime_key_introduced then
     begin
       {$if declared(FC_RSA_generate_multi_prime_key)}
       RSA_generate_multi_prime_key := @FC_RSA_generate_multi_prime_key;
-      {$else}
-      {$if not defined(RSA_generate_multi_prime_key_allownil)}
-      RSA_generate_multi_prime_key := @ERR_RSA_generate_multi_prime_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_generate_multi_prime_key_removed)}
@@ -2641,39 +2432,31 @@ begin
     begin
       {$if declared(_RSA_generate_multi_prime_key)}
       RSA_generate_multi_prime_key := @_RSA_generate_multi_prime_key;
-      {$else}
-      {$if not defined(RSA_generate_multi_prime_key_allownil)}
-      RSA_generate_multi_prime_key := @ERR_RSA_generate_multi_prime_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_generate_multi_prime_key_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_generate_multi_prime_key := @ERR_RSA_generate_multi_prime_key;
+    if FuncLoadError then
       AFailed.Add('RSA_generate_multi_prime_key');
-    end;
     {$ifend}
   end;
 
 
   RSA_X931_derive_ex := LoadLibFunction(ADllHandle, RSA_X931_derive_ex_procname);
-  FuncLoaded := assigned(RSA_X931_derive_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_X931_derive_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_X931_derive_ex_allownil)}
+    RSA_X931_derive_ex := @ERR_RSA_X931_derive_ex;
+    {$ifend}
     {$if declared(RSA_X931_derive_ex_introduced)}
     if LibVersion < RSA_X931_derive_ex_introduced then
     begin
       {$if declared(FC_RSA_X931_derive_ex)}
       RSA_X931_derive_ex := @FC_RSA_X931_derive_ex;
-      {$else}
-      {$if not defined(RSA_X931_derive_ex_allownil)}
-      RSA_X931_derive_ex := @ERR_RSA_X931_derive_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_X931_derive_ex_removed)}
@@ -2681,39 +2464,31 @@ begin
     begin
       {$if declared(_RSA_X931_derive_ex)}
       RSA_X931_derive_ex := @_RSA_X931_derive_ex;
-      {$else}
-      {$if not defined(RSA_X931_derive_ex_allownil)}
-      RSA_X931_derive_ex := @ERR_RSA_X931_derive_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_X931_derive_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_X931_derive_ex := @ERR_RSA_X931_derive_ex;
+    if FuncLoadError then
       AFailed.Add('RSA_X931_derive_ex');
-    end;
     {$ifend}
   end;
 
 
   RSA_X931_generate_key_ex := LoadLibFunction(ADllHandle, RSA_X931_generate_key_ex_procname);
-  FuncLoaded := assigned(RSA_X931_generate_key_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_X931_generate_key_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_X931_generate_key_ex_allownil)}
+    RSA_X931_generate_key_ex := @ERR_RSA_X931_generate_key_ex;
+    {$ifend}
     {$if declared(RSA_X931_generate_key_ex_introduced)}
     if LibVersion < RSA_X931_generate_key_ex_introduced then
     begin
       {$if declared(FC_RSA_X931_generate_key_ex)}
       RSA_X931_generate_key_ex := @FC_RSA_X931_generate_key_ex;
-      {$else}
-      {$if not defined(RSA_X931_generate_key_ex_allownil)}
-      RSA_X931_generate_key_ex := @ERR_RSA_X931_generate_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_X931_generate_key_ex_removed)}
@@ -2721,39 +2496,31 @@ begin
     begin
       {$if declared(_RSA_X931_generate_key_ex)}
       RSA_X931_generate_key_ex := @_RSA_X931_generate_key_ex;
-      {$else}
-      {$if not defined(RSA_X931_generate_key_ex_allownil)}
-      RSA_X931_generate_key_ex := @ERR_RSA_X931_generate_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_X931_generate_key_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_X931_generate_key_ex := @ERR_RSA_X931_generate_key_ex;
+    if FuncLoadError then
       AFailed.Add('RSA_X931_generate_key_ex');
-    end;
     {$ifend}
   end;
 
 
   RSA_check_key := LoadLibFunction(ADllHandle, RSA_check_key_procname);
-  FuncLoaded := assigned(RSA_check_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_check_key);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_check_key_allownil)}
+    RSA_check_key := @ERR_RSA_check_key;
+    {$ifend}
     {$if declared(RSA_check_key_introduced)}
     if LibVersion < RSA_check_key_introduced then
     begin
       {$if declared(FC_RSA_check_key)}
       RSA_check_key := @FC_RSA_check_key;
-      {$else}
-      {$if not defined(RSA_check_key_allownil)}
-      RSA_check_key := @ERR_RSA_check_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_check_key_removed)}
@@ -2761,39 +2528,31 @@ begin
     begin
       {$if declared(_RSA_check_key)}
       RSA_check_key := @_RSA_check_key;
-      {$else}
-      {$if not defined(RSA_check_key_allownil)}
-      RSA_check_key := @ERR_RSA_check_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_check_key_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_check_key := @ERR_RSA_check_key;
+    if FuncLoadError then
       AFailed.Add('RSA_check_key');
-    end;
     {$ifend}
   end;
 
 
   RSA_check_key_ex := LoadLibFunction(ADllHandle, RSA_check_key_ex_procname);
-  FuncLoaded := assigned(RSA_check_key_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_check_key_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_check_key_ex_allownil)}
+    RSA_check_key_ex := @ERR_RSA_check_key_ex;
+    {$ifend}
     {$if declared(RSA_check_key_ex_introduced)}
     if LibVersion < RSA_check_key_ex_introduced then
     begin
       {$if declared(FC_RSA_check_key_ex)}
       RSA_check_key_ex := @FC_RSA_check_key_ex;
-      {$else}
-      {$if not defined(RSA_check_key_ex_allownil)}
-      RSA_check_key_ex := @ERR_RSA_check_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_check_key_ex_removed)}
@@ -2801,39 +2560,31 @@ begin
     begin
       {$if declared(_RSA_check_key_ex)}
       RSA_check_key_ex := @_RSA_check_key_ex;
-      {$else}
-      {$if not defined(RSA_check_key_ex_allownil)}
-      RSA_check_key_ex := @ERR_RSA_check_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_check_key_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_check_key_ex := @ERR_RSA_check_key_ex;
+    if FuncLoadError then
       AFailed.Add('RSA_check_key_ex');
-    end;
     {$ifend}
   end;
 
 
   RSA_public_encrypt := LoadLibFunction(ADllHandle, RSA_public_encrypt_procname);
-  FuncLoaded := assigned(RSA_public_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_public_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_public_encrypt_allownil)}
+    RSA_public_encrypt := @ERR_RSA_public_encrypt;
+    {$ifend}
     {$if declared(RSA_public_encrypt_introduced)}
     if LibVersion < RSA_public_encrypt_introduced then
     begin
       {$if declared(FC_RSA_public_encrypt)}
       RSA_public_encrypt := @FC_RSA_public_encrypt;
-      {$else}
-      {$if not defined(RSA_public_encrypt_allownil)}
-      RSA_public_encrypt := @ERR_RSA_public_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_public_encrypt_removed)}
@@ -2841,39 +2592,31 @@ begin
     begin
       {$if declared(_RSA_public_encrypt)}
       RSA_public_encrypt := @_RSA_public_encrypt;
-      {$else}
-      {$if not defined(RSA_public_encrypt_allownil)}
-      RSA_public_encrypt := @ERR_RSA_public_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_public_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_public_encrypt := @ERR_RSA_public_encrypt;
+    if FuncLoadError then
       AFailed.Add('RSA_public_encrypt');
-    end;
     {$ifend}
   end;
 
 
   RSA_private_encrypt := LoadLibFunction(ADllHandle, RSA_private_encrypt_procname);
-  FuncLoaded := assigned(RSA_private_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_private_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_private_encrypt_allownil)}
+    RSA_private_encrypt := @ERR_RSA_private_encrypt;
+    {$ifend}
     {$if declared(RSA_private_encrypt_introduced)}
     if LibVersion < RSA_private_encrypt_introduced then
     begin
       {$if declared(FC_RSA_private_encrypt)}
       RSA_private_encrypt := @FC_RSA_private_encrypt;
-      {$else}
-      {$if not defined(RSA_private_encrypt_allownil)}
-      RSA_private_encrypt := @ERR_RSA_private_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_private_encrypt_removed)}
@@ -2881,39 +2624,31 @@ begin
     begin
       {$if declared(_RSA_private_encrypt)}
       RSA_private_encrypt := @_RSA_private_encrypt;
-      {$else}
-      {$if not defined(RSA_private_encrypt_allownil)}
-      RSA_private_encrypt := @ERR_RSA_private_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_private_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_private_encrypt := @ERR_RSA_private_encrypt;
+    if FuncLoadError then
       AFailed.Add('RSA_private_encrypt');
-    end;
     {$ifend}
   end;
 
 
   RSA_public_decrypt := LoadLibFunction(ADllHandle, RSA_public_decrypt_procname);
-  FuncLoaded := assigned(RSA_public_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_public_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_public_decrypt_allownil)}
+    RSA_public_decrypt := @ERR_RSA_public_decrypt;
+    {$ifend}
     {$if declared(RSA_public_decrypt_introduced)}
     if LibVersion < RSA_public_decrypt_introduced then
     begin
       {$if declared(FC_RSA_public_decrypt)}
       RSA_public_decrypt := @FC_RSA_public_decrypt;
-      {$else}
-      {$if not defined(RSA_public_decrypt_allownil)}
-      RSA_public_decrypt := @ERR_RSA_public_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_public_decrypt_removed)}
@@ -2921,39 +2656,31 @@ begin
     begin
       {$if declared(_RSA_public_decrypt)}
       RSA_public_decrypt := @_RSA_public_decrypt;
-      {$else}
-      {$if not defined(RSA_public_decrypt_allownil)}
-      RSA_public_decrypt := @ERR_RSA_public_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_public_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_public_decrypt := @ERR_RSA_public_decrypt;
+    if FuncLoadError then
       AFailed.Add('RSA_public_decrypt');
-    end;
     {$ifend}
   end;
 
 
   RSA_private_decrypt := LoadLibFunction(ADllHandle, RSA_private_decrypt_procname);
-  FuncLoaded := assigned(RSA_private_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_private_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_private_decrypt_allownil)}
+    RSA_private_decrypt := @ERR_RSA_private_decrypt;
+    {$ifend}
     {$if declared(RSA_private_decrypt_introduced)}
     if LibVersion < RSA_private_decrypt_introduced then
     begin
       {$if declared(FC_RSA_private_decrypt)}
       RSA_private_decrypt := @FC_RSA_private_decrypt;
-      {$else}
-      {$if not defined(RSA_private_decrypt_allownil)}
-      RSA_private_decrypt := @ERR_RSA_private_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_private_decrypt_removed)}
@@ -2961,39 +2688,31 @@ begin
     begin
       {$if declared(_RSA_private_decrypt)}
       RSA_private_decrypt := @_RSA_private_decrypt;
-      {$else}
-      {$if not defined(RSA_private_decrypt_allownil)}
-      RSA_private_decrypt := @ERR_RSA_private_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_private_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_private_decrypt := @ERR_RSA_private_decrypt;
+    if FuncLoadError then
       AFailed.Add('RSA_private_decrypt');
-    end;
     {$ifend}
   end;
 
 
   RSA_free := LoadLibFunction(ADllHandle, RSA_free_procname);
-  FuncLoaded := assigned(RSA_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_free);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_free_allownil)}
+    RSA_free := @ERR_RSA_free;
+    {$ifend}
     {$if declared(RSA_free_introduced)}
     if LibVersion < RSA_free_introduced then
     begin
       {$if declared(FC_RSA_free)}
       RSA_free := @FC_RSA_free;
-      {$else}
-      {$if not defined(RSA_free_allownil)}
-      RSA_free := @ERR_RSA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_free_removed)}
@@ -3001,39 +2720,31 @@ begin
     begin
       {$if declared(_RSA_free)}
       RSA_free := @_RSA_free;
-      {$else}
-      {$if not defined(RSA_free_allownil)}
-      RSA_free := @ERR_RSA_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_free_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_free := @ERR_RSA_free;
+    if FuncLoadError then
       AFailed.Add('RSA_free');
-    end;
     {$ifend}
   end;
 
 
   RSA_up_ref := LoadLibFunction(ADllHandle, RSA_up_ref_procname);
-  FuncLoaded := assigned(RSA_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_up_ref_allownil)}
+    RSA_up_ref := @ERR_RSA_up_ref;
+    {$ifend}
     {$if declared(RSA_up_ref_introduced)}
     if LibVersion < RSA_up_ref_introduced then
     begin
       {$if declared(FC_RSA_up_ref)}
       RSA_up_ref := @FC_RSA_up_ref;
-      {$else}
-      {$if not defined(RSA_up_ref_allownil)}
-      RSA_up_ref := @ERR_RSA_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_up_ref_removed)}
@@ -3041,39 +2752,31 @@ begin
     begin
       {$if declared(_RSA_up_ref)}
       RSA_up_ref := @_RSA_up_ref;
-      {$else}
-      {$if not defined(RSA_up_ref_allownil)}
-      RSA_up_ref := @ERR_RSA_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_up_ref := @ERR_RSA_up_ref;
+    if FuncLoadError then
       AFailed.Add('RSA_up_ref');
-    end;
     {$ifend}
   end;
 
 
   RSA_flags := LoadLibFunction(ADllHandle, RSA_flags_procname);
-  FuncLoaded := assigned(RSA_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_flags_allownil)}
+    RSA_flags := @ERR_RSA_flags;
+    {$ifend}
     {$if declared(RSA_flags_introduced)}
     if LibVersion < RSA_flags_introduced then
     begin
       {$if declared(FC_RSA_flags)}
       RSA_flags := @FC_RSA_flags;
-      {$else}
-      {$if not defined(RSA_flags_allownil)}
-      RSA_flags := @ERR_RSA_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_flags_removed)}
@@ -3081,39 +2784,31 @@ begin
     begin
       {$if declared(_RSA_flags)}
       RSA_flags := @_RSA_flags;
-      {$else}
-      {$if not defined(RSA_flags_allownil)}
-      RSA_flags := @ERR_RSA_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_flags := @ERR_RSA_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_set_default_method := LoadLibFunction(ADllHandle, RSA_set_default_method_procname);
-  FuncLoaded := assigned(RSA_set_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set_default_method_allownil)}
+    RSA_set_default_method := @ERR_RSA_set_default_method;
+    {$ifend}
     {$if declared(RSA_set_default_method_introduced)}
     if LibVersion < RSA_set_default_method_introduced then
     begin
       {$if declared(FC_RSA_set_default_method)}
       RSA_set_default_method := @FC_RSA_set_default_method;
-      {$else}
-      {$if not defined(RSA_set_default_method_allownil)}
-      RSA_set_default_method := @ERR_RSA_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set_default_method_removed)}
@@ -3121,39 +2816,31 @@ begin
     begin
       {$if declared(_RSA_set_default_method)}
       RSA_set_default_method := @_RSA_set_default_method;
-      {$else}
-      {$if not defined(RSA_set_default_method_allownil)}
-      RSA_set_default_method := @ERR_RSA_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set_default_method := @ERR_RSA_set_default_method;
+    if FuncLoadError then
       AFailed.Add('RSA_set_default_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_get_default_method := LoadLibFunction(ADllHandle, RSA_get_default_method_procname);
-  FuncLoaded := assigned(RSA_get_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get_default_method_allownil)}
+    RSA_get_default_method := @ERR_RSA_get_default_method;
+    {$ifend}
     {$if declared(RSA_get_default_method_introduced)}
     if LibVersion < RSA_get_default_method_introduced then
     begin
       {$if declared(FC_RSA_get_default_method)}
       RSA_get_default_method := @FC_RSA_get_default_method;
-      {$else}
-      {$if not defined(RSA_get_default_method_allownil)}
-      RSA_get_default_method := @ERR_RSA_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get_default_method_removed)}
@@ -3161,39 +2848,31 @@ begin
     begin
       {$if declared(_RSA_get_default_method)}
       RSA_get_default_method := @_RSA_get_default_method;
-      {$else}
-      {$if not defined(RSA_get_default_method_allownil)}
-      RSA_get_default_method := @ERR_RSA_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get_default_method := @ERR_RSA_get_default_method;
+    if FuncLoadError then
       AFailed.Add('RSA_get_default_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_null_method := LoadLibFunction(ADllHandle, RSA_null_method_procname);
-  FuncLoaded := assigned(RSA_null_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_null_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_null_method_allownil)}
+    RSA_null_method := @ERR_RSA_null_method;
+    {$ifend}
     {$if declared(RSA_null_method_introduced)}
     if LibVersion < RSA_null_method_introduced then
     begin
       {$if declared(FC_RSA_null_method)}
       RSA_null_method := @FC_RSA_null_method;
-      {$else}
-      {$if not defined(RSA_null_method_allownil)}
-      RSA_null_method := @ERR_RSA_null_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_null_method_removed)}
@@ -3201,39 +2880,31 @@ begin
     begin
       {$if declared(_RSA_null_method)}
       RSA_null_method := @_RSA_null_method;
-      {$else}
-      {$if not defined(RSA_null_method_allownil)}
-      RSA_null_method := @ERR_RSA_null_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_null_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_null_method := @ERR_RSA_null_method;
+    if FuncLoadError then
       AFailed.Add('RSA_null_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_get_method := LoadLibFunction(ADllHandle, RSA_get_method_procname);
-  FuncLoaded := assigned(RSA_get_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get_method_allownil)}
+    RSA_get_method := @ERR_RSA_get_method;
+    {$ifend}
     {$if declared(RSA_get_method_introduced)}
     if LibVersion < RSA_get_method_introduced then
     begin
       {$if declared(FC_RSA_get_method)}
       RSA_get_method := @FC_RSA_get_method;
-      {$else}
-      {$if not defined(RSA_get_method_allownil)}
-      RSA_get_method := @ERR_RSA_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get_method_removed)}
@@ -3241,39 +2912,31 @@ begin
     begin
       {$if declared(_RSA_get_method)}
       RSA_get_method := @_RSA_get_method;
-      {$else}
-      {$if not defined(RSA_get_method_allownil)}
-      RSA_get_method := @ERR_RSA_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get_method := @ERR_RSA_get_method;
+    if FuncLoadError then
       AFailed.Add('RSA_get_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_set_method := LoadLibFunction(ADllHandle, RSA_set_method_procname);
-  FuncLoaded := assigned(RSA_set_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set_method);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set_method_allownil)}
+    RSA_set_method := @ERR_RSA_set_method;
+    {$ifend}
     {$if declared(RSA_set_method_introduced)}
     if LibVersion < RSA_set_method_introduced then
     begin
       {$if declared(FC_RSA_set_method)}
       RSA_set_method := @FC_RSA_set_method;
-      {$else}
-      {$if not defined(RSA_set_method_allownil)}
-      RSA_set_method := @ERR_RSA_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set_method_removed)}
@@ -3281,39 +2944,31 @@ begin
     begin
       {$if declared(_RSA_set_method)}
       RSA_set_method := @_RSA_set_method;
-      {$else}
-      {$if not defined(RSA_set_method_allownil)}
-      RSA_set_method := @ERR_RSA_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set_method_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set_method := @ERR_RSA_set_method;
+    if FuncLoadError then
       AFailed.Add('RSA_set_method');
-    end;
     {$ifend}
   end;
 
 
   RSA_PKCS1_OpenSSL := LoadLibFunction(ADllHandle, RSA_PKCS1_OpenSSL_procname);
-  FuncLoaded := assigned(RSA_PKCS1_OpenSSL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_PKCS1_OpenSSL);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_PKCS1_OpenSSL_allownil)}
+    RSA_PKCS1_OpenSSL := @ERR_RSA_PKCS1_OpenSSL;
+    {$ifend}
     {$if declared(RSA_PKCS1_OpenSSL_introduced)}
     if LibVersion < RSA_PKCS1_OpenSSL_introduced then
     begin
       {$if declared(FC_RSA_PKCS1_OpenSSL)}
       RSA_PKCS1_OpenSSL := @FC_RSA_PKCS1_OpenSSL;
-      {$else}
-      {$if not defined(RSA_PKCS1_OpenSSL_allownil)}
-      RSA_PKCS1_OpenSSL := @ERR_RSA_PKCS1_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_PKCS1_OpenSSL_removed)}
@@ -3321,39 +2976,31 @@ begin
     begin
       {$if declared(_RSA_PKCS1_OpenSSL)}
       RSA_PKCS1_OpenSSL := @_RSA_PKCS1_OpenSSL;
-      {$else}
-      {$if not defined(RSA_PKCS1_OpenSSL_allownil)}
-      RSA_PKCS1_OpenSSL := @ERR_RSA_PKCS1_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_PKCS1_OpenSSL_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_PKCS1_OpenSSL := @ERR_RSA_PKCS1_OpenSSL;
+    if FuncLoadError then
       AFailed.Add('RSA_PKCS1_OpenSSL');
-    end;
     {$ifend}
   end;
 
 
   RSA_pkey_ctx_ctrl := LoadLibFunction(ADllHandle, RSA_pkey_ctx_ctrl_procname);
-  FuncLoaded := assigned(RSA_pkey_ctx_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_pkey_ctx_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_pkey_ctx_ctrl_allownil)}
+    RSA_pkey_ctx_ctrl := @ERR_RSA_pkey_ctx_ctrl;
+    {$ifend}
     {$if declared(RSA_pkey_ctx_ctrl_introduced)}
     if LibVersion < RSA_pkey_ctx_ctrl_introduced then
     begin
       {$if declared(FC_RSA_pkey_ctx_ctrl)}
       RSA_pkey_ctx_ctrl := @FC_RSA_pkey_ctx_ctrl;
-      {$else}
-      {$if not defined(RSA_pkey_ctx_ctrl_allownil)}
-      RSA_pkey_ctx_ctrl := @ERR_RSA_pkey_ctx_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_pkey_ctx_ctrl_removed)}
@@ -3361,39 +3008,31 @@ begin
     begin
       {$if declared(_RSA_pkey_ctx_ctrl)}
       RSA_pkey_ctx_ctrl := @_RSA_pkey_ctx_ctrl;
-      {$else}
-      {$if not defined(RSA_pkey_ctx_ctrl_allownil)}
-      RSA_pkey_ctx_ctrl := @ERR_RSA_pkey_ctx_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_pkey_ctx_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_pkey_ctx_ctrl := @ERR_RSA_pkey_ctx_ctrl;
+    if FuncLoadError then
       AFailed.Add('RSA_pkey_ctx_ctrl');
-    end;
     {$ifend}
   end;
 
 
   RSA_print := LoadLibFunction(ADllHandle, RSA_print_procname);
-  FuncLoaded := assigned(RSA_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_print);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_print_allownil)}
+    RSA_print := @ERR_RSA_print;
+    {$ifend}
     {$if declared(RSA_print_introduced)}
     if LibVersion < RSA_print_introduced then
     begin
       {$if declared(FC_RSA_print)}
       RSA_print := @FC_RSA_print;
-      {$else}
-      {$if not defined(RSA_print_allownil)}
-      RSA_print := @ERR_RSA_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_print_removed)}
@@ -3401,39 +3040,31 @@ begin
     begin
       {$if declared(_RSA_print)}
       RSA_print := @_RSA_print;
-      {$else}
-      {$if not defined(RSA_print_allownil)}
-      RSA_print := @ERR_RSA_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_print_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_print := @ERR_RSA_print;
+    if FuncLoadError then
       AFailed.Add('RSA_print');
-    end;
     {$ifend}
   end;
 
 
   RSA_sign := LoadLibFunction(ADllHandle, RSA_sign_procname);
-  FuncLoaded := assigned(RSA_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_sign_allownil)}
+    RSA_sign := @ERR_RSA_sign;
+    {$ifend}
     {$if declared(RSA_sign_introduced)}
     if LibVersion < RSA_sign_introduced then
     begin
       {$if declared(FC_RSA_sign)}
       RSA_sign := @FC_RSA_sign;
-      {$else}
-      {$if not defined(RSA_sign_allownil)}
-      RSA_sign := @ERR_RSA_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_sign_removed)}
@@ -3441,39 +3072,31 @@ begin
     begin
       {$if declared(_RSA_sign)}
       RSA_sign := @_RSA_sign;
-      {$else}
-      {$if not defined(RSA_sign_allownil)}
-      RSA_sign := @ERR_RSA_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_sign := @ERR_RSA_sign;
+    if FuncLoadError then
       AFailed.Add('RSA_sign');
-    end;
     {$ifend}
   end;
 
 
   RSA_verify := LoadLibFunction(ADllHandle, RSA_verify_procname);
-  FuncLoaded := assigned(RSA_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_verify_allownil)}
+    RSA_verify := @ERR_RSA_verify;
+    {$ifend}
     {$if declared(RSA_verify_introduced)}
     if LibVersion < RSA_verify_introduced then
     begin
       {$if declared(FC_RSA_verify)}
       RSA_verify := @FC_RSA_verify;
-      {$else}
-      {$if not defined(RSA_verify_allownil)}
-      RSA_verify := @ERR_RSA_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_verify_removed)}
@@ -3481,39 +3104,31 @@ begin
     begin
       {$if declared(_RSA_verify)}
       RSA_verify := @_RSA_verify;
-      {$else}
-      {$if not defined(RSA_verify_allownil)}
-      RSA_verify := @ERR_RSA_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_verify := @ERR_RSA_verify;
+    if FuncLoadError then
       AFailed.Add('RSA_verify');
-    end;
     {$ifend}
   end;
 
 
   RSA_sign_ASN1_OCTET_STRING := LoadLibFunction(ADllHandle, RSA_sign_ASN1_OCTET_STRING_procname);
-  FuncLoaded := assigned(RSA_sign_ASN1_OCTET_STRING);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_sign_ASN1_OCTET_STRING);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_sign_ASN1_OCTET_STRING_allownil)}
+    RSA_sign_ASN1_OCTET_STRING := @ERR_RSA_sign_ASN1_OCTET_STRING;
+    {$ifend}
     {$if declared(RSA_sign_ASN1_OCTET_STRING_introduced)}
     if LibVersion < RSA_sign_ASN1_OCTET_STRING_introduced then
     begin
       {$if declared(FC_RSA_sign_ASN1_OCTET_STRING)}
       RSA_sign_ASN1_OCTET_STRING := @FC_RSA_sign_ASN1_OCTET_STRING;
-      {$else}
-      {$if not defined(RSA_sign_ASN1_OCTET_STRING_allownil)}
-      RSA_sign_ASN1_OCTET_STRING := @ERR_RSA_sign_ASN1_OCTET_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_sign_ASN1_OCTET_STRING_removed)}
@@ -3521,39 +3136,31 @@ begin
     begin
       {$if declared(_RSA_sign_ASN1_OCTET_STRING)}
       RSA_sign_ASN1_OCTET_STRING := @_RSA_sign_ASN1_OCTET_STRING;
-      {$else}
-      {$if not defined(RSA_sign_ASN1_OCTET_STRING_allownil)}
-      RSA_sign_ASN1_OCTET_STRING := @ERR_RSA_sign_ASN1_OCTET_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_sign_ASN1_OCTET_STRING_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_sign_ASN1_OCTET_STRING := @ERR_RSA_sign_ASN1_OCTET_STRING;
+    if FuncLoadError then
       AFailed.Add('RSA_sign_ASN1_OCTET_STRING');
-    end;
     {$ifend}
   end;
 
 
   RSA_verify_ASN1_OCTET_STRING := LoadLibFunction(ADllHandle, RSA_verify_ASN1_OCTET_STRING_procname);
-  FuncLoaded := assigned(RSA_verify_ASN1_OCTET_STRING);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_verify_ASN1_OCTET_STRING);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_verify_ASN1_OCTET_STRING_allownil)}
+    RSA_verify_ASN1_OCTET_STRING := @ERR_RSA_verify_ASN1_OCTET_STRING;
+    {$ifend}
     {$if declared(RSA_verify_ASN1_OCTET_STRING_introduced)}
     if LibVersion < RSA_verify_ASN1_OCTET_STRING_introduced then
     begin
       {$if declared(FC_RSA_verify_ASN1_OCTET_STRING)}
       RSA_verify_ASN1_OCTET_STRING := @FC_RSA_verify_ASN1_OCTET_STRING;
-      {$else}
-      {$if not defined(RSA_verify_ASN1_OCTET_STRING_allownil)}
-      RSA_verify_ASN1_OCTET_STRING := @ERR_RSA_verify_ASN1_OCTET_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_verify_ASN1_OCTET_STRING_removed)}
@@ -3561,39 +3168,31 @@ begin
     begin
       {$if declared(_RSA_verify_ASN1_OCTET_STRING)}
       RSA_verify_ASN1_OCTET_STRING := @_RSA_verify_ASN1_OCTET_STRING;
-      {$else}
-      {$if not defined(RSA_verify_ASN1_OCTET_STRING_allownil)}
-      RSA_verify_ASN1_OCTET_STRING := @ERR_RSA_verify_ASN1_OCTET_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_verify_ASN1_OCTET_STRING_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_verify_ASN1_OCTET_STRING := @ERR_RSA_verify_ASN1_OCTET_STRING;
+    if FuncLoadError then
       AFailed.Add('RSA_verify_ASN1_OCTET_STRING');
-    end;
     {$ifend}
   end;
 
 
   RSA_blinding_on := LoadLibFunction(ADllHandle, RSA_blinding_on_procname);
-  FuncLoaded := assigned(RSA_blinding_on);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_blinding_on);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_blinding_on_allownil)}
+    RSA_blinding_on := @ERR_RSA_blinding_on;
+    {$ifend}
     {$if declared(RSA_blinding_on_introduced)}
     if LibVersion < RSA_blinding_on_introduced then
     begin
       {$if declared(FC_RSA_blinding_on)}
       RSA_blinding_on := @FC_RSA_blinding_on;
-      {$else}
-      {$if not defined(RSA_blinding_on_allownil)}
-      RSA_blinding_on := @ERR_RSA_blinding_on;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_blinding_on_removed)}
@@ -3601,39 +3200,31 @@ begin
     begin
       {$if declared(_RSA_blinding_on)}
       RSA_blinding_on := @_RSA_blinding_on;
-      {$else}
-      {$if not defined(RSA_blinding_on_allownil)}
-      RSA_blinding_on := @ERR_RSA_blinding_on;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_blinding_on_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_blinding_on := @ERR_RSA_blinding_on;
+    if FuncLoadError then
       AFailed.Add('RSA_blinding_on');
-    end;
     {$ifend}
   end;
 
 
   RSA_blinding_off := LoadLibFunction(ADllHandle, RSA_blinding_off_procname);
-  FuncLoaded := assigned(RSA_blinding_off);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_blinding_off);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_blinding_off_allownil)}
+    RSA_blinding_off := @ERR_RSA_blinding_off;
+    {$ifend}
     {$if declared(RSA_blinding_off_introduced)}
     if LibVersion < RSA_blinding_off_introduced then
     begin
       {$if declared(FC_RSA_blinding_off)}
       RSA_blinding_off := @FC_RSA_blinding_off;
-      {$else}
-      {$if not defined(RSA_blinding_off_allownil)}
-      RSA_blinding_off := @ERR_RSA_blinding_off;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_blinding_off_removed)}
@@ -3641,39 +3232,31 @@ begin
     begin
       {$if declared(_RSA_blinding_off)}
       RSA_blinding_off := @_RSA_blinding_off;
-      {$else}
-      {$if not defined(RSA_blinding_off_allownil)}
-      RSA_blinding_off := @ERR_RSA_blinding_off;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_blinding_off_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_blinding_off := @ERR_RSA_blinding_off;
+    if FuncLoadError then
       AFailed.Add('RSA_blinding_off');
-    end;
     {$ifend}
   end;
 
 
   RSA_setup_blinding := LoadLibFunction(ADllHandle, RSA_setup_blinding_procname);
-  FuncLoaded := assigned(RSA_setup_blinding);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_setup_blinding);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_setup_blinding_allownil)}
+    RSA_setup_blinding := @ERR_RSA_setup_blinding;
+    {$ifend}
     {$if declared(RSA_setup_blinding_introduced)}
     if LibVersion < RSA_setup_blinding_introduced then
     begin
       {$if declared(FC_RSA_setup_blinding)}
       RSA_setup_blinding := @FC_RSA_setup_blinding;
-      {$else}
-      {$if not defined(RSA_setup_blinding_allownil)}
-      RSA_setup_blinding := @ERR_RSA_setup_blinding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_setup_blinding_removed)}
@@ -3681,39 +3264,31 @@ begin
     begin
       {$if declared(_RSA_setup_blinding)}
       RSA_setup_blinding := @_RSA_setup_blinding;
-      {$else}
-      {$if not defined(RSA_setup_blinding_allownil)}
-      RSA_setup_blinding := @ERR_RSA_setup_blinding;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_setup_blinding_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_setup_blinding := @ERR_RSA_setup_blinding;
+    if FuncLoadError then
       AFailed.Add('RSA_setup_blinding');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_type_1 := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_type_1_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_type_1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_type_1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_type_1_allownil)}
+    RSA_padding_add_PKCS1_type_1 := @ERR_RSA_padding_add_PKCS1_type_1;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_type_1_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_type_1_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_type_1)}
       RSA_padding_add_PKCS1_type_1 := @FC_RSA_padding_add_PKCS1_type_1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_type_1_allownil)}
-      RSA_padding_add_PKCS1_type_1 := @ERR_RSA_padding_add_PKCS1_type_1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_type_1_removed)}
@@ -3721,39 +3296,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_type_1)}
       RSA_padding_add_PKCS1_type_1 := @_RSA_padding_add_PKCS1_type_1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_type_1_allownil)}
-      RSA_padding_add_PKCS1_type_1 := @ERR_RSA_padding_add_PKCS1_type_1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_type_1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_type_1 := @ERR_RSA_padding_add_PKCS1_type_1;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_type_1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_PKCS1_type_1 := LoadLibFunction(ADllHandle, RSA_padding_check_PKCS1_type_1_procname);
-  FuncLoaded := assigned(RSA_padding_check_PKCS1_type_1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_PKCS1_type_1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_PKCS1_type_1_allownil)}
+    RSA_padding_check_PKCS1_type_1 := @ERR_RSA_padding_check_PKCS1_type_1;
+    {$ifend}
     {$if declared(RSA_padding_check_PKCS1_type_1_introduced)}
     if LibVersion < RSA_padding_check_PKCS1_type_1_introduced then
     begin
       {$if declared(FC_RSA_padding_check_PKCS1_type_1)}
       RSA_padding_check_PKCS1_type_1 := @FC_RSA_padding_check_PKCS1_type_1;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_type_1_allownil)}
-      RSA_padding_check_PKCS1_type_1 := @ERR_RSA_padding_check_PKCS1_type_1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_PKCS1_type_1_removed)}
@@ -3761,39 +3328,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_PKCS1_type_1)}
       RSA_padding_check_PKCS1_type_1 := @_RSA_padding_check_PKCS1_type_1;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_type_1_allownil)}
-      RSA_padding_check_PKCS1_type_1 := @ERR_RSA_padding_check_PKCS1_type_1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_PKCS1_type_1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_PKCS1_type_1 := @ERR_RSA_padding_check_PKCS1_type_1;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_PKCS1_type_1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_type_2 := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_type_2_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_type_2);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_type_2);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_type_2_allownil)}
+    RSA_padding_add_PKCS1_type_2 := @ERR_RSA_padding_add_PKCS1_type_2;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_type_2_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_type_2_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_type_2)}
       RSA_padding_add_PKCS1_type_2 := @FC_RSA_padding_add_PKCS1_type_2;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_type_2_allownil)}
-      RSA_padding_add_PKCS1_type_2 := @ERR_RSA_padding_add_PKCS1_type_2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_type_2_removed)}
@@ -3801,39 +3360,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_type_2)}
       RSA_padding_add_PKCS1_type_2 := @_RSA_padding_add_PKCS1_type_2;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_type_2_allownil)}
-      RSA_padding_add_PKCS1_type_2 := @ERR_RSA_padding_add_PKCS1_type_2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_type_2_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_type_2 := @ERR_RSA_padding_add_PKCS1_type_2;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_type_2');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_PKCS1_type_2 := LoadLibFunction(ADllHandle, RSA_padding_check_PKCS1_type_2_procname);
-  FuncLoaded := assigned(RSA_padding_check_PKCS1_type_2);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_PKCS1_type_2);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_PKCS1_type_2_allownil)}
+    RSA_padding_check_PKCS1_type_2 := @ERR_RSA_padding_check_PKCS1_type_2;
+    {$ifend}
     {$if declared(RSA_padding_check_PKCS1_type_2_introduced)}
     if LibVersion < RSA_padding_check_PKCS1_type_2_introduced then
     begin
       {$if declared(FC_RSA_padding_check_PKCS1_type_2)}
       RSA_padding_check_PKCS1_type_2 := @FC_RSA_padding_check_PKCS1_type_2;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_type_2_allownil)}
-      RSA_padding_check_PKCS1_type_2 := @ERR_RSA_padding_check_PKCS1_type_2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_PKCS1_type_2_removed)}
@@ -3841,39 +3392,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_PKCS1_type_2)}
       RSA_padding_check_PKCS1_type_2 := @_RSA_padding_check_PKCS1_type_2;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_type_2_allownil)}
-      RSA_padding_check_PKCS1_type_2 := @ERR_RSA_padding_check_PKCS1_type_2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_PKCS1_type_2_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_PKCS1_type_2 := @ERR_RSA_padding_check_PKCS1_type_2;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_PKCS1_type_2');
-    end;
     {$ifend}
   end;
 
 
   PKCS1_MGF1 := LoadLibFunction(ADllHandle, PKCS1_MGF1_procname);
-  FuncLoaded := assigned(PKCS1_MGF1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PKCS1_MGF1);
+  if FuncLoadError then
   begin
+    {$if not defined(PKCS1_MGF1_allownil)}
+    PKCS1_MGF1 := @ERR_PKCS1_MGF1;
+    {$ifend}
     {$if declared(PKCS1_MGF1_introduced)}
     if LibVersion < PKCS1_MGF1_introduced then
     begin
       {$if declared(FC_PKCS1_MGF1)}
       PKCS1_MGF1 := @FC_PKCS1_MGF1;
-      {$else}
-      {$if not defined(PKCS1_MGF1_allownil)}
-      PKCS1_MGF1 := @ERR_PKCS1_MGF1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PKCS1_MGF1_removed)}
@@ -3881,39 +3424,31 @@ begin
     begin
       {$if declared(_PKCS1_MGF1)}
       PKCS1_MGF1 := @_PKCS1_MGF1;
-      {$else}
-      {$if not defined(PKCS1_MGF1_allownil)}
-      PKCS1_MGF1 := @ERR_PKCS1_MGF1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PKCS1_MGF1_allownil)}
-    if not FuncLoaded then
-    begin
-      PKCS1_MGF1 := @ERR_PKCS1_MGF1;
+    if FuncLoadError then
       AFailed.Add('PKCS1_MGF1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_OAEP := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_OAEP_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_OAEP);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_OAEP);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_OAEP_allownil)}
+    RSA_padding_add_PKCS1_OAEP := @ERR_RSA_padding_add_PKCS1_OAEP;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_OAEP_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_OAEP_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_OAEP)}
       RSA_padding_add_PKCS1_OAEP := @FC_RSA_padding_add_PKCS1_OAEP;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_OAEP_allownil)}
-      RSA_padding_add_PKCS1_OAEP := @ERR_RSA_padding_add_PKCS1_OAEP;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_OAEP_removed)}
@@ -3921,39 +3456,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_OAEP)}
       RSA_padding_add_PKCS1_OAEP := @_RSA_padding_add_PKCS1_OAEP;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_OAEP_allownil)}
-      RSA_padding_add_PKCS1_OAEP := @ERR_RSA_padding_add_PKCS1_OAEP;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_OAEP_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_OAEP := @ERR_RSA_padding_add_PKCS1_OAEP;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_OAEP');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_PKCS1_OAEP := LoadLibFunction(ADllHandle, RSA_padding_check_PKCS1_OAEP_procname);
-  FuncLoaded := assigned(RSA_padding_check_PKCS1_OAEP);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_PKCS1_OAEP);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_PKCS1_OAEP_allownil)}
+    RSA_padding_check_PKCS1_OAEP := @ERR_RSA_padding_check_PKCS1_OAEP;
+    {$ifend}
     {$if declared(RSA_padding_check_PKCS1_OAEP_introduced)}
     if LibVersion < RSA_padding_check_PKCS1_OAEP_introduced then
     begin
       {$if declared(FC_RSA_padding_check_PKCS1_OAEP)}
       RSA_padding_check_PKCS1_OAEP := @FC_RSA_padding_check_PKCS1_OAEP;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_OAEP_allownil)}
-      RSA_padding_check_PKCS1_OAEP := @ERR_RSA_padding_check_PKCS1_OAEP;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_PKCS1_OAEP_removed)}
@@ -3961,39 +3488,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_PKCS1_OAEP)}
       RSA_padding_check_PKCS1_OAEP := @_RSA_padding_check_PKCS1_OAEP;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_OAEP_allownil)}
-      RSA_padding_check_PKCS1_OAEP := @ERR_RSA_padding_check_PKCS1_OAEP;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_PKCS1_OAEP_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_PKCS1_OAEP := @ERR_RSA_padding_check_PKCS1_OAEP;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_PKCS1_OAEP');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_OAEP_mgf1 := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_OAEP_mgf1_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_OAEP_mgf1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_OAEP_mgf1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_OAEP_mgf1_allownil)}
+    RSA_padding_add_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_add_PKCS1_OAEP_mgf1;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_OAEP_mgf1_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_OAEP_mgf1_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_OAEP_mgf1)}
       RSA_padding_add_PKCS1_OAEP_mgf1 := @FC_RSA_padding_add_PKCS1_OAEP_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_OAEP_mgf1_allownil)}
-      RSA_padding_add_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_add_PKCS1_OAEP_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_OAEP_mgf1_removed)}
@@ -4001,39 +3520,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_OAEP_mgf1)}
       RSA_padding_add_PKCS1_OAEP_mgf1 := @_RSA_padding_add_PKCS1_OAEP_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_OAEP_mgf1_allownil)}
-      RSA_padding_add_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_add_PKCS1_OAEP_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_OAEP_mgf1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_add_PKCS1_OAEP_mgf1;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_OAEP_mgf1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_PKCS1_OAEP_mgf1 := LoadLibFunction(ADllHandle, RSA_padding_check_PKCS1_OAEP_mgf1_procname);
-  FuncLoaded := assigned(RSA_padding_check_PKCS1_OAEP_mgf1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_PKCS1_OAEP_mgf1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_PKCS1_OAEP_mgf1_allownil)}
+    RSA_padding_check_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_check_PKCS1_OAEP_mgf1;
+    {$ifend}
     {$if declared(RSA_padding_check_PKCS1_OAEP_mgf1_introduced)}
     if LibVersion < RSA_padding_check_PKCS1_OAEP_mgf1_introduced then
     begin
       {$if declared(FC_RSA_padding_check_PKCS1_OAEP_mgf1)}
       RSA_padding_check_PKCS1_OAEP_mgf1 := @FC_RSA_padding_check_PKCS1_OAEP_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_OAEP_mgf1_allownil)}
-      RSA_padding_check_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_check_PKCS1_OAEP_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_PKCS1_OAEP_mgf1_removed)}
@@ -4041,39 +3552,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_PKCS1_OAEP_mgf1)}
       RSA_padding_check_PKCS1_OAEP_mgf1 := @_RSA_padding_check_PKCS1_OAEP_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_check_PKCS1_OAEP_mgf1_allownil)}
-      RSA_padding_check_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_check_PKCS1_OAEP_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_PKCS1_OAEP_mgf1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_PKCS1_OAEP_mgf1 := @ERR_RSA_padding_check_PKCS1_OAEP_mgf1;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_PKCS1_OAEP_mgf1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_SSLv23 := LoadLibFunction(ADllHandle, RSA_padding_add_SSLv23_procname);
-  FuncLoaded := assigned(RSA_padding_add_SSLv23);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_SSLv23);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_SSLv23_allownil)}
+    RSA_padding_add_SSLv23 := @ERR_RSA_padding_add_SSLv23;
+    {$ifend}
     {$if declared(RSA_padding_add_SSLv23_introduced)}
     if LibVersion < RSA_padding_add_SSLv23_introduced then
     begin
       {$if declared(FC_RSA_padding_add_SSLv23)}
       RSA_padding_add_SSLv23 := @FC_RSA_padding_add_SSLv23;
-      {$else}
-      {$if not defined(RSA_padding_add_SSLv23_allownil)}
-      RSA_padding_add_SSLv23 := @ERR_RSA_padding_add_SSLv23;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_SSLv23_removed)}
@@ -4081,39 +3584,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_SSLv23)}
       RSA_padding_add_SSLv23 := @_RSA_padding_add_SSLv23;
-      {$else}
-      {$if not defined(RSA_padding_add_SSLv23_allownil)}
-      RSA_padding_add_SSLv23 := @ERR_RSA_padding_add_SSLv23;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_SSLv23_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_SSLv23 := @ERR_RSA_padding_add_SSLv23;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_SSLv23');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_SSLv23 := LoadLibFunction(ADllHandle, RSA_padding_check_SSLv23_procname);
-  FuncLoaded := assigned(RSA_padding_check_SSLv23);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_SSLv23);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_SSLv23_allownil)}
+    RSA_padding_check_SSLv23 := @ERR_RSA_padding_check_SSLv23;
+    {$ifend}
     {$if declared(RSA_padding_check_SSLv23_introduced)}
     if LibVersion < RSA_padding_check_SSLv23_introduced then
     begin
       {$if declared(FC_RSA_padding_check_SSLv23)}
       RSA_padding_check_SSLv23 := @FC_RSA_padding_check_SSLv23;
-      {$else}
-      {$if not defined(RSA_padding_check_SSLv23_allownil)}
-      RSA_padding_check_SSLv23 := @ERR_RSA_padding_check_SSLv23;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_SSLv23_removed)}
@@ -4121,39 +3616,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_SSLv23)}
       RSA_padding_check_SSLv23 := @_RSA_padding_check_SSLv23;
-      {$else}
-      {$if not defined(RSA_padding_check_SSLv23_allownil)}
-      RSA_padding_check_SSLv23 := @ERR_RSA_padding_check_SSLv23;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_SSLv23_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_SSLv23 := @ERR_RSA_padding_check_SSLv23;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_SSLv23');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_none := LoadLibFunction(ADllHandle, RSA_padding_add_none_procname);
-  FuncLoaded := assigned(RSA_padding_add_none);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_none);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_none_allownil)}
+    RSA_padding_add_none := @ERR_RSA_padding_add_none;
+    {$ifend}
     {$if declared(RSA_padding_add_none_introduced)}
     if LibVersion < RSA_padding_add_none_introduced then
     begin
       {$if declared(FC_RSA_padding_add_none)}
       RSA_padding_add_none := @FC_RSA_padding_add_none;
-      {$else}
-      {$if not defined(RSA_padding_add_none_allownil)}
-      RSA_padding_add_none := @ERR_RSA_padding_add_none;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_none_removed)}
@@ -4161,39 +3648,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_none)}
       RSA_padding_add_none := @_RSA_padding_add_none;
-      {$else}
-      {$if not defined(RSA_padding_add_none_allownil)}
-      RSA_padding_add_none := @ERR_RSA_padding_add_none;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_none_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_none := @ERR_RSA_padding_add_none;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_none');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_none := LoadLibFunction(ADllHandle, RSA_padding_check_none_procname);
-  FuncLoaded := assigned(RSA_padding_check_none);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_none);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_none_allownil)}
+    RSA_padding_check_none := @ERR_RSA_padding_check_none;
+    {$ifend}
     {$if declared(RSA_padding_check_none_introduced)}
     if LibVersion < RSA_padding_check_none_introduced then
     begin
       {$if declared(FC_RSA_padding_check_none)}
       RSA_padding_check_none := @FC_RSA_padding_check_none;
-      {$else}
-      {$if not defined(RSA_padding_check_none_allownil)}
-      RSA_padding_check_none := @ERR_RSA_padding_check_none;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_none_removed)}
@@ -4201,39 +3680,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_none)}
       RSA_padding_check_none := @_RSA_padding_check_none;
-      {$else}
-      {$if not defined(RSA_padding_check_none_allownil)}
-      RSA_padding_check_none := @ERR_RSA_padding_check_none;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_none_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_none := @ERR_RSA_padding_check_none;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_none');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_X931 := LoadLibFunction(ADllHandle, RSA_padding_add_X931_procname);
-  FuncLoaded := assigned(RSA_padding_add_X931);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_X931);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_X931_allownil)}
+    RSA_padding_add_X931 := @ERR_RSA_padding_add_X931;
+    {$ifend}
     {$if declared(RSA_padding_add_X931_introduced)}
     if LibVersion < RSA_padding_add_X931_introduced then
     begin
       {$if declared(FC_RSA_padding_add_X931)}
       RSA_padding_add_X931 := @FC_RSA_padding_add_X931;
-      {$else}
-      {$if not defined(RSA_padding_add_X931_allownil)}
-      RSA_padding_add_X931 := @ERR_RSA_padding_add_X931;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_X931_removed)}
@@ -4241,39 +3712,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_X931)}
       RSA_padding_add_X931 := @_RSA_padding_add_X931;
-      {$else}
-      {$if not defined(RSA_padding_add_X931_allownil)}
-      RSA_padding_add_X931 := @ERR_RSA_padding_add_X931;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_X931_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_X931 := @ERR_RSA_padding_add_X931;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_X931');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_check_X931 := LoadLibFunction(ADllHandle, RSA_padding_check_X931_procname);
-  FuncLoaded := assigned(RSA_padding_check_X931);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_check_X931);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_check_X931_allownil)}
+    RSA_padding_check_X931 := @ERR_RSA_padding_check_X931;
+    {$ifend}
     {$if declared(RSA_padding_check_X931_introduced)}
     if LibVersion < RSA_padding_check_X931_introduced then
     begin
       {$if declared(FC_RSA_padding_check_X931)}
       RSA_padding_check_X931 := @FC_RSA_padding_check_X931;
-      {$else}
-      {$if not defined(RSA_padding_check_X931_allownil)}
-      RSA_padding_check_X931 := @ERR_RSA_padding_check_X931;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_check_X931_removed)}
@@ -4281,39 +3744,31 @@ begin
     begin
       {$if declared(_RSA_padding_check_X931)}
       RSA_padding_check_X931 := @_RSA_padding_check_X931;
-      {$else}
-      {$if not defined(RSA_padding_check_X931_allownil)}
-      RSA_padding_check_X931 := @ERR_RSA_padding_check_X931;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_check_X931_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_check_X931 := @ERR_RSA_padding_check_X931;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_check_X931');
-    end;
     {$ifend}
   end;
 
 
   RSA_X931_hash_id := LoadLibFunction(ADllHandle, RSA_X931_hash_id_procname);
-  FuncLoaded := assigned(RSA_X931_hash_id);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_X931_hash_id);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_X931_hash_id_allownil)}
+    RSA_X931_hash_id := @ERR_RSA_X931_hash_id;
+    {$ifend}
     {$if declared(RSA_X931_hash_id_introduced)}
     if LibVersion < RSA_X931_hash_id_introduced then
     begin
       {$if declared(FC_RSA_X931_hash_id)}
       RSA_X931_hash_id := @FC_RSA_X931_hash_id;
-      {$else}
-      {$if not defined(RSA_X931_hash_id_allownil)}
-      RSA_X931_hash_id := @ERR_RSA_X931_hash_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_X931_hash_id_removed)}
@@ -4321,39 +3776,31 @@ begin
     begin
       {$if declared(_RSA_X931_hash_id)}
       RSA_X931_hash_id := @_RSA_X931_hash_id;
-      {$else}
-      {$if not defined(RSA_X931_hash_id_allownil)}
-      RSA_X931_hash_id := @ERR_RSA_X931_hash_id;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_X931_hash_id_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_X931_hash_id := @ERR_RSA_X931_hash_id;
+    if FuncLoadError then
       AFailed.Add('RSA_X931_hash_id');
-    end;
     {$ifend}
   end;
 
 
   RSA_verify_PKCS1_PSS := LoadLibFunction(ADllHandle, RSA_verify_PKCS1_PSS_procname);
-  FuncLoaded := assigned(RSA_verify_PKCS1_PSS);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_verify_PKCS1_PSS);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_verify_PKCS1_PSS_allownil)}
+    RSA_verify_PKCS1_PSS := @ERR_RSA_verify_PKCS1_PSS;
+    {$ifend}
     {$if declared(RSA_verify_PKCS1_PSS_introduced)}
     if LibVersion < RSA_verify_PKCS1_PSS_introduced then
     begin
       {$if declared(FC_RSA_verify_PKCS1_PSS)}
       RSA_verify_PKCS1_PSS := @FC_RSA_verify_PKCS1_PSS;
-      {$else}
-      {$if not defined(RSA_verify_PKCS1_PSS_allownil)}
-      RSA_verify_PKCS1_PSS := @ERR_RSA_verify_PKCS1_PSS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_verify_PKCS1_PSS_removed)}
@@ -4361,39 +3808,31 @@ begin
     begin
       {$if declared(_RSA_verify_PKCS1_PSS)}
       RSA_verify_PKCS1_PSS := @_RSA_verify_PKCS1_PSS;
-      {$else}
-      {$if not defined(RSA_verify_PKCS1_PSS_allownil)}
-      RSA_verify_PKCS1_PSS := @ERR_RSA_verify_PKCS1_PSS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_verify_PKCS1_PSS_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_verify_PKCS1_PSS := @ERR_RSA_verify_PKCS1_PSS;
+    if FuncLoadError then
       AFailed.Add('RSA_verify_PKCS1_PSS');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_PSS := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_PSS_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_PSS);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_PSS);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_PSS_allownil)}
+    RSA_padding_add_PKCS1_PSS := @ERR_RSA_padding_add_PKCS1_PSS;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_PSS_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_PSS_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_PSS)}
       RSA_padding_add_PKCS1_PSS := @FC_RSA_padding_add_PKCS1_PSS;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_PSS_allownil)}
-      RSA_padding_add_PKCS1_PSS := @ERR_RSA_padding_add_PKCS1_PSS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_PSS_removed)}
@@ -4401,39 +3840,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_PSS)}
       RSA_padding_add_PKCS1_PSS := @_RSA_padding_add_PKCS1_PSS;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_PSS_allownil)}
-      RSA_padding_add_PKCS1_PSS := @ERR_RSA_padding_add_PKCS1_PSS;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_PSS_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_PSS := @ERR_RSA_padding_add_PKCS1_PSS;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_PSS');
-    end;
     {$ifend}
   end;
 
 
   RSA_verify_PKCS1_PSS_mgf1 := LoadLibFunction(ADllHandle, RSA_verify_PKCS1_PSS_mgf1_procname);
-  FuncLoaded := assigned(RSA_verify_PKCS1_PSS_mgf1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_verify_PKCS1_PSS_mgf1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_verify_PKCS1_PSS_mgf1_allownil)}
+    RSA_verify_PKCS1_PSS_mgf1 := @ERR_RSA_verify_PKCS1_PSS_mgf1;
+    {$ifend}
     {$if declared(RSA_verify_PKCS1_PSS_mgf1_introduced)}
     if LibVersion < RSA_verify_PKCS1_PSS_mgf1_introduced then
     begin
       {$if declared(FC_RSA_verify_PKCS1_PSS_mgf1)}
       RSA_verify_PKCS1_PSS_mgf1 := @FC_RSA_verify_PKCS1_PSS_mgf1;
-      {$else}
-      {$if not defined(RSA_verify_PKCS1_PSS_mgf1_allownil)}
-      RSA_verify_PKCS1_PSS_mgf1 := @ERR_RSA_verify_PKCS1_PSS_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_verify_PKCS1_PSS_mgf1_removed)}
@@ -4441,39 +3872,31 @@ begin
     begin
       {$if declared(_RSA_verify_PKCS1_PSS_mgf1)}
       RSA_verify_PKCS1_PSS_mgf1 := @_RSA_verify_PKCS1_PSS_mgf1;
-      {$else}
-      {$if not defined(RSA_verify_PKCS1_PSS_mgf1_allownil)}
-      RSA_verify_PKCS1_PSS_mgf1 := @ERR_RSA_verify_PKCS1_PSS_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_verify_PKCS1_PSS_mgf1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_verify_PKCS1_PSS_mgf1 := @ERR_RSA_verify_PKCS1_PSS_mgf1;
+    if FuncLoadError then
       AFailed.Add('RSA_verify_PKCS1_PSS_mgf1');
-    end;
     {$ifend}
   end;
 
 
   RSA_padding_add_PKCS1_PSS_mgf1 := LoadLibFunction(ADllHandle, RSA_padding_add_PKCS1_PSS_mgf1_procname);
-  FuncLoaded := assigned(RSA_padding_add_PKCS1_PSS_mgf1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_padding_add_PKCS1_PSS_mgf1);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_padding_add_PKCS1_PSS_mgf1_allownil)}
+    RSA_padding_add_PKCS1_PSS_mgf1 := @ERR_RSA_padding_add_PKCS1_PSS_mgf1;
+    {$ifend}
     {$if declared(RSA_padding_add_PKCS1_PSS_mgf1_introduced)}
     if LibVersion < RSA_padding_add_PKCS1_PSS_mgf1_introduced then
     begin
       {$if declared(FC_RSA_padding_add_PKCS1_PSS_mgf1)}
       RSA_padding_add_PKCS1_PSS_mgf1 := @FC_RSA_padding_add_PKCS1_PSS_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_PSS_mgf1_allownil)}
-      RSA_padding_add_PKCS1_PSS_mgf1 := @ERR_RSA_padding_add_PKCS1_PSS_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_padding_add_PKCS1_PSS_mgf1_removed)}
@@ -4481,39 +3904,31 @@ begin
     begin
       {$if declared(_RSA_padding_add_PKCS1_PSS_mgf1)}
       RSA_padding_add_PKCS1_PSS_mgf1 := @_RSA_padding_add_PKCS1_PSS_mgf1;
-      {$else}
-      {$if not defined(RSA_padding_add_PKCS1_PSS_mgf1_allownil)}
-      RSA_padding_add_PKCS1_PSS_mgf1 := @ERR_RSA_padding_add_PKCS1_PSS_mgf1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_padding_add_PKCS1_PSS_mgf1_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_padding_add_PKCS1_PSS_mgf1 := @ERR_RSA_padding_add_PKCS1_PSS_mgf1;
+    if FuncLoadError then
       AFailed.Add('RSA_padding_add_PKCS1_PSS_mgf1');
-    end;
     {$ifend}
   end;
 
 
   RSA_set_ex_data := LoadLibFunction(ADllHandle, RSA_set_ex_data_procname);
-  FuncLoaded := assigned(RSA_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_set_ex_data_allownil)}
+    RSA_set_ex_data := @ERR_RSA_set_ex_data;
+    {$ifend}
     {$if declared(RSA_set_ex_data_introduced)}
     if LibVersion < RSA_set_ex_data_introduced then
     begin
       {$if declared(FC_RSA_set_ex_data)}
       RSA_set_ex_data := @FC_RSA_set_ex_data;
-      {$else}
-      {$if not defined(RSA_set_ex_data_allownil)}
-      RSA_set_ex_data := @ERR_RSA_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_set_ex_data_removed)}
@@ -4521,39 +3936,31 @@ begin
     begin
       {$if declared(_RSA_set_ex_data)}
       RSA_set_ex_data := @_RSA_set_ex_data;
-      {$else}
-      {$if not defined(RSA_set_ex_data_allownil)}
-      RSA_set_ex_data := @ERR_RSA_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_set_ex_data := @ERR_RSA_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('RSA_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   RSA_get_ex_data := LoadLibFunction(ADllHandle, RSA_get_ex_data_procname);
-  FuncLoaded := assigned(RSA_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_get_ex_data_allownil)}
+    RSA_get_ex_data := @ERR_RSA_get_ex_data;
+    {$ifend}
     {$if declared(RSA_get_ex_data_introduced)}
     if LibVersion < RSA_get_ex_data_introduced then
     begin
       {$if declared(FC_RSA_get_ex_data)}
       RSA_get_ex_data := @FC_RSA_get_ex_data;
-      {$else}
-      {$if not defined(RSA_get_ex_data_allownil)}
-      RSA_get_ex_data := @ERR_RSA_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_get_ex_data_removed)}
@@ -4561,39 +3968,31 @@ begin
     begin
       {$if declared(_RSA_get_ex_data)}
       RSA_get_ex_data := @_RSA_get_ex_data;
-      {$else}
-      {$if not defined(RSA_get_ex_data_allownil)}
-      RSA_get_ex_data := @ERR_RSA_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_get_ex_data := @ERR_RSA_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('RSA_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   RSAPublicKey_dup := LoadLibFunction(ADllHandle, RSAPublicKey_dup_procname);
-  FuncLoaded := assigned(RSAPublicKey_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSAPublicKey_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(RSAPublicKey_dup_allownil)}
+    RSAPublicKey_dup := @ERR_RSAPublicKey_dup;
+    {$ifend}
     {$if declared(RSAPublicKey_dup_introduced)}
     if LibVersion < RSAPublicKey_dup_introduced then
     begin
       {$if declared(FC_RSAPublicKey_dup)}
       RSAPublicKey_dup := @FC_RSAPublicKey_dup;
-      {$else}
-      {$if not defined(RSAPublicKey_dup_allownil)}
-      RSAPublicKey_dup := @ERR_RSAPublicKey_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSAPublicKey_dup_removed)}
@@ -4601,39 +4000,31 @@ begin
     begin
       {$if declared(_RSAPublicKey_dup)}
       RSAPublicKey_dup := @_RSAPublicKey_dup;
-      {$else}
-      {$if not defined(RSAPublicKey_dup_allownil)}
-      RSAPublicKey_dup := @ERR_RSAPublicKey_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSAPublicKey_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      RSAPublicKey_dup := @ERR_RSAPublicKey_dup;
+    if FuncLoadError then
       AFailed.Add('RSAPublicKey_dup');
-    end;
     {$ifend}
   end;
 
 
   RSAPrivateKey_dup := LoadLibFunction(ADllHandle, RSAPrivateKey_dup_procname);
-  FuncLoaded := assigned(RSAPrivateKey_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSAPrivateKey_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(RSAPrivateKey_dup_allownil)}
+    RSAPrivateKey_dup := @ERR_RSAPrivateKey_dup;
+    {$ifend}
     {$if declared(RSAPrivateKey_dup_introduced)}
     if LibVersion < RSAPrivateKey_dup_introduced then
     begin
       {$if declared(FC_RSAPrivateKey_dup)}
       RSAPrivateKey_dup := @FC_RSAPrivateKey_dup;
-      {$else}
-      {$if not defined(RSAPrivateKey_dup_allownil)}
-      RSAPrivateKey_dup := @ERR_RSAPrivateKey_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSAPrivateKey_dup_removed)}
@@ -4641,39 +4032,31 @@ begin
     begin
       {$if declared(_RSAPrivateKey_dup)}
       RSAPrivateKey_dup := @_RSAPrivateKey_dup;
-      {$else}
-      {$if not defined(RSAPrivateKey_dup_allownil)}
-      RSAPrivateKey_dup := @ERR_RSAPrivateKey_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSAPrivateKey_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      RSAPrivateKey_dup := @ERR_RSAPrivateKey_dup;
+    if FuncLoadError then
       AFailed.Add('RSAPrivateKey_dup');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_new := LoadLibFunction(ADllHandle, RSA_meth_new_procname);
-  FuncLoaded := assigned(RSA_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_new_allownil)}
+    RSA_meth_new := @ERR_RSA_meth_new;
+    {$ifend}
     {$if declared(RSA_meth_new_introduced)}
     if LibVersion < RSA_meth_new_introduced then
     begin
       {$if declared(FC_RSA_meth_new)}
       RSA_meth_new := @FC_RSA_meth_new;
-      {$else}
-      {$if not defined(RSA_meth_new_allownil)}
-      RSA_meth_new := @ERR_RSA_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_new_removed)}
@@ -4681,39 +4064,31 @@ begin
     begin
       {$if declared(_RSA_meth_new)}
       RSA_meth_new := @_RSA_meth_new;
-      {$else}
-      {$if not defined(RSA_meth_new_allownil)}
-      RSA_meth_new := @ERR_RSA_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_new := @ERR_RSA_meth_new;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_new');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_free := LoadLibFunction(ADllHandle, RSA_meth_free_procname);
-  FuncLoaded := assigned(RSA_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_free_allownil)}
+    RSA_meth_free := @ERR_RSA_meth_free;
+    {$ifend}
     {$if declared(RSA_meth_free_introduced)}
     if LibVersion < RSA_meth_free_introduced then
     begin
       {$if declared(FC_RSA_meth_free)}
       RSA_meth_free := @FC_RSA_meth_free;
-      {$else}
-      {$if not defined(RSA_meth_free_allownil)}
-      RSA_meth_free := @ERR_RSA_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_free_removed)}
@@ -4721,39 +4096,31 @@ begin
     begin
       {$if declared(_RSA_meth_free)}
       RSA_meth_free := @_RSA_meth_free;
-      {$else}
-      {$if not defined(RSA_meth_free_allownil)}
-      RSA_meth_free := @ERR_RSA_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_free := @ERR_RSA_meth_free;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_free');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_dup := LoadLibFunction(ADllHandle, RSA_meth_dup_procname);
-  FuncLoaded := assigned(RSA_meth_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_dup_allownil)}
+    RSA_meth_dup := @ERR_RSA_meth_dup;
+    {$ifend}
     {$if declared(RSA_meth_dup_introduced)}
     if LibVersion < RSA_meth_dup_introduced then
     begin
       {$if declared(FC_RSA_meth_dup)}
       RSA_meth_dup := @FC_RSA_meth_dup;
-      {$else}
-      {$if not defined(RSA_meth_dup_allownil)}
-      RSA_meth_dup := @ERR_RSA_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_dup_removed)}
@@ -4761,39 +4128,31 @@ begin
     begin
       {$if declared(_RSA_meth_dup)}
       RSA_meth_dup := @_RSA_meth_dup;
-      {$else}
-      {$if not defined(RSA_meth_dup_allownil)}
-      RSA_meth_dup := @ERR_RSA_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_dup := @ERR_RSA_meth_dup;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_dup');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_get0_name := LoadLibFunction(ADllHandle, RSA_meth_get0_name_procname);
-  FuncLoaded := assigned(RSA_meth_get0_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_get0_name);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_get0_name_allownil)}
+    RSA_meth_get0_name := @ERR_RSA_meth_get0_name;
+    {$ifend}
     {$if declared(RSA_meth_get0_name_introduced)}
     if LibVersion < RSA_meth_get0_name_introduced then
     begin
       {$if declared(FC_RSA_meth_get0_name)}
       RSA_meth_get0_name := @FC_RSA_meth_get0_name;
-      {$else}
-      {$if not defined(RSA_meth_get0_name_allownil)}
-      RSA_meth_get0_name := @ERR_RSA_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_get0_name_removed)}
@@ -4801,39 +4160,31 @@ begin
     begin
       {$if declared(_RSA_meth_get0_name)}
       RSA_meth_get0_name := @_RSA_meth_get0_name;
-      {$else}
-      {$if not defined(RSA_meth_get0_name_allownil)}
-      RSA_meth_get0_name := @ERR_RSA_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_get0_name_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_get0_name := @ERR_RSA_meth_get0_name;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_get0_name');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set1_name := LoadLibFunction(ADllHandle, RSA_meth_set1_name_procname);
-  FuncLoaded := assigned(RSA_meth_set1_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set1_name);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set1_name_allownil)}
+    RSA_meth_set1_name := @ERR_RSA_meth_set1_name;
+    {$ifend}
     {$if declared(RSA_meth_set1_name_introduced)}
     if LibVersion < RSA_meth_set1_name_introduced then
     begin
       {$if declared(FC_RSA_meth_set1_name)}
       RSA_meth_set1_name := @FC_RSA_meth_set1_name;
-      {$else}
-      {$if not defined(RSA_meth_set1_name_allownil)}
-      RSA_meth_set1_name := @ERR_RSA_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set1_name_removed)}
@@ -4841,39 +4192,31 @@ begin
     begin
       {$if declared(_RSA_meth_set1_name)}
       RSA_meth_set1_name := @_RSA_meth_set1_name;
-      {$else}
-      {$if not defined(RSA_meth_set1_name_allownil)}
-      RSA_meth_set1_name := @ERR_RSA_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set1_name_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set1_name := @ERR_RSA_meth_set1_name;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set1_name');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_get_flags := LoadLibFunction(ADllHandle, RSA_meth_get_flags_procname);
-  FuncLoaded := assigned(RSA_meth_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_get_flags_allownil)}
+    RSA_meth_get_flags := @ERR_RSA_meth_get_flags;
+    {$ifend}
     {$if declared(RSA_meth_get_flags_introduced)}
     if LibVersion < RSA_meth_get_flags_introduced then
     begin
       {$if declared(FC_RSA_meth_get_flags)}
       RSA_meth_get_flags := @FC_RSA_meth_get_flags;
-      {$else}
-      {$if not defined(RSA_meth_get_flags_allownil)}
-      RSA_meth_get_flags := @ERR_RSA_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_get_flags_removed)}
@@ -4881,39 +4224,31 @@ begin
     begin
       {$if declared(_RSA_meth_get_flags)}
       RSA_meth_get_flags := @_RSA_meth_get_flags;
-      {$else}
-      {$if not defined(RSA_meth_get_flags_allownil)}
-      RSA_meth_get_flags := @ERR_RSA_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_get_flags := @ERR_RSA_meth_get_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_get_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_flags := LoadLibFunction(ADllHandle, RSA_meth_set_flags_procname);
-  FuncLoaded := assigned(RSA_meth_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_flags_allownil)}
+    RSA_meth_set_flags := @ERR_RSA_meth_set_flags;
+    {$ifend}
     {$if declared(RSA_meth_set_flags_introduced)}
     if LibVersion < RSA_meth_set_flags_introduced then
     begin
       {$if declared(FC_RSA_meth_set_flags)}
       RSA_meth_set_flags := @FC_RSA_meth_set_flags;
-      {$else}
-      {$if not defined(RSA_meth_set_flags_allownil)}
-      RSA_meth_set_flags := @ERR_RSA_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_flags_removed)}
@@ -4921,39 +4256,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_flags)}
       RSA_meth_set_flags := @_RSA_meth_set_flags;
-      {$else}
-      {$if not defined(RSA_meth_set_flags_allownil)}
-      RSA_meth_set_flags := @ERR_RSA_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_flags := @ERR_RSA_meth_set_flags;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_flags');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_get0_app_data := LoadLibFunction(ADllHandle, RSA_meth_get0_app_data_procname);
-  FuncLoaded := assigned(RSA_meth_get0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_get0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_get0_app_data_allownil)}
+    RSA_meth_get0_app_data := @ERR_RSA_meth_get0_app_data;
+    {$ifend}
     {$if declared(RSA_meth_get0_app_data_introduced)}
     if LibVersion < RSA_meth_get0_app_data_introduced then
     begin
       {$if declared(FC_RSA_meth_get0_app_data)}
       RSA_meth_get0_app_data := @FC_RSA_meth_get0_app_data;
-      {$else}
-      {$if not defined(RSA_meth_get0_app_data_allownil)}
-      RSA_meth_get0_app_data := @ERR_RSA_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_get0_app_data_removed)}
@@ -4961,39 +4288,31 @@ begin
     begin
       {$if declared(_RSA_meth_get0_app_data)}
       RSA_meth_get0_app_data := @_RSA_meth_get0_app_data;
-      {$else}
-      {$if not defined(RSA_meth_get0_app_data_allownil)}
-      RSA_meth_get0_app_data := @ERR_RSA_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_get0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_get0_app_data := @ERR_RSA_meth_get0_app_data;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_get0_app_data');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set0_app_data := LoadLibFunction(ADllHandle, RSA_meth_set0_app_data_procname);
-  FuncLoaded := assigned(RSA_meth_set0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set0_app_data_allownil)}
+    RSA_meth_set0_app_data := @ERR_RSA_meth_set0_app_data;
+    {$ifend}
     {$if declared(RSA_meth_set0_app_data_introduced)}
     if LibVersion < RSA_meth_set0_app_data_introduced then
     begin
       {$if declared(FC_RSA_meth_set0_app_data)}
       RSA_meth_set0_app_data := @FC_RSA_meth_set0_app_data;
-      {$else}
-      {$if not defined(RSA_meth_set0_app_data_allownil)}
-      RSA_meth_set0_app_data := @ERR_RSA_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set0_app_data_removed)}
@@ -5001,39 +4320,31 @@ begin
     begin
       {$if declared(_RSA_meth_set0_app_data)}
       RSA_meth_set0_app_data := @_RSA_meth_set0_app_data;
-      {$else}
-      {$if not defined(RSA_meth_set0_app_data_allownil)}
-      RSA_meth_set0_app_data := @ERR_RSA_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set0_app_data := @ERR_RSA_meth_set0_app_data;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set0_app_data');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_priv_dec := LoadLibFunction(ADllHandle, RSA_meth_set_priv_dec_procname);
-  FuncLoaded := assigned(RSA_meth_set_priv_dec);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_priv_dec);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_priv_dec_allownil)}
+    RSA_meth_set_priv_dec := @ERR_RSA_meth_set_priv_dec;
+    {$ifend}
     {$if declared(RSA_meth_set_priv_dec_introduced)}
     if LibVersion < RSA_meth_set_priv_dec_introduced then
     begin
       {$if declared(FC_RSA_meth_set_priv_dec)}
       RSA_meth_set_priv_dec := @FC_RSA_meth_set_priv_dec;
-      {$else}
-      {$if not defined(RSA_meth_set_priv_dec_allownil)}
-      RSA_meth_set_priv_dec := @ERR_RSA_meth_set_priv_dec;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_priv_dec_removed)}
@@ -5041,39 +4352,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_priv_dec)}
       RSA_meth_set_priv_dec := @_RSA_meth_set_priv_dec;
-      {$else}
-      {$if not defined(RSA_meth_set_priv_dec_allownil)}
-      RSA_meth_set_priv_dec := @ERR_RSA_meth_set_priv_dec;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_priv_dec_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_priv_dec := @ERR_RSA_meth_set_priv_dec;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_priv_dec');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_mod_exp := LoadLibFunction(ADllHandle, RSA_meth_set_mod_exp_procname);
-  FuncLoaded := assigned(RSA_meth_set_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_mod_exp_allownil)}
+    RSA_meth_set_mod_exp := @ERR_RSA_meth_set_mod_exp;
+    {$ifend}
     {$if declared(RSA_meth_set_mod_exp_introduced)}
     if LibVersion < RSA_meth_set_mod_exp_introduced then
     begin
       {$if declared(FC_RSA_meth_set_mod_exp)}
       RSA_meth_set_mod_exp := @FC_RSA_meth_set_mod_exp;
-      {$else}
-      {$if not defined(RSA_meth_set_mod_exp_allownil)}
-      RSA_meth_set_mod_exp := @ERR_RSA_meth_set_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_mod_exp_removed)}
@@ -5081,39 +4384,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_mod_exp)}
       RSA_meth_set_mod_exp := @_RSA_meth_set_mod_exp;
-      {$else}
-      {$if not defined(RSA_meth_set_mod_exp_allownil)}
-      RSA_meth_set_mod_exp := @ERR_RSA_meth_set_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_mod_exp := @ERR_RSA_meth_set_mod_exp;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_bn_mod_exp := LoadLibFunction(ADllHandle, RSA_meth_set_bn_mod_exp_procname);
-  FuncLoaded := assigned(RSA_meth_set_bn_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_bn_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_bn_mod_exp_allownil)}
+    RSA_meth_set_bn_mod_exp := @ERR_RSA_meth_set_bn_mod_exp;
+    {$ifend}
     {$if declared(RSA_meth_set_bn_mod_exp_introduced)}
     if LibVersion < RSA_meth_set_bn_mod_exp_introduced then
     begin
       {$if declared(FC_RSA_meth_set_bn_mod_exp)}
       RSA_meth_set_bn_mod_exp := @FC_RSA_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(RSA_meth_set_bn_mod_exp_allownil)}
-      RSA_meth_set_bn_mod_exp := @ERR_RSA_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_bn_mod_exp_removed)}
@@ -5121,39 +4416,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_bn_mod_exp)}
       RSA_meth_set_bn_mod_exp := @_RSA_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(RSA_meth_set_bn_mod_exp_allownil)}
-      RSA_meth_set_bn_mod_exp := @ERR_RSA_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_bn_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_bn_mod_exp := @ERR_RSA_meth_set_bn_mod_exp;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_bn_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_init := LoadLibFunction(ADllHandle, RSA_meth_set_init_procname);
-  FuncLoaded := assigned(RSA_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_init_allownil)}
+    RSA_meth_set_init := @ERR_RSA_meth_set_init;
+    {$ifend}
     {$if declared(RSA_meth_set_init_introduced)}
     if LibVersion < RSA_meth_set_init_introduced then
     begin
       {$if declared(FC_RSA_meth_set_init)}
       RSA_meth_set_init := @FC_RSA_meth_set_init;
-      {$else}
-      {$if not defined(RSA_meth_set_init_allownil)}
-      RSA_meth_set_init := @ERR_RSA_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_init_removed)}
@@ -5161,39 +4448,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_init)}
       RSA_meth_set_init := @_RSA_meth_set_init;
-      {$else}
-      {$if not defined(RSA_meth_set_init_allownil)}
-      RSA_meth_set_init := @ERR_RSA_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_init := @ERR_RSA_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_init');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_finish := LoadLibFunction(ADllHandle, RSA_meth_set_finish_procname);
-  FuncLoaded := assigned(RSA_meth_set_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_finish_allownil)}
+    RSA_meth_set_finish := @ERR_RSA_meth_set_finish;
+    {$ifend}
     {$if declared(RSA_meth_set_finish_introduced)}
     if LibVersion < RSA_meth_set_finish_introduced then
     begin
       {$if declared(FC_RSA_meth_set_finish)}
       RSA_meth_set_finish := @FC_RSA_meth_set_finish;
-      {$else}
-      {$if not defined(RSA_meth_set_finish_allownil)}
-      RSA_meth_set_finish := @ERR_RSA_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_finish_removed)}
@@ -5201,39 +4480,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_finish)}
       RSA_meth_set_finish := @_RSA_meth_set_finish;
-      {$else}
-      {$if not defined(RSA_meth_set_finish_allownil)}
-      RSA_meth_set_finish := @ERR_RSA_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_finish := @ERR_RSA_meth_set_finish;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_finish');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_sign := LoadLibFunction(ADllHandle, RSA_meth_set_sign_procname);
-  FuncLoaded := assigned(RSA_meth_set_sign);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_sign);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_sign_allownil)}
+    RSA_meth_set_sign := @ERR_RSA_meth_set_sign;
+    {$ifend}
     {$if declared(RSA_meth_set_sign_introduced)}
     if LibVersion < RSA_meth_set_sign_introduced then
     begin
       {$if declared(FC_RSA_meth_set_sign)}
       RSA_meth_set_sign := @FC_RSA_meth_set_sign;
-      {$else}
-      {$if not defined(RSA_meth_set_sign_allownil)}
-      RSA_meth_set_sign := @ERR_RSA_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_sign_removed)}
@@ -5241,39 +4512,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_sign)}
       RSA_meth_set_sign := @_RSA_meth_set_sign;
-      {$else}
-      {$if not defined(RSA_meth_set_sign_allownil)}
-      RSA_meth_set_sign := @ERR_RSA_meth_set_sign;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_sign_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_sign := @ERR_RSA_meth_set_sign;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_sign');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_verify := LoadLibFunction(ADllHandle, RSA_meth_set_verify_procname);
-  FuncLoaded := assigned(RSA_meth_set_verify);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_verify);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_verify_allownil)}
+    RSA_meth_set_verify := @ERR_RSA_meth_set_verify;
+    {$ifend}
     {$if declared(RSA_meth_set_verify_introduced)}
     if LibVersion < RSA_meth_set_verify_introduced then
     begin
       {$if declared(FC_RSA_meth_set_verify)}
       RSA_meth_set_verify := @FC_RSA_meth_set_verify;
-      {$else}
-      {$if not defined(RSA_meth_set_verify_allownil)}
-      RSA_meth_set_verify := @ERR_RSA_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_verify_removed)}
@@ -5281,39 +4544,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_verify)}
       RSA_meth_set_verify := @_RSA_meth_set_verify;
-      {$else}
-      {$if not defined(RSA_meth_set_verify_allownil)}
-      RSA_meth_set_verify := @ERR_RSA_meth_set_verify;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_verify_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_verify := @ERR_RSA_meth_set_verify;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_verify');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_keygen := LoadLibFunction(ADllHandle, RSA_meth_set_keygen_procname);
-  FuncLoaded := assigned(RSA_meth_set_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_keygen_allownil)}
+    RSA_meth_set_keygen := @ERR_RSA_meth_set_keygen;
+    {$ifend}
     {$if declared(RSA_meth_set_keygen_introduced)}
     if LibVersion < RSA_meth_set_keygen_introduced then
     begin
       {$if declared(FC_RSA_meth_set_keygen)}
       RSA_meth_set_keygen := @FC_RSA_meth_set_keygen;
-      {$else}
-      {$if not defined(RSA_meth_set_keygen_allownil)}
-      RSA_meth_set_keygen := @ERR_RSA_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_keygen_removed)}
@@ -5321,39 +4576,31 @@ begin
     begin
       {$if declared(_RSA_meth_set_keygen)}
       RSA_meth_set_keygen := @_RSA_meth_set_keygen;
-      {$else}
-      {$if not defined(RSA_meth_set_keygen_allownil)}
-      RSA_meth_set_keygen := @ERR_RSA_meth_set_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_keygen := @ERR_RSA_meth_set_keygen;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_keygen');
-    end;
     {$ifend}
   end;
 
 
   RSA_meth_set_multi_prime_keygen := LoadLibFunction(ADllHandle, RSA_meth_set_multi_prime_keygen_procname);
-  FuncLoaded := assigned(RSA_meth_set_multi_prime_keygen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RSA_meth_set_multi_prime_keygen);
+  if FuncLoadError then
   begin
+    {$if not defined(RSA_meth_set_multi_prime_keygen_allownil)}
+    RSA_meth_set_multi_prime_keygen := @ERR_RSA_meth_set_multi_prime_keygen;
+    {$ifend}
     {$if declared(RSA_meth_set_multi_prime_keygen_introduced)}
     if LibVersion < RSA_meth_set_multi_prime_keygen_introduced then
     begin
       {$if declared(FC_RSA_meth_set_multi_prime_keygen)}
       RSA_meth_set_multi_prime_keygen := @FC_RSA_meth_set_multi_prime_keygen;
-      {$else}
-      {$if not defined(RSA_meth_set_multi_prime_keygen_allownil)}
-      RSA_meth_set_multi_prime_keygen := @ERR_RSA_meth_set_multi_prime_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RSA_meth_set_multi_prime_keygen_removed)}
@@ -5361,20 +4608,13 @@ begin
     begin
       {$if declared(_RSA_meth_set_multi_prime_keygen)}
       RSA_meth_set_multi_prime_keygen := @_RSA_meth_set_multi_prime_keygen;
-      {$else}
-      {$if not defined(RSA_meth_set_multi_prime_keygen_allownil)}
-      RSA_meth_set_multi_prime_keygen := @ERR_RSA_meth_set_multi_prime_keygen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RSA_meth_set_multi_prime_keygen_allownil)}
-    if not FuncLoaded then
-    begin
-      RSA_meth_set_multi_prime_keygen := @ERR_RSA_meth_set_multi_prime_keygen;
+    if FuncLoadError then
       AFailed.Add('RSA_meth_set_multi_prime_keygen');
-    end;
     {$ifend}
   end;
 

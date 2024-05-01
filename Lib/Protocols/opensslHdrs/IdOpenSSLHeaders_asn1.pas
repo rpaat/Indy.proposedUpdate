@@ -2883,24 +2883,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ASN1_TYPE_get := LoadLibFunction(ADllHandle, ASN1_TYPE_get_procname);
-  FuncLoaded := assigned(ASN1_TYPE_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_get);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_get_allownil)}
+    ASN1_TYPE_get := @ERR_ASN1_TYPE_get;
+    {$ifend}
     {$if declared(ASN1_TYPE_get_introduced)}
     if LibVersion < ASN1_TYPE_get_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_get)}
       ASN1_TYPE_get := @FC_ASN1_TYPE_get;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_allownil)}
-      ASN1_TYPE_get := @ERR_ASN1_TYPE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_get_removed)}
@@ -2908,39 +2907,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_get)}
       ASN1_TYPE_get := @_ASN1_TYPE_get;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_allownil)}
-      ASN1_TYPE_get := @ERR_ASN1_TYPE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_get_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_get := @ERR_ASN1_TYPE_get;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_get');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_set := LoadLibFunction(ADllHandle, ASN1_TYPE_set_procname);
-  FuncLoaded := assigned(ASN1_TYPE_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_set_allownil)}
+    ASN1_TYPE_set := @ERR_ASN1_TYPE_set;
+    {$ifend}
     {$if declared(ASN1_TYPE_set_introduced)}
     if LibVersion < ASN1_TYPE_set_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_set)}
       ASN1_TYPE_set := @FC_ASN1_TYPE_set;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_allownil)}
-      ASN1_TYPE_set := @ERR_ASN1_TYPE_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_set_removed)}
@@ -2948,39 +2939,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_set)}
       ASN1_TYPE_set := @_ASN1_TYPE_set;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_allownil)}
-      ASN1_TYPE_set := @ERR_ASN1_TYPE_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_set := @ERR_ASN1_TYPE_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_set1 := LoadLibFunction(ADllHandle, ASN1_TYPE_set1_procname);
-  FuncLoaded := assigned(ASN1_TYPE_set1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_set1);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_set1_allownil)}
+    ASN1_TYPE_set1 := @ERR_ASN1_TYPE_set1;
+    {$ifend}
     {$if declared(ASN1_TYPE_set1_introduced)}
     if LibVersion < ASN1_TYPE_set1_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_set1)}
       ASN1_TYPE_set1 := @FC_ASN1_TYPE_set1;
-      {$else}
-      {$if not defined(ASN1_TYPE_set1_allownil)}
-      ASN1_TYPE_set1 := @ERR_ASN1_TYPE_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_set1_removed)}
@@ -2988,39 +2971,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_set1)}
       ASN1_TYPE_set1 := @_ASN1_TYPE_set1;
-      {$else}
-      {$if not defined(ASN1_TYPE_set1_allownil)}
-      ASN1_TYPE_set1 := @ERR_ASN1_TYPE_set1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_set1_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_set1 := @ERR_ASN1_TYPE_set1;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_set1');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_cmp := LoadLibFunction(ADllHandle, ASN1_TYPE_cmp_procname);
-  FuncLoaded := assigned(ASN1_TYPE_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_cmp_allownil)}
+    ASN1_TYPE_cmp := @ERR_ASN1_TYPE_cmp;
+    {$ifend}
     {$if declared(ASN1_TYPE_cmp_introduced)}
     if LibVersion < ASN1_TYPE_cmp_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_cmp)}
       ASN1_TYPE_cmp := @FC_ASN1_TYPE_cmp;
-      {$else}
-      {$if not defined(ASN1_TYPE_cmp_allownil)}
-      ASN1_TYPE_cmp := @ERR_ASN1_TYPE_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_cmp_removed)}
@@ -3028,39 +3003,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_cmp)}
       ASN1_TYPE_cmp := @_ASN1_TYPE_cmp;
-      {$else}
-      {$if not defined(ASN1_TYPE_cmp_allownil)}
-      ASN1_TYPE_cmp := @ERR_ASN1_TYPE_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_cmp := @ERR_ASN1_TYPE_cmp;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_cmp');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_pack_sequence := LoadLibFunction(ADllHandle, ASN1_TYPE_pack_sequence_procname);
-  FuncLoaded := assigned(ASN1_TYPE_pack_sequence);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_pack_sequence);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_pack_sequence_allownil)}
+    ASN1_TYPE_pack_sequence := @ERR_ASN1_TYPE_pack_sequence;
+    {$ifend}
     {$if declared(ASN1_TYPE_pack_sequence_introduced)}
     if LibVersion < ASN1_TYPE_pack_sequence_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_pack_sequence)}
       ASN1_TYPE_pack_sequence := @FC_ASN1_TYPE_pack_sequence;
-      {$else}
-      {$if not defined(ASN1_TYPE_pack_sequence_allownil)}
-      ASN1_TYPE_pack_sequence := @ERR_ASN1_TYPE_pack_sequence;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_pack_sequence_removed)}
@@ -3068,39 +3035,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_pack_sequence)}
       ASN1_TYPE_pack_sequence := @_ASN1_TYPE_pack_sequence;
-      {$else}
-      {$if not defined(ASN1_TYPE_pack_sequence_allownil)}
-      ASN1_TYPE_pack_sequence := @ERR_ASN1_TYPE_pack_sequence;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_pack_sequence_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_pack_sequence := @ERR_ASN1_TYPE_pack_sequence;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_pack_sequence');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_TYPE_unpack_sequence := LoadLibFunction(ADllHandle, ASN1_TYPE_unpack_sequence_procname);
-  FuncLoaded := assigned(ASN1_TYPE_unpack_sequence);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_unpack_sequence);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_unpack_sequence_allownil)}
+    ASN1_TYPE_unpack_sequence := @ERR_ASN1_TYPE_unpack_sequence;
+    {$ifend}
     {$if declared(ASN1_TYPE_unpack_sequence_introduced)}
     if LibVersion < ASN1_TYPE_unpack_sequence_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_unpack_sequence)}
       ASN1_TYPE_unpack_sequence := @FC_ASN1_TYPE_unpack_sequence;
-      {$else}
-      {$if not defined(ASN1_TYPE_unpack_sequence_allownil)}
-      ASN1_TYPE_unpack_sequence := @ERR_ASN1_TYPE_unpack_sequence;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_unpack_sequence_removed)}
@@ -3108,39 +3067,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_unpack_sequence)}
       ASN1_TYPE_unpack_sequence := @_ASN1_TYPE_unpack_sequence;
-      {$else}
-      {$if not defined(ASN1_TYPE_unpack_sequence_allownil)}
-      ASN1_TYPE_unpack_sequence := @ERR_ASN1_TYPE_unpack_sequence;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_unpack_sequence_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_unpack_sequence := @ERR_ASN1_TYPE_unpack_sequence;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_unpack_sequence');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_OBJECT_new := LoadLibFunction(ADllHandle, ASN1_OBJECT_new_procname);
-  FuncLoaded := assigned(ASN1_OBJECT_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OBJECT_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OBJECT_new_allownil)}
+    ASN1_OBJECT_new := @ERR_ASN1_OBJECT_new;
+    {$ifend}
     {$if declared(ASN1_OBJECT_new_introduced)}
     if LibVersion < ASN1_OBJECT_new_introduced then
     begin
       {$if declared(FC_ASN1_OBJECT_new)}
       ASN1_OBJECT_new := @FC_ASN1_OBJECT_new;
-      {$else}
-      {$if not defined(ASN1_OBJECT_new_allownil)}
-      ASN1_OBJECT_new := @ERR_ASN1_OBJECT_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OBJECT_new_removed)}
@@ -3148,39 +3099,31 @@ begin
     begin
       {$if declared(_ASN1_OBJECT_new)}
       ASN1_OBJECT_new := @_ASN1_OBJECT_new;
-      {$else}
-      {$if not defined(ASN1_OBJECT_new_allownil)}
-      ASN1_OBJECT_new := @ERR_ASN1_OBJECT_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OBJECT_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OBJECT_new := @ERR_ASN1_OBJECT_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_OBJECT_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_OBJECT_free := LoadLibFunction(ADllHandle, ASN1_OBJECT_free_procname);
-  FuncLoaded := assigned(ASN1_OBJECT_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OBJECT_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OBJECT_free_allownil)}
+    ASN1_OBJECT_free := @ERR_ASN1_OBJECT_free;
+    {$ifend}
     {$if declared(ASN1_OBJECT_free_introduced)}
     if LibVersion < ASN1_OBJECT_free_introduced then
     begin
       {$if declared(FC_ASN1_OBJECT_free)}
       ASN1_OBJECT_free := @FC_ASN1_OBJECT_free;
-      {$else}
-      {$if not defined(ASN1_OBJECT_free_allownil)}
-      ASN1_OBJECT_free := @ERR_ASN1_OBJECT_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OBJECT_free_removed)}
@@ -3188,39 +3131,31 @@ begin
     begin
       {$if declared(_ASN1_OBJECT_free)}
       ASN1_OBJECT_free := @_ASN1_OBJECT_free;
-      {$else}
-      {$if not defined(ASN1_OBJECT_free_allownil)}
-      ASN1_OBJECT_free := @ERR_ASN1_OBJECT_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OBJECT_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OBJECT_free := @ERR_ASN1_OBJECT_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_OBJECT_free');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_OBJECT := LoadLibFunction(ADllHandle, i2d_ASN1_OBJECT_procname);
-  FuncLoaded := assigned(i2d_ASN1_OBJECT);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_OBJECT);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_OBJECT_allownil)}
+    i2d_ASN1_OBJECT := @ERR_i2d_ASN1_OBJECT;
+    {$ifend}
     {$if declared(i2d_ASN1_OBJECT_introduced)}
     if LibVersion < i2d_ASN1_OBJECT_introduced then
     begin
       {$if declared(FC_i2d_ASN1_OBJECT)}
       i2d_ASN1_OBJECT := @FC_i2d_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2d_ASN1_OBJECT_allownil)}
-      i2d_ASN1_OBJECT := @ERR_i2d_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_OBJECT_removed)}
@@ -3228,39 +3163,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_OBJECT)}
       i2d_ASN1_OBJECT := @_i2d_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2d_ASN1_OBJECT_allownil)}
-      i2d_ASN1_OBJECT := @ERR_i2d_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_OBJECT_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_OBJECT := @ERR_i2d_ASN1_OBJECT;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_OBJECT');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_OBJECT := LoadLibFunction(ADllHandle, d2i_ASN1_OBJECT_procname);
-  FuncLoaded := assigned(d2i_ASN1_OBJECT);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_OBJECT);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_OBJECT_allownil)}
+    d2i_ASN1_OBJECT := @ERR_d2i_ASN1_OBJECT;
+    {$ifend}
     {$if declared(d2i_ASN1_OBJECT_introduced)}
     if LibVersion < d2i_ASN1_OBJECT_introduced then
     begin
       {$if declared(FC_d2i_ASN1_OBJECT)}
       d2i_ASN1_OBJECT := @FC_d2i_ASN1_OBJECT;
-      {$else}
-      {$if not defined(d2i_ASN1_OBJECT_allownil)}
-      d2i_ASN1_OBJECT := @ERR_d2i_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_OBJECT_removed)}
@@ -3268,39 +3195,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_OBJECT)}
       d2i_ASN1_OBJECT := @_d2i_ASN1_OBJECT;
-      {$else}
-      {$if not defined(d2i_ASN1_OBJECT_allownil)}
-      d2i_ASN1_OBJECT := @ERR_d2i_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_OBJECT_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_OBJECT := @ERR_d2i_ASN1_OBJECT;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_OBJECT');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_new := LoadLibFunction(ADllHandle, ASN1_STRING_new_procname);
-  FuncLoaded := assigned(ASN1_STRING_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_new_allownil)}
+    ASN1_STRING_new := @ERR_ASN1_STRING_new;
+    {$ifend}
     {$if declared(ASN1_STRING_new_introduced)}
     if LibVersion < ASN1_STRING_new_introduced then
     begin
       {$if declared(FC_ASN1_STRING_new)}
       ASN1_STRING_new := @FC_ASN1_STRING_new;
-      {$else}
-      {$if not defined(ASN1_STRING_new_allownil)}
-      ASN1_STRING_new := @ERR_ASN1_STRING_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_new_removed)}
@@ -3308,39 +3227,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_new)}
       ASN1_STRING_new := @_ASN1_STRING_new;
-      {$else}
-      {$if not defined(ASN1_STRING_new_allownil)}
-      ASN1_STRING_new := @ERR_ASN1_STRING_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_new := @ERR_ASN1_STRING_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_free := LoadLibFunction(ADllHandle, ASN1_STRING_free_procname);
-  FuncLoaded := assigned(ASN1_STRING_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_free_allownil)}
+    ASN1_STRING_free := @ERR_ASN1_STRING_free;
+    {$ifend}
     {$if declared(ASN1_STRING_free_introduced)}
     if LibVersion < ASN1_STRING_free_introduced then
     begin
       {$if declared(FC_ASN1_STRING_free)}
       ASN1_STRING_free := @FC_ASN1_STRING_free;
-      {$else}
-      {$if not defined(ASN1_STRING_free_allownil)}
-      ASN1_STRING_free := @ERR_ASN1_STRING_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_free_removed)}
@@ -3348,39 +3259,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_free)}
       ASN1_STRING_free := @_ASN1_STRING_free;
-      {$else}
-      {$if not defined(ASN1_STRING_free_allownil)}
-      ASN1_STRING_free := @ERR_ASN1_STRING_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_free := @ERR_ASN1_STRING_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_free');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_clear_free := LoadLibFunction(ADllHandle, ASN1_STRING_clear_free_procname);
-  FuncLoaded := assigned(ASN1_STRING_clear_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_clear_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_clear_free_allownil)}
+    ASN1_STRING_clear_free := @ERR_ASN1_STRING_clear_free;
+    {$ifend}
     {$if declared(ASN1_STRING_clear_free_introduced)}
     if LibVersion < ASN1_STRING_clear_free_introduced then
     begin
       {$if declared(FC_ASN1_STRING_clear_free)}
       ASN1_STRING_clear_free := @FC_ASN1_STRING_clear_free;
-      {$else}
-      {$if not defined(ASN1_STRING_clear_free_allownil)}
-      ASN1_STRING_clear_free := @ERR_ASN1_STRING_clear_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_clear_free_removed)}
@@ -3388,39 +3291,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_clear_free)}
       ASN1_STRING_clear_free := @_ASN1_STRING_clear_free;
-      {$else}
-      {$if not defined(ASN1_STRING_clear_free_allownil)}
-      ASN1_STRING_clear_free := @ERR_ASN1_STRING_clear_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_clear_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_clear_free := @ERR_ASN1_STRING_clear_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_clear_free');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_copy := LoadLibFunction(ADllHandle, ASN1_STRING_copy_procname);
-  FuncLoaded := assigned(ASN1_STRING_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_copy_allownil)}
+    ASN1_STRING_copy := @ERR_ASN1_STRING_copy;
+    {$ifend}
     {$if declared(ASN1_STRING_copy_introduced)}
     if LibVersion < ASN1_STRING_copy_introduced then
     begin
       {$if declared(FC_ASN1_STRING_copy)}
       ASN1_STRING_copy := @FC_ASN1_STRING_copy;
-      {$else}
-      {$if not defined(ASN1_STRING_copy_allownil)}
-      ASN1_STRING_copy := @ERR_ASN1_STRING_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_copy_removed)}
@@ -3428,39 +3323,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_copy)}
       ASN1_STRING_copy := @_ASN1_STRING_copy;
-      {$else}
-      {$if not defined(ASN1_STRING_copy_allownil)}
-      ASN1_STRING_copy := @ERR_ASN1_STRING_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_copy := @ERR_ASN1_STRING_copy;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_copy');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_dup := LoadLibFunction(ADllHandle, ASN1_STRING_dup_procname);
-  FuncLoaded := assigned(ASN1_STRING_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_dup_allownil)}
+    ASN1_STRING_dup := @ERR_ASN1_STRING_dup;
+    {$ifend}
     {$if declared(ASN1_STRING_dup_introduced)}
     if LibVersion < ASN1_STRING_dup_introduced then
     begin
       {$if declared(FC_ASN1_STRING_dup)}
       ASN1_STRING_dup := @FC_ASN1_STRING_dup;
-      {$else}
-      {$if not defined(ASN1_STRING_dup_allownil)}
-      ASN1_STRING_dup := @ERR_ASN1_STRING_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_dup_removed)}
@@ -3468,39 +3355,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_dup)}
       ASN1_STRING_dup := @_ASN1_STRING_dup;
-      {$else}
-      {$if not defined(ASN1_STRING_dup_allownil)}
-      ASN1_STRING_dup := @ERR_ASN1_STRING_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_dup := @ERR_ASN1_STRING_dup;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_dup');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_type_new := LoadLibFunction(ADllHandle, ASN1_STRING_type_new_procname);
-  FuncLoaded := assigned(ASN1_STRING_type_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_type_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_type_new_allownil)}
+    ASN1_STRING_type_new := @ERR_ASN1_STRING_type_new;
+    {$ifend}
     {$if declared(ASN1_STRING_type_new_introduced)}
     if LibVersion < ASN1_STRING_type_new_introduced then
     begin
       {$if declared(FC_ASN1_STRING_type_new)}
       ASN1_STRING_type_new := @FC_ASN1_STRING_type_new;
-      {$else}
-      {$if not defined(ASN1_STRING_type_new_allownil)}
-      ASN1_STRING_type_new := @ERR_ASN1_STRING_type_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_type_new_removed)}
@@ -3508,39 +3387,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_type_new)}
       ASN1_STRING_type_new := @_ASN1_STRING_type_new;
-      {$else}
-      {$if not defined(ASN1_STRING_type_new_allownil)}
-      ASN1_STRING_type_new := @ERR_ASN1_STRING_type_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_type_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_type_new := @ERR_ASN1_STRING_type_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_type_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_cmp := LoadLibFunction(ADllHandle, ASN1_STRING_cmp_procname);
-  FuncLoaded := assigned(ASN1_STRING_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_cmp_allownil)}
+    ASN1_STRING_cmp := @ERR_ASN1_STRING_cmp;
+    {$ifend}
     {$if declared(ASN1_STRING_cmp_introduced)}
     if LibVersion < ASN1_STRING_cmp_introduced then
     begin
       {$if declared(FC_ASN1_STRING_cmp)}
       ASN1_STRING_cmp := @FC_ASN1_STRING_cmp;
-      {$else}
-      {$if not defined(ASN1_STRING_cmp_allownil)}
-      ASN1_STRING_cmp := @ERR_ASN1_STRING_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_cmp_removed)}
@@ -3548,39 +3419,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_cmp)}
       ASN1_STRING_cmp := @_ASN1_STRING_cmp;
-      {$else}
-      {$if not defined(ASN1_STRING_cmp_allownil)}
-      ASN1_STRING_cmp := @ERR_ASN1_STRING_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_cmp := @ERR_ASN1_STRING_cmp;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_cmp');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_set := LoadLibFunction(ADllHandle, ASN1_STRING_set_procname);
-  FuncLoaded := assigned(ASN1_STRING_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_set_allownil)}
+    ASN1_STRING_set := @ERR_ASN1_STRING_set;
+    {$ifend}
     {$if declared(ASN1_STRING_set_introduced)}
     if LibVersion < ASN1_STRING_set_introduced then
     begin
       {$if declared(FC_ASN1_STRING_set)}
       ASN1_STRING_set := @FC_ASN1_STRING_set;
-      {$else}
-      {$if not defined(ASN1_STRING_set_allownil)}
-      ASN1_STRING_set := @ERR_ASN1_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_set_removed)}
@@ -3588,39 +3451,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_set)}
       ASN1_STRING_set := @_ASN1_STRING_set;
-      {$else}
-      {$if not defined(ASN1_STRING_set_allownil)}
-      ASN1_STRING_set := @ERR_ASN1_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_set := @ERR_ASN1_STRING_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_set0 := LoadLibFunction(ADllHandle, ASN1_STRING_set0_procname);
-  FuncLoaded := assigned(ASN1_STRING_set0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_set0);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_set0_allownil)}
+    ASN1_STRING_set0 := @ERR_ASN1_STRING_set0;
+    {$ifend}
     {$if declared(ASN1_STRING_set0_introduced)}
     if LibVersion < ASN1_STRING_set0_introduced then
     begin
       {$if declared(FC_ASN1_STRING_set0)}
       ASN1_STRING_set0 := @FC_ASN1_STRING_set0;
-      {$else}
-      {$if not defined(ASN1_STRING_set0_allownil)}
-      ASN1_STRING_set0 := @ERR_ASN1_STRING_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_set0_removed)}
@@ -3628,39 +3483,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_set0)}
       ASN1_STRING_set0 := @_ASN1_STRING_set0;
-      {$else}
-      {$if not defined(ASN1_STRING_set0_allownil)}
-      ASN1_STRING_set0 := @ERR_ASN1_STRING_set0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_set0_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_set0 := @ERR_ASN1_STRING_set0;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_set0');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_length := LoadLibFunction(ADllHandle, ASN1_STRING_length_procname);
-  FuncLoaded := assigned(ASN1_STRING_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_length);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_length_allownil)}
+    ASN1_STRING_length := @ERR_ASN1_STRING_length;
+    {$ifend}
     {$if declared(ASN1_STRING_length_introduced)}
     if LibVersion < ASN1_STRING_length_introduced then
     begin
       {$if declared(FC_ASN1_STRING_length)}
       ASN1_STRING_length := @FC_ASN1_STRING_length;
-      {$else}
-      {$if not defined(ASN1_STRING_length_allownil)}
-      ASN1_STRING_length := @ERR_ASN1_STRING_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_length_removed)}
@@ -3668,39 +3515,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_length)}
       ASN1_STRING_length := @_ASN1_STRING_length;
-      {$else}
-      {$if not defined(ASN1_STRING_length_allownil)}
-      ASN1_STRING_length := @ERR_ASN1_STRING_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_length_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_length := @ERR_ASN1_STRING_length;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_length');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_length_set := LoadLibFunction(ADllHandle, ASN1_STRING_length_set_procname);
-  FuncLoaded := assigned(ASN1_STRING_length_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_length_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_length_set_allownil)}
+    ASN1_STRING_length_set := @ERR_ASN1_STRING_length_set;
+    {$ifend}
     {$if declared(ASN1_STRING_length_set_introduced)}
     if LibVersion < ASN1_STRING_length_set_introduced then
     begin
       {$if declared(FC_ASN1_STRING_length_set)}
       ASN1_STRING_length_set := @FC_ASN1_STRING_length_set;
-      {$else}
-      {$if not defined(ASN1_STRING_length_set_allownil)}
-      ASN1_STRING_length_set := @ERR_ASN1_STRING_length_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_length_set_removed)}
@@ -3708,39 +3547,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_length_set)}
       ASN1_STRING_length_set := @_ASN1_STRING_length_set;
-      {$else}
-      {$if not defined(ASN1_STRING_length_set_allownil)}
-      ASN1_STRING_length_set := @ERR_ASN1_STRING_length_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_length_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_length_set := @ERR_ASN1_STRING_length_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_length_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_type := LoadLibFunction(ADllHandle, ASN1_STRING_type_procname);
-  FuncLoaded := assigned(ASN1_STRING_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_type);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_type_allownil)}
+    ASN1_STRING_type := @ERR_ASN1_STRING_type;
+    {$ifend}
     {$if declared(ASN1_STRING_type_introduced)}
     if LibVersion < ASN1_STRING_type_introduced then
     begin
       {$if declared(FC_ASN1_STRING_type)}
       ASN1_STRING_type := @FC_ASN1_STRING_type;
-      {$else}
-      {$if not defined(ASN1_STRING_type_allownil)}
-      ASN1_STRING_type := @ERR_ASN1_STRING_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_type_removed)}
@@ -3748,39 +3579,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_type)}
       ASN1_STRING_type := @_ASN1_STRING_type;
-      {$else}
-      {$if not defined(ASN1_STRING_type_allownil)}
-      ASN1_STRING_type := @ERR_ASN1_STRING_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_type_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_type := @ERR_ASN1_STRING_type;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_type');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_get0_data := LoadLibFunction(ADllHandle, ASN1_STRING_get0_data_procname);
-  FuncLoaded := assigned(ASN1_STRING_get0_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_get0_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_get0_data_allownil)}
+    ASN1_STRING_get0_data := @ERR_ASN1_STRING_get0_data;
+    {$ifend}
     {$if declared(ASN1_STRING_get0_data_introduced)}
     if LibVersion < ASN1_STRING_get0_data_introduced then
     begin
       {$if declared(FC_ASN1_STRING_get0_data)}
       ASN1_STRING_get0_data := @FC_ASN1_STRING_get0_data;
-      {$else}
-      {$if not defined(ASN1_STRING_get0_data_allownil)}
-      ASN1_STRING_get0_data := @ERR_ASN1_STRING_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_get0_data_removed)}
@@ -3788,39 +3611,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_get0_data)}
       ASN1_STRING_get0_data := @_ASN1_STRING_get0_data;
-      {$else}
-      {$if not defined(ASN1_STRING_get0_data_allownil)}
-      ASN1_STRING_get0_data := @ERR_ASN1_STRING_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_get0_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_get0_data := @ERR_ASN1_STRING_get0_data;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_get0_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_BIT_STRING_set := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_set_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_set_allownil)}
+    ASN1_BIT_STRING_set := @ERR_ASN1_BIT_STRING_set;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_set_introduced)}
     if LibVersion < ASN1_BIT_STRING_set_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_set)}
       ASN1_BIT_STRING_set := @FC_ASN1_BIT_STRING_set;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_allownil)}
-      ASN1_BIT_STRING_set := @ERR_ASN1_BIT_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_set_removed)}
@@ -3828,39 +3643,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_set)}
       ASN1_BIT_STRING_set := @_ASN1_BIT_STRING_set;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_allownil)}
-      ASN1_BIT_STRING_set := @ERR_ASN1_BIT_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_set := @ERR_ASN1_BIT_STRING_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_set_bit := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_set_bit_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_set_bit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_set_bit);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_set_bit_allownil)}
+    ASN1_BIT_STRING_set_bit := @ERR_ASN1_BIT_STRING_set_bit;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_set_bit_introduced)}
     if LibVersion < ASN1_BIT_STRING_set_bit_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_set_bit)}
       ASN1_BIT_STRING_set_bit := @FC_ASN1_BIT_STRING_set_bit;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_bit_allownil)}
-      ASN1_BIT_STRING_set_bit := @ERR_ASN1_BIT_STRING_set_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_set_bit_removed)}
@@ -3868,39 +3675,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_set_bit)}
       ASN1_BIT_STRING_set_bit := @_ASN1_BIT_STRING_set_bit;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_bit_allownil)}
-      ASN1_BIT_STRING_set_bit := @ERR_ASN1_BIT_STRING_set_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_set_bit_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_set_bit := @ERR_ASN1_BIT_STRING_set_bit;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_set_bit');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_get_bit := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_get_bit_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_get_bit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_get_bit);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_get_bit_allownil)}
+    ASN1_BIT_STRING_get_bit := @ERR_ASN1_BIT_STRING_get_bit;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_get_bit_introduced)}
     if LibVersion < ASN1_BIT_STRING_get_bit_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_get_bit)}
       ASN1_BIT_STRING_get_bit := @FC_ASN1_BIT_STRING_get_bit;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_get_bit_allownil)}
-      ASN1_BIT_STRING_get_bit := @ERR_ASN1_BIT_STRING_get_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_get_bit_removed)}
@@ -3908,39 +3707,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_get_bit)}
       ASN1_BIT_STRING_get_bit := @_ASN1_BIT_STRING_get_bit;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_get_bit_allownil)}
-      ASN1_BIT_STRING_get_bit := @ERR_ASN1_BIT_STRING_get_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_get_bit_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_get_bit := @ERR_ASN1_BIT_STRING_get_bit;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_get_bit');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_check := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_check_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_check);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_check_allownil)}
+    ASN1_BIT_STRING_check := @ERR_ASN1_BIT_STRING_check;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_check_introduced)}
     if LibVersion < ASN1_BIT_STRING_check_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_check)}
       ASN1_BIT_STRING_check := @FC_ASN1_BIT_STRING_check;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_check_allownil)}
-      ASN1_BIT_STRING_check := @ERR_ASN1_BIT_STRING_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_check_removed)}
@@ -3948,39 +3739,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_check)}
       ASN1_BIT_STRING_check := @_ASN1_BIT_STRING_check;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_check_allownil)}
-      ASN1_BIT_STRING_check := @ERR_ASN1_BIT_STRING_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_check_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_check := @ERR_ASN1_BIT_STRING_check;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_check');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_name_print := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_name_print_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_name_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_name_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_name_print_allownil)}
+    ASN1_BIT_STRING_name_print := @ERR_ASN1_BIT_STRING_name_print;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_name_print_introduced)}
     if LibVersion < ASN1_BIT_STRING_name_print_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_name_print)}
       ASN1_BIT_STRING_name_print := @FC_ASN1_BIT_STRING_name_print;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_name_print_allownil)}
-      ASN1_BIT_STRING_name_print := @ERR_ASN1_BIT_STRING_name_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_name_print_removed)}
@@ -3988,39 +3771,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_name_print)}
       ASN1_BIT_STRING_name_print := @_ASN1_BIT_STRING_name_print;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_name_print_allownil)}
-      ASN1_BIT_STRING_name_print := @ERR_ASN1_BIT_STRING_name_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_name_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_name_print := @ERR_ASN1_BIT_STRING_name_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_name_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_num_asc := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_num_asc_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_num_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_num_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_num_asc_allownil)}
+    ASN1_BIT_STRING_num_asc := @ERR_ASN1_BIT_STRING_num_asc;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_num_asc_introduced)}
     if LibVersion < ASN1_BIT_STRING_num_asc_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_num_asc)}
       ASN1_BIT_STRING_num_asc := @FC_ASN1_BIT_STRING_num_asc;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_num_asc_allownil)}
-      ASN1_BIT_STRING_num_asc := @ERR_ASN1_BIT_STRING_num_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_num_asc_removed)}
@@ -4028,39 +3803,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_num_asc)}
       ASN1_BIT_STRING_num_asc := @_ASN1_BIT_STRING_num_asc;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_num_asc_allownil)}
-      ASN1_BIT_STRING_num_asc := @ERR_ASN1_BIT_STRING_num_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_num_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_num_asc := @ERR_ASN1_BIT_STRING_num_asc;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_num_asc');
-    end;
     {$ifend}
   end;
 
 
   ASN1_BIT_STRING_set_asc := LoadLibFunction(ADllHandle, ASN1_BIT_STRING_set_asc_procname);
-  FuncLoaded := assigned(ASN1_BIT_STRING_set_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_BIT_STRING_set_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_BIT_STRING_set_asc_allownil)}
+    ASN1_BIT_STRING_set_asc := @ERR_ASN1_BIT_STRING_set_asc;
+    {$ifend}
     {$if declared(ASN1_BIT_STRING_set_asc_introduced)}
     if LibVersion < ASN1_BIT_STRING_set_asc_introduced then
     begin
       {$if declared(FC_ASN1_BIT_STRING_set_asc)}
       ASN1_BIT_STRING_set_asc := @FC_ASN1_BIT_STRING_set_asc;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_asc_allownil)}
-      ASN1_BIT_STRING_set_asc := @ERR_ASN1_BIT_STRING_set_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_BIT_STRING_set_asc_removed)}
@@ -4068,39 +3835,31 @@ begin
     begin
       {$if declared(_ASN1_BIT_STRING_set_asc)}
       ASN1_BIT_STRING_set_asc := @_ASN1_BIT_STRING_set_asc;
-      {$else}
-      {$if not defined(ASN1_BIT_STRING_set_asc_allownil)}
-      ASN1_BIT_STRING_set_asc := @ERR_ASN1_BIT_STRING_set_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_BIT_STRING_set_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_BIT_STRING_set_asc := @ERR_ASN1_BIT_STRING_set_asc;
+    if FuncLoadError then
       AFailed.Add('ASN1_BIT_STRING_set_asc');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_new := LoadLibFunction(ADllHandle, ASN1_INTEGER_new_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_new_allownil)}
+    ASN1_INTEGER_new := @ERR_ASN1_INTEGER_new;
+    {$ifend}
     {$if declared(ASN1_INTEGER_new_introduced)}
     if LibVersion < ASN1_INTEGER_new_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_new)}
       ASN1_INTEGER_new := @FC_ASN1_INTEGER_new;
-      {$else}
-      {$if not defined(ASN1_INTEGER_new_allownil)}
-      ASN1_INTEGER_new := @ERR_ASN1_INTEGER_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_new_removed)}
@@ -4108,39 +3867,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_new)}
       ASN1_INTEGER_new := @_ASN1_INTEGER_new;
-      {$else}
-      {$if not defined(ASN1_INTEGER_new_allownil)}
-      ASN1_INTEGER_new := @ERR_ASN1_INTEGER_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_new := @ERR_ASN1_INTEGER_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_free := LoadLibFunction(ADllHandle, ASN1_INTEGER_free_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_free_allownil)}
+    ASN1_INTEGER_free := @ERR_ASN1_INTEGER_free;
+    {$ifend}
     {$if declared(ASN1_INTEGER_free_introduced)}
     if LibVersion < ASN1_INTEGER_free_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_free)}
       ASN1_INTEGER_free := @FC_ASN1_INTEGER_free;
-      {$else}
-      {$if not defined(ASN1_INTEGER_free_allownil)}
-      ASN1_INTEGER_free := @ERR_ASN1_INTEGER_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_free_removed)}
@@ -4148,39 +3899,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_free)}
       ASN1_INTEGER_free := @_ASN1_INTEGER_free;
-      {$else}
-      {$if not defined(ASN1_INTEGER_free_allownil)}
-      ASN1_INTEGER_free := @ERR_ASN1_INTEGER_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_free := @ERR_ASN1_INTEGER_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_INTEGER := LoadLibFunction(ADllHandle, d2i_ASN1_INTEGER_procname);
-  FuncLoaded := assigned(d2i_ASN1_INTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_INTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_INTEGER_allownil)}
+    d2i_ASN1_INTEGER := @ERR_d2i_ASN1_INTEGER;
+    {$ifend}
     {$if declared(d2i_ASN1_INTEGER_introduced)}
     if LibVersion < d2i_ASN1_INTEGER_introduced then
     begin
       {$if declared(FC_d2i_ASN1_INTEGER)}
       d2i_ASN1_INTEGER := @FC_d2i_ASN1_INTEGER;
-      {$else}
-      {$if not defined(d2i_ASN1_INTEGER_allownil)}
-      d2i_ASN1_INTEGER := @ERR_d2i_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_INTEGER_removed)}
@@ -4188,39 +3931,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_INTEGER)}
       d2i_ASN1_INTEGER := @_d2i_ASN1_INTEGER;
-      {$else}
-      {$if not defined(d2i_ASN1_INTEGER_allownil)}
-      d2i_ASN1_INTEGER := @ERR_d2i_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_INTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_INTEGER := @ERR_d2i_ASN1_INTEGER;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_INTEGER');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_INTEGER := LoadLibFunction(ADllHandle, i2d_ASN1_INTEGER_procname);
-  FuncLoaded := assigned(i2d_ASN1_INTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_INTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_INTEGER_allownil)}
+    i2d_ASN1_INTEGER := @ERR_i2d_ASN1_INTEGER;
+    {$ifend}
     {$if declared(i2d_ASN1_INTEGER_introduced)}
     if LibVersion < i2d_ASN1_INTEGER_introduced then
     begin
       {$if declared(FC_i2d_ASN1_INTEGER)}
       i2d_ASN1_INTEGER := @FC_i2d_ASN1_INTEGER;
-      {$else}
-      {$if not defined(i2d_ASN1_INTEGER_allownil)}
-      i2d_ASN1_INTEGER := @ERR_i2d_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_INTEGER_removed)}
@@ -4228,39 +3963,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_INTEGER)}
       i2d_ASN1_INTEGER := @_i2d_ASN1_INTEGER;
-      {$else}
-      {$if not defined(i2d_ASN1_INTEGER_allownil)}
-      i2d_ASN1_INTEGER := @ERR_i2d_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_INTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_INTEGER := @ERR_i2d_ASN1_INTEGER;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_INTEGER');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_UINTEGER := LoadLibFunction(ADllHandle, d2i_ASN1_UINTEGER_procname);
-  FuncLoaded := assigned(d2i_ASN1_UINTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_UINTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_UINTEGER_allownil)}
+    d2i_ASN1_UINTEGER := @ERR_d2i_ASN1_UINTEGER;
+    {$ifend}
     {$if declared(d2i_ASN1_UINTEGER_introduced)}
     if LibVersion < d2i_ASN1_UINTEGER_introduced then
     begin
       {$if declared(FC_d2i_ASN1_UINTEGER)}
       d2i_ASN1_UINTEGER := @FC_d2i_ASN1_UINTEGER;
-      {$else}
-      {$if not defined(d2i_ASN1_UINTEGER_allownil)}
-      d2i_ASN1_UINTEGER := @ERR_d2i_ASN1_UINTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_UINTEGER_removed)}
@@ -4268,39 +3995,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_UINTEGER)}
       d2i_ASN1_UINTEGER := @_d2i_ASN1_UINTEGER;
-      {$else}
-      {$if not defined(d2i_ASN1_UINTEGER_allownil)}
-      d2i_ASN1_UINTEGER := @ERR_d2i_ASN1_UINTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_UINTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_UINTEGER := @ERR_d2i_ASN1_UINTEGER;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_UINTEGER');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_dup := LoadLibFunction(ADllHandle, ASN1_INTEGER_dup_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_dup_allownil)}
+    ASN1_INTEGER_dup := @ERR_ASN1_INTEGER_dup;
+    {$ifend}
     {$if declared(ASN1_INTEGER_dup_introduced)}
     if LibVersion < ASN1_INTEGER_dup_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_dup)}
       ASN1_INTEGER_dup := @FC_ASN1_INTEGER_dup;
-      {$else}
-      {$if not defined(ASN1_INTEGER_dup_allownil)}
-      ASN1_INTEGER_dup := @ERR_ASN1_INTEGER_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_dup_removed)}
@@ -4308,39 +4027,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_dup)}
       ASN1_INTEGER_dup := @_ASN1_INTEGER_dup;
-      {$else}
-      {$if not defined(ASN1_INTEGER_dup_allownil)}
-      ASN1_INTEGER_dup := @ERR_ASN1_INTEGER_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_dup := @ERR_ASN1_INTEGER_dup;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_dup');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_cmp := LoadLibFunction(ADllHandle, ASN1_INTEGER_cmp_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_cmp_allownil)}
+    ASN1_INTEGER_cmp := @ERR_ASN1_INTEGER_cmp;
+    {$ifend}
     {$if declared(ASN1_INTEGER_cmp_introduced)}
     if LibVersion < ASN1_INTEGER_cmp_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_cmp)}
       ASN1_INTEGER_cmp := @FC_ASN1_INTEGER_cmp;
-      {$else}
-      {$if not defined(ASN1_INTEGER_cmp_allownil)}
-      ASN1_INTEGER_cmp := @ERR_ASN1_INTEGER_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_cmp_removed)}
@@ -4348,39 +4059,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_cmp)}
       ASN1_INTEGER_cmp := @_ASN1_INTEGER_cmp;
-      {$else}
-      {$if not defined(ASN1_INTEGER_cmp_allownil)}
-      ASN1_INTEGER_cmp := @ERR_ASN1_INTEGER_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_cmp := @ERR_ASN1_INTEGER_cmp;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_cmp');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_check := LoadLibFunction(ADllHandle, ASN1_UTCTIME_check_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_check);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_check_allownil)}
+    ASN1_UTCTIME_check := @ERR_ASN1_UTCTIME_check;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_check_introduced)}
     if LibVersion < ASN1_UTCTIME_check_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_check)}
       ASN1_UTCTIME_check := @FC_ASN1_UTCTIME_check;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_check_allownil)}
-      ASN1_UTCTIME_check := @ERR_ASN1_UTCTIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_check_removed)}
@@ -4388,39 +4091,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_check)}
       ASN1_UTCTIME_check := @_ASN1_UTCTIME_check;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_check_allownil)}
-      ASN1_UTCTIME_check := @ERR_ASN1_UTCTIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_check_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_check := @ERR_ASN1_UTCTIME_check;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_check');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_set := LoadLibFunction(ADllHandle, ASN1_UTCTIME_set_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_set_allownil)}
+    ASN1_UTCTIME_set := @ERR_ASN1_UTCTIME_set;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_set_introduced)}
     if LibVersion < ASN1_UTCTIME_set_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_set)}
       ASN1_UTCTIME_set := @FC_ASN1_UTCTIME_set;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_set_allownil)}
-      ASN1_UTCTIME_set := @ERR_ASN1_UTCTIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_set_removed)}
@@ -4428,39 +4123,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_set)}
       ASN1_UTCTIME_set := @_ASN1_UTCTIME_set;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_set_allownil)}
-      ASN1_UTCTIME_set := @ERR_ASN1_UTCTIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_set := @ERR_ASN1_UTCTIME_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_adj := LoadLibFunction(ADllHandle, ASN1_UTCTIME_adj_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_adj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_adj);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_adj_allownil)}
+    ASN1_UTCTIME_adj := @ERR_ASN1_UTCTIME_adj;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_adj_introduced)}
     if LibVersion < ASN1_UTCTIME_adj_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_adj)}
       ASN1_UTCTIME_adj := @FC_ASN1_UTCTIME_adj;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_adj_allownil)}
-      ASN1_UTCTIME_adj := @ERR_ASN1_UTCTIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_adj_removed)}
@@ -4468,39 +4155,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_adj)}
       ASN1_UTCTIME_adj := @_ASN1_UTCTIME_adj;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_adj_allownil)}
-      ASN1_UTCTIME_adj := @ERR_ASN1_UTCTIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_adj_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_adj := @ERR_ASN1_UTCTIME_adj;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_adj');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_set_string := LoadLibFunction(ADllHandle, ASN1_UTCTIME_set_string_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_set_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_set_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_set_string_allownil)}
+    ASN1_UTCTIME_set_string := @ERR_ASN1_UTCTIME_set_string;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_set_string_introduced)}
     if LibVersion < ASN1_UTCTIME_set_string_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_set_string)}
       ASN1_UTCTIME_set_string := @FC_ASN1_UTCTIME_set_string;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_set_string_allownil)}
-      ASN1_UTCTIME_set_string := @ERR_ASN1_UTCTIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_set_string_removed)}
@@ -4508,39 +4187,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_set_string)}
       ASN1_UTCTIME_set_string := @_ASN1_UTCTIME_set_string;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_set_string_allownil)}
-      ASN1_UTCTIME_set_string := @ERR_ASN1_UTCTIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_set_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_set_string := @ERR_ASN1_UTCTIME_set_string;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_set_string');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_cmp_time_t := LoadLibFunction(ADllHandle, ASN1_UTCTIME_cmp_time_t_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_cmp_time_t);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_cmp_time_t);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_cmp_time_t_allownil)}
+    ASN1_UTCTIME_cmp_time_t := @ERR_ASN1_UTCTIME_cmp_time_t;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_cmp_time_t_introduced)}
     if LibVersion < ASN1_UTCTIME_cmp_time_t_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_cmp_time_t)}
       ASN1_UTCTIME_cmp_time_t := @FC_ASN1_UTCTIME_cmp_time_t;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_cmp_time_t_allownil)}
-      ASN1_UTCTIME_cmp_time_t := @ERR_ASN1_UTCTIME_cmp_time_t;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_cmp_time_t_removed)}
@@ -4548,39 +4219,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_cmp_time_t)}
       ASN1_UTCTIME_cmp_time_t := @_ASN1_UTCTIME_cmp_time_t;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_cmp_time_t_allownil)}
-      ASN1_UTCTIME_cmp_time_t := @ERR_ASN1_UTCTIME_cmp_time_t;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_cmp_time_t_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_cmp_time_t := @ERR_ASN1_UTCTIME_cmp_time_t;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_cmp_time_t');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_check := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_check_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_check);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_check_allownil)}
+    ASN1_GENERALIZEDTIME_check := @ERR_ASN1_GENERALIZEDTIME_check;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_check_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_check_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_check)}
       ASN1_GENERALIZEDTIME_check := @FC_ASN1_GENERALIZEDTIME_check;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_check_allownil)}
-      ASN1_GENERALIZEDTIME_check := @ERR_ASN1_GENERALIZEDTIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_check_removed)}
@@ -4588,39 +4251,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_check)}
       ASN1_GENERALIZEDTIME_check := @_ASN1_GENERALIZEDTIME_check;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_check_allownil)}
-      ASN1_GENERALIZEDTIME_check := @ERR_ASN1_GENERALIZEDTIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_check_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_check := @ERR_ASN1_GENERALIZEDTIME_check;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_check');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_set := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_set_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_set_allownil)}
+    ASN1_GENERALIZEDTIME_set := @ERR_ASN1_GENERALIZEDTIME_set;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_set_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_set_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_set)}
       ASN1_GENERALIZEDTIME_set := @FC_ASN1_GENERALIZEDTIME_set;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_set_allownil)}
-      ASN1_GENERALIZEDTIME_set := @ERR_ASN1_GENERALIZEDTIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_set_removed)}
@@ -4628,39 +4283,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_set)}
       ASN1_GENERALIZEDTIME_set := @_ASN1_GENERALIZEDTIME_set;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_set_allownil)}
-      ASN1_GENERALIZEDTIME_set := @ERR_ASN1_GENERALIZEDTIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_set := @ERR_ASN1_GENERALIZEDTIME_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_adj := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_adj_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_adj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_adj);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_adj_allownil)}
+    ASN1_GENERALIZEDTIME_adj := @ERR_ASN1_GENERALIZEDTIME_adj;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_adj_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_adj_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_adj)}
       ASN1_GENERALIZEDTIME_adj := @FC_ASN1_GENERALIZEDTIME_adj;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_adj_allownil)}
-      ASN1_GENERALIZEDTIME_adj := @ERR_ASN1_GENERALIZEDTIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_adj_removed)}
@@ -4668,39 +4315,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_adj)}
       ASN1_GENERALIZEDTIME_adj := @_ASN1_GENERALIZEDTIME_adj;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_adj_allownil)}
-      ASN1_GENERALIZEDTIME_adj := @ERR_ASN1_GENERALIZEDTIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_adj_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_adj := @ERR_ASN1_GENERALIZEDTIME_adj;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_adj');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_set_string := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_set_string_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_set_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_set_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_set_string_allownil)}
+    ASN1_GENERALIZEDTIME_set_string := @ERR_ASN1_GENERALIZEDTIME_set_string;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_set_string_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_set_string_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_set_string)}
       ASN1_GENERALIZEDTIME_set_string := @FC_ASN1_GENERALIZEDTIME_set_string;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_set_string_allownil)}
-      ASN1_GENERALIZEDTIME_set_string := @ERR_ASN1_GENERALIZEDTIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_set_string_removed)}
@@ -4708,39 +4347,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_set_string)}
       ASN1_GENERALIZEDTIME_set_string := @_ASN1_GENERALIZEDTIME_set_string;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_set_string_allownil)}
-      ASN1_GENERALIZEDTIME_set_string := @ERR_ASN1_GENERALIZEDTIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_set_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_set_string := @ERR_ASN1_GENERALIZEDTIME_set_string;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_set_string');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_diff := LoadLibFunction(ADllHandle, ASN1_TIME_diff_procname);
-  FuncLoaded := assigned(ASN1_TIME_diff);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_diff);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_diff_allownil)}
+    ASN1_TIME_diff := @ERR_ASN1_TIME_diff;
+    {$ifend}
     {$if declared(ASN1_TIME_diff_introduced)}
     if LibVersion < ASN1_TIME_diff_introduced then
     begin
       {$if declared(FC_ASN1_TIME_diff)}
       ASN1_TIME_diff := @FC_ASN1_TIME_diff;
-      {$else}
-      {$if not defined(ASN1_TIME_diff_allownil)}
-      ASN1_TIME_diff := @ERR_ASN1_TIME_diff;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_diff_removed)}
@@ -4748,39 +4379,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_diff)}
       ASN1_TIME_diff := @_ASN1_TIME_diff;
-      {$else}
-      {$if not defined(ASN1_TIME_diff_allownil)}
-      ASN1_TIME_diff := @ERR_ASN1_TIME_diff;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_diff_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_diff := @ERR_ASN1_TIME_diff;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_diff');
-    end;
     {$ifend}
   end;
 
 
   ASN1_OCTET_STRING_dup := LoadLibFunction(ADllHandle, ASN1_OCTET_STRING_dup_procname);
-  FuncLoaded := assigned(ASN1_OCTET_STRING_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OCTET_STRING_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OCTET_STRING_dup_allownil)}
+    ASN1_OCTET_STRING_dup := @ERR_ASN1_OCTET_STRING_dup;
+    {$ifend}
     {$if declared(ASN1_OCTET_STRING_dup_introduced)}
     if LibVersion < ASN1_OCTET_STRING_dup_introduced then
     begin
       {$if declared(FC_ASN1_OCTET_STRING_dup)}
       ASN1_OCTET_STRING_dup := @FC_ASN1_OCTET_STRING_dup;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_dup_allownil)}
-      ASN1_OCTET_STRING_dup := @ERR_ASN1_OCTET_STRING_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OCTET_STRING_dup_removed)}
@@ -4788,39 +4411,31 @@ begin
     begin
       {$if declared(_ASN1_OCTET_STRING_dup)}
       ASN1_OCTET_STRING_dup := @_ASN1_OCTET_STRING_dup;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_dup_allownil)}
-      ASN1_OCTET_STRING_dup := @ERR_ASN1_OCTET_STRING_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OCTET_STRING_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OCTET_STRING_dup := @ERR_ASN1_OCTET_STRING_dup;
+    if FuncLoadError then
       AFailed.Add('ASN1_OCTET_STRING_dup');
-    end;
     {$ifend}
   end;
 
 
   ASN1_OCTET_STRING_cmp := LoadLibFunction(ADllHandle, ASN1_OCTET_STRING_cmp_procname);
-  FuncLoaded := assigned(ASN1_OCTET_STRING_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OCTET_STRING_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OCTET_STRING_cmp_allownil)}
+    ASN1_OCTET_STRING_cmp := @ERR_ASN1_OCTET_STRING_cmp;
+    {$ifend}
     {$if declared(ASN1_OCTET_STRING_cmp_introduced)}
     if LibVersion < ASN1_OCTET_STRING_cmp_introduced then
     begin
       {$if declared(FC_ASN1_OCTET_STRING_cmp)}
       ASN1_OCTET_STRING_cmp := @FC_ASN1_OCTET_STRING_cmp;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_cmp_allownil)}
-      ASN1_OCTET_STRING_cmp := @ERR_ASN1_OCTET_STRING_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OCTET_STRING_cmp_removed)}
@@ -4828,39 +4443,31 @@ begin
     begin
       {$if declared(_ASN1_OCTET_STRING_cmp)}
       ASN1_OCTET_STRING_cmp := @_ASN1_OCTET_STRING_cmp;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_cmp_allownil)}
-      ASN1_OCTET_STRING_cmp := @ERR_ASN1_OCTET_STRING_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OCTET_STRING_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OCTET_STRING_cmp := @ERR_ASN1_OCTET_STRING_cmp;
+    if FuncLoadError then
       AFailed.Add('ASN1_OCTET_STRING_cmp');
-    end;
     {$ifend}
   end;
 
 
   ASN1_OCTET_STRING_set := LoadLibFunction(ADllHandle, ASN1_OCTET_STRING_set_procname);
-  FuncLoaded := assigned(ASN1_OCTET_STRING_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OCTET_STRING_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OCTET_STRING_set_allownil)}
+    ASN1_OCTET_STRING_set := @ERR_ASN1_OCTET_STRING_set;
+    {$ifend}
     {$if declared(ASN1_OCTET_STRING_set_introduced)}
     if LibVersion < ASN1_OCTET_STRING_set_introduced then
     begin
       {$if declared(FC_ASN1_OCTET_STRING_set)}
       ASN1_OCTET_STRING_set := @FC_ASN1_OCTET_STRING_set;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_set_allownil)}
-      ASN1_OCTET_STRING_set := @ERR_ASN1_OCTET_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OCTET_STRING_set_removed)}
@@ -4868,39 +4475,31 @@ begin
     begin
       {$if declared(_ASN1_OCTET_STRING_set)}
       ASN1_OCTET_STRING_set := @_ASN1_OCTET_STRING_set;
-      {$else}
-      {$if not defined(ASN1_OCTET_STRING_set_allownil)}
-      ASN1_OCTET_STRING_set := @ERR_ASN1_OCTET_STRING_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OCTET_STRING_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OCTET_STRING_set := @ERR_ASN1_OCTET_STRING_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_OCTET_STRING_set');
-    end;
     {$ifend}
   end;
 
 
   UTF8_getc := LoadLibFunction(ADllHandle, UTF8_getc_procname);
-  FuncLoaded := assigned(UTF8_getc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UTF8_getc);
+  if FuncLoadError then
   begin
+    {$if not defined(UTF8_getc_allownil)}
+    UTF8_getc := @ERR_UTF8_getc;
+    {$ifend}
     {$if declared(UTF8_getc_introduced)}
     if LibVersion < UTF8_getc_introduced then
     begin
       {$if declared(FC_UTF8_getc)}
       UTF8_getc := @FC_UTF8_getc;
-      {$else}
-      {$if not defined(UTF8_getc_allownil)}
-      UTF8_getc := @ERR_UTF8_getc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UTF8_getc_removed)}
@@ -4908,39 +4507,31 @@ begin
     begin
       {$if declared(_UTF8_getc)}
       UTF8_getc := @_UTF8_getc;
-      {$else}
-      {$if not defined(UTF8_getc_allownil)}
-      UTF8_getc := @ERR_UTF8_getc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UTF8_getc_allownil)}
-    if not FuncLoaded then
-    begin
-      UTF8_getc := @ERR_UTF8_getc;
+    if FuncLoadError then
       AFailed.Add('UTF8_getc');
-    end;
     {$ifend}
   end;
 
 
   UTF8_putc := LoadLibFunction(ADllHandle, UTF8_putc_procname);
-  FuncLoaded := assigned(UTF8_putc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(UTF8_putc);
+  if FuncLoadError then
   begin
+    {$if not defined(UTF8_putc_allownil)}
+    UTF8_putc := @ERR_UTF8_putc;
+    {$ifend}
     {$if declared(UTF8_putc_introduced)}
     if LibVersion < UTF8_putc_introduced then
     begin
       {$if declared(FC_UTF8_putc)}
       UTF8_putc := @FC_UTF8_putc;
-      {$else}
-      {$if not defined(UTF8_putc_allownil)}
-      UTF8_putc := @ERR_UTF8_putc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(UTF8_putc_removed)}
@@ -4948,39 +4539,31 @@ begin
     begin
       {$if declared(_UTF8_putc)}
       UTF8_putc := @_UTF8_putc;
-      {$else}
-      {$if not defined(UTF8_putc_allownil)}
-      UTF8_putc := @ERR_UTF8_putc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(UTF8_putc_allownil)}
-    if not FuncLoaded then
-    begin
-      UTF8_putc := @ERR_UTF8_putc;
+    if FuncLoadError then
       AFailed.Add('UTF8_putc');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_new := LoadLibFunction(ADllHandle, ASN1_UTCTIME_new_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_new_allownil)}
+    ASN1_UTCTIME_new := @ERR_ASN1_UTCTIME_new;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_new_introduced)}
     if LibVersion < ASN1_UTCTIME_new_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_new)}
       ASN1_UTCTIME_new := @FC_ASN1_UTCTIME_new;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_new_allownil)}
-      ASN1_UTCTIME_new := @ERR_ASN1_UTCTIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_new_removed)}
@@ -4988,39 +4571,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_new)}
       ASN1_UTCTIME_new := @_ASN1_UTCTIME_new;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_new_allownil)}
-      ASN1_UTCTIME_new := @ERR_ASN1_UTCTIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_new := @ERR_ASN1_UTCTIME_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_free := LoadLibFunction(ADllHandle, ASN1_UTCTIME_free_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_free_allownil)}
+    ASN1_UTCTIME_free := @ERR_ASN1_UTCTIME_free;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_free_introduced)}
     if LibVersion < ASN1_UTCTIME_free_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_free)}
       ASN1_UTCTIME_free := @FC_ASN1_UTCTIME_free;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_free_allownil)}
-      ASN1_UTCTIME_free := @ERR_ASN1_UTCTIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_free_removed)}
@@ -5028,39 +4603,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_free)}
       ASN1_UTCTIME_free := @_ASN1_UTCTIME_free;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_free_allownil)}
-      ASN1_UTCTIME_free := @ERR_ASN1_UTCTIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_free := @ERR_ASN1_UTCTIME_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_UTCTIME := LoadLibFunction(ADllHandle, d2i_ASN1_UTCTIME_procname);
-  FuncLoaded := assigned(d2i_ASN1_UTCTIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_UTCTIME);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_UTCTIME_allownil)}
+    d2i_ASN1_UTCTIME := @ERR_d2i_ASN1_UTCTIME;
+    {$ifend}
     {$if declared(d2i_ASN1_UTCTIME_introduced)}
     if LibVersion < d2i_ASN1_UTCTIME_introduced then
     begin
       {$if declared(FC_d2i_ASN1_UTCTIME)}
       d2i_ASN1_UTCTIME := @FC_d2i_ASN1_UTCTIME;
-      {$else}
-      {$if not defined(d2i_ASN1_UTCTIME_allownil)}
-      d2i_ASN1_UTCTIME := @ERR_d2i_ASN1_UTCTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_UTCTIME_removed)}
@@ -5068,39 +4635,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_UTCTIME)}
       d2i_ASN1_UTCTIME := @_d2i_ASN1_UTCTIME;
-      {$else}
-      {$if not defined(d2i_ASN1_UTCTIME_allownil)}
-      d2i_ASN1_UTCTIME := @ERR_d2i_ASN1_UTCTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_UTCTIME_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_UTCTIME := @ERR_d2i_ASN1_UTCTIME;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_UTCTIME');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_UTCTIME := LoadLibFunction(ADllHandle, i2d_ASN1_UTCTIME_procname);
-  FuncLoaded := assigned(i2d_ASN1_UTCTIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_UTCTIME);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_UTCTIME_allownil)}
+    i2d_ASN1_UTCTIME := @ERR_i2d_ASN1_UTCTIME;
+    {$ifend}
     {$if declared(i2d_ASN1_UTCTIME_introduced)}
     if LibVersion < i2d_ASN1_UTCTIME_introduced then
     begin
       {$if declared(FC_i2d_ASN1_UTCTIME)}
       i2d_ASN1_UTCTIME := @FC_i2d_ASN1_UTCTIME;
-      {$else}
-      {$if not defined(i2d_ASN1_UTCTIME_allownil)}
-      i2d_ASN1_UTCTIME := @ERR_i2d_ASN1_UTCTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_UTCTIME_removed)}
@@ -5108,39 +4667,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_UTCTIME)}
       i2d_ASN1_UTCTIME := @_i2d_ASN1_UTCTIME;
-      {$else}
-      {$if not defined(i2d_ASN1_UTCTIME_allownil)}
-      i2d_ASN1_UTCTIME := @ERR_i2d_ASN1_UTCTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_UTCTIME_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_UTCTIME := @ERR_i2d_ASN1_UTCTIME;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_UTCTIME');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_new := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_new_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_new_allownil)}
+    ASN1_GENERALIZEDTIME_new := @ERR_ASN1_GENERALIZEDTIME_new;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_new_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_new_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_new)}
       ASN1_GENERALIZEDTIME_new := @FC_ASN1_GENERALIZEDTIME_new;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_new_allownil)}
-      ASN1_GENERALIZEDTIME_new := @ERR_ASN1_GENERALIZEDTIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_new_removed)}
@@ -5148,39 +4699,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_new)}
       ASN1_GENERALIZEDTIME_new := @_ASN1_GENERALIZEDTIME_new;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_new_allownil)}
-      ASN1_GENERALIZEDTIME_new := @ERR_ASN1_GENERALIZEDTIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_new := @ERR_ASN1_GENERALIZEDTIME_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_free := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_free_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_free_allownil)}
+    ASN1_GENERALIZEDTIME_free := @ERR_ASN1_GENERALIZEDTIME_free;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_free_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_free_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_free)}
       ASN1_GENERALIZEDTIME_free := @FC_ASN1_GENERALIZEDTIME_free;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_free_allownil)}
-      ASN1_GENERALIZEDTIME_free := @ERR_ASN1_GENERALIZEDTIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_free_removed)}
@@ -5188,39 +4731,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_free)}
       ASN1_GENERALIZEDTIME_free := @_ASN1_GENERALIZEDTIME_free;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_free_allownil)}
-      ASN1_GENERALIZEDTIME_free := @ERR_ASN1_GENERALIZEDTIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_free := @ERR_ASN1_GENERALIZEDTIME_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_GENERALIZEDTIME := LoadLibFunction(ADllHandle, d2i_ASN1_GENERALIZEDTIME_procname);
-  FuncLoaded := assigned(d2i_ASN1_GENERALIZEDTIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_GENERALIZEDTIME);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_GENERALIZEDTIME_allownil)}
+    d2i_ASN1_GENERALIZEDTIME := @ERR_d2i_ASN1_GENERALIZEDTIME;
+    {$ifend}
     {$if declared(d2i_ASN1_GENERALIZEDTIME_introduced)}
     if LibVersion < d2i_ASN1_GENERALIZEDTIME_introduced then
     begin
       {$if declared(FC_d2i_ASN1_GENERALIZEDTIME)}
       d2i_ASN1_GENERALIZEDTIME := @FC_d2i_ASN1_GENERALIZEDTIME;
-      {$else}
-      {$if not defined(d2i_ASN1_GENERALIZEDTIME_allownil)}
-      d2i_ASN1_GENERALIZEDTIME := @ERR_d2i_ASN1_GENERALIZEDTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_GENERALIZEDTIME_removed)}
@@ -5228,39 +4763,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_GENERALIZEDTIME)}
       d2i_ASN1_GENERALIZEDTIME := @_d2i_ASN1_GENERALIZEDTIME;
-      {$else}
-      {$if not defined(d2i_ASN1_GENERALIZEDTIME_allownil)}
-      d2i_ASN1_GENERALIZEDTIME := @ERR_d2i_ASN1_GENERALIZEDTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_GENERALIZEDTIME_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_GENERALIZEDTIME := @ERR_d2i_ASN1_GENERALIZEDTIME;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_GENERALIZEDTIME');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_GENERALIZEDTIME := LoadLibFunction(ADllHandle, i2d_ASN1_GENERALIZEDTIME_procname);
-  FuncLoaded := assigned(i2d_ASN1_GENERALIZEDTIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_GENERALIZEDTIME);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_GENERALIZEDTIME_allownil)}
+    i2d_ASN1_GENERALIZEDTIME := @ERR_i2d_ASN1_GENERALIZEDTIME;
+    {$ifend}
     {$if declared(i2d_ASN1_GENERALIZEDTIME_introduced)}
     if LibVersion < i2d_ASN1_GENERALIZEDTIME_introduced then
     begin
       {$if declared(FC_i2d_ASN1_GENERALIZEDTIME)}
       i2d_ASN1_GENERALIZEDTIME := @FC_i2d_ASN1_GENERALIZEDTIME;
-      {$else}
-      {$if not defined(i2d_ASN1_GENERALIZEDTIME_allownil)}
-      i2d_ASN1_GENERALIZEDTIME := @ERR_i2d_ASN1_GENERALIZEDTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_GENERALIZEDTIME_removed)}
@@ -5268,39 +4795,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_GENERALIZEDTIME)}
       i2d_ASN1_GENERALIZEDTIME := @_i2d_ASN1_GENERALIZEDTIME;
-      {$else}
-      {$if not defined(i2d_ASN1_GENERALIZEDTIME_allownil)}
-      i2d_ASN1_GENERALIZEDTIME := @ERR_i2d_ASN1_GENERALIZEDTIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_GENERALIZEDTIME_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_GENERALIZEDTIME := @ERR_i2d_ASN1_GENERALIZEDTIME;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_GENERALIZEDTIME');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_new := LoadLibFunction(ADllHandle, ASN1_TIME_new_procname);
-  FuncLoaded := assigned(ASN1_TIME_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_new_allownil)}
+    ASN1_TIME_new := @ERR_ASN1_TIME_new;
+    {$ifend}
     {$if declared(ASN1_TIME_new_introduced)}
     if LibVersion < ASN1_TIME_new_introduced then
     begin
       {$if declared(FC_ASN1_TIME_new)}
       ASN1_TIME_new := @FC_ASN1_TIME_new;
-      {$else}
-      {$if not defined(ASN1_TIME_new_allownil)}
-      ASN1_TIME_new := @ERR_ASN1_TIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_new_removed)}
@@ -5308,39 +4827,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_new)}
       ASN1_TIME_new := @_ASN1_TIME_new;
-      {$else}
-      {$if not defined(ASN1_TIME_new_allownil)}
-      ASN1_TIME_new := @ERR_ASN1_TIME_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_new := @ERR_ASN1_TIME_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_free := LoadLibFunction(ADllHandle, ASN1_TIME_free_procname);
-  FuncLoaded := assigned(ASN1_TIME_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_free_allownil)}
+    ASN1_TIME_free := @ERR_ASN1_TIME_free;
+    {$ifend}
     {$if declared(ASN1_TIME_free_introduced)}
     if LibVersion < ASN1_TIME_free_introduced then
     begin
       {$if declared(FC_ASN1_TIME_free)}
       ASN1_TIME_free := @FC_ASN1_TIME_free;
-      {$else}
-      {$if not defined(ASN1_TIME_free_allownil)}
-      ASN1_TIME_free := @ERR_ASN1_TIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_free_removed)}
@@ -5348,39 +4859,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_free)}
       ASN1_TIME_free := @_ASN1_TIME_free;
-      {$else}
-      {$if not defined(ASN1_TIME_free_allownil)}
-      ASN1_TIME_free := @ERR_ASN1_TIME_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_free := @ERR_ASN1_TIME_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_free');
-    end;
     {$ifend}
   end;
 
 
   d2i_ASN1_TIME := LoadLibFunction(ADllHandle, d2i_ASN1_TIME_procname);
-  FuncLoaded := assigned(d2i_ASN1_TIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_ASN1_TIME);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_ASN1_TIME_allownil)}
+    d2i_ASN1_TIME := @ERR_d2i_ASN1_TIME;
+    {$ifend}
     {$if declared(d2i_ASN1_TIME_introduced)}
     if LibVersion < d2i_ASN1_TIME_introduced then
     begin
       {$if declared(FC_d2i_ASN1_TIME)}
       d2i_ASN1_TIME := @FC_d2i_ASN1_TIME;
-      {$else}
-      {$if not defined(d2i_ASN1_TIME_allownil)}
-      d2i_ASN1_TIME := @ERR_d2i_ASN1_TIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_ASN1_TIME_removed)}
@@ -5388,39 +4891,31 @@ begin
     begin
       {$if declared(_d2i_ASN1_TIME)}
       d2i_ASN1_TIME := @_d2i_ASN1_TIME;
-      {$else}
-      {$if not defined(d2i_ASN1_TIME_allownil)}
-      d2i_ASN1_TIME := @ERR_d2i_ASN1_TIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_ASN1_TIME_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_ASN1_TIME := @ERR_d2i_ASN1_TIME;
+    if FuncLoadError then
       AFailed.Add('d2i_ASN1_TIME');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_TIME := LoadLibFunction(ADllHandle, i2d_ASN1_TIME_procname);
-  FuncLoaded := assigned(i2d_ASN1_TIME);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_TIME);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_TIME_allownil)}
+    i2d_ASN1_TIME := @ERR_i2d_ASN1_TIME;
+    {$ifend}
     {$if declared(i2d_ASN1_TIME_introduced)}
     if LibVersion < i2d_ASN1_TIME_introduced then
     begin
       {$if declared(FC_i2d_ASN1_TIME)}
       i2d_ASN1_TIME := @FC_i2d_ASN1_TIME;
-      {$else}
-      {$if not defined(i2d_ASN1_TIME_allownil)}
-      i2d_ASN1_TIME := @ERR_i2d_ASN1_TIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_TIME_removed)}
@@ -5428,39 +4923,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_TIME)}
       i2d_ASN1_TIME := @_i2d_ASN1_TIME;
-      {$else}
-      {$if not defined(i2d_ASN1_TIME_allownil)}
-      i2d_ASN1_TIME := @ERR_i2d_ASN1_TIME;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_TIME_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_TIME := @ERR_i2d_ASN1_TIME;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_TIME');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_set := LoadLibFunction(ADllHandle, ASN1_TIME_set_procname);
-  FuncLoaded := assigned(ASN1_TIME_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_set_allownil)}
+    ASN1_TIME_set := @ERR_ASN1_TIME_set;
+    {$ifend}
     {$if declared(ASN1_TIME_set_introduced)}
     if LibVersion < ASN1_TIME_set_introduced then
     begin
       {$if declared(FC_ASN1_TIME_set)}
       ASN1_TIME_set := @FC_ASN1_TIME_set;
-      {$else}
-      {$if not defined(ASN1_TIME_set_allownil)}
-      ASN1_TIME_set := @ERR_ASN1_TIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_set_removed)}
@@ -5468,39 +4955,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_set)}
       ASN1_TIME_set := @_ASN1_TIME_set;
-      {$else}
-      {$if not defined(ASN1_TIME_set_allownil)}
-      ASN1_TIME_set := @ERR_ASN1_TIME_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_set := @ERR_ASN1_TIME_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_adj := LoadLibFunction(ADllHandle, ASN1_TIME_adj_procname);
-  FuncLoaded := assigned(ASN1_TIME_adj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_adj);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_adj_allownil)}
+    ASN1_TIME_adj := @ERR_ASN1_TIME_adj;
+    {$ifend}
     {$if declared(ASN1_TIME_adj_introduced)}
     if LibVersion < ASN1_TIME_adj_introduced then
     begin
       {$if declared(FC_ASN1_TIME_adj)}
       ASN1_TIME_adj := @FC_ASN1_TIME_adj;
-      {$else}
-      {$if not defined(ASN1_TIME_adj_allownil)}
-      ASN1_TIME_adj := @ERR_ASN1_TIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_adj_removed)}
@@ -5508,39 +4987,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_adj)}
       ASN1_TIME_adj := @_ASN1_TIME_adj;
-      {$else}
-      {$if not defined(ASN1_TIME_adj_allownil)}
-      ASN1_TIME_adj := @ERR_ASN1_TIME_adj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_adj_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_adj := @ERR_ASN1_TIME_adj;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_adj');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_check := LoadLibFunction(ADllHandle, ASN1_TIME_check_procname);
-  FuncLoaded := assigned(ASN1_TIME_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_check);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_check_allownil)}
+    ASN1_TIME_check := @ERR_ASN1_TIME_check;
+    {$ifend}
     {$if declared(ASN1_TIME_check_introduced)}
     if LibVersion < ASN1_TIME_check_introduced then
     begin
       {$if declared(FC_ASN1_TIME_check)}
       ASN1_TIME_check := @FC_ASN1_TIME_check;
-      {$else}
-      {$if not defined(ASN1_TIME_check_allownil)}
-      ASN1_TIME_check := @ERR_ASN1_TIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_check_removed)}
@@ -5548,39 +5019,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_check)}
       ASN1_TIME_check := @_ASN1_TIME_check;
-      {$else}
-      {$if not defined(ASN1_TIME_check_allownil)}
-      ASN1_TIME_check := @ERR_ASN1_TIME_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_check_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_check := @ERR_ASN1_TIME_check;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_check');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_to_generalizedtime := LoadLibFunction(ADllHandle, ASN1_TIME_to_generalizedtime_procname);
-  FuncLoaded := assigned(ASN1_TIME_to_generalizedtime);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_to_generalizedtime);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_to_generalizedtime_allownil)}
+    ASN1_TIME_to_generalizedtime := @ERR_ASN1_TIME_to_generalizedtime;
+    {$ifend}
     {$if declared(ASN1_TIME_to_generalizedtime_introduced)}
     if LibVersion < ASN1_TIME_to_generalizedtime_introduced then
     begin
       {$if declared(FC_ASN1_TIME_to_generalizedtime)}
       ASN1_TIME_to_generalizedtime := @FC_ASN1_TIME_to_generalizedtime;
-      {$else}
-      {$if not defined(ASN1_TIME_to_generalizedtime_allownil)}
-      ASN1_TIME_to_generalizedtime := @ERR_ASN1_TIME_to_generalizedtime;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_to_generalizedtime_removed)}
@@ -5588,39 +5051,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_to_generalizedtime)}
       ASN1_TIME_to_generalizedtime := @_ASN1_TIME_to_generalizedtime;
-      {$else}
-      {$if not defined(ASN1_TIME_to_generalizedtime_allownil)}
-      ASN1_TIME_to_generalizedtime := @ERR_ASN1_TIME_to_generalizedtime;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_to_generalizedtime_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_to_generalizedtime := @ERR_ASN1_TIME_to_generalizedtime;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_to_generalizedtime');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_set_string := LoadLibFunction(ADllHandle, ASN1_TIME_set_string_procname);
-  FuncLoaded := assigned(ASN1_TIME_set_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_set_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_set_string_allownil)}
+    ASN1_TIME_set_string := @ERR_ASN1_TIME_set_string;
+    {$ifend}
     {$if declared(ASN1_TIME_set_string_introduced)}
     if LibVersion < ASN1_TIME_set_string_introduced then
     begin
       {$if declared(FC_ASN1_TIME_set_string)}
       ASN1_TIME_set_string := @FC_ASN1_TIME_set_string;
-      {$else}
-      {$if not defined(ASN1_TIME_set_string_allownil)}
-      ASN1_TIME_set_string := @ERR_ASN1_TIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_set_string_removed)}
@@ -5628,39 +5083,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_set_string)}
       ASN1_TIME_set_string := @_ASN1_TIME_set_string;
-      {$else}
-      {$if not defined(ASN1_TIME_set_string_allownil)}
-      ASN1_TIME_set_string := @ERR_ASN1_TIME_set_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_set_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_set_string := @ERR_ASN1_TIME_set_string;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_set_string');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_set_string_X509 := LoadLibFunction(ADllHandle, ASN1_TIME_set_string_X509_procname);
-  FuncLoaded := assigned(ASN1_TIME_set_string_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_set_string_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_set_string_X509_allownil)}
+    ASN1_TIME_set_string_X509 := @ERR_ASN1_TIME_set_string_X509;
+    {$ifend}
     {$if declared(ASN1_TIME_set_string_X509_introduced)}
     if LibVersion < ASN1_TIME_set_string_X509_introduced then
     begin
       {$if declared(FC_ASN1_TIME_set_string_X509)}
       ASN1_TIME_set_string_X509 := @FC_ASN1_TIME_set_string_X509;
-      {$else}
-      {$if not defined(ASN1_TIME_set_string_X509_allownil)}
-      ASN1_TIME_set_string_X509 := @ERR_ASN1_TIME_set_string_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_set_string_X509_removed)}
@@ -5668,39 +5115,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_set_string_X509)}
       ASN1_TIME_set_string_X509 := @_ASN1_TIME_set_string_X509;
-      {$else}
-      {$if not defined(ASN1_TIME_set_string_X509_allownil)}
-      ASN1_TIME_set_string_X509 := @ERR_ASN1_TIME_set_string_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_set_string_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_set_string_X509 := @ERR_ASN1_TIME_set_string_X509;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_set_string_X509');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_TIME_to_tm := LoadLibFunction(ADllHandle, ASN1_TIME_to_tm_procname);
-  FuncLoaded := assigned(ASN1_TIME_to_tm);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_to_tm);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_to_tm_allownil)}
+    ASN1_TIME_to_tm := @ERR_ASN1_TIME_to_tm;
+    {$ifend}
     {$if declared(ASN1_TIME_to_tm_introduced)}
     if LibVersion < ASN1_TIME_to_tm_introduced then
     begin
       {$if declared(FC_ASN1_TIME_to_tm)}
       ASN1_TIME_to_tm := @FC_ASN1_TIME_to_tm;
-      {$else}
-      {$if not defined(ASN1_TIME_to_tm_allownil)}
-      ASN1_TIME_to_tm := @ERR_ASN1_TIME_to_tm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_to_tm_removed)}
@@ -5708,39 +5147,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_to_tm)}
       ASN1_TIME_to_tm := @_ASN1_TIME_to_tm;
-      {$else}
-      {$if not defined(ASN1_TIME_to_tm_allownil)}
-      ASN1_TIME_to_tm := @ERR_ASN1_TIME_to_tm;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_to_tm_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_to_tm := @ERR_ASN1_TIME_to_tm;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_to_tm');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_TIME_normalize := LoadLibFunction(ADllHandle, ASN1_TIME_normalize_procname);
-  FuncLoaded := assigned(ASN1_TIME_normalize);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_normalize);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_normalize_allownil)}
+    ASN1_TIME_normalize := @ERR_ASN1_TIME_normalize;
+    {$ifend}
     {$if declared(ASN1_TIME_normalize_introduced)}
     if LibVersion < ASN1_TIME_normalize_introduced then
     begin
       {$if declared(FC_ASN1_TIME_normalize)}
       ASN1_TIME_normalize := @FC_ASN1_TIME_normalize;
-      {$else}
-      {$if not defined(ASN1_TIME_normalize_allownil)}
-      ASN1_TIME_normalize := @ERR_ASN1_TIME_normalize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_normalize_removed)}
@@ -5748,39 +5179,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_normalize)}
       ASN1_TIME_normalize := @_ASN1_TIME_normalize;
-      {$else}
-      {$if not defined(ASN1_TIME_normalize_allownil)}
-      ASN1_TIME_normalize := @ERR_ASN1_TIME_normalize;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_normalize_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_normalize := @ERR_ASN1_TIME_normalize;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_normalize');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_TIME_cmp_time_t := LoadLibFunction(ADllHandle, ASN1_TIME_cmp_time_t_procname);
-  FuncLoaded := assigned(ASN1_TIME_cmp_time_t);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_cmp_time_t);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_cmp_time_t_allownil)}
+    ASN1_TIME_cmp_time_t := @ERR_ASN1_TIME_cmp_time_t;
+    {$ifend}
     {$if declared(ASN1_TIME_cmp_time_t_introduced)}
     if LibVersion < ASN1_TIME_cmp_time_t_introduced then
     begin
       {$if declared(FC_ASN1_TIME_cmp_time_t)}
       ASN1_TIME_cmp_time_t := @FC_ASN1_TIME_cmp_time_t;
-      {$else}
-      {$if not defined(ASN1_TIME_cmp_time_t_allownil)}
-      ASN1_TIME_cmp_time_t := @ERR_ASN1_TIME_cmp_time_t;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_cmp_time_t_removed)}
@@ -5788,39 +5211,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_cmp_time_t)}
       ASN1_TIME_cmp_time_t := @_ASN1_TIME_cmp_time_t;
-      {$else}
-      {$if not defined(ASN1_TIME_cmp_time_t_allownil)}
-      ASN1_TIME_cmp_time_t := @ERR_ASN1_TIME_cmp_time_t;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_cmp_time_t_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_cmp_time_t := @ERR_ASN1_TIME_cmp_time_t;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_cmp_time_t');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_TIME_compare := LoadLibFunction(ADllHandle, ASN1_TIME_compare_procname);
-  FuncLoaded := assigned(ASN1_TIME_compare);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_compare);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_compare_allownil)}
+    ASN1_TIME_compare := @ERR_ASN1_TIME_compare;
+    {$ifend}
     {$if declared(ASN1_TIME_compare_introduced)}
     if LibVersion < ASN1_TIME_compare_introduced then
     begin
       {$if declared(FC_ASN1_TIME_compare)}
       ASN1_TIME_compare := @FC_ASN1_TIME_compare;
-      {$else}
-      {$if not defined(ASN1_TIME_compare_allownil)}
-      ASN1_TIME_compare := @ERR_ASN1_TIME_compare;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_compare_removed)}
@@ -5828,39 +5243,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_compare)}
       ASN1_TIME_compare := @_ASN1_TIME_compare;
-      {$else}
-      {$if not defined(ASN1_TIME_compare_allownil)}
-      ASN1_TIME_compare := @ERR_ASN1_TIME_compare;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_compare_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_compare := @ERR_ASN1_TIME_compare;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_compare');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   i2a_ASN1_INTEGER := LoadLibFunction(ADllHandle, i2a_ASN1_INTEGER_procname);
-  FuncLoaded := assigned(i2a_ASN1_INTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2a_ASN1_INTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(i2a_ASN1_INTEGER_allownil)}
+    i2a_ASN1_INTEGER := @ERR_i2a_ASN1_INTEGER;
+    {$ifend}
     {$if declared(i2a_ASN1_INTEGER_introduced)}
     if LibVersion < i2a_ASN1_INTEGER_introduced then
     begin
       {$if declared(FC_i2a_ASN1_INTEGER)}
       i2a_ASN1_INTEGER := @FC_i2a_ASN1_INTEGER;
-      {$else}
-      {$if not defined(i2a_ASN1_INTEGER_allownil)}
-      i2a_ASN1_INTEGER := @ERR_i2a_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2a_ASN1_INTEGER_removed)}
@@ -5868,39 +5275,31 @@ begin
     begin
       {$if declared(_i2a_ASN1_INTEGER)}
       i2a_ASN1_INTEGER := @_i2a_ASN1_INTEGER;
-      {$else}
-      {$if not defined(i2a_ASN1_INTEGER_allownil)}
-      i2a_ASN1_INTEGER := @ERR_i2a_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2a_ASN1_INTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      i2a_ASN1_INTEGER := @ERR_i2a_ASN1_INTEGER;
+    if FuncLoadError then
       AFailed.Add('i2a_ASN1_INTEGER');
-    end;
     {$ifend}
   end;
 
 
   a2i_ASN1_INTEGER := LoadLibFunction(ADllHandle, a2i_ASN1_INTEGER_procname);
-  FuncLoaded := assigned(a2i_ASN1_INTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(a2i_ASN1_INTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(a2i_ASN1_INTEGER_allownil)}
+    a2i_ASN1_INTEGER := @ERR_a2i_ASN1_INTEGER;
+    {$ifend}
     {$if declared(a2i_ASN1_INTEGER_introduced)}
     if LibVersion < a2i_ASN1_INTEGER_introduced then
     begin
       {$if declared(FC_a2i_ASN1_INTEGER)}
       a2i_ASN1_INTEGER := @FC_a2i_ASN1_INTEGER;
-      {$else}
-      {$if not defined(a2i_ASN1_INTEGER_allownil)}
-      a2i_ASN1_INTEGER := @ERR_a2i_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(a2i_ASN1_INTEGER_removed)}
@@ -5908,39 +5307,31 @@ begin
     begin
       {$if declared(_a2i_ASN1_INTEGER)}
       a2i_ASN1_INTEGER := @_a2i_ASN1_INTEGER;
-      {$else}
-      {$if not defined(a2i_ASN1_INTEGER_allownil)}
-      a2i_ASN1_INTEGER := @ERR_a2i_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(a2i_ASN1_INTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      a2i_ASN1_INTEGER := @ERR_a2i_ASN1_INTEGER;
+    if FuncLoadError then
       AFailed.Add('a2i_ASN1_INTEGER');
-    end;
     {$ifend}
   end;
 
 
   i2a_ASN1_ENUMERATED := LoadLibFunction(ADllHandle, i2a_ASN1_ENUMERATED_procname);
-  FuncLoaded := assigned(i2a_ASN1_ENUMERATED);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2a_ASN1_ENUMERATED);
+  if FuncLoadError then
   begin
+    {$if not defined(i2a_ASN1_ENUMERATED_allownil)}
+    i2a_ASN1_ENUMERATED := @ERR_i2a_ASN1_ENUMERATED;
+    {$ifend}
     {$if declared(i2a_ASN1_ENUMERATED_introduced)}
     if LibVersion < i2a_ASN1_ENUMERATED_introduced then
     begin
       {$if declared(FC_i2a_ASN1_ENUMERATED)}
       i2a_ASN1_ENUMERATED := @FC_i2a_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(i2a_ASN1_ENUMERATED_allownil)}
-      i2a_ASN1_ENUMERATED := @ERR_i2a_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2a_ASN1_ENUMERATED_removed)}
@@ -5948,39 +5339,31 @@ begin
     begin
       {$if declared(_i2a_ASN1_ENUMERATED)}
       i2a_ASN1_ENUMERATED := @_i2a_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(i2a_ASN1_ENUMERATED_allownil)}
-      i2a_ASN1_ENUMERATED := @ERR_i2a_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2a_ASN1_ENUMERATED_allownil)}
-    if not FuncLoaded then
-    begin
-      i2a_ASN1_ENUMERATED := @ERR_i2a_ASN1_ENUMERATED;
+    if FuncLoadError then
       AFailed.Add('i2a_ASN1_ENUMERATED');
-    end;
     {$ifend}
   end;
 
 
   a2i_ASN1_ENUMERATED := LoadLibFunction(ADllHandle, a2i_ASN1_ENUMERATED_procname);
-  FuncLoaded := assigned(a2i_ASN1_ENUMERATED);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(a2i_ASN1_ENUMERATED);
+  if FuncLoadError then
   begin
+    {$if not defined(a2i_ASN1_ENUMERATED_allownil)}
+    a2i_ASN1_ENUMERATED := @ERR_a2i_ASN1_ENUMERATED;
+    {$ifend}
     {$if declared(a2i_ASN1_ENUMERATED_introduced)}
     if LibVersion < a2i_ASN1_ENUMERATED_introduced then
     begin
       {$if declared(FC_a2i_ASN1_ENUMERATED)}
       a2i_ASN1_ENUMERATED := @FC_a2i_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(a2i_ASN1_ENUMERATED_allownil)}
-      a2i_ASN1_ENUMERATED := @ERR_a2i_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(a2i_ASN1_ENUMERATED_removed)}
@@ -5988,39 +5371,31 @@ begin
     begin
       {$if declared(_a2i_ASN1_ENUMERATED)}
       a2i_ASN1_ENUMERATED := @_a2i_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(a2i_ASN1_ENUMERATED_allownil)}
-      a2i_ASN1_ENUMERATED := @ERR_a2i_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(a2i_ASN1_ENUMERATED_allownil)}
-    if not FuncLoaded then
-    begin
-      a2i_ASN1_ENUMERATED := @ERR_a2i_ASN1_ENUMERATED;
+    if FuncLoadError then
       AFailed.Add('a2i_ASN1_ENUMERATED');
-    end;
     {$ifend}
   end;
 
 
   i2a_ASN1_OBJECT := LoadLibFunction(ADllHandle, i2a_ASN1_OBJECT_procname);
-  FuncLoaded := assigned(i2a_ASN1_OBJECT);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2a_ASN1_OBJECT);
+  if FuncLoadError then
   begin
+    {$if not defined(i2a_ASN1_OBJECT_allownil)}
+    i2a_ASN1_OBJECT := @ERR_i2a_ASN1_OBJECT;
+    {$ifend}
     {$if declared(i2a_ASN1_OBJECT_introduced)}
     if LibVersion < i2a_ASN1_OBJECT_introduced then
     begin
       {$if declared(FC_i2a_ASN1_OBJECT)}
       i2a_ASN1_OBJECT := @FC_i2a_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2a_ASN1_OBJECT_allownil)}
-      i2a_ASN1_OBJECT := @ERR_i2a_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2a_ASN1_OBJECT_removed)}
@@ -6028,39 +5403,31 @@ begin
     begin
       {$if declared(_i2a_ASN1_OBJECT)}
       i2a_ASN1_OBJECT := @_i2a_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2a_ASN1_OBJECT_allownil)}
-      i2a_ASN1_OBJECT := @ERR_i2a_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2a_ASN1_OBJECT_allownil)}
-    if not FuncLoaded then
-    begin
-      i2a_ASN1_OBJECT := @ERR_i2a_ASN1_OBJECT;
+    if FuncLoadError then
       AFailed.Add('i2a_ASN1_OBJECT');
-    end;
     {$ifend}
   end;
 
 
   a2i_ASN1_STRING := LoadLibFunction(ADllHandle, a2i_ASN1_STRING_procname);
-  FuncLoaded := assigned(a2i_ASN1_STRING);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(a2i_ASN1_STRING);
+  if FuncLoadError then
   begin
+    {$if not defined(a2i_ASN1_STRING_allownil)}
+    a2i_ASN1_STRING := @ERR_a2i_ASN1_STRING;
+    {$ifend}
     {$if declared(a2i_ASN1_STRING_introduced)}
     if LibVersion < a2i_ASN1_STRING_introduced then
     begin
       {$if declared(FC_a2i_ASN1_STRING)}
       a2i_ASN1_STRING := @FC_a2i_ASN1_STRING;
-      {$else}
-      {$if not defined(a2i_ASN1_STRING_allownil)}
-      a2i_ASN1_STRING := @ERR_a2i_ASN1_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(a2i_ASN1_STRING_removed)}
@@ -6068,39 +5435,31 @@ begin
     begin
       {$if declared(_a2i_ASN1_STRING)}
       a2i_ASN1_STRING := @_a2i_ASN1_STRING;
-      {$else}
-      {$if not defined(a2i_ASN1_STRING_allownil)}
-      a2i_ASN1_STRING := @ERR_a2i_ASN1_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(a2i_ASN1_STRING_allownil)}
-    if not FuncLoaded then
-    begin
-      a2i_ASN1_STRING := @ERR_a2i_ASN1_STRING;
+    if FuncLoadError then
       AFailed.Add('a2i_ASN1_STRING');
-    end;
     {$ifend}
   end;
 
 
   i2a_ASN1_STRING := LoadLibFunction(ADllHandle, i2a_ASN1_STRING_procname);
-  FuncLoaded := assigned(i2a_ASN1_STRING);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2a_ASN1_STRING);
+  if FuncLoadError then
   begin
+    {$if not defined(i2a_ASN1_STRING_allownil)}
+    i2a_ASN1_STRING := @ERR_i2a_ASN1_STRING;
+    {$ifend}
     {$if declared(i2a_ASN1_STRING_introduced)}
     if LibVersion < i2a_ASN1_STRING_introduced then
     begin
       {$if declared(FC_i2a_ASN1_STRING)}
       i2a_ASN1_STRING := @FC_i2a_ASN1_STRING;
-      {$else}
-      {$if not defined(i2a_ASN1_STRING_allownil)}
-      i2a_ASN1_STRING := @ERR_i2a_ASN1_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2a_ASN1_STRING_removed)}
@@ -6108,39 +5467,31 @@ begin
     begin
       {$if declared(_i2a_ASN1_STRING)}
       i2a_ASN1_STRING := @_i2a_ASN1_STRING;
-      {$else}
-      {$if not defined(i2a_ASN1_STRING_allownil)}
-      i2a_ASN1_STRING := @ERR_i2a_ASN1_STRING;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2a_ASN1_STRING_allownil)}
-    if not FuncLoaded then
-    begin
-      i2a_ASN1_STRING := @ERR_i2a_ASN1_STRING;
+    if FuncLoadError then
       AFailed.Add('i2a_ASN1_STRING');
-    end;
     {$ifend}
   end;
 
 
   i2t_ASN1_OBJECT := LoadLibFunction(ADllHandle, i2t_ASN1_OBJECT_procname);
-  FuncLoaded := assigned(i2t_ASN1_OBJECT);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2t_ASN1_OBJECT);
+  if FuncLoadError then
   begin
+    {$if not defined(i2t_ASN1_OBJECT_allownil)}
+    i2t_ASN1_OBJECT := @ERR_i2t_ASN1_OBJECT;
+    {$ifend}
     {$if declared(i2t_ASN1_OBJECT_introduced)}
     if LibVersion < i2t_ASN1_OBJECT_introduced then
     begin
       {$if declared(FC_i2t_ASN1_OBJECT)}
       i2t_ASN1_OBJECT := @FC_i2t_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2t_ASN1_OBJECT_allownil)}
-      i2t_ASN1_OBJECT := @ERR_i2t_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2t_ASN1_OBJECT_removed)}
@@ -6148,39 +5499,31 @@ begin
     begin
       {$if declared(_i2t_ASN1_OBJECT)}
       i2t_ASN1_OBJECT := @_i2t_ASN1_OBJECT;
-      {$else}
-      {$if not defined(i2t_ASN1_OBJECT_allownil)}
-      i2t_ASN1_OBJECT := @ERR_i2t_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2t_ASN1_OBJECT_allownil)}
-    if not FuncLoaded then
-    begin
-      i2t_ASN1_OBJECT := @ERR_i2t_ASN1_OBJECT;
+    if FuncLoadError then
       AFailed.Add('i2t_ASN1_OBJECT');
-    end;
     {$ifend}
   end;
 
 
   a2d_ASN1_OBJECT := LoadLibFunction(ADllHandle, a2d_ASN1_OBJECT_procname);
-  FuncLoaded := assigned(a2d_ASN1_OBJECT);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(a2d_ASN1_OBJECT);
+  if FuncLoadError then
   begin
+    {$if not defined(a2d_ASN1_OBJECT_allownil)}
+    a2d_ASN1_OBJECT := @ERR_a2d_ASN1_OBJECT;
+    {$ifend}
     {$if declared(a2d_ASN1_OBJECT_introduced)}
     if LibVersion < a2d_ASN1_OBJECT_introduced then
     begin
       {$if declared(FC_a2d_ASN1_OBJECT)}
       a2d_ASN1_OBJECT := @FC_a2d_ASN1_OBJECT;
-      {$else}
-      {$if not defined(a2d_ASN1_OBJECT_allownil)}
-      a2d_ASN1_OBJECT := @ERR_a2d_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(a2d_ASN1_OBJECT_removed)}
@@ -6188,39 +5531,31 @@ begin
     begin
       {$if declared(_a2d_ASN1_OBJECT)}
       a2d_ASN1_OBJECT := @_a2d_ASN1_OBJECT;
-      {$else}
-      {$if not defined(a2d_ASN1_OBJECT_allownil)}
-      a2d_ASN1_OBJECT := @ERR_a2d_ASN1_OBJECT;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(a2d_ASN1_OBJECT_allownil)}
-    if not FuncLoaded then
-    begin
-      a2d_ASN1_OBJECT := @ERR_a2d_ASN1_OBJECT;
+    if FuncLoadError then
       AFailed.Add('a2d_ASN1_OBJECT');
-    end;
     {$ifend}
   end;
 
 
   ASN1_OBJECT_create := LoadLibFunction(ADllHandle, ASN1_OBJECT_create_procname);
-  FuncLoaded := assigned(ASN1_OBJECT_create);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_OBJECT_create);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_OBJECT_create_allownil)}
+    ASN1_OBJECT_create := @ERR_ASN1_OBJECT_create;
+    {$ifend}
     {$if declared(ASN1_OBJECT_create_introduced)}
     if LibVersion < ASN1_OBJECT_create_introduced then
     begin
       {$if declared(FC_ASN1_OBJECT_create)}
       ASN1_OBJECT_create := @FC_ASN1_OBJECT_create;
-      {$else}
-      {$if not defined(ASN1_OBJECT_create_allownil)}
-      ASN1_OBJECT_create := @ERR_ASN1_OBJECT_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_OBJECT_create_removed)}
@@ -6228,39 +5563,31 @@ begin
     begin
       {$if declared(_ASN1_OBJECT_create)}
       ASN1_OBJECT_create := @_ASN1_OBJECT_create;
-      {$else}
-      {$if not defined(ASN1_OBJECT_create_allownil)}
-      ASN1_OBJECT_create := @ERR_ASN1_OBJECT_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_OBJECT_create_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_OBJECT_create := @ERR_ASN1_OBJECT_create;
+    if FuncLoadError then
       AFailed.Add('ASN1_OBJECT_create');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_get_int64 := LoadLibFunction(ADllHandle, ASN1_INTEGER_get_int64_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_get_int64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_get_int64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_get_int64_allownil)}
+    ASN1_INTEGER_get_int64 := @ERR_ASN1_INTEGER_get_int64;
+    {$ifend}
     {$if declared(ASN1_INTEGER_get_int64_introduced)}
     if LibVersion < ASN1_INTEGER_get_int64_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_get_int64)}
       ASN1_INTEGER_get_int64 := @FC_ASN1_INTEGER_get_int64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_int64_allownil)}
-      ASN1_INTEGER_get_int64 := @ERR_ASN1_INTEGER_get_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_get_int64_removed)}
@@ -6268,39 +5595,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_get_int64)}
       ASN1_INTEGER_get_int64 := @_ASN1_INTEGER_get_int64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_int64_allownil)}
-      ASN1_INTEGER_get_int64 := @ERR_ASN1_INTEGER_get_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_get_int64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_get_int64 := @ERR_ASN1_INTEGER_get_int64;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_get_int64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_INTEGER_set_int64 := LoadLibFunction(ADllHandle, ASN1_INTEGER_set_int64_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_set_int64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_set_int64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_set_int64_allownil)}
+    ASN1_INTEGER_set_int64 := @ERR_ASN1_INTEGER_set_int64;
+    {$ifend}
     {$if declared(ASN1_INTEGER_set_int64_introduced)}
     if LibVersion < ASN1_INTEGER_set_int64_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_set_int64)}
       ASN1_INTEGER_set_int64 := @FC_ASN1_INTEGER_set_int64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_int64_allownil)}
-      ASN1_INTEGER_set_int64 := @ERR_ASN1_INTEGER_set_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_set_int64_removed)}
@@ -6308,39 +5627,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_set_int64)}
       ASN1_INTEGER_set_int64 := @_ASN1_INTEGER_set_int64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_int64_allownil)}
-      ASN1_INTEGER_set_int64 := @ERR_ASN1_INTEGER_set_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_set_int64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_set_int64 := @ERR_ASN1_INTEGER_set_int64;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_set_int64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_INTEGER_get_uint64 := LoadLibFunction(ADllHandle, ASN1_INTEGER_get_uint64_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_get_uint64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_get_uint64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_get_uint64_allownil)}
+    ASN1_INTEGER_get_uint64 := @ERR_ASN1_INTEGER_get_uint64;
+    {$ifend}
     {$if declared(ASN1_INTEGER_get_uint64_introduced)}
     if LibVersion < ASN1_INTEGER_get_uint64_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_get_uint64)}
       ASN1_INTEGER_get_uint64 := @FC_ASN1_INTEGER_get_uint64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_uint64_allownil)}
-      ASN1_INTEGER_get_uint64 := @ERR_ASN1_INTEGER_get_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_get_uint64_removed)}
@@ -6348,39 +5659,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_get_uint64)}
       ASN1_INTEGER_get_uint64 := @_ASN1_INTEGER_get_uint64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_uint64_allownil)}
-      ASN1_INTEGER_get_uint64 := @ERR_ASN1_INTEGER_get_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_get_uint64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_get_uint64 := @ERR_ASN1_INTEGER_get_uint64;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_get_uint64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_INTEGER_set_uint64 := LoadLibFunction(ADllHandle, ASN1_INTEGER_set_uint64_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_set_uint64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_set_uint64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_set_uint64_allownil)}
+    ASN1_INTEGER_set_uint64 := @ERR_ASN1_INTEGER_set_uint64;
+    {$ifend}
     {$if declared(ASN1_INTEGER_set_uint64_introduced)}
     if LibVersion < ASN1_INTEGER_set_uint64_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_set_uint64)}
       ASN1_INTEGER_set_uint64 := @FC_ASN1_INTEGER_set_uint64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_uint64_allownil)}
-      ASN1_INTEGER_set_uint64 := @ERR_ASN1_INTEGER_set_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_set_uint64_removed)}
@@ -6388,39 +5691,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_set_uint64)}
       ASN1_INTEGER_set_uint64 := @_ASN1_INTEGER_set_uint64;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_uint64_allownil)}
-      ASN1_INTEGER_set_uint64 := @ERR_ASN1_INTEGER_set_uint64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_set_uint64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_set_uint64 := @ERR_ASN1_INTEGER_set_uint64;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_set_uint64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_INTEGER_set := LoadLibFunction(ADllHandle, ASN1_INTEGER_set_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_set_allownil)}
+    ASN1_INTEGER_set := @ERR_ASN1_INTEGER_set;
+    {$ifend}
     {$if declared(ASN1_INTEGER_set_introduced)}
     if LibVersion < ASN1_INTEGER_set_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_set)}
       ASN1_INTEGER_set := @FC_ASN1_INTEGER_set;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_allownil)}
-      ASN1_INTEGER_set := @ERR_ASN1_INTEGER_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_set_removed)}
@@ -6428,39 +5723,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_set)}
       ASN1_INTEGER_set := @_ASN1_INTEGER_set;
-      {$else}
-      {$if not defined(ASN1_INTEGER_set_allownil)}
-      ASN1_INTEGER_set := @ERR_ASN1_INTEGER_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_set := @ERR_ASN1_INTEGER_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_get := LoadLibFunction(ADllHandle, ASN1_INTEGER_get_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_get);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_get_allownil)}
+    ASN1_INTEGER_get := @ERR_ASN1_INTEGER_get;
+    {$ifend}
     {$if declared(ASN1_INTEGER_get_introduced)}
     if LibVersion < ASN1_INTEGER_get_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_get)}
       ASN1_INTEGER_get := @FC_ASN1_INTEGER_get;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_allownil)}
-      ASN1_INTEGER_get := @ERR_ASN1_INTEGER_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_get_removed)}
@@ -6468,39 +5755,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_get)}
       ASN1_INTEGER_get := @_ASN1_INTEGER_get;
-      {$else}
-      {$if not defined(ASN1_INTEGER_get_allownil)}
-      ASN1_INTEGER_get := @ERR_ASN1_INTEGER_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_get_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_get := @ERR_ASN1_INTEGER_get;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_get');
-    end;
     {$ifend}
   end;
 
 
   BN_to_ASN1_INTEGER := LoadLibFunction(ADllHandle, BN_to_ASN1_INTEGER_procname);
-  FuncLoaded := assigned(BN_to_ASN1_INTEGER);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_to_ASN1_INTEGER);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_to_ASN1_INTEGER_allownil)}
+    BN_to_ASN1_INTEGER := @ERR_BN_to_ASN1_INTEGER;
+    {$ifend}
     {$if declared(BN_to_ASN1_INTEGER_introduced)}
     if LibVersion < BN_to_ASN1_INTEGER_introduced then
     begin
       {$if declared(FC_BN_to_ASN1_INTEGER)}
       BN_to_ASN1_INTEGER := @FC_BN_to_ASN1_INTEGER;
-      {$else}
-      {$if not defined(BN_to_ASN1_INTEGER_allownil)}
-      BN_to_ASN1_INTEGER := @ERR_BN_to_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_to_ASN1_INTEGER_removed)}
@@ -6508,39 +5787,31 @@ begin
     begin
       {$if declared(_BN_to_ASN1_INTEGER)}
       BN_to_ASN1_INTEGER := @_BN_to_ASN1_INTEGER;
-      {$else}
-      {$if not defined(BN_to_ASN1_INTEGER_allownil)}
-      BN_to_ASN1_INTEGER := @ERR_BN_to_ASN1_INTEGER;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_to_ASN1_INTEGER_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_to_ASN1_INTEGER := @ERR_BN_to_ASN1_INTEGER;
+    if FuncLoadError then
       AFailed.Add('BN_to_ASN1_INTEGER');
-    end;
     {$ifend}
   end;
 
 
   ASN1_INTEGER_to_BN := LoadLibFunction(ADllHandle, ASN1_INTEGER_to_BN_procname);
-  FuncLoaded := assigned(ASN1_INTEGER_to_BN);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_INTEGER_to_BN);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_INTEGER_to_BN_allownil)}
+    ASN1_INTEGER_to_BN := @ERR_ASN1_INTEGER_to_BN;
+    {$ifend}
     {$if declared(ASN1_INTEGER_to_BN_introduced)}
     if LibVersion < ASN1_INTEGER_to_BN_introduced then
     begin
       {$if declared(FC_ASN1_INTEGER_to_BN)}
       ASN1_INTEGER_to_BN := @FC_ASN1_INTEGER_to_BN;
-      {$else}
-      {$if not defined(ASN1_INTEGER_to_BN_allownil)}
-      ASN1_INTEGER_to_BN := @ERR_ASN1_INTEGER_to_BN;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_INTEGER_to_BN_removed)}
@@ -6548,39 +5819,31 @@ begin
     begin
       {$if declared(_ASN1_INTEGER_to_BN)}
       ASN1_INTEGER_to_BN := @_ASN1_INTEGER_to_BN;
-      {$else}
-      {$if not defined(ASN1_INTEGER_to_BN_allownil)}
-      ASN1_INTEGER_to_BN := @ERR_ASN1_INTEGER_to_BN;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_INTEGER_to_BN_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_INTEGER_to_BN := @ERR_ASN1_INTEGER_to_BN;
+    if FuncLoadError then
       AFailed.Add('ASN1_INTEGER_to_BN');
-    end;
     {$ifend}
   end;
 
 
   ASN1_ENUMERATED_get_int64 := LoadLibFunction(ADllHandle, ASN1_ENUMERATED_get_int64_procname);
-  FuncLoaded := assigned(ASN1_ENUMERATED_get_int64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ENUMERATED_get_int64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ENUMERATED_get_int64_allownil)}
+    ASN1_ENUMERATED_get_int64 := @ERR_ASN1_ENUMERATED_get_int64;
+    {$ifend}
     {$if declared(ASN1_ENUMERATED_get_int64_introduced)}
     if LibVersion < ASN1_ENUMERATED_get_int64_introduced then
     begin
       {$if declared(FC_ASN1_ENUMERATED_get_int64)}
       ASN1_ENUMERATED_get_int64 := @FC_ASN1_ENUMERATED_get_int64;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_get_int64_allownil)}
-      ASN1_ENUMERATED_get_int64 := @ERR_ASN1_ENUMERATED_get_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ENUMERATED_get_int64_removed)}
@@ -6588,39 +5851,31 @@ begin
     begin
       {$if declared(_ASN1_ENUMERATED_get_int64)}
       ASN1_ENUMERATED_get_int64 := @_ASN1_ENUMERATED_get_int64;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_get_int64_allownil)}
-      ASN1_ENUMERATED_get_int64 := @ERR_ASN1_ENUMERATED_get_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ENUMERATED_get_int64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ENUMERATED_get_int64 := @ERR_ASN1_ENUMERATED_get_int64;
+    if FuncLoadError then
       AFailed.Add('ASN1_ENUMERATED_get_int64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_ENUMERATED_set_int64 := LoadLibFunction(ADllHandle, ASN1_ENUMERATED_set_int64_procname);
-  FuncLoaded := assigned(ASN1_ENUMERATED_set_int64);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ENUMERATED_set_int64);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ENUMERATED_set_int64_allownil)}
+    ASN1_ENUMERATED_set_int64 := @ERR_ASN1_ENUMERATED_set_int64;
+    {$ifend}
     {$if declared(ASN1_ENUMERATED_set_int64_introduced)}
     if LibVersion < ASN1_ENUMERATED_set_int64_introduced then
     begin
       {$if declared(FC_ASN1_ENUMERATED_set_int64)}
       ASN1_ENUMERATED_set_int64 := @FC_ASN1_ENUMERATED_set_int64;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_set_int64_allownil)}
-      ASN1_ENUMERATED_set_int64 := @ERR_ASN1_ENUMERATED_set_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ENUMERATED_set_int64_removed)}
@@ -6628,39 +5883,31 @@ begin
     begin
       {$if declared(_ASN1_ENUMERATED_set_int64)}
       ASN1_ENUMERATED_set_int64 := @_ASN1_ENUMERATED_set_int64;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_set_int64_allownil)}
-      ASN1_ENUMERATED_set_int64 := @ERR_ASN1_ENUMERATED_set_int64;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ENUMERATED_set_int64_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ENUMERATED_set_int64 := @ERR_ASN1_ENUMERATED_set_int64;
+    if FuncLoadError then
       AFailed.Add('ASN1_ENUMERATED_set_int64');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_ENUMERATED_set := LoadLibFunction(ADllHandle, ASN1_ENUMERATED_set_procname);
-  FuncLoaded := assigned(ASN1_ENUMERATED_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ENUMERATED_set);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ENUMERATED_set_allownil)}
+    ASN1_ENUMERATED_set := @ERR_ASN1_ENUMERATED_set;
+    {$ifend}
     {$if declared(ASN1_ENUMERATED_set_introduced)}
     if LibVersion < ASN1_ENUMERATED_set_introduced then
     begin
       {$if declared(FC_ASN1_ENUMERATED_set)}
       ASN1_ENUMERATED_set := @FC_ASN1_ENUMERATED_set;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_set_allownil)}
-      ASN1_ENUMERATED_set := @ERR_ASN1_ENUMERATED_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ENUMERATED_set_removed)}
@@ -6668,39 +5915,31 @@ begin
     begin
       {$if declared(_ASN1_ENUMERATED_set)}
       ASN1_ENUMERATED_set := @_ASN1_ENUMERATED_set;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_set_allownil)}
-      ASN1_ENUMERATED_set := @ERR_ASN1_ENUMERATED_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ENUMERATED_set_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ENUMERATED_set := @ERR_ASN1_ENUMERATED_set;
+    if FuncLoadError then
       AFailed.Add('ASN1_ENUMERATED_set');
-    end;
     {$ifend}
   end;
 
 
   ASN1_ENUMERATED_get := LoadLibFunction(ADllHandle, ASN1_ENUMERATED_get_procname);
-  FuncLoaded := assigned(ASN1_ENUMERATED_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ENUMERATED_get);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ENUMERATED_get_allownil)}
+    ASN1_ENUMERATED_get := @ERR_ASN1_ENUMERATED_get;
+    {$ifend}
     {$if declared(ASN1_ENUMERATED_get_introduced)}
     if LibVersion < ASN1_ENUMERATED_get_introduced then
     begin
       {$if declared(FC_ASN1_ENUMERATED_get)}
       ASN1_ENUMERATED_get := @FC_ASN1_ENUMERATED_get;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_get_allownil)}
-      ASN1_ENUMERATED_get := @ERR_ASN1_ENUMERATED_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ENUMERATED_get_removed)}
@@ -6708,39 +5947,31 @@ begin
     begin
       {$if declared(_ASN1_ENUMERATED_get)}
       ASN1_ENUMERATED_get := @_ASN1_ENUMERATED_get;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_get_allownil)}
-      ASN1_ENUMERATED_get := @ERR_ASN1_ENUMERATED_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ENUMERATED_get_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ENUMERATED_get := @ERR_ASN1_ENUMERATED_get;
+    if FuncLoadError then
       AFailed.Add('ASN1_ENUMERATED_get');
-    end;
     {$ifend}
   end;
 
 
   BN_to_ASN1_ENUMERATED := LoadLibFunction(ADllHandle, BN_to_ASN1_ENUMERATED_procname);
-  FuncLoaded := assigned(BN_to_ASN1_ENUMERATED);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_to_ASN1_ENUMERATED);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_to_ASN1_ENUMERATED_allownil)}
+    BN_to_ASN1_ENUMERATED := @ERR_BN_to_ASN1_ENUMERATED;
+    {$ifend}
     {$if declared(BN_to_ASN1_ENUMERATED_introduced)}
     if LibVersion < BN_to_ASN1_ENUMERATED_introduced then
     begin
       {$if declared(FC_BN_to_ASN1_ENUMERATED)}
       BN_to_ASN1_ENUMERATED := @FC_BN_to_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(BN_to_ASN1_ENUMERATED_allownil)}
-      BN_to_ASN1_ENUMERATED := @ERR_BN_to_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_to_ASN1_ENUMERATED_removed)}
@@ -6748,39 +5979,31 @@ begin
     begin
       {$if declared(_BN_to_ASN1_ENUMERATED)}
       BN_to_ASN1_ENUMERATED := @_BN_to_ASN1_ENUMERATED;
-      {$else}
-      {$if not defined(BN_to_ASN1_ENUMERATED_allownil)}
-      BN_to_ASN1_ENUMERATED := @ERR_BN_to_ASN1_ENUMERATED;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_to_ASN1_ENUMERATED_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_to_ASN1_ENUMERATED := @ERR_BN_to_ASN1_ENUMERATED;
+    if FuncLoadError then
       AFailed.Add('BN_to_ASN1_ENUMERATED');
-    end;
     {$ifend}
   end;
 
 
   ASN1_ENUMERATED_to_BN := LoadLibFunction(ADllHandle, ASN1_ENUMERATED_to_BN_procname);
-  FuncLoaded := assigned(ASN1_ENUMERATED_to_BN);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ENUMERATED_to_BN);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ENUMERATED_to_BN_allownil)}
+    ASN1_ENUMERATED_to_BN := @ERR_ASN1_ENUMERATED_to_BN;
+    {$ifend}
     {$if declared(ASN1_ENUMERATED_to_BN_introduced)}
     if LibVersion < ASN1_ENUMERATED_to_BN_introduced then
     begin
       {$if declared(FC_ASN1_ENUMERATED_to_BN)}
       ASN1_ENUMERATED_to_BN := @FC_ASN1_ENUMERATED_to_BN;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_to_BN_allownil)}
-      ASN1_ENUMERATED_to_BN := @ERR_ASN1_ENUMERATED_to_BN;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ENUMERATED_to_BN_removed)}
@@ -6788,39 +6011,31 @@ begin
     begin
       {$if declared(_ASN1_ENUMERATED_to_BN)}
       ASN1_ENUMERATED_to_BN := @_ASN1_ENUMERATED_to_BN;
-      {$else}
-      {$if not defined(ASN1_ENUMERATED_to_BN_allownil)}
-      ASN1_ENUMERATED_to_BN := @ERR_ASN1_ENUMERATED_to_BN;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ENUMERATED_to_BN_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ENUMERATED_to_BN := @ERR_ASN1_ENUMERATED_to_BN;
+    if FuncLoadError then
       AFailed.Add('ASN1_ENUMERATED_to_BN');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PRINTABLE_type := LoadLibFunction(ADllHandle, ASN1_PRINTABLE_type_procname);
-  FuncLoaded := assigned(ASN1_PRINTABLE_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PRINTABLE_type);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PRINTABLE_type_allownil)}
+    ASN1_PRINTABLE_type := @ERR_ASN1_PRINTABLE_type;
+    {$ifend}
     {$if declared(ASN1_PRINTABLE_type_introduced)}
     if LibVersion < ASN1_PRINTABLE_type_introduced then
     begin
       {$if declared(FC_ASN1_PRINTABLE_type)}
       ASN1_PRINTABLE_type := @FC_ASN1_PRINTABLE_type;
-      {$else}
-      {$if not defined(ASN1_PRINTABLE_type_allownil)}
-      ASN1_PRINTABLE_type := @ERR_ASN1_PRINTABLE_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PRINTABLE_type_removed)}
@@ -6828,39 +6043,31 @@ begin
     begin
       {$if declared(_ASN1_PRINTABLE_type)}
       ASN1_PRINTABLE_type := @_ASN1_PRINTABLE_type;
-      {$else}
-      {$if not defined(ASN1_PRINTABLE_type_allownil)}
-      ASN1_PRINTABLE_type := @ERR_ASN1_PRINTABLE_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PRINTABLE_type_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PRINTABLE_type := @ERR_ASN1_PRINTABLE_type;
+    if FuncLoadError then
       AFailed.Add('ASN1_PRINTABLE_type');
-    end;
     {$ifend}
   end;
 
 
   ASN1_tag2bit := LoadLibFunction(ADllHandle, ASN1_tag2bit_procname);
-  FuncLoaded := assigned(ASN1_tag2bit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_tag2bit);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_tag2bit_allownil)}
+    ASN1_tag2bit := @ERR_ASN1_tag2bit;
+    {$ifend}
     {$if declared(ASN1_tag2bit_introduced)}
     if LibVersion < ASN1_tag2bit_introduced then
     begin
       {$if declared(FC_ASN1_tag2bit)}
       ASN1_tag2bit := @FC_ASN1_tag2bit;
-      {$else}
-      {$if not defined(ASN1_tag2bit_allownil)}
-      ASN1_tag2bit := @ERR_ASN1_tag2bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_tag2bit_removed)}
@@ -6868,39 +6075,31 @@ begin
     begin
       {$if declared(_ASN1_tag2bit)}
       ASN1_tag2bit := @_ASN1_tag2bit;
-      {$else}
-      {$if not defined(ASN1_tag2bit_allownil)}
-      ASN1_tag2bit := @ERR_ASN1_tag2bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_tag2bit_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_tag2bit := @ERR_ASN1_tag2bit;
+    if FuncLoadError then
       AFailed.Add('ASN1_tag2bit');
-    end;
     {$ifend}
   end;
 
 
   ASN1_get_object := LoadLibFunction(ADllHandle, ASN1_get_object_procname);
-  FuncLoaded := assigned(ASN1_get_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_get_object);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_get_object_allownil)}
+    ASN1_get_object := @ERR_ASN1_get_object;
+    {$ifend}
     {$if declared(ASN1_get_object_introduced)}
     if LibVersion < ASN1_get_object_introduced then
     begin
       {$if declared(FC_ASN1_get_object)}
       ASN1_get_object := @FC_ASN1_get_object;
-      {$else}
-      {$if not defined(ASN1_get_object_allownil)}
-      ASN1_get_object := @ERR_ASN1_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_get_object_removed)}
@@ -6908,39 +6107,31 @@ begin
     begin
       {$if declared(_ASN1_get_object)}
       ASN1_get_object := @_ASN1_get_object;
-      {$else}
-      {$if not defined(ASN1_get_object_allownil)}
-      ASN1_get_object := @ERR_ASN1_get_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_get_object_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_get_object := @ERR_ASN1_get_object;
+    if FuncLoadError then
       AFailed.Add('ASN1_get_object');
-    end;
     {$ifend}
   end;
 
 
   ASN1_check_infinite_end := LoadLibFunction(ADllHandle, ASN1_check_infinite_end_procname);
-  FuncLoaded := assigned(ASN1_check_infinite_end);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_check_infinite_end);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_check_infinite_end_allownil)}
+    ASN1_check_infinite_end := @ERR_ASN1_check_infinite_end;
+    {$ifend}
     {$if declared(ASN1_check_infinite_end_introduced)}
     if LibVersion < ASN1_check_infinite_end_introduced then
     begin
       {$if declared(FC_ASN1_check_infinite_end)}
       ASN1_check_infinite_end := @FC_ASN1_check_infinite_end;
-      {$else}
-      {$if not defined(ASN1_check_infinite_end_allownil)}
-      ASN1_check_infinite_end := @ERR_ASN1_check_infinite_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_check_infinite_end_removed)}
@@ -6948,39 +6139,31 @@ begin
     begin
       {$if declared(_ASN1_check_infinite_end)}
       ASN1_check_infinite_end := @_ASN1_check_infinite_end;
-      {$else}
-      {$if not defined(ASN1_check_infinite_end_allownil)}
-      ASN1_check_infinite_end := @ERR_ASN1_check_infinite_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_check_infinite_end_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_check_infinite_end := @ERR_ASN1_check_infinite_end;
+    if FuncLoadError then
       AFailed.Add('ASN1_check_infinite_end');
-    end;
     {$ifend}
   end;
 
 
   ASN1_const_check_infinite_end := LoadLibFunction(ADllHandle, ASN1_const_check_infinite_end_procname);
-  FuncLoaded := assigned(ASN1_const_check_infinite_end);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_const_check_infinite_end);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_const_check_infinite_end_allownil)}
+    ASN1_const_check_infinite_end := @ERR_ASN1_const_check_infinite_end;
+    {$ifend}
     {$if declared(ASN1_const_check_infinite_end_introduced)}
     if LibVersion < ASN1_const_check_infinite_end_introduced then
     begin
       {$if declared(FC_ASN1_const_check_infinite_end)}
       ASN1_const_check_infinite_end := @FC_ASN1_const_check_infinite_end;
-      {$else}
-      {$if not defined(ASN1_const_check_infinite_end_allownil)}
-      ASN1_const_check_infinite_end := @ERR_ASN1_const_check_infinite_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_const_check_infinite_end_removed)}
@@ -6988,39 +6171,31 @@ begin
     begin
       {$if declared(_ASN1_const_check_infinite_end)}
       ASN1_const_check_infinite_end := @_ASN1_const_check_infinite_end;
-      {$else}
-      {$if not defined(ASN1_const_check_infinite_end_allownil)}
-      ASN1_const_check_infinite_end := @ERR_ASN1_const_check_infinite_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_const_check_infinite_end_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_const_check_infinite_end := @ERR_ASN1_const_check_infinite_end;
+    if FuncLoadError then
       AFailed.Add('ASN1_const_check_infinite_end');
-    end;
     {$ifend}
   end;
 
 
   ASN1_put_object := LoadLibFunction(ADllHandle, ASN1_put_object_procname);
-  FuncLoaded := assigned(ASN1_put_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_put_object);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_put_object_allownil)}
+    ASN1_put_object := @ERR_ASN1_put_object;
+    {$ifend}
     {$if declared(ASN1_put_object_introduced)}
     if LibVersion < ASN1_put_object_introduced then
     begin
       {$if declared(FC_ASN1_put_object)}
       ASN1_put_object := @FC_ASN1_put_object;
-      {$else}
-      {$if not defined(ASN1_put_object_allownil)}
-      ASN1_put_object := @ERR_ASN1_put_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_put_object_removed)}
@@ -7028,39 +6203,31 @@ begin
     begin
       {$if declared(_ASN1_put_object)}
       ASN1_put_object := @_ASN1_put_object;
-      {$else}
-      {$if not defined(ASN1_put_object_allownil)}
-      ASN1_put_object := @ERR_ASN1_put_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_put_object_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_put_object := @ERR_ASN1_put_object;
+    if FuncLoadError then
       AFailed.Add('ASN1_put_object');
-    end;
     {$ifend}
   end;
 
 
   ASN1_put_eoc := LoadLibFunction(ADllHandle, ASN1_put_eoc_procname);
-  FuncLoaded := assigned(ASN1_put_eoc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_put_eoc);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_put_eoc_allownil)}
+    ASN1_put_eoc := @ERR_ASN1_put_eoc;
+    {$ifend}
     {$if declared(ASN1_put_eoc_introduced)}
     if LibVersion < ASN1_put_eoc_introduced then
     begin
       {$if declared(FC_ASN1_put_eoc)}
       ASN1_put_eoc := @FC_ASN1_put_eoc;
-      {$else}
-      {$if not defined(ASN1_put_eoc_allownil)}
-      ASN1_put_eoc := @ERR_ASN1_put_eoc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_put_eoc_removed)}
@@ -7068,39 +6235,31 @@ begin
     begin
       {$if declared(_ASN1_put_eoc)}
       ASN1_put_eoc := @_ASN1_put_eoc;
-      {$else}
-      {$if not defined(ASN1_put_eoc_allownil)}
-      ASN1_put_eoc := @ERR_ASN1_put_eoc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_put_eoc_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_put_eoc := @ERR_ASN1_put_eoc;
+    if FuncLoadError then
       AFailed.Add('ASN1_put_eoc');
-    end;
     {$ifend}
   end;
 
 
   ASN1_object_size := LoadLibFunction(ADllHandle, ASN1_object_size_procname);
-  FuncLoaded := assigned(ASN1_object_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_object_size);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_object_size_allownil)}
+    ASN1_object_size := @ERR_ASN1_object_size;
+    {$ifend}
     {$if declared(ASN1_object_size_introduced)}
     if LibVersion < ASN1_object_size_introduced then
     begin
       {$if declared(FC_ASN1_object_size)}
       ASN1_object_size := @FC_ASN1_object_size;
-      {$else}
-      {$if not defined(ASN1_object_size_allownil)}
-      ASN1_object_size := @ERR_ASN1_object_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_object_size_removed)}
@@ -7108,39 +6267,31 @@ begin
     begin
       {$if declared(_ASN1_object_size)}
       ASN1_object_size := @_ASN1_object_size;
-      {$else}
-      {$if not defined(ASN1_object_size_allownil)}
-      ASN1_object_size := @ERR_ASN1_object_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_object_size_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_object_size := @ERR_ASN1_object_size;
+    if FuncLoadError then
       AFailed.Add('ASN1_object_size');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_dup := LoadLibFunction(ADllHandle, ASN1_item_dup_procname);
-  FuncLoaded := assigned(ASN1_item_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_dup_allownil)}
+    ASN1_item_dup := @ERR_ASN1_item_dup;
+    {$ifend}
     {$if declared(ASN1_item_dup_introduced)}
     if LibVersion < ASN1_item_dup_introduced then
     begin
       {$if declared(FC_ASN1_item_dup)}
       ASN1_item_dup := @FC_ASN1_item_dup;
-      {$else}
-      {$if not defined(ASN1_item_dup_allownil)}
-      ASN1_item_dup := @ERR_ASN1_item_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_dup_removed)}
@@ -7148,39 +6299,31 @@ begin
     begin
       {$if declared(_ASN1_item_dup)}
       ASN1_item_dup := @_ASN1_item_dup;
-      {$else}
-      {$if not defined(ASN1_item_dup_allownil)}
-      ASN1_item_dup := @ERR_ASN1_item_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_dup := @ERR_ASN1_item_dup;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_dup');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_to_UTF8 := LoadLibFunction(ADllHandle, ASN1_STRING_to_UTF8_procname);
-  FuncLoaded := assigned(ASN1_STRING_to_UTF8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_to_UTF8);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_to_UTF8_allownil)}
+    ASN1_STRING_to_UTF8 := @ERR_ASN1_STRING_to_UTF8;
+    {$ifend}
     {$if declared(ASN1_STRING_to_UTF8_introduced)}
     if LibVersion < ASN1_STRING_to_UTF8_introduced then
     begin
       {$if declared(FC_ASN1_STRING_to_UTF8)}
       ASN1_STRING_to_UTF8 := @FC_ASN1_STRING_to_UTF8;
-      {$else}
-      {$if not defined(ASN1_STRING_to_UTF8_allownil)}
-      ASN1_STRING_to_UTF8 := @ERR_ASN1_STRING_to_UTF8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_to_UTF8_removed)}
@@ -7188,39 +6331,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_to_UTF8)}
       ASN1_STRING_to_UTF8 := @_ASN1_STRING_to_UTF8;
-      {$else}
-      {$if not defined(ASN1_STRING_to_UTF8_allownil)}
-      ASN1_STRING_to_UTF8 := @ERR_ASN1_STRING_to_UTF8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_to_UTF8_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_to_UTF8 := @ERR_ASN1_STRING_to_UTF8;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_to_UTF8');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_d2i_bio := LoadLibFunction(ADllHandle, ASN1_item_d2i_bio_procname);
-  FuncLoaded := assigned(ASN1_item_d2i_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_d2i_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_d2i_bio_allownil)}
+    ASN1_item_d2i_bio := @ERR_ASN1_item_d2i_bio;
+    {$ifend}
     {$if declared(ASN1_item_d2i_bio_introduced)}
     if LibVersion < ASN1_item_d2i_bio_introduced then
     begin
       {$if declared(FC_ASN1_item_d2i_bio)}
       ASN1_item_d2i_bio := @FC_ASN1_item_d2i_bio;
-      {$else}
-      {$if not defined(ASN1_item_d2i_bio_allownil)}
-      ASN1_item_d2i_bio := @ERR_ASN1_item_d2i_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_d2i_bio_removed)}
@@ -7228,39 +6363,31 @@ begin
     begin
       {$if declared(_ASN1_item_d2i_bio)}
       ASN1_item_d2i_bio := @_ASN1_item_d2i_bio;
-      {$else}
-      {$if not defined(ASN1_item_d2i_bio_allownil)}
-      ASN1_item_d2i_bio := @ERR_ASN1_item_d2i_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_d2i_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_d2i_bio := @ERR_ASN1_item_d2i_bio;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_d2i_bio');
-    end;
     {$ifend}
   end;
 
 
   ASN1_i2d_bio := LoadLibFunction(ADllHandle, ASN1_i2d_bio_procname);
-  FuncLoaded := assigned(ASN1_i2d_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_i2d_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_i2d_bio_allownil)}
+    ASN1_i2d_bio := @ERR_ASN1_i2d_bio;
+    {$ifend}
     {$if declared(ASN1_i2d_bio_introduced)}
     if LibVersion < ASN1_i2d_bio_introduced then
     begin
       {$if declared(FC_ASN1_i2d_bio)}
       ASN1_i2d_bio := @FC_ASN1_i2d_bio;
-      {$else}
-      {$if not defined(ASN1_i2d_bio_allownil)}
-      ASN1_i2d_bio := @ERR_ASN1_i2d_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_i2d_bio_removed)}
@@ -7268,39 +6395,31 @@ begin
     begin
       {$if declared(_ASN1_i2d_bio)}
       ASN1_i2d_bio := @_ASN1_i2d_bio;
-      {$else}
-      {$if not defined(ASN1_i2d_bio_allownil)}
-      ASN1_i2d_bio := @ERR_ASN1_i2d_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_i2d_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_i2d_bio := @ERR_ASN1_i2d_bio;
+    if FuncLoadError then
       AFailed.Add('ASN1_i2d_bio');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_i2d_bio := LoadLibFunction(ADllHandle, ASN1_item_i2d_bio_procname);
-  FuncLoaded := assigned(ASN1_item_i2d_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_i2d_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_i2d_bio_allownil)}
+    ASN1_item_i2d_bio := @ERR_ASN1_item_i2d_bio;
+    {$ifend}
     {$if declared(ASN1_item_i2d_bio_introduced)}
     if LibVersion < ASN1_item_i2d_bio_introduced then
     begin
       {$if declared(FC_ASN1_item_i2d_bio)}
       ASN1_item_i2d_bio := @FC_ASN1_item_i2d_bio;
-      {$else}
-      {$if not defined(ASN1_item_i2d_bio_allownil)}
-      ASN1_item_i2d_bio := @ERR_ASN1_item_i2d_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_i2d_bio_removed)}
@@ -7308,39 +6427,31 @@ begin
     begin
       {$if declared(_ASN1_item_i2d_bio)}
       ASN1_item_i2d_bio := @_ASN1_item_i2d_bio;
-      {$else}
-      {$if not defined(ASN1_item_i2d_bio_allownil)}
-      ASN1_item_i2d_bio := @ERR_ASN1_item_i2d_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_i2d_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_i2d_bio := @ERR_ASN1_item_i2d_bio;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_i2d_bio');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UTCTIME_print := LoadLibFunction(ADllHandle, ASN1_UTCTIME_print_procname);
-  FuncLoaded := assigned(ASN1_UTCTIME_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UTCTIME_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UTCTIME_print_allownil)}
+    ASN1_UTCTIME_print := @ERR_ASN1_UTCTIME_print;
+    {$ifend}
     {$if declared(ASN1_UTCTIME_print_introduced)}
     if LibVersion < ASN1_UTCTIME_print_introduced then
     begin
       {$if declared(FC_ASN1_UTCTIME_print)}
       ASN1_UTCTIME_print := @FC_ASN1_UTCTIME_print;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_print_allownil)}
-      ASN1_UTCTIME_print := @ERR_ASN1_UTCTIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UTCTIME_print_removed)}
@@ -7348,39 +6459,31 @@ begin
     begin
       {$if declared(_ASN1_UTCTIME_print)}
       ASN1_UTCTIME_print := @_ASN1_UTCTIME_print;
-      {$else}
-      {$if not defined(ASN1_UTCTIME_print_allownil)}
-      ASN1_UTCTIME_print := @ERR_ASN1_UTCTIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UTCTIME_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UTCTIME_print := @ERR_ASN1_UTCTIME_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_UTCTIME_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_GENERALIZEDTIME_print := LoadLibFunction(ADllHandle, ASN1_GENERALIZEDTIME_print_procname);
-  FuncLoaded := assigned(ASN1_GENERALIZEDTIME_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_GENERALIZEDTIME_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_GENERALIZEDTIME_print_allownil)}
+    ASN1_GENERALIZEDTIME_print := @ERR_ASN1_GENERALIZEDTIME_print;
+    {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_print_introduced)}
     if LibVersion < ASN1_GENERALIZEDTIME_print_introduced then
     begin
       {$if declared(FC_ASN1_GENERALIZEDTIME_print)}
       ASN1_GENERALIZEDTIME_print := @FC_ASN1_GENERALIZEDTIME_print;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_print_allownil)}
-      ASN1_GENERALIZEDTIME_print := @ERR_ASN1_GENERALIZEDTIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_GENERALIZEDTIME_print_removed)}
@@ -7388,39 +6491,31 @@ begin
     begin
       {$if declared(_ASN1_GENERALIZEDTIME_print)}
       ASN1_GENERALIZEDTIME_print := @_ASN1_GENERALIZEDTIME_print;
-      {$else}
-      {$if not defined(ASN1_GENERALIZEDTIME_print_allownil)}
-      ASN1_GENERALIZEDTIME_print := @ERR_ASN1_GENERALIZEDTIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_GENERALIZEDTIME_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_GENERALIZEDTIME_print := @ERR_ASN1_GENERALIZEDTIME_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_GENERALIZEDTIME_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TIME_print := LoadLibFunction(ADllHandle, ASN1_TIME_print_procname);
-  FuncLoaded := assigned(ASN1_TIME_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TIME_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TIME_print_allownil)}
+    ASN1_TIME_print := @ERR_ASN1_TIME_print;
+    {$ifend}
     {$if declared(ASN1_TIME_print_introduced)}
     if LibVersion < ASN1_TIME_print_introduced then
     begin
       {$if declared(FC_ASN1_TIME_print)}
       ASN1_TIME_print := @FC_ASN1_TIME_print;
-      {$else}
-      {$if not defined(ASN1_TIME_print_allownil)}
-      ASN1_TIME_print := @ERR_ASN1_TIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TIME_print_removed)}
@@ -7428,39 +6523,31 @@ begin
     begin
       {$if declared(_ASN1_TIME_print)}
       ASN1_TIME_print := @_ASN1_TIME_print;
-      {$else}
-      {$if not defined(ASN1_TIME_print_allownil)}
-      ASN1_TIME_print := @ERR_ASN1_TIME_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TIME_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TIME_print := @ERR_ASN1_TIME_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_TIME_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_print := LoadLibFunction(ADllHandle, ASN1_STRING_print_procname);
-  FuncLoaded := assigned(ASN1_STRING_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_print_allownil)}
+    ASN1_STRING_print := @ERR_ASN1_STRING_print;
+    {$ifend}
     {$if declared(ASN1_STRING_print_introduced)}
     if LibVersion < ASN1_STRING_print_introduced then
     begin
       {$if declared(FC_ASN1_STRING_print)}
       ASN1_STRING_print := @FC_ASN1_STRING_print;
-      {$else}
-      {$if not defined(ASN1_STRING_print_allownil)}
-      ASN1_STRING_print := @ERR_ASN1_STRING_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_print_removed)}
@@ -7468,39 +6555,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_print)}
       ASN1_STRING_print := @_ASN1_STRING_print;
-      {$else}
-      {$if not defined(ASN1_STRING_print_allownil)}
-      ASN1_STRING_print := @ERR_ASN1_STRING_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_print := @ERR_ASN1_STRING_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_print_ex := LoadLibFunction(ADllHandle, ASN1_STRING_print_ex_procname);
-  FuncLoaded := assigned(ASN1_STRING_print_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_print_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_print_ex_allownil)}
+    ASN1_STRING_print_ex := @ERR_ASN1_STRING_print_ex;
+    {$ifend}
     {$if declared(ASN1_STRING_print_ex_introduced)}
     if LibVersion < ASN1_STRING_print_ex_introduced then
     begin
       {$if declared(FC_ASN1_STRING_print_ex)}
       ASN1_STRING_print_ex := @FC_ASN1_STRING_print_ex;
-      {$else}
-      {$if not defined(ASN1_STRING_print_ex_allownil)}
-      ASN1_STRING_print_ex := @ERR_ASN1_STRING_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_print_ex_removed)}
@@ -7508,39 +6587,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_print_ex)}
       ASN1_STRING_print_ex := @_ASN1_STRING_print_ex;
-      {$else}
-      {$if not defined(ASN1_STRING_print_ex_allownil)}
-      ASN1_STRING_print_ex := @ERR_ASN1_STRING_print_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_print_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_print_ex := @ERR_ASN1_STRING_print_ex;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_print_ex');
-    end;
     {$ifend}
   end;
 
 
   ASN1_buf_print := LoadLibFunction(ADllHandle, ASN1_buf_print_procname);
-  FuncLoaded := assigned(ASN1_buf_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_buf_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_buf_print_allownil)}
+    ASN1_buf_print := @ERR_ASN1_buf_print;
+    {$ifend}
     {$if declared(ASN1_buf_print_introduced)}
     if LibVersion < ASN1_buf_print_introduced then
     begin
       {$if declared(FC_ASN1_buf_print)}
       ASN1_buf_print := @FC_ASN1_buf_print;
-      {$else}
-      {$if not defined(ASN1_buf_print_allownil)}
-      ASN1_buf_print := @ERR_ASN1_buf_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_buf_print_removed)}
@@ -7548,39 +6619,31 @@ begin
     begin
       {$if declared(_ASN1_buf_print)}
       ASN1_buf_print := @_ASN1_buf_print;
-      {$else}
-      {$if not defined(ASN1_buf_print_allownil)}
-      ASN1_buf_print := @ERR_ASN1_buf_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_buf_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_buf_print := @ERR_ASN1_buf_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_buf_print');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_bn_print := LoadLibFunction(ADllHandle, ASN1_bn_print_procname);
-  FuncLoaded := assigned(ASN1_bn_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_bn_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_bn_print_allownil)}
+    ASN1_bn_print := @ERR_ASN1_bn_print;
+    {$ifend}
     {$if declared(ASN1_bn_print_introduced)}
     if LibVersion < ASN1_bn_print_introduced then
     begin
       {$if declared(FC_ASN1_bn_print)}
       ASN1_bn_print := @FC_ASN1_bn_print;
-      {$else}
-      {$if not defined(ASN1_bn_print_allownil)}
-      ASN1_bn_print := @ERR_ASN1_bn_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_bn_print_removed)}
@@ -7588,39 +6651,31 @@ begin
     begin
       {$if declared(_ASN1_bn_print)}
       ASN1_bn_print := @_ASN1_bn_print;
-      {$else}
-      {$if not defined(ASN1_bn_print_allownil)}
-      ASN1_bn_print := @ERR_ASN1_bn_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_bn_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_bn_print := @ERR_ASN1_bn_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_bn_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_parse := LoadLibFunction(ADllHandle, ASN1_parse_procname);
-  FuncLoaded := assigned(ASN1_parse);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_parse);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_parse_allownil)}
+    ASN1_parse := @ERR_ASN1_parse;
+    {$ifend}
     {$if declared(ASN1_parse_introduced)}
     if LibVersion < ASN1_parse_introduced then
     begin
       {$if declared(FC_ASN1_parse)}
       ASN1_parse := @FC_ASN1_parse;
-      {$else}
-      {$if not defined(ASN1_parse_allownil)}
-      ASN1_parse := @ERR_ASN1_parse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_parse_removed)}
@@ -7628,39 +6683,31 @@ begin
     begin
       {$if declared(_ASN1_parse)}
       ASN1_parse := @_ASN1_parse;
-      {$else}
-      {$if not defined(ASN1_parse_allownil)}
-      ASN1_parse := @ERR_ASN1_parse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_parse_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_parse := @ERR_ASN1_parse;
+    if FuncLoadError then
       AFailed.Add('ASN1_parse');
-    end;
     {$ifend}
   end;
 
 
   ASN1_parse_dump := LoadLibFunction(ADllHandle, ASN1_parse_dump_procname);
-  FuncLoaded := assigned(ASN1_parse_dump);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_parse_dump);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_parse_dump_allownil)}
+    ASN1_parse_dump := @ERR_ASN1_parse_dump;
+    {$ifend}
     {$if declared(ASN1_parse_dump_introduced)}
     if LibVersion < ASN1_parse_dump_introduced then
     begin
       {$if declared(FC_ASN1_parse_dump)}
       ASN1_parse_dump := @FC_ASN1_parse_dump;
-      {$else}
-      {$if not defined(ASN1_parse_dump_allownil)}
-      ASN1_parse_dump := @ERR_ASN1_parse_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_parse_dump_removed)}
@@ -7668,39 +6715,31 @@ begin
     begin
       {$if declared(_ASN1_parse_dump)}
       ASN1_parse_dump := @_ASN1_parse_dump;
-      {$else}
-      {$if not defined(ASN1_parse_dump_allownil)}
-      ASN1_parse_dump := @ERR_ASN1_parse_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_parse_dump_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_parse_dump := @ERR_ASN1_parse_dump;
+    if FuncLoadError then
       AFailed.Add('ASN1_parse_dump');
-    end;
     {$ifend}
   end;
 
 
   ASN1_tag2str := LoadLibFunction(ADllHandle, ASN1_tag2str_procname);
-  FuncLoaded := assigned(ASN1_tag2str);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_tag2str);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_tag2str_allownil)}
+    ASN1_tag2str := @ERR_ASN1_tag2str;
+    {$ifend}
     {$if declared(ASN1_tag2str_introduced)}
     if LibVersion < ASN1_tag2str_introduced then
     begin
       {$if declared(FC_ASN1_tag2str)}
       ASN1_tag2str := @FC_ASN1_tag2str;
-      {$else}
-      {$if not defined(ASN1_tag2str_allownil)}
-      ASN1_tag2str := @ERR_ASN1_tag2str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_tag2str_removed)}
@@ -7708,39 +6747,31 @@ begin
     begin
       {$if declared(_ASN1_tag2str)}
       ASN1_tag2str := @_ASN1_tag2str;
-      {$else}
-      {$if not defined(ASN1_tag2str_allownil)}
-      ASN1_tag2str := @ERR_ASN1_tag2str;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_tag2str_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_tag2str := @ERR_ASN1_tag2str;
+    if FuncLoadError then
       AFailed.Add('ASN1_tag2str');
-    end;
     {$ifend}
   end;
 
 
   ASN1_UNIVERSALSTRING_to_string := LoadLibFunction(ADllHandle, ASN1_UNIVERSALSTRING_to_string_procname);
-  FuncLoaded := assigned(ASN1_UNIVERSALSTRING_to_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_UNIVERSALSTRING_to_string);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_UNIVERSALSTRING_to_string_allownil)}
+    ASN1_UNIVERSALSTRING_to_string := @ERR_ASN1_UNIVERSALSTRING_to_string;
+    {$ifend}
     {$if declared(ASN1_UNIVERSALSTRING_to_string_introduced)}
     if LibVersion < ASN1_UNIVERSALSTRING_to_string_introduced then
     begin
       {$if declared(FC_ASN1_UNIVERSALSTRING_to_string)}
       ASN1_UNIVERSALSTRING_to_string := @FC_ASN1_UNIVERSALSTRING_to_string;
-      {$else}
-      {$if not defined(ASN1_UNIVERSALSTRING_to_string_allownil)}
-      ASN1_UNIVERSALSTRING_to_string := @ERR_ASN1_UNIVERSALSTRING_to_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_UNIVERSALSTRING_to_string_removed)}
@@ -7748,39 +6779,31 @@ begin
     begin
       {$if declared(_ASN1_UNIVERSALSTRING_to_string)}
       ASN1_UNIVERSALSTRING_to_string := @_ASN1_UNIVERSALSTRING_to_string;
-      {$else}
-      {$if not defined(ASN1_UNIVERSALSTRING_to_string_allownil)}
-      ASN1_UNIVERSALSTRING_to_string := @ERR_ASN1_UNIVERSALSTRING_to_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_UNIVERSALSTRING_to_string_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_UNIVERSALSTRING_to_string := @ERR_ASN1_UNIVERSALSTRING_to_string;
+    if FuncLoadError then
       AFailed.Add('ASN1_UNIVERSALSTRING_to_string');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_set_octetstring := LoadLibFunction(ADllHandle, ASN1_TYPE_set_octetstring_procname);
-  FuncLoaded := assigned(ASN1_TYPE_set_octetstring);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_set_octetstring);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_set_octetstring_allownil)}
+    ASN1_TYPE_set_octetstring := @ERR_ASN1_TYPE_set_octetstring;
+    {$ifend}
     {$if declared(ASN1_TYPE_set_octetstring_introduced)}
     if LibVersion < ASN1_TYPE_set_octetstring_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_set_octetstring)}
       ASN1_TYPE_set_octetstring := @FC_ASN1_TYPE_set_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_octetstring_allownil)}
-      ASN1_TYPE_set_octetstring := @ERR_ASN1_TYPE_set_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_set_octetstring_removed)}
@@ -7788,39 +6811,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_set_octetstring)}
       ASN1_TYPE_set_octetstring := @_ASN1_TYPE_set_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_octetstring_allownil)}
-      ASN1_TYPE_set_octetstring := @ERR_ASN1_TYPE_set_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_set_octetstring_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_set_octetstring := @ERR_ASN1_TYPE_set_octetstring;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_set_octetstring');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_get_octetstring := LoadLibFunction(ADllHandle, ASN1_TYPE_get_octetstring_procname);
-  FuncLoaded := assigned(ASN1_TYPE_get_octetstring);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_get_octetstring);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_get_octetstring_allownil)}
+    ASN1_TYPE_get_octetstring := @ERR_ASN1_TYPE_get_octetstring;
+    {$ifend}
     {$if declared(ASN1_TYPE_get_octetstring_introduced)}
     if LibVersion < ASN1_TYPE_get_octetstring_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_get_octetstring)}
       ASN1_TYPE_get_octetstring := @FC_ASN1_TYPE_get_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_octetstring_allownil)}
-      ASN1_TYPE_get_octetstring := @ERR_ASN1_TYPE_get_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_get_octetstring_removed)}
@@ -7828,39 +6843,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_get_octetstring)}
       ASN1_TYPE_get_octetstring := @_ASN1_TYPE_get_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_octetstring_allownil)}
-      ASN1_TYPE_get_octetstring := @ERR_ASN1_TYPE_get_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_get_octetstring_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_get_octetstring := @ERR_ASN1_TYPE_get_octetstring;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_get_octetstring');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_set_int_octetstring := LoadLibFunction(ADllHandle, ASN1_TYPE_set_int_octetstring_procname);
-  FuncLoaded := assigned(ASN1_TYPE_set_int_octetstring);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_set_int_octetstring);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_set_int_octetstring_allownil)}
+    ASN1_TYPE_set_int_octetstring := @ERR_ASN1_TYPE_set_int_octetstring;
+    {$ifend}
     {$if declared(ASN1_TYPE_set_int_octetstring_introduced)}
     if LibVersion < ASN1_TYPE_set_int_octetstring_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_set_int_octetstring)}
       ASN1_TYPE_set_int_octetstring := @FC_ASN1_TYPE_set_int_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_int_octetstring_allownil)}
-      ASN1_TYPE_set_int_octetstring := @ERR_ASN1_TYPE_set_int_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_set_int_octetstring_removed)}
@@ -7868,39 +6875,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_set_int_octetstring)}
       ASN1_TYPE_set_int_octetstring := @_ASN1_TYPE_set_int_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_set_int_octetstring_allownil)}
-      ASN1_TYPE_set_int_octetstring := @ERR_ASN1_TYPE_set_int_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_set_int_octetstring_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_set_int_octetstring := @ERR_ASN1_TYPE_set_int_octetstring;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_set_int_octetstring');
-    end;
     {$ifend}
   end;
 
 
   ASN1_TYPE_get_int_octetstring := LoadLibFunction(ADllHandle, ASN1_TYPE_get_int_octetstring_procname);
-  FuncLoaded := assigned(ASN1_TYPE_get_int_octetstring);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_TYPE_get_int_octetstring);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_TYPE_get_int_octetstring_allownil)}
+    ASN1_TYPE_get_int_octetstring := @ERR_ASN1_TYPE_get_int_octetstring;
+    {$ifend}
     {$if declared(ASN1_TYPE_get_int_octetstring_introduced)}
     if LibVersion < ASN1_TYPE_get_int_octetstring_introduced then
     begin
       {$if declared(FC_ASN1_TYPE_get_int_octetstring)}
       ASN1_TYPE_get_int_octetstring := @FC_ASN1_TYPE_get_int_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_int_octetstring_allownil)}
-      ASN1_TYPE_get_int_octetstring := @ERR_ASN1_TYPE_get_int_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_TYPE_get_int_octetstring_removed)}
@@ -7908,39 +6907,31 @@ begin
     begin
       {$if declared(_ASN1_TYPE_get_int_octetstring)}
       ASN1_TYPE_get_int_octetstring := @_ASN1_TYPE_get_int_octetstring;
-      {$else}
-      {$if not defined(ASN1_TYPE_get_int_octetstring_allownil)}
-      ASN1_TYPE_get_int_octetstring := @ERR_ASN1_TYPE_get_int_octetstring;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_TYPE_get_int_octetstring_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_TYPE_get_int_octetstring := @ERR_ASN1_TYPE_get_int_octetstring;
+    if FuncLoadError then
       AFailed.Add('ASN1_TYPE_get_int_octetstring');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_unpack := LoadLibFunction(ADllHandle, ASN1_item_unpack_procname);
-  FuncLoaded := assigned(ASN1_item_unpack);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_unpack);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_unpack_allownil)}
+    ASN1_item_unpack := @ERR_ASN1_item_unpack;
+    {$ifend}
     {$if declared(ASN1_item_unpack_introduced)}
     if LibVersion < ASN1_item_unpack_introduced then
     begin
       {$if declared(FC_ASN1_item_unpack)}
       ASN1_item_unpack := @FC_ASN1_item_unpack;
-      {$else}
-      {$if not defined(ASN1_item_unpack_allownil)}
-      ASN1_item_unpack := @ERR_ASN1_item_unpack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_unpack_removed)}
@@ -7948,39 +6939,31 @@ begin
     begin
       {$if declared(_ASN1_item_unpack)}
       ASN1_item_unpack := @_ASN1_item_unpack;
-      {$else}
-      {$if not defined(ASN1_item_unpack_allownil)}
-      ASN1_item_unpack := @ERR_ASN1_item_unpack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_unpack_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_unpack := @ERR_ASN1_item_unpack;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_unpack');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_pack := LoadLibFunction(ADllHandle, ASN1_item_pack_procname);
-  FuncLoaded := assigned(ASN1_item_pack);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_pack);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_pack_allownil)}
+    ASN1_item_pack := @ERR_ASN1_item_pack;
+    {$ifend}
     {$if declared(ASN1_item_pack_introduced)}
     if LibVersion < ASN1_item_pack_introduced then
     begin
       {$if declared(FC_ASN1_item_pack)}
       ASN1_item_pack := @FC_ASN1_item_pack;
-      {$else}
-      {$if not defined(ASN1_item_pack_allownil)}
-      ASN1_item_pack := @ERR_ASN1_item_pack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_pack_removed)}
@@ -7988,39 +6971,31 @@ begin
     begin
       {$if declared(_ASN1_item_pack)}
       ASN1_item_pack := @_ASN1_item_pack;
-      {$else}
-      {$if not defined(ASN1_item_pack_allownil)}
-      ASN1_item_pack := @ERR_ASN1_item_pack;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_pack_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_pack := @ERR_ASN1_item_pack;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_pack');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_set_default_mask := LoadLibFunction(ADllHandle, ASN1_STRING_set_default_mask_procname);
-  FuncLoaded := assigned(ASN1_STRING_set_default_mask);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_set_default_mask);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_set_default_mask_allownil)}
+    ASN1_STRING_set_default_mask := @ERR_ASN1_STRING_set_default_mask;
+    {$ifend}
     {$if declared(ASN1_STRING_set_default_mask_introduced)}
     if LibVersion < ASN1_STRING_set_default_mask_introduced then
     begin
       {$if declared(FC_ASN1_STRING_set_default_mask)}
       ASN1_STRING_set_default_mask := @FC_ASN1_STRING_set_default_mask;
-      {$else}
-      {$if not defined(ASN1_STRING_set_default_mask_allownil)}
-      ASN1_STRING_set_default_mask := @ERR_ASN1_STRING_set_default_mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_set_default_mask_removed)}
@@ -8028,39 +7003,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_set_default_mask)}
       ASN1_STRING_set_default_mask := @_ASN1_STRING_set_default_mask;
-      {$else}
-      {$if not defined(ASN1_STRING_set_default_mask_allownil)}
-      ASN1_STRING_set_default_mask := @ERR_ASN1_STRING_set_default_mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_set_default_mask_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_set_default_mask := @ERR_ASN1_STRING_set_default_mask;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_set_default_mask');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_set_default_mask_asc := LoadLibFunction(ADllHandle, ASN1_STRING_set_default_mask_asc_procname);
-  FuncLoaded := assigned(ASN1_STRING_set_default_mask_asc);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_set_default_mask_asc);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_set_default_mask_asc_allownil)}
+    ASN1_STRING_set_default_mask_asc := @ERR_ASN1_STRING_set_default_mask_asc;
+    {$ifend}
     {$if declared(ASN1_STRING_set_default_mask_asc_introduced)}
     if LibVersion < ASN1_STRING_set_default_mask_asc_introduced then
     begin
       {$if declared(FC_ASN1_STRING_set_default_mask_asc)}
       ASN1_STRING_set_default_mask_asc := @FC_ASN1_STRING_set_default_mask_asc;
-      {$else}
-      {$if not defined(ASN1_STRING_set_default_mask_asc_allownil)}
-      ASN1_STRING_set_default_mask_asc := @ERR_ASN1_STRING_set_default_mask_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_set_default_mask_asc_removed)}
@@ -8068,39 +7035,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_set_default_mask_asc)}
       ASN1_STRING_set_default_mask_asc := @_ASN1_STRING_set_default_mask_asc;
-      {$else}
-      {$if not defined(ASN1_STRING_set_default_mask_asc_allownil)}
-      ASN1_STRING_set_default_mask_asc := @ERR_ASN1_STRING_set_default_mask_asc;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_set_default_mask_asc_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_set_default_mask_asc := @ERR_ASN1_STRING_set_default_mask_asc;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_set_default_mask_asc');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_get_default_mask := LoadLibFunction(ADllHandle, ASN1_STRING_get_default_mask_procname);
-  FuncLoaded := assigned(ASN1_STRING_get_default_mask);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_get_default_mask);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_get_default_mask_allownil)}
+    ASN1_STRING_get_default_mask := @ERR_ASN1_STRING_get_default_mask;
+    {$ifend}
     {$if declared(ASN1_STRING_get_default_mask_introduced)}
     if LibVersion < ASN1_STRING_get_default_mask_introduced then
     begin
       {$if declared(FC_ASN1_STRING_get_default_mask)}
       ASN1_STRING_get_default_mask := @FC_ASN1_STRING_get_default_mask;
-      {$else}
-      {$if not defined(ASN1_STRING_get_default_mask_allownil)}
-      ASN1_STRING_get_default_mask := @ERR_ASN1_STRING_get_default_mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_get_default_mask_removed)}
@@ -8108,39 +7067,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_get_default_mask)}
       ASN1_STRING_get_default_mask := @_ASN1_STRING_get_default_mask;
-      {$else}
-      {$if not defined(ASN1_STRING_get_default_mask_allownil)}
-      ASN1_STRING_get_default_mask := @ERR_ASN1_STRING_get_default_mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_get_default_mask_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_get_default_mask := @ERR_ASN1_STRING_get_default_mask;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_get_default_mask');
-    end;
     {$ifend}
   end;
 
 
   ASN1_mbstring_copy := LoadLibFunction(ADllHandle, ASN1_mbstring_copy_procname);
-  FuncLoaded := assigned(ASN1_mbstring_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_mbstring_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_mbstring_copy_allownil)}
+    ASN1_mbstring_copy := @ERR_ASN1_mbstring_copy;
+    {$ifend}
     {$if declared(ASN1_mbstring_copy_introduced)}
     if LibVersion < ASN1_mbstring_copy_introduced then
     begin
       {$if declared(FC_ASN1_mbstring_copy)}
       ASN1_mbstring_copy := @FC_ASN1_mbstring_copy;
-      {$else}
-      {$if not defined(ASN1_mbstring_copy_allownil)}
-      ASN1_mbstring_copy := @ERR_ASN1_mbstring_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_mbstring_copy_removed)}
@@ -8148,39 +7099,31 @@ begin
     begin
       {$if declared(_ASN1_mbstring_copy)}
       ASN1_mbstring_copy := @_ASN1_mbstring_copy;
-      {$else}
-      {$if not defined(ASN1_mbstring_copy_allownil)}
-      ASN1_mbstring_copy := @ERR_ASN1_mbstring_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_mbstring_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_mbstring_copy := @ERR_ASN1_mbstring_copy;
+    if FuncLoadError then
       AFailed.Add('ASN1_mbstring_copy');
-    end;
     {$ifend}
   end;
 
 
   ASN1_mbstring_ncopy := LoadLibFunction(ADllHandle, ASN1_mbstring_ncopy_procname);
-  FuncLoaded := assigned(ASN1_mbstring_ncopy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_mbstring_ncopy);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_mbstring_ncopy_allownil)}
+    ASN1_mbstring_ncopy := @ERR_ASN1_mbstring_ncopy;
+    {$ifend}
     {$if declared(ASN1_mbstring_ncopy_introduced)}
     if LibVersion < ASN1_mbstring_ncopy_introduced then
     begin
       {$if declared(FC_ASN1_mbstring_ncopy)}
       ASN1_mbstring_ncopy := @FC_ASN1_mbstring_ncopy;
-      {$else}
-      {$if not defined(ASN1_mbstring_ncopy_allownil)}
-      ASN1_mbstring_ncopy := @ERR_ASN1_mbstring_ncopy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_mbstring_ncopy_removed)}
@@ -8188,39 +7131,31 @@ begin
     begin
       {$if declared(_ASN1_mbstring_ncopy)}
       ASN1_mbstring_ncopy := @_ASN1_mbstring_ncopy;
-      {$else}
-      {$if not defined(ASN1_mbstring_ncopy_allownil)}
-      ASN1_mbstring_ncopy := @ERR_ASN1_mbstring_ncopy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_mbstring_ncopy_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_mbstring_ncopy := @ERR_ASN1_mbstring_ncopy;
+    if FuncLoadError then
       AFailed.Add('ASN1_mbstring_ncopy');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_set_by_NID := LoadLibFunction(ADllHandle, ASN1_STRING_set_by_NID_procname);
-  FuncLoaded := assigned(ASN1_STRING_set_by_NID);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_set_by_NID);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_set_by_NID_allownil)}
+    ASN1_STRING_set_by_NID := @ERR_ASN1_STRING_set_by_NID;
+    {$ifend}
     {$if declared(ASN1_STRING_set_by_NID_introduced)}
     if LibVersion < ASN1_STRING_set_by_NID_introduced then
     begin
       {$if declared(FC_ASN1_STRING_set_by_NID)}
       ASN1_STRING_set_by_NID := @FC_ASN1_STRING_set_by_NID;
-      {$else}
-      {$if not defined(ASN1_STRING_set_by_NID_allownil)}
-      ASN1_STRING_set_by_NID := @ERR_ASN1_STRING_set_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_set_by_NID_removed)}
@@ -8228,39 +7163,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_set_by_NID)}
       ASN1_STRING_set_by_NID := @_ASN1_STRING_set_by_NID;
-      {$else}
-      {$if not defined(ASN1_STRING_set_by_NID_allownil)}
-      ASN1_STRING_set_by_NID := @ERR_ASN1_STRING_set_by_NID;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_set_by_NID_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_set_by_NID := @ERR_ASN1_STRING_set_by_NID;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_set_by_NID');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_TABLE_get := LoadLibFunction(ADllHandle, ASN1_STRING_TABLE_get_procname);
-  FuncLoaded := assigned(ASN1_STRING_TABLE_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_TABLE_get);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_TABLE_get_allownil)}
+    ASN1_STRING_TABLE_get := @ERR_ASN1_STRING_TABLE_get;
+    {$ifend}
     {$if declared(ASN1_STRING_TABLE_get_introduced)}
     if LibVersion < ASN1_STRING_TABLE_get_introduced then
     begin
       {$if declared(FC_ASN1_STRING_TABLE_get)}
       ASN1_STRING_TABLE_get := @FC_ASN1_STRING_TABLE_get;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_get_allownil)}
-      ASN1_STRING_TABLE_get := @ERR_ASN1_STRING_TABLE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_TABLE_get_removed)}
@@ -8268,39 +7195,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_TABLE_get)}
       ASN1_STRING_TABLE_get := @_ASN1_STRING_TABLE_get;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_get_allownil)}
-      ASN1_STRING_TABLE_get := @ERR_ASN1_STRING_TABLE_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_TABLE_get_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_TABLE_get := @ERR_ASN1_STRING_TABLE_get;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_TABLE_get');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_TABLE_add := LoadLibFunction(ADllHandle, ASN1_STRING_TABLE_add_procname);
-  FuncLoaded := assigned(ASN1_STRING_TABLE_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_TABLE_add);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_TABLE_add_allownil)}
+    ASN1_STRING_TABLE_add := @ERR_ASN1_STRING_TABLE_add;
+    {$ifend}
     {$if declared(ASN1_STRING_TABLE_add_introduced)}
     if LibVersion < ASN1_STRING_TABLE_add_introduced then
     begin
       {$if declared(FC_ASN1_STRING_TABLE_add)}
       ASN1_STRING_TABLE_add := @FC_ASN1_STRING_TABLE_add;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_add_allownil)}
-      ASN1_STRING_TABLE_add := @ERR_ASN1_STRING_TABLE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_TABLE_add_removed)}
@@ -8308,39 +7227,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_TABLE_add)}
       ASN1_STRING_TABLE_add := @_ASN1_STRING_TABLE_add;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_add_allownil)}
-      ASN1_STRING_TABLE_add := @ERR_ASN1_STRING_TABLE_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_TABLE_add_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_TABLE_add := @ERR_ASN1_STRING_TABLE_add;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_TABLE_add');
-    end;
     {$ifend}
   end;
 
 
   ASN1_STRING_TABLE_cleanup := LoadLibFunction(ADllHandle, ASN1_STRING_TABLE_cleanup_procname);
-  FuncLoaded := assigned(ASN1_STRING_TABLE_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_STRING_TABLE_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_STRING_TABLE_cleanup_allownil)}
+    ASN1_STRING_TABLE_cleanup := @ERR_ASN1_STRING_TABLE_cleanup;
+    {$ifend}
     {$if declared(ASN1_STRING_TABLE_cleanup_introduced)}
     if LibVersion < ASN1_STRING_TABLE_cleanup_introduced then
     begin
       {$if declared(FC_ASN1_STRING_TABLE_cleanup)}
       ASN1_STRING_TABLE_cleanup := @FC_ASN1_STRING_TABLE_cleanup;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_cleanup_allownil)}
-      ASN1_STRING_TABLE_cleanup := @ERR_ASN1_STRING_TABLE_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_STRING_TABLE_cleanup_removed)}
@@ -8348,39 +7259,31 @@ begin
     begin
       {$if declared(_ASN1_STRING_TABLE_cleanup)}
       ASN1_STRING_TABLE_cleanup := @_ASN1_STRING_TABLE_cleanup;
-      {$else}
-      {$if not defined(ASN1_STRING_TABLE_cleanup_allownil)}
-      ASN1_STRING_TABLE_cleanup := @ERR_ASN1_STRING_TABLE_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_STRING_TABLE_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_STRING_TABLE_cleanup := @ERR_ASN1_STRING_TABLE_cleanup;
+    if FuncLoadError then
       AFailed.Add('ASN1_STRING_TABLE_cleanup');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_new := LoadLibFunction(ADllHandle, ASN1_item_new_procname);
-  FuncLoaded := assigned(ASN1_item_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_new_allownil)}
+    ASN1_item_new := @ERR_ASN1_item_new;
+    {$ifend}
     {$if declared(ASN1_item_new_introduced)}
     if LibVersion < ASN1_item_new_introduced then
     begin
       {$if declared(FC_ASN1_item_new)}
       ASN1_item_new := @FC_ASN1_item_new;
-      {$else}
-      {$if not defined(ASN1_item_new_allownil)}
-      ASN1_item_new := @ERR_ASN1_item_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_new_removed)}
@@ -8388,39 +7291,31 @@ begin
     begin
       {$if declared(_ASN1_item_new)}
       ASN1_item_new := @_ASN1_item_new;
-      {$else}
-      {$if not defined(ASN1_item_new_allownil)}
-      ASN1_item_new := @ERR_ASN1_item_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_new := @ERR_ASN1_item_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_free := LoadLibFunction(ADllHandle, ASN1_item_free_procname);
-  FuncLoaded := assigned(ASN1_item_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_free_allownil)}
+    ASN1_item_free := @ERR_ASN1_item_free;
+    {$ifend}
     {$if declared(ASN1_item_free_introduced)}
     if LibVersion < ASN1_item_free_introduced then
     begin
       {$if declared(FC_ASN1_item_free)}
       ASN1_item_free := @FC_ASN1_item_free;
-      {$else}
-      {$if not defined(ASN1_item_free_allownil)}
-      ASN1_item_free := @ERR_ASN1_item_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_free_removed)}
@@ -8428,39 +7323,31 @@ begin
     begin
       {$if declared(_ASN1_item_free)}
       ASN1_item_free := @_ASN1_item_free;
-      {$else}
-      {$if not defined(ASN1_item_free_allownil)}
-      ASN1_item_free := @ERR_ASN1_item_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_free := @ERR_ASN1_item_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_free');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_d2i := LoadLibFunction(ADllHandle, ASN1_item_d2i_procname);
-  FuncLoaded := assigned(ASN1_item_d2i);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_d2i);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_d2i_allownil)}
+    ASN1_item_d2i := @ERR_ASN1_item_d2i;
+    {$ifend}
     {$if declared(ASN1_item_d2i_introduced)}
     if LibVersion < ASN1_item_d2i_introduced then
     begin
       {$if declared(FC_ASN1_item_d2i)}
       ASN1_item_d2i := @FC_ASN1_item_d2i;
-      {$else}
-      {$if not defined(ASN1_item_d2i_allownil)}
-      ASN1_item_d2i := @ERR_ASN1_item_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_d2i_removed)}
@@ -8468,39 +7355,31 @@ begin
     begin
       {$if declared(_ASN1_item_d2i)}
       ASN1_item_d2i := @_ASN1_item_d2i;
-      {$else}
-      {$if not defined(ASN1_item_d2i_allownil)}
-      ASN1_item_d2i := @ERR_ASN1_item_d2i;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_d2i_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_d2i := @ERR_ASN1_item_d2i;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_d2i');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_i2d := LoadLibFunction(ADllHandle, ASN1_item_i2d_procname);
-  FuncLoaded := assigned(ASN1_item_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_i2d_allownil)}
+    ASN1_item_i2d := @ERR_ASN1_item_i2d;
+    {$ifend}
     {$if declared(ASN1_item_i2d_introduced)}
     if LibVersion < ASN1_item_i2d_introduced then
     begin
       {$if declared(FC_ASN1_item_i2d)}
       ASN1_item_i2d := @FC_ASN1_item_i2d;
-      {$else}
-      {$if not defined(ASN1_item_i2d_allownil)}
-      ASN1_item_i2d := @ERR_ASN1_item_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_i2d_removed)}
@@ -8508,39 +7387,31 @@ begin
     begin
       {$if declared(_ASN1_item_i2d)}
       ASN1_item_i2d := @_ASN1_item_i2d;
-      {$else}
-      {$if not defined(ASN1_item_i2d_allownil)}
-      ASN1_item_i2d := @ERR_ASN1_item_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_i2d := @ERR_ASN1_item_i2d;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_i2d');
-    end;
     {$ifend}
   end;
 
 
   ASN1_item_ndef_i2d := LoadLibFunction(ADllHandle, ASN1_item_ndef_i2d_procname);
-  FuncLoaded := assigned(ASN1_item_ndef_i2d);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_ndef_i2d);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_ndef_i2d_allownil)}
+    ASN1_item_ndef_i2d := @ERR_ASN1_item_ndef_i2d;
+    {$ifend}
     {$if declared(ASN1_item_ndef_i2d_introduced)}
     if LibVersion < ASN1_item_ndef_i2d_introduced then
     begin
       {$if declared(FC_ASN1_item_ndef_i2d)}
       ASN1_item_ndef_i2d := @FC_ASN1_item_ndef_i2d;
-      {$else}
-      {$if not defined(ASN1_item_ndef_i2d_allownil)}
-      ASN1_item_ndef_i2d := @ERR_ASN1_item_ndef_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_ndef_i2d_removed)}
@@ -8548,39 +7419,31 @@ begin
     begin
       {$if declared(_ASN1_item_ndef_i2d)}
       ASN1_item_ndef_i2d := @_ASN1_item_ndef_i2d;
-      {$else}
-      {$if not defined(ASN1_item_ndef_i2d_allownil)}
-      ASN1_item_ndef_i2d := @ERR_ASN1_item_ndef_i2d;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_ndef_i2d_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_ndef_i2d := @ERR_ASN1_item_ndef_i2d;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_ndef_i2d');
-    end;
     {$ifend}
   end;
 
 
   ASN1_add_oid_module := LoadLibFunction(ADllHandle, ASN1_add_oid_module_procname);
-  FuncLoaded := assigned(ASN1_add_oid_module);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_add_oid_module);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_add_oid_module_allownil)}
+    ASN1_add_oid_module := @ERR_ASN1_add_oid_module;
+    {$ifend}
     {$if declared(ASN1_add_oid_module_introduced)}
     if LibVersion < ASN1_add_oid_module_introduced then
     begin
       {$if declared(FC_ASN1_add_oid_module)}
       ASN1_add_oid_module := @FC_ASN1_add_oid_module;
-      {$else}
-      {$if not defined(ASN1_add_oid_module_allownil)}
-      ASN1_add_oid_module := @ERR_ASN1_add_oid_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_add_oid_module_removed)}
@@ -8588,39 +7451,31 @@ begin
     begin
       {$if declared(_ASN1_add_oid_module)}
       ASN1_add_oid_module := @_ASN1_add_oid_module;
-      {$else}
-      {$if not defined(ASN1_add_oid_module_allownil)}
-      ASN1_add_oid_module := @ERR_ASN1_add_oid_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_add_oid_module_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_add_oid_module := @ERR_ASN1_add_oid_module;
+    if FuncLoadError then
       AFailed.Add('ASN1_add_oid_module');
-    end;
     {$ifend}
   end;
 
 
   ASN1_add_stable_module := LoadLibFunction(ADllHandle, ASN1_add_stable_module_procname);
-  FuncLoaded := assigned(ASN1_add_stable_module);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_add_stable_module);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_add_stable_module_allownil)}
+    ASN1_add_stable_module := @ERR_ASN1_add_stable_module;
+    {$ifend}
     {$if declared(ASN1_add_stable_module_introduced)}
     if LibVersion < ASN1_add_stable_module_introduced then
     begin
       {$if declared(FC_ASN1_add_stable_module)}
       ASN1_add_stable_module := @FC_ASN1_add_stable_module;
-      {$else}
-      {$if not defined(ASN1_add_stable_module_allownil)}
-      ASN1_add_stable_module := @ERR_ASN1_add_stable_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_add_stable_module_removed)}
@@ -8628,39 +7483,31 @@ begin
     begin
       {$if declared(_ASN1_add_stable_module)}
       ASN1_add_stable_module := @_ASN1_add_stable_module;
-      {$else}
-      {$if not defined(ASN1_add_stable_module_allownil)}
-      ASN1_add_stable_module := @ERR_ASN1_add_stable_module;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_add_stable_module_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_add_stable_module := @ERR_ASN1_add_stable_module;
+    if FuncLoadError then
       AFailed.Add('ASN1_add_stable_module');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_generate_nconf := LoadLibFunction(ADllHandle, ASN1_generate_nconf_procname);
-  FuncLoaded := assigned(ASN1_generate_nconf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_generate_nconf);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_generate_nconf_allownil)}
+    ASN1_generate_nconf := @ERR_ASN1_generate_nconf;
+    {$ifend}
     {$if declared(ASN1_generate_nconf_introduced)}
     if LibVersion < ASN1_generate_nconf_introduced then
     begin
       {$if declared(FC_ASN1_generate_nconf)}
       ASN1_generate_nconf := @FC_ASN1_generate_nconf;
-      {$else}
-      {$if not defined(ASN1_generate_nconf_allownil)}
-      ASN1_generate_nconf := @ERR_ASN1_generate_nconf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_generate_nconf_removed)}
@@ -8668,39 +7515,31 @@ begin
     begin
       {$if declared(_ASN1_generate_nconf)}
       ASN1_generate_nconf := @_ASN1_generate_nconf;
-      {$else}
-      {$if not defined(ASN1_generate_nconf_allownil)}
-      ASN1_generate_nconf := @ERR_ASN1_generate_nconf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_generate_nconf_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_generate_nconf := @ERR_ASN1_generate_nconf;
+    if FuncLoadError then
       AFailed.Add('ASN1_generate_nconf');
-    end;
     {$ifend}
   end;
 
 
   ASN1_generate_v3 := LoadLibFunction(ADllHandle, ASN1_generate_v3_procname);
-  FuncLoaded := assigned(ASN1_generate_v3);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_generate_v3);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_generate_v3_allownil)}
+    ASN1_generate_v3 := @ERR_ASN1_generate_v3;
+    {$ifend}
     {$if declared(ASN1_generate_v3_introduced)}
     if LibVersion < ASN1_generate_v3_introduced then
     begin
       {$if declared(FC_ASN1_generate_v3)}
       ASN1_generate_v3 := @FC_ASN1_generate_v3;
-      {$else}
-      {$if not defined(ASN1_generate_v3_allownil)}
-      ASN1_generate_v3 := @ERR_ASN1_generate_v3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_generate_v3_removed)}
@@ -8708,39 +7547,31 @@ begin
     begin
       {$if declared(_ASN1_generate_v3)}
       ASN1_generate_v3 := @_ASN1_generate_v3;
-      {$else}
-      {$if not defined(ASN1_generate_v3_allownil)}
-      ASN1_generate_v3 := @ERR_ASN1_generate_v3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_generate_v3_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_generate_v3 := @ERR_ASN1_generate_v3;
+    if FuncLoadError then
       AFailed.Add('ASN1_generate_v3');
-    end;
     {$ifend}
   end;
 
 
   ASN1_str2mask := LoadLibFunction(ADllHandle, ASN1_str2mask_procname);
-  FuncLoaded := assigned(ASN1_str2mask);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_str2mask);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_str2mask_allownil)}
+    ASN1_str2mask := @ERR_ASN1_str2mask;
+    {$ifend}
     {$if declared(ASN1_str2mask_introduced)}
     if LibVersion < ASN1_str2mask_introduced then
     begin
       {$if declared(FC_ASN1_str2mask)}
       ASN1_str2mask := @FC_ASN1_str2mask;
-      {$else}
-      {$if not defined(ASN1_str2mask_allownil)}
-      ASN1_str2mask := @ERR_ASN1_str2mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_str2mask_removed)}
@@ -8748,39 +7579,31 @@ begin
     begin
       {$if declared(_ASN1_str2mask)}
       ASN1_str2mask := @_ASN1_str2mask;
-      {$else}
-      {$if not defined(ASN1_str2mask_allownil)}
-      ASN1_str2mask := @ERR_ASN1_str2mask;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_str2mask_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_str2mask := @ERR_ASN1_str2mask;
+    if FuncLoadError then
       AFailed.Add('ASN1_str2mask');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_item_print := LoadLibFunction(ADllHandle, ASN1_item_print_procname);
-  FuncLoaded := assigned(ASN1_item_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_item_print);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_item_print_allownil)}
+    ASN1_item_print := @ERR_ASN1_item_print;
+    {$ifend}
     {$if declared(ASN1_item_print_introduced)}
     if LibVersion < ASN1_item_print_introduced then
     begin
       {$if declared(FC_ASN1_item_print)}
       ASN1_item_print := @FC_ASN1_item_print;
-      {$else}
-      {$if not defined(ASN1_item_print_allownil)}
-      ASN1_item_print := @ERR_ASN1_item_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_item_print_removed)}
@@ -8788,39 +7611,31 @@ begin
     begin
       {$if declared(_ASN1_item_print)}
       ASN1_item_print := @_ASN1_item_print;
-      {$else}
-      {$if not defined(ASN1_item_print_allownil)}
-      ASN1_item_print := @ERR_ASN1_item_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_item_print_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_item_print := @ERR_ASN1_item_print;
+    if FuncLoadError then
       AFailed.Add('ASN1_item_print');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_new := LoadLibFunction(ADllHandle, ASN1_PCTX_new_procname);
-  FuncLoaded := assigned(ASN1_PCTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_new_allownil)}
+    ASN1_PCTX_new := @ERR_ASN1_PCTX_new;
+    {$ifend}
     {$if declared(ASN1_PCTX_new_introduced)}
     if LibVersion < ASN1_PCTX_new_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_new)}
       ASN1_PCTX_new := @FC_ASN1_PCTX_new;
-      {$else}
-      {$if not defined(ASN1_PCTX_new_allownil)}
-      ASN1_PCTX_new := @ERR_ASN1_PCTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_new_removed)}
@@ -8828,39 +7643,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_new)}
       ASN1_PCTX_new := @_ASN1_PCTX_new;
-      {$else}
-      {$if not defined(ASN1_PCTX_new_allownil)}
-      ASN1_PCTX_new := @ERR_ASN1_PCTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_new := @ERR_ASN1_PCTX_new;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_new');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_free := LoadLibFunction(ADllHandle, ASN1_PCTX_free_procname);
-  FuncLoaded := assigned(ASN1_PCTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_free_allownil)}
+    ASN1_PCTX_free := @ERR_ASN1_PCTX_free;
+    {$ifend}
     {$if declared(ASN1_PCTX_free_introduced)}
     if LibVersion < ASN1_PCTX_free_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_free)}
       ASN1_PCTX_free := @FC_ASN1_PCTX_free;
-      {$else}
-      {$if not defined(ASN1_PCTX_free_allownil)}
-      ASN1_PCTX_free := @ERR_ASN1_PCTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_free_removed)}
@@ -8868,39 +7675,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_free)}
       ASN1_PCTX_free := @_ASN1_PCTX_free;
-      {$else}
-      {$if not defined(ASN1_PCTX_free_allownil)}
-      ASN1_PCTX_free := @ERR_ASN1_PCTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_free := @ERR_ASN1_PCTX_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_free');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_get_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_get_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_get_flags_allownil)}
+    ASN1_PCTX_get_flags := @ERR_ASN1_PCTX_get_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_get_flags_introduced)}
     if LibVersion < ASN1_PCTX_get_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_get_flags)}
       ASN1_PCTX_get_flags := @FC_ASN1_PCTX_get_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_flags_allownil)}
-      ASN1_PCTX_get_flags := @ERR_ASN1_PCTX_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_get_flags_removed)}
@@ -8908,39 +7707,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_get_flags)}
       ASN1_PCTX_get_flags := @_ASN1_PCTX_get_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_flags_allownil)}
-      ASN1_PCTX_get_flags := @ERR_ASN1_PCTX_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_get_flags := @ERR_ASN1_PCTX_get_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_get_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_set_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_set_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_set_flags_allownil)}
+    ASN1_PCTX_set_flags := @ERR_ASN1_PCTX_set_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_set_flags_introduced)}
     if LibVersion < ASN1_PCTX_set_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_set_flags)}
       ASN1_PCTX_set_flags := @FC_ASN1_PCTX_set_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_flags_allownil)}
-      ASN1_PCTX_set_flags := @ERR_ASN1_PCTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_set_flags_removed)}
@@ -8948,39 +7739,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_set_flags)}
       ASN1_PCTX_set_flags := @_ASN1_PCTX_set_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_flags_allownil)}
-      ASN1_PCTX_set_flags := @ERR_ASN1_PCTX_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_set_flags := @ERR_ASN1_PCTX_set_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_set_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_get_nm_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_get_nm_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_get_nm_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_get_nm_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_get_nm_flags_allownil)}
+    ASN1_PCTX_get_nm_flags := @ERR_ASN1_PCTX_get_nm_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_get_nm_flags_introduced)}
     if LibVersion < ASN1_PCTX_get_nm_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_get_nm_flags)}
       ASN1_PCTX_get_nm_flags := @FC_ASN1_PCTX_get_nm_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_nm_flags_allownil)}
-      ASN1_PCTX_get_nm_flags := @ERR_ASN1_PCTX_get_nm_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_get_nm_flags_removed)}
@@ -8988,39 +7771,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_get_nm_flags)}
       ASN1_PCTX_get_nm_flags := @_ASN1_PCTX_get_nm_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_nm_flags_allownil)}
-      ASN1_PCTX_get_nm_flags := @ERR_ASN1_PCTX_get_nm_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_get_nm_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_get_nm_flags := @ERR_ASN1_PCTX_get_nm_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_get_nm_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_set_nm_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_set_nm_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_set_nm_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_set_nm_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_set_nm_flags_allownil)}
+    ASN1_PCTX_set_nm_flags := @ERR_ASN1_PCTX_set_nm_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_set_nm_flags_introduced)}
     if LibVersion < ASN1_PCTX_set_nm_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_set_nm_flags)}
       ASN1_PCTX_set_nm_flags := @FC_ASN1_PCTX_set_nm_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_nm_flags_allownil)}
-      ASN1_PCTX_set_nm_flags := @ERR_ASN1_PCTX_set_nm_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_set_nm_flags_removed)}
@@ -9028,39 +7803,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_set_nm_flags)}
       ASN1_PCTX_set_nm_flags := @_ASN1_PCTX_set_nm_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_nm_flags_allownil)}
-      ASN1_PCTX_set_nm_flags := @ERR_ASN1_PCTX_set_nm_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_set_nm_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_set_nm_flags := @ERR_ASN1_PCTX_set_nm_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_set_nm_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_get_cert_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_get_cert_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_get_cert_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_get_cert_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_get_cert_flags_allownil)}
+    ASN1_PCTX_get_cert_flags := @ERR_ASN1_PCTX_get_cert_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_get_cert_flags_introduced)}
     if LibVersion < ASN1_PCTX_get_cert_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_get_cert_flags)}
       ASN1_PCTX_get_cert_flags := @FC_ASN1_PCTX_get_cert_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_cert_flags_allownil)}
-      ASN1_PCTX_get_cert_flags := @ERR_ASN1_PCTX_get_cert_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_get_cert_flags_removed)}
@@ -9068,39 +7835,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_get_cert_flags)}
       ASN1_PCTX_get_cert_flags := @_ASN1_PCTX_get_cert_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_cert_flags_allownil)}
-      ASN1_PCTX_get_cert_flags := @ERR_ASN1_PCTX_get_cert_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_get_cert_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_get_cert_flags := @ERR_ASN1_PCTX_get_cert_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_get_cert_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_set_cert_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_set_cert_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_set_cert_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_set_cert_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_set_cert_flags_allownil)}
+    ASN1_PCTX_set_cert_flags := @ERR_ASN1_PCTX_set_cert_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_set_cert_flags_introduced)}
     if LibVersion < ASN1_PCTX_set_cert_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_set_cert_flags)}
       ASN1_PCTX_set_cert_flags := @FC_ASN1_PCTX_set_cert_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_cert_flags_allownil)}
-      ASN1_PCTX_set_cert_flags := @ERR_ASN1_PCTX_set_cert_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_set_cert_flags_removed)}
@@ -9108,39 +7867,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_set_cert_flags)}
       ASN1_PCTX_set_cert_flags := @_ASN1_PCTX_set_cert_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_cert_flags_allownil)}
-      ASN1_PCTX_set_cert_flags := @ERR_ASN1_PCTX_set_cert_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_set_cert_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_set_cert_flags := @ERR_ASN1_PCTX_set_cert_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_set_cert_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_get_oid_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_get_oid_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_get_oid_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_get_oid_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_get_oid_flags_allownil)}
+    ASN1_PCTX_get_oid_flags := @ERR_ASN1_PCTX_get_oid_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_get_oid_flags_introduced)}
     if LibVersion < ASN1_PCTX_get_oid_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_get_oid_flags)}
       ASN1_PCTX_get_oid_flags := @FC_ASN1_PCTX_get_oid_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_oid_flags_allownil)}
-      ASN1_PCTX_get_oid_flags := @ERR_ASN1_PCTX_get_oid_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_get_oid_flags_removed)}
@@ -9148,39 +7899,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_get_oid_flags)}
       ASN1_PCTX_get_oid_flags := @_ASN1_PCTX_get_oid_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_oid_flags_allownil)}
-      ASN1_PCTX_get_oid_flags := @ERR_ASN1_PCTX_get_oid_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_get_oid_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_get_oid_flags := @ERR_ASN1_PCTX_get_oid_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_get_oid_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_set_oid_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_set_oid_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_set_oid_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_set_oid_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_set_oid_flags_allownil)}
+    ASN1_PCTX_set_oid_flags := @ERR_ASN1_PCTX_set_oid_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_set_oid_flags_introduced)}
     if LibVersion < ASN1_PCTX_set_oid_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_set_oid_flags)}
       ASN1_PCTX_set_oid_flags := @FC_ASN1_PCTX_set_oid_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_oid_flags_allownil)}
-      ASN1_PCTX_set_oid_flags := @ERR_ASN1_PCTX_set_oid_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_set_oid_flags_removed)}
@@ -9188,39 +7931,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_set_oid_flags)}
       ASN1_PCTX_set_oid_flags := @_ASN1_PCTX_set_oid_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_oid_flags_allownil)}
-      ASN1_PCTX_set_oid_flags := @ERR_ASN1_PCTX_set_oid_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_set_oid_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_set_oid_flags := @ERR_ASN1_PCTX_set_oid_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_set_oid_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_get_str_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_get_str_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_get_str_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_get_str_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_get_str_flags_allownil)}
+    ASN1_PCTX_get_str_flags := @ERR_ASN1_PCTX_get_str_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_get_str_flags_introduced)}
     if LibVersion < ASN1_PCTX_get_str_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_get_str_flags)}
       ASN1_PCTX_get_str_flags := @FC_ASN1_PCTX_get_str_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_str_flags_allownil)}
-      ASN1_PCTX_get_str_flags := @ERR_ASN1_PCTX_get_str_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_get_str_flags_removed)}
@@ -9228,39 +7963,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_get_str_flags)}
       ASN1_PCTX_get_str_flags := @_ASN1_PCTX_get_str_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_get_str_flags_allownil)}
-      ASN1_PCTX_get_str_flags := @ERR_ASN1_PCTX_get_str_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_get_str_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_get_str_flags := @ERR_ASN1_PCTX_get_str_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_get_str_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_PCTX_set_str_flags := LoadLibFunction(ADllHandle, ASN1_PCTX_set_str_flags_procname);
-  FuncLoaded := assigned(ASN1_PCTX_set_str_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_PCTX_set_str_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_PCTX_set_str_flags_allownil)}
+    ASN1_PCTX_set_str_flags := @ERR_ASN1_PCTX_set_str_flags;
+    {$ifend}
     {$if declared(ASN1_PCTX_set_str_flags_introduced)}
     if LibVersion < ASN1_PCTX_set_str_flags_introduced then
     begin
       {$if declared(FC_ASN1_PCTX_set_str_flags)}
       ASN1_PCTX_set_str_flags := @FC_ASN1_PCTX_set_str_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_str_flags_allownil)}
-      ASN1_PCTX_set_str_flags := @ERR_ASN1_PCTX_set_str_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_PCTX_set_str_flags_removed)}
@@ -9268,39 +7995,31 @@ begin
     begin
       {$if declared(_ASN1_PCTX_set_str_flags)}
       ASN1_PCTX_set_str_flags := @_ASN1_PCTX_set_str_flags;
-      {$else}
-      {$if not defined(ASN1_PCTX_set_str_flags_allownil)}
-      ASN1_PCTX_set_str_flags := @ERR_ASN1_PCTX_set_str_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_PCTX_set_str_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_PCTX_set_str_flags := @ERR_ASN1_PCTX_set_str_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_PCTX_set_str_flags');
-    end;
     {$ifend}
   end;
 
 
   ASN1_SCTX_free := LoadLibFunction(ADllHandle, ASN1_SCTX_free_procname);
-  FuncLoaded := assigned(ASN1_SCTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_free_allownil)}
+    ASN1_SCTX_free := @ERR_ASN1_SCTX_free;
+    {$ifend}
     {$if declared(ASN1_SCTX_free_introduced)}
     if LibVersion < ASN1_SCTX_free_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_free)}
       ASN1_SCTX_free := @FC_ASN1_SCTX_free;
-      {$else}
-      {$if not defined(ASN1_SCTX_free_allownil)}
-      ASN1_SCTX_free := @ERR_ASN1_SCTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_free_removed)}
@@ -9308,39 +8027,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_free)}
       ASN1_SCTX_free := @_ASN1_SCTX_free;
-      {$else}
-      {$if not defined(ASN1_SCTX_free_allownil)}
-      ASN1_SCTX_free := @ERR_ASN1_SCTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_free := @ERR_ASN1_SCTX_free;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_SCTX_get_item := LoadLibFunction(ADllHandle, ASN1_SCTX_get_item_procname);
-  FuncLoaded := assigned(ASN1_SCTX_get_item);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_get_item);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_get_item_allownil)}
+    ASN1_SCTX_get_item := @ERR_ASN1_SCTX_get_item;
+    {$ifend}
     {$if declared(ASN1_SCTX_get_item_introduced)}
     if LibVersion < ASN1_SCTX_get_item_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_get_item)}
       ASN1_SCTX_get_item := @FC_ASN1_SCTX_get_item;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_item_allownil)}
-      ASN1_SCTX_get_item := @ERR_ASN1_SCTX_get_item;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_get_item_removed)}
@@ -9348,39 +8059,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_get_item)}
       ASN1_SCTX_get_item := @_ASN1_SCTX_get_item;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_item_allownil)}
-      ASN1_SCTX_get_item := @ERR_ASN1_SCTX_get_item;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_get_item_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_get_item := @ERR_ASN1_SCTX_get_item;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_get_item');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_SCTX_get_template := LoadLibFunction(ADllHandle, ASN1_SCTX_get_template_procname);
-  FuncLoaded := assigned(ASN1_SCTX_get_template);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_get_template);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_get_template_allownil)}
+    ASN1_SCTX_get_template := @ERR_ASN1_SCTX_get_template;
+    {$ifend}
     {$if declared(ASN1_SCTX_get_template_introduced)}
     if LibVersion < ASN1_SCTX_get_template_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_get_template)}
       ASN1_SCTX_get_template := @FC_ASN1_SCTX_get_template;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_template_allownil)}
-      ASN1_SCTX_get_template := @ERR_ASN1_SCTX_get_template;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_get_template_removed)}
@@ -9388,39 +8091,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_get_template)}
       ASN1_SCTX_get_template := @_ASN1_SCTX_get_template;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_template_allownil)}
-      ASN1_SCTX_get_template := @ERR_ASN1_SCTX_get_template;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_get_template_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_get_template := @ERR_ASN1_SCTX_get_template;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_get_template');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_SCTX_get_flags := LoadLibFunction(ADllHandle, ASN1_SCTX_get_flags_procname);
-  FuncLoaded := assigned(ASN1_SCTX_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_get_flags_allownil)}
+    ASN1_SCTX_get_flags := @ERR_ASN1_SCTX_get_flags;
+    {$ifend}
     {$if declared(ASN1_SCTX_get_flags_introduced)}
     if LibVersion < ASN1_SCTX_get_flags_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_get_flags)}
       ASN1_SCTX_get_flags := @FC_ASN1_SCTX_get_flags;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_flags_allownil)}
-      ASN1_SCTX_get_flags := @ERR_ASN1_SCTX_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_get_flags_removed)}
@@ -9428,39 +8123,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_get_flags)}
       ASN1_SCTX_get_flags := @_ASN1_SCTX_get_flags;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_flags_allownil)}
-      ASN1_SCTX_get_flags := @ERR_ASN1_SCTX_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_get_flags := @ERR_ASN1_SCTX_get_flags;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_get_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_SCTX_set_app_data := LoadLibFunction(ADllHandle, ASN1_SCTX_set_app_data_procname);
-  FuncLoaded := assigned(ASN1_SCTX_set_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_set_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_set_app_data_allownil)}
+    ASN1_SCTX_set_app_data := @ERR_ASN1_SCTX_set_app_data;
+    {$ifend}
     {$if declared(ASN1_SCTX_set_app_data_introduced)}
     if LibVersion < ASN1_SCTX_set_app_data_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_set_app_data)}
       ASN1_SCTX_set_app_data := @FC_ASN1_SCTX_set_app_data;
-      {$else}
-      {$if not defined(ASN1_SCTX_set_app_data_allownil)}
-      ASN1_SCTX_set_app_data := @ERR_ASN1_SCTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_set_app_data_removed)}
@@ -9468,39 +8155,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_set_app_data)}
       ASN1_SCTX_set_app_data := @_ASN1_SCTX_set_app_data;
-      {$else}
-      {$if not defined(ASN1_SCTX_set_app_data_allownil)}
-      ASN1_SCTX_set_app_data := @ERR_ASN1_SCTX_set_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_set_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_set_app_data := @ERR_ASN1_SCTX_set_app_data;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_set_app_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_SCTX_get_app_data := LoadLibFunction(ADllHandle, ASN1_SCTX_get_app_data_procname);
-  FuncLoaded := assigned(ASN1_SCTX_get_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_SCTX_get_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_SCTX_get_app_data_allownil)}
+    ASN1_SCTX_get_app_data := @ERR_ASN1_SCTX_get_app_data;
+    {$ifend}
     {$if declared(ASN1_SCTX_get_app_data_introduced)}
     if LibVersion < ASN1_SCTX_get_app_data_introduced then
     begin
       {$if declared(FC_ASN1_SCTX_get_app_data)}
       ASN1_SCTX_get_app_data := @FC_ASN1_SCTX_get_app_data;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_app_data_allownil)}
-      ASN1_SCTX_get_app_data := @ERR_ASN1_SCTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_SCTX_get_app_data_removed)}
@@ -9508,39 +8187,31 @@ begin
     begin
       {$if declared(_ASN1_SCTX_get_app_data)}
       ASN1_SCTX_get_app_data := @_ASN1_SCTX_get_app_data;
-      {$else}
-      {$if not defined(ASN1_SCTX_get_app_data_allownil)}
-      ASN1_SCTX_get_app_data := @ERR_ASN1_SCTX_get_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_SCTX_get_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_SCTX_get_app_data := @ERR_ASN1_SCTX_get_app_data;
+    if FuncLoadError then
       AFailed.Add('ASN1_SCTX_get_app_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_f_asn1 := LoadLibFunction(ADllHandle, BIO_f_asn1_procname);
-  FuncLoaded := assigned(BIO_f_asn1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_asn1);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_asn1_allownil)}
+    BIO_f_asn1 := @ERR_BIO_f_asn1;
+    {$ifend}
     {$if declared(BIO_f_asn1_introduced)}
     if LibVersion < BIO_f_asn1_introduced then
     begin
       {$if declared(FC_BIO_f_asn1)}
       BIO_f_asn1 := @FC_BIO_f_asn1;
-      {$else}
-      {$if not defined(BIO_f_asn1_allownil)}
-      BIO_f_asn1 := @ERR_BIO_f_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_asn1_removed)}
@@ -9548,39 +8219,31 @@ begin
     begin
       {$if declared(_BIO_f_asn1)}
       BIO_f_asn1 := @_BIO_f_asn1;
-      {$else}
-      {$if not defined(BIO_f_asn1_allownil)}
-      BIO_f_asn1 := @ERR_BIO_f_asn1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_asn1_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_asn1 := @ERR_BIO_f_asn1;
+    if FuncLoadError then
       AFailed.Add('BIO_f_asn1');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_NDEF := LoadLibFunction(ADllHandle, BIO_new_NDEF_procname);
-  FuncLoaded := assigned(BIO_new_NDEF);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_NDEF);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_NDEF_allownil)}
+    BIO_new_NDEF := @ERR_BIO_new_NDEF;
+    {$ifend}
     {$if declared(BIO_new_NDEF_introduced)}
     if LibVersion < BIO_new_NDEF_introduced then
     begin
       {$if declared(FC_BIO_new_NDEF)}
       BIO_new_NDEF := @FC_BIO_new_NDEF;
-      {$else}
-      {$if not defined(BIO_new_NDEF_allownil)}
-      BIO_new_NDEF := @ERR_BIO_new_NDEF;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_NDEF_removed)}
@@ -9588,39 +8251,31 @@ begin
     begin
       {$if declared(_BIO_new_NDEF)}
       BIO_new_NDEF := @_BIO_new_NDEF;
-      {$else}
-      {$if not defined(BIO_new_NDEF_allownil)}
-      BIO_new_NDEF := @ERR_BIO_new_NDEF;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_NDEF_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_NDEF := @ERR_BIO_new_NDEF;
+    if FuncLoadError then
       AFailed.Add('BIO_new_NDEF');
-    end;
     {$ifend}
   end;
 
 
   i2d_ASN1_bio_stream := LoadLibFunction(ADllHandle, i2d_ASN1_bio_stream_procname);
-  FuncLoaded := assigned(i2d_ASN1_bio_stream);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_ASN1_bio_stream);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_ASN1_bio_stream_allownil)}
+    i2d_ASN1_bio_stream := @ERR_i2d_ASN1_bio_stream;
+    {$ifend}
     {$if declared(i2d_ASN1_bio_stream_introduced)}
     if LibVersion < i2d_ASN1_bio_stream_introduced then
     begin
       {$if declared(FC_i2d_ASN1_bio_stream)}
       i2d_ASN1_bio_stream := @FC_i2d_ASN1_bio_stream;
-      {$else}
-      {$if not defined(i2d_ASN1_bio_stream_allownil)}
-      i2d_ASN1_bio_stream := @ERR_i2d_ASN1_bio_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_ASN1_bio_stream_removed)}
@@ -9628,39 +8283,31 @@ begin
     begin
       {$if declared(_i2d_ASN1_bio_stream)}
       i2d_ASN1_bio_stream := @_i2d_ASN1_bio_stream;
-      {$else}
-      {$if not defined(i2d_ASN1_bio_stream_allownil)}
-      i2d_ASN1_bio_stream := @ERR_i2d_ASN1_bio_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_ASN1_bio_stream_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_ASN1_bio_stream := @ERR_i2d_ASN1_bio_stream;
+    if FuncLoadError then
       AFailed.Add('i2d_ASN1_bio_stream');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_ASN1_stream := LoadLibFunction(ADllHandle, PEM_write_bio_ASN1_stream_procname);
-  FuncLoaded := assigned(PEM_write_bio_ASN1_stream);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_ASN1_stream);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_ASN1_stream_allownil)}
+    PEM_write_bio_ASN1_stream := @ERR_PEM_write_bio_ASN1_stream;
+    {$ifend}
     {$if declared(PEM_write_bio_ASN1_stream_introduced)}
     if LibVersion < PEM_write_bio_ASN1_stream_introduced then
     begin
       {$if declared(FC_PEM_write_bio_ASN1_stream)}
       PEM_write_bio_ASN1_stream := @FC_PEM_write_bio_ASN1_stream;
-      {$else}
-      {$if not defined(PEM_write_bio_ASN1_stream_allownil)}
-      PEM_write_bio_ASN1_stream := @ERR_PEM_write_bio_ASN1_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_ASN1_stream_removed)}
@@ -9668,39 +8315,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_ASN1_stream)}
       PEM_write_bio_ASN1_stream := @_PEM_write_bio_ASN1_stream;
-      {$else}
-      {$if not defined(PEM_write_bio_ASN1_stream_allownil)}
-      PEM_write_bio_ASN1_stream := @ERR_PEM_write_bio_ASN1_stream;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_ASN1_stream_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_ASN1_stream := @ERR_PEM_write_bio_ASN1_stream;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_ASN1_stream');
-    end;
     {$ifend}
   end;
 
 
   SMIME_read_ASN1 := LoadLibFunction(ADllHandle, SMIME_read_ASN1_procname);
-  FuncLoaded := assigned(SMIME_read_ASN1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SMIME_read_ASN1);
+  if FuncLoadError then
   begin
+    {$if not defined(SMIME_read_ASN1_allownil)}
+    SMIME_read_ASN1 := @ERR_SMIME_read_ASN1;
+    {$ifend}
     {$if declared(SMIME_read_ASN1_introduced)}
     if LibVersion < SMIME_read_ASN1_introduced then
     begin
       {$if declared(FC_SMIME_read_ASN1)}
       SMIME_read_ASN1 := @FC_SMIME_read_ASN1;
-      {$else}
-      {$if not defined(SMIME_read_ASN1_allownil)}
-      SMIME_read_ASN1 := @ERR_SMIME_read_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SMIME_read_ASN1_removed)}
@@ -9708,39 +8347,31 @@ begin
     begin
       {$if declared(_SMIME_read_ASN1)}
       SMIME_read_ASN1 := @_SMIME_read_ASN1;
-      {$else}
-      {$if not defined(SMIME_read_ASN1_allownil)}
-      SMIME_read_ASN1 := @ERR_SMIME_read_ASN1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SMIME_read_ASN1_allownil)}
-    if not FuncLoaded then
-    begin
-      SMIME_read_ASN1 := @ERR_SMIME_read_ASN1;
+    if FuncLoadError then
       AFailed.Add('SMIME_read_ASN1');
-    end;
     {$ifend}
   end;
 
 
   SMIME_crlf_copy := LoadLibFunction(ADllHandle, SMIME_crlf_copy_procname);
-  FuncLoaded := assigned(SMIME_crlf_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SMIME_crlf_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(SMIME_crlf_copy_allownil)}
+    SMIME_crlf_copy := @ERR_SMIME_crlf_copy;
+    {$ifend}
     {$if declared(SMIME_crlf_copy_introduced)}
     if LibVersion < SMIME_crlf_copy_introduced then
     begin
       {$if declared(FC_SMIME_crlf_copy)}
       SMIME_crlf_copy := @FC_SMIME_crlf_copy;
-      {$else}
-      {$if not defined(SMIME_crlf_copy_allownil)}
-      SMIME_crlf_copy := @ERR_SMIME_crlf_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SMIME_crlf_copy_removed)}
@@ -9748,39 +8379,31 @@ begin
     begin
       {$if declared(_SMIME_crlf_copy)}
       SMIME_crlf_copy := @_SMIME_crlf_copy;
-      {$else}
-      {$if not defined(SMIME_crlf_copy_allownil)}
-      SMIME_crlf_copy := @ERR_SMIME_crlf_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SMIME_crlf_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      SMIME_crlf_copy := @ERR_SMIME_crlf_copy;
+    if FuncLoadError then
       AFailed.Add('SMIME_crlf_copy');
-    end;
     {$ifend}
   end;
 
 
   SMIME_text := LoadLibFunction(ADllHandle, SMIME_text_procname);
-  FuncLoaded := assigned(SMIME_text);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SMIME_text);
+  if FuncLoadError then
   begin
+    {$if not defined(SMIME_text_allownil)}
+    SMIME_text := @ERR_SMIME_text;
+    {$ifend}
     {$if declared(SMIME_text_introduced)}
     if LibVersion < SMIME_text_introduced then
     begin
       {$if declared(FC_SMIME_text)}
       SMIME_text := @FC_SMIME_text;
-      {$else}
-      {$if not defined(SMIME_text_allownil)}
-      SMIME_text := @ERR_SMIME_text;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SMIME_text_removed)}
@@ -9788,39 +8411,31 @@ begin
     begin
       {$if declared(_SMIME_text)}
       SMIME_text := @_SMIME_text;
-      {$else}
-      {$if not defined(SMIME_text_allownil)}
-      SMIME_text := @ERR_SMIME_text;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SMIME_text_allownil)}
-    if not FuncLoaded then
-    begin
-      SMIME_text := @ERR_SMIME_text;
+    if FuncLoadError then
       AFailed.Add('SMIME_text');
-    end;
     {$ifend}
   end;
 
 
   ASN1_ITEM_lookup := LoadLibFunction(ADllHandle, ASN1_ITEM_lookup_procname);
-  FuncLoaded := assigned(ASN1_ITEM_lookup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ITEM_lookup);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ITEM_lookup_allownil)}
+    ASN1_ITEM_lookup := @ERR_ASN1_ITEM_lookup;
+    {$ifend}
     {$if declared(ASN1_ITEM_lookup_introduced)}
     if LibVersion < ASN1_ITEM_lookup_introduced then
     begin
       {$if declared(FC_ASN1_ITEM_lookup)}
       ASN1_ITEM_lookup := @FC_ASN1_ITEM_lookup;
-      {$else}
-      {$if not defined(ASN1_ITEM_lookup_allownil)}
-      ASN1_ITEM_lookup := @ERR_ASN1_ITEM_lookup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ITEM_lookup_removed)}
@@ -9828,39 +8443,31 @@ begin
     begin
       {$if declared(_ASN1_ITEM_lookup)}
       ASN1_ITEM_lookup := @_ASN1_ITEM_lookup;
-      {$else}
-      {$if not defined(ASN1_ITEM_lookup_allownil)}
-      ASN1_ITEM_lookup := @ERR_ASN1_ITEM_lookup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ITEM_lookup_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ITEM_lookup := @ERR_ASN1_ITEM_lookup;
+    if FuncLoadError then
       AFailed.Add('ASN1_ITEM_lookup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   ASN1_ITEM_get := LoadLibFunction(ADllHandle, ASN1_ITEM_get_procname);
-  FuncLoaded := assigned(ASN1_ITEM_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ASN1_ITEM_get);
+  if FuncLoadError then
   begin
+    {$if not defined(ASN1_ITEM_get_allownil)}
+    ASN1_ITEM_get := @ERR_ASN1_ITEM_get;
+    {$ifend}
     {$if declared(ASN1_ITEM_get_introduced)}
     if LibVersion < ASN1_ITEM_get_introduced then
     begin
       {$if declared(FC_ASN1_ITEM_get)}
       ASN1_ITEM_get := @FC_ASN1_ITEM_get;
-      {$else}
-      {$if not defined(ASN1_ITEM_get_allownil)}
-      ASN1_ITEM_get := @ERR_ASN1_ITEM_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ASN1_ITEM_get_removed)}
@@ -9868,20 +8475,13 @@ begin
     begin
       {$if declared(_ASN1_ITEM_get)}
       ASN1_ITEM_get := @_ASN1_ITEM_get;
-      {$else}
-      {$if not defined(ASN1_ITEM_get_allownil)}
-      ASN1_ITEM_get := @ERR_ASN1_ITEM_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ASN1_ITEM_get_allownil)}
-    if not FuncLoaded then
-    begin
-      ASN1_ITEM_get := @ERR_ASN1_ITEM_get;
+    if FuncLoadError then
       AFailed.Add('ASN1_ITEM_get');
-    end;
     {$ifend}
   end;
 

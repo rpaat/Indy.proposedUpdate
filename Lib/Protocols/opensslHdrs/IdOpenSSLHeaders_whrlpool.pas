@@ -147,24 +147,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   WHIRLPOOL_Init := LoadLibFunction(ADllHandle, WHIRLPOOL_Init_procname);
-  FuncLoaded := assigned(WHIRLPOOL_Init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(WHIRLPOOL_Init);
+  if FuncLoadError then
   begin
+    {$if not defined(WHIRLPOOL_Init_allownil)}
+    WHIRLPOOL_Init := @ERR_WHIRLPOOL_Init;
+    {$ifend}
     {$if declared(WHIRLPOOL_Init_introduced)}
     if LibVersion < WHIRLPOOL_Init_introduced then
     begin
       {$if declared(FC_WHIRLPOOL_Init)}
       WHIRLPOOL_Init := @FC_WHIRLPOOL_Init;
-      {$else}
-      {$if not defined(WHIRLPOOL_Init_allownil)}
-      WHIRLPOOL_Init := @ERR_WHIRLPOOL_Init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(WHIRLPOOL_Init_removed)}
@@ -172,39 +171,31 @@ begin
     begin
       {$if declared(_WHIRLPOOL_Init)}
       WHIRLPOOL_Init := @_WHIRLPOOL_Init;
-      {$else}
-      {$if not defined(WHIRLPOOL_Init_allownil)}
-      WHIRLPOOL_Init := @ERR_WHIRLPOOL_Init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(WHIRLPOOL_Init_allownil)}
-    if not FuncLoaded then
-    begin
-      WHIRLPOOL_Init := @ERR_WHIRLPOOL_Init;
+    if FuncLoadError then
       AFailed.Add('WHIRLPOOL_Init');
-    end;
     {$ifend}
   end;
 
 
   WHIRLPOOL_Update := LoadLibFunction(ADllHandle, WHIRLPOOL_Update_procname);
-  FuncLoaded := assigned(WHIRLPOOL_Update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(WHIRLPOOL_Update);
+  if FuncLoadError then
   begin
+    {$if not defined(WHIRLPOOL_Update_allownil)}
+    WHIRLPOOL_Update := @ERR_WHIRLPOOL_Update;
+    {$ifend}
     {$if declared(WHIRLPOOL_Update_introduced)}
     if LibVersion < WHIRLPOOL_Update_introduced then
     begin
       {$if declared(FC_WHIRLPOOL_Update)}
       WHIRLPOOL_Update := @FC_WHIRLPOOL_Update;
-      {$else}
-      {$if not defined(WHIRLPOOL_Update_allownil)}
-      WHIRLPOOL_Update := @ERR_WHIRLPOOL_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(WHIRLPOOL_Update_removed)}
@@ -212,39 +203,31 @@ begin
     begin
       {$if declared(_WHIRLPOOL_Update)}
       WHIRLPOOL_Update := @_WHIRLPOOL_Update;
-      {$else}
-      {$if not defined(WHIRLPOOL_Update_allownil)}
-      WHIRLPOOL_Update := @ERR_WHIRLPOOL_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(WHIRLPOOL_Update_allownil)}
-    if not FuncLoaded then
-    begin
-      WHIRLPOOL_Update := @ERR_WHIRLPOOL_Update;
+    if FuncLoadError then
       AFailed.Add('WHIRLPOOL_Update');
-    end;
     {$ifend}
   end;
 
 
   WHIRLPOOL_BitUpdate := LoadLibFunction(ADllHandle, WHIRLPOOL_BitUpdate_procname);
-  FuncLoaded := assigned(WHIRLPOOL_BitUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(WHIRLPOOL_BitUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(WHIRLPOOL_BitUpdate_allownil)}
+    WHIRLPOOL_BitUpdate := @ERR_WHIRLPOOL_BitUpdate;
+    {$ifend}
     {$if declared(WHIRLPOOL_BitUpdate_introduced)}
     if LibVersion < WHIRLPOOL_BitUpdate_introduced then
     begin
       {$if declared(FC_WHIRLPOOL_BitUpdate)}
       WHIRLPOOL_BitUpdate := @FC_WHIRLPOOL_BitUpdate;
-      {$else}
-      {$if not defined(WHIRLPOOL_BitUpdate_allownil)}
-      WHIRLPOOL_BitUpdate := @ERR_WHIRLPOOL_BitUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(WHIRLPOOL_BitUpdate_removed)}
@@ -252,39 +235,31 @@ begin
     begin
       {$if declared(_WHIRLPOOL_BitUpdate)}
       WHIRLPOOL_BitUpdate := @_WHIRLPOOL_BitUpdate;
-      {$else}
-      {$if not defined(WHIRLPOOL_BitUpdate_allownil)}
-      WHIRLPOOL_BitUpdate := @ERR_WHIRLPOOL_BitUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(WHIRLPOOL_BitUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      WHIRLPOOL_BitUpdate := @ERR_WHIRLPOOL_BitUpdate;
+    if FuncLoadError then
       AFailed.Add('WHIRLPOOL_BitUpdate');
-    end;
     {$ifend}
   end;
 
 
   WHIRLPOOL_Final := LoadLibFunction(ADllHandle, WHIRLPOOL_Final_procname);
-  FuncLoaded := assigned(WHIRLPOOL_Final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(WHIRLPOOL_Final);
+  if FuncLoadError then
   begin
+    {$if not defined(WHIRLPOOL_Final_allownil)}
+    WHIRLPOOL_Final := @ERR_WHIRLPOOL_Final;
+    {$ifend}
     {$if declared(WHIRLPOOL_Final_introduced)}
     if LibVersion < WHIRLPOOL_Final_introduced then
     begin
       {$if declared(FC_WHIRLPOOL_Final)}
       WHIRLPOOL_Final := @FC_WHIRLPOOL_Final;
-      {$else}
-      {$if not defined(WHIRLPOOL_Final_allownil)}
-      WHIRLPOOL_Final := @ERR_WHIRLPOOL_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(WHIRLPOOL_Final_removed)}
@@ -292,39 +267,31 @@ begin
     begin
       {$if declared(_WHIRLPOOL_Final)}
       WHIRLPOOL_Final := @_WHIRLPOOL_Final;
-      {$else}
-      {$if not defined(WHIRLPOOL_Final_allownil)}
-      WHIRLPOOL_Final := @ERR_WHIRLPOOL_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(WHIRLPOOL_Final_allownil)}
-    if not FuncLoaded then
-    begin
-      WHIRLPOOL_Final := @ERR_WHIRLPOOL_Final;
+    if FuncLoadError then
       AFailed.Add('WHIRLPOOL_Final');
-    end;
     {$ifend}
   end;
 
 
   WHIRLPOOL := LoadLibFunction(ADllHandle, WHIRLPOOL_procname);
-  FuncLoaded := assigned(WHIRLPOOL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(WHIRLPOOL);
+  if FuncLoadError then
   begin
+    {$if not defined(WHIRLPOOL_allownil)}
+    WHIRLPOOL := @ERR_WHIRLPOOL;
+    {$ifend}
     {$if declared(WHIRLPOOL_introduced)}
     if LibVersion < WHIRLPOOL_introduced then
     begin
       {$if declared(FC_WHIRLPOOL)}
       WHIRLPOOL := @FC_WHIRLPOOL;
-      {$else}
-      {$if not defined(WHIRLPOOL_allownil)}
-      WHIRLPOOL := @ERR_WHIRLPOOL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(WHIRLPOOL_removed)}
@@ -332,20 +299,13 @@ begin
     begin
       {$if declared(_WHIRLPOOL)}
       WHIRLPOOL := @_WHIRLPOOL;
-      {$else}
-      {$if not defined(WHIRLPOOL_allownil)}
-      WHIRLPOOL := @ERR_WHIRLPOOL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(WHIRLPOOL_allownil)}
-    if not FuncLoaded then
-    begin
-      WHIRLPOOL := @ERR_WHIRLPOOL;
+    if FuncLoadError then
       AFailed.Add('WHIRLPOOL');
-    end;
     {$ifend}
   end;
 

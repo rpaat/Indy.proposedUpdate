@@ -162,24 +162,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   TXT_DB_read := LoadLibFunction(ADllHandle, TXT_DB_read_procname);
-  FuncLoaded := assigned(TXT_DB_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TXT_DB_read);
+  if FuncLoadError then
   begin
+    {$if not defined(TXT_DB_read_allownil)}
+    TXT_DB_read := @ERR_TXT_DB_read;
+    {$ifend}
     {$if declared(TXT_DB_read_introduced)}
     if LibVersion < TXT_DB_read_introduced then
     begin
       {$if declared(FC_TXT_DB_read)}
       TXT_DB_read := @FC_TXT_DB_read;
-      {$else}
-      {$if not defined(TXT_DB_read_allownil)}
-      TXT_DB_read := @ERR_TXT_DB_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TXT_DB_read_removed)}
@@ -187,39 +186,31 @@ begin
     begin
       {$if declared(_TXT_DB_read)}
       TXT_DB_read := @_TXT_DB_read;
-      {$else}
-      {$if not defined(TXT_DB_read_allownil)}
-      TXT_DB_read := @ERR_TXT_DB_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TXT_DB_read_allownil)}
-    if not FuncLoaded then
-    begin
-      TXT_DB_read := @ERR_TXT_DB_read;
+    if FuncLoadError then
       AFailed.Add('TXT_DB_read');
-    end;
     {$ifend}
   end;
 
 
   TXT_DB_write := LoadLibFunction(ADllHandle, TXT_DB_write_procname);
-  FuncLoaded := assigned(TXT_DB_write);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TXT_DB_write);
+  if FuncLoadError then
   begin
+    {$if not defined(TXT_DB_write_allownil)}
+    TXT_DB_write := @ERR_TXT_DB_write;
+    {$ifend}
     {$if declared(TXT_DB_write_introduced)}
     if LibVersion < TXT_DB_write_introduced then
     begin
       {$if declared(FC_TXT_DB_write)}
       TXT_DB_write := @FC_TXT_DB_write;
-      {$else}
-      {$if not defined(TXT_DB_write_allownil)}
-      TXT_DB_write := @ERR_TXT_DB_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TXT_DB_write_removed)}
@@ -227,39 +218,31 @@ begin
     begin
       {$if declared(_TXT_DB_write)}
       TXT_DB_write := @_TXT_DB_write;
-      {$else}
-      {$if not defined(TXT_DB_write_allownil)}
-      TXT_DB_write := @ERR_TXT_DB_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TXT_DB_write_allownil)}
-    if not FuncLoaded then
-    begin
-      TXT_DB_write := @ERR_TXT_DB_write;
+    if FuncLoadError then
       AFailed.Add('TXT_DB_write');
-    end;
     {$ifend}
   end;
 
 
   TXT_DB_free := LoadLibFunction(ADllHandle, TXT_DB_free_procname);
-  FuncLoaded := assigned(TXT_DB_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TXT_DB_free);
+  if FuncLoadError then
   begin
+    {$if not defined(TXT_DB_free_allownil)}
+    TXT_DB_free := @ERR_TXT_DB_free;
+    {$ifend}
     {$if declared(TXT_DB_free_introduced)}
     if LibVersion < TXT_DB_free_introduced then
     begin
       {$if declared(FC_TXT_DB_free)}
       TXT_DB_free := @FC_TXT_DB_free;
-      {$else}
-      {$if not defined(TXT_DB_free_allownil)}
-      TXT_DB_free := @ERR_TXT_DB_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TXT_DB_free_removed)}
@@ -267,39 +250,31 @@ begin
     begin
       {$if declared(_TXT_DB_free)}
       TXT_DB_free := @_TXT_DB_free;
-      {$else}
-      {$if not defined(TXT_DB_free_allownil)}
-      TXT_DB_free := @ERR_TXT_DB_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TXT_DB_free_allownil)}
-    if not FuncLoaded then
-    begin
-      TXT_DB_free := @ERR_TXT_DB_free;
+    if FuncLoadError then
       AFailed.Add('TXT_DB_free');
-    end;
     {$ifend}
   end;
 
 
   TXT_DB_get_by_index := LoadLibFunction(ADllHandle, TXT_DB_get_by_index_procname);
-  FuncLoaded := assigned(TXT_DB_get_by_index);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TXT_DB_get_by_index);
+  if FuncLoadError then
   begin
+    {$if not defined(TXT_DB_get_by_index_allownil)}
+    TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
+    {$ifend}
     {$if declared(TXT_DB_get_by_index_introduced)}
     if LibVersion < TXT_DB_get_by_index_introduced then
     begin
       {$if declared(FC_TXT_DB_get_by_index)}
       TXT_DB_get_by_index := @FC_TXT_DB_get_by_index;
-      {$else}
-      {$if not defined(TXT_DB_get_by_index_allownil)}
-      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TXT_DB_get_by_index_removed)}
@@ -307,39 +282,31 @@ begin
     begin
       {$if declared(_TXT_DB_get_by_index)}
       TXT_DB_get_by_index := @_TXT_DB_get_by_index;
-      {$else}
-      {$if not defined(TXT_DB_get_by_index_allownil)}
-      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TXT_DB_get_by_index_allownil)}
-    if not FuncLoaded then
-    begin
-      TXT_DB_get_by_index := @ERR_TXT_DB_get_by_index;
+    if FuncLoadError then
       AFailed.Add('TXT_DB_get_by_index');
-    end;
     {$ifend}
   end;
 
 
   TXT_DB_insert := LoadLibFunction(ADllHandle, TXT_DB_insert_procname);
-  FuncLoaded := assigned(TXT_DB_insert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(TXT_DB_insert);
+  if FuncLoadError then
   begin
+    {$if not defined(TXT_DB_insert_allownil)}
+    TXT_DB_insert := @ERR_TXT_DB_insert;
+    {$ifend}
     {$if declared(TXT_DB_insert_introduced)}
     if LibVersion < TXT_DB_insert_introduced then
     begin
       {$if declared(FC_TXT_DB_insert)}
       TXT_DB_insert := @FC_TXT_DB_insert;
-      {$else}
-      {$if not defined(TXT_DB_insert_allownil)}
-      TXT_DB_insert := @ERR_TXT_DB_insert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(TXT_DB_insert_removed)}
@@ -347,20 +314,13 @@ begin
     begin
       {$if declared(_TXT_DB_insert)}
       TXT_DB_insert := @_TXT_DB_insert;
-      {$else}
-      {$if not defined(TXT_DB_insert_allownil)}
-      TXT_DB_insert := @ERR_TXT_DB_insert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(TXT_DB_insert_allownil)}
-    if not FuncLoaded then
-    begin
-      TXT_DB_insert := @ERR_TXT_DB_insert;
+    if FuncLoadError then
       AFailed.Add('TXT_DB_insert');
-    end;
     {$ifend}
   end;
 

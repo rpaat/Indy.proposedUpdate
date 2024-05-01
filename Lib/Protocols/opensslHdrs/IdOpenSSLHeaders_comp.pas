@@ -191,24 +191,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   COMP_CTX_new := LoadLibFunction(ADllHandle, COMP_CTX_new_procname);
-  FuncLoaded := assigned(COMP_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_CTX_new_allownil)}
+    COMP_CTX_new := @ERR_COMP_CTX_new;
+    {$ifend}
     {$if declared(COMP_CTX_new_introduced)}
     if LibVersion < COMP_CTX_new_introduced then
     begin
       {$if declared(FC_COMP_CTX_new)}
       COMP_CTX_new := @FC_COMP_CTX_new;
-      {$else}
-      {$if not defined(COMP_CTX_new_allownil)}
-      COMP_CTX_new := @ERR_COMP_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_CTX_new_removed)}
@@ -216,39 +215,31 @@ begin
     begin
       {$if declared(_COMP_CTX_new)}
       COMP_CTX_new := @_COMP_CTX_new;
-      {$else}
-      {$if not defined(COMP_CTX_new_allownil)}
-      COMP_CTX_new := @ERR_COMP_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_CTX_new := @ERR_COMP_CTX_new;
+    if FuncLoadError then
       AFailed.Add('COMP_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   COMP_CTX_get_method := LoadLibFunction(ADllHandle, COMP_CTX_get_method_procname);
-  FuncLoaded := assigned(COMP_CTX_get_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_CTX_get_method);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_CTX_get_method_allownil)}
+    COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
+    {$ifend}
     {$if declared(COMP_CTX_get_method_introduced)}
     if LibVersion < COMP_CTX_get_method_introduced then
     begin
       {$if declared(FC_COMP_CTX_get_method)}
       COMP_CTX_get_method := @FC_COMP_CTX_get_method;
-      {$else}
-      {$if not defined(COMP_CTX_get_method_allownil)}
-      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_CTX_get_method_removed)}
@@ -256,39 +247,31 @@ begin
     begin
       {$if declared(_COMP_CTX_get_method)}
       COMP_CTX_get_method := @_COMP_CTX_get_method;
-      {$else}
-      {$if not defined(COMP_CTX_get_method_allownil)}
-      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_CTX_get_method_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_CTX_get_method := @ERR_COMP_CTX_get_method;
+    if FuncLoadError then
       AFailed.Add('COMP_CTX_get_method');
-    end;
     {$ifend}
   end;
 
 
   COMP_CTX_get_type := LoadLibFunction(ADllHandle, COMP_CTX_get_type_procname);
-  FuncLoaded := assigned(COMP_CTX_get_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_CTX_get_type);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_CTX_get_type_allownil)}
+    COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
+    {$ifend}
     {$if declared(COMP_CTX_get_type_introduced)}
     if LibVersion < COMP_CTX_get_type_introduced then
     begin
       {$if declared(FC_COMP_CTX_get_type)}
       COMP_CTX_get_type := @FC_COMP_CTX_get_type;
-      {$else}
-      {$if not defined(COMP_CTX_get_type_allownil)}
-      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_CTX_get_type_removed)}
@@ -296,39 +279,31 @@ begin
     begin
       {$if declared(_COMP_CTX_get_type)}
       COMP_CTX_get_type := @_COMP_CTX_get_type;
-      {$else}
-      {$if not defined(COMP_CTX_get_type_allownil)}
-      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_CTX_get_type_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_CTX_get_type := @ERR_COMP_CTX_get_type;
+    if FuncLoadError then
       AFailed.Add('COMP_CTX_get_type');
-    end;
     {$ifend}
   end;
 
 
   COMP_get_type := LoadLibFunction(ADllHandle, COMP_get_type_procname);
-  FuncLoaded := assigned(COMP_get_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_get_type);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_get_type_allownil)}
+    COMP_get_type := @ERR_COMP_get_type;
+    {$ifend}
     {$if declared(COMP_get_type_introduced)}
     if LibVersion < COMP_get_type_introduced then
     begin
       {$if declared(FC_COMP_get_type)}
       COMP_get_type := @FC_COMP_get_type;
-      {$else}
-      {$if not defined(COMP_get_type_allownil)}
-      COMP_get_type := @ERR_COMP_get_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_get_type_removed)}
@@ -336,39 +311,31 @@ begin
     begin
       {$if declared(_COMP_get_type)}
       COMP_get_type := @_COMP_get_type;
-      {$else}
-      {$if not defined(COMP_get_type_allownil)}
-      COMP_get_type := @ERR_COMP_get_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_get_type_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_get_type := @ERR_COMP_get_type;
+    if FuncLoadError then
       AFailed.Add('COMP_get_type');
-    end;
     {$ifend}
   end;
 
 
   COMP_get_name := LoadLibFunction(ADllHandle, COMP_get_name_procname);
-  FuncLoaded := assigned(COMP_get_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_get_name);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_get_name_allownil)}
+    COMP_get_name := @ERR_COMP_get_name;
+    {$ifend}
     {$if declared(COMP_get_name_introduced)}
     if LibVersion < COMP_get_name_introduced then
     begin
       {$if declared(FC_COMP_get_name)}
       COMP_get_name := @FC_COMP_get_name;
-      {$else}
-      {$if not defined(COMP_get_name_allownil)}
-      COMP_get_name := @ERR_COMP_get_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_get_name_removed)}
@@ -376,39 +343,31 @@ begin
     begin
       {$if declared(_COMP_get_name)}
       COMP_get_name := @_COMP_get_name;
-      {$else}
-      {$if not defined(COMP_get_name_allownil)}
-      COMP_get_name := @ERR_COMP_get_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_get_name_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_get_name := @ERR_COMP_get_name;
+    if FuncLoadError then
       AFailed.Add('COMP_get_name');
-    end;
     {$ifend}
   end;
 
 
   COMP_CTX_free := LoadLibFunction(ADllHandle, COMP_CTX_free_procname);
-  FuncLoaded := assigned(COMP_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_CTX_free_allownil)}
+    COMP_CTX_free := @ERR_COMP_CTX_free;
+    {$ifend}
     {$if declared(COMP_CTX_free_introduced)}
     if LibVersion < COMP_CTX_free_introduced then
     begin
       {$if declared(FC_COMP_CTX_free)}
       COMP_CTX_free := @FC_COMP_CTX_free;
-      {$else}
-      {$if not defined(COMP_CTX_free_allownil)}
-      COMP_CTX_free := @ERR_COMP_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_CTX_free_removed)}
@@ -416,39 +375,31 @@ begin
     begin
       {$if declared(_COMP_CTX_free)}
       COMP_CTX_free := @_COMP_CTX_free;
-      {$else}
-      {$if not defined(COMP_CTX_free_allownil)}
-      COMP_CTX_free := @ERR_COMP_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_CTX_free := @ERR_COMP_CTX_free;
+    if FuncLoadError then
       AFailed.Add('COMP_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   COMP_compress_block := LoadLibFunction(ADllHandle, COMP_compress_block_procname);
-  FuncLoaded := assigned(COMP_compress_block);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_compress_block);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_compress_block_allownil)}
+    COMP_compress_block := @ERR_COMP_compress_block;
+    {$ifend}
     {$if declared(COMP_compress_block_introduced)}
     if LibVersion < COMP_compress_block_introduced then
     begin
       {$if declared(FC_COMP_compress_block)}
       COMP_compress_block := @FC_COMP_compress_block;
-      {$else}
-      {$if not defined(COMP_compress_block_allownil)}
-      COMP_compress_block := @ERR_COMP_compress_block;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_compress_block_removed)}
@@ -456,39 +407,31 @@ begin
     begin
       {$if declared(_COMP_compress_block)}
       COMP_compress_block := @_COMP_compress_block;
-      {$else}
-      {$if not defined(COMP_compress_block_allownil)}
-      COMP_compress_block := @ERR_COMP_compress_block;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_compress_block_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_compress_block := @ERR_COMP_compress_block;
+    if FuncLoadError then
       AFailed.Add('COMP_compress_block');
-    end;
     {$ifend}
   end;
 
 
   COMP_expand_block := LoadLibFunction(ADllHandle, COMP_expand_block_procname);
-  FuncLoaded := assigned(COMP_expand_block);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_expand_block);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_expand_block_allownil)}
+    COMP_expand_block := @ERR_COMP_expand_block;
+    {$ifend}
     {$if declared(COMP_expand_block_introduced)}
     if LibVersion < COMP_expand_block_introduced then
     begin
       {$if declared(FC_COMP_expand_block)}
       COMP_expand_block := @FC_COMP_expand_block;
-      {$else}
-      {$if not defined(COMP_expand_block_allownil)}
-      COMP_expand_block := @ERR_COMP_expand_block;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_expand_block_removed)}
@@ -496,39 +439,31 @@ begin
     begin
       {$if declared(_COMP_expand_block)}
       COMP_expand_block := @_COMP_expand_block;
-      {$else}
-      {$if not defined(COMP_expand_block_allownil)}
-      COMP_expand_block := @ERR_COMP_expand_block;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_expand_block_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_expand_block := @ERR_COMP_expand_block;
+    if FuncLoadError then
       AFailed.Add('COMP_expand_block');
-    end;
     {$ifend}
   end;
 
 
   COMP_zlib := LoadLibFunction(ADllHandle, COMP_zlib_procname);
-  FuncLoaded := assigned(COMP_zlib);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(COMP_zlib);
+  if FuncLoadError then
   begin
+    {$if not defined(COMP_zlib_allownil)}
+    COMP_zlib := @ERR_COMP_zlib;
+    {$ifend}
     {$if declared(COMP_zlib_introduced)}
     if LibVersion < COMP_zlib_introduced then
     begin
       {$if declared(FC_COMP_zlib)}
       COMP_zlib := @FC_COMP_zlib;
-      {$else}
-      {$if not defined(COMP_zlib_allownil)}
-      COMP_zlib := @ERR_COMP_zlib;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(COMP_zlib_removed)}
@@ -536,39 +471,31 @@ begin
     begin
       {$if declared(_COMP_zlib)}
       COMP_zlib := @_COMP_zlib;
-      {$else}
-      {$if not defined(COMP_zlib_allownil)}
-      COMP_zlib := @ERR_COMP_zlib;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(COMP_zlib_allownil)}
-    if not FuncLoaded then
-    begin
-      COMP_zlib := @ERR_COMP_zlib;
+    if FuncLoadError then
       AFailed.Add('COMP_zlib');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_zlib := LoadLibFunction(ADllHandle, BIO_f_zlib_procname);
-  FuncLoaded := assigned(BIO_f_zlib);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_zlib);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_zlib_allownil)}
+    BIO_f_zlib := @ERR_BIO_f_zlib;
+    {$ifend}
     {$if declared(BIO_f_zlib_introduced)}
     if LibVersion < BIO_f_zlib_introduced then
     begin
       {$if declared(FC_BIO_f_zlib)}
       BIO_f_zlib := @FC_BIO_f_zlib;
-      {$else}
-      {$if not defined(BIO_f_zlib_allownil)}
-      BIO_f_zlib := @ERR_BIO_f_zlib;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_zlib_removed)}
@@ -576,20 +503,13 @@ begin
     begin
       {$if declared(_BIO_f_zlib)}
       BIO_f_zlib := @_BIO_f_zlib;
-      {$else}
-      {$if not defined(BIO_f_zlib_allownil)}
-      BIO_f_zlib := @ERR_BIO_f_zlib;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_zlib_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_zlib := @ERR_BIO_f_zlib;
+    if FuncLoadError then
       AFailed.Add('BIO_f_zlib');
-    end;
     {$ifend}
   end;
 

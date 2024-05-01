@@ -223,7 +223,7 @@ end;\n\\n/" >>$UNITFILE
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
 EOT
@@ -235,20 +235,19 @@ EOT
     sed  '/^implementation.*$/,$d' $FILE |sed "${HELPERS}d" |  grep -i '^ *\(procedure \|function \)' |sed "s/$REMOVEDNOTNILFILTER//" |\
     sed "s/$PROCFILTER/\
   \2 := LoadLibFunction(ADllHandle, \2_procname);\n\
-  FuncLoaded := assigned(\2);\n\
-  if not FuncLoaded then\n\
+  FuncLoadError := not assigned(\2);\n\
+  if FuncLoadError then\n\
   begin\n\
+    {\$if not defined(\2_allownil)}\n\
+    \2 := @ERR_\2;\n\
+    {\$ifend}\n\
     {\$if declared(\2_introduced)}\n\
     if LibVersion < \2_introduced then\n\
     begin\n\
       {\$if declared(FC_\2)}\n\
       \2 := @FC_\2;\n\
-      {\$else}\n\
-      {\$if not defined(\2_allownil)}\n\
-      \2 := @ERR_\2;\n\
       {\$ifend}\n\
-      {\$ifend}\n\
-      FuncLoaded := true;\n\
+      FuncLoadError := false;\n\
     end;\n\
     {\$ifend}\n\
     {\$if declared(\2_removed)}\n\
@@ -256,20 +255,13 @@ EOT
     begin\n\
       {\$if declared(_\2)}\n\
       \2 := @_\2;\n\
-      {\$else}\n\
-      {\$if not defined(\2_allownil)}\n\
-      \2 := @ERR_\2;\n\
       {\$ifend}\n\
-      {\$ifend}\n\
-      FuncLoaded := true;\n\
+      FuncLoadError := false;\n\
     end;\n\
     {$\ifend}\n\
     {\$if not defined(\2_allownil)}\n\
-    if not FuncLoaded then\n\
-    begin\n\
-      \2 := @ERR_\2;\n\
+    if FuncLoadError then\n\
       AFailed.Add('\2');\n\
-    end;\n\
     {\$ifend}\n\
   end;\n\n/" >> $UNITFILE
  

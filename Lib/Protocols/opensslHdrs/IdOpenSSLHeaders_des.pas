@@ -847,24 +847,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   DES_ecb2_encrypt := LoadLibFunction(ADllHandle, DES_ecb2_encrypt_procname);
-  FuncLoaded := assigned(DES_ecb2_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ecb2_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ecb2_encrypt_allownil)}
+    DES_ecb2_encrypt := @ERR_DES_ecb2_encrypt;
+    {$ifend}
     {$if declared(DES_ecb2_encrypt_introduced)}
     if LibVersion < DES_ecb2_encrypt_introduced then
     begin
       {$if declared(FC_DES_ecb2_encrypt)}
       DES_ecb2_encrypt := @FC_DES_ecb2_encrypt;
-      {$else}
-      {$if not defined(DES_ecb2_encrypt_allownil)}
-      DES_ecb2_encrypt := @ERR_DES_ecb2_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ecb2_encrypt_removed)}
@@ -872,39 +871,31 @@ begin
     begin
       {$if declared(_DES_ecb2_encrypt)}
       DES_ecb2_encrypt := @_DES_ecb2_encrypt;
-      {$else}
-      {$if not defined(DES_ecb2_encrypt_allownil)}
-      DES_ecb2_encrypt := @ERR_DES_ecb2_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ecb2_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ecb2_encrypt := @ERR_DES_ecb2_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ecb2_encrypt');
-    end;
     {$ifend}
   end;
 
   
   DES_ede2_cbc_encrypt := LoadLibFunction(ADllHandle, DES_ede2_cbc_encrypt_procname);
-  FuncLoaded := assigned(DES_ede2_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede2_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede2_cbc_encrypt_allownil)}
+    DES_ede2_cbc_encrypt := @ERR_DES_ede2_cbc_encrypt;
+    {$ifend}
     {$if declared(DES_ede2_cbc_encrypt_introduced)}
     if LibVersion < DES_ede2_cbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede2_cbc_encrypt)}
       DES_ede2_cbc_encrypt := @FC_DES_ede2_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_cbc_encrypt_allownil)}
-      DES_ede2_cbc_encrypt := @ERR_DES_ede2_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede2_cbc_encrypt_removed)}
@@ -912,39 +903,31 @@ begin
     begin
       {$if declared(_DES_ede2_cbc_encrypt)}
       DES_ede2_cbc_encrypt := @_DES_ede2_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_cbc_encrypt_allownil)}
-      DES_ede2_cbc_encrypt := @ERR_DES_ede2_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede2_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede2_cbc_encrypt := @ERR_DES_ede2_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede2_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
   
   DES_ede2_cfb64_encrypt := LoadLibFunction(ADllHandle, DES_ede2_cfb64_encrypt_procname);
-  FuncLoaded := assigned(DES_ede2_cfb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede2_cfb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede2_cfb64_encrypt_allownil)}
+    DES_ede2_cfb64_encrypt := @ERR_DES_ede2_cfb64_encrypt;
+    {$ifend}
     {$if declared(DES_ede2_cfb64_encrypt_introduced)}
     if LibVersion < DES_ede2_cfb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede2_cfb64_encrypt)}
       DES_ede2_cfb64_encrypt := @FC_DES_ede2_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_cfb64_encrypt_allownil)}
-      DES_ede2_cfb64_encrypt := @ERR_DES_ede2_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede2_cfb64_encrypt_removed)}
@@ -952,39 +935,31 @@ begin
     begin
       {$if declared(_DES_ede2_cfb64_encrypt)}
       DES_ede2_cfb64_encrypt := @_DES_ede2_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_cfb64_encrypt_allownil)}
-      DES_ede2_cfb64_encrypt := @ERR_DES_ede2_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede2_cfb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede2_cfb64_encrypt := @ERR_DES_ede2_cfb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede2_cfb64_encrypt');
-    end;
     {$ifend}
   end;
 
   
   DES_ede2_ofb64_encrypt := LoadLibFunction(ADllHandle, DES_ede2_ofb64_encrypt_procname);
-  FuncLoaded := assigned(DES_ede2_ofb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede2_ofb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede2_ofb64_encrypt_allownil)}
+    DES_ede2_ofb64_encrypt := @ERR_DES_ede2_ofb64_encrypt;
+    {$ifend}
     {$if declared(DES_ede2_ofb64_encrypt_introduced)}
     if LibVersion < DES_ede2_ofb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede2_ofb64_encrypt)}
       DES_ede2_ofb64_encrypt := @FC_DES_ede2_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_ofb64_encrypt_allownil)}
-      DES_ede2_ofb64_encrypt := @ERR_DES_ede2_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede2_ofb64_encrypt_removed)}
@@ -992,39 +967,31 @@ begin
     begin
       {$if declared(_DES_ede2_ofb64_encrypt)}
       DES_ede2_ofb64_encrypt := @_DES_ede2_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede2_ofb64_encrypt_allownil)}
-      DES_ede2_ofb64_encrypt := @ERR_DES_ede2_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede2_ofb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede2_ofb64_encrypt := @ERR_DES_ede2_ofb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede2_ofb64_encrypt');
-    end;
     {$ifend}
   end;
 
   
   DES_options := LoadLibFunction(ADllHandle, DES_options_procname);
-  FuncLoaded := assigned(DES_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_options);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_options_allownil)}
+    DES_options := @ERR_DES_options;
+    {$ifend}
     {$if declared(DES_options_introduced)}
     if LibVersion < DES_options_introduced then
     begin
       {$if declared(FC_DES_options)}
       DES_options := @FC_DES_options;
-      {$else}
-      {$if not defined(DES_options_allownil)}
-      DES_options := @ERR_DES_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_options_removed)}
@@ -1032,39 +999,31 @@ begin
     begin
       {$if declared(_DES_options)}
       DES_options := @_DES_options;
-      {$else}
-      {$if not defined(DES_options_allownil)}
-      DES_options := @ERR_DES_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_options_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_options := @ERR_DES_options;
+    if FuncLoadError then
       AFailed.Add('DES_options');
-    end;
     {$ifend}
   end;
 
 
   DES_ecb3_encrypt := LoadLibFunction(ADllHandle, DES_ecb3_encrypt_procname);
-  FuncLoaded := assigned(DES_ecb3_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ecb3_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ecb3_encrypt_allownil)}
+    DES_ecb3_encrypt := @ERR_DES_ecb3_encrypt;
+    {$ifend}
     {$if declared(DES_ecb3_encrypt_introduced)}
     if LibVersion < DES_ecb3_encrypt_introduced then
     begin
       {$if declared(FC_DES_ecb3_encrypt)}
       DES_ecb3_encrypt := @FC_DES_ecb3_encrypt;
-      {$else}
-      {$if not defined(DES_ecb3_encrypt_allownil)}
-      DES_ecb3_encrypt := @ERR_DES_ecb3_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ecb3_encrypt_removed)}
@@ -1072,39 +1031,31 @@ begin
     begin
       {$if declared(_DES_ecb3_encrypt)}
       DES_ecb3_encrypt := @_DES_ecb3_encrypt;
-      {$else}
-      {$if not defined(DES_ecb3_encrypt_allownil)}
-      DES_ecb3_encrypt := @ERR_DES_ecb3_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ecb3_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ecb3_encrypt := @ERR_DES_ecb3_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ecb3_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_cbc_cksum := LoadLibFunction(ADllHandle, DES_cbc_cksum_procname);
-  FuncLoaded := assigned(DES_cbc_cksum);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_cbc_cksum);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_cbc_cksum_allownil)}
+    DES_cbc_cksum := @ERR_DES_cbc_cksum;
+    {$ifend}
     {$if declared(DES_cbc_cksum_introduced)}
     if LibVersion < DES_cbc_cksum_introduced then
     begin
       {$if declared(FC_DES_cbc_cksum)}
       DES_cbc_cksum := @FC_DES_cbc_cksum;
-      {$else}
-      {$if not defined(DES_cbc_cksum_allownil)}
-      DES_cbc_cksum := @ERR_DES_cbc_cksum;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_cbc_cksum_removed)}
@@ -1112,39 +1063,31 @@ begin
     begin
       {$if declared(_DES_cbc_cksum)}
       DES_cbc_cksum := @_DES_cbc_cksum;
-      {$else}
-      {$if not defined(DES_cbc_cksum_allownil)}
-      DES_cbc_cksum := @ERR_DES_cbc_cksum;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_cbc_cksum_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_cbc_cksum := @ERR_DES_cbc_cksum;
+    if FuncLoadError then
       AFailed.Add('DES_cbc_cksum');
-    end;
     {$ifend}
   end;
 
 
   DES_cbc_encrypt := LoadLibFunction(ADllHandle, DES_cbc_encrypt_procname);
-  FuncLoaded := assigned(DES_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_cbc_encrypt_allownil)}
+    DES_cbc_encrypt := @ERR_DES_cbc_encrypt;
+    {$ifend}
     {$if declared(DES_cbc_encrypt_introduced)}
     if LibVersion < DES_cbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_cbc_encrypt)}
       DES_cbc_encrypt := @FC_DES_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_cbc_encrypt_allownil)}
-      DES_cbc_encrypt := @ERR_DES_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_cbc_encrypt_removed)}
@@ -1152,39 +1095,31 @@ begin
     begin
       {$if declared(_DES_cbc_encrypt)}
       DES_cbc_encrypt := @_DES_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_cbc_encrypt_allownil)}
-      DES_cbc_encrypt := @ERR_DES_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_cbc_encrypt := @ERR_DES_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ncbc_encrypt := LoadLibFunction(ADllHandle, DES_ncbc_encrypt_procname);
-  FuncLoaded := assigned(DES_ncbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ncbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ncbc_encrypt_allownil)}
+    DES_ncbc_encrypt := @ERR_DES_ncbc_encrypt;
+    {$ifend}
     {$if declared(DES_ncbc_encrypt_introduced)}
     if LibVersion < DES_ncbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_ncbc_encrypt)}
       DES_ncbc_encrypt := @FC_DES_ncbc_encrypt;
-      {$else}
-      {$if not defined(DES_ncbc_encrypt_allownil)}
-      DES_ncbc_encrypt := @ERR_DES_ncbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ncbc_encrypt_removed)}
@@ -1192,39 +1127,31 @@ begin
     begin
       {$if declared(_DES_ncbc_encrypt)}
       DES_ncbc_encrypt := @_DES_ncbc_encrypt;
-      {$else}
-      {$if not defined(DES_ncbc_encrypt_allownil)}
-      DES_ncbc_encrypt := @ERR_DES_ncbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ncbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ncbc_encrypt := @ERR_DES_ncbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ncbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_xcbc_encrypt := LoadLibFunction(ADllHandle, DES_xcbc_encrypt_procname);
-  FuncLoaded := assigned(DES_xcbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_xcbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_xcbc_encrypt_allownil)}
+    DES_xcbc_encrypt := @ERR_DES_xcbc_encrypt;
+    {$ifend}
     {$if declared(DES_xcbc_encrypt_introduced)}
     if LibVersion < DES_xcbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_xcbc_encrypt)}
       DES_xcbc_encrypt := @FC_DES_xcbc_encrypt;
-      {$else}
-      {$if not defined(DES_xcbc_encrypt_allownil)}
-      DES_xcbc_encrypt := @ERR_DES_xcbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_xcbc_encrypt_removed)}
@@ -1232,39 +1159,31 @@ begin
     begin
       {$if declared(_DES_xcbc_encrypt)}
       DES_xcbc_encrypt := @_DES_xcbc_encrypt;
-      {$else}
-      {$if not defined(DES_xcbc_encrypt_allownil)}
-      DES_xcbc_encrypt := @ERR_DES_xcbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_xcbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_xcbc_encrypt := @ERR_DES_xcbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_xcbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_cfb_encrypt := LoadLibFunction(ADllHandle, DES_cfb_encrypt_procname);
-  FuncLoaded := assigned(DES_cfb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_cfb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_cfb_encrypt_allownil)}
+    DES_cfb_encrypt := @ERR_DES_cfb_encrypt;
+    {$ifend}
     {$if declared(DES_cfb_encrypt_introduced)}
     if LibVersion < DES_cfb_encrypt_introduced then
     begin
       {$if declared(FC_DES_cfb_encrypt)}
       DES_cfb_encrypt := @FC_DES_cfb_encrypt;
-      {$else}
-      {$if not defined(DES_cfb_encrypt_allownil)}
-      DES_cfb_encrypt := @ERR_DES_cfb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_cfb_encrypt_removed)}
@@ -1272,39 +1191,31 @@ begin
     begin
       {$if declared(_DES_cfb_encrypt)}
       DES_cfb_encrypt := @_DES_cfb_encrypt;
-      {$else}
-      {$if not defined(DES_cfb_encrypt_allownil)}
-      DES_cfb_encrypt := @ERR_DES_cfb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_cfb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_cfb_encrypt := @ERR_DES_cfb_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_cfb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ecb_encrypt := LoadLibFunction(ADllHandle, DES_ecb_encrypt_procname);
-  FuncLoaded := assigned(DES_ecb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ecb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ecb_encrypt_allownil)}
+    DES_ecb_encrypt := @ERR_DES_ecb_encrypt;
+    {$ifend}
     {$if declared(DES_ecb_encrypt_introduced)}
     if LibVersion < DES_ecb_encrypt_introduced then
     begin
       {$if declared(FC_DES_ecb_encrypt)}
       DES_ecb_encrypt := @FC_DES_ecb_encrypt;
-      {$else}
-      {$if not defined(DES_ecb_encrypt_allownil)}
-      DES_ecb_encrypt := @ERR_DES_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ecb_encrypt_removed)}
@@ -1312,39 +1223,31 @@ begin
     begin
       {$if declared(_DES_ecb_encrypt)}
       DES_ecb_encrypt := @_DES_ecb_encrypt;
-      {$else}
-      {$if not defined(DES_ecb_encrypt_allownil)}
-      DES_ecb_encrypt := @ERR_DES_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ecb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ecb_encrypt := @ERR_DES_ecb_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ecb_encrypt');
-    end;
     {$ifend}
   end;
 
  
   DES_encrypt1 := LoadLibFunction(ADllHandle, DES_encrypt1_procname);
-  FuncLoaded := assigned(DES_encrypt1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_encrypt1);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_encrypt1_allownil)}
+    DES_encrypt1 := @ERR_DES_encrypt1;
+    {$ifend}
     {$if declared(DES_encrypt1_introduced)}
     if LibVersion < DES_encrypt1_introduced then
     begin
       {$if declared(FC_DES_encrypt1)}
       DES_encrypt1 := @FC_DES_encrypt1;
-      {$else}
-      {$if not defined(DES_encrypt1_allownil)}
-      DES_encrypt1 := @ERR_DES_encrypt1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_encrypt1_removed)}
@@ -1352,39 +1255,31 @@ begin
     begin
       {$if declared(_DES_encrypt1)}
       DES_encrypt1 := @_DES_encrypt1;
-      {$else}
-      {$if not defined(DES_encrypt1_allownil)}
-      DES_encrypt1 := @ERR_DES_encrypt1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_encrypt1_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_encrypt1 := @ERR_DES_encrypt1;
+    if FuncLoadError then
       AFailed.Add('DES_encrypt1');
-    end;
     {$ifend}
   end;
 
 
   DES_encrypt2 := LoadLibFunction(ADllHandle, DES_encrypt2_procname);
-  FuncLoaded := assigned(DES_encrypt2);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_encrypt2);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_encrypt2_allownil)}
+    DES_encrypt2 := @ERR_DES_encrypt2;
+    {$ifend}
     {$if declared(DES_encrypt2_introduced)}
     if LibVersion < DES_encrypt2_introduced then
     begin
       {$if declared(FC_DES_encrypt2)}
       DES_encrypt2 := @FC_DES_encrypt2;
-      {$else}
-      {$if not defined(DES_encrypt2_allownil)}
-      DES_encrypt2 := @ERR_DES_encrypt2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_encrypt2_removed)}
@@ -1392,39 +1287,31 @@ begin
     begin
       {$if declared(_DES_encrypt2)}
       DES_encrypt2 := @_DES_encrypt2;
-      {$else}
-      {$if not defined(DES_encrypt2_allownil)}
-      DES_encrypt2 := @ERR_DES_encrypt2;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_encrypt2_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_encrypt2 := @ERR_DES_encrypt2;
+    if FuncLoadError then
       AFailed.Add('DES_encrypt2');
-    end;
     {$ifend}
   end;
 
 
   DES_encrypt3 := LoadLibFunction(ADllHandle, DES_encrypt3_procname);
-  FuncLoaded := assigned(DES_encrypt3);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_encrypt3);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_encrypt3_allownil)}
+    DES_encrypt3 := @ERR_DES_encrypt3;
+    {$ifend}
     {$if declared(DES_encrypt3_introduced)}
     if LibVersion < DES_encrypt3_introduced then
     begin
       {$if declared(FC_DES_encrypt3)}
       DES_encrypt3 := @FC_DES_encrypt3;
-      {$else}
-      {$if not defined(DES_encrypt3_allownil)}
-      DES_encrypt3 := @ERR_DES_encrypt3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_encrypt3_removed)}
@@ -1432,39 +1319,31 @@ begin
     begin
       {$if declared(_DES_encrypt3)}
       DES_encrypt3 := @_DES_encrypt3;
-      {$else}
-      {$if not defined(DES_encrypt3_allownil)}
-      DES_encrypt3 := @ERR_DES_encrypt3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_encrypt3_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_encrypt3 := @ERR_DES_encrypt3;
+    if FuncLoadError then
       AFailed.Add('DES_encrypt3');
-    end;
     {$ifend}
   end;
 
 
   DES_decrypt3 := LoadLibFunction(ADllHandle, DES_decrypt3_procname);
-  FuncLoaded := assigned(DES_decrypt3);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_decrypt3);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_decrypt3_allownil)}
+    DES_decrypt3 := @ERR_DES_decrypt3;
+    {$ifend}
     {$if declared(DES_decrypt3_introduced)}
     if LibVersion < DES_decrypt3_introduced then
     begin
       {$if declared(FC_DES_decrypt3)}
       DES_decrypt3 := @FC_DES_decrypt3;
-      {$else}
-      {$if not defined(DES_decrypt3_allownil)}
-      DES_decrypt3 := @ERR_DES_decrypt3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_decrypt3_removed)}
@@ -1472,39 +1351,31 @@ begin
     begin
       {$if declared(_DES_decrypt3)}
       DES_decrypt3 := @_DES_decrypt3;
-      {$else}
-      {$if not defined(DES_decrypt3_allownil)}
-      DES_decrypt3 := @ERR_DES_decrypt3;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_decrypt3_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_decrypt3 := @ERR_DES_decrypt3;
+    if FuncLoadError then
       AFailed.Add('DES_decrypt3');
-    end;
     {$ifend}
   end;
 
 
   DES_ede3_cbc_encrypt := LoadLibFunction(ADllHandle, DES_ede3_cbc_encrypt_procname);
-  FuncLoaded := assigned(DES_ede3_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede3_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede3_cbc_encrypt_allownil)}
+    DES_ede3_cbc_encrypt := @ERR_DES_ede3_cbc_encrypt;
+    {$ifend}
     {$if declared(DES_ede3_cbc_encrypt_introduced)}
     if LibVersion < DES_ede3_cbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede3_cbc_encrypt)}
       DES_ede3_cbc_encrypt := @FC_DES_ede3_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cbc_encrypt_allownil)}
-      DES_ede3_cbc_encrypt := @ERR_DES_ede3_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede3_cbc_encrypt_removed)}
@@ -1512,39 +1383,31 @@ begin
     begin
       {$if declared(_DES_ede3_cbc_encrypt)}
       DES_ede3_cbc_encrypt := @_DES_ede3_cbc_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cbc_encrypt_allownil)}
-      DES_ede3_cbc_encrypt := @ERR_DES_ede3_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede3_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede3_cbc_encrypt := @ERR_DES_ede3_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede3_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ede3_cfb64_encrypt := LoadLibFunction(ADllHandle, DES_ede3_cfb64_encrypt_procname);
-  FuncLoaded := assigned(DES_ede3_cfb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede3_cfb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede3_cfb64_encrypt_allownil)}
+    DES_ede3_cfb64_encrypt := @ERR_DES_ede3_cfb64_encrypt;
+    {$ifend}
     {$if declared(DES_ede3_cfb64_encrypt_introduced)}
     if LibVersion < DES_ede3_cfb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede3_cfb64_encrypt)}
       DES_ede3_cfb64_encrypt := @FC_DES_ede3_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cfb64_encrypt_allownil)}
-      DES_ede3_cfb64_encrypt := @ERR_DES_ede3_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede3_cfb64_encrypt_removed)}
@@ -1552,39 +1415,31 @@ begin
     begin
       {$if declared(_DES_ede3_cfb64_encrypt)}
       DES_ede3_cfb64_encrypt := @_DES_ede3_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cfb64_encrypt_allownil)}
-      DES_ede3_cfb64_encrypt := @ERR_DES_ede3_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede3_cfb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede3_cfb64_encrypt := @ERR_DES_ede3_cfb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede3_cfb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ede3_cfb_encrypt := LoadLibFunction(ADllHandle, DES_ede3_cfb_encrypt_procname);
-  FuncLoaded := assigned(DES_ede3_cfb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede3_cfb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede3_cfb_encrypt_allownil)}
+    DES_ede3_cfb_encrypt := @ERR_DES_ede3_cfb_encrypt;
+    {$ifend}
     {$if declared(DES_ede3_cfb_encrypt_introduced)}
     if LibVersion < DES_ede3_cfb_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede3_cfb_encrypt)}
       DES_ede3_cfb_encrypt := @FC_DES_ede3_cfb_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cfb_encrypt_allownil)}
-      DES_ede3_cfb_encrypt := @ERR_DES_ede3_cfb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede3_cfb_encrypt_removed)}
@@ -1592,39 +1447,31 @@ begin
     begin
       {$if declared(_DES_ede3_cfb_encrypt)}
       DES_ede3_cfb_encrypt := @_DES_ede3_cfb_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_cfb_encrypt_allownil)}
-      DES_ede3_cfb_encrypt := @ERR_DES_ede3_cfb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede3_cfb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede3_cfb_encrypt := @ERR_DES_ede3_cfb_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede3_cfb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ede3_ofb64_encrypt := LoadLibFunction(ADllHandle, DES_ede3_ofb64_encrypt_procname);
-  FuncLoaded := assigned(DES_ede3_ofb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ede3_ofb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ede3_ofb64_encrypt_allownil)}
+    DES_ede3_ofb64_encrypt := @ERR_DES_ede3_ofb64_encrypt;
+    {$ifend}
     {$if declared(DES_ede3_ofb64_encrypt_introduced)}
     if LibVersion < DES_ede3_ofb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_ede3_ofb64_encrypt)}
       DES_ede3_ofb64_encrypt := @FC_DES_ede3_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_ofb64_encrypt_allownil)}
-      DES_ede3_ofb64_encrypt := @ERR_DES_ede3_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ede3_ofb64_encrypt_removed)}
@@ -1632,39 +1479,31 @@ begin
     begin
       {$if declared(_DES_ede3_ofb64_encrypt)}
       DES_ede3_ofb64_encrypt := @_DES_ede3_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ede3_ofb64_encrypt_allownil)}
-      DES_ede3_ofb64_encrypt := @ERR_DES_ede3_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ede3_ofb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ede3_ofb64_encrypt := @ERR_DES_ede3_ofb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ede3_ofb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_fcrypt := LoadLibFunction(ADllHandle, DES_fcrypt_procname);
-  FuncLoaded := assigned(DES_fcrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_fcrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_fcrypt_allownil)}
+    DES_fcrypt := @ERR_DES_fcrypt;
+    {$ifend}
     {$if declared(DES_fcrypt_introduced)}
     if LibVersion < DES_fcrypt_introduced then
     begin
       {$if declared(FC_DES_fcrypt)}
       DES_fcrypt := @FC_DES_fcrypt;
-      {$else}
-      {$if not defined(DES_fcrypt_allownil)}
-      DES_fcrypt := @ERR_DES_fcrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_fcrypt_removed)}
@@ -1672,39 +1511,31 @@ begin
     begin
       {$if declared(_DES_fcrypt)}
       DES_fcrypt := @_DES_fcrypt;
-      {$else}
-      {$if not defined(DES_fcrypt_allownil)}
-      DES_fcrypt := @ERR_DES_fcrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_fcrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_fcrypt := @ERR_DES_fcrypt;
+    if FuncLoadError then
       AFailed.Add('DES_fcrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_crypt := LoadLibFunction(ADllHandle, DES_crypt_procname);
-  FuncLoaded := assigned(DES_crypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_crypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_crypt_allownil)}
+    DES_crypt := @ERR_DES_crypt;
+    {$ifend}
     {$if declared(DES_crypt_introduced)}
     if LibVersion < DES_crypt_introduced then
     begin
       {$if declared(FC_DES_crypt)}
       DES_crypt := @FC_DES_crypt;
-      {$else}
-      {$if not defined(DES_crypt_allownil)}
-      DES_crypt := @ERR_DES_crypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_crypt_removed)}
@@ -1712,39 +1543,31 @@ begin
     begin
       {$if declared(_DES_crypt)}
       DES_crypt := @_DES_crypt;
-      {$else}
-      {$if not defined(DES_crypt_allownil)}
-      DES_crypt := @ERR_DES_crypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_crypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_crypt := @ERR_DES_crypt;
+    if FuncLoadError then
       AFailed.Add('DES_crypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ofb_encrypt := LoadLibFunction(ADllHandle, DES_ofb_encrypt_procname);
-  FuncLoaded := assigned(DES_ofb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ofb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ofb_encrypt_allownil)}
+    DES_ofb_encrypt := @ERR_DES_ofb_encrypt;
+    {$ifend}
     {$if declared(DES_ofb_encrypt_introduced)}
     if LibVersion < DES_ofb_encrypt_introduced then
     begin
       {$if declared(FC_DES_ofb_encrypt)}
       DES_ofb_encrypt := @FC_DES_ofb_encrypt;
-      {$else}
-      {$if not defined(DES_ofb_encrypt_allownil)}
-      DES_ofb_encrypt := @ERR_DES_ofb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ofb_encrypt_removed)}
@@ -1752,39 +1575,31 @@ begin
     begin
       {$if declared(_DES_ofb_encrypt)}
       DES_ofb_encrypt := @_DES_ofb_encrypt;
-      {$else}
-      {$if not defined(DES_ofb_encrypt_allownil)}
-      DES_ofb_encrypt := @ERR_DES_ofb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ofb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ofb_encrypt := @ERR_DES_ofb_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ofb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_pcbc_encrypt := LoadLibFunction(ADllHandle, DES_pcbc_encrypt_procname);
-  FuncLoaded := assigned(DES_pcbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_pcbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_pcbc_encrypt_allownil)}
+    DES_pcbc_encrypt := @ERR_DES_pcbc_encrypt;
+    {$ifend}
     {$if declared(DES_pcbc_encrypt_introduced)}
     if LibVersion < DES_pcbc_encrypt_introduced then
     begin
       {$if declared(FC_DES_pcbc_encrypt)}
       DES_pcbc_encrypt := @FC_DES_pcbc_encrypt;
-      {$else}
-      {$if not defined(DES_pcbc_encrypt_allownil)}
-      DES_pcbc_encrypt := @ERR_DES_pcbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_pcbc_encrypt_removed)}
@@ -1792,39 +1607,31 @@ begin
     begin
       {$if declared(_DES_pcbc_encrypt)}
       DES_pcbc_encrypt := @_DES_pcbc_encrypt;
-      {$else}
-      {$if not defined(DES_pcbc_encrypt_allownil)}
-      DES_pcbc_encrypt := @ERR_DES_pcbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_pcbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_pcbc_encrypt := @ERR_DES_pcbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_pcbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_quad_cksum := LoadLibFunction(ADllHandle, DES_quad_cksum_procname);
-  FuncLoaded := assigned(DES_quad_cksum);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_quad_cksum);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_quad_cksum_allownil)}
+    DES_quad_cksum := @ERR_DES_quad_cksum;
+    {$ifend}
     {$if declared(DES_quad_cksum_introduced)}
     if LibVersion < DES_quad_cksum_introduced then
     begin
       {$if declared(FC_DES_quad_cksum)}
       DES_quad_cksum := @FC_DES_quad_cksum;
-      {$else}
-      {$if not defined(DES_quad_cksum_allownil)}
-      DES_quad_cksum := @ERR_DES_quad_cksum;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_quad_cksum_removed)}
@@ -1832,39 +1639,31 @@ begin
     begin
       {$if declared(_DES_quad_cksum)}
       DES_quad_cksum := @_DES_quad_cksum;
-      {$else}
-      {$if not defined(DES_quad_cksum_allownil)}
-      DES_quad_cksum := @ERR_DES_quad_cksum;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_quad_cksum_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_quad_cksum := @ERR_DES_quad_cksum;
+    if FuncLoadError then
       AFailed.Add('DES_quad_cksum');
-    end;
     {$ifend}
   end;
 
 
   DES_random_key := LoadLibFunction(ADllHandle, DES_random_key_procname);
-  FuncLoaded := assigned(DES_random_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_random_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_random_key_allownil)}
+    DES_random_key := @ERR_DES_random_key;
+    {$ifend}
     {$if declared(DES_random_key_introduced)}
     if LibVersion < DES_random_key_introduced then
     begin
       {$if declared(FC_DES_random_key)}
       DES_random_key := @FC_DES_random_key;
-      {$else}
-      {$if not defined(DES_random_key_allownil)}
-      DES_random_key := @ERR_DES_random_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_random_key_removed)}
@@ -1872,39 +1671,31 @@ begin
     begin
       {$if declared(_DES_random_key)}
       DES_random_key := @_DES_random_key;
-      {$else}
-      {$if not defined(DES_random_key_allownil)}
-      DES_random_key := @ERR_DES_random_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_random_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_random_key := @ERR_DES_random_key;
+    if FuncLoadError then
       AFailed.Add('DES_random_key');
-    end;
     {$ifend}
   end;
 
 
   DES_set_odd_parity := LoadLibFunction(ADllHandle, DES_set_odd_parity_procname);
-  FuncLoaded := assigned(DES_set_odd_parity);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_set_odd_parity);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_set_odd_parity_allownil)}
+    DES_set_odd_parity := @ERR_DES_set_odd_parity;
+    {$ifend}
     {$if declared(DES_set_odd_parity_introduced)}
     if LibVersion < DES_set_odd_parity_introduced then
     begin
       {$if declared(FC_DES_set_odd_parity)}
       DES_set_odd_parity := @FC_DES_set_odd_parity;
-      {$else}
-      {$if not defined(DES_set_odd_parity_allownil)}
-      DES_set_odd_parity := @ERR_DES_set_odd_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_set_odd_parity_removed)}
@@ -1912,39 +1703,31 @@ begin
     begin
       {$if declared(_DES_set_odd_parity)}
       DES_set_odd_parity := @_DES_set_odd_parity;
-      {$else}
-      {$if not defined(DES_set_odd_parity_allownil)}
-      DES_set_odd_parity := @ERR_DES_set_odd_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_set_odd_parity_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_set_odd_parity := @ERR_DES_set_odd_parity;
+    if FuncLoadError then
       AFailed.Add('DES_set_odd_parity');
-    end;
     {$ifend}
   end;
 
 
   DES_check_key_parity := LoadLibFunction(ADllHandle, DES_check_key_parity_procname);
-  FuncLoaded := assigned(DES_check_key_parity);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_check_key_parity);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_check_key_parity_allownil)}
+    DES_check_key_parity := @ERR_DES_check_key_parity;
+    {$ifend}
     {$if declared(DES_check_key_parity_introduced)}
     if LibVersion < DES_check_key_parity_introduced then
     begin
       {$if declared(FC_DES_check_key_parity)}
       DES_check_key_parity := @FC_DES_check_key_parity;
-      {$else}
-      {$if not defined(DES_check_key_parity_allownil)}
-      DES_check_key_parity := @ERR_DES_check_key_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_check_key_parity_removed)}
@@ -1952,39 +1735,31 @@ begin
     begin
       {$if declared(_DES_check_key_parity)}
       DES_check_key_parity := @_DES_check_key_parity;
-      {$else}
-      {$if not defined(DES_check_key_parity_allownil)}
-      DES_check_key_parity := @ERR_DES_check_key_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_check_key_parity_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_check_key_parity := @ERR_DES_check_key_parity;
+    if FuncLoadError then
       AFailed.Add('DES_check_key_parity');
-    end;
     {$ifend}
   end;
 
 
   DES_is_weak_key := LoadLibFunction(ADllHandle, DES_is_weak_key_procname);
-  FuncLoaded := assigned(DES_is_weak_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_is_weak_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_is_weak_key_allownil)}
+    DES_is_weak_key := @ERR_DES_is_weak_key;
+    {$ifend}
     {$if declared(DES_is_weak_key_introduced)}
     if LibVersion < DES_is_weak_key_introduced then
     begin
       {$if declared(FC_DES_is_weak_key)}
       DES_is_weak_key := @FC_DES_is_weak_key;
-      {$else}
-      {$if not defined(DES_is_weak_key_allownil)}
-      DES_is_weak_key := @ERR_DES_is_weak_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_is_weak_key_removed)}
@@ -1992,39 +1767,31 @@ begin
     begin
       {$if declared(_DES_is_weak_key)}
       DES_is_weak_key := @_DES_is_weak_key;
-      {$else}
-      {$if not defined(DES_is_weak_key_allownil)}
-      DES_is_weak_key := @ERR_DES_is_weak_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_is_weak_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_is_weak_key := @ERR_DES_is_weak_key;
+    if FuncLoadError then
       AFailed.Add('DES_is_weak_key');
-    end;
     {$ifend}
   end;
 
 
   DES_set_key := LoadLibFunction(ADllHandle, DES_set_key_procname);
-  FuncLoaded := assigned(DES_set_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_set_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_set_key_allownil)}
+    DES_set_key := @ERR_DES_set_key;
+    {$ifend}
     {$if declared(DES_set_key_introduced)}
     if LibVersion < DES_set_key_introduced then
     begin
       {$if declared(FC_DES_set_key)}
       DES_set_key := @FC_DES_set_key;
-      {$else}
-      {$if not defined(DES_set_key_allownil)}
-      DES_set_key := @ERR_DES_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_set_key_removed)}
@@ -2032,39 +1799,31 @@ begin
     begin
       {$if declared(_DES_set_key)}
       DES_set_key := @_DES_set_key;
-      {$else}
-      {$if not defined(DES_set_key_allownil)}
-      DES_set_key := @ERR_DES_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_set_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_set_key := @ERR_DES_set_key;
+    if FuncLoadError then
       AFailed.Add('DES_set_key');
-    end;
     {$ifend}
   end;
 
 
   DES_key_sched := LoadLibFunction(ADllHandle, DES_key_sched_procname);
-  FuncLoaded := assigned(DES_key_sched);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_key_sched);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_key_sched_allownil)}
+    DES_key_sched := @ERR_DES_key_sched;
+    {$ifend}
     {$if declared(DES_key_sched_introduced)}
     if LibVersion < DES_key_sched_introduced then
     begin
       {$if declared(FC_DES_key_sched)}
       DES_key_sched := @FC_DES_key_sched;
-      {$else}
-      {$if not defined(DES_key_sched_allownil)}
-      DES_key_sched := @ERR_DES_key_sched;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_key_sched_removed)}
@@ -2072,39 +1831,31 @@ begin
     begin
       {$if declared(_DES_key_sched)}
       DES_key_sched := @_DES_key_sched;
-      {$else}
-      {$if not defined(DES_key_sched_allownil)}
-      DES_key_sched := @ERR_DES_key_sched;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_key_sched_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_key_sched := @ERR_DES_key_sched;
+    if FuncLoadError then
       AFailed.Add('DES_key_sched');
-    end;
     {$ifend}
   end;
 
 
   DES_set_key_checked := LoadLibFunction(ADllHandle, DES_set_key_checked_procname);
-  FuncLoaded := assigned(DES_set_key_checked);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_set_key_checked);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_set_key_checked_allownil)}
+    DES_set_key_checked := @ERR_DES_set_key_checked;
+    {$ifend}
     {$if declared(DES_set_key_checked_introduced)}
     if LibVersion < DES_set_key_checked_introduced then
     begin
       {$if declared(FC_DES_set_key_checked)}
       DES_set_key_checked := @FC_DES_set_key_checked;
-      {$else}
-      {$if not defined(DES_set_key_checked_allownil)}
-      DES_set_key_checked := @ERR_DES_set_key_checked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_set_key_checked_removed)}
@@ -2112,39 +1863,31 @@ begin
     begin
       {$if declared(_DES_set_key_checked)}
       DES_set_key_checked := @_DES_set_key_checked;
-      {$else}
-      {$if not defined(DES_set_key_checked_allownil)}
-      DES_set_key_checked := @ERR_DES_set_key_checked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_set_key_checked_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_set_key_checked := @ERR_DES_set_key_checked;
+    if FuncLoadError then
       AFailed.Add('DES_set_key_checked');
-    end;
     {$ifend}
   end;
 
 
   DES_set_key_unchecked := LoadLibFunction(ADllHandle, DES_set_key_unchecked_procname);
-  FuncLoaded := assigned(DES_set_key_unchecked);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_set_key_unchecked);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_set_key_unchecked_allownil)}
+    DES_set_key_unchecked := @ERR_DES_set_key_unchecked;
+    {$ifend}
     {$if declared(DES_set_key_unchecked_introduced)}
     if LibVersion < DES_set_key_unchecked_introduced then
     begin
       {$if declared(FC_DES_set_key_unchecked)}
       DES_set_key_unchecked := @FC_DES_set_key_unchecked;
-      {$else}
-      {$if not defined(DES_set_key_unchecked_allownil)}
-      DES_set_key_unchecked := @ERR_DES_set_key_unchecked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_set_key_unchecked_removed)}
@@ -2152,39 +1895,31 @@ begin
     begin
       {$if declared(_DES_set_key_unchecked)}
       DES_set_key_unchecked := @_DES_set_key_unchecked;
-      {$else}
-      {$if not defined(DES_set_key_unchecked_allownil)}
-      DES_set_key_unchecked := @ERR_DES_set_key_unchecked;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_set_key_unchecked_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_set_key_unchecked := @ERR_DES_set_key_unchecked;
+    if FuncLoadError then
       AFailed.Add('DES_set_key_unchecked');
-    end;
     {$ifend}
   end;
 
 
   DES_string_to_key := LoadLibFunction(ADllHandle, DES_string_to_key_procname);
-  FuncLoaded := assigned(DES_string_to_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_string_to_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_string_to_key_allownil)}
+    DES_string_to_key := @ERR_DES_string_to_key;
+    {$ifend}
     {$if declared(DES_string_to_key_introduced)}
     if LibVersion < DES_string_to_key_introduced then
     begin
       {$if declared(FC_DES_string_to_key)}
       DES_string_to_key := @FC_DES_string_to_key;
-      {$else}
-      {$if not defined(DES_string_to_key_allownil)}
-      DES_string_to_key := @ERR_DES_string_to_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_string_to_key_removed)}
@@ -2192,39 +1927,31 @@ begin
     begin
       {$if declared(_DES_string_to_key)}
       DES_string_to_key := @_DES_string_to_key;
-      {$else}
-      {$if not defined(DES_string_to_key_allownil)}
-      DES_string_to_key := @ERR_DES_string_to_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_string_to_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_string_to_key := @ERR_DES_string_to_key;
+    if FuncLoadError then
       AFailed.Add('DES_string_to_key');
-    end;
     {$ifend}
   end;
 
 
   DES_string_to_2keys := LoadLibFunction(ADllHandle, DES_string_to_2keys_procname);
-  FuncLoaded := assigned(DES_string_to_2keys);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_string_to_2keys);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_string_to_2keys_allownil)}
+    DES_string_to_2keys := @ERR_DES_string_to_2keys;
+    {$ifend}
     {$if declared(DES_string_to_2keys_introduced)}
     if LibVersion < DES_string_to_2keys_introduced then
     begin
       {$if declared(FC_DES_string_to_2keys)}
       DES_string_to_2keys := @FC_DES_string_to_2keys;
-      {$else}
-      {$if not defined(DES_string_to_2keys_allownil)}
-      DES_string_to_2keys := @ERR_DES_string_to_2keys;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_string_to_2keys_removed)}
@@ -2232,39 +1959,31 @@ begin
     begin
       {$if declared(_DES_string_to_2keys)}
       DES_string_to_2keys := @_DES_string_to_2keys;
-      {$else}
-      {$if not defined(DES_string_to_2keys_allownil)}
-      DES_string_to_2keys := @ERR_DES_string_to_2keys;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_string_to_2keys_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_string_to_2keys := @ERR_DES_string_to_2keys;
+    if FuncLoadError then
       AFailed.Add('DES_string_to_2keys');
-    end;
     {$ifend}
   end;
 
 
   DES_cfb64_encrypt := LoadLibFunction(ADllHandle, DES_cfb64_encrypt_procname);
-  FuncLoaded := assigned(DES_cfb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_cfb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_cfb64_encrypt_allownil)}
+    DES_cfb64_encrypt := @ERR_DES_cfb64_encrypt;
+    {$ifend}
     {$if declared(DES_cfb64_encrypt_introduced)}
     if LibVersion < DES_cfb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_cfb64_encrypt)}
       DES_cfb64_encrypt := @FC_DES_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_cfb64_encrypt_allownil)}
-      DES_cfb64_encrypt := @ERR_DES_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_cfb64_encrypt_removed)}
@@ -2272,39 +1991,31 @@ begin
     begin
       {$if declared(_DES_cfb64_encrypt)}
       DES_cfb64_encrypt := @_DES_cfb64_encrypt;
-      {$else}
-      {$if not defined(DES_cfb64_encrypt_allownil)}
-      DES_cfb64_encrypt := @ERR_DES_cfb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_cfb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_cfb64_encrypt := @ERR_DES_cfb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_cfb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_ofb64_encrypt := LoadLibFunction(ADllHandle, DES_ofb64_encrypt_procname);
-  FuncLoaded := assigned(DES_ofb64_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_ofb64_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_ofb64_encrypt_allownil)}
+    DES_ofb64_encrypt := @ERR_DES_ofb64_encrypt;
+    {$ifend}
     {$if declared(DES_ofb64_encrypt_introduced)}
     if LibVersion < DES_ofb64_encrypt_introduced then
     begin
       {$if declared(FC_DES_ofb64_encrypt)}
       DES_ofb64_encrypt := @FC_DES_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ofb64_encrypt_allownil)}
-      DES_ofb64_encrypt := @ERR_DES_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_ofb64_encrypt_removed)}
@@ -2312,39 +2023,31 @@ begin
     begin
       {$if declared(_DES_ofb64_encrypt)}
       DES_ofb64_encrypt := @_DES_ofb64_encrypt;
-      {$else}
-      {$if not defined(DES_ofb64_encrypt_allownil)}
-      DES_ofb64_encrypt := @ERR_DES_ofb64_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_ofb64_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_ofb64_encrypt := @ERR_DES_ofb64_encrypt;
+    if FuncLoadError then
       AFailed.Add('DES_ofb64_encrypt');
-    end;
     {$ifend}
   end;
 
 
   DES_fixup_key_parity := LoadLibFunction(ADllHandle, DES_fixup_key_parity_procname);
-  FuncLoaded := assigned(DES_fixup_key_parity);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DES_fixup_key_parity);
+  if FuncLoadError then
   begin
+    {$if not defined(DES_fixup_key_parity_allownil)}
+    DES_fixup_key_parity := @ERR_DES_fixup_key_parity;
+    {$ifend}
     {$if declared(DES_fixup_key_parity_introduced)}
     if LibVersion < DES_fixup_key_parity_introduced then
     begin
       {$if declared(FC_DES_fixup_key_parity)}
       DES_fixup_key_parity := @FC_DES_fixup_key_parity;
-      {$else}
-      {$if not defined(DES_fixup_key_parity_allownil)}
-      DES_fixup_key_parity := @ERR_DES_fixup_key_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DES_fixup_key_parity_removed)}
@@ -2352,20 +2055,13 @@ begin
     begin
       {$if declared(_DES_fixup_key_parity)}
       DES_fixup_key_parity := @_DES_fixup_key_parity;
-      {$else}
-      {$if not defined(DES_fixup_key_parity_allownil)}
-      DES_fixup_key_parity := @ERR_DES_fixup_key_parity;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DES_fixup_key_parity_allownil)}
-    if not FuncLoaded then
-    begin
-      DES_fixup_key_parity := @ERR_DES_fixup_key_parity;
+    if FuncLoadError then
       AFailed.Add('DES_fixup_key_parity');
-    end;
     {$ifend}
   end;
 

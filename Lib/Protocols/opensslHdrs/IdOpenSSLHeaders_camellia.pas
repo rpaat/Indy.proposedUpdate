@@ -215,24 +215,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   Camellia_set_key := LoadLibFunction(ADllHandle, Camellia_set_key_procname);
-  FuncLoaded := assigned(Camellia_set_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_set_key);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_set_key_allownil)}
+    Camellia_set_key := @ERR_Camellia_set_key;
+    {$ifend}
     {$if declared(Camellia_set_key_introduced)}
     if LibVersion < Camellia_set_key_introduced then
     begin
       {$if declared(FC_Camellia_set_key)}
       Camellia_set_key := @FC_Camellia_set_key;
-      {$else}
-      {$if not defined(Camellia_set_key_allownil)}
-      Camellia_set_key := @ERR_Camellia_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_set_key_removed)}
@@ -240,39 +239,31 @@ begin
     begin
       {$if declared(_Camellia_set_key)}
       Camellia_set_key := @_Camellia_set_key;
-      {$else}
-      {$if not defined(Camellia_set_key_allownil)}
-      Camellia_set_key := @ERR_Camellia_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_set_key_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_set_key := @ERR_Camellia_set_key;
+    if FuncLoadError then
       AFailed.Add('Camellia_set_key');
-    end;
     {$ifend}
   end;
 
 
   Camellia_encrypt := LoadLibFunction(ADllHandle, Camellia_encrypt_procname);
-  FuncLoaded := assigned(Camellia_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_encrypt_allownil)}
+    Camellia_encrypt := @ERR_Camellia_encrypt;
+    {$ifend}
     {$if declared(Camellia_encrypt_introduced)}
     if LibVersion < Camellia_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_encrypt)}
       Camellia_encrypt := @FC_Camellia_encrypt;
-      {$else}
-      {$if not defined(Camellia_encrypt_allownil)}
-      Camellia_encrypt := @ERR_Camellia_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_encrypt_removed)}
@@ -280,39 +271,31 @@ begin
     begin
       {$if declared(_Camellia_encrypt)}
       Camellia_encrypt := @_Camellia_encrypt;
-      {$else}
-      {$if not defined(Camellia_encrypt_allownil)}
-      Camellia_encrypt := @ERR_Camellia_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_encrypt := @ERR_Camellia_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_decrypt := LoadLibFunction(ADllHandle, Camellia_decrypt_procname);
-  FuncLoaded := assigned(Camellia_decrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_decrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_decrypt_allownil)}
+    Camellia_decrypt := @ERR_Camellia_decrypt;
+    {$ifend}
     {$if declared(Camellia_decrypt_introduced)}
     if LibVersion < Camellia_decrypt_introduced then
     begin
       {$if declared(FC_Camellia_decrypt)}
       Camellia_decrypt := @FC_Camellia_decrypt;
-      {$else}
-      {$if not defined(Camellia_decrypt_allownil)}
-      Camellia_decrypt := @ERR_Camellia_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_decrypt_removed)}
@@ -320,39 +303,31 @@ begin
     begin
       {$if declared(_Camellia_decrypt)}
       Camellia_decrypt := @_Camellia_decrypt;
-      {$else}
-      {$if not defined(Camellia_decrypt_allownil)}
-      Camellia_decrypt := @ERR_Camellia_decrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_decrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_decrypt := @ERR_Camellia_decrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_decrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_ecb_encrypt := LoadLibFunction(ADllHandle, Camellia_ecb_encrypt_procname);
-  FuncLoaded := assigned(Camellia_ecb_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_ecb_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_ecb_encrypt_allownil)}
+    Camellia_ecb_encrypt := @ERR_Camellia_ecb_encrypt;
+    {$ifend}
     {$if declared(Camellia_ecb_encrypt_introduced)}
     if LibVersion < Camellia_ecb_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_ecb_encrypt)}
       Camellia_ecb_encrypt := @FC_Camellia_ecb_encrypt;
-      {$else}
-      {$if not defined(Camellia_ecb_encrypt_allownil)}
-      Camellia_ecb_encrypt := @ERR_Camellia_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_ecb_encrypt_removed)}
@@ -360,39 +335,31 @@ begin
     begin
       {$if declared(_Camellia_ecb_encrypt)}
       Camellia_ecb_encrypt := @_Camellia_ecb_encrypt;
-      {$else}
-      {$if not defined(Camellia_ecb_encrypt_allownil)}
-      Camellia_ecb_encrypt := @ERR_Camellia_ecb_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_ecb_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_ecb_encrypt := @ERR_Camellia_ecb_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_ecb_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_cbc_encrypt := LoadLibFunction(ADllHandle, Camellia_cbc_encrypt_procname);
-  FuncLoaded := assigned(Camellia_cbc_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_cbc_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_cbc_encrypt_allownil)}
+    Camellia_cbc_encrypt := @ERR_Camellia_cbc_encrypt;
+    {$ifend}
     {$if declared(Camellia_cbc_encrypt_introduced)}
     if LibVersion < Camellia_cbc_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_cbc_encrypt)}
       Camellia_cbc_encrypt := @FC_Camellia_cbc_encrypt;
-      {$else}
-      {$if not defined(Camellia_cbc_encrypt_allownil)}
-      Camellia_cbc_encrypt := @ERR_Camellia_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_cbc_encrypt_removed)}
@@ -400,39 +367,31 @@ begin
     begin
       {$if declared(_Camellia_cbc_encrypt)}
       Camellia_cbc_encrypt := @_Camellia_cbc_encrypt;
-      {$else}
-      {$if not defined(Camellia_cbc_encrypt_allownil)}
-      Camellia_cbc_encrypt := @ERR_Camellia_cbc_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_cbc_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_cbc_encrypt := @ERR_Camellia_cbc_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_cbc_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_cfb128_encrypt := LoadLibFunction(ADllHandle, Camellia_cfb128_encrypt_procname);
-  FuncLoaded := assigned(Camellia_cfb128_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_cfb128_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_cfb128_encrypt_allownil)}
+    Camellia_cfb128_encrypt := @ERR_Camellia_cfb128_encrypt;
+    {$ifend}
     {$if declared(Camellia_cfb128_encrypt_introduced)}
     if LibVersion < Camellia_cfb128_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_cfb128_encrypt)}
       Camellia_cfb128_encrypt := @FC_Camellia_cfb128_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb128_encrypt_allownil)}
-      Camellia_cfb128_encrypt := @ERR_Camellia_cfb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_cfb128_encrypt_removed)}
@@ -440,39 +399,31 @@ begin
     begin
       {$if declared(_Camellia_cfb128_encrypt)}
       Camellia_cfb128_encrypt := @_Camellia_cfb128_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb128_encrypt_allownil)}
-      Camellia_cfb128_encrypt := @ERR_Camellia_cfb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_cfb128_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_cfb128_encrypt := @ERR_Camellia_cfb128_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_cfb128_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_cfb1_encrypt := LoadLibFunction(ADllHandle, Camellia_cfb1_encrypt_procname);
-  FuncLoaded := assigned(Camellia_cfb1_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_cfb1_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_cfb1_encrypt_allownil)}
+    Camellia_cfb1_encrypt := @ERR_Camellia_cfb1_encrypt;
+    {$ifend}
     {$if declared(Camellia_cfb1_encrypt_introduced)}
     if LibVersion < Camellia_cfb1_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_cfb1_encrypt)}
       Camellia_cfb1_encrypt := @FC_Camellia_cfb1_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb1_encrypt_allownil)}
-      Camellia_cfb1_encrypt := @ERR_Camellia_cfb1_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_cfb1_encrypt_removed)}
@@ -480,39 +431,31 @@ begin
     begin
       {$if declared(_Camellia_cfb1_encrypt)}
       Camellia_cfb1_encrypt := @_Camellia_cfb1_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb1_encrypt_allownil)}
-      Camellia_cfb1_encrypt := @ERR_Camellia_cfb1_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_cfb1_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_cfb1_encrypt := @ERR_Camellia_cfb1_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_cfb1_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_cfb8_encrypt := LoadLibFunction(ADllHandle, Camellia_cfb8_encrypt_procname);
-  FuncLoaded := assigned(Camellia_cfb8_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_cfb8_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_cfb8_encrypt_allownil)}
+    Camellia_cfb8_encrypt := @ERR_Camellia_cfb8_encrypt;
+    {$ifend}
     {$if declared(Camellia_cfb8_encrypt_introduced)}
     if LibVersion < Camellia_cfb8_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_cfb8_encrypt)}
       Camellia_cfb8_encrypt := @FC_Camellia_cfb8_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb8_encrypt_allownil)}
-      Camellia_cfb8_encrypt := @ERR_Camellia_cfb8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_cfb8_encrypt_removed)}
@@ -520,39 +463,31 @@ begin
     begin
       {$if declared(_Camellia_cfb8_encrypt)}
       Camellia_cfb8_encrypt := @_Camellia_cfb8_encrypt;
-      {$else}
-      {$if not defined(Camellia_cfb8_encrypt_allownil)}
-      Camellia_cfb8_encrypt := @ERR_Camellia_cfb8_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_cfb8_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_cfb8_encrypt := @ERR_Camellia_cfb8_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_cfb8_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_ofb128_encrypt := LoadLibFunction(ADllHandle, Camellia_ofb128_encrypt_procname);
-  FuncLoaded := assigned(Camellia_ofb128_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_ofb128_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_ofb128_encrypt_allownil)}
+    Camellia_ofb128_encrypt := @ERR_Camellia_ofb128_encrypt;
+    {$ifend}
     {$if declared(Camellia_ofb128_encrypt_introduced)}
     if LibVersion < Camellia_ofb128_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_ofb128_encrypt)}
       Camellia_ofb128_encrypt := @FC_Camellia_ofb128_encrypt;
-      {$else}
-      {$if not defined(Camellia_ofb128_encrypt_allownil)}
-      Camellia_ofb128_encrypt := @ERR_Camellia_ofb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_ofb128_encrypt_removed)}
@@ -560,39 +495,31 @@ begin
     begin
       {$if declared(_Camellia_ofb128_encrypt)}
       Camellia_ofb128_encrypt := @_Camellia_ofb128_encrypt;
-      {$else}
-      {$if not defined(Camellia_ofb128_encrypt_allownil)}
-      Camellia_ofb128_encrypt := @ERR_Camellia_ofb128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_ofb128_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_ofb128_encrypt := @ERR_Camellia_ofb128_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_ofb128_encrypt');
-    end;
     {$ifend}
   end;
 
 
   Camellia_ctr128_encrypt := LoadLibFunction(ADllHandle, Camellia_ctr128_encrypt_procname);
-  FuncLoaded := assigned(Camellia_ctr128_encrypt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(Camellia_ctr128_encrypt);
+  if FuncLoadError then
   begin
+    {$if not defined(Camellia_ctr128_encrypt_allownil)}
+    Camellia_ctr128_encrypt := @ERR_Camellia_ctr128_encrypt;
+    {$ifend}
     {$if declared(Camellia_ctr128_encrypt_introduced)}
     if LibVersion < Camellia_ctr128_encrypt_introduced then
     begin
       {$if declared(FC_Camellia_ctr128_encrypt)}
       Camellia_ctr128_encrypt := @FC_Camellia_ctr128_encrypt;
-      {$else}
-      {$if not defined(Camellia_ctr128_encrypt_allownil)}
-      Camellia_ctr128_encrypt := @ERR_Camellia_ctr128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(Camellia_ctr128_encrypt_removed)}
@@ -600,20 +527,13 @@ begin
     begin
       {$if declared(_Camellia_ctr128_encrypt)}
       Camellia_ctr128_encrypt := @_Camellia_ctr128_encrypt;
-      {$else}
-      {$if not defined(Camellia_ctr128_encrypt_allownil)}
-      Camellia_ctr128_encrypt := @ERR_Camellia_ctr128_encrypt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(Camellia_ctr128_encrypt_allownil)}
-    if not FuncLoaded then
-    begin
-      Camellia_ctr128_encrypt := @ERR_Camellia_ctr128_encrypt;
+    if FuncLoadError then
       AFailed.Add('Camellia_ctr128_encrypt');
-    end;
     {$ifend}
   end;
 

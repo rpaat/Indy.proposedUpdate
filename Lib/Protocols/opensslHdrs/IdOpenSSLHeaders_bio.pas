@@ -2930,24 +2930,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   BIO_get_flags := LoadLibFunction(ADllHandle, BIO_get_flags_procname);
-  FuncLoaded := assigned(BIO_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_flags_allownil)}
+    BIO_get_flags := @ERR_BIO_get_flags;
+    {$ifend}
     {$if declared(BIO_get_flags_introduced)}
     if LibVersion < BIO_get_flags_introduced then
     begin
       {$if declared(FC_BIO_get_flags)}
       BIO_get_flags := @FC_BIO_get_flags;
-      {$else}
-      {$if not defined(BIO_get_flags_allownil)}
-      BIO_get_flags := @ERR_BIO_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_flags_removed)}
@@ -2955,39 +2954,31 @@ begin
     begin
       {$if declared(_BIO_get_flags)}
       BIO_get_flags := @_BIO_get_flags;
-      {$else}
-      {$if not defined(BIO_get_flags_allownil)}
-      BIO_get_flags := @ERR_BIO_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_flags := @ERR_BIO_get_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_get_flags');
-    end;
     {$ifend}
   end;
 
  
   BIO_set_retry_special := LoadLibFunction(ADllHandle, BIO_set_retry_special_procname);
-  FuncLoaded := assigned(BIO_set_retry_special);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_retry_special);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_retry_special_allownil)}
+    BIO_set_retry_special := @ERR_BIO_set_retry_special;
+    {$ifend}
     {$if declared(BIO_set_retry_special_introduced)}
     if LibVersion < BIO_set_retry_special_introduced then
     begin
       {$if declared(FC_BIO_set_retry_special)}
       BIO_set_retry_special := @FC_BIO_set_retry_special;
-      {$else}
-      {$if not defined(BIO_set_retry_special_allownil)}
-      BIO_set_retry_special := @ERR_BIO_set_retry_special;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_retry_special_removed)}
@@ -2995,39 +2986,31 @@ begin
     begin
       {$if declared(_BIO_set_retry_special)}
       BIO_set_retry_special := @_BIO_set_retry_special;
-      {$else}
-      {$if not defined(BIO_set_retry_special_allownil)}
-      BIO_set_retry_special := @ERR_BIO_set_retry_special;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_retry_special_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_retry_special := @ERR_BIO_set_retry_special;
+    if FuncLoadError then
       AFailed.Add('BIO_set_retry_special');
-    end;
     {$ifend}
   end;
 
  
   BIO_set_retry_read := LoadLibFunction(ADllHandle, BIO_set_retry_read_procname);
-  FuncLoaded := assigned(BIO_set_retry_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_retry_read);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_retry_read_allownil)}
+    BIO_set_retry_read := @ERR_BIO_set_retry_read;
+    {$ifend}
     {$if declared(BIO_set_retry_read_introduced)}
     if LibVersion < BIO_set_retry_read_introduced then
     begin
       {$if declared(FC_BIO_set_retry_read)}
       BIO_set_retry_read := @FC_BIO_set_retry_read;
-      {$else}
-      {$if not defined(BIO_set_retry_read_allownil)}
-      BIO_set_retry_read := @ERR_BIO_set_retry_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_retry_read_removed)}
@@ -3035,39 +3018,31 @@ begin
     begin
       {$if declared(_BIO_set_retry_read)}
       BIO_set_retry_read := @_BIO_set_retry_read;
-      {$else}
-      {$if not defined(BIO_set_retry_read_allownil)}
-      BIO_set_retry_read := @ERR_BIO_set_retry_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_retry_read_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_retry_read := @ERR_BIO_set_retry_read;
+    if FuncLoadError then
       AFailed.Add('BIO_set_retry_read');
-    end;
     {$ifend}
   end;
 
  
   BIO_set_retry_write := LoadLibFunction(ADllHandle, BIO_set_retry_write_procname);
-  FuncLoaded := assigned(BIO_set_retry_write);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_retry_write);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_retry_write_allownil)}
+    BIO_set_retry_write := @ERR_BIO_set_retry_write;
+    {$ifend}
     {$if declared(BIO_set_retry_write_introduced)}
     if LibVersion < BIO_set_retry_write_introduced then
     begin
       {$if declared(FC_BIO_set_retry_write)}
       BIO_set_retry_write := @FC_BIO_set_retry_write;
-      {$else}
-      {$if not defined(BIO_set_retry_write_allownil)}
-      BIO_set_retry_write := @ERR_BIO_set_retry_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_retry_write_removed)}
@@ -3075,39 +3050,31 @@ begin
     begin
       {$if declared(_BIO_set_retry_write)}
       BIO_set_retry_write := @_BIO_set_retry_write;
-      {$else}
-      {$if not defined(BIO_set_retry_write_allownil)}
-      BIO_set_retry_write := @ERR_BIO_set_retry_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_retry_write_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_retry_write := @ERR_BIO_set_retry_write;
+    if FuncLoadError then
       AFailed.Add('BIO_set_retry_write');
-    end;
     {$ifend}
   end;
 
  
   BIO_clear_retry_flags := LoadLibFunction(ADllHandle, BIO_clear_retry_flags_procname);
-  FuncLoaded := assigned(BIO_clear_retry_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_clear_retry_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_clear_retry_flags_allownil)}
+    BIO_clear_retry_flags := @ERR_BIO_clear_retry_flags;
+    {$ifend}
     {$if declared(BIO_clear_retry_flags_introduced)}
     if LibVersion < BIO_clear_retry_flags_introduced then
     begin
       {$if declared(FC_BIO_clear_retry_flags)}
       BIO_clear_retry_flags := @FC_BIO_clear_retry_flags;
-      {$else}
-      {$if not defined(BIO_clear_retry_flags_allownil)}
-      BIO_clear_retry_flags := @ERR_BIO_clear_retry_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_clear_retry_flags_removed)}
@@ -3115,39 +3082,31 @@ begin
     begin
       {$if declared(_BIO_clear_retry_flags)}
       BIO_clear_retry_flags := @_BIO_clear_retry_flags;
-      {$else}
-      {$if not defined(BIO_clear_retry_flags_allownil)}
-      BIO_clear_retry_flags := @ERR_BIO_clear_retry_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_clear_retry_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_clear_retry_flags := @ERR_BIO_clear_retry_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_clear_retry_flags');
-    end;
     {$ifend}
   end;
 
  
   BIO_get_retry_flags := LoadLibFunction(ADllHandle, BIO_get_retry_flags_procname);
-  FuncLoaded := assigned(BIO_get_retry_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_retry_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_retry_flags_allownil)}
+    BIO_get_retry_flags := @ERR_BIO_get_retry_flags;
+    {$ifend}
     {$if declared(BIO_get_retry_flags_introduced)}
     if LibVersion < BIO_get_retry_flags_introduced then
     begin
       {$if declared(FC_BIO_get_retry_flags)}
       BIO_get_retry_flags := @FC_BIO_get_retry_flags;
-      {$else}
-      {$if not defined(BIO_get_retry_flags_allownil)}
-      BIO_get_retry_flags := @ERR_BIO_get_retry_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_retry_flags_removed)}
@@ -3155,39 +3114,31 @@ begin
     begin
       {$if declared(_BIO_get_retry_flags)}
       BIO_get_retry_flags := @_BIO_get_retry_flags;
-      {$else}
-      {$if not defined(BIO_get_retry_flags_allownil)}
-      BIO_get_retry_flags := @ERR_BIO_get_retry_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_retry_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_retry_flags := @ERR_BIO_get_retry_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_get_retry_flags');
-    end;
     {$ifend}
   end;
 
  
   BIO_should_read := LoadLibFunction(ADllHandle, BIO_should_read_procname);
-  FuncLoaded := assigned(BIO_should_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_should_read);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_should_read_allownil)}
+    BIO_should_read := @ERR_BIO_should_read;
+    {$ifend}
     {$if declared(BIO_should_read_introduced)}
     if LibVersion < BIO_should_read_introduced then
     begin
       {$if declared(FC_BIO_should_read)}
       BIO_should_read := @FC_BIO_should_read;
-      {$else}
-      {$if not defined(BIO_should_read_allownil)}
-      BIO_should_read := @ERR_BIO_should_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_should_read_removed)}
@@ -3195,39 +3146,31 @@ begin
     begin
       {$if declared(_BIO_should_read)}
       BIO_should_read := @_BIO_should_read;
-      {$else}
-      {$if not defined(BIO_should_read_allownil)}
-      BIO_should_read := @ERR_BIO_should_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_should_read_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_should_read := @ERR_BIO_should_read;
+    if FuncLoadError then
       AFailed.Add('BIO_should_read');
-    end;
     {$ifend}
   end;
 
  
   BIO_should_write := LoadLibFunction(ADllHandle, BIO_should_write_procname);
-  FuncLoaded := assigned(BIO_should_write);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_should_write);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_should_write_allownil)}
+    BIO_should_write := @ERR_BIO_should_write;
+    {$ifend}
     {$if declared(BIO_should_write_introduced)}
     if LibVersion < BIO_should_write_introduced then
     begin
       {$if declared(FC_BIO_should_write)}
       BIO_should_write := @FC_BIO_should_write;
-      {$else}
-      {$if not defined(BIO_should_write_allownil)}
-      BIO_should_write := @ERR_BIO_should_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_should_write_removed)}
@@ -3235,39 +3178,31 @@ begin
     begin
       {$if declared(_BIO_should_write)}
       BIO_should_write := @_BIO_should_write;
-      {$else}
-      {$if not defined(BIO_should_write_allownil)}
-      BIO_should_write := @ERR_BIO_should_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_should_write_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_should_write := @ERR_BIO_should_write;
+    if FuncLoadError then
       AFailed.Add('BIO_should_write');
-    end;
     {$ifend}
   end;
 
  
   BIO_should_io_special := LoadLibFunction(ADllHandle, BIO_should_io_special_procname);
-  FuncLoaded := assigned(BIO_should_io_special);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_should_io_special);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_should_io_special_allownil)}
+    BIO_should_io_special := @ERR_BIO_should_io_special;
+    {$ifend}
     {$if declared(BIO_should_io_special_introduced)}
     if LibVersion < BIO_should_io_special_introduced then
     begin
       {$if declared(FC_BIO_should_io_special)}
       BIO_should_io_special := @FC_BIO_should_io_special;
-      {$else}
-      {$if not defined(BIO_should_io_special_allownil)}
-      BIO_should_io_special := @ERR_BIO_should_io_special;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_should_io_special_removed)}
@@ -3275,39 +3210,31 @@ begin
     begin
       {$if declared(_BIO_should_io_special)}
       BIO_should_io_special := @_BIO_should_io_special;
-      {$else}
-      {$if not defined(BIO_should_io_special_allownil)}
-      BIO_should_io_special := @ERR_BIO_should_io_special;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_should_io_special_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_should_io_special := @ERR_BIO_should_io_special;
+    if FuncLoadError then
       AFailed.Add('BIO_should_io_special');
-    end;
     {$ifend}
   end;
 
  
   BIO_retry_type := LoadLibFunction(ADllHandle, BIO_retry_type_procname);
-  FuncLoaded := assigned(BIO_retry_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_retry_type);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_retry_type_allownil)}
+    BIO_retry_type := @ERR_BIO_retry_type;
+    {$ifend}
     {$if declared(BIO_retry_type_introduced)}
     if LibVersion < BIO_retry_type_introduced then
     begin
       {$if declared(FC_BIO_retry_type)}
       BIO_retry_type := @FC_BIO_retry_type;
-      {$else}
-      {$if not defined(BIO_retry_type_allownil)}
-      BIO_retry_type := @ERR_BIO_retry_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_retry_type_removed)}
@@ -3315,39 +3242,31 @@ begin
     begin
       {$if declared(_BIO_retry_type)}
       BIO_retry_type := @_BIO_retry_type;
-      {$else}
-      {$if not defined(BIO_retry_type_allownil)}
-      BIO_retry_type := @ERR_BIO_retry_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_retry_type_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_retry_type := @ERR_BIO_retry_type;
+    if FuncLoadError then
       AFailed.Add('BIO_retry_type');
-    end;
     {$ifend}
   end;
 
  
   BIO_should_retry := LoadLibFunction(ADllHandle, BIO_should_retry_procname);
-  FuncLoaded := assigned(BIO_should_retry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_should_retry);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_should_retry_allownil)}
+    BIO_should_retry := @ERR_BIO_should_retry;
+    {$ifend}
     {$if declared(BIO_should_retry_introduced)}
     if LibVersion < BIO_should_retry_introduced then
     begin
       {$if declared(FC_BIO_should_retry)}
       BIO_should_retry := @FC_BIO_should_retry;
-      {$else}
-      {$if not defined(BIO_should_retry_allownil)}
-      BIO_should_retry := @ERR_BIO_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_should_retry_removed)}
@@ -3355,39 +3274,31 @@ begin
     begin
       {$if declared(_BIO_should_retry)}
       BIO_should_retry := @_BIO_should_retry;
-      {$else}
-      {$if not defined(BIO_should_retry_allownil)}
-      BIO_should_retry := @ERR_BIO_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_should_retry_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_should_retry := @ERR_BIO_should_retry;
+    if FuncLoadError then
       AFailed.Add('BIO_should_retry');
-    end;
     {$ifend}
   end;
 
  
   BIO_do_connect := LoadLibFunction(ADllHandle, BIO_do_connect_procname);
-  FuncLoaded := assigned(BIO_do_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_do_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_do_connect_allownil)}
+    BIO_do_connect := @ERR_BIO_do_connect;
+    {$ifend}
     {$if declared(BIO_do_connect_introduced)}
     if LibVersion < BIO_do_connect_introduced then
     begin
       {$if declared(FC_BIO_do_connect)}
       BIO_do_connect := @FC_BIO_do_connect;
-      {$else}
-      {$if not defined(BIO_do_connect_allownil)}
-      BIO_do_connect := @ERR_BIO_do_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_do_connect_removed)}
@@ -3395,39 +3306,31 @@ begin
     begin
       {$if declared(_BIO_do_connect)}
       BIO_do_connect := @_BIO_do_connect;
-      {$else}
-      {$if not defined(BIO_do_connect_allownil)}
-      BIO_do_connect := @ERR_BIO_do_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_do_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_do_connect := @ERR_BIO_do_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_do_connect');
-    end;
     {$ifend}
   end;
 
  
   BIO_do_accept := LoadLibFunction(ADllHandle, BIO_do_accept_procname);
-  FuncLoaded := assigned(BIO_do_accept);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_do_accept);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_do_accept_allownil)}
+    BIO_do_accept := @ERR_BIO_do_accept;
+    {$ifend}
     {$if declared(BIO_do_accept_introduced)}
     if LibVersion < BIO_do_accept_introduced then
     begin
       {$if declared(FC_BIO_do_accept)}
       BIO_do_accept := @FC_BIO_do_accept;
-      {$else}
-      {$if not defined(BIO_do_accept_allownil)}
-      BIO_do_accept := @ERR_BIO_do_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_do_accept_removed)}
@@ -3435,39 +3338,31 @@ begin
     begin
       {$if declared(_BIO_do_accept)}
       BIO_do_accept := @_BIO_do_accept;
-      {$else}
-      {$if not defined(BIO_do_accept_allownil)}
-      BIO_do_accept := @ERR_BIO_do_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_do_accept_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_do_accept := @ERR_BIO_do_accept;
+    if FuncLoadError then
       AFailed.Add('BIO_do_accept');
-    end;
     {$ifend}
   end;
 
  
   BIO_do_handshake := LoadLibFunction(ADllHandle, BIO_do_handshake_procname);
-  FuncLoaded := assigned(BIO_do_handshake);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_do_handshake);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_do_handshake_allownil)}
+    BIO_do_handshake := @ERR_BIO_do_handshake;
+    {$ifend}
     {$if declared(BIO_do_handshake_introduced)}
     if LibVersion < BIO_do_handshake_introduced then
     begin
       {$if declared(FC_BIO_do_handshake)}
       BIO_do_handshake := @FC_BIO_do_handshake;
-      {$else}
-      {$if not defined(BIO_do_handshake_allownil)}
-      BIO_do_handshake := @ERR_BIO_do_handshake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_do_handshake_removed)}
@@ -3475,39 +3370,31 @@ begin
     begin
       {$if declared(_BIO_do_handshake)}
       BIO_do_handshake := @_BIO_do_handshake;
-      {$else}
-      {$if not defined(BIO_do_handshake_allownil)}
-      BIO_do_handshake := @ERR_BIO_do_handshake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_do_handshake_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_do_handshake := @ERR_BIO_do_handshake;
+    if FuncLoadError then
       AFailed.Add('BIO_do_handshake');
-    end;
     {$ifend}
   end;
 
  
   BIO_get_mem_data := LoadLibFunction(ADllHandle, BIO_get_mem_data_procname);
-  FuncLoaded := assigned(BIO_get_mem_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_mem_data);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_mem_data_allownil)}
+    BIO_get_mem_data := @ERR_BIO_get_mem_data;
+    {$ifend}
     {$if declared(BIO_get_mem_data_introduced)}
     if LibVersion < BIO_get_mem_data_introduced then
     begin
       {$if declared(FC_BIO_get_mem_data)}
       BIO_get_mem_data := @FC_BIO_get_mem_data;
-      {$else}
-      {$if not defined(BIO_get_mem_data_allownil)}
-      BIO_get_mem_data := @ERR_BIO_get_mem_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_mem_data_removed)}
@@ -3515,39 +3402,31 @@ begin
     begin
       {$if declared(_BIO_get_mem_data)}
       BIO_get_mem_data := @_BIO_get_mem_data;
-      {$else}
-      {$if not defined(BIO_get_mem_data_allownil)}
-      BIO_get_mem_data := @ERR_BIO_get_mem_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_mem_data_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_mem_data := @ERR_BIO_get_mem_data;
+    if FuncLoadError then
       AFailed.Add('BIO_get_mem_data');
-    end;
     {$ifend}
   end;
 
  
   BIO_set_mem_buf := LoadLibFunction(ADllHandle, BIO_set_mem_buf_procname);
-  FuncLoaded := assigned(BIO_set_mem_buf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_mem_buf);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_mem_buf_allownil)}
+    BIO_set_mem_buf := @ERR_BIO_set_mem_buf;
+    {$ifend}
     {$if declared(BIO_set_mem_buf_introduced)}
     if LibVersion < BIO_set_mem_buf_introduced then
     begin
       {$if declared(FC_BIO_set_mem_buf)}
       BIO_set_mem_buf := @FC_BIO_set_mem_buf;
-      {$else}
-      {$if not defined(BIO_set_mem_buf_allownil)}
-      BIO_set_mem_buf := @ERR_BIO_set_mem_buf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_mem_buf_removed)}
@@ -3555,39 +3434,31 @@ begin
     begin
       {$if declared(_BIO_set_mem_buf)}
       BIO_set_mem_buf := @_BIO_set_mem_buf;
-      {$else}
-      {$if not defined(BIO_set_mem_buf_allownil)}
-      BIO_set_mem_buf := @ERR_BIO_set_mem_buf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_mem_buf_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_mem_buf := @ERR_BIO_set_mem_buf;
+    if FuncLoadError then
       AFailed.Add('BIO_set_mem_buf');
-    end;
     {$ifend}
   end;
 
  
   BIO_get_mem_ptr := LoadLibFunction(ADllHandle, BIO_get_mem_ptr_procname);
-  FuncLoaded := assigned(BIO_get_mem_ptr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_mem_ptr);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_mem_ptr_allownil)}
+    BIO_get_mem_ptr := @ERR_BIO_get_mem_ptr;
+    {$ifend}
     {$if declared(BIO_get_mem_ptr_introduced)}
     if LibVersion < BIO_get_mem_ptr_introduced then
     begin
       {$if declared(FC_BIO_get_mem_ptr)}
       BIO_get_mem_ptr := @FC_BIO_get_mem_ptr;
-      {$else}
-      {$if not defined(BIO_get_mem_ptr_allownil)}
-      BIO_get_mem_ptr := @ERR_BIO_get_mem_ptr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_mem_ptr_removed)}
@@ -3595,39 +3466,31 @@ begin
     begin
       {$if declared(_BIO_get_mem_ptr)}
       BIO_get_mem_ptr := @_BIO_get_mem_ptr;
-      {$else}
-      {$if not defined(BIO_get_mem_ptr_allownil)}
-      BIO_get_mem_ptr := @ERR_BIO_get_mem_ptr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_mem_ptr_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_mem_ptr := @ERR_BIO_get_mem_ptr;
+    if FuncLoadError then
       AFailed.Add('BIO_get_mem_ptr');
-    end;
     {$ifend}
   end;
 
  
   BIO_set_mem_eof_return := LoadLibFunction(ADllHandle, BIO_set_mem_eof_return_procname);
-  FuncLoaded := assigned(BIO_set_mem_eof_return);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_mem_eof_return);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_mem_eof_return_allownil)}
+    BIO_set_mem_eof_return := @ERR_BIO_set_mem_eof_return;
+    {$ifend}
     {$if declared(BIO_set_mem_eof_return_introduced)}
     if LibVersion < BIO_set_mem_eof_return_introduced then
     begin
       {$if declared(FC_BIO_set_mem_eof_return)}
       BIO_set_mem_eof_return := @FC_BIO_set_mem_eof_return;
-      {$else}
-      {$if not defined(BIO_set_mem_eof_return_allownil)}
-      BIO_set_mem_eof_return := @ERR_BIO_set_mem_eof_return;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_mem_eof_return_removed)}
@@ -3635,39 +3498,31 @@ begin
     begin
       {$if declared(_BIO_set_mem_eof_return)}
       BIO_set_mem_eof_return := @_BIO_set_mem_eof_return;
-      {$else}
-      {$if not defined(BIO_set_mem_eof_return_allownil)}
-      BIO_set_mem_eof_return := @ERR_BIO_set_mem_eof_return;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_mem_eof_return_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_mem_eof_return := @ERR_BIO_set_mem_eof_return;
+    if FuncLoadError then
       AFailed.Add('BIO_set_mem_eof_return');
-    end;
     {$ifend}
   end;
 
  
   BIO_get_new_index := LoadLibFunction(ADllHandle, BIO_get_new_index_procname);
-  FuncLoaded := assigned(BIO_get_new_index);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_new_index);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_new_index_allownil)}
+    BIO_get_new_index := @ERR_BIO_get_new_index;
+    {$ifend}
     {$if declared(BIO_get_new_index_introduced)}
     if LibVersion < BIO_get_new_index_introduced then
     begin
       {$if declared(FC_BIO_get_new_index)}
       BIO_get_new_index := @FC_BIO_get_new_index;
-      {$else}
-      {$if not defined(BIO_get_new_index_allownil)}
-      BIO_get_new_index := @ERR_BIO_get_new_index;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_new_index_removed)}
@@ -3675,39 +3530,31 @@ begin
     begin
       {$if declared(_BIO_get_new_index)}
       BIO_get_new_index := @_BIO_get_new_index;
-      {$else}
-      {$if not defined(BIO_get_new_index_allownil)}
-      BIO_get_new_index := @ERR_BIO_get_new_index;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_new_index_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_new_index := @ERR_BIO_get_new_index;
+    if FuncLoadError then
       AFailed.Add('BIO_get_new_index');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_set_flags := LoadLibFunction(ADllHandle, BIO_set_flags_procname);
-  FuncLoaded := assigned(BIO_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_flags_allownil)}
+    BIO_set_flags := @ERR_BIO_set_flags;
+    {$ifend}
     {$if declared(BIO_set_flags_introduced)}
     if LibVersion < BIO_set_flags_introduced then
     begin
       {$if declared(FC_BIO_set_flags)}
       BIO_set_flags := @FC_BIO_set_flags;
-      {$else}
-      {$if not defined(BIO_set_flags_allownil)}
-      BIO_set_flags := @ERR_BIO_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_flags_removed)}
@@ -3715,39 +3562,31 @@ begin
     begin
       {$if declared(_BIO_set_flags)}
       BIO_set_flags := @_BIO_set_flags;
-      {$else}
-      {$if not defined(BIO_set_flags_allownil)}
-      BIO_set_flags := @ERR_BIO_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_flags := @ERR_BIO_set_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_set_flags');
-    end;
     {$ifend}
   end;
 
 
   BIO_test_flags := LoadLibFunction(ADllHandle, BIO_test_flags_procname);
-  FuncLoaded := assigned(BIO_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_test_flags_allownil)}
+    BIO_test_flags := @ERR_BIO_test_flags;
+    {$ifend}
     {$if declared(BIO_test_flags_introduced)}
     if LibVersion < BIO_test_flags_introduced then
     begin
       {$if declared(FC_BIO_test_flags)}
       BIO_test_flags := @FC_BIO_test_flags;
-      {$else}
-      {$if not defined(BIO_test_flags_allownil)}
-      BIO_test_flags := @ERR_BIO_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_test_flags_removed)}
@@ -3755,39 +3594,31 @@ begin
     begin
       {$if declared(_BIO_test_flags)}
       BIO_test_flags := @_BIO_test_flags;
-      {$else}
-      {$if not defined(BIO_test_flags_allownil)}
-      BIO_test_flags := @ERR_BIO_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_test_flags := @ERR_BIO_test_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_test_flags');
-    end;
     {$ifend}
   end;
 
 
   BIO_clear_flags := LoadLibFunction(ADllHandle, BIO_clear_flags_procname);
-  FuncLoaded := assigned(BIO_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_clear_flags_allownil)}
+    BIO_clear_flags := @ERR_BIO_clear_flags;
+    {$ifend}
     {$if declared(BIO_clear_flags_introduced)}
     if LibVersion < BIO_clear_flags_introduced then
     begin
       {$if declared(FC_BIO_clear_flags)}
       BIO_clear_flags := @FC_BIO_clear_flags;
-      {$else}
-      {$if not defined(BIO_clear_flags_allownil)}
-      BIO_clear_flags := @ERR_BIO_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_clear_flags_removed)}
@@ -3795,39 +3626,31 @@ begin
     begin
       {$if declared(_BIO_clear_flags)}
       BIO_clear_flags := @_BIO_clear_flags;
-      {$else}
-      {$if not defined(BIO_clear_flags_allownil)}
-      BIO_clear_flags := @ERR_BIO_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_clear_flags := @ERR_BIO_clear_flags;
+    if FuncLoadError then
       AFailed.Add('BIO_clear_flags');
-    end;
     {$ifend}
   end;
 
 
   BIO_get_callback := LoadLibFunction(ADllHandle, BIO_get_callback_procname);
-  FuncLoaded := assigned(BIO_get_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_callback_allownil)}
+    BIO_get_callback := @ERR_BIO_get_callback;
+    {$ifend}
     {$if declared(BIO_get_callback_introduced)}
     if LibVersion < BIO_get_callback_introduced then
     begin
       {$if declared(FC_BIO_get_callback)}
       BIO_get_callback := @FC_BIO_get_callback;
-      {$else}
-      {$if not defined(BIO_get_callback_allownil)}
-      BIO_get_callback := @ERR_BIO_get_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_callback_removed)}
@@ -3835,39 +3658,31 @@ begin
     begin
       {$if declared(_BIO_get_callback)}
       BIO_get_callback := @_BIO_get_callback;
-      {$else}
-      {$if not defined(BIO_get_callback_allownil)}
-      BIO_get_callback := @ERR_BIO_get_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_callback := @ERR_BIO_get_callback;
+    if FuncLoadError then
       AFailed.Add('BIO_get_callback');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_callback := LoadLibFunction(ADllHandle, BIO_set_callback_procname);
-  FuncLoaded := assigned(BIO_set_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_callback_allownil)}
+    BIO_set_callback := @ERR_BIO_set_callback;
+    {$ifend}
     {$if declared(BIO_set_callback_introduced)}
     if LibVersion < BIO_set_callback_introduced then
     begin
       {$if declared(FC_BIO_set_callback)}
       BIO_set_callback := @FC_BIO_set_callback;
-      {$else}
-      {$if not defined(BIO_set_callback_allownil)}
-      BIO_set_callback := @ERR_BIO_set_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_callback_removed)}
@@ -3875,39 +3690,31 @@ begin
     begin
       {$if declared(_BIO_set_callback)}
       BIO_set_callback := @_BIO_set_callback;
-      {$else}
-      {$if not defined(BIO_set_callback_allownil)}
-      BIO_set_callback := @ERR_BIO_set_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_callback := @ERR_BIO_set_callback;
+    if FuncLoadError then
       AFailed.Add('BIO_set_callback');
-    end;
     {$ifend}
   end;
 
 
   BIO_get_callback_ex := LoadLibFunction(ADllHandle, BIO_get_callback_ex_procname);
-  FuncLoaded := assigned(BIO_get_callback_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_callback_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_callback_ex_allownil)}
+    BIO_get_callback_ex := @ERR_BIO_get_callback_ex;
+    {$ifend}
     {$if declared(BIO_get_callback_ex_introduced)}
     if LibVersion < BIO_get_callback_ex_introduced then
     begin
       {$if declared(FC_BIO_get_callback_ex)}
       BIO_get_callback_ex := @FC_BIO_get_callback_ex;
-      {$else}
-      {$if not defined(BIO_get_callback_ex_allownil)}
-      BIO_get_callback_ex := @ERR_BIO_get_callback_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_callback_ex_removed)}
@@ -3915,39 +3722,31 @@ begin
     begin
       {$if declared(_BIO_get_callback_ex)}
       BIO_get_callback_ex := @_BIO_get_callback_ex;
-      {$else}
-      {$if not defined(BIO_get_callback_ex_allownil)}
-      BIO_get_callback_ex := @ERR_BIO_get_callback_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_callback_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_callback_ex := @ERR_BIO_get_callback_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_get_callback_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_set_callback_ex := LoadLibFunction(ADllHandle, BIO_set_callback_ex_procname);
-  FuncLoaded := assigned(BIO_set_callback_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_callback_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_callback_ex_allownil)}
+    BIO_set_callback_ex := @ERR_BIO_set_callback_ex;
+    {$ifend}
     {$if declared(BIO_set_callback_ex_introduced)}
     if LibVersion < BIO_set_callback_ex_introduced then
     begin
       {$if declared(FC_BIO_set_callback_ex)}
       BIO_set_callback_ex := @FC_BIO_set_callback_ex;
-      {$else}
-      {$if not defined(BIO_set_callback_ex_allownil)}
-      BIO_set_callback_ex := @ERR_BIO_set_callback_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_callback_ex_removed)}
@@ -3955,39 +3754,31 @@ begin
     begin
       {$if declared(_BIO_set_callback_ex)}
       BIO_set_callback_ex := @_BIO_set_callback_ex;
-      {$else}
-      {$if not defined(BIO_set_callback_ex_allownil)}
-      BIO_set_callback_ex := @ERR_BIO_set_callback_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_callback_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_callback_ex := @ERR_BIO_set_callback_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_set_callback_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_get_callback_arg := LoadLibFunction(ADllHandle, BIO_get_callback_arg_procname);
-  FuncLoaded := assigned(BIO_get_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_callback_arg_allownil)}
+    BIO_get_callback_arg := @ERR_BIO_get_callback_arg;
+    {$ifend}
     {$if declared(BIO_get_callback_arg_introduced)}
     if LibVersion < BIO_get_callback_arg_introduced then
     begin
       {$if declared(FC_BIO_get_callback_arg)}
       BIO_get_callback_arg := @FC_BIO_get_callback_arg;
-      {$else}
-      {$if not defined(BIO_get_callback_arg_allownil)}
-      BIO_get_callback_arg := @ERR_BIO_get_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_callback_arg_removed)}
@@ -3995,39 +3786,31 @@ begin
     begin
       {$if declared(_BIO_get_callback_arg)}
       BIO_get_callback_arg := @_BIO_get_callback_arg;
-      {$else}
-      {$if not defined(BIO_get_callback_arg_allownil)}
-      BIO_get_callback_arg := @ERR_BIO_get_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_callback_arg := @ERR_BIO_get_callback_arg;
+    if FuncLoadError then
       AFailed.Add('BIO_get_callback_arg');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_callback_arg := LoadLibFunction(ADllHandle, BIO_set_callback_arg_procname);
-  FuncLoaded := assigned(BIO_set_callback_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_callback_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_callback_arg_allownil)}
+    BIO_set_callback_arg := @ERR_BIO_set_callback_arg;
+    {$ifend}
     {$if declared(BIO_set_callback_arg_introduced)}
     if LibVersion < BIO_set_callback_arg_introduced then
     begin
       {$if declared(FC_BIO_set_callback_arg)}
       BIO_set_callback_arg := @FC_BIO_set_callback_arg;
-      {$else}
-      {$if not defined(BIO_set_callback_arg_allownil)}
-      BIO_set_callback_arg := @ERR_BIO_set_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_callback_arg_removed)}
@@ -4035,39 +3818,31 @@ begin
     begin
       {$if declared(_BIO_set_callback_arg)}
       BIO_set_callback_arg := @_BIO_set_callback_arg;
-      {$else}
-      {$if not defined(BIO_set_callback_arg_allownil)}
-      BIO_set_callback_arg := @ERR_BIO_set_callback_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_callback_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_callback_arg := @ERR_BIO_set_callback_arg;
+    if FuncLoadError then
       AFailed.Add('BIO_set_callback_arg');
-    end;
     {$ifend}
   end;
 
 
   BIO_method_name := LoadLibFunction(ADllHandle, BIO_method_name_procname);
-  FuncLoaded := assigned(BIO_method_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_method_name);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_method_name_allownil)}
+    BIO_method_name := @ERR_BIO_method_name;
+    {$ifend}
     {$if declared(BIO_method_name_introduced)}
     if LibVersion < BIO_method_name_introduced then
     begin
       {$if declared(FC_BIO_method_name)}
       BIO_method_name := @FC_BIO_method_name;
-      {$else}
-      {$if not defined(BIO_method_name_allownil)}
-      BIO_method_name := @ERR_BIO_method_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_method_name_removed)}
@@ -4075,39 +3850,31 @@ begin
     begin
       {$if declared(_BIO_method_name)}
       BIO_method_name := @_BIO_method_name;
-      {$else}
-      {$if not defined(BIO_method_name_allownil)}
-      BIO_method_name := @ERR_BIO_method_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_method_name_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_method_name := @ERR_BIO_method_name;
+    if FuncLoadError then
       AFailed.Add('BIO_method_name');
-    end;
     {$ifend}
   end;
 
 
   BIO_method_type := LoadLibFunction(ADllHandle, BIO_method_type_procname);
-  FuncLoaded := assigned(BIO_method_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_method_type);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_method_type_allownil)}
+    BIO_method_type := @ERR_BIO_method_type;
+    {$ifend}
     {$if declared(BIO_method_type_introduced)}
     if LibVersion < BIO_method_type_introduced then
     begin
       {$if declared(FC_BIO_method_type)}
       BIO_method_type := @FC_BIO_method_type;
-      {$else}
-      {$if not defined(BIO_method_type_allownil)}
-      BIO_method_type := @ERR_BIO_method_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_method_type_removed)}
@@ -4115,39 +3882,31 @@ begin
     begin
       {$if declared(_BIO_method_type)}
       BIO_method_type := @_BIO_method_type;
-      {$else}
-      {$if not defined(BIO_method_type_allownil)}
-      BIO_method_type := @ERR_BIO_method_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_method_type_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_method_type := @ERR_BIO_method_type;
+    if FuncLoadError then
       AFailed.Add('BIO_method_type');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl_pending := LoadLibFunction(ADllHandle, BIO_ctrl_pending_procname);
-  FuncLoaded := assigned(BIO_ctrl_pending);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl_pending);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_pending_allownil)}
+    BIO_ctrl_pending := @ERR_BIO_ctrl_pending;
+    {$ifend}
     {$if declared(BIO_ctrl_pending_introduced)}
     if LibVersion < BIO_ctrl_pending_introduced then
     begin
       {$if declared(FC_BIO_ctrl_pending)}
       BIO_ctrl_pending := @FC_BIO_ctrl_pending;
-      {$else}
-      {$if not defined(BIO_ctrl_pending_allownil)}
-      BIO_ctrl_pending := @ERR_BIO_ctrl_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_pending_removed)}
@@ -4155,39 +3914,31 @@ begin
     begin
       {$if declared(_BIO_ctrl_pending)}
       BIO_ctrl_pending := @_BIO_ctrl_pending;
-      {$else}
-      {$if not defined(BIO_ctrl_pending_allownil)}
-      BIO_ctrl_pending := @ERR_BIO_ctrl_pending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_pending_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl_pending := @ERR_BIO_ctrl_pending;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl_pending');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl_wpending := LoadLibFunction(ADllHandle, BIO_ctrl_wpending_procname);
-  FuncLoaded := assigned(BIO_ctrl_wpending);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl_wpending);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_wpending_allownil)}
+    BIO_ctrl_wpending := @ERR_BIO_ctrl_wpending;
+    {$ifend}
     {$if declared(BIO_ctrl_wpending_introduced)}
     if LibVersion < BIO_ctrl_wpending_introduced then
     begin
       {$if declared(FC_BIO_ctrl_wpending)}
       BIO_ctrl_wpending := @FC_BIO_ctrl_wpending;
-      {$else}
-      {$if not defined(BIO_ctrl_wpending_allownil)}
-      BIO_ctrl_wpending := @ERR_BIO_ctrl_wpending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_wpending_removed)}
@@ -4195,39 +3946,31 @@ begin
     begin
       {$if declared(_BIO_ctrl_wpending)}
       BIO_ctrl_wpending := @_BIO_ctrl_wpending;
-      {$else}
-      {$if not defined(BIO_ctrl_wpending_allownil)}
-      BIO_ctrl_wpending := @ERR_BIO_ctrl_wpending;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_wpending_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl_wpending := @ERR_BIO_ctrl_wpending;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl_wpending');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl_get_write_guarantee := LoadLibFunction(ADllHandle, BIO_ctrl_get_write_guarantee_procname);
-  FuncLoaded := assigned(BIO_ctrl_get_write_guarantee);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl_get_write_guarantee);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_get_write_guarantee_allownil)}
+    BIO_ctrl_get_write_guarantee := @ERR_BIO_ctrl_get_write_guarantee;
+    {$ifend}
     {$if declared(BIO_ctrl_get_write_guarantee_introduced)}
     if LibVersion < BIO_ctrl_get_write_guarantee_introduced then
     begin
       {$if declared(FC_BIO_ctrl_get_write_guarantee)}
       BIO_ctrl_get_write_guarantee := @FC_BIO_ctrl_get_write_guarantee;
-      {$else}
-      {$if not defined(BIO_ctrl_get_write_guarantee_allownil)}
-      BIO_ctrl_get_write_guarantee := @ERR_BIO_ctrl_get_write_guarantee;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_get_write_guarantee_removed)}
@@ -4235,39 +3978,31 @@ begin
     begin
       {$if declared(_BIO_ctrl_get_write_guarantee)}
       BIO_ctrl_get_write_guarantee := @_BIO_ctrl_get_write_guarantee;
-      {$else}
-      {$if not defined(BIO_ctrl_get_write_guarantee_allownil)}
-      BIO_ctrl_get_write_guarantee := @ERR_BIO_ctrl_get_write_guarantee;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_get_write_guarantee_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl_get_write_guarantee := @ERR_BIO_ctrl_get_write_guarantee;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl_get_write_guarantee');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl_get_read_request := LoadLibFunction(ADllHandle, BIO_ctrl_get_read_request_procname);
-  FuncLoaded := assigned(BIO_ctrl_get_read_request);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl_get_read_request);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_get_read_request_allownil)}
+    BIO_ctrl_get_read_request := @ERR_BIO_ctrl_get_read_request;
+    {$ifend}
     {$if declared(BIO_ctrl_get_read_request_introduced)}
     if LibVersion < BIO_ctrl_get_read_request_introduced then
     begin
       {$if declared(FC_BIO_ctrl_get_read_request)}
       BIO_ctrl_get_read_request := @FC_BIO_ctrl_get_read_request;
-      {$else}
-      {$if not defined(BIO_ctrl_get_read_request_allownil)}
-      BIO_ctrl_get_read_request := @ERR_BIO_ctrl_get_read_request;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_get_read_request_removed)}
@@ -4275,39 +4010,31 @@ begin
     begin
       {$if declared(_BIO_ctrl_get_read_request)}
       BIO_ctrl_get_read_request := @_BIO_ctrl_get_read_request;
-      {$else}
-      {$if not defined(BIO_ctrl_get_read_request_allownil)}
-      BIO_ctrl_get_read_request := @ERR_BIO_ctrl_get_read_request;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_get_read_request_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl_get_read_request := @ERR_BIO_ctrl_get_read_request;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl_get_read_request');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl_reset_read_request := LoadLibFunction(ADllHandle, BIO_ctrl_reset_read_request_procname);
-  FuncLoaded := assigned(BIO_ctrl_reset_read_request);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl_reset_read_request);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_reset_read_request_allownil)}
+    BIO_ctrl_reset_read_request := @ERR_BIO_ctrl_reset_read_request;
+    {$ifend}
     {$if declared(BIO_ctrl_reset_read_request_introduced)}
     if LibVersion < BIO_ctrl_reset_read_request_introduced then
     begin
       {$if declared(FC_BIO_ctrl_reset_read_request)}
       BIO_ctrl_reset_read_request := @FC_BIO_ctrl_reset_read_request;
-      {$else}
-      {$if not defined(BIO_ctrl_reset_read_request_allownil)}
-      BIO_ctrl_reset_read_request := @ERR_BIO_ctrl_reset_read_request;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_reset_read_request_removed)}
@@ -4315,39 +4042,31 @@ begin
     begin
       {$if declared(_BIO_ctrl_reset_read_request)}
       BIO_ctrl_reset_read_request := @_BIO_ctrl_reset_read_request;
-      {$else}
-      {$if not defined(BIO_ctrl_reset_read_request_allownil)}
-      BIO_ctrl_reset_read_request := @ERR_BIO_ctrl_reset_read_request;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_reset_read_request_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl_reset_read_request := @ERR_BIO_ctrl_reset_read_request;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl_reset_read_request');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_ex_data := LoadLibFunction(ADllHandle, BIO_set_ex_data_procname);
-  FuncLoaded := assigned(BIO_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_ex_data_allownil)}
+    BIO_set_ex_data := @ERR_BIO_set_ex_data;
+    {$ifend}
     {$if declared(BIO_set_ex_data_introduced)}
     if LibVersion < BIO_set_ex_data_introduced then
     begin
       {$if declared(FC_BIO_set_ex_data)}
       BIO_set_ex_data := @FC_BIO_set_ex_data;
-      {$else}
-      {$if not defined(BIO_set_ex_data_allownil)}
-      BIO_set_ex_data := @ERR_BIO_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_ex_data_removed)}
@@ -4355,39 +4074,31 @@ begin
     begin
       {$if declared(_BIO_set_ex_data)}
       BIO_set_ex_data := @_BIO_set_ex_data;
-      {$else}
-      {$if not defined(BIO_set_ex_data_allownil)}
-      BIO_set_ex_data := @ERR_BIO_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_ex_data := @ERR_BIO_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('BIO_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   BIO_get_ex_data := LoadLibFunction(ADllHandle, BIO_get_ex_data_procname);
-  FuncLoaded := assigned(BIO_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_ex_data_allownil)}
+    BIO_get_ex_data := @ERR_BIO_get_ex_data;
+    {$ifend}
     {$if declared(BIO_get_ex_data_introduced)}
     if LibVersion < BIO_get_ex_data_introduced then
     begin
       {$if declared(FC_BIO_get_ex_data)}
       BIO_get_ex_data := @FC_BIO_get_ex_data;
-      {$else}
-      {$if not defined(BIO_get_ex_data_allownil)}
-      BIO_get_ex_data := @ERR_BIO_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_ex_data_removed)}
@@ -4395,39 +4106,31 @@ begin
     begin
       {$if declared(_BIO_get_ex_data)}
       BIO_get_ex_data := @_BIO_get_ex_data;
-      {$else}
-      {$if not defined(BIO_get_ex_data_allownil)}
-      BIO_get_ex_data := @ERR_BIO_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_ex_data := @ERR_BIO_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('BIO_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   BIO_number_read := LoadLibFunction(ADllHandle, BIO_number_read_procname);
-  FuncLoaded := assigned(BIO_number_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_number_read);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_number_read_allownil)}
+    BIO_number_read := @ERR_BIO_number_read;
+    {$ifend}
     {$if declared(BIO_number_read_introduced)}
     if LibVersion < BIO_number_read_introduced then
     begin
       {$if declared(FC_BIO_number_read)}
       BIO_number_read := @FC_BIO_number_read;
-      {$else}
-      {$if not defined(BIO_number_read_allownil)}
-      BIO_number_read := @ERR_BIO_number_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_number_read_removed)}
@@ -4435,39 +4138,31 @@ begin
     begin
       {$if declared(_BIO_number_read)}
       BIO_number_read := @_BIO_number_read;
-      {$else}
-      {$if not defined(BIO_number_read_allownil)}
-      BIO_number_read := @ERR_BIO_number_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_number_read_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_number_read := @ERR_BIO_number_read;
+    if FuncLoadError then
       AFailed.Add('BIO_number_read');
-    end;
     {$ifend}
   end;
 
 
   BIO_number_written := LoadLibFunction(ADllHandle, BIO_number_written_procname);
-  FuncLoaded := assigned(BIO_number_written);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_number_written);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_number_written_allownil)}
+    BIO_number_written := @ERR_BIO_number_written;
+    {$ifend}
     {$if declared(BIO_number_written_introduced)}
     if LibVersion < BIO_number_written_introduced then
     begin
       {$if declared(FC_BIO_number_written)}
       BIO_number_written := @FC_BIO_number_written;
-      {$else}
-      {$if not defined(BIO_number_written_allownil)}
-      BIO_number_written := @ERR_BIO_number_written;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_number_written_removed)}
@@ -4475,39 +4170,31 @@ begin
     begin
       {$if declared(_BIO_number_written)}
       BIO_number_written := @_BIO_number_written;
-      {$else}
-      {$if not defined(BIO_number_written_allownil)}
-      BIO_number_written := @ERR_BIO_number_written;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_number_written_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_number_written := @ERR_BIO_number_written;
+    if FuncLoadError then
       AFailed.Add('BIO_number_written');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_file := LoadLibFunction(ADllHandle, BIO_s_file_procname);
-  FuncLoaded := assigned(BIO_s_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_file);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_file_allownil)}
+    BIO_s_file := @ERR_BIO_s_file;
+    {$ifend}
     {$if declared(BIO_s_file_introduced)}
     if LibVersion < BIO_s_file_introduced then
     begin
       {$if declared(FC_BIO_s_file)}
       BIO_s_file := @FC_BIO_s_file;
-      {$else}
-      {$if not defined(BIO_s_file_allownil)}
-      BIO_s_file := @ERR_BIO_s_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_file_removed)}
@@ -4515,39 +4202,31 @@ begin
     begin
       {$if declared(_BIO_s_file)}
       BIO_s_file := @_BIO_s_file;
-      {$else}
-      {$if not defined(BIO_s_file_allownil)}
-      BIO_s_file := @ERR_BIO_s_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_file_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_file := @ERR_BIO_s_file;
+    if FuncLoadError then
       AFailed.Add('BIO_s_file');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_file := LoadLibFunction(ADllHandle, BIO_new_file_procname);
-  FuncLoaded := assigned(BIO_new_file);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_file);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_file_allownil)}
+    BIO_new_file := @ERR_BIO_new_file;
+    {$ifend}
     {$if declared(BIO_new_file_introduced)}
     if LibVersion < BIO_new_file_introduced then
     begin
       {$if declared(FC_BIO_new_file)}
       BIO_new_file := @FC_BIO_new_file;
-      {$else}
-      {$if not defined(BIO_new_file_allownil)}
-      BIO_new_file := @ERR_BIO_new_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_file_removed)}
@@ -4555,39 +4234,31 @@ begin
     begin
       {$if declared(_BIO_new_file)}
       BIO_new_file := @_BIO_new_file;
-      {$else}
-      {$if not defined(BIO_new_file_allownil)}
-      BIO_new_file := @ERR_BIO_new_file;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_file_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_file := @ERR_BIO_new_file;
+    if FuncLoadError then
       AFailed.Add('BIO_new_file');
-    end;
     {$ifend}
   end;
 
 
   BIO_new := LoadLibFunction(ADllHandle, BIO_new_procname);
-  FuncLoaded := assigned(BIO_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_allownil)}
+    BIO_new := @ERR_BIO_new;
+    {$ifend}
     {$if declared(BIO_new_introduced)}
     if LibVersion < BIO_new_introduced then
     begin
       {$if declared(FC_BIO_new)}
       BIO_new := @FC_BIO_new;
-      {$else}
-      {$if not defined(BIO_new_allownil)}
-      BIO_new := @ERR_BIO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_removed)}
@@ -4595,39 +4266,31 @@ begin
     begin
       {$if declared(_BIO_new)}
       BIO_new := @_BIO_new;
-      {$else}
-      {$if not defined(BIO_new_allownil)}
-      BIO_new := @ERR_BIO_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new := @ERR_BIO_new;
+    if FuncLoadError then
       AFailed.Add('BIO_new');
-    end;
     {$ifend}
   end;
 
 
   BIO_free := LoadLibFunction(ADllHandle, BIO_free_procname);
-  FuncLoaded := assigned(BIO_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_free_allownil)}
+    BIO_free := @ERR_BIO_free;
+    {$ifend}
     {$if declared(BIO_free_introduced)}
     if LibVersion < BIO_free_introduced then
     begin
       {$if declared(FC_BIO_free)}
       BIO_free := @FC_BIO_free;
-      {$else}
-      {$if not defined(BIO_free_allownil)}
-      BIO_free := @ERR_BIO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_free_removed)}
@@ -4635,39 +4298,31 @@ begin
     begin
       {$if declared(_BIO_free)}
       BIO_free := @_BIO_free;
-      {$else}
-      {$if not defined(BIO_free_allownil)}
-      BIO_free := @ERR_BIO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_free := @ERR_BIO_free;
+    if FuncLoadError then
       AFailed.Add('BIO_free');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_data := LoadLibFunction(ADllHandle, BIO_set_data_procname);
-  FuncLoaded := assigned(BIO_set_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_data);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_data_allownil)}
+    BIO_set_data := @ERR_BIO_set_data;
+    {$ifend}
     {$if declared(BIO_set_data_introduced)}
     if LibVersion < BIO_set_data_introduced then
     begin
       {$if declared(FC_BIO_set_data)}
       BIO_set_data := @FC_BIO_set_data;
-      {$else}
-      {$if not defined(BIO_set_data_allownil)}
-      BIO_set_data := @ERR_BIO_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_data_removed)}
@@ -4675,39 +4330,31 @@ begin
     begin
       {$if declared(_BIO_set_data)}
       BIO_set_data := @_BIO_set_data;
-      {$else}
-      {$if not defined(BIO_set_data_allownil)}
-      BIO_set_data := @ERR_BIO_set_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_data_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_data := @ERR_BIO_set_data;
+    if FuncLoadError then
       AFailed.Add('BIO_set_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_get_data := LoadLibFunction(ADllHandle, BIO_get_data_procname);
-  FuncLoaded := assigned(BIO_get_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_data);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_data_allownil)}
+    BIO_get_data := @ERR_BIO_get_data;
+    {$ifend}
     {$if declared(BIO_get_data_introduced)}
     if LibVersion < BIO_get_data_introduced then
     begin
       {$if declared(FC_BIO_get_data)}
       BIO_get_data := @FC_BIO_get_data;
-      {$else}
-      {$if not defined(BIO_get_data_allownil)}
-      BIO_get_data := @ERR_BIO_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_data_removed)}
@@ -4715,39 +4362,31 @@ begin
     begin
       {$if declared(_BIO_get_data)}
       BIO_get_data := @_BIO_get_data;
-      {$else}
-      {$if not defined(BIO_get_data_allownil)}
-      BIO_get_data := @ERR_BIO_get_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_data_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_data := @ERR_BIO_get_data;
+    if FuncLoadError then
       AFailed.Add('BIO_get_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_set_init := LoadLibFunction(ADllHandle, BIO_set_init_procname);
-  FuncLoaded := assigned(BIO_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_init_allownil)}
+    BIO_set_init := @ERR_BIO_set_init;
+    {$ifend}
     {$if declared(BIO_set_init_introduced)}
     if LibVersion < BIO_set_init_introduced then
     begin
       {$if declared(FC_BIO_set_init)}
       BIO_set_init := @FC_BIO_set_init;
-      {$else}
-      {$if not defined(BIO_set_init_allownil)}
-      BIO_set_init := @ERR_BIO_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_init_removed)}
@@ -4755,39 +4394,31 @@ begin
     begin
       {$if declared(_BIO_set_init)}
       BIO_set_init := @_BIO_set_init;
-      {$else}
-      {$if not defined(BIO_set_init_allownil)}
-      BIO_set_init := @ERR_BIO_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_init := @ERR_BIO_set_init;
+    if FuncLoadError then
       AFailed.Add('BIO_set_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_get_init := LoadLibFunction(ADllHandle, BIO_get_init_procname);
-  FuncLoaded := assigned(BIO_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_init_allownil)}
+    BIO_get_init := @ERR_BIO_get_init;
+    {$ifend}
     {$if declared(BIO_get_init_introduced)}
     if LibVersion < BIO_get_init_introduced then
     begin
       {$if declared(FC_BIO_get_init)}
       BIO_get_init := @FC_BIO_get_init;
-      {$else}
-      {$if not defined(BIO_get_init_allownil)}
-      BIO_get_init := @ERR_BIO_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_init_removed)}
@@ -4795,39 +4426,31 @@ begin
     begin
       {$if declared(_BIO_get_init)}
       BIO_get_init := @_BIO_get_init;
-      {$else}
-      {$if not defined(BIO_get_init_allownil)}
-      BIO_get_init := @ERR_BIO_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_init := @ERR_BIO_get_init;
+    if FuncLoadError then
       AFailed.Add('BIO_get_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_set_shutdown := LoadLibFunction(ADllHandle, BIO_set_shutdown_procname);
-  FuncLoaded := assigned(BIO_set_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_shutdown_allownil)}
+    BIO_set_shutdown := @ERR_BIO_set_shutdown;
+    {$ifend}
     {$if declared(BIO_set_shutdown_introduced)}
     if LibVersion < BIO_set_shutdown_introduced then
     begin
       {$if declared(FC_BIO_set_shutdown)}
       BIO_set_shutdown := @FC_BIO_set_shutdown;
-      {$else}
-      {$if not defined(BIO_set_shutdown_allownil)}
-      BIO_set_shutdown := @ERR_BIO_set_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_shutdown_removed)}
@@ -4835,39 +4458,31 @@ begin
     begin
       {$if declared(_BIO_set_shutdown)}
       BIO_set_shutdown := @_BIO_set_shutdown;
-      {$else}
-      {$if not defined(BIO_set_shutdown_allownil)}
-      BIO_set_shutdown := @ERR_BIO_set_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_shutdown := @ERR_BIO_set_shutdown;
+    if FuncLoadError then
       AFailed.Add('BIO_set_shutdown');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_get_shutdown := LoadLibFunction(ADllHandle, BIO_get_shutdown_procname);
-  FuncLoaded := assigned(BIO_get_shutdown);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_shutdown);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_shutdown_allownil)}
+    BIO_get_shutdown := @ERR_BIO_get_shutdown;
+    {$ifend}
     {$if declared(BIO_get_shutdown_introduced)}
     if LibVersion < BIO_get_shutdown_introduced then
     begin
       {$if declared(FC_BIO_get_shutdown)}
       BIO_get_shutdown := @FC_BIO_get_shutdown;
-      {$else}
-      {$if not defined(BIO_get_shutdown_allownil)}
-      BIO_get_shutdown := @ERR_BIO_get_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_shutdown_removed)}
@@ -4875,39 +4490,31 @@ begin
     begin
       {$if declared(_BIO_get_shutdown)}
       BIO_get_shutdown := @_BIO_get_shutdown;
-      {$else}
-      {$if not defined(BIO_get_shutdown_allownil)}
-      BIO_get_shutdown := @ERR_BIO_get_shutdown;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_shutdown_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_shutdown := @ERR_BIO_get_shutdown;
+    if FuncLoadError then
       AFailed.Add('BIO_get_shutdown');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_vfree := LoadLibFunction(ADllHandle, BIO_vfree_procname);
-  FuncLoaded := assigned(BIO_vfree);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_vfree);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_vfree_allownil)}
+    BIO_vfree := @ERR_BIO_vfree;
+    {$ifend}
     {$if declared(BIO_vfree_introduced)}
     if LibVersion < BIO_vfree_introduced then
     begin
       {$if declared(FC_BIO_vfree)}
       BIO_vfree := @FC_BIO_vfree;
-      {$else}
-      {$if not defined(BIO_vfree_allownil)}
-      BIO_vfree := @ERR_BIO_vfree;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_vfree_removed)}
@@ -4915,39 +4522,31 @@ begin
     begin
       {$if declared(_BIO_vfree)}
       BIO_vfree := @_BIO_vfree;
-      {$else}
-      {$if not defined(BIO_vfree_allownil)}
-      BIO_vfree := @ERR_BIO_vfree;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_vfree_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_vfree := @ERR_BIO_vfree;
+    if FuncLoadError then
       AFailed.Add('BIO_vfree');
-    end;
     {$ifend}
   end;
 
 
   BIO_up_ref := LoadLibFunction(ADllHandle, BIO_up_ref_procname);
-  FuncLoaded := assigned(BIO_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_up_ref_allownil)}
+    BIO_up_ref := @ERR_BIO_up_ref;
+    {$ifend}
     {$if declared(BIO_up_ref_introduced)}
     if LibVersion < BIO_up_ref_introduced then
     begin
       {$if declared(FC_BIO_up_ref)}
       BIO_up_ref := @FC_BIO_up_ref;
-      {$else}
-      {$if not defined(BIO_up_ref_allownil)}
-      BIO_up_ref := @ERR_BIO_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_up_ref_removed)}
@@ -4955,39 +4554,31 @@ begin
     begin
       {$if declared(_BIO_up_ref)}
       BIO_up_ref := @_BIO_up_ref;
-      {$else}
-      {$if not defined(BIO_up_ref_allownil)}
-      BIO_up_ref := @ERR_BIO_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_up_ref := @ERR_BIO_up_ref;
+    if FuncLoadError then
       AFailed.Add('BIO_up_ref');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_read := LoadLibFunction(ADllHandle, BIO_read_procname);
-  FuncLoaded := assigned(BIO_read);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_read);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_read_allownil)}
+    BIO_read := @ERR_BIO_read;
+    {$ifend}
     {$if declared(BIO_read_introduced)}
     if LibVersion < BIO_read_introduced then
     begin
       {$if declared(FC_BIO_read)}
       BIO_read := @FC_BIO_read;
-      {$else}
-      {$if not defined(BIO_read_allownil)}
-      BIO_read := @ERR_BIO_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_read_removed)}
@@ -4995,39 +4586,31 @@ begin
     begin
       {$if declared(_BIO_read)}
       BIO_read := @_BIO_read;
-      {$else}
-      {$if not defined(BIO_read_allownil)}
-      BIO_read := @ERR_BIO_read;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_read_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_read := @ERR_BIO_read;
+    if FuncLoadError then
       AFailed.Add('BIO_read');
-    end;
     {$ifend}
   end;
 
 
   BIO_read_ex := LoadLibFunction(ADllHandle, BIO_read_ex_procname);
-  FuncLoaded := assigned(BIO_read_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_read_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_read_ex_allownil)}
+    BIO_read_ex := @ERR_BIO_read_ex;
+    {$ifend}
     {$if declared(BIO_read_ex_introduced)}
     if LibVersion < BIO_read_ex_introduced then
     begin
       {$if declared(FC_BIO_read_ex)}
       BIO_read_ex := @FC_BIO_read_ex;
-      {$else}
-      {$if not defined(BIO_read_ex_allownil)}
-      BIO_read_ex := @ERR_BIO_read_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_read_ex_removed)}
@@ -5035,39 +4618,31 @@ begin
     begin
       {$if declared(_BIO_read_ex)}
       BIO_read_ex := @_BIO_read_ex;
-      {$else}
-      {$if not defined(BIO_read_ex_allownil)}
-      BIO_read_ex := @ERR_BIO_read_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_read_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_read_ex := @ERR_BIO_read_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_read_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_gets := LoadLibFunction(ADllHandle, BIO_gets_procname);
-  FuncLoaded := assigned(BIO_gets);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_gets);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_gets_allownil)}
+    BIO_gets := @ERR_BIO_gets;
+    {$ifend}
     {$if declared(BIO_gets_introduced)}
     if LibVersion < BIO_gets_introduced then
     begin
       {$if declared(FC_BIO_gets)}
       BIO_gets := @FC_BIO_gets;
-      {$else}
-      {$if not defined(BIO_gets_allownil)}
-      BIO_gets := @ERR_BIO_gets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_gets_removed)}
@@ -5075,39 +4650,31 @@ begin
     begin
       {$if declared(_BIO_gets)}
       BIO_gets := @_BIO_gets;
-      {$else}
-      {$if not defined(BIO_gets_allownil)}
-      BIO_gets := @ERR_BIO_gets;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_gets_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_gets := @ERR_BIO_gets;
+    if FuncLoadError then
       AFailed.Add('BIO_gets');
-    end;
     {$ifend}
   end;
 
 
   BIO_write := LoadLibFunction(ADllHandle, BIO_write_procname);
-  FuncLoaded := assigned(BIO_write);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_write);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_write_allownil)}
+    BIO_write := @ERR_BIO_write;
+    {$ifend}
     {$if declared(BIO_write_introduced)}
     if LibVersion < BIO_write_introduced then
     begin
       {$if declared(FC_BIO_write)}
       BIO_write := @FC_BIO_write;
-      {$else}
-      {$if not defined(BIO_write_allownil)}
-      BIO_write := @ERR_BIO_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_write_removed)}
@@ -5115,39 +4682,31 @@ begin
     begin
       {$if declared(_BIO_write)}
       BIO_write := @_BIO_write;
-      {$else}
-      {$if not defined(BIO_write_allownil)}
-      BIO_write := @ERR_BIO_write;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_write_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_write := @ERR_BIO_write;
+    if FuncLoadError then
       AFailed.Add('BIO_write');
-    end;
     {$ifend}
   end;
 
 
   BIO_write_ex := LoadLibFunction(ADllHandle, BIO_write_ex_procname);
-  FuncLoaded := assigned(BIO_write_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_write_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_write_ex_allownil)}
+    BIO_write_ex := @ERR_BIO_write_ex;
+    {$ifend}
     {$if declared(BIO_write_ex_introduced)}
     if LibVersion < BIO_write_ex_introduced then
     begin
       {$if declared(FC_BIO_write_ex)}
       BIO_write_ex := @FC_BIO_write_ex;
-      {$else}
-      {$if not defined(BIO_write_ex_allownil)}
-      BIO_write_ex := @ERR_BIO_write_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_write_ex_removed)}
@@ -5155,39 +4714,31 @@ begin
     begin
       {$if declared(_BIO_write_ex)}
       BIO_write_ex := @_BIO_write_ex;
-      {$else}
-      {$if not defined(BIO_write_ex_allownil)}
-      BIO_write_ex := @ERR_BIO_write_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_write_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_write_ex := @ERR_BIO_write_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_write_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_puts := LoadLibFunction(ADllHandle, BIO_puts_procname);
-  FuncLoaded := assigned(BIO_puts);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_puts);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_puts_allownil)}
+    BIO_puts := @ERR_BIO_puts;
+    {$ifend}
     {$if declared(BIO_puts_introduced)}
     if LibVersion < BIO_puts_introduced then
     begin
       {$if declared(FC_BIO_puts)}
       BIO_puts := @FC_BIO_puts;
-      {$else}
-      {$if not defined(BIO_puts_allownil)}
-      BIO_puts := @ERR_BIO_puts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_puts_removed)}
@@ -5195,39 +4746,31 @@ begin
     begin
       {$if declared(_BIO_puts)}
       BIO_puts := @_BIO_puts;
-      {$else}
-      {$if not defined(BIO_puts_allownil)}
-      BIO_puts := @ERR_BIO_puts;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_puts_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_puts := @ERR_BIO_puts;
+    if FuncLoadError then
       AFailed.Add('BIO_puts');
-    end;
     {$ifend}
   end;
 
 
   BIO_indent := LoadLibFunction(ADllHandle, BIO_indent_procname);
-  FuncLoaded := assigned(BIO_indent);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_indent);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_indent_allownil)}
+    BIO_indent := @ERR_BIO_indent;
+    {$ifend}
     {$if declared(BIO_indent_introduced)}
     if LibVersion < BIO_indent_introduced then
     begin
       {$if declared(FC_BIO_indent)}
       BIO_indent := @FC_BIO_indent;
-      {$else}
-      {$if not defined(BIO_indent_allownil)}
-      BIO_indent := @ERR_BIO_indent;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_indent_removed)}
@@ -5235,39 +4778,31 @@ begin
     begin
       {$if declared(_BIO_indent)}
       BIO_indent := @_BIO_indent;
-      {$else}
-      {$if not defined(BIO_indent_allownil)}
-      BIO_indent := @ERR_BIO_indent;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_indent_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_indent := @ERR_BIO_indent;
+    if FuncLoadError then
       AFailed.Add('BIO_indent');
-    end;
     {$ifend}
   end;
 
 
   BIO_ctrl := LoadLibFunction(ADllHandle, BIO_ctrl_procname);
-  FuncLoaded := assigned(BIO_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ctrl_allownil)}
+    BIO_ctrl := @ERR_BIO_ctrl;
+    {$ifend}
     {$if declared(BIO_ctrl_introduced)}
     if LibVersion < BIO_ctrl_introduced then
     begin
       {$if declared(FC_BIO_ctrl)}
       BIO_ctrl := @FC_BIO_ctrl;
-      {$else}
-      {$if not defined(BIO_ctrl_allownil)}
-      BIO_ctrl := @ERR_BIO_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ctrl_removed)}
@@ -5275,39 +4810,31 @@ begin
     begin
       {$if declared(_BIO_ctrl)}
       BIO_ctrl := @_BIO_ctrl;
-      {$else}
-      {$if not defined(BIO_ctrl_allownil)}
-      BIO_ctrl := @ERR_BIO_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ctrl := @ERR_BIO_ctrl;
+    if FuncLoadError then
       AFailed.Add('BIO_ctrl');
-    end;
     {$ifend}
   end;
 
 
   BIO_callback_ctrl := LoadLibFunction(ADllHandle, BIO_callback_ctrl_procname);
-  FuncLoaded := assigned(BIO_callback_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_callback_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_callback_ctrl_allownil)}
+    BIO_callback_ctrl := @ERR_BIO_callback_ctrl;
+    {$ifend}
     {$if declared(BIO_callback_ctrl_introduced)}
     if LibVersion < BIO_callback_ctrl_introduced then
     begin
       {$if declared(FC_BIO_callback_ctrl)}
       BIO_callback_ctrl := @FC_BIO_callback_ctrl;
-      {$else}
-      {$if not defined(BIO_callback_ctrl_allownil)}
-      BIO_callback_ctrl := @ERR_BIO_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_callback_ctrl_removed)}
@@ -5315,39 +4842,31 @@ begin
     begin
       {$if declared(_BIO_callback_ctrl)}
       BIO_callback_ctrl := @_BIO_callback_ctrl;
-      {$else}
-      {$if not defined(BIO_callback_ctrl_allownil)}
-      BIO_callback_ctrl := @ERR_BIO_callback_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_callback_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_callback_ctrl := @ERR_BIO_callback_ctrl;
+    if FuncLoadError then
       AFailed.Add('BIO_callback_ctrl');
-    end;
     {$ifend}
   end;
 
 
   BIO_ptr_ctrl := LoadLibFunction(ADllHandle, BIO_ptr_ctrl_procname);
-  FuncLoaded := assigned(BIO_ptr_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ptr_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ptr_ctrl_allownil)}
+    BIO_ptr_ctrl := @ERR_BIO_ptr_ctrl;
+    {$ifend}
     {$if declared(BIO_ptr_ctrl_introduced)}
     if LibVersion < BIO_ptr_ctrl_introduced then
     begin
       {$if declared(FC_BIO_ptr_ctrl)}
       BIO_ptr_ctrl := @FC_BIO_ptr_ctrl;
-      {$else}
-      {$if not defined(BIO_ptr_ctrl_allownil)}
-      BIO_ptr_ctrl := @ERR_BIO_ptr_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ptr_ctrl_removed)}
@@ -5355,39 +4874,31 @@ begin
     begin
       {$if declared(_BIO_ptr_ctrl)}
       BIO_ptr_ctrl := @_BIO_ptr_ctrl;
-      {$else}
-      {$if not defined(BIO_ptr_ctrl_allownil)}
-      BIO_ptr_ctrl := @ERR_BIO_ptr_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ptr_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ptr_ctrl := @ERR_BIO_ptr_ctrl;
+    if FuncLoadError then
       AFailed.Add('BIO_ptr_ctrl');
-    end;
     {$ifend}
   end;
 
 
   BIO_int_ctrl := LoadLibFunction(ADllHandle, BIO_int_ctrl_procname);
-  FuncLoaded := assigned(BIO_int_ctrl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_int_ctrl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_int_ctrl_allownil)}
+    BIO_int_ctrl := @ERR_BIO_int_ctrl;
+    {$ifend}
     {$if declared(BIO_int_ctrl_introduced)}
     if LibVersion < BIO_int_ctrl_introduced then
     begin
       {$if declared(FC_BIO_int_ctrl)}
       BIO_int_ctrl := @FC_BIO_int_ctrl;
-      {$else}
-      {$if not defined(BIO_int_ctrl_allownil)}
-      BIO_int_ctrl := @ERR_BIO_int_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_int_ctrl_removed)}
@@ -5395,39 +4906,31 @@ begin
     begin
       {$if declared(_BIO_int_ctrl)}
       BIO_int_ctrl := @_BIO_int_ctrl;
-      {$else}
-      {$if not defined(BIO_int_ctrl_allownil)}
-      BIO_int_ctrl := @ERR_BIO_int_ctrl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_int_ctrl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_int_ctrl := @ERR_BIO_int_ctrl;
+    if FuncLoadError then
       AFailed.Add('BIO_int_ctrl');
-    end;
     {$ifend}
   end;
 
 
   BIO_push := LoadLibFunction(ADllHandle, BIO_push_procname);
-  FuncLoaded := assigned(BIO_push);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_push);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_push_allownil)}
+    BIO_push := @ERR_BIO_push;
+    {$ifend}
     {$if declared(BIO_push_introduced)}
     if LibVersion < BIO_push_introduced then
     begin
       {$if declared(FC_BIO_push)}
       BIO_push := @FC_BIO_push;
-      {$else}
-      {$if not defined(BIO_push_allownil)}
-      BIO_push := @ERR_BIO_push;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_push_removed)}
@@ -5435,39 +4938,31 @@ begin
     begin
       {$if declared(_BIO_push)}
       BIO_push := @_BIO_push;
-      {$else}
-      {$if not defined(BIO_push_allownil)}
-      BIO_push := @ERR_BIO_push;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_push_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_push := @ERR_BIO_push;
+    if FuncLoadError then
       AFailed.Add('BIO_push');
-    end;
     {$ifend}
   end;
 
 
   BIO_pop := LoadLibFunction(ADllHandle, BIO_pop_procname);
-  FuncLoaded := assigned(BIO_pop);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_pop);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_pop_allownil)}
+    BIO_pop := @ERR_BIO_pop;
+    {$ifend}
     {$if declared(BIO_pop_introduced)}
     if LibVersion < BIO_pop_introduced then
     begin
       {$if declared(FC_BIO_pop)}
       BIO_pop := @FC_BIO_pop;
-      {$else}
-      {$if not defined(BIO_pop_allownil)}
-      BIO_pop := @ERR_BIO_pop;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_pop_removed)}
@@ -5475,39 +4970,31 @@ begin
     begin
       {$if declared(_BIO_pop)}
       BIO_pop := @_BIO_pop;
-      {$else}
-      {$if not defined(BIO_pop_allownil)}
-      BIO_pop := @ERR_BIO_pop;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_pop_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_pop := @ERR_BIO_pop;
+    if FuncLoadError then
       AFailed.Add('BIO_pop');
-    end;
     {$ifend}
   end;
 
 
   BIO_free_all := LoadLibFunction(ADllHandle, BIO_free_all_procname);
-  FuncLoaded := assigned(BIO_free_all);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_free_all);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_free_all_allownil)}
+    BIO_free_all := @ERR_BIO_free_all;
+    {$ifend}
     {$if declared(BIO_free_all_introduced)}
     if LibVersion < BIO_free_all_introduced then
     begin
       {$if declared(FC_BIO_free_all)}
       BIO_free_all := @FC_BIO_free_all;
-      {$else}
-      {$if not defined(BIO_free_all_allownil)}
-      BIO_free_all := @ERR_BIO_free_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_free_all_removed)}
@@ -5515,39 +5002,31 @@ begin
     begin
       {$if declared(_BIO_free_all)}
       BIO_free_all := @_BIO_free_all;
-      {$else}
-      {$if not defined(BIO_free_all_allownil)}
-      BIO_free_all := @ERR_BIO_free_all;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_free_all_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_free_all := @ERR_BIO_free_all;
+    if FuncLoadError then
       AFailed.Add('BIO_free_all');
-    end;
     {$ifend}
   end;
 
 
   BIO_find_type := LoadLibFunction(ADllHandle, BIO_find_type_procname);
-  FuncLoaded := assigned(BIO_find_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_find_type);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_find_type_allownil)}
+    BIO_find_type := @ERR_BIO_find_type;
+    {$ifend}
     {$if declared(BIO_find_type_introduced)}
     if LibVersion < BIO_find_type_introduced then
     begin
       {$if declared(FC_BIO_find_type)}
       BIO_find_type := @FC_BIO_find_type;
-      {$else}
-      {$if not defined(BIO_find_type_allownil)}
-      BIO_find_type := @ERR_BIO_find_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_find_type_removed)}
@@ -5555,39 +5034,31 @@ begin
     begin
       {$if declared(_BIO_find_type)}
       BIO_find_type := @_BIO_find_type;
-      {$else}
-      {$if not defined(BIO_find_type_allownil)}
-      BIO_find_type := @ERR_BIO_find_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_find_type_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_find_type := @ERR_BIO_find_type;
+    if FuncLoadError then
       AFailed.Add('BIO_find_type');
-    end;
     {$ifend}
   end;
 
 
   BIO_next := LoadLibFunction(ADllHandle, BIO_next_procname);
-  FuncLoaded := assigned(BIO_next);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_next);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_next_allownil)}
+    BIO_next := @ERR_BIO_next;
+    {$ifend}
     {$if declared(BIO_next_introduced)}
     if LibVersion < BIO_next_introduced then
     begin
       {$if declared(FC_BIO_next)}
       BIO_next := @FC_BIO_next;
-      {$else}
-      {$if not defined(BIO_next_allownil)}
-      BIO_next := @ERR_BIO_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_next_removed)}
@@ -5595,39 +5066,31 @@ begin
     begin
       {$if declared(_BIO_next)}
       BIO_next := @_BIO_next;
-      {$else}
-      {$if not defined(BIO_next_allownil)}
-      BIO_next := @ERR_BIO_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_next_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_next := @ERR_BIO_next;
+    if FuncLoadError then
       AFailed.Add('BIO_next');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_next := LoadLibFunction(ADllHandle, BIO_set_next_procname);
-  FuncLoaded := assigned(BIO_set_next);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_next);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_next_allownil)}
+    BIO_set_next := @ERR_BIO_set_next;
+    {$ifend}
     {$if declared(BIO_set_next_introduced)}
     if LibVersion < BIO_set_next_introduced then
     begin
       {$if declared(FC_BIO_set_next)}
       BIO_set_next := @FC_BIO_set_next;
-      {$else}
-      {$if not defined(BIO_set_next_allownil)}
-      BIO_set_next := @ERR_BIO_set_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_next_removed)}
@@ -5635,39 +5098,31 @@ begin
     begin
       {$if declared(_BIO_set_next)}
       BIO_set_next := @_BIO_set_next;
-      {$else}
-      {$if not defined(BIO_set_next_allownil)}
-      BIO_set_next := @ERR_BIO_set_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_next_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_next := @ERR_BIO_set_next;
+    if FuncLoadError then
       AFailed.Add('BIO_set_next');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_get_retry_BIO := LoadLibFunction(ADllHandle, BIO_get_retry_BIO_procname);
-  FuncLoaded := assigned(BIO_get_retry_BIO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_retry_BIO);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_retry_BIO_allownil)}
+    BIO_get_retry_BIO := @ERR_BIO_get_retry_BIO;
+    {$ifend}
     {$if declared(BIO_get_retry_BIO_introduced)}
     if LibVersion < BIO_get_retry_BIO_introduced then
     begin
       {$if declared(FC_BIO_get_retry_BIO)}
       BIO_get_retry_BIO := @FC_BIO_get_retry_BIO;
-      {$else}
-      {$if not defined(BIO_get_retry_BIO_allownil)}
-      BIO_get_retry_BIO := @ERR_BIO_get_retry_BIO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_retry_BIO_removed)}
@@ -5675,39 +5130,31 @@ begin
     begin
       {$if declared(_BIO_get_retry_BIO)}
       BIO_get_retry_BIO := @_BIO_get_retry_BIO;
-      {$else}
-      {$if not defined(BIO_get_retry_BIO_allownil)}
-      BIO_get_retry_BIO := @ERR_BIO_get_retry_BIO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_retry_BIO_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_retry_BIO := @ERR_BIO_get_retry_BIO;
+    if FuncLoadError then
       AFailed.Add('BIO_get_retry_BIO');
-    end;
     {$ifend}
   end;
 
 
   BIO_get_retry_reason := LoadLibFunction(ADllHandle, BIO_get_retry_reason_procname);
-  FuncLoaded := assigned(BIO_get_retry_reason);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_get_retry_reason);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_get_retry_reason_allownil)}
+    BIO_get_retry_reason := @ERR_BIO_get_retry_reason;
+    {$ifend}
     {$if declared(BIO_get_retry_reason_introduced)}
     if LibVersion < BIO_get_retry_reason_introduced then
     begin
       {$if declared(FC_BIO_get_retry_reason)}
       BIO_get_retry_reason := @FC_BIO_get_retry_reason;
-      {$else}
-      {$if not defined(BIO_get_retry_reason_allownil)}
-      BIO_get_retry_reason := @ERR_BIO_get_retry_reason;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_get_retry_reason_removed)}
@@ -5715,39 +5162,31 @@ begin
     begin
       {$if declared(_BIO_get_retry_reason)}
       BIO_get_retry_reason := @_BIO_get_retry_reason;
-      {$else}
-      {$if not defined(BIO_get_retry_reason_allownil)}
-      BIO_get_retry_reason := @ERR_BIO_get_retry_reason;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_get_retry_reason_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_get_retry_reason := @ERR_BIO_get_retry_reason;
+    if FuncLoadError then
       AFailed.Add('BIO_get_retry_reason');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_retry_reason := LoadLibFunction(ADllHandle, BIO_set_retry_reason_procname);
-  FuncLoaded := assigned(BIO_set_retry_reason);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_retry_reason);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_retry_reason_allownil)}
+    BIO_set_retry_reason := @ERR_BIO_set_retry_reason;
+    {$ifend}
     {$if declared(BIO_set_retry_reason_introduced)}
     if LibVersion < BIO_set_retry_reason_introduced then
     begin
       {$if declared(FC_BIO_set_retry_reason)}
       BIO_set_retry_reason := @FC_BIO_set_retry_reason;
-      {$else}
-      {$if not defined(BIO_set_retry_reason_allownil)}
-      BIO_set_retry_reason := @ERR_BIO_set_retry_reason;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_retry_reason_removed)}
@@ -5755,39 +5194,31 @@ begin
     begin
       {$if declared(_BIO_set_retry_reason)}
       BIO_set_retry_reason := @_BIO_set_retry_reason;
-      {$else}
-      {$if not defined(BIO_set_retry_reason_allownil)}
-      BIO_set_retry_reason := @ERR_BIO_set_retry_reason;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_retry_reason_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_retry_reason := @ERR_BIO_set_retry_reason;
+    if FuncLoadError then
       AFailed.Add('BIO_set_retry_reason');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_dup_chain := LoadLibFunction(ADllHandle, BIO_dup_chain_procname);
-  FuncLoaded := assigned(BIO_dup_chain);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_dup_chain);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_dup_chain_allownil)}
+    BIO_dup_chain := @ERR_BIO_dup_chain;
+    {$ifend}
     {$if declared(BIO_dup_chain_introduced)}
     if LibVersion < BIO_dup_chain_introduced then
     begin
       {$if declared(FC_BIO_dup_chain)}
       BIO_dup_chain := @FC_BIO_dup_chain;
-      {$else}
-      {$if not defined(BIO_dup_chain_allownil)}
-      BIO_dup_chain := @ERR_BIO_dup_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_dup_chain_removed)}
@@ -5795,39 +5226,31 @@ begin
     begin
       {$if declared(_BIO_dup_chain)}
       BIO_dup_chain := @_BIO_dup_chain;
-      {$else}
-      {$if not defined(BIO_dup_chain_allownil)}
-      BIO_dup_chain := @ERR_BIO_dup_chain;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_dup_chain_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_dup_chain := @ERR_BIO_dup_chain;
+    if FuncLoadError then
       AFailed.Add('BIO_dup_chain');
-    end;
     {$ifend}
   end;
 
 
   BIO_nread0 := LoadLibFunction(ADllHandle, BIO_nread0_procname);
-  FuncLoaded := assigned(BIO_nread0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_nread0);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_nread0_allownil)}
+    BIO_nread0 := @ERR_BIO_nread0;
+    {$ifend}
     {$if declared(BIO_nread0_introduced)}
     if LibVersion < BIO_nread0_introduced then
     begin
       {$if declared(FC_BIO_nread0)}
       BIO_nread0 := @FC_BIO_nread0;
-      {$else}
-      {$if not defined(BIO_nread0_allownil)}
-      BIO_nread0 := @ERR_BIO_nread0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_nread0_removed)}
@@ -5835,39 +5258,31 @@ begin
     begin
       {$if declared(_BIO_nread0)}
       BIO_nread0 := @_BIO_nread0;
-      {$else}
-      {$if not defined(BIO_nread0_allownil)}
-      BIO_nread0 := @ERR_BIO_nread0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_nread0_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_nread0 := @ERR_BIO_nread0;
+    if FuncLoadError then
       AFailed.Add('BIO_nread0');
-    end;
     {$ifend}
   end;
 
 
   BIO_nread := LoadLibFunction(ADllHandle, BIO_nread_procname);
-  FuncLoaded := assigned(BIO_nread);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_nread);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_nread_allownil)}
+    BIO_nread := @ERR_BIO_nread;
+    {$ifend}
     {$if declared(BIO_nread_introduced)}
     if LibVersion < BIO_nread_introduced then
     begin
       {$if declared(FC_BIO_nread)}
       BIO_nread := @FC_BIO_nread;
-      {$else}
-      {$if not defined(BIO_nread_allownil)}
-      BIO_nread := @ERR_BIO_nread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_nread_removed)}
@@ -5875,39 +5290,31 @@ begin
     begin
       {$if declared(_BIO_nread)}
       BIO_nread := @_BIO_nread;
-      {$else}
-      {$if not defined(BIO_nread_allownil)}
-      BIO_nread := @ERR_BIO_nread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_nread_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_nread := @ERR_BIO_nread;
+    if FuncLoadError then
       AFailed.Add('BIO_nread');
-    end;
     {$ifend}
   end;
 
 
   BIO_nwrite0 := LoadLibFunction(ADllHandle, BIO_nwrite0_procname);
-  FuncLoaded := assigned(BIO_nwrite0);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_nwrite0);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_nwrite0_allownil)}
+    BIO_nwrite0 := @ERR_BIO_nwrite0;
+    {$ifend}
     {$if declared(BIO_nwrite0_introduced)}
     if LibVersion < BIO_nwrite0_introduced then
     begin
       {$if declared(FC_BIO_nwrite0)}
       BIO_nwrite0 := @FC_BIO_nwrite0;
-      {$else}
-      {$if not defined(BIO_nwrite0_allownil)}
-      BIO_nwrite0 := @ERR_BIO_nwrite0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_nwrite0_removed)}
@@ -5915,39 +5322,31 @@ begin
     begin
       {$if declared(_BIO_nwrite0)}
       BIO_nwrite0 := @_BIO_nwrite0;
-      {$else}
-      {$if not defined(BIO_nwrite0_allownil)}
-      BIO_nwrite0 := @ERR_BIO_nwrite0;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_nwrite0_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_nwrite0 := @ERR_BIO_nwrite0;
+    if FuncLoadError then
       AFailed.Add('BIO_nwrite0');
-    end;
     {$ifend}
   end;
 
 
   BIO_nwrite := LoadLibFunction(ADllHandle, BIO_nwrite_procname);
-  FuncLoaded := assigned(BIO_nwrite);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_nwrite);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_nwrite_allownil)}
+    BIO_nwrite := @ERR_BIO_nwrite;
+    {$ifend}
     {$if declared(BIO_nwrite_introduced)}
     if LibVersion < BIO_nwrite_introduced then
     begin
       {$if declared(FC_BIO_nwrite)}
       BIO_nwrite := @FC_BIO_nwrite;
-      {$else}
-      {$if not defined(BIO_nwrite_allownil)}
-      BIO_nwrite := @ERR_BIO_nwrite;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_nwrite_removed)}
@@ -5955,39 +5354,31 @@ begin
     begin
       {$if declared(_BIO_nwrite)}
       BIO_nwrite := @_BIO_nwrite;
-      {$else}
-      {$if not defined(BIO_nwrite_allownil)}
-      BIO_nwrite := @ERR_BIO_nwrite;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_nwrite_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_nwrite := @ERR_BIO_nwrite;
+    if FuncLoadError then
       AFailed.Add('BIO_nwrite');
-    end;
     {$ifend}
   end;
 
 
   BIO_debug_callback := LoadLibFunction(ADllHandle, BIO_debug_callback_procname);
-  FuncLoaded := assigned(BIO_debug_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_debug_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_debug_callback_allownil)}
+    BIO_debug_callback := @ERR_BIO_debug_callback;
+    {$ifend}
     {$if declared(BIO_debug_callback_introduced)}
     if LibVersion < BIO_debug_callback_introduced then
     begin
       {$if declared(FC_BIO_debug_callback)}
       BIO_debug_callback := @FC_BIO_debug_callback;
-      {$else}
-      {$if not defined(BIO_debug_callback_allownil)}
-      BIO_debug_callback := @ERR_BIO_debug_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_debug_callback_removed)}
@@ -5995,39 +5386,31 @@ begin
     begin
       {$if declared(_BIO_debug_callback)}
       BIO_debug_callback := @_BIO_debug_callback;
-      {$else}
-      {$if not defined(BIO_debug_callback_allownil)}
-      BIO_debug_callback := @ERR_BIO_debug_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_debug_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_debug_callback := @ERR_BIO_debug_callback;
+    if FuncLoadError then
       AFailed.Add('BIO_debug_callback');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_mem := LoadLibFunction(ADllHandle, BIO_s_mem_procname);
-  FuncLoaded := assigned(BIO_s_mem);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_mem);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_mem_allownil)}
+    BIO_s_mem := @ERR_BIO_s_mem;
+    {$ifend}
     {$if declared(BIO_s_mem_introduced)}
     if LibVersion < BIO_s_mem_introduced then
     begin
       {$if declared(FC_BIO_s_mem)}
       BIO_s_mem := @FC_BIO_s_mem;
-      {$else}
-      {$if not defined(BIO_s_mem_allownil)}
-      BIO_s_mem := @ERR_BIO_s_mem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_mem_removed)}
@@ -6035,39 +5418,31 @@ begin
     begin
       {$if declared(_BIO_s_mem)}
       BIO_s_mem := @_BIO_s_mem;
-      {$else}
-      {$if not defined(BIO_s_mem_allownil)}
-      BIO_s_mem := @ERR_BIO_s_mem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_mem_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_mem := @ERR_BIO_s_mem;
+    if FuncLoadError then
       AFailed.Add('BIO_s_mem');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_secmem := LoadLibFunction(ADllHandle, BIO_s_secmem_procname);
-  FuncLoaded := assigned(BIO_s_secmem);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_secmem);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_secmem_allownil)}
+    BIO_s_secmem := @ERR_BIO_s_secmem;
+    {$ifend}
     {$if declared(BIO_s_secmem_introduced)}
     if LibVersion < BIO_s_secmem_introduced then
     begin
       {$if declared(FC_BIO_s_secmem)}
       BIO_s_secmem := @FC_BIO_s_secmem;
-      {$else}
-      {$if not defined(BIO_s_secmem_allownil)}
-      BIO_s_secmem := @ERR_BIO_s_secmem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_secmem_removed)}
@@ -6075,39 +5450,31 @@ begin
     begin
       {$if declared(_BIO_s_secmem)}
       BIO_s_secmem := @_BIO_s_secmem;
-      {$else}
-      {$if not defined(BIO_s_secmem_allownil)}
-      BIO_s_secmem := @ERR_BIO_s_secmem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_secmem_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_secmem := @ERR_BIO_s_secmem;
+    if FuncLoadError then
       AFailed.Add('BIO_s_secmem');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_new_mem_buf := LoadLibFunction(ADllHandle, BIO_new_mem_buf_procname);
-  FuncLoaded := assigned(BIO_new_mem_buf);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_mem_buf);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_mem_buf_allownil)}
+    BIO_new_mem_buf := @ERR_BIO_new_mem_buf;
+    {$ifend}
     {$if declared(BIO_new_mem_buf_introduced)}
     if LibVersion < BIO_new_mem_buf_introduced then
     begin
       {$if declared(FC_BIO_new_mem_buf)}
       BIO_new_mem_buf := @FC_BIO_new_mem_buf;
-      {$else}
-      {$if not defined(BIO_new_mem_buf_allownil)}
-      BIO_new_mem_buf := @ERR_BIO_new_mem_buf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_mem_buf_removed)}
@@ -6115,39 +5482,31 @@ begin
     begin
       {$if declared(_BIO_new_mem_buf)}
       BIO_new_mem_buf := @_BIO_new_mem_buf;
-      {$else}
-      {$if not defined(BIO_new_mem_buf_allownil)}
-      BIO_new_mem_buf := @ERR_BIO_new_mem_buf;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_mem_buf_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_mem_buf := @ERR_BIO_new_mem_buf;
+    if FuncLoadError then
       AFailed.Add('BIO_new_mem_buf');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_socket := LoadLibFunction(ADllHandle, BIO_s_socket_procname);
-  FuncLoaded := assigned(BIO_s_socket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_socket);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_socket_allownil)}
+    BIO_s_socket := @ERR_BIO_s_socket;
+    {$ifend}
     {$if declared(BIO_s_socket_introduced)}
     if LibVersion < BIO_s_socket_introduced then
     begin
       {$if declared(FC_BIO_s_socket)}
       BIO_s_socket := @FC_BIO_s_socket;
-      {$else}
-      {$if not defined(BIO_s_socket_allownil)}
-      BIO_s_socket := @ERR_BIO_s_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_socket_removed)}
@@ -6155,39 +5514,31 @@ begin
     begin
       {$if declared(_BIO_s_socket)}
       BIO_s_socket := @_BIO_s_socket;
-      {$else}
-      {$if not defined(BIO_s_socket_allownil)}
-      BIO_s_socket := @ERR_BIO_s_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_socket_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_socket := @ERR_BIO_s_socket;
+    if FuncLoadError then
       AFailed.Add('BIO_s_socket');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_connect := LoadLibFunction(ADllHandle, BIO_s_connect_procname);
-  FuncLoaded := assigned(BIO_s_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_connect_allownil)}
+    BIO_s_connect := @ERR_BIO_s_connect;
+    {$ifend}
     {$if declared(BIO_s_connect_introduced)}
     if LibVersion < BIO_s_connect_introduced then
     begin
       {$if declared(FC_BIO_s_connect)}
       BIO_s_connect := @FC_BIO_s_connect;
-      {$else}
-      {$if not defined(BIO_s_connect_allownil)}
-      BIO_s_connect := @ERR_BIO_s_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_connect_removed)}
@@ -6195,39 +5546,31 @@ begin
     begin
       {$if declared(_BIO_s_connect)}
       BIO_s_connect := @_BIO_s_connect;
-      {$else}
-      {$if not defined(BIO_s_connect_allownil)}
-      BIO_s_connect := @ERR_BIO_s_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_connect := @ERR_BIO_s_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_s_connect');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_accept := LoadLibFunction(ADllHandle, BIO_s_accept_procname);
-  FuncLoaded := assigned(BIO_s_accept);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_accept);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_accept_allownil)}
+    BIO_s_accept := @ERR_BIO_s_accept;
+    {$ifend}
     {$if declared(BIO_s_accept_introduced)}
     if LibVersion < BIO_s_accept_introduced then
     begin
       {$if declared(FC_BIO_s_accept)}
       BIO_s_accept := @FC_BIO_s_accept;
-      {$else}
-      {$if not defined(BIO_s_accept_allownil)}
-      BIO_s_accept := @ERR_BIO_s_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_accept_removed)}
@@ -6235,39 +5578,31 @@ begin
     begin
       {$if declared(_BIO_s_accept)}
       BIO_s_accept := @_BIO_s_accept;
-      {$else}
-      {$if not defined(BIO_s_accept_allownil)}
-      BIO_s_accept := @ERR_BIO_s_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_accept_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_accept := @ERR_BIO_s_accept;
+    if FuncLoadError then
       AFailed.Add('BIO_s_accept');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_fd := LoadLibFunction(ADllHandle, BIO_s_fd_procname);
-  FuncLoaded := assigned(BIO_s_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_fd_allownil)}
+    BIO_s_fd := @ERR_BIO_s_fd;
+    {$ifend}
     {$if declared(BIO_s_fd_introduced)}
     if LibVersion < BIO_s_fd_introduced then
     begin
       {$if declared(FC_BIO_s_fd)}
       BIO_s_fd := @FC_BIO_s_fd;
-      {$else}
-      {$if not defined(BIO_s_fd_allownil)}
-      BIO_s_fd := @ERR_BIO_s_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_fd_removed)}
@@ -6275,39 +5610,31 @@ begin
     begin
       {$if declared(_BIO_s_fd)}
       BIO_s_fd := @_BIO_s_fd;
-      {$else}
-      {$if not defined(BIO_s_fd_allownil)}
-      BIO_s_fd := @ERR_BIO_s_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_fd := @ERR_BIO_s_fd;
+    if FuncLoadError then
       AFailed.Add('BIO_s_fd');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_log := LoadLibFunction(ADllHandle, BIO_s_log_procname);
-  FuncLoaded := assigned(BIO_s_log);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_log);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_log_allownil)}
+    BIO_s_log := @ERR_BIO_s_log;
+    {$ifend}
     {$if declared(BIO_s_log_introduced)}
     if LibVersion < BIO_s_log_introduced then
     begin
       {$if declared(FC_BIO_s_log)}
       BIO_s_log := @FC_BIO_s_log;
-      {$else}
-      {$if not defined(BIO_s_log_allownil)}
-      BIO_s_log := @ERR_BIO_s_log;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_log_removed)}
@@ -6315,39 +5642,31 @@ begin
     begin
       {$if declared(_BIO_s_log)}
       BIO_s_log := @_BIO_s_log;
-      {$else}
-      {$if not defined(BIO_s_log_allownil)}
-      BIO_s_log := @ERR_BIO_s_log;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_log_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_log := @ERR_BIO_s_log;
+    if FuncLoadError then
       AFailed.Add('BIO_s_log');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_bio := LoadLibFunction(ADllHandle, BIO_s_bio_procname);
-  FuncLoaded := assigned(BIO_s_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_bio_allownil)}
+    BIO_s_bio := @ERR_BIO_s_bio;
+    {$ifend}
     {$if declared(BIO_s_bio_introduced)}
     if LibVersion < BIO_s_bio_introduced then
     begin
       {$if declared(FC_BIO_s_bio)}
       BIO_s_bio := @FC_BIO_s_bio;
-      {$else}
-      {$if not defined(BIO_s_bio_allownil)}
-      BIO_s_bio := @ERR_BIO_s_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_bio_removed)}
@@ -6355,39 +5674,31 @@ begin
     begin
       {$if declared(_BIO_s_bio)}
       BIO_s_bio := @_BIO_s_bio;
-      {$else}
-      {$if not defined(BIO_s_bio_allownil)}
-      BIO_s_bio := @ERR_BIO_s_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_bio := @ERR_BIO_s_bio;
+    if FuncLoadError then
       AFailed.Add('BIO_s_bio');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_null := LoadLibFunction(ADllHandle, BIO_s_null_procname);
-  FuncLoaded := assigned(BIO_s_null);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_null);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_null_allownil)}
+    BIO_s_null := @ERR_BIO_s_null;
+    {$ifend}
     {$if declared(BIO_s_null_introduced)}
     if LibVersion < BIO_s_null_introduced then
     begin
       {$if declared(FC_BIO_s_null)}
       BIO_s_null := @FC_BIO_s_null;
-      {$else}
-      {$if not defined(BIO_s_null_allownil)}
-      BIO_s_null := @ERR_BIO_s_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_null_removed)}
@@ -6395,39 +5706,31 @@ begin
     begin
       {$if declared(_BIO_s_null)}
       BIO_s_null := @_BIO_s_null;
-      {$else}
-      {$if not defined(BIO_s_null_allownil)}
-      BIO_s_null := @ERR_BIO_s_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_null_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_null := @ERR_BIO_s_null;
+    if FuncLoadError then
       AFailed.Add('BIO_s_null');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_null := LoadLibFunction(ADllHandle, BIO_f_null_procname);
-  FuncLoaded := assigned(BIO_f_null);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_null);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_null_allownil)}
+    BIO_f_null := @ERR_BIO_f_null;
+    {$ifend}
     {$if declared(BIO_f_null_introduced)}
     if LibVersion < BIO_f_null_introduced then
     begin
       {$if declared(FC_BIO_f_null)}
       BIO_f_null := @FC_BIO_f_null;
-      {$else}
-      {$if not defined(BIO_f_null_allownil)}
-      BIO_f_null := @ERR_BIO_f_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_null_removed)}
@@ -6435,39 +5738,31 @@ begin
     begin
       {$if declared(_BIO_f_null)}
       BIO_f_null := @_BIO_f_null;
-      {$else}
-      {$if not defined(BIO_f_null_allownil)}
-      BIO_f_null := @ERR_BIO_f_null;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_null_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_null := @ERR_BIO_f_null;
+    if FuncLoadError then
       AFailed.Add('BIO_f_null');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_buffer := LoadLibFunction(ADllHandle, BIO_f_buffer_procname);
-  FuncLoaded := assigned(BIO_f_buffer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_buffer);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_buffer_allownil)}
+    BIO_f_buffer := @ERR_BIO_f_buffer;
+    {$ifend}
     {$if declared(BIO_f_buffer_introduced)}
     if LibVersion < BIO_f_buffer_introduced then
     begin
       {$if declared(FC_BIO_f_buffer)}
       BIO_f_buffer := @FC_BIO_f_buffer;
-      {$else}
-      {$if not defined(BIO_f_buffer_allownil)}
-      BIO_f_buffer := @ERR_BIO_f_buffer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_buffer_removed)}
@@ -6475,39 +5770,31 @@ begin
     begin
       {$if declared(_BIO_f_buffer)}
       BIO_f_buffer := @_BIO_f_buffer;
-      {$else}
-      {$if not defined(BIO_f_buffer_allownil)}
-      BIO_f_buffer := @ERR_BIO_f_buffer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_buffer_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_buffer := @ERR_BIO_f_buffer;
+    if FuncLoadError then
       AFailed.Add('BIO_f_buffer');
-    end;
     {$ifend}
   end;
 
 
   BIO_f_linebuffer := LoadLibFunction(ADllHandle, BIO_f_linebuffer_procname);
-  FuncLoaded := assigned(BIO_f_linebuffer);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_linebuffer);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_linebuffer_allownil)}
+    BIO_f_linebuffer := @ERR_BIO_f_linebuffer;
+    {$ifend}
     {$if declared(BIO_f_linebuffer_introduced)}
     if LibVersion < BIO_f_linebuffer_introduced then
     begin
       {$if declared(FC_BIO_f_linebuffer)}
       BIO_f_linebuffer := @FC_BIO_f_linebuffer;
-      {$else}
-      {$if not defined(BIO_f_linebuffer_allownil)}
-      BIO_f_linebuffer := @ERR_BIO_f_linebuffer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_linebuffer_removed)}
@@ -6515,39 +5802,31 @@ begin
     begin
       {$if declared(_BIO_f_linebuffer)}
       BIO_f_linebuffer := @_BIO_f_linebuffer;
-      {$else}
-      {$if not defined(BIO_f_linebuffer_allownil)}
-      BIO_f_linebuffer := @ERR_BIO_f_linebuffer;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_linebuffer_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_linebuffer := @ERR_BIO_f_linebuffer;
+    if FuncLoadError then
       AFailed.Add('BIO_f_linebuffer');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_f_nbio_test := LoadLibFunction(ADllHandle, BIO_f_nbio_test_procname);
-  FuncLoaded := assigned(BIO_f_nbio_test);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_f_nbio_test);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_f_nbio_test_allownil)}
+    BIO_f_nbio_test := @ERR_BIO_f_nbio_test;
+    {$ifend}
     {$if declared(BIO_f_nbio_test_introduced)}
     if LibVersion < BIO_f_nbio_test_introduced then
     begin
       {$if declared(FC_BIO_f_nbio_test)}
       BIO_f_nbio_test := @FC_BIO_f_nbio_test;
-      {$else}
-      {$if not defined(BIO_f_nbio_test_allownil)}
-      BIO_f_nbio_test := @ERR_BIO_f_nbio_test;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_f_nbio_test_removed)}
@@ -6555,39 +5834,31 @@ begin
     begin
       {$if declared(_BIO_f_nbio_test)}
       BIO_f_nbio_test := @_BIO_f_nbio_test;
-      {$else}
-      {$if not defined(BIO_f_nbio_test_allownil)}
-      BIO_f_nbio_test := @ERR_BIO_f_nbio_test;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_f_nbio_test_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_f_nbio_test := @ERR_BIO_f_nbio_test;
+    if FuncLoadError then
       AFailed.Add('BIO_f_nbio_test');
-    end;
     {$ifend}
   end;
 
 
   BIO_s_datagram := LoadLibFunction(ADllHandle, BIO_s_datagram_procname);
-  FuncLoaded := assigned(BIO_s_datagram);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_s_datagram);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_s_datagram_allownil)}
+    BIO_s_datagram := @ERR_BIO_s_datagram;
+    {$ifend}
     {$if declared(BIO_s_datagram_introduced)}
     if LibVersion < BIO_s_datagram_introduced then
     begin
       {$if declared(FC_BIO_s_datagram)}
       BIO_s_datagram := @FC_BIO_s_datagram;
-      {$else}
-      {$if not defined(BIO_s_datagram_allownil)}
-      BIO_s_datagram := @ERR_BIO_s_datagram;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_s_datagram_removed)}
@@ -6595,39 +5866,31 @@ begin
     begin
       {$if declared(_BIO_s_datagram)}
       BIO_s_datagram := @_BIO_s_datagram;
-      {$else}
-      {$if not defined(BIO_s_datagram_allownil)}
-      BIO_s_datagram := @ERR_BIO_s_datagram;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_s_datagram_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_s_datagram := @ERR_BIO_s_datagram;
+    if FuncLoadError then
       AFailed.Add('BIO_s_datagram');
-    end;
     {$ifend}
   end;
 
 
   BIO_dgram_non_fatal_error := LoadLibFunction(ADllHandle, BIO_dgram_non_fatal_error_procname);
-  FuncLoaded := assigned(BIO_dgram_non_fatal_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_dgram_non_fatal_error);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_dgram_non_fatal_error_allownil)}
+    BIO_dgram_non_fatal_error := @ERR_BIO_dgram_non_fatal_error;
+    {$ifend}
     {$if declared(BIO_dgram_non_fatal_error_introduced)}
     if LibVersion < BIO_dgram_non_fatal_error_introduced then
     begin
       {$if declared(FC_BIO_dgram_non_fatal_error)}
       BIO_dgram_non_fatal_error := @FC_BIO_dgram_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_dgram_non_fatal_error_allownil)}
-      BIO_dgram_non_fatal_error := @ERR_BIO_dgram_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_dgram_non_fatal_error_removed)}
@@ -6635,39 +5898,31 @@ begin
     begin
       {$if declared(_BIO_dgram_non_fatal_error)}
       BIO_dgram_non_fatal_error := @_BIO_dgram_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_dgram_non_fatal_error_allownil)}
-      BIO_dgram_non_fatal_error := @ERR_BIO_dgram_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_dgram_non_fatal_error_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_dgram_non_fatal_error := @ERR_BIO_dgram_non_fatal_error;
+    if FuncLoadError then
       AFailed.Add('BIO_dgram_non_fatal_error');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_dgram := LoadLibFunction(ADllHandle, BIO_new_dgram_procname);
-  FuncLoaded := assigned(BIO_new_dgram);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_dgram);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_dgram_allownil)}
+    BIO_new_dgram := @ERR_BIO_new_dgram;
+    {$ifend}
     {$if declared(BIO_new_dgram_introduced)}
     if LibVersion < BIO_new_dgram_introduced then
     begin
       {$if declared(FC_BIO_new_dgram)}
       BIO_new_dgram := @FC_BIO_new_dgram;
-      {$else}
-      {$if not defined(BIO_new_dgram_allownil)}
-      BIO_new_dgram := @ERR_BIO_new_dgram;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_dgram_removed)}
@@ -6675,39 +5930,31 @@ begin
     begin
       {$if declared(_BIO_new_dgram)}
       BIO_new_dgram := @_BIO_new_dgram;
-      {$else}
-      {$if not defined(BIO_new_dgram_allownil)}
-      BIO_new_dgram := @ERR_BIO_new_dgram;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_dgram_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_dgram := @ERR_BIO_new_dgram;
+    if FuncLoadError then
       AFailed.Add('BIO_new_dgram');
-    end;
     {$ifend}
   end;
 
 
   BIO_sock_should_retry := LoadLibFunction(ADllHandle, BIO_sock_should_retry_procname);
-  FuncLoaded := assigned(BIO_sock_should_retry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_sock_should_retry);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_sock_should_retry_allownil)}
+    BIO_sock_should_retry := @ERR_BIO_sock_should_retry;
+    {$ifend}
     {$if declared(BIO_sock_should_retry_introduced)}
     if LibVersion < BIO_sock_should_retry_introduced then
     begin
       {$if declared(FC_BIO_sock_should_retry)}
       BIO_sock_should_retry := @FC_BIO_sock_should_retry;
-      {$else}
-      {$if not defined(BIO_sock_should_retry_allownil)}
-      BIO_sock_should_retry := @ERR_BIO_sock_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_sock_should_retry_removed)}
@@ -6715,39 +5962,31 @@ begin
     begin
       {$if declared(_BIO_sock_should_retry)}
       BIO_sock_should_retry := @_BIO_sock_should_retry;
-      {$else}
-      {$if not defined(BIO_sock_should_retry_allownil)}
-      BIO_sock_should_retry := @ERR_BIO_sock_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_sock_should_retry_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_sock_should_retry := @ERR_BIO_sock_should_retry;
+    if FuncLoadError then
       AFailed.Add('BIO_sock_should_retry');
-    end;
     {$ifend}
   end;
 
 
   BIO_sock_non_fatal_error := LoadLibFunction(ADllHandle, BIO_sock_non_fatal_error_procname);
-  FuncLoaded := assigned(BIO_sock_non_fatal_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_sock_non_fatal_error);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_sock_non_fatal_error_allownil)}
+    BIO_sock_non_fatal_error := @ERR_BIO_sock_non_fatal_error;
+    {$ifend}
     {$if declared(BIO_sock_non_fatal_error_introduced)}
     if LibVersion < BIO_sock_non_fatal_error_introduced then
     begin
       {$if declared(FC_BIO_sock_non_fatal_error)}
       BIO_sock_non_fatal_error := @FC_BIO_sock_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_sock_non_fatal_error_allownil)}
-      BIO_sock_non_fatal_error := @ERR_BIO_sock_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_sock_non_fatal_error_removed)}
@@ -6755,39 +5994,31 @@ begin
     begin
       {$if declared(_BIO_sock_non_fatal_error)}
       BIO_sock_non_fatal_error := @_BIO_sock_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_sock_non_fatal_error_allownil)}
-      BIO_sock_non_fatal_error := @ERR_BIO_sock_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_sock_non_fatal_error_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_sock_non_fatal_error := @ERR_BIO_sock_non_fatal_error;
+    if FuncLoadError then
       AFailed.Add('BIO_sock_non_fatal_error');
-    end;
     {$ifend}
   end;
 
 
   BIO_fd_should_retry := LoadLibFunction(ADllHandle, BIO_fd_should_retry_procname);
-  FuncLoaded := assigned(BIO_fd_should_retry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_fd_should_retry);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_fd_should_retry_allownil)}
+    BIO_fd_should_retry := @ERR_BIO_fd_should_retry;
+    {$ifend}
     {$if declared(BIO_fd_should_retry_introduced)}
     if LibVersion < BIO_fd_should_retry_introduced then
     begin
       {$if declared(FC_BIO_fd_should_retry)}
       BIO_fd_should_retry := @FC_BIO_fd_should_retry;
-      {$else}
-      {$if not defined(BIO_fd_should_retry_allownil)}
-      BIO_fd_should_retry := @ERR_BIO_fd_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_fd_should_retry_removed)}
@@ -6795,39 +6026,31 @@ begin
     begin
       {$if declared(_BIO_fd_should_retry)}
       BIO_fd_should_retry := @_BIO_fd_should_retry;
-      {$else}
-      {$if not defined(BIO_fd_should_retry_allownil)}
-      BIO_fd_should_retry := @ERR_BIO_fd_should_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_fd_should_retry_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_fd_should_retry := @ERR_BIO_fd_should_retry;
+    if FuncLoadError then
       AFailed.Add('BIO_fd_should_retry');
-    end;
     {$ifend}
   end;
 
 
   BIO_fd_non_fatal_error := LoadLibFunction(ADllHandle, BIO_fd_non_fatal_error_procname);
-  FuncLoaded := assigned(BIO_fd_non_fatal_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_fd_non_fatal_error);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_fd_non_fatal_error_allownil)}
+    BIO_fd_non_fatal_error := @ERR_BIO_fd_non_fatal_error;
+    {$ifend}
     {$if declared(BIO_fd_non_fatal_error_introduced)}
     if LibVersion < BIO_fd_non_fatal_error_introduced then
     begin
       {$if declared(FC_BIO_fd_non_fatal_error)}
       BIO_fd_non_fatal_error := @FC_BIO_fd_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_fd_non_fatal_error_allownil)}
-      BIO_fd_non_fatal_error := @ERR_BIO_fd_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_fd_non_fatal_error_removed)}
@@ -6835,39 +6058,31 @@ begin
     begin
       {$if declared(_BIO_fd_non_fatal_error)}
       BIO_fd_non_fatal_error := @_BIO_fd_non_fatal_error;
-      {$else}
-      {$if not defined(BIO_fd_non_fatal_error_allownil)}
-      BIO_fd_non_fatal_error := @ERR_BIO_fd_non_fatal_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_fd_non_fatal_error_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_fd_non_fatal_error := @ERR_BIO_fd_non_fatal_error;
+    if FuncLoadError then
       AFailed.Add('BIO_fd_non_fatal_error');
-    end;
     {$ifend}
   end;
 
 
   BIO_dump := LoadLibFunction(ADllHandle, BIO_dump_procname);
-  FuncLoaded := assigned(BIO_dump);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_dump);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_dump_allownil)}
+    BIO_dump := @ERR_BIO_dump;
+    {$ifend}
     {$if declared(BIO_dump_introduced)}
     if LibVersion < BIO_dump_introduced then
     begin
       {$if declared(FC_BIO_dump)}
       BIO_dump := @FC_BIO_dump;
-      {$else}
-      {$if not defined(BIO_dump_allownil)}
-      BIO_dump := @ERR_BIO_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_dump_removed)}
@@ -6875,39 +6090,31 @@ begin
     begin
       {$if declared(_BIO_dump)}
       BIO_dump := @_BIO_dump;
-      {$else}
-      {$if not defined(BIO_dump_allownil)}
-      BIO_dump := @ERR_BIO_dump;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_dump_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_dump := @ERR_BIO_dump;
+    if FuncLoadError then
       AFailed.Add('BIO_dump');
-    end;
     {$ifend}
   end;
 
 
   BIO_dump_indent := LoadLibFunction(ADllHandle, BIO_dump_indent_procname);
-  FuncLoaded := assigned(BIO_dump_indent);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_dump_indent);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_dump_indent_allownil)}
+    BIO_dump_indent := @ERR_BIO_dump_indent;
+    {$ifend}
     {$if declared(BIO_dump_indent_introduced)}
     if LibVersion < BIO_dump_indent_introduced then
     begin
       {$if declared(FC_BIO_dump_indent)}
       BIO_dump_indent := @FC_BIO_dump_indent;
-      {$else}
-      {$if not defined(BIO_dump_indent_allownil)}
-      BIO_dump_indent := @ERR_BIO_dump_indent;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_dump_indent_removed)}
@@ -6915,39 +6122,31 @@ begin
     begin
       {$if declared(_BIO_dump_indent)}
       BIO_dump_indent := @_BIO_dump_indent;
-      {$else}
-      {$if not defined(BIO_dump_indent_allownil)}
-      BIO_dump_indent := @ERR_BIO_dump_indent;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_dump_indent_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_dump_indent := @ERR_BIO_dump_indent;
+    if FuncLoadError then
       AFailed.Add('BIO_dump_indent');
-    end;
     {$ifend}
   end;
 
 
   BIO_hex_string := LoadLibFunction(ADllHandle, BIO_hex_string_procname);
-  FuncLoaded := assigned(BIO_hex_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_hex_string);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_hex_string_allownil)}
+    BIO_hex_string := @ERR_BIO_hex_string;
+    {$ifend}
     {$if declared(BIO_hex_string_introduced)}
     if LibVersion < BIO_hex_string_introduced then
     begin
       {$if declared(FC_BIO_hex_string)}
       BIO_hex_string := @FC_BIO_hex_string;
-      {$else}
-      {$if not defined(BIO_hex_string_allownil)}
-      BIO_hex_string := @ERR_BIO_hex_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_hex_string_removed)}
@@ -6955,39 +6154,31 @@ begin
     begin
       {$if declared(_BIO_hex_string)}
       BIO_hex_string := @_BIO_hex_string;
-      {$else}
-      {$if not defined(BIO_hex_string_allownil)}
-      BIO_hex_string := @ERR_BIO_hex_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_hex_string_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_hex_string := @ERR_BIO_hex_string;
+    if FuncLoadError then
       AFailed.Add('BIO_hex_string');
-    end;
     {$ifend}
   end;
 
 
   BIO_ADDR_new := LoadLibFunction(ADllHandle, BIO_ADDR_new_procname);
-  FuncLoaded := assigned(BIO_ADDR_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_new_allownil)}
+    BIO_ADDR_new := @ERR_BIO_ADDR_new;
+    {$ifend}
     {$if declared(BIO_ADDR_new_introduced)}
     if LibVersion < BIO_ADDR_new_introduced then
     begin
       {$if declared(FC_BIO_ADDR_new)}
       BIO_ADDR_new := @FC_BIO_ADDR_new;
-      {$else}
-      {$if not defined(BIO_ADDR_new_allownil)}
-      BIO_ADDR_new := @ERR_BIO_ADDR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_new_removed)}
@@ -6995,39 +6186,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_new)}
       BIO_ADDR_new := @_BIO_ADDR_new;
-      {$else}
-      {$if not defined(BIO_ADDR_new_allownil)}
-      BIO_ADDR_new := @ERR_BIO_ADDR_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_new := @ERR_BIO_ADDR_new;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_rawmake := LoadLibFunction(ADllHandle, BIO_ADDR_rawmake_procname);
-  FuncLoaded := assigned(BIO_ADDR_rawmake);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_rawmake);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_rawmake_allownil)}
+    BIO_ADDR_rawmake := @ERR_BIO_ADDR_rawmake;
+    {$ifend}
     {$if declared(BIO_ADDR_rawmake_introduced)}
     if LibVersion < BIO_ADDR_rawmake_introduced then
     begin
       {$if declared(FC_BIO_ADDR_rawmake)}
       BIO_ADDR_rawmake := @FC_BIO_ADDR_rawmake;
-      {$else}
-      {$if not defined(BIO_ADDR_rawmake_allownil)}
-      BIO_ADDR_rawmake := @ERR_BIO_ADDR_rawmake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_rawmake_removed)}
@@ -7035,39 +6218,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_rawmake)}
       BIO_ADDR_rawmake := @_BIO_ADDR_rawmake;
-      {$else}
-      {$if not defined(BIO_ADDR_rawmake_allownil)}
-      BIO_ADDR_rawmake := @ERR_BIO_ADDR_rawmake;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_rawmake_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_rawmake := @ERR_BIO_ADDR_rawmake;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_rawmake');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_free := LoadLibFunction(ADllHandle, BIO_ADDR_free_procname);
-  FuncLoaded := assigned(BIO_ADDR_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_free_allownil)}
+    BIO_ADDR_free := @ERR_BIO_ADDR_free;
+    {$ifend}
     {$if declared(BIO_ADDR_free_introduced)}
     if LibVersion < BIO_ADDR_free_introduced then
     begin
       {$if declared(FC_BIO_ADDR_free)}
       BIO_ADDR_free := @FC_BIO_ADDR_free;
-      {$else}
-      {$if not defined(BIO_ADDR_free_allownil)}
-      BIO_ADDR_free := @ERR_BIO_ADDR_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_free_removed)}
@@ -7075,39 +6250,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_free)}
       BIO_ADDR_free := @_BIO_ADDR_free;
-      {$else}
-      {$if not defined(BIO_ADDR_free_allownil)}
-      BIO_ADDR_free := @ERR_BIO_ADDR_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_free := @ERR_BIO_ADDR_free;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_clear := LoadLibFunction(ADllHandle, BIO_ADDR_clear_procname);
-  FuncLoaded := assigned(BIO_ADDR_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_clear_allownil)}
+    BIO_ADDR_clear := @ERR_BIO_ADDR_clear;
+    {$ifend}
     {$if declared(BIO_ADDR_clear_introduced)}
     if LibVersion < BIO_ADDR_clear_introduced then
     begin
       {$if declared(FC_BIO_ADDR_clear)}
       BIO_ADDR_clear := @FC_BIO_ADDR_clear;
-      {$else}
-      {$if not defined(BIO_ADDR_clear_allownil)}
-      BIO_ADDR_clear := @ERR_BIO_ADDR_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_clear_removed)}
@@ -7115,39 +6282,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_clear)}
       BIO_ADDR_clear := @_BIO_ADDR_clear;
-      {$else}
-      {$if not defined(BIO_ADDR_clear_allownil)}
-      BIO_ADDR_clear := @ERR_BIO_ADDR_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_clear := @ERR_BIO_ADDR_clear;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_clear');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_family := LoadLibFunction(ADllHandle, BIO_ADDR_family_procname);
-  FuncLoaded := assigned(BIO_ADDR_family);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_family);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_family_allownil)}
+    BIO_ADDR_family := @ERR_BIO_ADDR_family;
+    {$ifend}
     {$if declared(BIO_ADDR_family_introduced)}
     if LibVersion < BIO_ADDR_family_introduced then
     begin
       {$if declared(FC_BIO_ADDR_family)}
       BIO_ADDR_family := @FC_BIO_ADDR_family;
-      {$else}
-      {$if not defined(BIO_ADDR_family_allownil)}
-      BIO_ADDR_family := @ERR_BIO_ADDR_family;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_family_removed)}
@@ -7155,39 +6314,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_family)}
       BIO_ADDR_family := @_BIO_ADDR_family;
-      {$else}
-      {$if not defined(BIO_ADDR_family_allownil)}
-      BIO_ADDR_family := @ERR_BIO_ADDR_family;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_family_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_family := @ERR_BIO_ADDR_family;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_family');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_rawaddress := LoadLibFunction(ADllHandle, BIO_ADDR_rawaddress_procname);
-  FuncLoaded := assigned(BIO_ADDR_rawaddress);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_rawaddress);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_rawaddress_allownil)}
+    BIO_ADDR_rawaddress := @ERR_BIO_ADDR_rawaddress;
+    {$ifend}
     {$if declared(BIO_ADDR_rawaddress_introduced)}
     if LibVersion < BIO_ADDR_rawaddress_introduced then
     begin
       {$if declared(FC_BIO_ADDR_rawaddress)}
       BIO_ADDR_rawaddress := @FC_BIO_ADDR_rawaddress;
-      {$else}
-      {$if not defined(BIO_ADDR_rawaddress_allownil)}
-      BIO_ADDR_rawaddress := @ERR_BIO_ADDR_rawaddress;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_rawaddress_removed)}
@@ -7195,39 +6346,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_rawaddress)}
       BIO_ADDR_rawaddress := @_BIO_ADDR_rawaddress;
-      {$else}
-      {$if not defined(BIO_ADDR_rawaddress_allownil)}
-      BIO_ADDR_rawaddress := @ERR_BIO_ADDR_rawaddress;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_rawaddress_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_rawaddress := @ERR_BIO_ADDR_rawaddress;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_rawaddress');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_rawport := LoadLibFunction(ADllHandle, BIO_ADDR_rawport_procname);
-  FuncLoaded := assigned(BIO_ADDR_rawport);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_rawport);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_rawport_allownil)}
+    BIO_ADDR_rawport := @ERR_BIO_ADDR_rawport;
+    {$ifend}
     {$if declared(BIO_ADDR_rawport_introduced)}
     if LibVersion < BIO_ADDR_rawport_introduced then
     begin
       {$if declared(FC_BIO_ADDR_rawport)}
       BIO_ADDR_rawport := @FC_BIO_ADDR_rawport;
-      {$else}
-      {$if not defined(BIO_ADDR_rawport_allownil)}
-      BIO_ADDR_rawport := @ERR_BIO_ADDR_rawport;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_rawport_removed)}
@@ -7235,39 +6378,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_rawport)}
       BIO_ADDR_rawport := @_BIO_ADDR_rawport;
-      {$else}
-      {$if not defined(BIO_ADDR_rawport_allownil)}
-      BIO_ADDR_rawport := @ERR_BIO_ADDR_rawport;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_rawport_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_rawport := @ERR_BIO_ADDR_rawport;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_rawport');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_hostname_string := LoadLibFunction(ADllHandle, BIO_ADDR_hostname_string_procname);
-  FuncLoaded := assigned(BIO_ADDR_hostname_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_hostname_string);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_hostname_string_allownil)}
+    BIO_ADDR_hostname_string := @ERR_BIO_ADDR_hostname_string;
+    {$ifend}
     {$if declared(BIO_ADDR_hostname_string_introduced)}
     if LibVersion < BIO_ADDR_hostname_string_introduced then
     begin
       {$if declared(FC_BIO_ADDR_hostname_string)}
       BIO_ADDR_hostname_string := @FC_BIO_ADDR_hostname_string;
-      {$else}
-      {$if not defined(BIO_ADDR_hostname_string_allownil)}
-      BIO_ADDR_hostname_string := @ERR_BIO_ADDR_hostname_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_hostname_string_removed)}
@@ -7275,39 +6410,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_hostname_string)}
       BIO_ADDR_hostname_string := @_BIO_ADDR_hostname_string;
-      {$else}
-      {$if not defined(BIO_ADDR_hostname_string_allownil)}
-      BIO_ADDR_hostname_string := @ERR_BIO_ADDR_hostname_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_hostname_string_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_hostname_string := @ERR_BIO_ADDR_hostname_string;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_hostname_string');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_service_string := LoadLibFunction(ADllHandle, BIO_ADDR_service_string_procname);
-  FuncLoaded := assigned(BIO_ADDR_service_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_service_string);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_service_string_allownil)}
+    BIO_ADDR_service_string := @ERR_BIO_ADDR_service_string;
+    {$ifend}
     {$if declared(BIO_ADDR_service_string_introduced)}
     if LibVersion < BIO_ADDR_service_string_introduced then
     begin
       {$if declared(FC_BIO_ADDR_service_string)}
       BIO_ADDR_service_string := @FC_BIO_ADDR_service_string;
-      {$else}
-      {$if not defined(BIO_ADDR_service_string_allownil)}
-      BIO_ADDR_service_string := @ERR_BIO_ADDR_service_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_service_string_removed)}
@@ -7315,39 +6442,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_service_string)}
       BIO_ADDR_service_string := @_BIO_ADDR_service_string;
-      {$else}
-      {$if not defined(BIO_ADDR_service_string_allownil)}
-      BIO_ADDR_service_string := @ERR_BIO_ADDR_service_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_service_string_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_service_string := @ERR_BIO_ADDR_service_string;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_service_string');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDR_path_string := LoadLibFunction(ADllHandle, BIO_ADDR_path_string_procname);
-  FuncLoaded := assigned(BIO_ADDR_path_string);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDR_path_string);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDR_path_string_allownil)}
+    BIO_ADDR_path_string := @ERR_BIO_ADDR_path_string;
+    {$ifend}
     {$if declared(BIO_ADDR_path_string_introduced)}
     if LibVersion < BIO_ADDR_path_string_introduced then
     begin
       {$if declared(FC_BIO_ADDR_path_string)}
       BIO_ADDR_path_string := @FC_BIO_ADDR_path_string;
-      {$else}
-      {$if not defined(BIO_ADDR_path_string_allownil)}
-      BIO_ADDR_path_string := @ERR_BIO_ADDR_path_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDR_path_string_removed)}
@@ -7355,39 +6474,31 @@ begin
     begin
       {$if declared(_BIO_ADDR_path_string)}
       BIO_ADDR_path_string := @_BIO_ADDR_path_string;
-      {$else}
-      {$if not defined(BIO_ADDR_path_string_allownil)}
-      BIO_ADDR_path_string := @ERR_BIO_ADDR_path_string;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDR_path_string_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDR_path_string := @ERR_BIO_ADDR_path_string;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDR_path_string');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_next := LoadLibFunction(ADllHandle, BIO_ADDRINFO_next_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_next);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_next);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_next_allownil)}
+    BIO_ADDRINFO_next := @ERR_BIO_ADDRINFO_next;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_next_introduced)}
     if LibVersion < BIO_ADDRINFO_next_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_next)}
       BIO_ADDRINFO_next := @FC_BIO_ADDRINFO_next;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_next_allownil)}
-      BIO_ADDRINFO_next := @ERR_BIO_ADDRINFO_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_next_removed)}
@@ -7395,39 +6506,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_next)}
       BIO_ADDRINFO_next := @_BIO_ADDRINFO_next;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_next_allownil)}
-      BIO_ADDRINFO_next := @ERR_BIO_ADDRINFO_next;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_next_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_next := @ERR_BIO_ADDRINFO_next;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_next');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_family := LoadLibFunction(ADllHandle, BIO_ADDRINFO_family_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_family);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_family);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_family_allownil)}
+    BIO_ADDRINFO_family := @ERR_BIO_ADDRINFO_family;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_family_introduced)}
     if LibVersion < BIO_ADDRINFO_family_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_family)}
       BIO_ADDRINFO_family := @FC_BIO_ADDRINFO_family;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_family_allownil)}
-      BIO_ADDRINFO_family := @ERR_BIO_ADDRINFO_family;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_family_removed)}
@@ -7435,39 +6538,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_family)}
       BIO_ADDRINFO_family := @_BIO_ADDRINFO_family;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_family_allownil)}
-      BIO_ADDRINFO_family := @ERR_BIO_ADDRINFO_family;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_family_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_family := @ERR_BIO_ADDRINFO_family;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_family');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_socktype := LoadLibFunction(ADllHandle, BIO_ADDRINFO_socktype_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_socktype);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_socktype);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_socktype_allownil)}
+    BIO_ADDRINFO_socktype := @ERR_BIO_ADDRINFO_socktype;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_socktype_introduced)}
     if LibVersion < BIO_ADDRINFO_socktype_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_socktype)}
       BIO_ADDRINFO_socktype := @FC_BIO_ADDRINFO_socktype;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_socktype_allownil)}
-      BIO_ADDRINFO_socktype := @ERR_BIO_ADDRINFO_socktype;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_socktype_removed)}
@@ -7475,39 +6570,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_socktype)}
       BIO_ADDRINFO_socktype := @_BIO_ADDRINFO_socktype;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_socktype_allownil)}
-      BIO_ADDRINFO_socktype := @ERR_BIO_ADDRINFO_socktype;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_socktype_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_socktype := @ERR_BIO_ADDRINFO_socktype;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_socktype');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_protocol := LoadLibFunction(ADllHandle, BIO_ADDRINFO_protocol_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_protocol);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_protocol);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_protocol_allownil)}
+    BIO_ADDRINFO_protocol := @ERR_BIO_ADDRINFO_protocol;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_protocol_introduced)}
     if LibVersion < BIO_ADDRINFO_protocol_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_protocol)}
       BIO_ADDRINFO_protocol := @FC_BIO_ADDRINFO_protocol;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_protocol_allownil)}
-      BIO_ADDRINFO_protocol := @ERR_BIO_ADDRINFO_protocol;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_protocol_removed)}
@@ -7515,39 +6602,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_protocol)}
       BIO_ADDRINFO_protocol := @_BIO_ADDRINFO_protocol;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_protocol_allownil)}
-      BIO_ADDRINFO_protocol := @ERR_BIO_ADDRINFO_protocol;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_protocol_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_protocol := @ERR_BIO_ADDRINFO_protocol;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_protocol');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_address := LoadLibFunction(ADllHandle, BIO_ADDRINFO_address_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_address);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_address);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_address_allownil)}
+    BIO_ADDRINFO_address := @ERR_BIO_ADDRINFO_address;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_address_introduced)}
     if LibVersion < BIO_ADDRINFO_address_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_address)}
       BIO_ADDRINFO_address := @FC_BIO_ADDRINFO_address;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_address_allownil)}
-      BIO_ADDRINFO_address := @ERR_BIO_ADDRINFO_address;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_address_removed)}
@@ -7555,39 +6634,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_address)}
       BIO_ADDRINFO_address := @_BIO_ADDRINFO_address;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_address_allownil)}
-      BIO_ADDRINFO_address := @ERR_BIO_ADDRINFO_address;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_address_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_address := @ERR_BIO_ADDRINFO_address;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_address');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_ADDRINFO_free := LoadLibFunction(ADllHandle, BIO_ADDRINFO_free_procname);
-  FuncLoaded := assigned(BIO_ADDRINFO_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_ADDRINFO_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_ADDRINFO_free_allownil)}
+    BIO_ADDRINFO_free := @ERR_BIO_ADDRINFO_free;
+    {$ifend}
     {$if declared(BIO_ADDRINFO_free_introduced)}
     if LibVersion < BIO_ADDRINFO_free_introduced then
     begin
       {$if declared(FC_BIO_ADDRINFO_free)}
       BIO_ADDRINFO_free := @FC_BIO_ADDRINFO_free;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_free_allownil)}
-      BIO_ADDRINFO_free := @ERR_BIO_ADDRINFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_ADDRINFO_free_removed)}
@@ -7595,39 +6666,31 @@ begin
     begin
       {$if declared(_BIO_ADDRINFO_free)}
       BIO_ADDRINFO_free := @_BIO_ADDRINFO_free;
-      {$else}
-      {$if not defined(BIO_ADDRINFO_free_allownil)}
-      BIO_ADDRINFO_free := @ERR_BIO_ADDRINFO_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_ADDRINFO_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_ADDRINFO_free := @ERR_BIO_ADDRINFO_free;
+    if FuncLoadError then
       AFailed.Add('BIO_ADDRINFO_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_parse_hostserv := LoadLibFunction(ADllHandle, BIO_parse_hostserv_procname);
-  FuncLoaded := assigned(BIO_parse_hostserv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_parse_hostserv);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_parse_hostserv_allownil)}
+    BIO_parse_hostserv := @ERR_BIO_parse_hostserv;
+    {$ifend}
     {$if declared(BIO_parse_hostserv_introduced)}
     if LibVersion < BIO_parse_hostserv_introduced then
     begin
       {$if declared(FC_BIO_parse_hostserv)}
       BIO_parse_hostserv := @FC_BIO_parse_hostserv;
-      {$else}
-      {$if not defined(BIO_parse_hostserv_allownil)}
-      BIO_parse_hostserv := @ERR_BIO_parse_hostserv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_parse_hostserv_removed)}
@@ -7635,39 +6698,31 @@ begin
     begin
       {$if declared(_BIO_parse_hostserv)}
       BIO_parse_hostserv := @_BIO_parse_hostserv;
-      {$else}
-      {$if not defined(BIO_parse_hostserv_allownil)}
-      BIO_parse_hostserv := @ERR_BIO_parse_hostserv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_parse_hostserv_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_parse_hostserv := @ERR_BIO_parse_hostserv;
+    if FuncLoadError then
       AFailed.Add('BIO_parse_hostserv');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_lookup := LoadLibFunction(ADllHandle, BIO_lookup_procname);
-  FuncLoaded := assigned(BIO_lookup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_lookup);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_lookup_allownil)}
+    BIO_lookup := @ERR_BIO_lookup;
+    {$ifend}
     {$if declared(BIO_lookup_introduced)}
     if LibVersion < BIO_lookup_introduced then
     begin
       {$if declared(FC_BIO_lookup)}
       BIO_lookup := @FC_BIO_lookup;
-      {$else}
-      {$if not defined(BIO_lookup_allownil)}
-      BIO_lookup := @ERR_BIO_lookup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_lookup_removed)}
@@ -7675,39 +6730,31 @@ begin
     begin
       {$if declared(_BIO_lookup)}
       BIO_lookup := @_BIO_lookup;
-      {$else}
-      {$if not defined(BIO_lookup_allownil)}
-      BIO_lookup := @ERR_BIO_lookup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_lookup_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_lookup := @ERR_BIO_lookup;
+    if FuncLoadError then
       AFailed.Add('BIO_lookup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_lookup_ex := LoadLibFunction(ADllHandle, BIO_lookup_ex_procname);
-  FuncLoaded := assigned(BIO_lookup_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_lookup_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_lookup_ex_allownil)}
+    BIO_lookup_ex := @ERR_BIO_lookup_ex;
+    {$ifend}
     {$if declared(BIO_lookup_ex_introduced)}
     if LibVersion < BIO_lookup_ex_introduced then
     begin
       {$if declared(FC_BIO_lookup_ex)}
       BIO_lookup_ex := @FC_BIO_lookup_ex;
-      {$else}
-      {$if not defined(BIO_lookup_ex_allownil)}
-      BIO_lookup_ex := @ERR_BIO_lookup_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_lookup_ex_removed)}
@@ -7715,39 +6762,31 @@ begin
     begin
       {$if declared(_BIO_lookup_ex)}
       BIO_lookup_ex := @_BIO_lookup_ex;
-      {$else}
-      {$if not defined(BIO_lookup_ex_allownil)}
-      BIO_lookup_ex := @ERR_BIO_lookup_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_lookup_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_lookup_ex := @ERR_BIO_lookup_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_lookup_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_sock_error := LoadLibFunction(ADllHandle, BIO_sock_error_procname);
-  FuncLoaded := assigned(BIO_sock_error);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_sock_error);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_sock_error_allownil)}
+    BIO_sock_error := @ERR_BIO_sock_error;
+    {$ifend}
     {$if declared(BIO_sock_error_introduced)}
     if LibVersion < BIO_sock_error_introduced then
     begin
       {$if declared(FC_BIO_sock_error)}
       BIO_sock_error := @FC_BIO_sock_error;
-      {$else}
-      {$if not defined(BIO_sock_error_allownil)}
-      BIO_sock_error := @ERR_BIO_sock_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_sock_error_removed)}
@@ -7755,39 +6794,31 @@ begin
     begin
       {$if declared(_BIO_sock_error)}
       BIO_sock_error := @_BIO_sock_error;
-      {$else}
-      {$if not defined(BIO_sock_error_allownil)}
-      BIO_sock_error := @ERR_BIO_sock_error;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_sock_error_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_sock_error := @ERR_BIO_sock_error;
+    if FuncLoadError then
       AFailed.Add('BIO_sock_error');
-    end;
     {$ifend}
   end;
 
 
   BIO_socket_ioctl := LoadLibFunction(ADllHandle, BIO_socket_ioctl_procname);
-  FuncLoaded := assigned(BIO_socket_ioctl);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_socket_ioctl);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_socket_ioctl_allownil)}
+    BIO_socket_ioctl := @ERR_BIO_socket_ioctl;
+    {$ifend}
     {$if declared(BIO_socket_ioctl_introduced)}
     if LibVersion < BIO_socket_ioctl_introduced then
     begin
       {$if declared(FC_BIO_socket_ioctl)}
       BIO_socket_ioctl := @FC_BIO_socket_ioctl;
-      {$else}
-      {$if not defined(BIO_socket_ioctl_allownil)}
-      BIO_socket_ioctl := @ERR_BIO_socket_ioctl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_socket_ioctl_removed)}
@@ -7795,39 +6826,31 @@ begin
     begin
       {$if declared(_BIO_socket_ioctl)}
       BIO_socket_ioctl := @_BIO_socket_ioctl;
-      {$else}
-      {$if not defined(BIO_socket_ioctl_allownil)}
-      BIO_socket_ioctl := @ERR_BIO_socket_ioctl;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_socket_ioctl_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_socket_ioctl := @ERR_BIO_socket_ioctl;
+    if FuncLoadError then
       AFailed.Add('BIO_socket_ioctl');
-    end;
     {$ifend}
   end;
 
 
   BIO_socket_nbio := LoadLibFunction(ADllHandle, BIO_socket_nbio_procname);
-  FuncLoaded := assigned(BIO_socket_nbio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_socket_nbio);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_socket_nbio_allownil)}
+    BIO_socket_nbio := @ERR_BIO_socket_nbio;
+    {$ifend}
     {$if declared(BIO_socket_nbio_introduced)}
     if LibVersion < BIO_socket_nbio_introduced then
     begin
       {$if declared(FC_BIO_socket_nbio)}
       BIO_socket_nbio := @FC_BIO_socket_nbio;
-      {$else}
-      {$if not defined(BIO_socket_nbio_allownil)}
-      BIO_socket_nbio := @ERR_BIO_socket_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_socket_nbio_removed)}
@@ -7835,39 +6858,31 @@ begin
     begin
       {$if declared(_BIO_socket_nbio)}
       BIO_socket_nbio := @_BIO_socket_nbio;
-      {$else}
-      {$if not defined(BIO_socket_nbio_allownil)}
-      BIO_socket_nbio := @ERR_BIO_socket_nbio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_socket_nbio_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_socket_nbio := @ERR_BIO_socket_nbio;
+    if FuncLoadError then
       AFailed.Add('BIO_socket_nbio');
-    end;
     {$ifend}
   end;
 
 
   BIO_sock_init := LoadLibFunction(ADllHandle, BIO_sock_init_procname);
-  FuncLoaded := assigned(BIO_sock_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_sock_init);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_sock_init_allownil)}
+    BIO_sock_init := @ERR_BIO_sock_init;
+    {$ifend}
     {$if declared(BIO_sock_init_introduced)}
     if LibVersion < BIO_sock_init_introduced then
     begin
       {$if declared(FC_BIO_sock_init)}
       BIO_sock_init := @FC_BIO_sock_init;
-      {$else}
-      {$if not defined(BIO_sock_init_allownil)}
-      BIO_sock_init := @ERR_BIO_sock_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_sock_init_removed)}
@@ -7875,39 +6890,31 @@ begin
     begin
       {$if declared(_BIO_sock_init)}
       BIO_sock_init := @_BIO_sock_init;
-      {$else}
-      {$if not defined(BIO_sock_init_allownil)}
-      BIO_sock_init := @ERR_BIO_sock_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_sock_init_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_sock_init := @ERR_BIO_sock_init;
+    if FuncLoadError then
       AFailed.Add('BIO_sock_init');
-    end;
     {$ifend}
   end;
 
 
   BIO_set_tcp_ndelay := LoadLibFunction(ADllHandle, BIO_set_tcp_ndelay_procname);
-  FuncLoaded := assigned(BIO_set_tcp_ndelay);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_set_tcp_ndelay);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_set_tcp_ndelay_allownil)}
+    BIO_set_tcp_ndelay := @ERR_BIO_set_tcp_ndelay;
+    {$ifend}
     {$if declared(BIO_set_tcp_ndelay_introduced)}
     if LibVersion < BIO_set_tcp_ndelay_introduced then
     begin
       {$if declared(FC_BIO_set_tcp_ndelay)}
       BIO_set_tcp_ndelay := @FC_BIO_set_tcp_ndelay;
-      {$else}
-      {$if not defined(BIO_set_tcp_ndelay_allownil)}
-      BIO_set_tcp_ndelay := @ERR_BIO_set_tcp_ndelay;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_set_tcp_ndelay_removed)}
@@ -7915,39 +6922,31 @@ begin
     begin
       {$if declared(_BIO_set_tcp_ndelay)}
       BIO_set_tcp_ndelay := @_BIO_set_tcp_ndelay;
-      {$else}
-      {$if not defined(BIO_set_tcp_ndelay_allownil)}
-      BIO_set_tcp_ndelay := @ERR_BIO_set_tcp_ndelay;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_set_tcp_ndelay_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_set_tcp_ndelay := @ERR_BIO_set_tcp_ndelay;
+    if FuncLoadError then
       AFailed.Add('BIO_set_tcp_ndelay');
-    end;
     {$ifend}
   end;
 
 
   BIO_sock_info := LoadLibFunction(ADllHandle, BIO_sock_info_procname);
-  FuncLoaded := assigned(BIO_sock_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_sock_info);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_sock_info_allownil)}
+    BIO_sock_info := @ERR_BIO_sock_info;
+    {$ifend}
     {$if declared(BIO_sock_info_introduced)}
     if LibVersion < BIO_sock_info_introduced then
     begin
       {$if declared(FC_BIO_sock_info)}
       BIO_sock_info := @FC_BIO_sock_info;
-      {$else}
-      {$if not defined(BIO_sock_info_allownil)}
-      BIO_sock_info := @ERR_BIO_sock_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_sock_info_removed)}
@@ -7955,39 +6954,31 @@ begin
     begin
       {$if declared(_BIO_sock_info)}
       BIO_sock_info := @_BIO_sock_info;
-      {$else}
-      {$if not defined(BIO_sock_info_allownil)}
-      BIO_sock_info := @ERR_BIO_sock_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_sock_info_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_sock_info := @ERR_BIO_sock_info;
+    if FuncLoadError then
       AFailed.Add('BIO_sock_info');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_socket := LoadLibFunction(ADllHandle, BIO_socket_procname);
-  FuncLoaded := assigned(BIO_socket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_socket);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_socket_allownil)}
+    BIO_socket := @ERR_BIO_socket;
+    {$ifend}
     {$if declared(BIO_socket_introduced)}
     if LibVersion < BIO_socket_introduced then
     begin
       {$if declared(FC_BIO_socket)}
       BIO_socket := @FC_BIO_socket;
-      {$else}
-      {$if not defined(BIO_socket_allownil)}
-      BIO_socket := @ERR_BIO_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_socket_removed)}
@@ -7995,39 +6986,31 @@ begin
     begin
       {$if declared(_BIO_socket)}
       BIO_socket := @_BIO_socket;
-      {$else}
-      {$if not defined(BIO_socket_allownil)}
-      BIO_socket := @ERR_BIO_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_socket_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_socket := @ERR_BIO_socket;
+    if FuncLoadError then
       AFailed.Add('BIO_socket');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_connect := LoadLibFunction(ADllHandle, BIO_connect_procname);
-  FuncLoaded := assigned(BIO_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_connect_allownil)}
+    BIO_connect := @ERR_BIO_connect;
+    {$ifend}
     {$if declared(BIO_connect_introduced)}
     if LibVersion < BIO_connect_introduced then
     begin
       {$if declared(FC_BIO_connect)}
       BIO_connect := @FC_BIO_connect;
-      {$else}
-      {$if not defined(BIO_connect_allownil)}
-      BIO_connect := @ERR_BIO_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_connect_removed)}
@@ -8035,39 +7018,31 @@ begin
     begin
       {$if declared(_BIO_connect)}
       BIO_connect := @_BIO_connect;
-      {$else}
-      {$if not defined(BIO_connect_allownil)}
-      BIO_connect := @ERR_BIO_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_connect := @ERR_BIO_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_connect');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_bind := LoadLibFunction(ADllHandle, BIO_bind_procname);
-  FuncLoaded := assigned(BIO_bind);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_bind);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_bind_allownil)}
+    BIO_bind := @ERR_BIO_bind;
+    {$ifend}
     {$if declared(BIO_bind_introduced)}
     if LibVersion < BIO_bind_introduced then
     begin
       {$if declared(FC_BIO_bind)}
       BIO_bind := @FC_BIO_bind;
-      {$else}
-      {$if not defined(BIO_bind_allownil)}
-      BIO_bind := @ERR_BIO_bind;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_bind_removed)}
@@ -8075,39 +7050,31 @@ begin
     begin
       {$if declared(_BIO_bind)}
       BIO_bind := @_BIO_bind;
-      {$else}
-      {$if not defined(BIO_bind_allownil)}
-      BIO_bind := @ERR_BIO_bind;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_bind_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_bind := @ERR_BIO_bind;
+    if FuncLoadError then
       AFailed.Add('BIO_bind');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_listen := LoadLibFunction(ADllHandle, BIO_listen_procname);
-  FuncLoaded := assigned(BIO_listen);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_listen);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_listen_allownil)}
+    BIO_listen := @ERR_BIO_listen;
+    {$ifend}
     {$if declared(BIO_listen_introduced)}
     if LibVersion < BIO_listen_introduced then
     begin
       {$if declared(FC_BIO_listen)}
       BIO_listen := @FC_BIO_listen;
-      {$else}
-      {$if not defined(BIO_listen_allownil)}
-      BIO_listen := @ERR_BIO_listen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_listen_removed)}
@@ -8115,39 +7082,31 @@ begin
     begin
       {$if declared(_BIO_listen)}
       BIO_listen := @_BIO_listen;
-      {$else}
-      {$if not defined(BIO_listen_allownil)}
-      BIO_listen := @ERR_BIO_listen;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_listen_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_listen := @ERR_BIO_listen;
+    if FuncLoadError then
       AFailed.Add('BIO_listen');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_accept_ex := LoadLibFunction(ADllHandle, BIO_accept_ex_procname);
-  FuncLoaded := assigned(BIO_accept_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_accept_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_accept_ex_allownil)}
+    BIO_accept_ex := @ERR_BIO_accept_ex;
+    {$ifend}
     {$if declared(BIO_accept_ex_introduced)}
     if LibVersion < BIO_accept_ex_introduced then
     begin
       {$if declared(FC_BIO_accept_ex)}
       BIO_accept_ex := @FC_BIO_accept_ex;
-      {$else}
-      {$if not defined(BIO_accept_ex_allownil)}
-      BIO_accept_ex := @ERR_BIO_accept_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_accept_ex_removed)}
@@ -8155,39 +7114,31 @@ begin
     begin
       {$if declared(_BIO_accept_ex)}
       BIO_accept_ex := @_BIO_accept_ex;
-      {$else}
-      {$if not defined(BIO_accept_ex_allownil)}
-      BIO_accept_ex := @ERR_BIO_accept_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_accept_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_accept_ex := @ERR_BIO_accept_ex;
+    if FuncLoadError then
       AFailed.Add('BIO_accept_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_closesocket := LoadLibFunction(ADllHandle, BIO_closesocket_procname);
-  FuncLoaded := assigned(BIO_closesocket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_closesocket);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_closesocket_allownil)}
+    BIO_closesocket := @ERR_BIO_closesocket;
+    {$ifend}
     {$if declared(BIO_closesocket_introduced)}
     if LibVersion < BIO_closesocket_introduced then
     begin
       {$if declared(FC_BIO_closesocket)}
       BIO_closesocket := @FC_BIO_closesocket;
-      {$else}
-      {$if not defined(BIO_closesocket_allownil)}
-      BIO_closesocket := @ERR_BIO_closesocket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_closesocket_removed)}
@@ -8195,39 +7146,31 @@ begin
     begin
       {$if declared(_BIO_closesocket)}
       BIO_closesocket := @_BIO_closesocket;
-      {$else}
-      {$if not defined(BIO_closesocket_allownil)}
-      BIO_closesocket := @ERR_BIO_closesocket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_closesocket_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_closesocket := @ERR_BIO_closesocket;
+    if FuncLoadError then
       AFailed.Add('BIO_closesocket');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   BIO_new_socket := LoadLibFunction(ADllHandle, BIO_new_socket_procname);
-  FuncLoaded := assigned(BIO_new_socket);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_socket);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_socket_allownil)}
+    BIO_new_socket := @ERR_BIO_new_socket;
+    {$ifend}
     {$if declared(BIO_new_socket_introduced)}
     if LibVersion < BIO_new_socket_introduced then
     begin
       {$if declared(FC_BIO_new_socket)}
       BIO_new_socket := @FC_BIO_new_socket;
-      {$else}
-      {$if not defined(BIO_new_socket_allownil)}
-      BIO_new_socket := @ERR_BIO_new_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_socket_removed)}
@@ -8235,39 +7178,31 @@ begin
     begin
       {$if declared(_BIO_new_socket)}
       BIO_new_socket := @_BIO_new_socket;
-      {$else}
-      {$if not defined(BIO_new_socket_allownil)}
-      BIO_new_socket := @ERR_BIO_new_socket;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_socket_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_socket := @ERR_BIO_new_socket;
+    if FuncLoadError then
       AFailed.Add('BIO_new_socket');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_connect := LoadLibFunction(ADllHandle, BIO_new_connect_procname);
-  FuncLoaded := assigned(BIO_new_connect);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_connect);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_connect_allownil)}
+    BIO_new_connect := @ERR_BIO_new_connect;
+    {$ifend}
     {$if declared(BIO_new_connect_introduced)}
     if LibVersion < BIO_new_connect_introduced then
     begin
       {$if declared(FC_BIO_new_connect)}
       BIO_new_connect := @FC_BIO_new_connect;
-      {$else}
-      {$if not defined(BIO_new_connect_allownil)}
-      BIO_new_connect := @ERR_BIO_new_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_connect_removed)}
@@ -8275,39 +7210,31 @@ begin
     begin
       {$if declared(_BIO_new_connect)}
       BIO_new_connect := @_BIO_new_connect;
-      {$else}
-      {$if not defined(BIO_new_connect_allownil)}
-      BIO_new_connect := @ERR_BIO_new_connect;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_connect_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_connect := @ERR_BIO_new_connect;
+    if FuncLoadError then
       AFailed.Add('BIO_new_connect');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_accept := LoadLibFunction(ADllHandle, BIO_new_accept_procname);
-  FuncLoaded := assigned(BIO_new_accept);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_accept);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_accept_allownil)}
+    BIO_new_accept := @ERR_BIO_new_accept;
+    {$ifend}
     {$if declared(BIO_new_accept_introduced)}
     if LibVersion < BIO_new_accept_introduced then
     begin
       {$if declared(FC_BIO_new_accept)}
       BIO_new_accept := @FC_BIO_new_accept;
-      {$else}
-      {$if not defined(BIO_new_accept_allownil)}
-      BIO_new_accept := @ERR_BIO_new_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_accept_removed)}
@@ -8315,39 +7242,31 @@ begin
     begin
       {$if declared(_BIO_new_accept)}
       BIO_new_accept := @_BIO_new_accept;
-      {$else}
-      {$if not defined(BIO_new_accept_allownil)}
-      BIO_new_accept := @ERR_BIO_new_accept;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_accept_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_accept := @ERR_BIO_new_accept;
+    if FuncLoadError then
       AFailed.Add('BIO_new_accept');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_fd := LoadLibFunction(ADllHandle, BIO_new_fd_procname);
-  FuncLoaded := assigned(BIO_new_fd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_fd);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_fd_allownil)}
+    BIO_new_fd := @ERR_BIO_new_fd;
+    {$ifend}
     {$if declared(BIO_new_fd_introduced)}
     if LibVersion < BIO_new_fd_introduced then
     begin
       {$if declared(FC_BIO_new_fd)}
       BIO_new_fd := @FC_BIO_new_fd;
-      {$else}
-      {$if not defined(BIO_new_fd_allownil)}
-      BIO_new_fd := @ERR_BIO_new_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_fd_removed)}
@@ -8355,39 +7274,31 @@ begin
     begin
       {$if declared(_BIO_new_fd)}
       BIO_new_fd := @_BIO_new_fd;
-      {$else}
-      {$if not defined(BIO_new_fd_allownil)}
-      BIO_new_fd := @ERR_BIO_new_fd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_fd_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_fd := @ERR_BIO_new_fd;
+    if FuncLoadError then
       AFailed.Add('BIO_new_fd');
-    end;
     {$ifend}
   end;
 
 
   BIO_new_bio_pair := LoadLibFunction(ADllHandle, BIO_new_bio_pair_procname);
-  FuncLoaded := assigned(BIO_new_bio_pair);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_new_bio_pair);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_new_bio_pair_allownil)}
+    BIO_new_bio_pair := @ERR_BIO_new_bio_pair;
+    {$ifend}
     {$if declared(BIO_new_bio_pair_introduced)}
     if LibVersion < BIO_new_bio_pair_introduced then
     begin
       {$if declared(FC_BIO_new_bio_pair)}
       BIO_new_bio_pair := @FC_BIO_new_bio_pair;
-      {$else}
-      {$if not defined(BIO_new_bio_pair_allownil)}
-      BIO_new_bio_pair := @ERR_BIO_new_bio_pair;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_new_bio_pair_removed)}
@@ -8395,39 +7306,31 @@ begin
     begin
       {$if declared(_BIO_new_bio_pair)}
       BIO_new_bio_pair := @_BIO_new_bio_pair;
-      {$else}
-      {$if not defined(BIO_new_bio_pair_allownil)}
-      BIO_new_bio_pair := @ERR_BIO_new_bio_pair;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_new_bio_pair_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_new_bio_pair := @ERR_BIO_new_bio_pair;
+    if FuncLoadError then
       AFailed.Add('BIO_new_bio_pair');
-    end;
     {$ifend}
   end;
 
 
   BIO_copy_next_retry := LoadLibFunction(ADllHandle, BIO_copy_next_retry_procname);
-  FuncLoaded := assigned(BIO_copy_next_retry);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BIO_copy_next_retry);
+  if FuncLoadError then
   begin
+    {$if not defined(BIO_copy_next_retry_allownil)}
+    BIO_copy_next_retry := @ERR_BIO_copy_next_retry;
+    {$ifend}
     {$if declared(BIO_copy_next_retry_introduced)}
     if LibVersion < BIO_copy_next_retry_introduced then
     begin
       {$if declared(FC_BIO_copy_next_retry)}
       BIO_copy_next_retry := @FC_BIO_copy_next_retry;
-      {$else}
-      {$if not defined(BIO_copy_next_retry_allownil)}
-      BIO_copy_next_retry := @ERR_BIO_copy_next_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BIO_copy_next_retry_removed)}
@@ -8435,20 +7338,13 @@ begin
     begin
       {$if declared(_BIO_copy_next_retry)}
       BIO_copy_next_retry := @_BIO_copy_next_retry;
-      {$else}
-      {$if not defined(BIO_copy_next_retry_allownil)}
-      BIO_copy_next_retry := @ERR_BIO_copy_next_retry;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BIO_copy_next_retry_allownil)}
-    if not FuncLoaded then
-    begin
-      BIO_copy_next_retry := @ERR_BIO_copy_next_retry;
+    if FuncLoadError then
       AFailed.Add('BIO_copy_next_retry');
-    end;
     {$ifend}
   end;
 

@@ -197,24 +197,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   RC4_options := LoadLibFunction(ADllHandle, RC4_options_procname);
-  FuncLoaded := assigned(RC4_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RC4_options);
+  if FuncLoadError then
   begin
+    {$if not defined(RC4_options_allownil)}
+    RC4_options := @ERR_RC4_options;
+    {$ifend}
     {$if declared(RC4_options_introduced)}
     if LibVersion < RC4_options_introduced then
     begin
       {$if declared(FC_RC4_options)}
       RC4_options := @FC_RC4_options;
-      {$else}
-      {$if not defined(RC4_options_allownil)}
-      RC4_options := @ERR_RC4_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RC4_options_removed)}
@@ -222,39 +221,31 @@ begin
     begin
       {$if declared(_RC4_options)}
       RC4_options := @_RC4_options;
-      {$else}
-      {$if not defined(RC4_options_allownil)}
-      RC4_options := @ERR_RC4_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RC4_options_allownil)}
-    if not FuncLoaded then
-    begin
-      RC4_options := @ERR_RC4_options;
+    if FuncLoadError then
       AFailed.Add('RC4_options');
-    end;
     {$ifend}
   end;
 
  {allow_nil}
   RC4_set_key := LoadLibFunction(ADllHandle, RC4_set_key_procname);
-  FuncLoaded := assigned(RC4_set_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RC4_set_key);
+  if FuncLoadError then
   begin
+    {$if not defined(RC4_set_key_allownil)}
+    RC4_set_key := @ERR_RC4_set_key;
+    {$ifend}
     {$if declared(RC4_set_key_introduced)}
     if LibVersion < RC4_set_key_introduced then
     begin
       {$if declared(FC_RC4_set_key)}
       RC4_set_key := @FC_RC4_set_key;
-      {$else}
-      {$if not defined(RC4_set_key_allownil)}
-      RC4_set_key := @ERR_RC4_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RC4_set_key_removed)}
@@ -262,39 +253,31 @@ begin
     begin
       {$if declared(_RC4_set_key)}
       RC4_set_key := @_RC4_set_key;
-      {$else}
-      {$if not defined(RC4_set_key_allownil)}
-      RC4_set_key := @ERR_RC4_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RC4_set_key_allownil)}
-    if not FuncLoaded then
-    begin
-      RC4_set_key := @ERR_RC4_set_key;
+    if FuncLoadError then
       AFailed.Add('RC4_set_key');
-    end;
     {$ifend}
   end;
 
  {allow_nil}
   private_RC4_set_key := LoadLibFunction(ADllHandle, private_RC4_set_key_procname);
-  FuncLoaded := assigned(private_RC4_set_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(private_RC4_set_key);
+  if FuncLoadError then
   begin
+    {$if not defined(private_RC4_set_key_allownil)}
+    private_RC4_set_key := @ERR_private_RC4_set_key;
+    {$ifend}
     {$if declared(private_RC4_set_key_introduced)}
     if LibVersion < private_RC4_set_key_introduced then
     begin
       {$if declared(FC_private_RC4_set_key)}
       private_RC4_set_key := @FC_private_RC4_set_key;
-      {$else}
-      {$if not defined(private_RC4_set_key_allownil)}
-      private_RC4_set_key := @ERR_private_RC4_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(private_RC4_set_key_removed)}
@@ -302,39 +285,31 @@ begin
     begin
       {$if declared(_private_RC4_set_key)}
       private_RC4_set_key := @_private_RC4_set_key;
-      {$else}
-      {$if not defined(private_RC4_set_key_allownil)}
-      private_RC4_set_key := @ERR_private_RC4_set_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(private_RC4_set_key_allownil)}
-    if not FuncLoaded then
-    begin
-      private_RC4_set_key := @ERR_private_RC4_set_key;
+    if FuncLoadError then
       AFailed.Add('private_RC4_set_key');
-    end;
     {$ifend}
   end;
 
  {allow_nil}
   RC4 := LoadLibFunction(ADllHandle, RC4_procname);
-  FuncLoaded := assigned(RC4);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(RC4);
+  if FuncLoadError then
   begin
+    {$if not defined(RC4_allownil)}
+    RC4 := @ERR_RC4;
+    {$ifend}
     {$if declared(RC4_introduced)}
     if LibVersion < RC4_introduced then
     begin
       {$if declared(FC_RC4)}
       RC4 := @FC_RC4;
-      {$else}
-      {$if not defined(RC4_allownil)}
-      RC4 := @ERR_RC4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(RC4_removed)}
@@ -342,20 +317,13 @@ begin
     begin
       {$if declared(_RC4)}
       RC4 := @_RC4;
-      {$else}
-      {$if not defined(RC4_allownil)}
-      RC4 := @ERR_RC4;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(RC4_allownil)}
-    if not FuncLoaded then
-    begin
-      RC4 := @ERR_RC4;
+    if FuncLoadError then
       AFailed.Add('RC4');
-    end;
     {$ifend}
   end;
 

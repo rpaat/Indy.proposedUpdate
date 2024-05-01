@@ -175,24 +175,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   CMAC_CTX_new := LoadLibFunction(ADllHandle, CMAC_CTX_new_procname);
-  FuncLoaded := assigned(CMAC_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_CTX_new_allownil)}
+    CMAC_CTX_new := @ERR_CMAC_CTX_new;
+    {$ifend}
     {$if declared(CMAC_CTX_new_introduced)}
     if LibVersion < CMAC_CTX_new_introduced then
     begin
       {$if declared(FC_CMAC_CTX_new)}
       CMAC_CTX_new := @FC_CMAC_CTX_new;
-      {$else}
-      {$if not defined(CMAC_CTX_new_allownil)}
-      CMAC_CTX_new := @ERR_CMAC_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_CTX_new_removed)}
@@ -200,39 +199,31 @@ begin
     begin
       {$if declared(_CMAC_CTX_new)}
       CMAC_CTX_new := @_CMAC_CTX_new;
-      {$else}
-      {$if not defined(CMAC_CTX_new_allownil)}
-      CMAC_CTX_new := @ERR_CMAC_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_CTX_new := @ERR_CMAC_CTX_new;
+    if FuncLoadError then
       AFailed.Add('CMAC_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   CMAC_CTX_cleanup := LoadLibFunction(ADllHandle, CMAC_CTX_cleanup_procname);
-  FuncLoaded := assigned(CMAC_CTX_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_CTX_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_CTX_cleanup_allownil)}
+    CMAC_CTX_cleanup := @ERR_CMAC_CTX_cleanup;
+    {$ifend}
     {$if declared(CMAC_CTX_cleanup_introduced)}
     if LibVersion < CMAC_CTX_cleanup_introduced then
     begin
       {$if declared(FC_CMAC_CTX_cleanup)}
       CMAC_CTX_cleanup := @FC_CMAC_CTX_cleanup;
-      {$else}
-      {$if not defined(CMAC_CTX_cleanup_allownil)}
-      CMAC_CTX_cleanup := @ERR_CMAC_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_CTX_cleanup_removed)}
@@ -240,39 +231,31 @@ begin
     begin
       {$if declared(_CMAC_CTX_cleanup)}
       CMAC_CTX_cleanup := @_CMAC_CTX_cleanup;
-      {$else}
-      {$if not defined(CMAC_CTX_cleanup_allownil)}
-      CMAC_CTX_cleanup := @ERR_CMAC_CTX_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_CTX_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_CTX_cleanup := @ERR_CMAC_CTX_cleanup;
+    if FuncLoadError then
       AFailed.Add('CMAC_CTX_cleanup');
-    end;
     {$ifend}
   end;
 
 
   CMAC_CTX_free := LoadLibFunction(ADllHandle, CMAC_CTX_free_procname);
-  FuncLoaded := assigned(CMAC_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_CTX_free_allownil)}
+    CMAC_CTX_free := @ERR_CMAC_CTX_free;
+    {$ifend}
     {$if declared(CMAC_CTX_free_introduced)}
     if LibVersion < CMAC_CTX_free_introduced then
     begin
       {$if declared(FC_CMAC_CTX_free)}
       CMAC_CTX_free := @FC_CMAC_CTX_free;
-      {$else}
-      {$if not defined(CMAC_CTX_free_allownil)}
-      CMAC_CTX_free := @ERR_CMAC_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_CTX_free_removed)}
@@ -280,39 +263,31 @@ begin
     begin
       {$if declared(_CMAC_CTX_free)}
       CMAC_CTX_free := @_CMAC_CTX_free;
-      {$else}
-      {$if not defined(CMAC_CTX_free_allownil)}
-      CMAC_CTX_free := @ERR_CMAC_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_CTX_free := @ERR_CMAC_CTX_free;
+    if FuncLoadError then
       AFailed.Add('CMAC_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   CMAC_CTX_get0_cipher_ctx := LoadLibFunction(ADllHandle, CMAC_CTX_get0_cipher_ctx_procname);
-  FuncLoaded := assigned(CMAC_CTX_get0_cipher_ctx);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_CTX_get0_cipher_ctx);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_CTX_get0_cipher_ctx_allownil)}
+    CMAC_CTX_get0_cipher_ctx := @ERR_CMAC_CTX_get0_cipher_ctx;
+    {$ifend}
     {$if declared(CMAC_CTX_get0_cipher_ctx_introduced)}
     if LibVersion < CMAC_CTX_get0_cipher_ctx_introduced then
     begin
       {$if declared(FC_CMAC_CTX_get0_cipher_ctx)}
       CMAC_CTX_get0_cipher_ctx := @FC_CMAC_CTX_get0_cipher_ctx;
-      {$else}
-      {$if not defined(CMAC_CTX_get0_cipher_ctx_allownil)}
-      CMAC_CTX_get0_cipher_ctx := @ERR_CMAC_CTX_get0_cipher_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_CTX_get0_cipher_ctx_removed)}
@@ -320,39 +295,31 @@ begin
     begin
       {$if declared(_CMAC_CTX_get0_cipher_ctx)}
       CMAC_CTX_get0_cipher_ctx := @_CMAC_CTX_get0_cipher_ctx;
-      {$else}
-      {$if not defined(CMAC_CTX_get0_cipher_ctx_allownil)}
-      CMAC_CTX_get0_cipher_ctx := @ERR_CMAC_CTX_get0_cipher_ctx;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_CTX_get0_cipher_ctx_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_CTX_get0_cipher_ctx := @ERR_CMAC_CTX_get0_cipher_ctx;
+    if FuncLoadError then
       AFailed.Add('CMAC_CTX_get0_cipher_ctx');
-    end;
     {$ifend}
   end;
 
 
   CMAC_CTX_copy := LoadLibFunction(ADllHandle, CMAC_CTX_copy_procname);
-  FuncLoaded := assigned(CMAC_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_CTX_copy_allownil)}
+    CMAC_CTX_copy := @ERR_CMAC_CTX_copy;
+    {$ifend}
     {$if declared(CMAC_CTX_copy_introduced)}
     if LibVersion < CMAC_CTX_copy_introduced then
     begin
       {$if declared(FC_CMAC_CTX_copy)}
       CMAC_CTX_copy := @FC_CMAC_CTX_copy;
-      {$else}
-      {$if not defined(CMAC_CTX_copy_allownil)}
-      CMAC_CTX_copy := @ERR_CMAC_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_CTX_copy_removed)}
@@ -360,39 +327,31 @@ begin
     begin
       {$if declared(_CMAC_CTX_copy)}
       CMAC_CTX_copy := @_CMAC_CTX_copy;
-      {$else}
-      {$if not defined(CMAC_CTX_copy_allownil)}
-      CMAC_CTX_copy := @ERR_CMAC_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_CTX_copy := @ERR_CMAC_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('CMAC_CTX_copy');
-    end;
     {$ifend}
   end;
 
 
   CMAC_Init := LoadLibFunction(ADllHandle, CMAC_Init_procname);
-  FuncLoaded := assigned(CMAC_Init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_Init);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_Init_allownil)}
+    CMAC_Init := @ERR_CMAC_Init;
+    {$ifend}
     {$if declared(CMAC_Init_introduced)}
     if LibVersion < CMAC_Init_introduced then
     begin
       {$if declared(FC_CMAC_Init)}
       CMAC_Init := @FC_CMAC_Init;
-      {$else}
-      {$if not defined(CMAC_Init_allownil)}
-      CMAC_Init := @ERR_CMAC_Init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_Init_removed)}
@@ -400,39 +359,31 @@ begin
     begin
       {$if declared(_CMAC_Init)}
       CMAC_Init := @_CMAC_Init;
-      {$else}
-      {$if not defined(CMAC_Init_allownil)}
-      CMAC_Init := @ERR_CMAC_Init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_Init_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_Init := @ERR_CMAC_Init;
+    if FuncLoadError then
       AFailed.Add('CMAC_Init');
-    end;
     {$ifend}
   end;
 
 
   CMAC_Update := LoadLibFunction(ADllHandle, CMAC_Update_procname);
-  FuncLoaded := assigned(CMAC_Update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_Update);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_Update_allownil)}
+    CMAC_Update := @ERR_CMAC_Update;
+    {$ifend}
     {$if declared(CMAC_Update_introduced)}
     if LibVersion < CMAC_Update_introduced then
     begin
       {$if declared(FC_CMAC_Update)}
       CMAC_Update := @FC_CMAC_Update;
-      {$else}
-      {$if not defined(CMAC_Update_allownil)}
-      CMAC_Update := @ERR_CMAC_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_Update_removed)}
@@ -440,39 +391,31 @@ begin
     begin
       {$if declared(_CMAC_Update)}
       CMAC_Update := @_CMAC_Update;
-      {$else}
-      {$if not defined(CMAC_Update_allownil)}
-      CMAC_Update := @ERR_CMAC_Update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_Update_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_Update := @ERR_CMAC_Update;
+    if FuncLoadError then
       AFailed.Add('CMAC_Update');
-    end;
     {$ifend}
   end;
 
 
   CMAC_Final := LoadLibFunction(ADllHandle, CMAC_Final_procname);
-  FuncLoaded := assigned(CMAC_Final);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_Final);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_Final_allownil)}
+    CMAC_Final := @ERR_CMAC_Final;
+    {$ifend}
     {$if declared(CMAC_Final_introduced)}
     if LibVersion < CMAC_Final_introduced then
     begin
       {$if declared(FC_CMAC_Final)}
       CMAC_Final := @FC_CMAC_Final;
-      {$else}
-      {$if not defined(CMAC_Final_allownil)}
-      CMAC_Final := @ERR_CMAC_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_Final_removed)}
@@ -480,39 +423,31 @@ begin
     begin
       {$if declared(_CMAC_Final)}
       CMAC_Final := @_CMAC_Final;
-      {$else}
-      {$if not defined(CMAC_Final_allownil)}
-      CMAC_Final := @ERR_CMAC_Final;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_Final_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_Final := @ERR_CMAC_Final;
+    if FuncLoadError then
       AFailed.Add('CMAC_Final');
-    end;
     {$ifend}
   end;
 
 
   CMAC_resume := LoadLibFunction(ADllHandle, CMAC_resume_procname);
-  FuncLoaded := assigned(CMAC_resume);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(CMAC_resume);
+  if FuncLoadError then
   begin
+    {$if not defined(CMAC_resume_allownil)}
+    CMAC_resume := @ERR_CMAC_resume;
+    {$ifend}
     {$if declared(CMAC_resume_introduced)}
     if LibVersion < CMAC_resume_introduced then
     begin
       {$if declared(FC_CMAC_resume)}
       CMAC_resume := @FC_CMAC_resume;
-      {$else}
-      {$if not defined(CMAC_resume_allownil)}
-      CMAC_resume := @ERR_CMAC_resume;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(CMAC_resume_removed)}
@@ -520,20 +455,13 @@ begin
     begin
       {$if declared(_CMAC_resume)}
       CMAC_resume := @_CMAC_resume;
-      {$else}
-      {$if not defined(CMAC_resume_allownil)}
-      CMAC_resume := @ERR_CMAC_resume;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(CMAC_resume_allownil)}
-    if not FuncLoaded then
-    begin
-      CMAC_resume := @ERR_CMAC_resume;
+    if FuncLoadError then
       AFailed.Add('CMAC_resume');
-    end;
     {$ifend}
   end;
 

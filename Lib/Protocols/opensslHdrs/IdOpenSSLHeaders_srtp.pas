@@ -129,24 +129,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   SSL_CTX_set_tlsext_use_srtp := LoadLibFunction(ADllHandle, SSL_CTX_set_tlsext_use_srtp_procname);
-  FuncLoaded := assigned(SSL_CTX_set_tlsext_use_srtp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_CTX_set_tlsext_use_srtp);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
+    SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
+    {$ifend}
     {$if declared(SSL_CTX_set_tlsext_use_srtp_introduced)}
     if LibVersion < SSL_CTX_set_tlsext_use_srtp_introduced then
     begin
       {$if declared(FC_SSL_CTX_set_tlsext_use_srtp)}
       SSL_CTX_set_tlsext_use_srtp := @FC_SSL_CTX_set_tlsext_use_srtp;
-      {$else}
-      {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
-      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_CTX_set_tlsext_use_srtp_removed)}
@@ -154,39 +153,31 @@ begin
     begin
       {$if declared(_SSL_CTX_set_tlsext_use_srtp)}
       SSL_CTX_set_tlsext_use_srtp := @_SSL_CTX_set_tlsext_use_srtp;
-      {$else}
-      {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
-      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_CTX_set_tlsext_use_srtp_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_CTX_set_tlsext_use_srtp := @ERR_SSL_CTX_set_tlsext_use_srtp;
+    if FuncLoadError then
       AFailed.Add('SSL_CTX_set_tlsext_use_srtp');
-    end;
     {$ifend}
   end;
 
 
   SSL_set_tlsext_use_srtp := LoadLibFunction(ADllHandle, SSL_set_tlsext_use_srtp_procname);
-  FuncLoaded := assigned(SSL_set_tlsext_use_srtp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_set_tlsext_use_srtp);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
+    SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
+    {$ifend}
     {$if declared(SSL_set_tlsext_use_srtp_introduced)}
     if LibVersion < SSL_set_tlsext_use_srtp_introduced then
     begin
       {$if declared(FC_SSL_set_tlsext_use_srtp)}
       SSL_set_tlsext_use_srtp := @FC_SSL_set_tlsext_use_srtp;
-      {$else}
-      {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
-      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_set_tlsext_use_srtp_removed)}
@@ -194,39 +185,31 @@ begin
     begin
       {$if declared(_SSL_set_tlsext_use_srtp)}
       SSL_set_tlsext_use_srtp := @_SSL_set_tlsext_use_srtp;
-      {$else}
-      {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
-      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_set_tlsext_use_srtp_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_set_tlsext_use_srtp := @ERR_SSL_set_tlsext_use_srtp;
+    if FuncLoadError then
       AFailed.Add('SSL_set_tlsext_use_srtp');
-    end;
     {$ifend}
   end;
 
 
   SSL_get_selected_srtp_profile := LoadLibFunction(ADllHandle, SSL_get_selected_srtp_profile_procname);
-  FuncLoaded := assigned(SSL_get_selected_srtp_profile);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(SSL_get_selected_srtp_profile);
+  if FuncLoadError then
   begin
+    {$if not defined(SSL_get_selected_srtp_profile_allownil)}
+    SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
+    {$ifend}
     {$if declared(SSL_get_selected_srtp_profile_introduced)}
     if LibVersion < SSL_get_selected_srtp_profile_introduced then
     begin
       {$if declared(FC_SSL_get_selected_srtp_profile)}
       SSL_get_selected_srtp_profile := @FC_SSL_get_selected_srtp_profile;
-      {$else}
-      {$if not defined(SSL_get_selected_srtp_profile_allownil)}
-      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(SSL_get_selected_srtp_profile_removed)}
@@ -234,20 +217,13 @@ begin
     begin
       {$if declared(_SSL_get_selected_srtp_profile)}
       SSL_get_selected_srtp_profile := @_SSL_get_selected_srtp_profile;
-      {$else}
-      {$if not defined(SSL_get_selected_srtp_profile_allownil)}
-      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(SSL_get_selected_srtp_profile_allownil)}
-    if not FuncLoaded then
-    begin
-      SSL_get_selected_srtp_profile := @ERR_SSL_get_selected_srtp_profile;
+    if FuncLoadError then
       AFailed.Add('SSL_get_selected_srtp_profile');
-    end;
     {$ifend}
   end;
 

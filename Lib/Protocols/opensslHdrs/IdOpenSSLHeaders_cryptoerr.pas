@@ -122,24 +122,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   ERR_load_CRYPTO_strings := LoadLibFunction(ADllHandle, ERR_load_CRYPTO_strings_procname);
-  FuncLoaded := assigned(ERR_load_CRYPTO_strings);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(ERR_load_CRYPTO_strings);
+  if FuncLoadError then
   begin
+    {$if not defined(ERR_load_CRYPTO_strings_allownil)}
+    ERR_load_CRYPTO_strings := @ERR_ERR_load_CRYPTO_strings;
+    {$ifend}
     {$if declared(ERR_load_CRYPTO_strings_introduced)}
     if LibVersion < ERR_load_CRYPTO_strings_introduced then
     begin
       {$if declared(FC_ERR_load_CRYPTO_strings)}
       ERR_load_CRYPTO_strings := @FC_ERR_load_CRYPTO_strings;
-      {$else}
-      {$if not defined(ERR_load_CRYPTO_strings_allownil)}
-      ERR_load_CRYPTO_strings := @ERR_ERR_load_CRYPTO_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(ERR_load_CRYPTO_strings_removed)}
@@ -147,20 +146,13 @@ begin
     begin
       {$if declared(_ERR_load_CRYPTO_strings)}
       ERR_load_CRYPTO_strings := @_ERR_load_CRYPTO_strings;
-      {$else}
-      {$if not defined(ERR_load_CRYPTO_strings_allownil)}
-      ERR_load_CRYPTO_strings := @ERR_ERR_load_CRYPTO_strings;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(ERR_load_CRYPTO_strings_allownil)}
-    if not FuncLoaded then
-    begin
-      ERR_load_CRYPTO_strings := @ERR_ERR_load_CRYPTO_strings;
+    if FuncLoadError then
       AFailed.Add('ERR_load_CRYPTO_strings');
-    end;
     {$ifend}
   end;
 

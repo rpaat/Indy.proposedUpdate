@@ -741,24 +741,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   OBJ_NAME_init := LoadLibFunction(ADllHandle, OBJ_NAME_init_procname);
-  FuncLoaded := assigned(OBJ_NAME_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_NAME_init);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_NAME_init_allownil)}
+    OBJ_NAME_init := @ERR_OBJ_NAME_init;
+    {$ifend}
     {$if declared(OBJ_NAME_init_introduced)}
     if LibVersion < OBJ_NAME_init_introduced then
     begin
       {$if declared(FC_OBJ_NAME_init)}
       OBJ_NAME_init := @FC_OBJ_NAME_init;
-      {$else}
-      {$if not defined(OBJ_NAME_init_allownil)}
-      OBJ_NAME_init := @ERR_OBJ_NAME_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_NAME_init_removed)}
@@ -766,39 +765,31 @@ begin
     begin
       {$if declared(_OBJ_NAME_init)}
       OBJ_NAME_init := @_OBJ_NAME_init;
-      {$else}
-      {$if not defined(OBJ_NAME_init_allownil)}
-      OBJ_NAME_init := @ERR_OBJ_NAME_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_NAME_init_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_NAME_init := @ERR_OBJ_NAME_init;
+    if FuncLoadError then
       AFailed.Add('OBJ_NAME_init');
-    end;
     {$ifend}
   end;
 
 
   OBJ_NAME_get := LoadLibFunction(ADllHandle, OBJ_NAME_get_procname);
-  FuncLoaded := assigned(OBJ_NAME_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_NAME_get);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_NAME_get_allownil)}
+    OBJ_NAME_get := @ERR_OBJ_NAME_get;
+    {$ifend}
     {$if declared(OBJ_NAME_get_introduced)}
     if LibVersion < OBJ_NAME_get_introduced then
     begin
       {$if declared(FC_OBJ_NAME_get)}
       OBJ_NAME_get := @FC_OBJ_NAME_get;
-      {$else}
-      {$if not defined(OBJ_NAME_get_allownil)}
-      OBJ_NAME_get := @ERR_OBJ_NAME_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_NAME_get_removed)}
@@ -806,39 +797,31 @@ begin
     begin
       {$if declared(_OBJ_NAME_get)}
       OBJ_NAME_get := @_OBJ_NAME_get;
-      {$else}
-      {$if not defined(OBJ_NAME_get_allownil)}
-      OBJ_NAME_get := @ERR_OBJ_NAME_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_NAME_get_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_NAME_get := @ERR_OBJ_NAME_get;
+    if FuncLoadError then
       AFailed.Add('OBJ_NAME_get');
-    end;
     {$ifend}
   end;
 
 
   OBJ_NAME_add := LoadLibFunction(ADllHandle, OBJ_NAME_add_procname);
-  FuncLoaded := assigned(OBJ_NAME_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_NAME_add);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_NAME_add_allownil)}
+    OBJ_NAME_add := @ERR_OBJ_NAME_add;
+    {$ifend}
     {$if declared(OBJ_NAME_add_introduced)}
     if LibVersion < OBJ_NAME_add_introduced then
     begin
       {$if declared(FC_OBJ_NAME_add)}
       OBJ_NAME_add := @FC_OBJ_NAME_add;
-      {$else}
-      {$if not defined(OBJ_NAME_add_allownil)}
-      OBJ_NAME_add := @ERR_OBJ_NAME_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_NAME_add_removed)}
@@ -846,39 +829,31 @@ begin
     begin
       {$if declared(_OBJ_NAME_add)}
       OBJ_NAME_add := @_OBJ_NAME_add;
-      {$else}
-      {$if not defined(OBJ_NAME_add_allownil)}
-      OBJ_NAME_add := @ERR_OBJ_NAME_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_NAME_add_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_NAME_add := @ERR_OBJ_NAME_add;
+    if FuncLoadError then
       AFailed.Add('OBJ_NAME_add');
-    end;
     {$ifend}
   end;
 
 
   OBJ_NAME_remove := LoadLibFunction(ADllHandle, OBJ_NAME_remove_procname);
-  FuncLoaded := assigned(OBJ_NAME_remove);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_NAME_remove);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_NAME_remove_allownil)}
+    OBJ_NAME_remove := @ERR_OBJ_NAME_remove;
+    {$ifend}
     {$if declared(OBJ_NAME_remove_introduced)}
     if LibVersion < OBJ_NAME_remove_introduced then
     begin
       {$if declared(FC_OBJ_NAME_remove)}
       OBJ_NAME_remove := @FC_OBJ_NAME_remove;
-      {$else}
-      {$if not defined(OBJ_NAME_remove_allownil)}
-      OBJ_NAME_remove := @ERR_OBJ_NAME_remove;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_NAME_remove_removed)}
@@ -886,39 +861,31 @@ begin
     begin
       {$if declared(_OBJ_NAME_remove)}
       OBJ_NAME_remove := @_OBJ_NAME_remove;
-      {$else}
-      {$if not defined(OBJ_NAME_remove_allownil)}
-      OBJ_NAME_remove := @ERR_OBJ_NAME_remove;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_NAME_remove_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_NAME_remove := @ERR_OBJ_NAME_remove;
+    if FuncLoadError then
       AFailed.Add('OBJ_NAME_remove');
-    end;
     {$ifend}
   end;
 
 
   OBJ_NAME_cleanup := LoadLibFunction(ADllHandle, OBJ_NAME_cleanup_procname);
-  FuncLoaded := assigned(OBJ_NAME_cleanup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_NAME_cleanup);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_NAME_cleanup_allownil)}
+    OBJ_NAME_cleanup := @ERR_OBJ_NAME_cleanup;
+    {$ifend}
     {$if declared(OBJ_NAME_cleanup_introduced)}
     if LibVersion < OBJ_NAME_cleanup_introduced then
     begin
       {$if declared(FC_OBJ_NAME_cleanup)}
       OBJ_NAME_cleanup := @FC_OBJ_NAME_cleanup;
-      {$else}
-      {$if not defined(OBJ_NAME_cleanup_allownil)}
-      OBJ_NAME_cleanup := @ERR_OBJ_NAME_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_NAME_cleanup_removed)}
@@ -926,39 +893,31 @@ begin
     begin
       {$if declared(_OBJ_NAME_cleanup)}
       OBJ_NAME_cleanup := @_OBJ_NAME_cleanup;
-      {$else}
-      {$if not defined(OBJ_NAME_cleanup_allownil)}
-      OBJ_NAME_cleanup := @ERR_OBJ_NAME_cleanup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_NAME_cleanup_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_NAME_cleanup := @ERR_OBJ_NAME_cleanup;
+    if FuncLoadError then
       AFailed.Add('OBJ_NAME_cleanup');
-    end;
     {$ifend}
   end;
 
 
   OBJ_dup := LoadLibFunction(ADllHandle, OBJ_dup_procname);
-  FuncLoaded := assigned(OBJ_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_dup_allownil)}
+    OBJ_dup := @ERR_OBJ_dup;
+    {$ifend}
     {$if declared(OBJ_dup_introduced)}
     if LibVersion < OBJ_dup_introduced then
     begin
       {$if declared(FC_OBJ_dup)}
       OBJ_dup := @FC_OBJ_dup;
-      {$else}
-      {$if not defined(OBJ_dup_allownil)}
-      OBJ_dup := @ERR_OBJ_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_dup_removed)}
@@ -966,39 +925,31 @@ begin
     begin
       {$if declared(_OBJ_dup)}
       OBJ_dup := @_OBJ_dup;
-      {$else}
-      {$if not defined(OBJ_dup_allownil)}
-      OBJ_dup := @ERR_OBJ_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_dup := @ERR_OBJ_dup;
+    if FuncLoadError then
       AFailed.Add('OBJ_dup');
-    end;
     {$ifend}
   end;
 
 
   OBJ_nid2obj := LoadLibFunction(ADllHandle, OBJ_nid2obj_procname);
-  FuncLoaded := assigned(OBJ_nid2obj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_nid2obj);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_nid2obj_allownil)}
+    OBJ_nid2obj := @ERR_OBJ_nid2obj;
+    {$ifend}
     {$if declared(OBJ_nid2obj_introduced)}
     if LibVersion < OBJ_nid2obj_introduced then
     begin
       {$if declared(FC_OBJ_nid2obj)}
       OBJ_nid2obj := @FC_OBJ_nid2obj;
-      {$else}
-      {$if not defined(OBJ_nid2obj_allownil)}
-      OBJ_nid2obj := @ERR_OBJ_nid2obj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_nid2obj_removed)}
@@ -1006,39 +957,31 @@ begin
     begin
       {$if declared(_OBJ_nid2obj)}
       OBJ_nid2obj := @_OBJ_nid2obj;
-      {$else}
-      {$if not defined(OBJ_nid2obj_allownil)}
-      OBJ_nid2obj := @ERR_OBJ_nid2obj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_nid2obj_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_nid2obj := @ERR_OBJ_nid2obj;
+    if FuncLoadError then
       AFailed.Add('OBJ_nid2obj');
-    end;
     {$ifend}
   end;
 
 
   OBJ_nid2ln := LoadLibFunction(ADllHandle, OBJ_nid2ln_procname);
-  FuncLoaded := assigned(OBJ_nid2ln);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_nid2ln);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_nid2ln_allownil)}
+    OBJ_nid2ln := @ERR_OBJ_nid2ln;
+    {$ifend}
     {$if declared(OBJ_nid2ln_introduced)}
     if LibVersion < OBJ_nid2ln_introduced then
     begin
       {$if declared(FC_OBJ_nid2ln)}
       OBJ_nid2ln := @FC_OBJ_nid2ln;
-      {$else}
-      {$if not defined(OBJ_nid2ln_allownil)}
-      OBJ_nid2ln := @ERR_OBJ_nid2ln;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_nid2ln_removed)}
@@ -1046,39 +989,31 @@ begin
     begin
       {$if declared(_OBJ_nid2ln)}
       OBJ_nid2ln := @_OBJ_nid2ln;
-      {$else}
-      {$if not defined(OBJ_nid2ln_allownil)}
-      OBJ_nid2ln := @ERR_OBJ_nid2ln;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_nid2ln_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_nid2ln := @ERR_OBJ_nid2ln;
+    if FuncLoadError then
       AFailed.Add('OBJ_nid2ln');
-    end;
     {$ifend}
   end;
 
 
   OBJ_nid2sn := LoadLibFunction(ADllHandle, OBJ_nid2sn_procname);
-  FuncLoaded := assigned(OBJ_nid2sn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_nid2sn);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_nid2sn_allownil)}
+    OBJ_nid2sn := @ERR_OBJ_nid2sn;
+    {$ifend}
     {$if declared(OBJ_nid2sn_introduced)}
     if LibVersion < OBJ_nid2sn_introduced then
     begin
       {$if declared(FC_OBJ_nid2sn)}
       OBJ_nid2sn := @FC_OBJ_nid2sn;
-      {$else}
-      {$if not defined(OBJ_nid2sn_allownil)}
-      OBJ_nid2sn := @ERR_OBJ_nid2sn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_nid2sn_removed)}
@@ -1086,39 +1021,31 @@ begin
     begin
       {$if declared(_OBJ_nid2sn)}
       OBJ_nid2sn := @_OBJ_nid2sn;
-      {$else}
-      {$if not defined(OBJ_nid2sn_allownil)}
-      OBJ_nid2sn := @ERR_OBJ_nid2sn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_nid2sn_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_nid2sn := @ERR_OBJ_nid2sn;
+    if FuncLoadError then
       AFailed.Add('OBJ_nid2sn');
-    end;
     {$ifend}
   end;
 
 
   OBJ_obj2nid := LoadLibFunction(ADllHandle, OBJ_obj2nid_procname);
-  FuncLoaded := assigned(OBJ_obj2nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_obj2nid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_obj2nid_allownil)}
+    OBJ_obj2nid := @ERR_OBJ_obj2nid;
+    {$ifend}
     {$if declared(OBJ_obj2nid_introduced)}
     if LibVersion < OBJ_obj2nid_introduced then
     begin
       {$if declared(FC_OBJ_obj2nid)}
       OBJ_obj2nid := @FC_OBJ_obj2nid;
-      {$else}
-      {$if not defined(OBJ_obj2nid_allownil)}
-      OBJ_obj2nid := @ERR_OBJ_obj2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_obj2nid_removed)}
@@ -1126,39 +1053,31 @@ begin
     begin
       {$if declared(_OBJ_obj2nid)}
       OBJ_obj2nid := @_OBJ_obj2nid;
-      {$else}
-      {$if not defined(OBJ_obj2nid_allownil)}
-      OBJ_obj2nid := @ERR_OBJ_obj2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_obj2nid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_obj2nid := @ERR_OBJ_obj2nid;
+    if FuncLoadError then
       AFailed.Add('OBJ_obj2nid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_txt2obj := LoadLibFunction(ADllHandle, OBJ_txt2obj_procname);
-  FuncLoaded := assigned(OBJ_txt2obj);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_txt2obj);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_txt2obj_allownil)}
+    OBJ_txt2obj := @ERR_OBJ_txt2obj;
+    {$ifend}
     {$if declared(OBJ_txt2obj_introduced)}
     if LibVersion < OBJ_txt2obj_introduced then
     begin
       {$if declared(FC_OBJ_txt2obj)}
       OBJ_txt2obj := @FC_OBJ_txt2obj;
-      {$else}
-      {$if not defined(OBJ_txt2obj_allownil)}
-      OBJ_txt2obj := @ERR_OBJ_txt2obj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_txt2obj_removed)}
@@ -1166,39 +1085,31 @@ begin
     begin
       {$if declared(_OBJ_txt2obj)}
       OBJ_txt2obj := @_OBJ_txt2obj;
-      {$else}
-      {$if not defined(OBJ_txt2obj_allownil)}
-      OBJ_txt2obj := @ERR_OBJ_txt2obj;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_txt2obj_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_txt2obj := @ERR_OBJ_txt2obj;
+    if FuncLoadError then
       AFailed.Add('OBJ_txt2obj');
-    end;
     {$ifend}
   end;
 
 
   OBJ_obj2txt := LoadLibFunction(ADllHandle, OBJ_obj2txt_procname);
-  FuncLoaded := assigned(OBJ_obj2txt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_obj2txt);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_obj2txt_allownil)}
+    OBJ_obj2txt := @ERR_OBJ_obj2txt;
+    {$ifend}
     {$if declared(OBJ_obj2txt_introduced)}
     if LibVersion < OBJ_obj2txt_introduced then
     begin
       {$if declared(FC_OBJ_obj2txt)}
       OBJ_obj2txt := @FC_OBJ_obj2txt;
-      {$else}
-      {$if not defined(OBJ_obj2txt_allownil)}
-      OBJ_obj2txt := @ERR_OBJ_obj2txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_obj2txt_removed)}
@@ -1206,39 +1117,31 @@ begin
     begin
       {$if declared(_OBJ_obj2txt)}
       OBJ_obj2txt := @_OBJ_obj2txt;
-      {$else}
-      {$if not defined(OBJ_obj2txt_allownil)}
-      OBJ_obj2txt := @ERR_OBJ_obj2txt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_obj2txt_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_obj2txt := @ERR_OBJ_obj2txt;
+    if FuncLoadError then
       AFailed.Add('OBJ_obj2txt');
-    end;
     {$ifend}
   end;
 
 
   OBJ_txt2nid := LoadLibFunction(ADllHandle, OBJ_txt2nid_procname);
-  FuncLoaded := assigned(OBJ_txt2nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_txt2nid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_txt2nid_allownil)}
+    OBJ_txt2nid := @ERR_OBJ_txt2nid;
+    {$ifend}
     {$if declared(OBJ_txt2nid_introduced)}
     if LibVersion < OBJ_txt2nid_introduced then
     begin
       {$if declared(FC_OBJ_txt2nid)}
       OBJ_txt2nid := @FC_OBJ_txt2nid;
-      {$else}
-      {$if not defined(OBJ_txt2nid_allownil)}
-      OBJ_txt2nid := @ERR_OBJ_txt2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_txt2nid_removed)}
@@ -1246,39 +1149,31 @@ begin
     begin
       {$if declared(_OBJ_txt2nid)}
       OBJ_txt2nid := @_OBJ_txt2nid;
-      {$else}
-      {$if not defined(OBJ_txt2nid_allownil)}
-      OBJ_txt2nid := @ERR_OBJ_txt2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_txt2nid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_txt2nid := @ERR_OBJ_txt2nid;
+    if FuncLoadError then
       AFailed.Add('OBJ_txt2nid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_ln2nid := LoadLibFunction(ADllHandle, OBJ_ln2nid_procname);
-  FuncLoaded := assigned(OBJ_ln2nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_ln2nid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_ln2nid_allownil)}
+    OBJ_ln2nid := @ERR_OBJ_ln2nid;
+    {$ifend}
     {$if declared(OBJ_ln2nid_introduced)}
     if LibVersion < OBJ_ln2nid_introduced then
     begin
       {$if declared(FC_OBJ_ln2nid)}
       OBJ_ln2nid := @FC_OBJ_ln2nid;
-      {$else}
-      {$if not defined(OBJ_ln2nid_allownil)}
-      OBJ_ln2nid := @ERR_OBJ_ln2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_ln2nid_removed)}
@@ -1286,39 +1181,31 @@ begin
     begin
       {$if declared(_OBJ_ln2nid)}
       OBJ_ln2nid := @_OBJ_ln2nid;
-      {$else}
-      {$if not defined(OBJ_ln2nid_allownil)}
-      OBJ_ln2nid := @ERR_OBJ_ln2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_ln2nid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_ln2nid := @ERR_OBJ_ln2nid;
+    if FuncLoadError then
       AFailed.Add('OBJ_ln2nid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_sn2nid := LoadLibFunction(ADllHandle, OBJ_sn2nid_procname);
-  FuncLoaded := assigned(OBJ_sn2nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_sn2nid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_sn2nid_allownil)}
+    OBJ_sn2nid := @ERR_OBJ_sn2nid;
+    {$ifend}
     {$if declared(OBJ_sn2nid_introduced)}
     if LibVersion < OBJ_sn2nid_introduced then
     begin
       {$if declared(FC_OBJ_sn2nid)}
       OBJ_sn2nid := @FC_OBJ_sn2nid;
-      {$else}
-      {$if not defined(OBJ_sn2nid_allownil)}
-      OBJ_sn2nid := @ERR_OBJ_sn2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_sn2nid_removed)}
@@ -1326,39 +1213,31 @@ begin
     begin
       {$if declared(_OBJ_sn2nid)}
       OBJ_sn2nid := @_OBJ_sn2nid;
-      {$else}
-      {$if not defined(OBJ_sn2nid_allownil)}
-      OBJ_sn2nid := @ERR_OBJ_sn2nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_sn2nid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_sn2nid := @ERR_OBJ_sn2nid;
+    if FuncLoadError then
       AFailed.Add('OBJ_sn2nid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_cmp := LoadLibFunction(ADllHandle, OBJ_cmp_procname);
-  FuncLoaded := assigned(OBJ_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_cmp_allownil)}
+    OBJ_cmp := @ERR_OBJ_cmp;
+    {$ifend}
     {$if declared(OBJ_cmp_introduced)}
     if LibVersion < OBJ_cmp_introduced then
     begin
       {$if declared(FC_OBJ_cmp)}
       OBJ_cmp := @FC_OBJ_cmp;
-      {$else}
-      {$if not defined(OBJ_cmp_allownil)}
-      OBJ_cmp := @ERR_OBJ_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_cmp_removed)}
@@ -1366,39 +1245,31 @@ begin
     begin
       {$if declared(_OBJ_cmp)}
       OBJ_cmp := @_OBJ_cmp;
-      {$else}
-      {$if not defined(OBJ_cmp_allownil)}
-      OBJ_cmp := @ERR_OBJ_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_cmp := @ERR_OBJ_cmp;
+    if FuncLoadError then
       AFailed.Add('OBJ_cmp');
-    end;
     {$ifend}
   end;
 
 
   OBJ_new_nid := LoadLibFunction(ADllHandle, OBJ_new_nid_procname);
-  FuncLoaded := assigned(OBJ_new_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_new_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_new_nid_allownil)}
+    OBJ_new_nid := @ERR_OBJ_new_nid;
+    {$ifend}
     {$if declared(OBJ_new_nid_introduced)}
     if LibVersion < OBJ_new_nid_introduced then
     begin
       {$if declared(FC_OBJ_new_nid)}
       OBJ_new_nid := @FC_OBJ_new_nid;
-      {$else}
-      {$if not defined(OBJ_new_nid_allownil)}
-      OBJ_new_nid := @ERR_OBJ_new_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_new_nid_removed)}
@@ -1406,39 +1277,31 @@ begin
     begin
       {$if declared(_OBJ_new_nid)}
       OBJ_new_nid := @_OBJ_new_nid;
-      {$else}
-      {$if not defined(OBJ_new_nid_allownil)}
-      OBJ_new_nid := @ERR_OBJ_new_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_new_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_new_nid := @ERR_OBJ_new_nid;
+    if FuncLoadError then
       AFailed.Add('OBJ_new_nid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_add_object := LoadLibFunction(ADllHandle, OBJ_add_object_procname);
-  FuncLoaded := assigned(OBJ_add_object);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_add_object);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_add_object_allownil)}
+    OBJ_add_object := @ERR_OBJ_add_object;
+    {$ifend}
     {$if declared(OBJ_add_object_introduced)}
     if LibVersion < OBJ_add_object_introduced then
     begin
       {$if declared(FC_OBJ_add_object)}
       OBJ_add_object := @FC_OBJ_add_object;
-      {$else}
-      {$if not defined(OBJ_add_object_allownil)}
-      OBJ_add_object := @ERR_OBJ_add_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_add_object_removed)}
@@ -1446,39 +1309,31 @@ begin
     begin
       {$if declared(_OBJ_add_object)}
       OBJ_add_object := @_OBJ_add_object;
-      {$else}
-      {$if not defined(OBJ_add_object_allownil)}
-      OBJ_add_object := @ERR_OBJ_add_object;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_add_object_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_add_object := @ERR_OBJ_add_object;
+    if FuncLoadError then
       AFailed.Add('OBJ_add_object');
-    end;
     {$ifend}
   end;
 
 
   OBJ_create := LoadLibFunction(ADllHandle, OBJ_create_procname);
-  FuncLoaded := assigned(OBJ_create);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_create);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_create_allownil)}
+    OBJ_create := @ERR_OBJ_create;
+    {$ifend}
     {$if declared(OBJ_create_introduced)}
     if LibVersion < OBJ_create_introduced then
     begin
       {$if declared(FC_OBJ_create)}
       OBJ_create := @FC_OBJ_create;
-      {$else}
-      {$if not defined(OBJ_create_allownil)}
-      OBJ_create := @ERR_OBJ_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_create_removed)}
@@ -1486,39 +1341,31 @@ begin
     begin
       {$if declared(_OBJ_create)}
       OBJ_create := @_OBJ_create;
-      {$else}
-      {$if not defined(OBJ_create_allownil)}
-      OBJ_create := @ERR_OBJ_create;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_create_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_create := @ERR_OBJ_create;
+    if FuncLoadError then
       AFailed.Add('OBJ_create');
-    end;
     {$ifend}
   end;
 
 
   OBJ_create_objects := LoadLibFunction(ADllHandle, OBJ_create_objects_procname);
-  FuncLoaded := assigned(OBJ_create_objects);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_create_objects);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_create_objects_allownil)}
+    OBJ_create_objects := @ERR_OBJ_create_objects;
+    {$ifend}
     {$if declared(OBJ_create_objects_introduced)}
     if LibVersion < OBJ_create_objects_introduced then
     begin
       {$if declared(FC_OBJ_create_objects)}
       OBJ_create_objects := @FC_OBJ_create_objects;
-      {$else}
-      {$if not defined(OBJ_create_objects_allownil)}
-      OBJ_create_objects := @ERR_OBJ_create_objects;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_create_objects_removed)}
@@ -1526,39 +1373,31 @@ begin
     begin
       {$if declared(_OBJ_create_objects)}
       OBJ_create_objects := @_OBJ_create_objects;
-      {$else}
-      {$if not defined(OBJ_create_objects_allownil)}
-      OBJ_create_objects := @ERR_OBJ_create_objects;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_create_objects_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_create_objects := @ERR_OBJ_create_objects;
+    if FuncLoadError then
       AFailed.Add('OBJ_create_objects');
-    end;
     {$ifend}
   end;
 
 
   OBJ_length := LoadLibFunction(ADllHandle, OBJ_length_procname);
-  FuncLoaded := assigned(OBJ_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_length);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_length_allownil)}
+    OBJ_length := @ERR_OBJ_length;
+    {$ifend}
     {$if declared(OBJ_length_introduced)}
     if LibVersion < OBJ_length_introduced then
     begin
       {$if declared(FC_OBJ_length)}
       OBJ_length := @FC_OBJ_length;
-      {$else}
-      {$if not defined(OBJ_length_allownil)}
-      OBJ_length := @ERR_OBJ_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_length_removed)}
@@ -1566,39 +1405,31 @@ begin
     begin
       {$if declared(_OBJ_length)}
       OBJ_length := @_OBJ_length;
-      {$else}
-      {$if not defined(OBJ_length_allownil)}
-      OBJ_length := @ERR_OBJ_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_length_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_length := @ERR_OBJ_length;
+    if FuncLoadError then
       AFailed.Add('OBJ_length');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   OBJ_get0_data := LoadLibFunction(ADllHandle, OBJ_get0_data_procname);
-  FuncLoaded := assigned(OBJ_get0_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_get0_data);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_get0_data_allownil)}
+    OBJ_get0_data := @ERR_OBJ_get0_data;
+    {$ifend}
     {$if declared(OBJ_get0_data_introduced)}
     if LibVersion < OBJ_get0_data_introduced then
     begin
       {$if declared(FC_OBJ_get0_data)}
       OBJ_get0_data := @FC_OBJ_get0_data;
-      {$else}
-      {$if not defined(OBJ_get0_data_allownil)}
-      OBJ_get0_data := @ERR_OBJ_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_get0_data_removed)}
@@ -1606,39 +1437,31 @@ begin
     begin
       {$if declared(_OBJ_get0_data)}
       OBJ_get0_data := @_OBJ_get0_data;
-      {$else}
-      {$if not defined(OBJ_get0_data_allownil)}
-      OBJ_get0_data := @ERR_OBJ_get0_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_get0_data_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_get0_data := @ERR_OBJ_get0_data;
+    if FuncLoadError then
       AFailed.Add('OBJ_get0_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   OBJ_find_sigid_algs := LoadLibFunction(ADllHandle, OBJ_find_sigid_algs_procname);
-  FuncLoaded := assigned(OBJ_find_sigid_algs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_find_sigid_algs);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_find_sigid_algs_allownil)}
+    OBJ_find_sigid_algs := @ERR_OBJ_find_sigid_algs;
+    {$ifend}
     {$if declared(OBJ_find_sigid_algs_introduced)}
     if LibVersion < OBJ_find_sigid_algs_introduced then
     begin
       {$if declared(FC_OBJ_find_sigid_algs)}
       OBJ_find_sigid_algs := @FC_OBJ_find_sigid_algs;
-      {$else}
-      {$if not defined(OBJ_find_sigid_algs_allownil)}
-      OBJ_find_sigid_algs := @ERR_OBJ_find_sigid_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_find_sigid_algs_removed)}
@@ -1646,39 +1469,31 @@ begin
     begin
       {$if declared(_OBJ_find_sigid_algs)}
       OBJ_find_sigid_algs := @_OBJ_find_sigid_algs;
-      {$else}
-      {$if not defined(OBJ_find_sigid_algs_allownil)}
-      OBJ_find_sigid_algs := @ERR_OBJ_find_sigid_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_find_sigid_algs_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_find_sigid_algs := @ERR_OBJ_find_sigid_algs;
+    if FuncLoadError then
       AFailed.Add('OBJ_find_sigid_algs');
-    end;
     {$ifend}
   end;
 
 
   OBJ_find_sigid_by_algs := LoadLibFunction(ADllHandle, OBJ_find_sigid_by_algs_procname);
-  FuncLoaded := assigned(OBJ_find_sigid_by_algs);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_find_sigid_by_algs);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_find_sigid_by_algs_allownil)}
+    OBJ_find_sigid_by_algs := @ERR_OBJ_find_sigid_by_algs;
+    {$ifend}
     {$if declared(OBJ_find_sigid_by_algs_introduced)}
     if LibVersion < OBJ_find_sigid_by_algs_introduced then
     begin
       {$if declared(FC_OBJ_find_sigid_by_algs)}
       OBJ_find_sigid_by_algs := @FC_OBJ_find_sigid_by_algs;
-      {$else}
-      {$if not defined(OBJ_find_sigid_by_algs_allownil)}
-      OBJ_find_sigid_by_algs := @ERR_OBJ_find_sigid_by_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_find_sigid_by_algs_removed)}
@@ -1686,39 +1501,31 @@ begin
     begin
       {$if declared(_OBJ_find_sigid_by_algs)}
       OBJ_find_sigid_by_algs := @_OBJ_find_sigid_by_algs;
-      {$else}
-      {$if not defined(OBJ_find_sigid_by_algs_allownil)}
-      OBJ_find_sigid_by_algs := @ERR_OBJ_find_sigid_by_algs;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_find_sigid_by_algs_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_find_sigid_by_algs := @ERR_OBJ_find_sigid_by_algs;
+    if FuncLoadError then
       AFailed.Add('OBJ_find_sigid_by_algs');
-    end;
     {$ifend}
   end;
 
 
   OBJ_add_sigid := LoadLibFunction(ADllHandle, OBJ_add_sigid_procname);
-  FuncLoaded := assigned(OBJ_add_sigid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_add_sigid);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_add_sigid_allownil)}
+    OBJ_add_sigid := @ERR_OBJ_add_sigid;
+    {$ifend}
     {$if declared(OBJ_add_sigid_introduced)}
     if LibVersion < OBJ_add_sigid_introduced then
     begin
       {$if declared(FC_OBJ_add_sigid)}
       OBJ_add_sigid := @FC_OBJ_add_sigid;
-      {$else}
-      {$if not defined(OBJ_add_sigid_allownil)}
-      OBJ_add_sigid := @ERR_OBJ_add_sigid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_add_sigid_removed)}
@@ -1726,39 +1533,31 @@ begin
     begin
       {$if declared(_OBJ_add_sigid)}
       OBJ_add_sigid := @_OBJ_add_sigid;
-      {$else}
-      {$if not defined(OBJ_add_sigid_allownil)}
-      OBJ_add_sigid := @ERR_OBJ_add_sigid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_add_sigid_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_add_sigid := @ERR_OBJ_add_sigid;
+    if FuncLoadError then
       AFailed.Add('OBJ_add_sigid');
-    end;
     {$ifend}
   end;
 
 
   OBJ_sigid_free := LoadLibFunction(ADllHandle, OBJ_sigid_free_procname);
-  FuncLoaded := assigned(OBJ_sigid_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(OBJ_sigid_free);
+  if FuncLoadError then
   begin
+    {$if not defined(OBJ_sigid_free_allownil)}
+    OBJ_sigid_free := @ERR_OBJ_sigid_free;
+    {$ifend}
     {$if declared(OBJ_sigid_free_introduced)}
     if LibVersion < OBJ_sigid_free_introduced then
     begin
       {$if declared(FC_OBJ_sigid_free)}
       OBJ_sigid_free := @FC_OBJ_sigid_free;
-      {$else}
-      {$if not defined(OBJ_sigid_free_allownil)}
-      OBJ_sigid_free := @ERR_OBJ_sigid_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(OBJ_sigid_free_removed)}
@@ -1766,20 +1565,13 @@ begin
     begin
       {$if declared(_OBJ_sigid_free)}
       OBJ_sigid_free := @_OBJ_sigid_free;
-      {$else}
-      {$if not defined(OBJ_sigid_free_allownil)}
-      OBJ_sigid_free := @ERR_OBJ_sigid_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(OBJ_sigid_free_allownil)}
-    if not FuncLoaded then
-    begin
-      OBJ_sigid_free := @ERR_OBJ_sigid_free;
+    if FuncLoadError then
       AFailed.Add('OBJ_sigid_free');
-    end;
     {$ifend}
   end;
 

@@ -1051,24 +1051,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   PEM_get_EVP_CIPHER_INFO := LoadLibFunction(ADllHandle, PEM_get_EVP_CIPHER_INFO_procname);
-  FuncLoaded := assigned(PEM_get_EVP_CIPHER_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_get_EVP_CIPHER_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_get_EVP_CIPHER_INFO_allownil)}
+    PEM_get_EVP_CIPHER_INFO := @ERR_PEM_get_EVP_CIPHER_INFO;
+    {$ifend}
     {$if declared(PEM_get_EVP_CIPHER_INFO_introduced)}
     if LibVersion < PEM_get_EVP_CIPHER_INFO_introduced then
     begin
       {$if declared(FC_PEM_get_EVP_CIPHER_INFO)}
       PEM_get_EVP_CIPHER_INFO := @FC_PEM_get_EVP_CIPHER_INFO;
-      {$else}
-      {$if not defined(PEM_get_EVP_CIPHER_INFO_allownil)}
-      PEM_get_EVP_CIPHER_INFO := @ERR_PEM_get_EVP_CIPHER_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_get_EVP_CIPHER_INFO_removed)}
@@ -1076,39 +1075,31 @@ begin
     begin
       {$if declared(_PEM_get_EVP_CIPHER_INFO)}
       PEM_get_EVP_CIPHER_INFO := @_PEM_get_EVP_CIPHER_INFO;
-      {$else}
-      {$if not defined(PEM_get_EVP_CIPHER_INFO_allownil)}
-      PEM_get_EVP_CIPHER_INFO := @ERR_PEM_get_EVP_CIPHER_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_get_EVP_CIPHER_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_get_EVP_CIPHER_INFO := @ERR_PEM_get_EVP_CIPHER_INFO;
+    if FuncLoadError then
       AFailed.Add('PEM_get_EVP_CIPHER_INFO');
-    end;
     {$ifend}
   end;
 
 
   PEM_do_header := LoadLibFunction(ADllHandle, PEM_do_header_procname);
-  FuncLoaded := assigned(PEM_do_header);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_do_header);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_do_header_allownil)}
+    PEM_do_header := @ERR_PEM_do_header;
+    {$ifend}
     {$if declared(PEM_do_header_introduced)}
     if LibVersion < PEM_do_header_introduced then
     begin
       {$if declared(FC_PEM_do_header)}
       PEM_do_header := @FC_PEM_do_header;
-      {$else}
-      {$if not defined(PEM_do_header_allownil)}
-      PEM_do_header := @ERR_PEM_do_header;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_do_header_removed)}
@@ -1116,39 +1107,31 @@ begin
     begin
       {$if declared(_PEM_do_header)}
       PEM_do_header := @_PEM_do_header;
-      {$else}
-      {$if not defined(PEM_do_header_allownil)}
-      PEM_do_header := @ERR_PEM_do_header;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_do_header_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_do_header := @ERR_PEM_do_header;
+    if FuncLoadError then
       AFailed.Add('PEM_do_header');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio := LoadLibFunction(ADllHandle, PEM_read_bio_procname);
-  FuncLoaded := assigned(PEM_read_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_allownil)}
+    PEM_read_bio := @ERR_PEM_read_bio;
+    {$ifend}
     {$if declared(PEM_read_bio_introduced)}
     if LibVersion < PEM_read_bio_introduced then
     begin
       {$if declared(FC_PEM_read_bio)}
       PEM_read_bio := @FC_PEM_read_bio;
-      {$else}
-      {$if not defined(PEM_read_bio_allownil)}
-      PEM_read_bio := @ERR_PEM_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_removed)}
@@ -1156,39 +1139,31 @@ begin
     begin
       {$if declared(_PEM_read_bio)}
       PEM_read_bio := @_PEM_read_bio;
-      {$else}
-      {$if not defined(PEM_read_bio_allownil)}
-      PEM_read_bio := @ERR_PEM_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio := @ERR_PEM_read_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_ex := LoadLibFunction(ADllHandle, PEM_read_bio_ex_procname);
-  FuncLoaded := assigned(PEM_read_bio_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_ex_allownil)}
+    PEM_read_bio_ex := @ERR_PEM_read_bio_ex;
+    {$ifend}
     {$if declared(PEM_read_bio_ex_introduced)}
     if LibVersion < PEM_read_bio_ex_introduced then
     begin
       {$if declared(FC_PEM_read_bio_ex)}
       PEM_read_bio_ex := @FC_PEM_read_bio_ex;
-      {$else}
-      {$if not defined(PEM_read_bio_ex_allownil)}
-      PEM_read_bio_ex := @ERR_PEM_read_bio_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_ex_removed)}
@@ -1196,39 +1171,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_ex)}
       PEM_read_bio_ex := @_PEM_read_bio_ex;
-      {$else}
-      {$if not defined(PEM_read_bio_ex_allownil)}
-      PEM_read_bio_ex := @ERR_PEM_read_bio_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_ex := @ERR_PEM_read_bio_ex;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PEM_bytes_read_bio_secmem := LoadLibFunction(ADllHandle, PEM_bytes_read_bio_secmem_procname);
-  FuncLoaded := assigned(PEM_bytes_read_bio_secmem);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_bytes_read_bio_secmem);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_bytes_read_bio_secmem_allownil)}
+    PEM_bytes_read_bio_secmem := @ERR_PEM_bytes_read_bio_secmem;
+    {$ifend}
     {$if declared(PEM_bytes_read_bio_secmem_introduced)}
     if LibVersion < PEM_bytes_read_bio_secmem_introduced then
     begin
       {$if declared(FC_PEM_bytes_read_bio_secmem)}
       PEM_bytes_read_bio_secmem := @FC_PEM_bytes_read_bio_secmem;
-      {$else}
-      {$if not defined(PEM_bytes_read_bio_secmem_allownil)}
-      PEM_bytes_read_bio_secmem := @ERR_PEM_bytes_read_bio_secmem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_bytes_read_bio_secmem_removed)}
@@ -1236,39 +1203,31 @@ begin
     begin
       {$if declared(_PEM_bytes_read_bio_secmem)}
       PEM_bytes_read_bio_secmem := @_PEM_bytes_read_bio_secmem;
-      {$else}
-      {$if not defined(PEM_bytes_read_bio_secmem_allownil)}
-      PEM_bytes_read_bio_secmem := @ERR_PEM_bytes_read_bio_secmem;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_bytes_read_bio_secmem_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_bytes_read_bio_secmem := @ERR_PEM_bytes_read_bio_secmem;
+    if FuncLoadError then
       AFailed.Add('PEM_bytes_read_bio_secmem');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PEM_write_bio := LoadLibFunction(ADllHandle, PEM_write_bio_procname);
-  FuncLoaded := assigned(PEM_write_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_allownil)}
+    PEM_write_bio := @ERR_PEM_write_bio;
+    {$ifend}
     {$if declared(PEM_write_bio_introduced)}
     if LibVersion < PEM_write_bio_introduced then
     begin
       {$if declared(FC_PEM_write_bio)}
       PEM_write_bio := @FC_PEM_write_bio;
-      {$else}
-      {$if not defined(PEM_write_bio_allownil)}
-      PEM_write_bio := @ERR_PEM_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_removed)}
@@ -1276,39 +1235,31 @@ begin
     begin
       {$if declared(_PEM_write_bio)}
       PEM_write_bio := @_PEM_write_bio;
-      {$else}
-      {$if not defined(PEM_write_bio_allownil)}
-      PEM_write_bio := @ERR_PEM_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio := @ERR_PEM_write_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_bytes_read_bio := LoadLibFunction(ADllHandle, PEM_bytes_read_bio_procname);
-  FuncLoaded := assigned(PEM_bytes_read_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_bytes_read_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_bytes_read_bio_allownil)}
+    PEM_bytes_read_bio := @ERR_PEM_bytes_read_bio;
+    {$ifend}
     {$if declared(PEM_bytes_read_bio_introduced)}
     if LibVersion < PEM_bytes_read_bio_introduced then
     begin
       {$if declared(FC_PEM_bytes_read_bio)}
       PEM_bytes_read_bio := @FC_PEM_bytes_read_bio;
-      {$else}
-      {$if not defined(PEM_bytes_read_bio_allownil)}
-      PEM_bytes_read_bio := @ERR_PEM_bytes_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_bytes_read_bio_removed)}
@@ -1316,39 +1267,31 @@ begin
     begin
       {$if declared(_PEM_bytes_read_bio)}
       PEM_bytes_read_bio := @_PEM_bytes_read_bio;
-      {$else}
-      {$if not defined(PEM_bytes_read_bio_allownil)}
-      PEM_bytes_read_bio := @ERR_PEM_bytes_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_bytes_read_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_bytes_read_bio := @ERR_PEM_bytes_read_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_bytes_read_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_ASN1_read_bio := LoadLibFunction(ADllHandle, PEM_ASN1_read_bio_procname);
-  FuncLoaded := assigned(PEM_ASN1_read_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_ASN1_read_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_ASN1_read_bio_allownil)}
+    PEM_ASN1_read_bio := @ERR_PEM_ASN1_read_bio;
+    {$ifend}
     {$if declared(PEM_ASN1_read_bio_introduced)}
     if LibVersion < PEM_ASN1_read_bio_introduced then
     begin
       {$if declared(FC_PEM_ASN1_read_bio)}
       PEM_ASN1_read_bio := @FC_PEM_ASN1_read_bio;
-      {$else}
-      {$if not defined(PEM_ASN1_read_bio_allownil)}
-      PEM_ASN1_read_bio := @ERR_PEM_ASN1_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_ASN1_read_bio_removed)}
@@ -1356,39 +1299,31 @@ begin
     begin
       {$if declared(_PEM_ASN1_read_bio)}
       PEM_ASN1_read_bio := @_PEM_ASN1_read_bio;
-      {$else}
-      {$if not defined(PEM_ASN1_read_bio_allownil)}
-      PEM_ASN1_read_bio := @ERR_PEM_ASN1_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_ASN1_read_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_ASN1_read_bio := @ERR_PEM_ASN1_read_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_ASN1_read_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_ASN1_write_bio := LoadLibFunction(ADllHandle, PEM_ASN1_write_bio_procname);
-  FuncLoaded := assigned(PEM_ASN1_write_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_ASN1_write_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_ASN1_write_bio_allownil)}
+    PEM_ASN1_write_bio := @ERR_PEM_ASN1_write_bio;
+    {$ifend}
     {$if declared(PEM_ASN1_write_bio_introduced)}
     if LibVersion < PEM_ASN1_write_bio_introduced then
     begin
       {$if declared(FC_PEM_ASN1_write_bio)}
       PEM_ASN1_write_bio := @FC_PEM_ASN1_write_bio;
-      {$else}
-      {$if not defined(PEM_ASN1_write_bio_allownil)}
-      PEM_ASN1_write_bio := @ERR_PEM_ASN1_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_ASN1_write_bio_removed)}
@@ -1396,39 +1331,31 @@ begin
     begin
       {$if declared(_PEM_ASN1_write_bio)}
       PEM_ASN1_write_bio := @_PEM_ASN1_write_bio;
-      {$else}
-      {$if not defined(PEM_ASN1_write_bio_allownil)}
-      PEM_ASN1_write_bio := @ERR_PEM_ASN1_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_ASN1_write_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_ASN1_write_bio := @ERR_PEM_ASN1_write_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_ASN1_write_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_X509_INFO_read_bio := LoadLibFunction(ADllHandle, PEM_X509_INFO_read_bio_procname);
-  FuncLoaded := assigned(PEM_X509_INFO_read_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_X509_INFO_read_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_X509_INFO_read_bio_allownil)}
+    PEM_X509_INFO_read_bio := @ERR_PEM_X509_INFO_read_bio;
+    {$ifend}
     {$if declared(PEM_X509_INFO_read_bio_introduced)}
     if LibVersion < PEM_X509_INFO_read_bio_introduced then
     begin
       {$if declared(FC_PEM_X509_INFO_read_bio)}
       PEM_X509_INFO_read_bio := @FC_PEM_X509_INFO_read_bio;
-      {$else}
-      {$if not defined(PEM_X509_INFO_read_bio_allownil)}
-      PEM_X509_INFO_read_bio := @ERR_PEM_X509_INFO_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_X509_INFO_read_bio_removed)}
@@ -1436,39 +1363,31 @@ begin
     begin
       {$if declared(_PEM_X509_INFO_read_bio)}
       PEM_X509_INFO_read_bio := @_PEM_X509_INFO_read_bio;
-      {$else}
-      {$if not defined(PEM_X509_INFO_read_bio_allownil)}
-      PEM_X509_INFO_read_bio := @ERR_PEM_X509_INFO_read_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_X509_INFO_read_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_X509_INFO_read_bio := @ERR_PEM_X509_INFO_read_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_X509_INFO_read_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_X509_INFO_write_bio := LoadLibFunction(ADllHandle, PEM_X509_INFO_write_bio_procname);
-  FuncLoaded := assigned(PEM_X509_INFO_write_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_X509_INFO_write_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_X509_INFO_write_bio_allownil)}
+    PEM_X509_INFO_write_bio := @ERR_PEM_X509_INFO_write_bio;
+    {$ifend}
     {$if declared(PEM_X509_INFO_write_bio_introduced)}
     if LibVersion < PEM_X509_INFO_write_bio_introduced then
     begin
       {$if declared(FC_PEM_X509_INFO_write_bio)}
       PEM_X509_INFO_write_bio := @FC_PEM_X509_INFO_write_bio;
-      {$else}
-      {$if not defined(PEM_X509_INFO_write_bio_allownil)}
-      PEM_X509_INFO_write_bio := @ERR_PEM_X509_INFO_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_X509_INFO_write_bio_removed)}
@@ -1476,39 +1395,31 @@ begin
     begin
       {$if declared(_PEM_X509_INFO_write_bio)}
       PEM_X509_INFO_write_bio := @_PEM_X509_INFO_write_bio;
-      {$else}
-      {$if not defined(PEM_X509_INFO_write_bio_allownil)}
-      PEM_X509_INFO_write_bio := @ERR_PEM_X509_INFO_write_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_X509_INFO_write_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_X509_INFO_write_bio := @ERR_PEM_X509_INFO_write_bio;
+    if FuncLoadError then
       AFailed.Add('PEM_X509_INFO_write_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_SignInit := LoadLibFunction(ADllHandle, PEM_SignInit_procname);
-  FuncLoaded := assigned(PEM_SignInit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_SignInit);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_SignInit_allownil)}
+    PEM_SignInit := @ERR_PEM_SignInit;
+    {$ifend}
     {$if declared(PEM_SignInit_introduced)}
     if LibVersion < PEM_SignInit_introduced then
     begin
       {$if declared(FC_PEM_SignInit)}
       PEM_SignInit := @FC_PEM_SignInit;
-      {$else}
-      {$if not defined(PEM_SignInit_allownil)}
-      PEM_SignInit := @ERR_PEM_SignInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_SignInit_removed)}
@@ -1516,39 +1427,31 @@ begin
     begin
       {$if declared(_PEM_SignInit)}
       PEM_SignInit := @_PEM_SignInit;
-      {$else}
-      {$if not defined(PEM_SignInit_allownil)}
-      PEM_SignInit := @ERR_PEM_SignInit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_SignInit_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_SignInit := @ERR_PEM_SignInit;
+    if FuncLoadError then
       AFailed.Add('PEM_SignInit');
-    end;
     {$ifend}
   end;
 
 
   PEM_SignUpdate := LoadLibFunction(ADllHandle, PEM_SignUpdate_procname);
-  FuncLoaded := assigned(PEM_SignUpdate);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_SignUpdate);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_SignUpdate_allownil)}
+    PEM_SignUpdate := @ERR_PEM_SignUpdate;
+    {$ifend}
     {$if declared(PEM_SignUpdate_introduced)}
     if LibVersion < PEM_SignUpdate_introduced then
     begin
       {$if declared(FC_PEM_SignUpdate)}
       PEM_SignUpdate := @FC_PEM_SignUpdate;
-      {$else}
-      {$if not defined(PEM_SignUpdate_allownil)}
-      PEM_SignUpdate := @ERR_PEM_SignUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_SignUpdate_removed)}
@@ -1556,39 +1459,31 @@ begin
     begin
       {$if declared(_PEM_SignUpdate)}
       PEM_SignUpdate := @_PEM_SignUpdate;
-      {$else}
-      {$if not defined(PEM_SignUpdate_allownil)}
-      PEM_SignUpdate := @ERR_PEM_SignUpdate;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_SignUpdate_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_SignUpdate := @ERR_PEM_SignUpdate;
+    if FuncLoadError then
       AFailed.Add('PEM_SignUpdate');
-    end;
     {$ifend}
   end;
 
 
   PEM_SignFinal := LoadLibFunction(ADllHandle, PEM_SignFinal_procname);
-  FuncLoaded := assigned(PEM_SignFinal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_SignFinal);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_SignFinal_allownil)}
+    PEM_SignFinal := @ERR_PEM_SignFinal;
+    {$ifend}
     {$if declared(PEM_SignFinal_introduced)}
     if LibVersion < PEM_SignFinal_introduced then
     begin
       {$if declared(FC_PEM_SignFinal)}
       PEM_SignFinal := @FC_PEM_SignFinal;
-      {$else}
-      {$if not defined(PEM_SignFinal_allownil)}
-      PEM_SignFinal := @ERR_PEM_SignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_SignFinal_removed)}
@@ -1596,39 +1491,31 @@ begin
     begin
       {$if declared(_PEM_SignFinal)}
       PEM_SignFinal := @_PEM_SignFinal;
-      {$else}
-      {$if not defined(PEM_SignFinal_allownil)}
-      PEM_SignFinal := @ERR_PEM_SignFinal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_SignFinal_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_SignFinal := @ERR_PEM_SignFinal;
+    if FuncLoadError then
       AFailed.Add('PEM_SignFinal');
-    end;
     {$ifend}
   end;
 
 
   PEM_def_callback := LoadLibFunction(ADllHandle, PEM_def_callback_procname);
-  FuncLoaded := assigned(PEM_def_callback);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_def_callback);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_def_callback_allownil)}
+    PEM_def_callback := @ERR_PEM_def_callback;
+    {$ifend}
     {$if declared(PEM_def_callback_introduced)}
     if LibVersion < PEM_def_callback_introduced then
     begin
       {$if declared(FC_PEM_def_callback)}
       PEM_def_callback := @FC_PEM_def_callback;
-      {$else}
-      {$if not defined(PEM_def_callback_allownil)}
-      PEM_def_callback := @ERR_PEM_def_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_def_callback_removed)}
@@ -1636,39 +1523,31 @@ begin
     begin
       {$if declared(_PEM_def_callback)}
       PEM_def_callback := @_PEM_def_callback;
-      {$else}
-      {$if not defined(PEM_def_callback_allownil)}
-      PEM_def_callback := @ERR_PEM_def_callback;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_def_callback_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_def_callback := @ERR_PEM_def_callback;
+    if FuncLoadError then
       AFailed.Add('PEM_def_callback');
-    end;
     {$ifend}
   end;
 
 
   PEM_proc_type := LoadLibFunction(ADllHandle, PEM_proc_type_procname);
-  FuncLoaded := assigned(PEM_proc_type);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_proc_type);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_proc_type_allownil)}
+    PEM_proc_type := @ERR_PEM_proc_type;
+    {$ifend}
     {$if declared(PEM_proc_type_introduced)}
     if LibVersion < PEM_proc_type_introduced then
     begin
       {$if declared(FC_PEM_proc_type)}
       PEM_proc_type := @FC_PEM_proc_type;
-      {$else}
-      {$if not defined(PEM_proc_type_allownil)}
-      PEM_proc_type := @ERR_PEM_proc_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_proc_type_removed)}
@@ -1676,39 +1555,31 @@ begin
     begin
       {$if declared(_PEM_proc_type)}
       PEM_proc_type := @_PEM_proc_type;
-      {$else}
-      {$if not defined(PEM_proc_type_allownil)}
-      PEM_proc_type := @ERR_PEM_proc_type;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_proc_type_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_proc_type := @ERR_PEM_proc_type;
+    if FuncLoadError then
       AFailed.Add('PEM_proc_type');
-    end;
     {$ifend}
   end;
 
 
   PEM_dek_info := LoadLibFunction(ADllHandle, PEM_dek_info_procname);
-  FuncLoaded := assigned(PEM_dek_info);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_dek_info);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_dek_info_allownil)}
+    PEM_dek_info := @ERR_PEM_dek_info;
+    {$ifend}
     {$if declared(PEM_dek_info_introduced)}
     if LibVersion < PEM_dek_info_introduced then
     begin
       {$if declared(FC_PEM_dek_info)}
       PEM_dek_info := @FC_PEM_dek_info;
-      {$else}
-      {$if not defined(PEM_dek_info_allownil)}
-      PEM_dek_info := @ERR_PEM_dek_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_dek_info_removed)}
@@ -1716,39 +1587,31 @@ begin
     begin
       {$if declared(_PEM_dek_info)}
       PEM_dek_info := @_PEM_dek_info;
-      {$else}
-      {$if not defined(PEM_dek_info_allownil)}
-      PEM_dek_info := @ERR_PEM_dek_info;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_dek_info_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_dek_info := @ERR_PEM_dek_info;
+    if FuncLoadError then
       AFailed.Add('PEM_dek_info');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_X509 := LoadLibFunction(ADllHandle, PEM_read_bio_X509_procname);
-  FuncLoaded := assigned(PEM_read_bio_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_X509_allownil)}
+    PEM_read_bio_X509 := @ERR_PEM_read_bio_X509;
+    {$ifend}
     {$if declared(PEM_read_bio_X509_introduced)}
     if LibVersion < PEM_read_bio_X509_introduced then
     begin
       {$if declared(FC_PEM_read_bio_X509)}
       PEM_read_bio_X509 := @FC_PEM_read_bio_X509;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_allownil)}
-      PEM_read_bio_X509 := @ERR_PEM_read_bio_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_X509_removed)}
@@ -1756,39 +1619,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_X509)}
       PEM_read_bio_X509 := @_PEM_read_bio_X509;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_allownil)}
-      PEM_read_bio_X509 := @ERR_PEM_read_bio_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_X509 := @ERR_PEM_read_bio_X509;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_X509');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_X509 := LoadLibFunction(ADllHandle, PEM_write_bio_X509_procname);
-  FuncLoaded := assigned(PEM_write_bio_X509);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_X509);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_X509_allownil)}
+    PEM_write_bio_X509 := @ERR_PEM_write_bio_X509;
+    {$ifend}
     {$if declared(PEM_write_bio_X509_introduced)}
     if LibVersion < PEM_write_bio_X509_introduced then
     begin
       {$if declared(FC_PEM_write_bio_X509)}
       PEM_write_bio_X509 := @FC_PEM_write_bio_X509;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_allownil)}
-      PEM_write_bio_X509 := @ERR_PEM_write_bio_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_X509_removed)}
@@ -1796,39 +1651,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_X509)}
       PEM_write_bio_X509 := @_PEM_write_bio_X509;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_allownil)}
-      PEM_write_bio_X509 := @ERR_PEM_write_bio_X509;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_X509_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_X509 := @ERR_PEM_write_bio_X509;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_X509');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_X509_AUX := LoadLibFunction(ADllHandle, PEM_read_bio_X509_AUX_procname);
-  FuncLoaded := assigned(PEM_read_bio_X509_AUX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_X509_AUX);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_X509_AUX_allownil)}
+    PEM_read_bio_X509_AUX := @ERR_PEM_read_bio_X509_AUX;
+    {$ifend}
     {$if declared(PEM_read_bio_X509_AUX_introduced)}
     if LibVersion < PEM_read_bio_X509_AUX_introduced then
     begin
       {$if declared(FC_PEM_read_bio_X509_AUX)}
       PEM_read_bio_X509_AUX := @FC_PEM_read_bio_X509_AUX;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_AUX_allownil)}
-      PEM_read_bio_X509_AUX := @ERR_PEM_read_bio_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_X509_AUX_removed)}
@@ -1836,39 +1683,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_X509_AUX)}
       PEM_read_bio_X509_AUX := @_PEM_read_bio_X509_AUX;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_AUX_allownil)}
-      PEM_read_bio_X509_AUX := @ERR_PEM_read_bio_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_X509_AUX_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_X509_AUX := @ERR_PEM_read_bio_X509_AUX;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_X509_AUX');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_X509_AUX := LoadLibFunction(ADllHandle, PEM_write_bio_X509_AUX_procname);
-  FuncLoaded := assigned(PEM_write_bio_X509_AUX);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_X509_AUX);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_X509_AUX_allownil)}
+    PEM_write_bio_X509_AUX := @ERR_PEM_write_bio_X509_AUX;
+    {$ifend}
     {$if declared(PEM_write_bio_X509_AUX_introduced)}
     if LibVersion < PEM_write_bio_X509_AUX_introduced then
     begin
       {$if declared(FC_PEM_write_bio_X509_AUX)}
       PEM_write_bio_X509_AUX := @FC_PEM_write_bio_X509_AUX;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_AUX_allownil)}
-      PEM_write_bio_X509_AUX := @ERR_PEM_write_bio_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_X509_AUX_removed)}
@@ -1876,39 +1715,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_X509_AUX)}
       PEM_write_bio_X509_AUX := @_PEM_write_bio_X509_AUX;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_AUX_allownil)}
-      PEM_write_bio_X509_AUX := @ERR_PEM_write_bio_X509_AUX;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_X509_AUX_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_X509_AUX := @ERR_PEM_write_bio_X509_AUX;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_X509_AUX');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_X509_REQ := LoadLibFunction(ADllHandle, PEM_read_bio_X509_REQ_procname);
-  FuncLoaded := assigned(PEM_read_bio_X509_REQ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_X509_REQ);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_X509_REQ_allownil)}
+    PEM_read_bio_X509_REQ := @ERR_PEM_read_bio_X509_REQ;
+    {$ifend}
     {$if declared(PEM_read_bio_X509_REQ_introduced)}
     if LibVersion < PEM_read_bio_X509_REQ_introduced then
     begin
       {$if declared(FC_PEM_read_bio_X509_REQ)}
       PEM_read_bio_X509_REQ := @FC_PEM_read_bio_X509_REQ;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_REQ_allownil)}
-      PEM_read_bio_X509_REQ := @ERR_PEM_read_bio_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_X509_REQ_removed)}
@@ -1916,39 +1747,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_X509_REQ)}
       PEM_read_bio_X509_REQ := @_PEM_read_bio_X509_REQ;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_REQ_allownil)}
-      PEM_read_bio_X509_REQ := @ERR_PEM_read_bio_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_X509_REQ_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_X509_REQ := @ERR_PEM_read_bio_X509_REQ;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_X509_REQ');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_X509_REQ := LoadLibFunction(ADllHandle, PEM_write_bio_X509_REQ_procname);
-  FuncLoaded := assigned(PEM_write_bio_X509_REQ);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_X509_REQ);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_X509_REQ_allownil)}
+    PEM_write_bio_X509_REQ := @ERR_PEM_write_bio_X509_REQ;
+    {$ifend}
     {$if declared(PEM_write_bio_X509_REQ_introduced)}
     if LibVersion < PEM_write_bio_X509_REQ_introduced then
     begin
       {$if declared(FC_PEM_write_bio_X509_REQ)}
       PEM_write_bio_X509_REQ := @FC_PEM_write_bio_X509_REQ;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_REQ_allownil)}
-      PEM_write_bio_X509_REQ := @ERR_PEM_write_bio_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_X509_REQ_removed)}
@@ -1956,39 +1779,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_X509_REQ)}
       PEM_write_bio_X509_REQ := @_PEM_write_bio_X509_REQ;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_REQ_allownil)}
-      PEM_write_bio_X509_REQ := @ERR_PEM_write_bio_X509_REQ;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_X509_REQ_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_X509_REQ := @ERR_PEM_write_bio_X509_REQ;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_X509_REQ');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_X509_REQ_NEW := LoadLibFunction(ADllHandle, PEM_write_bio_X509_REQ_NEW_procname);
-  FuncLoaded := assigned(PEM_write_bio_X509_REQ_NEW);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_X509_REQ_NEW);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_X509_REQ_NEW_allownil)}
+    PEM_write_bio_X509_REQ_NEW := @ERR_PEM_write_bio_X509_REQ_NEW;
+    {$ifend}
     {$if declared(PEM_write_bio_X509_REQ_NEW_introduced)}
     if LibVersion < PEM_write_bio_X509_REQ_NEW_introduced then
     begin
       {$if declared(FC_PEM_write_bio_X509_REQ_NEW)}
       PEM_write_bio_X509_REQ_NEW := @FC_PEM_write_bio_X509_REQ_NEW;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_REQ_NEW_allownil)}
-      PEM_write_bio_X509_REQ_NEW := @ERR_PEM_write_bio_X509_REQ_NEW;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_X509_REQ_NEW_removed)}
@@ -1996,39 +1811,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_X509_REQ_NEW)}
       PEM_write_bio_X509_REQ_NEW := @_PEM_write_bio_X509_REQ_NEW;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_REQ_NEW_allownil)}
-      PEM_write_bio_X509_REQ_NEW := @ERR_PEM_write_bio_X509_REQ_NEW;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_X509_REQ_NEW_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_X509_REQ_NEW := @ERR_PEM_write_bio_X509_REQ_NEW;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_X509_REQ_NEW');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_X509_CRL := LoadLibFunction(ADllHandle, PEM_read_bio_X509_CRL_procname);
-  FuncLoaded := assigned(PEM_read_bio_X509_CRL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_X509_CRL);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_X509_CRL_allownil)}
+    PEM_read_bio_X509_CRL := @ERR_PEM_read_bio_X509_CRL;
+    {$ifend}
     {$if declared(PEM_read_bio_X509_CRL_introduced)}
     if LibVersion < PEM_read_bio_X509_CRL_introduced then
     begin
       {$if declared(FC_PEM_read_bio_X509_CRL)}
       PEM_read_bio_X509_CRL := @FC_PEM_read_bio_X509_CRL;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_CRL_allownil)}
-      PEM_read_bio_X509_CRL := @ERR_PEM_read_bio_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_X509_CRL_removed)}
@@ -2036,39 +1843,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_X509_CRL)}
       PEM_read_bio_X509_CRL := @_PEM_read_bio_X509_CRL;
-      {$else}
-      {$if not defined(PEM_read_bio_X509_CRL_allownil)}
-      PEM_read_bio_X509_CRL := @ERR_PEM_read_bio_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_X509_CRL_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_X509_CRL := @ERR_PEM_read_bio_X509_CRL;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_X509_CRL');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_X509_CRL := LoadLibFunction(ADllHandle, PEM_write_bio_X509_CRL_procname);
-  FuncLoaded := assigned(PEM_write_bio_X509_CRL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_X509_CRL);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_X509_CRL_allownil)}
+    PEM_write_bio_X509_CRL := @ERR_PEM_write_bio_X509_CRL;
+    {$ifend}
     {$if declared(PEM_write_bio_X509_CRL_introduced)}
     if LibVersion < PEM_write_bio_X509_CRL_introduced then
     begin
       {$if declared(FC_PEM_write_bio_X509_CRL)}
       PEM_write_bio_X509_CRL := @FC_PEM_write_bio_X509_CRL;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_CRL_allownil)}
-      PEM_write_bio_X509_CRL := @ERR_PEM_write_bio_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_X509_CRL_removed)}
@@ -2076,39 +1875,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_X509_CRL)}
       PEM_write_bio_X509_CRL := @_PEM_write_bio_X509_CRL;
-      {$else}
-      {$if not defined(PEM_write_bio_X509_CRL_allownil)}
-      PEM_write_bio_X509_CRL := @ERR_PEM_write_bio_X509_CRL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_X509_CRL_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_X509_CRL := @ERR_PEM_write_bio_X509_CRL;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_X509_CRL');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_PKCS7 := LoadLibFunction(ADllHandle, PEM_read_bio_PKCS7_procname);
-  FuncLoaded := assigned(PEM_read_bio_PKCS7);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_PKCS7);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_PKCS7_allownil)}
+    PEM_read_bio_PKCS7 := @ERR_PEM_read_bio_PKCS7;
+    {$ifend}
     {$if declared(PEM_read_bio_PKCS7_introduced)}
     if LibVersion < PEM_read_bio_PKCS7_introduced then
     begin
       {$if declared(FC_PEM_read_bio_PKCS7)}
       PEM_read_bio_PKCS7 := @FC_PEM_read_bio_PKCS7;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS7_allownil)}
-      PEM_read_bio_PKCS7 := @ERR_PEM_read_bio_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_PKCS7_removed)}
@@ -2116,39 +1907,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_PKCS7)}
       PEM_read_bio_PKCS7 := @_PEM_read_bio_PKCS7;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS7_allownil)}
-      PEM_read_bio_PKCS7 := @ERR_PEM_read_bio_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_PKCS7_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_PKCS7 := @ERR_PEM_read_bio_PKCS7;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_PKCS7');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PKCS7 := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS7_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS7);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS7);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS7_allownil)}
+    PEM_write_bio_PKCS7 := @ERR_PEM_write_bio_PKCS7;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS7_introduced)}
     if LibVersion < PEM_write_bio_PKCS7_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS7)}
       PEM_write_bio_PKCS7 := @FC_PEM_write_bio_PKCS7;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS7_allownil)}
-      PEM_write_bio_PKCS7 := @ERR_PEM_write_bio_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS7_removed)}
@@ -2156,39 +1939,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS7)}
       PEM_write_bio_PKCS7 := @_PEM_write_bio_PKCS7;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS7_allownil)}
-      PEM_write_bio_PKCS7 := @ERR_PEM_write_bio_PKCS7;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS7_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS7 := @ERR_PEM_write_bio_PKCS7;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS7');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_PKCS8 := LoadLibFunction(ADllHandle, PEM_read_bio_PKCS8_procname);
-  FuncLoaded := assigned(PEM_read_bio_PKCS8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_PKCS8);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_PKCS8_allownil)}
+    PEM_read_bio_PKCS8 := @ERR_PEM_read_bio_PKCS8;
+    {$ifend}
     {$if declared(PEM_read_bio_PKCS8_introduced)}
     if LibVersion < PEM_read_bio_PKCS8_introduced then
     begin
       {$if declared(FC_PEM_read_bio_PKCS8)}
       PEM_read_bio_PKCS8 := @FC_PEM_read_bio_PKCS8;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS8_allownil)}
-      PEM_read_bio_PKCS8 := @ERR_PEM_read_bio_PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_PKCS8_removed)}
@@ -2196,39 +1971,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_PKCS8)}
       PEM_read_bio_PKCS8 := @_PEM_read_bio_PKCS8;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS8_allownil)}
-      PEM_read_bio_PKCS8 := @ERR_PEM_read_bio_PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_PKCS8_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_PKCS8 := @ERR_PEM_read_bio_PKCS8;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_PKCS8');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PKCS8 := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS8_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS8);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS8);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS8_allownil)}
+    PEM_write_bio_PKCS8 := @ERR_PEM_write_bio_PKCS8;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS8_introduced)}
     if LibVersion < PEM_write_bio_PKCS8_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS8)}
       PEM_write_bio_PKCS8 := @FC_PEM_write_bio_PKCS8;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8_allownil)}
-      PEM_write_bio_PKCS8 := @ERR_PEM_write_bio_PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS8_removed)}
@@ -2236,39 +2003,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS8)}
       PEM_write_bio_PKCS8 := @_PEM_write_bio_PKCS8;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8_allownil)}
-      PEM_write_bio_PKCS8 := @ERR_PEM_write_bio_PKCS8;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS8_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS8 := @ERR_PEM_write_bio_PKCS8;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS8');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_PKCS8_PRIV_KEY_INFO := LoadLibFunction(ADllHandle, PEM_read_bio_PKCS8_PRIV_KEY_INFO_procname);
-  FuncLoaded := assigned(PEM_read_bio_PKCS8_PRIV_KEY_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_PKCS8_PRIV_KEY_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_PKCS8_PRIV_KEY_INFO_allownil)}
+    PEM_read_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
+    {$ifend}
     {$if declared(PEM_read_bio_PKCS8_PRIV_KEY_INFO_introduced)}
     if LibVersion < PEM_read_bio_PKCS8_PRIV_KEY_INFO_introduced then
     begin
       {$if declared(FC_PEM_read_bio_PKCS8_PRIV_KEY_INFO)}
       PEM_read_bio_PKCS8_PRIV_KEY_INFO := @FC_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-      PEM_read_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_PKCS8_PRIV_KEY_INFO_removed)}
@@ -2276,39 +2035,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_PKCS8_PRIV_KEY_INFO)}
       PEM_read_bio_PKCS8_PRIV_KEY_INFO := @_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
-      {$else}
-      {$if not defined(PEM_read_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-      PEM_read_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_read_bio_PKCS8_PRIV_KEY_INFO;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_PKCS8_PRIV_KEY_INFO');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PKCS8_PRIV_KEY_INFO := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS8_PRIV_KEY_INFO_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS8_PRIV_KEY_INFO);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS8_PRIV_KEY_INFO);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS8_PRIV_KEY_INFO_allownil)}
+    PEM_write_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS8_PRIV_KEY_INFO_introduced)}
     if LibVersion < PEM_write_bio_PKCS8_PRIV_KEY_INFO_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS8_PRIV_KEY_INFO)}
       PEM_write_bio_PKCS8_PRIV_KEY_INFO := @FC_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-      PEM_write_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS8_PRIV_KEY_INFO_removed)}
@@ -2316,39 +2067,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS8_PRIV_KEY_INFO)}
       PEM_write_bio_PKCS8_PRIV_KEY_INFO := @_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-      PEM_write_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS8_PRIV_KEY_INFO_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS8_PRIV_KEY_INFO := @ERR_PEM_write_bio_PKCS8_PRIV_KEY_INFO;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS8_PRIV_KEY_INFO');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_RSAPrivateKey := LoadLibFunction(ADllHandle, PEM_read_bio_RSAPrivateKey_procname);
-  FuncLoaded := assigned(PEM_read_bio_RSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_RSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_RSAPrivateKey_allownil)}
+    PEM_read_bio_RSAPrivateKey := @ERR_PEM_read_bio_RSAPrivateKey;
+    {$ifend}
     {$if declared(PEM_read_bio_RSAPrivateKey_introduced)}
     if LibVersion < PEM_read_bio_RSAPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_read_bio_RSAPrivateKey)}
       PEM_read_bio_RSAPrivateKey := @FC_PEM_read_bio_RSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_RSAPrivateKey_allownil)}
-      PEM_read_bio_RSAPrivateKey := @ERR_PEM_read_bio_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_RSAPrivateKey_removed)}
@@ -2356,39 +2099,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_RSAPrivateKey)}
       PEM_read_bio_RSAPrivateKey := @_PEM_read_bio_RSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_RSAPrivateKey_allownil)}
-      PEM_read_bio_RSAPrivateKey := @ERR_PEM_read_bio_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_RSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_RSAPrivateKey := @ERR_PEM_read_bio_RSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_RSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_RSAPrivateKey := LoadLibFunction(ADllHandle, PEM_write_bio_RSAPrivateKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_RSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_RSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_RSAPrivateKey_allownil)}
+    PEM_write_bio_RSAPrivateKey := @ERR_PEM_write_bio_RSAPrivateKey;
+    {$ifend}
     {$if declared(PEM_write_bio_RSAPrivateKey_introduced)}
     if LibVersion < PEM_write_bio_RSAPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_RSAPrivateKey)}
       PEM_write_bio_RSAPrivateKey := @FC_PEM_write_bio_RSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_RSAPrivateKey_allownil)}
-      PEM_write_bio_RSAPrivateKey := @ERR_PEM_write_bio_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_RSAPrivateKey_removed)}
@@ -2396,39 +2131,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_RSAPrivateKey)}
       PEM_write_bio_RSAPrivateKey := @_PEM_write_bio_RSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_RSAPrivateKey_allownil)}
-      PEM_write_bio_RSAPrivateKey := @ERR_PEM_write_bio_RSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_RSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_RSAPrivateKey := @ERR_PEM_write_bio_RSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_RSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_RSAPublicKey := LoadLibFunction(ADllHandle, PEM_read_bio_RSAPublicKey_procname);
-  FuncLoaded := assigned(PEM_read_bio_RSAPublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_RSAPublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_RSAPublicKey_allownil)}
+    PEM_read_bio_RSAPublicKey := @ERR_PEM_read_bio_RSAPublicKey;
+    {$ifend}
     {$if declared(PEM_read_bio_RSAPublicKey_introduced)}
     if LibVersion < PEM_read_bio_RSAPublicKey_introduced then
     begin
       {$if declared(FC_PEM_read_bio_RSAPublicKey)}
       PEM_read_bio_RSAPublicKey := @FC_PEM_read_bio_RSAPublicKey;
-      {$else}
-      {$if not defined(PEM_read_bio_RSAPublicKey_allownil)}
-      PEM_read_bio_RSAPublicKey := @ERR_PEM_read_bio_RSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_RSAPublicKey_removed)}
@@ -2436,39 +2163,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_RSAPublicKey)}
       PEM_read_bio_RSAPublicKey := @_PEM_read_bio_RSAPublicKey;
-      {$else}
-      {$if not defined(PEM_read_bio_RSAPublicKey_allownil)}
-      PEM_read_bio_RSAPublicKey := @ERR_PEM_read_bio_RSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_RSAPublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_RSAPublicKey := @ERR_PEM_read_bio_RSAPublicKey;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_RSAPublicKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_RSAPublicKey := LoadLibFunction(ADllHandle, PEM_write_bio_RSAPublicKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_RSAPublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_RSAPublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_RSAPublicKey_allownil)}
+    PEM_write_bio_RSAPublicKey := @ERR_PEM_write_bio_RSAPublicKey;
+    {$ifend}
     {$if declared(PEM_write_bio_RSAPublicKey_introduced)}
     if LibVersion < PEM_write_bio_RSAPublicKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_RSAPublicKey)}
       PEM_write_bio_RSAPublicKey := @FC_PEM_write_bio_RSAPublicKey;
-      {$else}
-      {$if not defined(PEM_write_bio_RSAPublicKey_allownil)}
-      PEM_write_bio_RSAPublicKey := @ERR_PEM_write_bio_RSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_RSAPublicKey_removed)}
@@ -2476,39 +2195,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_RSAPublicKey)}
       PEM_write_bio_RSAPublicKey := @_PEM_write_bio_RSAPublicKey;
-      {$else}
-      {$if not defined(PEM_write_bio_RSAPublicKey_allownil)}
-      PEM_write_bio_RSAPublicKey := @ERR_PEM_write_bio_RSAPublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_RSAPublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_RSAPublicKey := @ERR_PEM_write_bio_RSAPublicKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_RSAPublicKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_RSA_PUBKEY := LoadLibFunction(ADllHandle, PEM_read_bio_RSA_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_read_bio_RSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_RSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_RSA_PUBKEY_allownil)}
+    PEM_read_bio_RSA_PUBKEY := @ERR_PEM_read_bio_RSA_PUBKEY;
+    {$ifend}
     {$if declared(PEM_read_bio_RSA_PUBKEY_introduced)}
     if LibVersion < PEM_read_bio_RSA_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_read_bio_RSA_PUBKEY)}
       PEM_read_bio_RSA_PUBKEY := @FC_PEM_read_bio_RSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_RSA_PUBKEY_allownil)}
-      PEM_read_bio_RSA_PUBKEY := @ERR_PEM_read_bio_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_RSA_PUBKEY_removed)}
@@ -2516,39 +2227,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_RSA_PUBKEY)}
       PEM_read_bio_RSA_PUBKEY := @_PEM_read_bio_RSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_RSA_PUBKEY_allownil)}
-      PEM_read_bio_RSA_PUBKEY := @ERR_PEM_read_bio_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_RSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_RSA_PUBKEY := @ERR_PEM_read_bio_RSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_RSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_RSA_PUBKEY := LoadLibFunction(ADllHandle, PEM_write_bio_RSA_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_write_bio_RSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_RSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_RSA_PUBKEY_allownil)}
+    PEM_write_bio_RSA_PUBKEY := @ERR_PEM_write_bio_RSA_PUBKEY;
+    {$ifend}
     {$if declared(PEM_write_bio_RSA_PUBKEY_introduced)}
     if LibVersion < PEM_write_bio_RSA_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_write_bio_RSA_PUBKEY)}
       PEM_write_bio_RSA_PUBKEY := @FC_PEM_write_bio_RSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_RSA_PUBKEY_allownil)}
-      PEM_write_bio_RSA_PUBKEY := @ERR_PEM_write_bio_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_RSA_PUBKEY_removed)}
@@ -2556,39 +2259,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_RSA_PUBKEY)}
       PEM_write_bio_RSA_PUBKEY := @_PEM_write_bio_RSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_RSA_PUBKEY_allownil)}
-      PEM_write_bio_RSA_PUBKEY := @ERR_PEM_write_bio_RSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_RSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_RSA_PUBKEY := @ERR_PEM_write_bio_RSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_RSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_DSAPrivateKey := LoadLibFunction(ADllHandle, PEM_read_bio_DSAPrivateKey_procname);
-  FuncLoaded := assigned(PEM_read_bio_DSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_DSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_DSAPrivateKey_allownil)}
+    PEM_read_bio_DSAPrivateKey := @ERR_PEM_read_bio_DSAPrivateKey;
+    {$ifend}
     {$if declared(PEM_read_bio_DSAPrivateKey_introduced)}
     if LibVersion < PEM_read_bio_DSAPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_read_bio_DSAPrivateKey)}
       PEM_read_bio_DSAPrivateKey := @FC_PEM_read_bio_DSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_DSAPrivateKey_allownil)}
-      PEM_read_bio_DSAPrivateKey := @ERR_PEM_read_bio_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_DSAPrivateKey_removed)}
@@ -2596,39 +2291,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_DSAPrivateKey)}
       PEM_read_bio_DSAPrivateKey := @_PEM_read_bio_DSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_DSAPrivateKey_allownil)}
-      PEM_read_bio_DSAPrivateKey := @ERR_PEM_read_bio_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_DSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_DSAPrivateKey := @ERR_PEM_read_bio_DSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_DSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_DSAPrivateKey := LoadLibFunction(ADllHandle, PEM_write_bio_DSAPrivateKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_DSAPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_DSAPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_DSAPrivateKey_allownil)}
+    PEM_write_bio_DSAPrivateKey := @ERR_PEM_write_bio_DSAPrivateKey;
+    {$ifend}
     {$if declared(PEM_write_bio_DSAPrivateKey_introduced)}
     if LibVersion < PEM_write_bio_DSAPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_DSAPrivateKey)}
       PEM_write_bio_DSAPrivateKey := @FC_PEM_write_bio_DSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_DSAPrivateKey_allownil)}
-      PEM_write_bio_DSAPrivateKey := @ERR_PEM_write_bio_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_DSAPrivateKey_removed)}
@@ -2636,39 +2323,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_DSAPrivateKey)}
       PEM_write_bio_DSAPrivateKey := @_PEM_write_bio_DSAPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_DSAPrivateKey_allownil)}
-      PEM_write_bio_DSAPrivateKey := @ERR_PEM_write_bio_DSAPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_DSAPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_DSAPrivateKey := @ERR_PEM_write_bio_DSAPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_DSAPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_DSA_PUBKEY := LoadLibFunction(ADllHandle, PEM_read_bio_DSA_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_read_bio_DSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_DSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_DSA_PUBKEY_allownil)}
+    PEM_read_bio_DSA_PUBKEY := @ERR_PEM_read_bio_DSA_PUBKEY;
+    {$ifend}
     {$if declared(PEM_read_bio_DSA_PUBKEY_introduced)}
     if LibVersion < PEM_read_bio_DSA_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_read_bio_DSA_PUBKEY)}
       PEM_read_bio_DSA_PUBKEY := @FC_PEM_read_bio_DSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_DSA_PUBKEY_allownil)}
-      PEM_read_bio_DSA_PUBKEY := @ERR_PEM_read_bio_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_DSA_PUBKEY_removed)}
@@ -2676,39 +2355,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_DSA_PUBKEY)}
       PEM_read_bio_DSA_PUBKEY := @_PEM_read_bio_DSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_DSA_PUBKEY_allownil)}
-      PEM_read_bio_DSA_PUBKEY := @ERR_PEM_read_bio_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_DSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_DSA_PUBKEY := @ERR_PEM_read_bio_DSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_DSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_DSA_PUBKEY := LoadLibFunction(ADllHandle, PEM_write_bio_DSA_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_write_bio_DSA_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_DSA_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_DSA_PUBKEY_allownil)}
+    PEM_write_bio_DSA_PUBKEY := @ERR_PEM_write_bio_DSA_PUBKEY;
+    {$ifend}
     {$if declared(PEM_write_bio_DSA_PUBKEY_introduced)}
     if LibVersion < PEM_write_bio_DSA_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_write_bio_DSA_PUBKEY)}
       PEM_write_bio_DSA_PUBKEY := @FC_PEM_write_bio_DSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_DSA_PUBKEY_allownil)}
-      PEM_write_bio_DSA_PUBKEY := @ERR_PEM_write_bio_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_DSA_PUBKEY_removed)}
@@ -2716,39 +2387,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_DSA_PUBKEY)}
       PEM_write_bio_DSA_PUBKEY := @_PEM_write_bio_DSA_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_DSA_PUBKEY_allownil)}
-      PEM_write_bio_DSA_PUBKEY := @ERR_PEM_write_bio_DSA_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_DSA_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_DSA_PUBKEY := @ERR_PEM_write_bio_DSA_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_DSA_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_DSAparams := LoadLibFunction(ADllHandle, PEM_read_bio_DSAparams_procname);
-  FuncLoaded := assigned(PEM_read_bio_DSAparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_DSAparams);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_DSAparams_allownil)}
+    PEM_read_bio_DSAparams := @ERR_PEM_read_bio_DSAparams;
+    {$ifend}
     {$if declared(PEM_read_bio_DSAparams_introduced)}
     if LibVersion < PEM_read_bio_DSAparams_introduced then
     begin
       {$if declared(FC_PEM_read_bio_DSAparams)}
       PEM_read_bio_DSAparams := @FC_PEM_read_bio_DSAparams;
-      {$else}
-      {$if not defined(PEM_read_bio_DSAparams_allownil)}
-      PEM_read_bio_DSAparams := @ERR_PEM_read_bio_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_DSAparams_removed)}
@@ -2756,39 +2419,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_DSAparams)}
       PEM_read_bio_DSAparams := @_PEM_read_bio_DSAparams;
-      {$else}
-      {$if not defined(PEM_read_bio_DSAparams_allownil)}
-      PEM_read_bio_DSAparams := @ERR_PEM_read_bio_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_DSAparams_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_DSAparams := @ERR_PEM_read_bio_DSAparams;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_DSAparams');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_DSAparams := LoadLibFunction(ADllHandle, PEM_write_bio_DSAparams_procname);
-  FuncLoaded := assigned(PEM_write_bio_DSAparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_DSAparams);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_DSAparams_allownil)}
+    PEM_write_bio_DSAparams := @ERR_PEM_write_bio_DSAparams;
+    {$ifend}
     {$if declared(PEM_write_bio_DSAparams_introduced)}
     if LibVersion < PEM_write_bio_DSAparams_introduced then
     begin
       {$if declared(FC_PEM_write_bio_DSAparams)}
       PEM_write_bio_DSAparams := @FC_PEM_write_bio_DSAparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DSAparams_allownil)}
-      PEM_write_bio_DSAparams := @ERR_PEM_write_bio_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_DSAparams_removed)}
@@ -2796,39 +2451,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_DSAparams)}
       PEM_write_bio_DSAparams := @_PEM_write_bio_DSAparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DSAparams_allownil)}
-      PEM_write_bio_DSAparams := @ERR_PEM_write_bio_DSAparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_DSAparams_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_DSAparams := @ERR_PEM_write_bio_DSAparams;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_DSAparams');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_ECPKParameters := LoadLibFunction(ADllHandle, PEM_read_bio_ECPKParameters_procname);
-  FuncLoaded := assigned(PEM_read_bio_ECPKParameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_ECPKParameters);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_ECPKParameters_allownil)}
+    PEM_read_bio_ECPKParameters := @ERR_PEM_read_bio_ECPKParameters;
+    {$ifend}
     {$if declared(PEM_read_bio_ECPKParameters_introduced)}
     if LibVersion < PEM_read_bio_ECPKParameters_introduced then
     begin
       {$if declared(FC_PEM_read_bio_ECPKParameters)}
       PEM_read_bio_ECPKParameters := @FC_PEM_read_bio_ECPKParameters;
-      {$else}
-      {$if not defined(PEM_read_bio_ECPKParameters_allownil)}
-      PEM_read_bio_ECPKParameters := @ERR_PEM_read_bio_ECPKParameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_ECPKParameters_removed)}
@@ -2836,39 +2483,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_ECPKParameters)}
       PEM_read_bio_ECPKParameters := @_PEM_read_bio_ECPKParameters;
-      {$else}
-      {$if not defined(PEM_read_bio_ECPKParameters_allownil)}
-      PEM_read_bio_ECPKParameters := @ERR_PEM_read_bio_ECPKParameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_ECPKParameters_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_ECPKParameters := @ERR_PEM_read_bio_ECPKParameters;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_ECPKParameters');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_ECPKParameters := LoadLibFunction(ADllHandle, PEM_write_bio_ECPKParameters_procname);
-  FuncLoaded := assigned(PEM_write_bio_ECPKParameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_ECPKParameters);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_ECPKParameters_allownil)}
+    PEM_write_bio_ECPKParameters := @ERR_PEM_write_bio_ECPKParameters;
+    {$ifend}
     {$if declared(PEM_write_bio_ECPKParameters_introduced)}
     if LibVersion < PEM_write_bio_ECPKParameters_introduced then
     begin
       {$if declared(FC_PEM_write_bio_ECPKParameters)}
       PEM_write_bio_ECPKParameters := @FC_PEM_write_bio_ECPKParameters;
-      {$else}
-      {$if not defined(PEM_write_bio_ECPKParameters_allownil)}
-      PEM_write_bio_ECPKParameters := @ERR_PEM_write_bio_ECPKParameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_ECPKParameters_removed)}
@@ -2876,39 +2515,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_ECPKParameters)}
       PEM_write_bio_ECPKParameters := @_PEM_write_bio_ECPKParameters;
-      {$else}
-      {$if not defined(PEM_write_bio_ECPKParameters_allownil)}
-      PEM_write_bio_ECPKParameters := @ERR_PEM_write_bio_ECPKParameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_ECPKParameters_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_ECPKParameters := @ERR_PEM_write_bio_ECPKParameters;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_ECPKParameters');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_ECPrivateKey := LoadLibFunction(ADllHandle, PEM_read_bio_ECPrivateKey_procname);
-  FuncLoaded := assigned(PEM_read_bio_ECPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_ECPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_ECPrivateKey_allownil)}
+    PEM_read_bio_ECPrivateKey := @ERR_PEM_read_bio_ECPrivateKey;
+    {$ifend}
     {$if declared(PEM_read_bio_ECPrivateKey_introduced)}
     if LibVersion < PEM_read_bio_ECPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_read_bio_ECPrivateKey)}
       PEM_read_bio_ECPrivateKey := @FC_PEM_read_bio_ECPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_ECPrivateKey_allownil)}
-      PEM_read_bio_ECPrivateKey := @ERR_PEM_read_bio_ECPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_ECPrivateKey_removed)}
@@ -2916,39 +2547,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_ECPrivateKey)}
       PEM_read_bio_ECPrivateKey := @_PEM_read_bio_ECPrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_ECPrivateKey_allownil)}
-      PEM_read_bio_ECPrivateKey := @ERR_PEM_read_bio_ECPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_ECPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_ECPrivateKey := @ERR_PEM_read_bio_ECPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_ECPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_ECPrivateKey := LoadLibFunction(ADllHandle, PEM_write_bio_ECPrivateKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_ECPrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_ECPrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_ECPrivateKey_allownil)}
+    PEM_write_bio_ECPrivateKey := @ERR_PEM_write_bio_ECPrivateKey;
+    {$ifend}
     {$if declared(PEM_write_bio_ECPrivateKey_introduced)}
     if LibVersion < PEM_write_bio_ECPrivateKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_ECPrivateKey)}
       PEM_write_bio_ECPrivateKey := @FC_PEM_write_bio_ECPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_ECPrivateKey_allownil)}
-      PEM_write_bio_ECPrivateKey := @ERR_PEM_write_bio_ECPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_ECPrivateKey_removed)}
@@ -2956,39 +2579,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_ECPrivateKey)}
       PEM_write_bio_ECPrivateKey := @_PEM_write_bio_ECPrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_ECPrivateKey_allownil)}
-      PEM_write_bio_ECPrivateKey := @ERR_PEM_write_bio_ECPrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_ECPrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_ECPrivateKey := @ERR_PEM_write_bio_ECPrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_ECPrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_EC_PUBKEY := LoadLibFunction(ADllHandle, PEM_read_bio_EC_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_read_bio_EC_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_EC_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_EC_PUBKEY_allownil)}
+    PEM_read_bio_EC_PUBKEY := @ERR_PEM_read_bio_EC_PUBKEY;
+    {$ifend}
     {$if declared(PEM_read_bio_EC_PUBKEY_introduced)}
     if LibVersion < PEM_read_bio_EC_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_read_bio_EC_PUBKEY)}
       PEM_read_bio_EC_PUBKEY := @FC_PEM_read_bio_EC_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_EC_PUBKEY_allownil)}
-      PEM_read_bio_EC_PUBKEY := @ERR_PEM_read_bio_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_EC_PUBKEY_removed)}
@@ -2996,39 +2611,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_EC_PUBKEY)}
       PEM_read_bio_EC_PUBKEY := @_PEM_read_bio_EC_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_EC_PUBKEY_allownil)}
-      PEM_read_bio_EC_PUBKEY := @ERR_PEM_read_bio_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_EC_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_EC_PUBKEY := @ERR_PEM_read_bio_EC_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_EC_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_EC_PUBKEY := LoadLibFunction(ADllHandle, PEM_write_bio_EC_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_write_bio_EC_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_EC_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_EC_PUBKEY_allownil)}
+    PEM_write_bio_EC_PUBKEY := @ERR_PEM_write_bio_EC_PUBKEY;
+    {$ifend}
     {$if declared(PEM_write_bio_EC_PUBKEY_introduced)}
     if LibVersion < PEM_write_bio_EC_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_write_bio_EC_PUBKEY)}
       PEM_write_bio_EC_PUBKEY := @FC_PEM_write_bio_EC_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_EC_PUBKEY_allownil)}
-      PEM_write_bio_EC_PUBKEY := @ERR_PEM_write_bio_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_EC_PUBKEY_removed)}
@@ -3036,39 +2643,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_EC_PUBKEY)}
       PEM_write_bio_EC_PUBKEY := @_PEM_write_bio_EC_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_EC_PUBKEY_allownil)}
-      PEM_write_bio_EC_PUBKEY := @ERR_PEM_write_bio_EC_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_EC_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_EC_PUBKEY := @ERR_PEM_write_bio_EC_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_EC_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_DHparams := LoadLibFunction(ADllHandle, PEM_read_bio_DHparams_procname);
-  FuncLoaded := assigned(PEM_read_bio_DHparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_DHparams);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_DHparams_allownil)}
+    PEM_read_bio_DHparams := @ERR_PEM_read_bio_DHparams;
+    {$ifend}
     {$if declared(PEM_read_bio_DHparams_introduced)}
     if LibVersion < PEM_read_bio_DHparams_introduced then
     begin
       {$if declared(FC_PEM_read_bio_DHparams)}
       PEM_read_bio_DHparams := @FC_PEM_read_bio_DHparams;
-      {$else}
-      {$if not defined(PEM_read_bio_DHparams_allownil)}
-      PEM_read_bio_DHparams := @ERR_PEM_read_bio_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_DHparams_removed)}
@@ -3076,39 +2675,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_DHparams)}
       PEM_read_bio_DHparams := @_PEM_read_bio_DHparams;
-      {$else}
-      {$if not defined(PEM_read_bio_DHparams_allownil)}
-      PEM_read_bio_DHparams := @ERR_PEM_read_bio_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_DHparams_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_DHparams := @ERR_PEM_read_bio_DHparams;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_DHparams');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_DHparams := LoadLibFunction(ADllHandle, PEM_write_bio_DHparams_procname);
-  FuncLoaded := assigned(PEM_write_bio_DHparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_DHparams);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_DHparams_allownil)}
+    PEM_write_bio_DHparams := @ERR_PEM_write_bio_DHparams;
+    {$ifend}
     {$if declared(PEM_write_bio_DHparams_introduced)}
     if LibVersion < PEM_write_bio_DHparams_introduced then
     begin
       {$if declared(FC_PEM_write_bio_DHparams)}
       PEM_write_bio_DHparams := @FC_PEM_write_bio_DHparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DHparams_allownil)}
-      PEM_write_bio_DHparams := @ERR_PEM_write_bio_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_DHparams_removed)}
@@ -3116,39 +2707,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_DHparams)}
       PEM_write_bio_DHparams := @_PEM_write_bio_DHparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DHparams_allownil)}
-      PEM_write_bio_DHparams := @ERR_PEM_write_bio_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_DHparams_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_DHparams := @ERR_PEM_write_bio_DHparams;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_DHparams');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_DHxparams := LoadLibFunction(ADllHandle, PEM_write_bio_DHxparams_procname);
-  FuncLoaded := assigned(PEM_write_bio_DHxparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_DHxparams);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_DHxparams_allownil)}
+    PEM_write_bio_DHxparams := @ERR_PEM_write_bio_DHxparams;
+    {$ifend}
     {$if declared(PEM_write_bio_DHxparams_introduced)}
     if LibVersion < PEM_write_bio_DHxparams_introduced then
     begin
       {$if declared(FC_PEM_write_bio_DHxparams)}
       PEM_write_bio_DHxparams := @FC_PEM_write_bio_DHxparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DHxparams_allownil)}
-      PEM_write_bio_DHxparams := @ERR_PEM_write_bio_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_DHxparams_removed)}
@@ -3156,39 +2739,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_DHxparams)}
       PEM_write_bio_DHxparams := @_PEM_write_bio_DHxparams;
-      {$else}
-      {$if not defined(PEM_write_bio_DHxparams_allownil)}
-      PEM_write_bio_DHxparams := @ERR_PEM_write_bio_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_DHxparams_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_DHxparams := @ERR_PEM_write_bio_DHxparams;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_DHxparams');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_PrivateKey := LoadLibFunction(ADllHandle, PEM_read_bio_PrivateKey_procname);
-  FuncLoaded := assigned(PEM_read_bio_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_PrivateKey_allownil)}
+    PEM_read_bio_PrivateKey := @ERR_PEM_read_bio_PrivateKey;
+    {$ifend}
     {$if declared(PEM_read_bio_PrivateKey_introduced)}
     if LibVersion < PEM_read_bio_PrivateKey_introduced then
     begin
       {$if declared(FC_PEM_read_bio_PrivateKey)}
       PEM_read_bio_PrivateKey := @FC_PEM_read_bio_PrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_PrivateKey_allownil)}
-      PEM_read_bio_PrivateKey := @ERR_PEM_read_bio_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_PrivateKey_removed)}
@@ -3196,39 +2771,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_PrivateKey)}
       PEM_read_bio_PrivateKey := @_PEM_read_bio_PrivateKey;
-      {$else}
-      {$if not defined(PEM_read_bio_PrivateKey_allownil)}
-      PEM_read_bio_PrivateKey := @ERR_PEM_read_bio_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_PrivateKey := @ERR_PEM_read_bio_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PrivateKey := LoadLibFunction(ADllHandle, PEM_write_bio_PrivateKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PrivateKey_allownil)}
+    PEM_write_bio_PrivateKey := @ERR_PEM_write_bio_PrivateKey;
+    {$ifend}
     {$if declared(PEM_write_bio_PrivateKey_introduced)}
     if LibVersion < PEM_write_bio_PrivateKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PrivateKey)}
       PEM_write_bio_PrivateKey := @FC_PEM_write_bio_PrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_PrivateKey_allownil)}
-      PEM_write_bio_PrivateKey := @ERR_PEM_write_bio_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PrivateKey_removed)}
@@ -3236,39 +2803,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PrivateKey)}
       PEM_write_bio_PrivateKey := @_PEM_write_bio_PrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_PrivateKey_allownil)}
-      PEM_write_bio_PrivateKey := @ERR_PEM_write_bio_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PrivateKey := @ERR_PEM_write_bio_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_PUBKEY := LoadLibFunction(ADllHandle, PEM_read_bio_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_read_bio_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_PUBKEY_allownil)}
+    PEM_read_bio_PUBKEY := @ERR_PEM_read_bio_PUBKEY;
+    {$ifend}
     {$if declared(PEM_read_bio_PUBKEY_introduced)}
     if LibVersion < PEM_read_bio_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_read_bio_PUBKEY)}
       PEM_read_bio_PUBKEY := @FC_PEM_read_bio_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_PUBKEY_allownil)}
-      PEM_read_bio_PUBKEY := @ERR_PEM_read_bio_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_PUBKEY_removed)}
@@ -3276,39 +2835,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_PUBKEY)}
       PEM_read_bio_PUBKEY := @_PEM_read_bio_PUBKEY;
-      {$else}
-      {$if not defined(PEM_read_bio_PUBKEY_allownil)}
-      PEM_read_bio_PUBKEY := @ERR_PEM_read_bio_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_PUBKEY := @ERR_PEM_read_bio_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PUBKEY := LoadLibFunction(ADllHandle, PEM_write_bio_PUBKEY_procname);
-  FuncLoaded := assigned(PEM_write_bio_PUBKEY);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PUBKEY);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PUBKEY_allownil)}
+    PEM_write_bio_PUBKEY := @ERR_PEM_write_bio_PUBKEY;
+    {$ifend}
     {$if declared(PEM_write_bio_PUBKEY_introduced)}
     if LibVersion < PEM_write_bio_PUBKEY_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PUBKEY)}
       PEM_write_bio_PUBKEY := @FC_PEM_write_bio_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_PUBKEY_allownil)}
-      PEM_write_bio_PUBKEY := @ERR_PEM_write_bio_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PUBKEY_removed)}
@@ -3316,39 +2867,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PUBKEY)}
       PEM_write_bio_PUBKEY := @_PEM_write_bio_PUBKEY;
-      {$else}
-      {$if not defined(PEM_write_bio_PUBKEY_allownil)}
-      PEM_write_bio_PUBKEY := @ERR_PEM_write_bio_PUBKEY;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PUBKEY_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PUBKEY := @ERR_PEM_write_bio_PUBKEY;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PUBKEY');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PrivateKey_traditional := LoadLibFunction(ADllHandle, PEM_write_bio_PrivateKey_traditional_procname);
-  FuncLoaded := assigned(PEM_write_bio_PrivateKey_traditional);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PrivateKey_traditional);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PrivateKey_traditional_allownil)}
+    PEM_write_bio_PrivateKey_traditional := @ERR_PEM_write_bio_PrivateKey_traditional;
+    {$ifend}
     {$if declared(PEM_write_bio_PrivateKey_traditional_introduced)}
     if LibVersion < PEM_write_bio_PrivateKey_traditional_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PrivateKey_traditional)}
       PEM_write_bio_PrivateKey_traditional := @FC_PEM_write_bio_PrivateKey_traditional;
-      {$else}
-      {$if not defined(PEM_write_bio_PrivateKey_traditional_allownil)}
-      PEM_write_bio_PrivateKey_traditional := @ERR_PEM_write_bio_PrivateKey_traditional;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PrivateKey_traditional_removed)}
@@ -3356,39 +2899,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PrivateKey_traditional)}
       PEM_write_bio_PrivateKey_traditional := @_PEM_write_bio_PrivateKey_traditional;
-      {$else}
-      {$if not defined(PEM_write_bio_PrivateKey_traditional_allownil)}
-      PEM_write_bio_PrivateKey_traditional := @ERR_PEM_write_bio_PrivateKey_traditional;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PrivateKey_traditional_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PrivateKey_traditional := @ERR_PEM_write_bio_PrivateKey_traditional;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PrivateKey_traditional');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   PEM_write_bio_PKCS8PrivateKey_nid := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS8PrivateKey_nid_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS8PrivateKey_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS8PrivateKey_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS8PrivateKey_nid_allownil)}
+    PEM_write_bio_PKCS8PrivateKey_nid := @ERR_PEM_write_bio_PKCS8PrivateKey_nid;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS8PrivateKey_nid_introduced)}
     if LibVersion < PEM_write_bio_PKCS8PrivateKey_nid_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS8PrivateKey_nid)}
       PEM_write_bio_PKCS8PrivateKey_nid := @FC_PEM_write_bio_PKCS8PrivateKey_nid;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8PrivateKey_nid_allownil)}
-      PEM_write_bio_PKCS8PrivateKey_nid := @ERR_PEM_write_bio_PKCS8PrivateKey_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS8PrivateKey_nid_removed)}
@@ -3396,39 +2931,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS8PrivateKey_nid)}
       PEM_write_bio_PKCS8PrivateKey_nid := @_PEM_write_bio_PKCS8PrivateKey_nid;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8PrivateKey_nid_allownil)}
-      PEM_write_bio_PKCS8PrivateKey_nid := @ERR_PEM_write_bio_PKCS8PrivateKey_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS8PrivateKey_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS8PrivateKey_nid := @ERR_PEM_write_bio_PKCS8PrivateKey_nid;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS8PrivateKey_nid');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_PKCS8PrivateKey := LoadLibFunction(ADllHandle, PEM_write_bio_PKCS8PrivateKey_procname);
-  FuncLoaded := assigned(PEM_write_bio_PKCS8PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_PKCS8PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_PKCS8PrivateKey_allownil)}
+    PEM_write_bio_PKCS8PrivateKey := @ERR_PEM_write_bio_PKCS8PrivateKey;
+    {$ifend}
     {$if declared(PEM_write_bio_PKCS8PrivateKey_introduced)}
     if LibVersion < PEM_write_bio_PKCS8PrivateKey_introduced then
     begin
       {$if declared(FC_PEM_write_bio_PKCS8PrivateKey)}
       PEM_write_bio_PKCS8PrivateKey := @FC_PEM_write_bio_PKCS8PrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8PrivateKey_allownil)}
-      PEM_write_bio_PKCS8PrivateKey := @ERR_PEM_write_bio_PKCS8PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_PKCS8PrivateKey_removed)}
@@ -3436,39 +2963,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_PKCS8PrivateKey)}
       PEM_write_bio_PKCS8PrivateKey := @_PEM_write_bio_PKCS8PrivateKey;
-      {$else}
-      {$if not defined(PEM_write_bio_PKCS8PrivateKey_allownil)}
-      PEM_write_bio_PKCS8PrivateKey := @ERR_PEM_write_bio_PKCS8PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_PKCS8PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_PKCS8PrivateKey := @ERR_PEM_write_bio_PKCS8PrivateKey;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_PKCS8PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS8PrivateKey_bio := LoadLibFunction(ADllHandle, i2d_PKCS8PrivateKey_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS8PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS8PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS8PrivateKey_bio_allownil)}
+    i2d_PKCS8PrivateKey_bio := @ERR_i2d_PKCS8PrivateKey_bio;
+    {$ifend}
     {$if declared(i2d_PKCS8PrivateKey_bio_introduced)}
     if LibVersion < i2d_PKCS8PrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS8PrivateKey_bio)}
       i2d_PKCS8PrivateKey_bio := @FC_i2d_PKCS8PrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKey_bio_allownil)}
-      i2d_PKCS8PrivateKey_bio := @ERR_i2d_PKCS8PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS8PrivateKey_bio_removed)}
@@ -3476,39 +2995,31 @@ begin
     begin
       {$if declared(_i2d_PKCS8PrivateKey_bio)}
       i2d_PKCS8PrivateKey_bio := @_i2d_PKCS8PrivateKey_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKey_bio_allownil)}
-      i2d_PKCS8PrivateKey_bio := @ERR_i2d_PKCS8PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS8PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS8PrivateKey_bio := @ERR_i2d_PKCS8PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS8PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2d_PKCS8PrivateKey_nid_bio := LoadLibFunction(ADllHandle, i2d_PKCS8PrivateKey_nid_bio_procname);
-  FuncLoaded := assigned(i2d_PKCS8PrivateKey_nid_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_PKCS8PrivateKey_nid_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_PKCS8PrivateKey_nid_bio_allownil)}
+    i2d_PKCS8PrivateKey_nid_bio := @ERR_i2d_PKCS8PrivateKey_nid_bio;
+    {$ifend}
     {$if declared(i2d_PKCS8PrivateKey_nid_bio_introduced)}
     if LibVersion < i2d_PKCS8PrivateKey_nid_bio_introduced then
     begin
       {$if declared(FC_i2d_PKCS8PrivateKey_nid_bio)}
       i2d_PKCS8PrivateKey_nid_bio := @FC_i2d_PKCS8PrivateKey_nid_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKey_nid_bio_allownil)}
-      i2d_PKCS8PrivateKey_nid_bio := @ERR_i2d_PKCS8PrivateKey_nid_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_PKCS8PrivateKey_nid_bio_removed)}
@@ -3516,39 +3027,31 @@ begin
     begin
       {$if declared(_i2d_PKCS8PrivateKey_nid_bio)}
       i2d_PKCS8PrivateKey_nid_bio := @_i2d_PKCS8PrivateKey_nid_bio;
-      {$else}
-      {$if not defined(i2d_PKCS8PrivateKey_nid_bio_allownil)}
-      i2d_PKCS8PrivateKey_nid_bio := @ERR_i2d_PKCS8PrivateKey_nid_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_PKCS8PrivateKey_nid_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_PKCS8PrivateKey_nid_bio := @ERR_i2d_PKCS8PrivateKey_nid_bio;
+    if FuncLoadError then
       AFailed.Add('i2d_PKCS8PrivateKey_nid_bio');
-    end;
     {$ifend}
   end;
 
 
   d2i_PKCS8PrivateKey_bio := LoadLibFunction(ADllHandle, d2i_PKCS8PrivateKey_bio_procname);
-  FuncLoaded := assigned(d2i_PKCS8PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_PKCS8PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_PKCS8PrivateKey_bio_allownil)}
+    d2i_PKCS8PrivateKey_bio := @ERR_d2i_PKCS8PrivateKey_bio;
+    {$ifend}
     {$if declared(d2i_PKCS8PrivateKey_bio_introduced)}
     if LibVersion < d2i_PKCS8PrivateKey_bio_introduced then
     begin
       {$if declared(FC_d2i_PKCS8PrivateKey_bio)}
       d2i_PKCS8PrivateKey_bio := @FC_d2i_PKCS8PrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8PrivateKey_bio_allownil)}
-      d2i_PKCS8PrivateKey_bio := @ERR_d2i_PKCS8PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_PKCS8PrivateKey_bio_removed)}
@@ -3556,39 +3059,31 @@ begin
     begin
       {$if declared(_d2i_PKCS8PrivateKey_bio)}
       d2i_PKCS8PrivateKey_bio := @_d2i_PKCS8PrivateKey_bio;
-      {$else}
-      {$if not defined(d2i_PKCS8PrivateKey_bio_allownil)}
-      d2i_PKCS8PrivateKey_bio := @ERR_d2i_PKCS8PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_PKCS8PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_PKCS8PrivateKey_bio := @ERR_d2i_PKCS8PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('d2i_PKCS8PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   PEM_read_bio_Parameters := LoadLibFunction(ADllHandle, PEM_read_bio_Parameters_procname);
-  FuncLoaded := assigned(PEM_read_bio_Parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_read_bio_Parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_read_bio_Parameters_allownil)}
+    PEM_read_bio_Parameters := @ERR_PEM_read_bio_Parameters;
+    {$ifend}
     {$if declared(PEM_read_bio_Parameters_introduced)}
     if LibVersion < PEM_read_bio_Parameters_introduced then
     begin
       {$if declared(FC_PEM_read_bio_Parameters)}
       PEM_read_bio_Parameters := @FC_PEM_read_bio_Parameters;
-      {$else}
-      {$if not defined(PEM_read_bio_Parameters_allownil)}
-      PEM_read_bio_Parameters := @ERR_PEM_read_bio_Parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_read_bio_Parameters_removed)}
@@ -3596,39 +3091,31 @@ begin
     begin
       {$if declared(_PEM_read_bio_Parameters)}
       PEM_read_bio_Parameters := @_PEM_read_bio_Parameters;
-      {$else}
-      {$if not defined(PEM_read_bio_Parameters_allownil)}
-      PEM_read_bio_Parameters := @ERR_PEM_read_bio_Parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_read_bio_Parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_read_bio_Parameters := @ERR_PEM_read_bio_Parameters;
+    if FuncLoadError then
       AFailed.Add('PEM_read_bio_Parameters');
-    end;
     {$ifend}
   end;
 
 
   PEM_write_bio_Parameters := LoadLibFunction(ADllHandle, PEM_write_bio_Parameters_procname);
-  FuncLoaded := assigned(PEM_write_bio_Parameters);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(PEM_write_bio_Parameters);
+  if FuncLoadError then
   begin
+    {$if not defined(PEM_write_bio_Parameters_allownil)}
+    PEM_write_bio_Parameters := @ERR_PEM_write_bio_Parameters;
+    {$ifend}
     {$if declared(PEM_write_bio_Parameters_introduced)}
     if LibVersion < PEM_write_bio_Parameters_introduced then
     begin
       {$if declared(FC_PEM_write_bio_Parameters)}
       PEM_write_bio_Parameters := @FC_PEM_write_bio_Parameters;
-      {$else}
-      {$if not defined(PEM_write_bio_Parameters_allownil)}
-      PEM_write_bio_Parameters := @ERR_PEM_write_bio_Parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(PEM_write_bio_Parameters_removed)}
@@ -3636,39 +3123,31 @@ begin
     begin
       {$if declared(_PEM_write_bio_Parameters)}
       PEM_write_bio_Parameters := @_PEM_write_bio_Parameters;
-      {$else}
-      {$if not defined(PEM_write_bio_Parameters_allownil)}
-      PEM_write_bio_Parameters := @ERR_PEM_write_bio_Parameters;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(PEM_write_bio_Parameters_allownil)}
-    if not FuncLoaded then
-    begin
-      PEM_write_bio_Parameters := @ERR_PEM_write_bio_Parameters;
+    if FuncLoadError then
       AFailed.Add('PEM_write_bio_Parameters');
-    end;
     {$ifend}
   end;
 
 
   b2i_PrivateKey := LoadLibFunction(ADllHandle, b2i_PrivateKey_procname);
-  FuncLoaded := assigned(b2i_PrivateKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(b2i_PrivateKey);
+  if FuncLoadError then
   begin
+    {$if not defined(b2i_PrivateKey_allownil)}
+    b2i_PrivateKey := @ERR_b2i_PrivateKey;
+    {$ifend}
     {$if declared(b2i_PrivateKey_introduced)}
     if LibVersion < b2i_PrivateKey_introduced then
     begin
       {$if declared(FC_b2i_PrivateKey)}
       b2i_PrivateKey := @FC_b2i_PrivateKey;
-      {$else}
-      {$if not defined(b2i_PrivateKey_allownil)}
-      b2i_PrivateKey := @ERR_b2i_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(b2i_PrivateKey_removed)}
@@ -3676,39 +3155,31 @@ begin
     begin
       {$if declared(_b2i_PrivateKey)}
       b2i_PrivateKey := @_b2i_PrivateKey;
-      {$else}
-      {$if not defined(b2i_PrivateKey_allownil)}
-      b2i_PrivateKey := @ERR_b2i_PrivateKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(b2i_PrivateKey_allownil)}
-    if not FuncLoaded then
-    begin
-      b2i_PrivateKey := @ERR_b2i_PrivateKey;
+    if FuncLoadError then
       AFailed.Add('b2i_PrivateKey');
-    end;
     {$ifend}
   end;
 
 
   b2i_PublicKey := LoadLibFunction(ADllHandle, b2i_PublicKey_procname);
-  FuncLoaded := assigned(b2i_PublicKey);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(b2i_PublicKey);
+  if FuncLoadError then
   begin
+    {$if not defined(b2i_PublicKey_allownil)}
+    b2i_PublicKey := @ERR_b2i_PublicKey;
+    {$ifend}
     {$if declared(b2i_PublicKey_introduced)}
     if LibVersion < b2i_PublicKey_introduced then
     begin
       {$if declared(FC_b2i_PublicKey)}
       b2i_PublicKey := @FC_b2i_PublicKey;
-      {$else}
-      {$if not defined(b2i_PublicKey_allownil)}
-      b2i_PublicKey := @ERR_b2i_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(b2i_PublicKey_removed)}
@@ -3716,39 +3187,31 @@ begin
     begin
       {$if declared(_b2i_PublicKey)}
       b2i_PublicKey := @_b2i_PublicKey;
-      {$else}
-      {$if not defined(b2i_PublicKey_allownil)}
-      b2i_PublicKey := @ERR_b2i_PublicKey;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(b2i_PublicKey_allownil)}
-    if not FuncLoaded then
-    begin
-      b2i_PublicKey := @ERR_b2i_PublicKey;
+    if FuncLoadError then
       AFailed.Add('b2i_PublicKey');
-    end;
     {$ifend}
   end;
 
 
   b2i_PrivateKey_bio := LoadLibFunction(ADllHandle, b2i_PrivateKey_bio_procname);
-  FuncLoaded := assigned(b2i_PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(b2i_PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(b2i_PrivateKey_bio_allownil)}
+    b2i_PrivateKey_bio := @ERR_b2i_PrivateKey_bio;
+    {$ifend}
     {$if declared(b2i_PrivateKey_bio_introduced)}
     if LibVersion < b2i_PrivateKey_bio_introduced then
     begin
       {$if declared(FC_b2i_PrivateKey_bio)}
       b2i_PrivateKey_bio := @FC_b2i_PrivateKey_bio;
-      {$else}
-      {$if not defined(b2i_PrivateKey_bio_allownil)}
-      b2i_PrivateKey_bio := @ERR_b2i_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(b2i_PrivateKey_bio_removed)}
@@ -3756,39 +3219,31 @@ begin
     begin
       {$if declared(_b2i_PrivateKey_bio)}
       b2i_PrivateKey_bio := @_b2i_PrivateKey_bio;
-      {$else}
-      {$if not defined(b2i_PrivateKey_bio_allownil)}
-      b2i_PrivateKey_bio := @ERR_b2i_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(b2i_PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      b2i_PrivateKey_bio := @ERR_b2i_PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('b2i_PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   b2i_PublicKey_bio := LoadLibFunction(ADllHandle, b2i_PublicKey_bio_procname);
-  FuncLoaded := assigned(b2i_PublicKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(b2i_PublicKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(b2i_PublicKey_bio_allownil)}
+    b2i_PublicKey_bio := @ERR_b2i_PublicKey_bio;
+    {$ifend}
     {$if declared(b2i_PublicKey_bio_introduced)}
     if LibVersion < b2i_PublicKey_bio_introduced then
     begin
       {$if declared(FC_b2i_PublicKey_bio)}
       b2i_PublicKey_bio := @FC_b2i_PublicKey_bio;
-      {$else}
-      {$if not defined(b2i_PublicKey_bio_allownil)}
-      b2i_PublicKey_bio := @ERR_b2i_PublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(b2i_PublicKey_bio_removed)}
@@ -3796,39 +3251,31 @@ begin
     begin
       {$if declared(_b2i_PublicKey_bio)}
       b2i_PublicKey_bio := @_b2i_PublicKey_bio;
-      {$else}
-      {$if not defined(b2i_PublicKey_bio_allownil)}
-      b2i_PublicKey_bio := @ERR_b2i_PublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(b2i_PublicKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      b2i_PublicKey_bio := @ERR_b2i_PublicKey_bio;
+    if FuncLoadError then
       AFailed.Add('b2i_PublicKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2b_PrivateKey_bio := LoadLibFunction(ADllHandle, i2b_PrivateKey_bio_procname);
-  FuncLoaded := assigned(i2b_PrivateKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2b_PrivateKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2b_PrivateKey_bio_allownil)}
+    i2b_PrivateKey_bio := @ERR_i2b_PrivateKey_bio;
+    {$ifend}
     {$if declared(i2b_PrivateKey_bio_introduced)}
     if LibVersion < i2b_PrivateKey_bio_introduced then
     begin
       {$if declared(FC_i2b_PrivateKey_bio)}
       i2b_PrivateKey_bio := @FC_i2b_PrivateKey_bio;
-      {$else}
-      {$if not defined(i2b_PrivateKey_bio_allownil)}
-      i2b_PrivateKey_bio := @ERR_i2b_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2b_PrivateKey_bio_removed)}
@@ -3836,39 +3283,31 @@ begin
     begin
       {$if declared(_i2b_PrivateKey_bio)}
       i2b_PrivateKey_bio := @_i2b_PrivateKey_bio;
-      {$else}
-      {$if not defined(i2b_PrivateKey_bio_allownil)}
-      i2b_PrivateKey_bio := @ERR_i2b_PrivateKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2b_PrivateKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2b_PrivateKey_bio := @ERR_i2b_PrivateKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2b_PrivateKey_bio');
-    end;
     {$ifend}
   end;
 
 
   i2b_PublicKey_bio := LoadLibFunction(ADllHandle, i2b_PublicKey_bio_procname);
-  FuncLoaded := assigned(i2b_PublicKey_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2b_PublicKey_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2b_PublicKey_bio_allownil)}
+    i2b_PublicKey_bio := @ERR_i2b_PublicKey_bio;
+    {$ifend}
     {$if declared(i2b_PublicKey_bio_introduced)}
     if LibVersion < i2b_PublicKey_bio_introduced then
     begin
       {$if declared(FC_i2b_PublicKey_bio)}
       i2b_PublicKey_bio := @FC_i2b_PublicKey_bio;
-      {$else}
-      {$if not defined(i2b_PublicKey_bio_allownil)}
-      i2b_PublicKey_bio := @ERR_i2b_PublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2b_PublicKey_bio_removed)}
@@ -3876,39 +3315,31 @@ begin
     begin
       {$if declared(_i2b_PublicKey_bio)}
       i2b_PublicKey_bio := @_i2b_PublicKey_bio;
-      {$else}
-      {$if not defined(i2b_PublicKey_bio_allownil)}
-      i2b_PublicKey_bio := @ERR_i2b_PublicKey_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2b_PublicKey_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2b_PublicKey_bio := @ERR_i2b_PublicKey_bio;
+    if FuncLoadError then
       AFailed.Add('i2b_PublicKey_bio');
-    end;
     {$ifend}
   end;
 
 
   b2i_PVK_bio := LoadLibFunction(ADllHandle, b2i_PVK_bio_procname);
-  FuncLoaded := assigned(b2i_PVK_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(b2i_PVK_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(b2i_PVK_bio_allownil)}
+    b2i_PVK_bio := @ERR_b2i_PVK_bio;
+    {$ifend}
     {$if declared(b2i_PVK_bio_introduced)}
     if LibVersion < b2i_PVK_bio_introduced then
     begin
       {$if declared(FC_b2i_PVK_bio)}
       b2i_PVK_bio := @FC_b2i_PVK_bio;
-      {$else}
-      {$if not defined(b2i_PVK_bio_allownil)}
-      b2i_PVK_bio := @ERR_b2i_PVK_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(b2i_PVK_bio_removed)}
@@ -3916,39 +3347,31 @@ begin
     begin
       {$if declared(_b2i_PVK_bio)}
       b2i_PVK_bio := @_b2i_PVK_bio;
-      {$else}
-      {$if not defined(b2i_PVK_bio_allownil)}
-      b2i_PVK_bio := @ERR_b2i_PVK_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(b2i_PVK_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      b2i_PVK_bio := @ERR_b2i_PVK_bio;
+    if FuncLoadError then
       AFailed.Add('b2i_PVK_bio');
-    end;
     {$ifend}
   end;
 
 
   i2b_PVK_bio := LoadLibFunction(ADllHandle, i2b_PVK_bio_procname);
-  FuncLoaded := assigned(i2b_PVK_bio);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2b_PVK_bio);
+  if FuncLoadError then
   begin
+    {$if not defined(i2b_PVK_bio_allownil)}
+    i2b_PVK_bio := @ERR_i2b_PVK_bio;
+    {$ifend}
     {$if declared(i2b_PVK_bio_introduced)}
     if LibVersion < i2b_PVK_bio_introduced then
     begin
       {$if declared(FC_i2b_PVK_bio)}
       i2b_PVK_bio := @FC_i2b_PVK_bio;
-      {$else}
-      {$if not defined(i2b_PVK_bio_allownil)}
-      i2b_PVK_bio := @ERR_i2b_PVK_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2b_PVK_bio_removed)}
@@ -3956,20 +3379,13 @@ begin
     begin
       {$if declared(_i2b_PVK_bio)}
       i2b_PVK_bio := @_i2b_PVK_bio;
-      {$else}
-      {$if not defined(i2b_PVK_bio_allownil)}
-      i2b_PVK_bio := @ERR_i2b_PVK_bio;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2b_PVK_bio_allownil)}
-    if not FuncLoaded then
-    begin
-      i2b_PVK_bio := @ERR_i2b_PVK_bio;
+    if FuncLoadError then
       AFailed.Add('i2b_PVK_bio');
-    end;
     {$ifend}
   end;
 

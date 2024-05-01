@@ -2488,24 +2488,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   BN_set_flags := LoadLibFunction(ADllHandle, BN_set_flags_procname);
-  FuncLoaded := assigned(BN_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_set_flags_allownil)}
+    BN_set_flags := @ERR_BN_set_flags;
+    {$ifend}
     {$if declared(BN_set_flags_introduced)}
     if LibVersion < BN_set_flags_introduced then
     begin
       {$if declared(FC_BN_set_flags)}
       BN_set_flags := @FC_BN_set_flags;
-      {$else}
-      {$if not defined(BN_set_flags_allownil)}
-      BN_set_flags := @ERR_BN_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_set_flags_removed)}
@@ -2513,39 +2512,31 @@ begin
     begin
       {$if declared(_BN_set_flags)}
       BN_set_flags := @_BN_set_flags;
-      {$else}
-      {$if not defined(BN_set_flags_allownil)}
-      BN_set_flags := @ERR_BN_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_set_flags := @ERR_BN_set_flags;
+    if FuncLoadError then
       AFailed.Add('BN_set_flags');
-    end;
     {$ifend}
   end;
 
 
   BN_get_flags := LoadLibFunction(ADllHandle, BN_get_flags_procname);
-  FuncLoaded := assigned(BN_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_flags_allownil)}
+    BN_get_flags := @ERR_BN_get_flags;
+    {$ifend}
     {$if declared(BN_get_flags_introduced)}
     if LibVersion < BN_get_flags_introduced then
     begin
       {$if declared(FC_BN_get_flags)}
       BN_get_flags := @FC_BN_get_flags;
-      {$else}
-      {$if not defined(BN_get_flags_allownil)}
-      BN_get_flags := @ERR_BN_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_flags_removed)}
@@ -2553,39 +2544,31 @@ begin
     begin
       {$if declared(_BN_get_flags)}
       BN_get_flags := @_BN_get_flags;
-      {$else}
-      {$if not defined(BN_get_flags_allownil)}
-      BN_get_flags := @ERR_BN_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_flags := @ERR_BN_get_flags;
+    if FuncLoadError then
       AFailed.Add('BN_get_flags');
-    end;
     {$ifend}
   end;
 
 
   BN_with_flags := LoadLibFunction(ADllHandle, BN_with_flags_procname);
-  FuncLoaded := assigned(BN_with_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_with_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_with_flags_allownil)}
+    BN_with_flags := @ERR_BN_with_flags;
+    {$ifend}
     {$if declared(BN_with_flags_introduced)}
     if LibVersion < BN_with_flags_introduced then
     begin
       {$if declared(FC_BN_with_flags)}
       BN_with_flags := @FC_BN_with_flags;
-      {$else}
-      {$if not defined(BN_with_flags_allownil)}
-      BN_with_flags := @ERR_BN_with_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_with_flags_removed)}
@@ -2593,39 +2576,31 @@ begin
     begin
       {$if declared(_BN_with_flags)}
       BN_with_flags := @_BN_with_flags;
-      {$else}
-      {$if not defined(BN_with_flags_allownil)}
-      BN_with_flags := @ERR_BN_with_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_with_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_with_flags := @ERR_BN_with_flags;
+    if FuncLoadError then
       AFailed.Add('BN_with_flags');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_call := LoadLibFunction(ADllHandle, BN_GENCB_call_procname);
-  FuncLoaded := assigned(BN_GENCB_call);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_call);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_call_allownil)}
+    BN_GENCB_call := @ERR_BN_GENCB_call;
+    {$ifend}
     {$if declared(BN_GENCB_call_introduced)}
     if LibVersion < BN_GENCB_call_introduced then
     begin
       {$if declared(FC_BN_GENCB_call)}
       BN_GENCB_call := @FC_BN_GENCB_call;
-      {$else}
-      {$if not defined(BN_GENCB_call_allownil)}
-      BN_GENCB_call := @ERR_BN_GENCB_call;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_call_removed)}
@@ -2633,39 +2608,31 @@ begin
     begin
       {$if declared(_BN_GENCB_call)}
       BN_GENCB_call := @_BN_GENCB_call;
-      {$else}
-      {$if not defined(BN_GENCB_call_allownil)}
-      BN_GENCB_call := @ERR_BN_GENCB_call;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_call_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_call := @ERR_BN_GENCB_call;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_call');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_new := LoadLibFunction(ADllHandle, BN_GENCB_new_procname);
-  FuncLoaded := assigned(BN_GENCB_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_new_allownil)}
+    BN_GENCB_new := @ERR_BN_GENCB_new;
+    {$ifend}
     {$if declared(BN_GENCB_new_introduced)}
     if LibVersion < BN_GENCB_new_introduced then
     begin
       {$if declared(FC_BN_GENCB_new)}
       BN_GENCB_new := @FC_BN_GENCB_new;
-      {$else}
-      {$if not defined(BN_GENCB_new_allownil)}
-      BN_GENCB_new := @ERR_BN_GENCB_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_new_removed)}
@@ -2673,39 +2640,31 @@ begin
     begin
       {$if declared(_BN_GENCB_new)}
       BN_GENCB_new := @_BN_GENCB_new;
-      {$else}
-      {$if not defined(BN_GENCB_new_allownil)}
-      BN_GENCB_new := @ERR_BN_GENCB_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_new := @ERR_BN_GENCB_new;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_new');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_free := LoadLibFunction(ADllHandle, BN_GENCB_free_procname);
-  FuncLoaded := assigned(BN_GENCB_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_free_allownil)}
+    BN_GENCB_free := @ERR_BN_GENCB_free;
+    {$ifend}
     {$if declared(BN_GENCB_free_introduced)}
     if LibVersion < BN_GENCB_free_introduced then
     begin
       {$if declared(FC_BN_GENCB_free)}
       BN_GENCB_free := @FC_BN_GENCB_free;
-      {$else}
-      {$if not defined(BN_GENCB_free_allownil)}
-      BN_GENCB_free := @ERR_BN_GENCB_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_free_removed)}
@@ -2713,39 +2672,31 @@ begin
     begin
       {$if declared(_BN_GENCB_free)}
       BN_GENCB_free := @_BN_GENCB_free;
-      {$else}
-      {$if not defined(BN_GENCB_free_allownil)}
-      BN_GENCB_free := @ERR_BN_GENCB_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_free := @ERR_BN_GENCB_free;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_free');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_set_old := LoadLibFunction(ADllHandle, BN_GENCB_set_old_procname);
-  FuncLoaded := assigned(BN_GENCB_set_old);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_set_old);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_set_old_allownil)}
+    BN_GENCB_set_old := @ERR_BN_GENCB_set_old;
+    {$ifend}
     {$if declared(BN_GENCB_set_old_introduced)}
     if LibVersion < BN_GENCB_set_old_introduced then
     begin
       {$if declared(FC_BN_GENCB_set_old)}
       BN_GENCB_set_old := @FC_BN_GENCB_set_old;
-      {$else}
-      {$if not defined(BN_GENCB_set_old_allownil)}
-      BN_GENCB_set_old := @ERR_BN_GENCB_set_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_set_old_removed)}
@@ -2753,39 +2704,31 @@ begin
     begin
       {$if declared(_BN_GENCB_set_old)}
       BN_GENCB_set_old := @_BN_GENCB_set_old;
-      {$else}
-      {$if not defined(BN_GENCB_set_old_allownil)}
-      BN_GENCB_set_old := @ERR_BN_GENCB_set_old;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_set_old_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_set_old := @ERR_BN_GENCB_set_old;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_set_old');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_set := LoadLibFunction(ADllHandle, BN_GENCB_set_procname);
-  FuncLoaded := assigned(BN_GENCB_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_set);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_set_allownil)}
+    BN_GENCB_set := @ERR_BN_GENCB_set;
+    {$ifend}
     {$if declared(BN_GENCB_set_introduced)}
     if LibVersion < BN_GENCB_set_introduced then
     begin
       {$if declared(FC_BN_GENCB_set)}
       BN_GENCB_set := @FC_BN_GENCB_set;
-      {$else}
-      {$if not defined(BN_GENCB_set_allownil)}
-      BN_GENCB_set := @ERR_BN_GENCB_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_set_removed)}
@@ -2793,39 +2736,31 @@ begin
     begin
       {$if declared(_BN_GENCB_set)}
       BN_GENCB_set := @_BN_GENCB_set;
-      {$else}
-      {$if not defined(BN_GENCB_set_allownil)}
-      BN_GENCB_set := @ERR_BN_GENCB_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_set_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_set := @ERR_BN_GENCB_set;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_set');
-    end;
     {$ifend}
   end;
 
 
   BN_GENCB_get_arg := LoadLibFunction(ADllHandle, BN_GENCB_get_arg_procname);
-  FuncLoaded := assigned(BN_GENCB_get_arg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GENCB_get_arg);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GENCB_get_arg_allownil)}
+    BN_GENCB_get_arg := @ERR_BN_GENCB_get_arg;
+    {$ifend}
     {$if declared(BN_GENCB_get_arg_introduced)}
     if LibVersion < BN_GENCB_get_arg_introduced then
     begin
       {$if declared(FC_BN_GENCB_get_arg)}
       BN_GENCB_get_arg := @FC_BN_GENCB_get_arg;
-      {$else}
-      {$if not defined(BN_GENCB_get_arg_allownil)}
-      BN_GENCB_get_arg := @ERR_BN_GENCB_get_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GENCB_get_arg_removed)}
@@ -2833,39 +2768,31 @@ begin
     begin
       {$if declared(_BN_GENCB_get_arg)}
       BN_GENCB_get_arg := @_BN_GENCB_get_arg;
-      {$else}
-      {$if not defined(BN_GENCB_get_arg_allownil)}
-      BN_GENCB_get_arg := @ERR_BN_GENCB_get_arg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GENCB_get_arg_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GENCB_get_arg := @ERR_BN_GENCB_get_arg;
+    if FuncLoadError then
       AFailed.Add('BN_GENCB_get_arg');
-    end;
     {$ifend}
   end;
 
 
   BN_abs_is_word := LoadLibFunction(ADllHandle, BN_abs_is_word_procname);
-  FuncLoaded := assigned(BN_abs_is_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_abs_is_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_abs_is_word_allownil)}
+    BN_abs_is_word := @ERR_BN_abs_is_word;
+    {$ifend}
     {$if declared(BN_abs_is_word_introduced)}
     if LibVersion < BN_abs_is_word_introduced then
     begin
       {$if declared(FC_BN_abs_is_word)}
       BN_abs_is_word := @FC_BN_abs_is_word;
-      {$else}
-      {$if not defined(BN_abs_is_word_allownil)}
-      BN_abs_is_word := @ERR_BN_abs_is_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_abs_is_word_removed)}
@@ -2873,39 +2800,31 @@ begin
     begin
       {$if declared(_BN_abs_is_word)}
       BN_abs_is_word := @_BN_abs_is_word;
-      {$else}
-      {$if not defined(BN_abs_is_word_allownil)}
-      BN_abs_is_word := @ERR_BN_abs_is_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_abs_is_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_abs_is_word := @ERR_BN_abs_is_word;
+    if FuncLoadError then
       AFailed.Add('BN_abs_is_word');
-    end;
     {$ifend}
   end;
 
 
   BN_is_zero := LoadLibFunction(ADllHandle, BN_is_zero_procname);
-  FuncLoaded := assigned(BN_is_zero);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_zero);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_zero_allownil)}
+    BN_is_zero := @ERR_BN_is_zero;
+    {$ifend}
     {$if declared(BN_is_zero_introduced)}
     if LibVersion < BN_is_zero_introduced then
     begin
       {$if declared(FC_BN_is_zero)}
       BN_is_zero := @FC_BN_is_zero;
-      {$else}
-      {$if not defined(BN_is_zero_allownil)}
-      BN_is_zero := @ERR_BN_is_zero;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_zero_removed)}
@@ -2913,39 +2832,31 @@ begin
     begin
       {$if declared(_BN_is_zero)}
       BN_is_zero := @_BN_is_zero;
-      {$else}
-      {$if not defined(BN_is_zero_allownil)}
-      BN_is_zero := @ERR_BN_is_zero;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_zero_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_zero := @ERR_BN_is_zero;
+    if FuncLoadError then
       AFailed.Add('BN_is_zero');
-    end;
     {$ifend}
   end;
 
 
   BN_is_one := LoadLibFunction(ADllHandle, BN_is_one_procname);
-  FuncLoaded := assigned(BN_is_one);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_one);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_one_allownil)}
+    BN_is_one := @ERR_BN_is_one;
+    {$ifend}
     {$if declared(BN_is_one_introduced)}
     if LibVersion < BN_is_one_introduced then
     begin
       {$if declared(FC_BN_is_one)}
       BN_is_one := @FC_BN_is_one;
-      {$else}
-      {$if not defined(BN_is_one_allownil)}
-      BN_is_one := @ERR_BN_is_one;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_one_removed)}
@@ -2953,39 +2864,31 @@ begin
     begin
       {$if declared(_BN_is_one)}
       BN_is_one := @_BN_is_one;
-      {$else}
-      {$if not defined(BN_is_one_allownil)}
-      BN_is_one := @ERR_BN_is_one;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_one_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_one := @ERR_BN_is_one;
+    if FuncLoadError then
       AFailed.Add('BN_is_one');
-    end;
     {$ifend}
   end;
 
 
   BN_is_word := LoadLibFunction(ADllHandle, BN_is_word_procname);
-  FuncLoaded := assigned(BN_is_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_word_allownil)}
+    BN_is_word := @ERR_BN_is_word;
+    {$ifend}
     {$if declared(BN_is_word_introduced)}
     if LibVersion < BN_is_word_introduced then
     begin
       {$if declared(FC_BN_is_word)}
       BN_is_word := @FC_BN_is_word;
-      {$else}
-      {$if not defined(BN_is_word_allownil)}
-      BN_is_word := @ERR_BN_is_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_word_removed)}
@@ -2993,39 +2896,31 @@ begin
     begin
       {$if declared(_BN_is_word)}
       BN_is_word := @_BN_is_word;
-      {$else}
-      {$if not defined(BN_is_word_allownil)}
-      BN_is_word := @ERR_BN_is_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_word := @ERR_BN_is_word;
+    if FuncLoadError then
       AFailed.Add('BN_is_word');
-    end;
     {$ifend}
   end;
 
 
   BN_is_odd := LoadLibFunction(ADllHandle, BN_is_odd_procname);
-  FuncLoaded := assigned(BN_is_odd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_odd);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_odd_allownil)}
+    BN_is_odd := @ERR_BN_is_odd;
+    {$ifend}
     {$if declared(BN_is_odd_introduced)}
     if LibVersion < BN_is_odd_introduced then
     begin
       {$if declared(FC_BN_is_odd)}
       BN_is_odd := @FC_BN_is_odd;
-      {$else}
-      {$if not defined(BN_is_odd_allownil)}
-      BN_is_odd := @ERR_BN_is_odd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_odd_removed)}
@@ -3033,39 +2928,31 @@ begin
     begin
       {$if declared(_BN_is_odd)}
       BN_is_odd := @_BN_is_odd;
-      {$else}
-      {$if not defined(BN_is_odd_allownil)}
-      BN_is_odd := @ERR_BN_is_odd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_odd_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_odd := @ERR_BN_is_odd;
+    if FuncLoadError then
       AFailed.Add('BN_is_odd');
-    end;
     {$ifend}
   end;
 
 
   BN_zero_ex := LoadLibFunction(ADllHandle, BN_zero_ex_procname);
-  FuncLoaded := assigned(BN_zero_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_zero_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_zero_ex_allownil)}
+    BN_zero_ex := @ERR_BN_zero_ex;
+    {$ifend}
     {$if declared(BN_zero_ex_introduced)}
     if LibVersion < BN_zero_ex_introduced then
     begin
       {$if declared(FC_BN_zero_ex)}
       BN_zero_ex := @FC_BN_zero_ex;
-      {$else}
-      {$if not defined(BN_zero_ex_allownil)}
-      BN_zero_ex := @ERR_BN_zero_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_zero_ex_removed)}
@@ -3073,39 +2960,31 @@ begin
     begin
       {$if declared(_BN_zero_ex)}
       BN_zero_ex := @_BN_zero_ex;
-      {$else}
-      {$if not defined(BN_zero_ex_allownil)}
-      BN_zero_ex := @ERR_BN_zero_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_zero_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_zero_ex := @ERR_BN_zero_ex;
+    if FuncLoadError then
       AFailed.Add('BN_zero_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_value_one := LoadLibFunction(ADllHandle, BN_value_one_procname);
-  FuncLoaded := assigned(BN_value_one);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_value_one);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_value_one_allownil)}
+    BN_value_one := @ERR_BN_value_one;
+    {$ifend}
     {$if declared(BN_value_one_introduced)}
     if LibVersion < BN_value_one_introduced then
     begin
       {$if declared(FC_BN_value_one)}
       BN_value_one := @FC_BN_value_one;
-      {$else}
-      {$if not defined(BN_value_one_allownil)}
-      BN_value_one := @ERR_BN_value_one;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_value_one_removed)}
@@ -3113,39 +2992,31 @@ begin
     begin
       {$if declared(_BN_value_one)}
       BN_value_one := @_BN_value_one;
-      {$else}
-      {$if not defined(BN_value_one_allownil)}
-      BN_value_one := @ERR_BN_value_one;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_value_one_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_value_one := @ERR_BN_value_one;
+    if FuncLoadError then
       AFailed.Add('BN_value_one');
-    end;
     {$ifend}
   end;
 
 
   BN_options := LoadLibFunction(ADllHandle, BN_options_procname);
-  FuncLoaded := assigned(BN_options);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_options);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_options_allownil)}
+    BN_options := @ERR_BN_options;
+    {$ifend}
     {$if declared(BN_options_introduced)}
     if LibVersion < BN_options_introduced then
     begin
       {$if declared(FC_BN_options)}
       BN_options := @FC_BN_options;
-      {$else}
-      {$if not defined(BN_options_allownil)}
-      BN_options := @ERR_BN_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_options_removed)}
@@ -3153,39 +3024,31 @@ begin
     begin
       {$if declared(_BN_options)}
       BN_options := @_BN_options;
-      {$else}
-      {$if not defined(BN_options_allownil)}
-      BN_options := @ERR_BN_options;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_options_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_options := @ERR_BN_options;
+    if FuncLoadError then
       AFailed.Add('BN_options');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_new := LoadLibFunction(ADllHandle, BN_CTX_new_procname);
-  FuncLoaded := assigned(BN_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_new_allownil)}
+    BN_CTX_new := @ERR_BN_CTX_new;
+    {$ifend}
     {$if declared(BN_CTX_new_introduced)}
     if LibVersion < BN_CTX_new_introduced then
     begin
       {$if declared(FC_BN_CTX_new)}
       BN_CTX_new := @FC_BN_CTX_new;
-      {$else}
-      {$if not defined(BN_CTX_new_allownil)}
-      BN_CTX_new := @ERR_BN_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_new_removed)}
@@ -3193,39 +3056,31 @@ begin
     begin
       {$if declared(_BN_CTX_new)}
       BN_CTX_new := @_BN_CTX_new;
-      {$else}
-      {$if not defined(BN_CTX_new_allownil)}
-      BN_CTX_new := @ERR_BN_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_new := @ERR_BN_CTX_new;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_secure_new := LoadLibFunction(ADllHandle, BN_CTX_secure_new_procname);
-  FuncLoaded := assigned(BN_CTX_secure_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_secure_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_secure_new_allownil)}
+    BN_CTX_secure_new := @ERR_BN_CTX_secure_new;
+    {$ifend}
     {$if declared(BN_CTX_secure_new_introduced)}
     if LibVersion < BN_CTX_secure_new_introduced then
     begin
       {$if declared(FC_BN_CTX_secure_new)}
       BN_CTX_secure_new := @FC_BN_CTX_secure_new;
-      {$else}
-      {$if not defined(BN_CTX_secure_new_allownil)}
-      BN_CTX_secure_new := @ERR_BN_CTX_secure_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_secure_new_removed)}
@@ -3233,39 +3088,31 @@ begin
     begin
       {$if declared(_BN_CTX_secure_new)}
       BN_CTX_secure_new := @_BN_CTX_secure_new;
-      {$else}
-      {$if not defined(BN_CTX_secure_new_allownil)}
-      BN_CTX_secure_new := @ERR_BN_CTX_secure_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_secure_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_secure_new := @ERR_BN_CTX_secure_new;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_secure_new');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_free := LoadLibFunction(ADllHandle, BN_CTX_free_procname);
-  FuncLoaded := assigned(BN_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_free_allownil)}
+    BN_CTX_free := @ERR_BN_CTX_free;
+    {$ifend}
     {$if declared(BN_CTX_free_introduced)}
     if LibVersion < BN_CTX_free_introduced then
     begin
       {$if declared(FC_BN_CTX_free)}
       BN_CTX_free := @FC_BN_CTX_free;
-      {$else}
-      {$if not defined(BN_CTX_free_allownil)}
-      BN_CTX_free := @ERR_BN_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_free_removed)}
@@ -3273,39 +3120,31 @@ begin
     begin
       {$if declared(_BN_CTX_free)}
       BN_CTX_free := @_BN_CTX_free;
-      {$else}
-      {$if not defined(BN_CTX_free_allownil)}
-      BN_CTX_free := @ERR_BN_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_free := @ERR_BN_CTX_free;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_start := LoadLibFunction(ADllHandle, BN_CTX_start_procname);
-  FuncLoaded := assigned(BN_CTX_start);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_start);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_start_allownil)}
+    BN_CTX_start := @ERR_BN_CTX_start;
+    {$ifend}
     {$if declared(BN_CTX_start_introduced)}
     if LibVersion < BN_CTX_start_introduced then
     begin
       {$if declared(FC_BN_CTX_start)}
       BN_CTX_start := @FC_BN_CTX_start;
-      {$else}
-      {$if not defined(BN_CTX_start_allownil)}
-      BN_CTX_start := @ERR_BN_CTX_start;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_start_removed)}
@@ -3313,39 +3152,31 @@ begin
     begin
       {$if declared(_BN_CTX_start)}
       BN_CTX_start := @_BN_CTX_start;
-      {$else}
-      {$if not defined(BN_CTX_start_allownil)}
-      BN_CTX_start := @ERR_BN_CTX_start;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_start_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_start := @ERR_BN_CTX_start;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_start');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_get := LoadLibFunction(ADllHandle, BN_CTX_get_procname);
-  FuncLoaded := assigned(BN_CTX_get);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_get);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_get_allownil)}
+    BN_CTX_get := @ERR_BN_CTX_get;
+    {$ifend}
     {$if declared(BN_CTX_get_introduced)}
     if LibVersion < BN_CTX_get_introduced then
     begin
       {$if declared(FC_BN_CTX_get)}
       BN_CTX_get := @FC_BN_CTX_get;
-      {$else}
-      {$if not defined(BN_CTX_get_allownil)}
-      BN_CTX_get := @ERR_BN_CTX_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_get_removed)}
@@ -3353,39 +3184,31 @@ begin
     begin
       {$if declared(_BN_CTX_get)}
       BN_CTX_get := @_BN_CTX_get;
-      {$else}
-      {$if not defined(BN_CTX_get_allownil)}
-      BN_CTX_get := @ERR_BN_CTX_get;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_get_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_get := @ERR_BN_CTX_get;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_get');
-    end;
     {$ifend}
   end;
 
 
   BN_CTX_end := LoadLibFunction(ADllHandle, BN_CTX_end_procname);
-  FuncLoaded := assigned(BN_CTX_end);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_CTX_end);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_CTX_end_allownil)}
+    BN_CTX_end := @ERR_BN_CTX_end;
+    {$ifend}
     {$if declared(BN_CTX_end_introduced)}
     if LibVersion < BN_CTX_end_introduced then
     begin
       {$if declared(FC_BN_CTX_end)}
       BN_CTX_end := @FC_BN_CTX_end;
-      {$else}
-      {$if not defined(BN_CTX_end_allownil)}
-      BN_CTX_end := @ERR_BN_CTX_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_CTX_end_removed)}
@@ -3393,39 +3216,31 @@ begin
     begin
       {$if declared(_BN_CTX_end)}
       BN_CTX_end := @_BN_CTX_end;
-      {$else}
-      {$if not defined(BN_CTX_end_allownil)}
-      BN_CTX_end := @ERR_BN_CTX_end;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_CTX_end_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_CTX_end := @ERR_BN_CTX_end;
+    if FuncLoadError then
       AFailed.Add('BN_CTX_end');
-    end;
     {$ifend}
   end;
 
 
   BN_rand := LoadLibFunction(ADllHandle, BN_rand_procname);
-  FuncLoaded := assigned(BN_rand);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_rand);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_rand_allownil)}
+    BN_rand := @ERR_BN_rand;
+    {$ifend}
     {$if declared(BN_rand_introduced)}
     if LibVersion < BN_rand_introduced then
     begin
       {$if declared(FC_BN_rand)}
       BN_rand := @FC_BN_rand;
-      {$else}
-      {$if not defined(BN_rand_allownil)}
-      BN_rand := @ERR_BN_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_rand_removed)}
@@ -3433,39 +3248,31 @@ begin
     begin
       {$if declared(_BN_rand)}
       BN_rand := @_BN_rand;
-      {$else}
-      {$if not defined(BN_rand_allownil)}
-      BN_rand := @ERR_BN_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_rand_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_rand := @ERR_BN_rand;
+    if FuncLoadError then
       AFailed.Add('BN_rand');
-    end;
     {$ifend}
   end;
 
 
   BN_priv_rand := LoadLibFunction(ADllHandle, BN_priv_rand_procname);
-  FuncLoaded := assigned(BN_priv_rand);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_priv_rand);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_priv_rand_allownil)}
+    BN_priv_rand := @ERR_BN_priv_rand;
+    {$ifend}
     {$if declared(BN_priv_rand_introduced)}
     if LibVersion < BN_priv_rand_introduced then
     begin
       {$if declared(FC_BN_priv_rand)}
       BN_priv_rand := @FC_BN_priv_rand;
-      {$else}
-      {$if not defined(BN_priv_rand_allownil)}
-      BN_priv_rand := @ERR_BN_priv_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_priv_rand_removed)}
@@ -3473,39 +3280,31 @@ begin
     begin
       {$if declared(_BN_priv_rand)}
       BN_priv_rand := @_BN_priv_rand;
-      {$else}
-      {$if not defined(BN_priv_rand_allownil)}
-      BN_priv_rand := @ERR_BN_priv_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_priv_rand_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_priv_rand := @ERR_BN_priv_rand;
+    if FuncLoadError then
       AFailed.Add('BN_priv_rand');
-    end;
     {$ifend}
   end;
 
 
   BN_rand_range := LoadLibFunction(ADllHandle, BN_rand_range_procname);
-  FuncLoaded := assigned(BN_rand_range);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_rand_range);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_rand_range_allownil)}
+    BN_rand_range := @ERR_BN_rand_range;
+    {$ifend}
     {$if declared(BN_rand_range_introduced)}
     if LibVersion < BN_rand_range_introduced then
     begin
       {$if declared(FC_BN_rand_range)}
       BN_rand_range := @FC_BN_rand_range;
-      {$else}
-      {$if not defined(BN_rand_range_allownil)}
-      BN_rand_range := @ERR_BN_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_rand_range_removed)}
@@ -3513,39 +3312,31 @@ begin
     begin
       {$if declared(_BN_rand_range)}
       BN_rand_range := @_BN_rand_range;
-      {$else}
-      {$if not defined(BN_rand_range_allownil)}
-      BN_rand_range := @ERR_BN_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_rand_range_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_rand_range := @ERR_BN_rand_range;
+    if FuncLoadError then
       AFailed.Add('BN_rand_range');
-    end;
     {$ifend}
   end;
 
 
   BN_priv_rand_range := LoadLibFunction(ADllHandle, BN_priv_rand_range_procname);
-  FuncLoaded := assigned(BN_priv_rand_range);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_priv_rand_range);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_priv_rand_range_allownil)}
+    BN_priv_rand_range := @ERR_BN_priv_rand_range;
+    {$ifend}
     {$if declared(BN_priv_rand_range_introduced)}
     if LibVersion < BN_priv_rand_range_introduced then
     begin
       {$if declared(FC_BN_priv_rand_range)}
       BN_priv_rand_range := @FC_BN_priv_rand_range;
-      {$else}
-      {$if not defined(BN_priv_rand_range_allownil)}
-      BN_priv_rand_range := @ERR_BN_priv_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_priv_rand_range_removed)}
@@ -3553,39 +3344,31 @@ begin
     begin
       {$if declared(_BN_priv_rand_range)}
       BN_priv_rand_range := @_BN_priv_rand_range;
-      {$else}
-      {$if not defined(BN_priv_rand_range_allownil)}
-      BN_priv_rand_range := @ERR_BN_priv_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_priv_rand_range_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_priv_rand_range := @ERR_BN_priv_rand_range;
+    if FuncLoadError then
       AFailed.Add('BN_priv_rand_range');
-    end;
     {$ifend}
   end;
 
 
   BN_pseudo_rand := LoadLibFunction(ADllHandle, BN_pseudo_rand_procname);
-  FuncLoaded := assigned(BN_pseudo_rand);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_pseudo_rand);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_pseudo_rand_allownil)}
+    BN_pseudo_rand := @ERR_BN_pseudo_rand;
+    {$ifend}
     {$if declared(BN_pseudo_rand_introduced)}
     if LibVersion < BN_pseudo_rand_introduced then
     begin
       {$if declared(FC_BN_pseudo_rand)}
       BN_pseudo_rand := @FC_BN_pseudo_rand;
-      {$else}
-      {$if not defined(BN_pseudo_rand_allownil)}
-      BN_pseudo_rand := @ERR_BN_pseudo_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_pseudo_rand_removed)}
@@ -3593,39 +3376,31 @@ begin
     begin
       {$if declared(_BN_pseudo_rand)}
       BN_pseudo_rand := @_BN_pseudo_rand;
-      {$else}
-      {$if not defined(BN_pseudo_rand_allownil)}
-      BN_pseudo_rand := @ERR_BN_pseudo_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_pseudo_rand_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_pseudo_rand := @ERR_BN_pseudo_rand;
+    if FuncLoadError then
       AFailed.Add('BN_pseudo_rand');
-    end;
     {$ifend}
   end;
 
 
   BN_pseudo_rand_range := LoadLibFunction(ADllHandle, BN_pseudo_rand_range_procname);
-  FuncLoaded := assigned(BN_pseudo_rand_range);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_pseudo_rand_range);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_pseudo_rand_range_allownil)}
+    BN_pseudo_rand_range := @ERR_BN_pseudo_rand_range;
+    {$ifend}
     {$if declared(BN_pseudo_rand_range_introduced)}
     if LibVersion < BN_pseudo_rand_range_introduced then
     begin
       {$if declared(FC_BN_pseudo_rand_range)}
       BN_pseudo_rand_range := @FC_BN_pseudo_rand_range;
-      {$else}
-      {$if not defined(BN_pseudo_rand_range_allownil)}
-      BN_pseudo_rand_range := @ERR_BN_pseudo_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_pseudo_rand_range_removed)}
@@ -3633,39 +3408,31 @@ begin
     begin
       {$if declared(_BN_pseudo_rand_range)}
       BN_pseudo_rand_range := @_BN_pseudo_rand_range;
-      {$else}
-      {$if not defined(BN_pseudo_rand_range_allownil)}
-      BN_pseudo_rand_range := @ERR_BN_pseudo_rand_range;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_pseudo_rand_range_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_pseudo_rand_range := @ERR_BN_pseudo_rand_range;
+    if FuncLoadError then
       AFailed.Add('BN_pseudo_rand_range');
-    end;
     {$ifend}
   end;
 
 
   BN_num_bits := LoadLibFunction(ADllHandle, BN_num_bits_procname);
-  FuncLoaded := assigned(BN_num_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_num_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_num_bits_allownil)}
+    BN_num_bits := @ERR_BN_num_bits;
+    {$ifend}
     {$if declared(BN_num_bits_introduced)}
     if LibVersion < BN_num_bits_introduced then
     begin
       {$if declared(FC_BN_num_bits)}
       BN_num_bits := @FC_BN_num_bits;
-      {$else}
-      {$if not defined(BN_num_bits_allownil)}
-      BN_num_bits := @ERR_BN_num_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_num_bits_removed)}
@@ -3673,39 +3440,31 @@ begin
     begin
       {$if declared(_BN_num_bits)}
       BN_num_bits := @_BN_num_bits;
-      {$else}
-      {$if not defined(BN_num_bits_allownil)}
-      BN_num_bits := @ERR_BN_num_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_num_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_num_bits := @ERR_BN_num_bits;
+    if FuncLoadError then
       AFailed.Add('BN_num_bits');
-    end;
     {$ifend}
   end;
 
 
   BN_num_bits_word := LoadLibFunction(ADllHandle, BN_num_bits_word_procname);
-  FuncLoaded := assigned(BN_num_bits_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_num_bits_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_num_bits_word_allownil)}
+    BN_num_bits_word := @ERR_BN_num_bits_word;
+    {$ifend}
     {$if declared(BN_num_bits_word_introduced)}
     if LibVersion < BN_num_bits_word_introduced then
     begin
       {$if declared(FC_BN_num_bits_word)}
       BN_num_bits_word := @FC_BN_num_bits_word;
-      {$else}
-      {$if not defined(BN_num_bits_word_allownil)}
-      BN_num_bits_word := @ERR_BN_num_bits_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_num_bits_word_removed)}
@@ -3713,39 +3472,31 @@ begin
     begin
       {$if declared(_BN_num_bits_word)}
       BN_num_bits_word := @_BN_num_bits_word;
-      {$else}
-      {$if not defined(BN_num_bits_word_allownil)}
-      BN_num_bits_word := @ERR_BN_num_bits_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_num_bits_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_num_bits_word := @ERR_BN_num_bits_word;
+    if FuncLoadError then
       AFailed.Add('BN_num_bits_word');
-    end;
     {$ifend}
   end;
 
 
   BN_security_bits := LoadLibFunction(ADllHandle, BN_security_bits_procname);
-  FuncLoaded := assigned(BN_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_security_bits_allownil)}
+    BN_security_bits := @ERR_BN_security_bits;
+    {$ifend}
     {$if declared(BN_security_bits_introduced)}
     if LibVersion < BN_security_bits_introduced then
     begin
       {$if declared(FC_BN_security_bits)}
       BN_security_bits := @FC_BN_security_bits;
-      {$else}
-      {$if not defined(BN_security_bits_allownil)}
-      BN_security_bits := @ERR_BN_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_security_bits_removed)}
@@ -3753,39 +3504,31 @@ begin
     begin
       {$if declared(_BN_security_bits)}
       BN_security_bits := @_BN_security_bits;
-      {$else}
-      {$if not defined(BN_security_bits_allownil)}
-      BN_security_bits := @ERR_BN_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_security_bits := @ERR_BN_security_bits;
+    if FuncLoadError then
       AFailed.Add('BN_security_bits');
-    end;
     {$ifend}
   end;
 
 
   BN_new := LoadLibFunction(ADllHandle, BN_new_procname);
-  FuncLoaded := assigned(BN_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_new_allownil)}
+    BN_new := @ERR_BN_new;
+    {$ifend}
     {$if declared(BN_new_introduced)}
     if LibVersion < BN_new_introduced then
     begin
       {$if declared(FC_BN_new)}
       BN_new := @FC_BN_new;
-      {$else}
-      {$if not defined(BN_new_allownil)}
-      BN_new := @ERR_BN_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_new_removed)}
@@ -3793,39 +3536,31 @@ begin
     begin
       {$if declared(_BN_new)}
       BN_new := @_BN_new;
-      {$else}
-      {$if not defined(BN_new_allownil)}
-      BN_new := @ERR_BN_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_new := @ERR_BN_new;
+    if FuncLoadError then
       AFailed.Add('BN_new');
-    end;
     {$ifend}
   end;
 
 
   BN_secure_new := LoadLibFunction(ADllHandle, BN_secure_new_procname);
-  FuncLoaded := assigned(BN_secure_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_secure_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_secure_new_allownil)}
+    BN_secure_new := @ERR_BN_secure_new;
+    {$ifend}
     {$if declared(BN_secure_new_introduced)}
     if LibVersion < BN_secure_new_introduced then
     begin
       {$if declared(FC_BN_secure_new)}
       BN_secure_new := @FC_BN_secure_new;
-      {$else}
-      {$if not defined(BN_secure_new_allownil)}
-      BN_secure_new := @ERR_BN_secure_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_secure_new_removed)}
@@ -3833,39 +3568,31 @@ begin
     begin
       {$if declared(_BN_secure_new)}
       BN_secure_new := @_BN_secure_new;
-      {$else}
-      {$if not defined(BN_secure_new_allownil)}
-      BN_secure_new := @ERR_BN_secure_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_secure_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_secure_new := @ERR_BN_secure_new;
+    if FuncLoadError then
       AFailed.Add('BN_secure_new');
-    end;
     {$ifend}
   end;
 
 
   BN_clear_free := LoadLibFunction(ADllHandle, BN_clear_free_procname);
-  FuncLoaded := assigned(BN_clear_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_clear_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_clear_free_allownil)}
+    BN_clear_free := @ERR_BN_clear_free;
+    {$ifend}
     {$if declared(BN_clear_free_introduced)}
     if LibVersion < BN_clear_free_introduced then
     begin
       {$if declared(FC_BN_clear_free)}
       BN_clear_free := @FC_BN_clear_free;
-      {$else}
-      {$if not defined(BN_clear_free_allownil)}
-      BN_clear_free := @ERR_BN_clear_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_clear_free_removed)}
@@ -3873,39 +3600,31 @@ begin
     begin
       {$if declared(_BN_clear_free)}
       BN_clear_free := @_BN_clear_free;
-      {$else}
-      {$if not defined(BN_clear_free_allownil)}
-      BN_clear_free := @ERR_BN_clear_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_clear_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_clear_free := @ERR_BN_clear_free;
+    if FuncLoadError then
       AFailed.Add('BN_clear_free');
-    end;
     {$ifend}
   end;
 
 
   BN_copy := LoadLibFunction(ADllHandle, BN_copy_procname);
-  FuncLoaded := assigned(BN_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_copy_allownil)}
+    BN_copy := @ERR_BN_copy;
+    {$ifend}
     {$if declared(BN_copy_introduced)}
     if LibVersion < BN_copy_introduced then
     begin
       {$if declared(FC_BN_copy)}
       BN_copy := @FC_BN_copy;
-      {$else}
-      {$if not defined(BN_copy_allownil)}
-      BN_copy := @ERR_BN_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_copy_removed)}
@@ -3913,39 +3632,31 @@ begin
     begin
       {$if declared(_BN_copy)}
       BN_copy := @_BN_copy;
-      {$else}
-      {$if not defined(BN_copy_allownil)}
-      BN_copy := @ERR_BN_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_copy := @ERR_BN_copy;
+    if FuncLoadError then
       AFailed.Add('BN_copy');
-    end;
     {$ifend}
   end;
 
 
   BN_swap := LoadLibFunction(ADllHandle, BN_swap_procname);
-  FuncLoaded := assigned(BN_swap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_swap);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_swap_allownil)}
+    BN_swap := @ERR_BN_swap;
+    {$ifend}
     {$if declared(BN_swap_introduced)}
     if LibVersion < BN_swap_introduced then
     begin
       {$if declared(FC_BN_swap)}
       BN_swap := @FC_BN_swap;
-      {$else}
-      {$if not defined(BN_swap_allownil)}
-      BN_swap := @ERR_BN_swap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_swap_removed)}
@@ -3953,39 +3664,31 @@ begin
     begin
       {$if declared(_BN_swap)}
       BN_swap := @_BN_swap;
-      {$else}
-      {$if not defined(BN_swap_allownil)}
-      BN_swap := @ERR_BN_swap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_swap_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_swap := @ERR_BN_swap;
+    if FuncLoadError then
       AFailed.Add('BN_swap');
-    end;
     {$ifend}
   end;
 
 
   BN_bin2bn := LoadLibFunction(ADllHandle, BN_bin2bn_procname);
-  FuncLoaded := assigned(BN_bin2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bin2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bin2bn_allownil)}
+    BN_bin2bn := @ERR_BN_bin2bn;
+    {$ifend}
     {$if declared(BN_bin2bn_introduced)}
     if LibVersion < BN_bin2bn_introduced then
     begin
       {$if declared(FC_BN_bin2bn)}
       BN_bin2bn := @FC_BN_bin2bn;
-      {$else}
-      {$if not defined(BN_bin2bn_allownil)}
-      BN_bin2bn := @ERR_BN_bin2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bin2bn_removed)}
@@ -3993,39 +3696,31 @@ begin
     begin
       {$if declared(_BN_bin2bn)}
       BN_bin2bn := @_BN_bin2bn;
-      {$else}
-      {$if not defined(BN_bin2bn_allownil)}
-      BN_bin2bn := @ERR_BN_bin2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bin2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bin2bn := @ERR_BN_bin2bn;
+    if FuncLoadError then
       AFailed.Add('BN_bin2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2bin := LoadLibFunction(ADllHandle, BN_bn2bin_procname);
-  FuncLoaded := assigned(BN_bn2bin);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2bin);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2bin_allownil)}
+    BN_bn2bin := @ERR_BN_bn2bin;
+    {$ifend}
     {$if declared(BN_bn2bin_introduced)}
     if LibVersion < BN_bn2bin_introduced then
     begin
       {$if declared(FC_BN_bn2bin)}
       BN_bn2bin := @FC_BN_bn2bin;
-      {$else}
-      {$if not defined(BN_bn2bin_allownil)}
-      BN_bn2bin := @ERR_BN_bn2bin;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2bin_removed)}
@@ -4033,39 +3728,31 @@ begin
     begin
       {$if declared(_BN_bn2bin)}
       BN_bn2bin := @_BN_bn2bin;
-      {$else}
-      {$if not defined(BN_bn2bin_allownil)}
-      BN_bn2bin := @ERR_BN_bn2bin;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2bin_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2bin := @ERR_BN_bn2bin;
+    if FuncLoadError then
       AFailed.Add('BN_bn2bin');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2binpad := LoadLibFunction(ADllHandle, BN_bn2binpad_procname);
-  FuncLoaded := assigned(BN_bn2binpad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2binpad);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2binpad_allownil)}
+    BN_bn2binpad := @ERR_BN_bn2binpad;
+    {$ifend}
     {$if declared(BN_bn2binpad_introduced)}
     if LibVersion < BN_bn2binpad_introduced then
     begin
       {$if declared(FC_BN_bn2binpad)}
       BN_bn2binpad := @FC_BN_bn2binpad;
-      {$else}
-      {$if not defined(BN_bn2binpad_allownil)}
-      BN_bn2binpad := @ERR_BN_bn2binpad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2binpad_removed)}
@@ -4073,39 +3760,31 @@ begin
     begin
       {$if declared(_BN_bn2binpad)}
       BN_bn2binpad := @_BN_bn2binpad;
-      {$else}
-      {$if not defined(BN_bn2binpad_allownil)}
-      BN_bn2binpad := @ERR_BN_bn2binpad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2binpad_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2binpad := @ERR_BN_bn2binpad;
+    if FuncLoadError then
       AFailed.Add('BN_bn2binpad');
-    end;
     {$ifend}
   end;
 
 
   BN_lebin2bn := LoadLibFunction(ADllHandle, BN_lebin2bn_procname);
-  FuncLoaded := assigned(BN_lebin2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_lebin2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_lebin2bn_allownil)}
+    BN_lebin2bn := @ERR_BN_lebin2bn;
+    {$ifend}
     {$if declared(BN_lebin2bn_introduced)}
     if LibVersion < BN_lebin2bn_introduced then
     begin
       {$if declared(FC_BN_lebin2bn)}
       BN_lebin2bn := @FC_BN_lebin2bn;
-      {$else}
-      {$if not defined(BN_lebin2bn_allownil)}
-      BN_lebin2bn := @ERR_BN_lebin2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_lebin2bn_removed)}
@@ -4113,39 +3792,31 @@ begin
     begin
       {$if declared(_BN_lebin2bn)}
       BN_lebin2bn := @_BN_lebin2bn;
-      {$else}
-      {$if not defined(BN_lebin2bn_allownil)}
-      BN_lebin2bn := @ERR_BN_lebin2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_lebin2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_lebin2bn := @ERR_BN_lebin2bn;
+    if FuncLoadError then
       AFailed.Add('BN_lebin2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2lebinpad := LoadLibFunction(ADllHandle, BN_bn2lebinpad_procname);
-  FuncLoaded := assigned(BN_bn2lebinpad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2lebinpad);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2lebinpad_allownil)}
+    BN_bn2lebinpad := @ERR_BN_bn2lebinpad;
+    {$ifend}
     {$if declared(BN_bn2lebinpad_introduced)}
     if LibVersion < BN_bn2lebinpad_introduced then
     begin
       {$if declared(FC_BN_bn2lebinpad)}
       BN_bn2lebinpad := @FC_BN_bn2lebinpad;
-      {$else}
-      {$if not defined(BN_bn2lebinpad_allownil)}
-      BN_bn2lebinpad := @ERR_BN_bn2lebinpad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2lebinpad_removed)}
@@ -4153,39 +3824,31 @@ begin
     begin
       {$if declared(_BN_bn2lebinpad)}
       BN_bn2lebinpad := @_BN_bn2lebinpad;
-      {$else}
-      {$if not defined(BN_bn2lebinpad_allownil)}
-      BN_bn2lebinpad := @ERR_BN_bn2lebinpad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2lebinpad_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2lebinpad := @ERR_BN_bn2lebinpad;
+    if FuncLoadError then
       AFailed.Add('BN_bn2lebinpad');
-    end;
     {$ifend}
   end;
 
 
   BN_mpi2bn := LoadLibFunction(ADllHandle, BN_mpi2bn_procname);
-  FuncLoaded := assigned(BN_mpi2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mpi2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mpi2bn_allownil)}
+    BN_mpi2bn := @ERR_BN_mpi2bn;
+    {$ifend}
     {$if declared(BN_mpi2bn_introduced)}
     if LibVersion < BN_mpi2bn_introduced then
     begin
       {$if declared(FC_BN_mpi2bn)}
       BN_mpi2bn := @FC_BN_mpi2bn;
-      {$else}
-      {$if not defined(BN_mpi2bn_allownil)}
-      BN_mpi2bn := @ERR_BN_mpi2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mpi2bn_removed)}
@@ -4193,39 +3856,31 @@ begin
     begin
       {$if declared(_BN_mpi2bn)}
       BN_mpi2bn := @_BN_mpi2bn;
-      {$else}
-      {$if not defined(BN_mpi2bn_allownil)}
-      BN_mpi2bn := @ERR_BN_mpi2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mpi2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mpi2bn := @ERR_BN_mpi2bn;
+    if FuncLoadError then
       AFailed.Add('BN_mpi2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2mpi := LoadLibFunction(ADllHandle, BN_bn2mpi_procname);
-  FuncLoaded := assigned(BN_bn2mpi);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2mpi);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2mpi_allownil)}
+    BN_bn2mpi := @ERR_BN_bn2mpi;
+    {$ifend}
     {$if declared(BN_bn2mpi_introduced)}
     if LibVersion < BN_bn2mpi_introduced then
     begin
       {$if declared(FC_BN_bn2mpi)}
       BN_bn2mpi := @FC_BN_bn2mpi;
-      {$else}
-      {$if not defined(BN_bn2mpi_allownil)}
-      BN_bn2mpi := @ERR_BN_bn2mpi;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2mpi_removed)}
@@ -4233,39 +3888,31 @@ begin
     begin
       {$if declared(_BN_bn2mpi)}
       BN_bn2mpi := @_BN_bn2mpi;
-      {$else}
-      {$if not defined(BN_bn2mpi_allownil)}
-      BN_bn2mpi := @ERR_BN_bn2mpi;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2mpi_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2mpi := @ERR_BN_bn2mpi;
+    if FuncLoadError then
       AFailed.Add('BN_bn2mpi');
-    end;
     {$ifend}
   end;
 
 
   BN_sub := LoadLibFunction(ADllHandle, BN_sub_procname);
-  FuncLoaded := assigned(BN_sub);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_sub);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_sub_allownil)}
+    BN_sub := @ERR_BN_sub;
+    {$ifend}
     {$if declared(BN_sub_introduced)}
     if LibVersion < BN_sub_introduced then
     begin
       {$if declared(FC_BN_sub)}
       BN_sub := @FC_BN_sub;
-      {$else}
-      {$if not defined(BN_sub_allownil)}
-      BN_sub := @ERR_BN_sub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_sub_removed)}
@@ -4273,39 +3920,31 @@ begin
     begin
       {$if declared(_BN_sub)}
       BN_sub := @_BN_sub;
-      {$else}
-      {$if not defined(BN_sub_allownil)}
-      BN_sub := @ERR_BN_sub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_sub_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_sub := @ERR_BN_sub;
+    if FuncLoadError then
       AFailed.Add('BN_sub');
-    end;
     {$ifend}
   end;
 
 
   BN_usub := LoadLibFunction(ADllHandle, BN_usub_procname);
-  FuncLoaded := assigned(BN_usub);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_usub);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_usub_allownil)}
+    BN_usub := @ERR_BN_usub;
+    {$ifend}
     {$if declared(BN_usub_introduced)}
     if LibVersion < BN_usub_introduced then
     begin
       {$if declared(FC_BN_usub)}
       BN_usub := @FC_BN_usub;
-      {$else}
-      {$if not defined(BN_usub_allownil)}
-      BN_usub := @ERR_BN_usub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_usub_removed)}
@@ -4313,39 +3952,31 @@ begin
     begin
       {$if declared(_BN_usub)}
       BN_usub := @_BN_usub;
-      {$else}
-      {$if not defined(BN_usub_allownil)}
-      BN_usub := @ERR_BN_usub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_usub_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_usub := @ERR_BN_usub;
+    if FuncLoadError then
       AFailed.Add('BN_usub');
-    end;
     {$ifend}
   end;
 
 
   BN_uadd := LoadLibFunction(ADllHandle, BN_uadd_procname);
-  FuncLoaded := assigned(BN_uadd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_uadd);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_uadd_allownil)}
+    BN_uadd := @ERR_BN_uadd;
+    {$ifend}
     {$if declared(BN_uadd_introduced)}
     if LibVersion < BN_uadd_introduced then
     begin
       {$if declared(FC_BN_uadd)}
       BN_uadd := @FC_BN_uadd;
-      {$else}
-      {$if not defined(BN_uadd_allownil)}
-      BN_uadd := @ERR_BN_uadd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_uadd_removed)}
@@ -4353,39 +3984,31 @@ begin
     begin
       {$if declared(_BN_uadd)}
       BN_uadd := @_BN_uadd;
-      {$else}
-      {$if not defined(BN_uadd_allownil)}
-      BN_uadd := @ERR_BN_uadd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_uadd_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_uadd := @ERR_BN_uadd;
+    if FuncLoadError then
       AFailed.Add('BN_uadd');
-    end;
     {$ifend}
   end;
 
 
   BN_add := LoadLibFunction(ADllHandle, BN_add_procname);
-  FuncLoaded := assigned(BN_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_add);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_add_allownil)}
+    BN_add := @ERR_BN_add;
+    {$ifend}
     {$if declared(BN_add_introduced)}
     if LibVersion < BN_add_introduced then
     begin
       {$if declared(FC_BN_add)}
       BN_add := @FC_BN_add;
-      {$else}
-      {$if not defined(BN_add_allownil)}
-      BN_add := @ERR_BN_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_add_removed)}
@@ -4393,39 +4016,31 @@ begin
     begin
       {$if declared(_BN_add)}
       BN_add := @_BN_add;
-      {$else}
-      {$if not defined(BN_add_allownil)}
-      BN_add := @ERR_BN_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_add_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_add := @ERR_BN_add;
+    if FuncLoadError then
       AFailed.Add('BN_add');
-    end;
     {$ifend}
   end;
 
 
   BN_mul := LoadLibFunction(ADllHandle, BN_mul_procname);
-  FuncLoaded := assigned(BN_mul);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mul);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mul_allownil)}
+    BN_mul := @ERR_BN_mul;
+    {$ifend}
     {$if declared(BN_mul_introduced)}
     if LibVersion < BN_mul_introduced then
     begin
       {$if declared(FC_BN_mul)}
       BN_mul := @FC_BN_mul;
-      {$else}
-      {$if not defined(BN_mul_allownil)}
-      BN_mul := @ERR_BN_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mul_removed)}
@@ -4433,39 +4048,31 @@ begin
     begin
       {$if declared(_BN_mul)}
       BN_mul := @_BN_mul;
-      {$else}
-      {$if not defined(BN_mul_allownil)}
-      BN_mul := @ERR_BN_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mul_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mul := @ERR_BN_mul;
+    if FuncLoadError then
       AFailed.Add('BN_mul');
-    end;
     {$ifend}
   end;
 
 
   BN_sqr := LoadLibFunction(ADllHandle, BN_sqr_procname);
-  FuncLoaded := assigned(BN_sqr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_sqr);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_sqr_allownil)}
+    BN_sqr := @ERR_BN_sqr;
+    {$ifend}
     {$if declared(BN_sqr_introduced)}
     if LibVersion < BN_sqr_introduced then
     begin
       {$if declared(FC_BN_sqr)}
       BN_sqr := @FC_BN_sqr;
-      {$else}
-      {$if not defined(BN_sqr_allownil)}
-      BN_sqr := @ERR_BN_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_sqr_removed)}
@@ -4473,39 +4080,31 @@ begin
     begin
       {$if declared(_BN_sqr)}
       BN_sqr := @_BN_sqr;
-      {$else}
-      {$if not defined(BN_sqr_allownil)}
-      BN_sqr := @ERR_BN_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_sqr_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_sqr := @ERR_BN_sqr;
+    if FuncLoadError then
       AFailed.Add('BN_sqr');
-    end;
     {$ifend}
   end;
 
 
   BN_set_negative := LoadLibFunction(ADllHandle, BN_set_negative_procname);
-  FuncLoaded := assigned(BN_set_negative);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_set_negative);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_set_negative_allownil)}
+    BN_set_negative := @ERR_BN_set_negative;
+    {$ifend}
     {$if declared(BN_set_negative_introduced)}
     if LibVersion < BN_set_negative_introduced then
     begin
       {$if declared(FC_BN_set_negative)}
       BN_set_negative := @FC_BN_set_negative;
-      {$else}
-      {$if not defined(BN_set_negative_allownil)}
-      BN_set_negative := @ERR_BN_set_negative;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_set_negative_removed)}
@@ -4513,39 +4112,31 @@ begin
     begin
       {$if declared(_BN_set_negative)}
       BN_set_negative := @_BN_set_negative;
-      {$else}
-      {$if not defined(BN_set_negative_allownil)}
-      BN_set_negative := @ERR_BN_set_negative;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_set_negative_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_set_negative := @ERR_BN_set_negative;
+    if FuncLoadError then
       AFailed.Add('BN_set_negative');
-    end;
     {$ifend}
   end;
 
 
   BN_is_negative := LoadLibFunction(ADllHandle, BN_is_negative_procname);
-  FuncLoaded := assigned(BN_is_negative);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_negative);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_negative_allownil)}
+    BN_is_negative := @ERR_BN_is_negative;
+    {$ifend}
     {$if declared(BN_is_negative_introduced)}
     if LibVersion < BN_is_negative_introduced then
     begin
       {$if declared(FC_BN_is_negative)}
       BN_is_negative := @FC_BN_is_negative;
-      {$else}
-      {$if not defined(BN_is_negative_allownil)}
-      BN_is_negative := @ERR_BN_is_negative;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_negative_removed)}
@@ -4553,39 +4144,31 @@ begin
     begin
       {$if declared(_BN_is_negative)}
       BN_is_negative := @_BN_is_negative;
-      {$else}
-      {$if not defined(BN_is_negative_allownil)}
-      BN_is_negative := @ERR_BN_is_negative;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_negative_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_negative := @ERR_BN_is_negative;
+    if FuncLoadError then
       AFailed.Add('BN_is_negative');
-    end;
     {$ifend}
   end;
 
 
   BN_div := LoadLibFunction(ADllHandle, BN_div_procname);
-  FuncLoaded := assigned(BN_div);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_div);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_div_allownil)}
+    BN_div := @ERR_BN_div;
+    {$ifend}
     {$if declared(BN_div_introduced)}
     if LibVersion < BN_div_introduced then
     begin
       {$if declared(FC_BN_div)}
       BN_div := @FC_BN_div;
-      {$else}
-      {$if not defined(BN_div_allownil)}
-      BN_div := @ERR_BN_div;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_div_removed)}
@@ -4593,39 +4176,31 @@ begin
     begin
       {$if declared(_BN_div)}
       BN_div := @_BN_div;
-      {$else}
-      {$if not defined(BN_div_allownil)}
-      BN_div := @ERR_BN_div;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_div_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_div := @ERR_BN_div;
+    if FuncLoadError then
       AFailed.Add('BN_div');
-    end;
     {$ifend}
   end;
 
 
   BN_nnmod := LoadLibFunction(ADllHandle, BN_nnmod_procname);
-  FuncLoaded := assigned(BN_nnmod);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nnmod);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nnmod_allownil)}
+    BN_nnmod := @ERR_BN_nnmod;
+    {$ifend}
     {$if declared(BN_nnmod_introduced)}
     if LibVersion < BN_nnmod_introduced then
     begin
       {$if declared(FC_BN_nnmod)}
       BN_nnmod := @FC_BN_nnmod;
-      {$else}
-      {$if not defined(BN_nnmod_allownil)}
-      BN_nnmod := @ERR_BN_nnmod;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nnmod_removed)}
@@ -4633,39 +4208,31 @@ begin
     begin
       {$if declared(_BN_nnmod)}
       BN_nnmod := @_BN_nnmod;
-      {$else}
-      {$if not defined(BN_nnmod_allownil)}
-      BN_nnmod := @ERR_BN_nnmod;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nnmod_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nnmod := @ERR_BN_nnmod;
+    if FuncLoadError then
       AFailed.Add('BN_nnmod');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_add := LoadLibFunction(ADllHandle, BN_mod_add_procname);
-  FuncLoaded := assigned(BN_mod_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_add);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_add_allownil)}
+    BN_mod_add := @ERR_BN_mod_add;
+    {$ifend}
     {$if declared(BN_mod_add_introduced)}
     if LibVersion < BN_mod_add_introduced then
     begin
       {$if declared(FC_BN_mod_add)}
       BN_mod_add := @FC_BN_mod_add;
-      {$else}
-      {$if not defined(BN_mod_add_allownil)}
-      BN_mod_add := @ERR_BN_mod_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_add_removed)}
@@ -4673,39 +4240,31 @@ begin
     begin
       {$if declared(_BN_mod_add)}
       BN_mod_add := @_BN_mod_add;
-      {$else}
-      {$if not defined(BN_mod_add_allownil)}
-      BN_mod_add := @ERR_BN_mod_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_add_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_add := @ERR_BN_mod_add;
+    if FuncLoadError then
       AFailed.Add('BN_mod_add');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_add_quick := LoadLibFunction(ADllHandle, BN_mod_add_quick_procname);
-  FuncLoaded := assigned(BN_mod_add_quick);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_add_quick);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_add_quick_allownil)}
+    BN_mod_add_quick := @ERR_BN_mod_add_quick;
+    {$ifend}
     {$if declared(BN_mod_add_quick_introduced)}
     if LibVersion < BN_mod_add_quick_introduced then
     begin
       {$if declared(FC_BN_mod_add_quick)}
       BN_mod_add_quick := @FC_BN_mod_add_quick;
-      {$else}
-      {$if not defined(BN_mod_add_quick_allownil)}
-      BN_mod_add_quick := @ERR_BN_mod_add_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_add_quick_removed)}
@@ -4713,39 +4272,31 @@ begin
     begin
       {$if declared(_BN_mod_add_quick)}
       BN_mod_add_quick := @_BN_mod_add_quick;
-      {$else}
-      {$if not defined(BN_mod_add_quick_allownil)}
-      BN_mod_add_quick := @ERR_BN_mod_add_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_add_quick_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_add_quick := @ERR_BN_mod_add_quick;
+    if FuncLoadError then
       AFailed.Add('BN_mod_add_quick');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_sub := LoadLibFunction(ADllHandle, BN_mod_sub_procname);
-  FuncLoaded := assigned(BN_mod_sub);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_sub);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_sub_allownil)}
+    BN_mod_sub := @ERR_BN_mod_sub;
+    {$ifend}
     {$if declared(BN_mod_sub_introduced)}
     if LibVersion < BN_mod_sub_introduced then
     begin
       {$if declared(FC_BN_mod_sub)}
       BN_mod_sub := @FC_BN_mod_sub;
-      {$else}
-      {$if not defined(BN_mod_sub_allownil)}
-      BN_mod_sub := @ERR_BN_mod_sub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_sub_removed)}
@@ -4753,39 +4304,31 @@ begin
     begin
       {$if declared(_BN_mod_sub)}
       BN_mod_sub := @_BN_mod_sub;
-      {$else}
-      {$if not defined(BN_mod_sub_allownil)}
-      BN_mod_sub := @ERR_BN_mod_sub;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_sub_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_sub := @ERR_BN_mod_sub;
+    if FuncLoadError then
       AFailed.Add('BN_mod_sub');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_sub_quick := LoadLibFunction(ADllHandle, BN_mod_sub_quick_procname);
-  FuncLoaded := assigned(BN_mod_sub_quick);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_sub_quick);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_sub_quick_allownil)}
+    BN_mod_sub_quick := @ERR_BN_mod_sub_quick;
+    {$ifend}
     {$if declared(BN_mod_sub_quick_introduced)}
     if LibVersion < BN_mod_sub_quick_introduced then
     begin
       {$if declared(FC_BN_mod_sub_quick)}
       BN_mod_sub_quick := @FC_BN_mod_sub_quick;
-      {$else}
-      {$if not defined(BN_mod_sub_quick_allownil)}
-      BN_mod_sub_quick := @ERR_BN_mod_sub_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_sub_quick_removed)}
@@ -4793,39 +4336,31 @@ begin
     begin
       {$if declared(_BN_mod_sub_quick)}
       BN_mod_sub_quick := @_BN_mod_sub_quick;
-      {$else}
-      {$if not defined(BN_mod_sub_quick_allownil)}
-      BN_mod_sub_quick := @ERR_BN_mod_sub_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_sub_quick_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_sub_quick := @ERR_BN_mod_sub_quick;
+    if FuncLoadError then
       AFailed.Add('BN_mod_sub_quick');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_mul := LoadLibFunction(ADllHandle, BN_mod_mul_procname);
-  FuncLoaded := assigned(BN_mod_mul);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_mul);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_mul_allownil)}
+    BN_mod_mul := @ERR_BN_mod_mul;
+    {$ifend}
     {$if declared(BN_mod_mul_introduced)}
     if LibVersion < BN_mod_mul_introduced then
     begin
       {$if declared(FC_BN_mod_mul)}
       BN_mod_mul := @FC_BN_mod_mul;
-      {$else}
-      {$if not defined(BN_mod_mul_allownil)}
-      BN_mod_mul := @ERR_BN_mod_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_mul_removed)}
@@ -4833,39 +4368,31 @@ begin
     begin
       {$if declared(_BN_mod_mul)}
       BN_mod_mul := @_BN_mod_mul;
-      {$else}
-      {$if not defined(BN_mod_mul_allownil)}
-      BN_mod_mul := @ERR_BN_mod_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_mul_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_mul := @ERR_BN_mod_mul;
+    if FuncLoadError then
       AFailed.Add('BN_mod_mul');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_sqr := LoadLibFunction(ADllHandle, BN_mod_sqr_procname);
-  FuncLoaded := assigned(BN_mod_sqr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_sqr);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_sqr_allownil)}
+    BN_mod_sqr := @ERR_BN_mod_sqr;
+    {$ifend}
     {$if declared(BN_mod_sqr_introduced)}
     if LibVersion < BN_mod_sqr_introduced then
     begin
       {$if declared(FC_BN_mod_sqr)}
       BN_mod_sqr := @FC_BN_mod_sqr;
-      {$else}
-      {$if not defined(BN_mod_sqr_allownil)}
-      BN_mod_sqr := @ERR_BN_mod_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_sqr_removed)}
@@ -4873,39 +4400,31 @@ begin
     begin
       {$if declared(_BN_mod_sqr)}
       BN_mod_sqr := @_BN_mod_sqr;
-      {$else}
-      {$if not defined(BN_mod_sqr_allownil)}
-      BN_mod_sqr := @ERR_BN_mod_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_sqr_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_sqr := @ERR_BN_mod_sqr;
+    if FuncLoadError then
       AFailed.Add('BN_mod_sqr');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_lshift1 := LoadLibFunction(ADllHandle, BN_mod_lshift1_procname);
-  FuncLoaded := assigned(BN_mod_lshift1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_lshift1);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_lshift1_allownil)}
+    BN_mod_lshift1 := @ERR_BN_mod_lshift1;
+    {$ifend}
     {$if declared(BN_mod_lshift1_introduced)}
     if LibVersion < BN_mod_lshift1_introduced then
     begin
       {$if declared(FC_BN_mod_lshift1)}
       BN_mod_lshift1 := @FC_BN_mod_lshift1;
-      {$else}
-      {$if not defined(BN_mod_lshift1_allownil)}
-      BN_mod_lshift1 := @ERR_BN_mod_lshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_lshift1_removed)}
@@ -4913,39 +4432,31 @@ begin
     begin
       {$if declared(_BN_mod_lshift1)}
       BN_mod_lshift1 := @_BN_mod_lshift1;
-      {$else}
-      {$if not defined(BN_mod_lshift1_allownil)}
-      BN_mod_lshift1 := @ERR_BN_mod_lshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_lshift1_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_lshift1 := @ERR_BN_mod_lshift1;
+    if FuncLoadError then
       AFailed.Add('BN_mod_lshift1');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_lshift1_quick := LoadLibFunction(ADllHandle, BN_mod_lshift1_quick_procname);
-  FuncLoaded := assigned(BN_mod_lshift1_quick);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_lshift1_quick);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_lshift1_quick_allownil)}
+    BN_mod_lshift1_quick := @ERR_BN_mod_lshift1_quick;
+    {$ifend}
     {$if declared(BN_mod_lshift1_quick_introduced)}
     if LibVersion < BN_mod_lshift1_quick_introduced then
     begin
       {$if declared(FC_BN_mod_lshift1_quick)}
       BN_mod_lshift1_quick := @FC_BN_mod_lshift1_quick;
-      {$else}
-      {$if not defined(BN_mod_lshift1_quick_allownil)}
-      BN_mod_lshift1_quick := @ERR_BN_mod_lshift1_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_lshift1_quick_removed)}
@@ -4953,39 +4464,31 @@ begin
     begin
       {$if declared(_BN_mod_lshift1_quick)}
       BN_mod_lshift1_quick := @_BN_mod_lshift1_quick;
-      {$else}
-      {$if not defined(BN_mod_lshift1_quick_allownil)}
-      BN_mod_lshift1_quick := @ERR_BN_mod_lshift1_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_lshift1_quick_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_lshift1_quick := @ERR_BN_mod_lshift1_quick;
+    if FuncLoadError then
       AFailed.Add('BN_mod_lshift1_quick');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_lshift := LoadLibFunction(ADllHandle, BN_mod_lshift_procname);
-  FuncLoaded := assigned(BN_mod_lshift);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_lshift);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_lshift_allownil)}
+    BN_mod_lshift := @ERR_BN_mod_lshift;
+    {$ifend}
     {$if declared(BN_mod_lshift_introduced)}
     if LibVersion < BN_mod_lshift_introduced then
     begin
       {$if declared(FC_BN_mod_lshift)}
       BN_mod_lshift := @FC_BN_mod_lshift;
-      {$else}
-      {$if not defined(BN_mod_lshift_allownil)}
-      BN_mod_lshift := @ERR_BN_mod_lshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_lshift_removed)}
@@ -4993,39 +4496,31 @@ begin
     begin
       {$if declared(_BN_mod_lshift)}
       BN_mod_lshift := @_BN_mod_lshift;
-      {$else}
-      {$if not defined(BN_mod_lshift_allownil)}
-      BN_mod_lshift := @ERR_BN_mod_lshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_lshift_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_lshift := @ERR_BN_mod_lshift;
+    if FuncLoadError then
       AFailed.Add('BN_mod_lshift');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_lshift_quick := LoadLibFunction(ADllHandle, BN_mod_lshift_quick_procname);
-  FuncLoaded := assigned(BN_mod_lshift_quick);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_lshift_quick);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_lshift_quick_allownil)}
+    BN_mod_lshift_quick := @ERR_BN_mod_lshift_quick;
+    {$ifend}
     {$if declared(BN_mod_lshift_quick_introduced)}
     if LibVersion < BN_mod_lshift_quick_introduced then
     begin
       {$if declared(FC_BN_mod_lshift_quick)}
       BN_mod_lshift_quick := @FC_BN_mod_lshift_quick;
-      {$else}
-      {$if not defined(BN_mod_lshift_quick_allownil)}
-      BN_mod_lshift_quick := @ERR_BN_mod_lshift_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_lshift_quick_removed)}
@@ -5033,39 +4528,31 @@ begin
     begin
       {$if declared(_BN_mod_lshift_quick)}
       BN_mod_lshift_quick := @_BN_mod_lshift_quick;
-      {$else}
-      {$if not defined(BN_mod_lshift_quick_allownil)}
-      BN_mod_lshift_quick := @ERR_BN_mod_lshift_quick;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_lshift_quick_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_lshift_quick := @ERR_BN_mod_lshift_quick;
+    if FuncLoadError then
       AFailed.Add('BN_mod_lshift_quick');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_word := LoadLibFunction(ADllHandle, BN_mod_word_procname);
-  FuncLoaded := assigned(BN_mod_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_word_allownil)}
+    BN_mod_word := @ERR_BN_mod_word;
+    {$ifend}
     {$if declared(BN_mod_word_introduced)}
     if LibVersion < BN_mod_word_introduced then
     begin
       {$if declared(FC_BN_mod_word)}
       BN_mod_word := @FC_BN_mod_word;
-      {$else}
-      {$if not defined(BN_mod_word_allownil)}
-      BN_mod_word := @ERR_BN_mod_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_word_removed)}
@@ -5073,39 +4560,31 @@ begin
     begin
       {$if declared(_BN_mod_word)}
       BN_mod_word := @_BN_mod_word;
-      {$else}
-      {$if not defined(BN_mod_word_allownil)}
-      BN_mod_word := @ERR_BN_mod_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_word := @ERR_BN_mod_word;
+    if FuncLoadError then
       AFailed.Add('BN_mod_word');
-    end;
     {$ifend}
   end;
 
 
   BN_div_word := LoadLibFunction(ADllHandle, BN_div_word_procname);
-  FuncLoaded := assigned(BN_div_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_div_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_div_word_allownil)}
+    BN_div_word := @ERR_BN_div_word;
+    {$ifend}
     {$if declared(BN_div_word_introduced)}
     if LibVersion < BN_div_word_introduced then
     begin
       {$if declared(FC_BN_div_word)}
       BN_div_word := @FC_BN_div_word;
-      {$else}
-      {$if not defined(BN_div_word_allownil)}
-      BN_div_word := @ERR_BN_div_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_div_word_removed)}
@@ -5113,39 +4592,31 @@ begin
     begin
       {$if declared(_BN_div_word)}
       BN_div_word := @_BN_div_word;
-      {$else}
-      {$if not defined(BN_div_word_allownil)}
-      BN_div_word := @ERR_BN_div_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_div_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_div_word := @ERR_BN_div_word;
+    if FuncLoadError then
       AFailed.Add('BN_div_word');
-    end;
     {$ifend}
   end;
 
 
   BN_mul_word := LoadLibFunction(ADllHandle, BN_mul_word_procname);
-  FuncLoaded := assigned(BN_mul_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mul_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mul_word_allownil)}
+    BN_mul_word := @ERR_BN_mul_word;
+    {$ifend}
     {$if declared(BN_mul_word_introduced)}
     if LibVersion < BN_mul_word_introduced then
     begin
       {$if declared(FC_BN_mul_word)}
       BN_mul_word := @FC_BN_mul_word;
-      {$else}
-      {$if not defined(BN_mul_word_allownil)}
-      BN_mul_word := @ERR_BN_mul_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mul_word_removed)}
@@ -5153,39 +4624,31 @@ begin
     begin
       {$if declared(_BN_mul_word)}
       BN_mul_word := @_BN_mul_word;
-      {$else}
-      {$if not defined(BN_mul_word_allownil)}
-      BN_mul_word := @ERR_BN_mul_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mul_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mul_word := @ERR_BN_mul_word;
+    if FuncLoadError then
       AFailed.Add('BN_mul_word');
-    end;
     {$ifend}
   end;
 
 
   BN_add_word := LoadLibFunction(ADllHandle, BN_add_word_procname);
-  FuncLoaded := assigned(BN_add_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_add_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_add_word_allownil)}
+    BN_add_word := @ERR_BN_add_word;
+    {$ifend}
     {$if declared(BN_add_word_introduced)}
     if LibVersion < BN_add_word_introduced then
     begin
       {$if declared(FC_BN_add_word)}
       BN_add_word := @FC_BN_add_word;
-      {$else}
-      {$if not defined(BN_add_word_allownil)}
-      BN_add_word := @ERR_BN_add_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_add_word_removed)}
@@ -5193,39 +4656,31 @@ begin
     begin
       {$if declared(_BN_add_word)}
       BN_add_word := @_BN_add_word;
-      {$else}
-      {$if not defined(BN_add_word_allownil)}
-      BN_add_word := @ERR_BN_add_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_add_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_add_word := @ERR_BN_add_word;
+    if FuncLoadError then
       AFailed.Add('BN_add_word');
-    end;
     {$ifend}
   end;
 
 
   BN_sub_word := LoadLibFunction(ADllHandle, BN_sub_word_procname);
-  FuncLoaded := assigned(BN_sub_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_sub_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_sub_word_allownil)}
+    BN_sub_word := @ERR_BN_sub_word;
+    {$ifend}
     {$if declared(BN_sub_word_introduced)}
     if LibVersion < BN_sub_word_introduced then
     begin
       {$if declared(FC_BN_sub_word)}
       BN_sub_word := @FC_BN_sub_word;
-      {$else}
-      {$if not defined(BN_sub_word_allownil)}
-      BN_sub_word := @ERR_BN_sub_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_sub_word_removed)}
@@ -5233,39 +4688,31 @@ begin
     begin
       {$if declared(_BN_sub_word)}
       BN_sub_word := @_BN_sub_word;
-      {$else}
-      {$if not defined(BN_sub_word_allownil)}
-      BN_sub_word := @ERR_BN_sub_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_sub_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_sub_word := @ERR_BN_sub_word;
+    if FuncLoadError then
       AFailed.Add('BN_sub_word');
-    end;
     {$ifend}
   end;
 
 
   BN_set_word := LoadLibFunction(ADllHandle, BN_set_word_procname);
-  FuncLoaded := assigned(BN_set_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_set_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_set_word_allownil)}
+    BN_set_word := @ERR_BN_set_word;
+    {$ifend}
     {$if declared(BN_set_word_introduced)}
     if LibVersion < BN_set_word_introduced then
     begin
       {$if declared(FC_BN_set_word)}
       BN_set_word := @FC_BN_set_word;
-      {$else}
-      {$if not defined(BN_set_word_allownil)}
-      BN_set_word := @ERR_BN_set_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_set_word_removed)}
@@ -5273,39 +4720,31 @@ begin
     begin
       {$if declared(_BN_set_word)}
       BN_set_word := @_BN_set_word;
-      {$else}
-      {$if not defined(BN_set_word_allownil)}
-      BN_set_word := @ERR_BN_set_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_set_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_set_word := @ERR_BN_set_word;
+    if FuncLoadError then
       AFailed.Add('BN_set_word');
-    end;
     {$ifend}
   end;
 
 
   BN_get_word := LoadLibFunction(ADllHandle, BN_get_word_procname);
-  FuncLoaded := assigned(BN_get_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_word_allownil)}
+    BN_get_word := @ERR_BN_get_word;
+    {$ifend}
     {$if declared(BN_get_word_introduced)}
     if LibVersion < BN_get_word_introduced then
     begin
       {$if declared(FC_BN_get_word)}
       BN_get_word := @FC_BN_get_word;
-      {$else}
-      {$if not defined(BN_get_word_allownil)}
-      BN_get_word := @ERR_BN_get_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_word_removed)}
@@ -5313,39 +4752,31 @@ begin
     begin
       {$if declared(_BN_get_word)}
       BN_get_word := @_BN_get_word;
-      {$else}
-      {$if not defined(BN_get_word_allownil)}
-      BN_get_word := @ERR_BN_get_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_word := @ERR_BN_get_word;
+    if FuncLoadError then
       AFailed.Add('BN_get_word');
-    end;
     {$ifend}
   end;
 
 
   BN_cmp := LoadLibFunction(ADllHandle, BN_cmp_procname);
-  FuncLoaded := assigned(BN_cmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_cmp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_cmp_allownil)}
+    BN_cmp := @ERR_BN_cmp;
+    {$ifend}
     {$if declared(BN_cmp_introduced)}
     if LibVersion < BN_cmp_introduced then
     begin
       {$if declared(FC_BN_cmp)}
       BN_cmp := @FC_BN_cmp;
-      {$else}
-      {$if not defined(BN_cmp_allownil)}
-      BN_cmp := @ERR_BN_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_cmp_removed)}
@@ -5353,39 +4784,31 @@ begin
     begin
       {$if declared(_BN_cmp)}
       BN_cmp := @_BN_cmp;
-      {$else}
-      {$if not defined(BN_cmp_allownil)}
-      BN_cmp := @ERR_BN_cmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_cmp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_cmp := @ERR_BN_cmp;
+    if FuncLoadError then
       AFailed.Add('BN_cmp');
-    end;
     {$ifend}
   end;
 
 
   BN_free := LoadLibFunction(ADllHandle, BN_free_procname);
-  FuncLoaded := assigned(BN_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_free_allownil)}
+    BN_free := @ERR_BN_free;
+    {$ifend}
     {$if declared(BN_free_introduced)}
     if LibVersion < BN_free_introduced then
     begin
       {$if declared(FC_BN_free)}
       BN_free := @FC_BN_free;
-      {$else}
-      {$if not defined(BN_free_allownil)}
-      BN_free := @ERR_BN_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_free_removed)}
@@ -5393,39 +4816,31 @@ begin
     begin
       {$if declared(_BN_free)}
       BN_free := @_BN_free;
-      {$else}
-      {$if not defined(BN_free_allownil)}
-      BN_free := @ERR_BN_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_free := @ERR_BN_free;
+    if FuncLoadError then
       AFailed.Add('BN_free');
-    end;
     {$ifend}
   end;
 
 
   BN_is_bit_set := LoadLibFunction(ADllHandle, BN_is_bit_set_procname);
-  FuncLoaded := assigned(BN_is_bit_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_bit_set);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_bit_set_allownil)}
+    BN_is_bit_set := @ERR_BN_is_bit_set;
+    {$ifend}
     {$if declared(BN_is_bit_set_introduced)}
     if LibVersion < BN_is_bit_set_introduced then
     begin
       {$if declared(FC_BN_is_bit_set)}
       BN_is_bit_set := @FC_BN_is_bit_set;
-      {$else}
-      {$if not defined(BN_is_bit_set_allownil)}
-      BN_is_bit_set := @ERR_BN_is_bit_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_bit_set_removed)}
@@ -5433,39 +4848,31 @@ begin
     begin
       {$if declared(_BN_is_bit_set)}
       BN_is_bit_set := @_BN_is_bit_set;
-      {$else}
-      {$if not defined(BN_is_bit_set_allownil)}
-      BN_is_bit_set := @ERR_BN_is_bit_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_bit_set_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_bit_set := @ERR_BN_is_bit_set;
+    if FuncLoadError then
       AFailed.Add('BN_is_bit_set');
-    end;
     {$ifend}
   end;
 
 
   BN_lshift := LoadLibFunction(ADllHandle, BN_lshift_procname);
-  FuncLoaded := assigned(BN_lshift);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_lshift);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_lshift_allownil)}
+    BN_lshift := @ERR_BN_lshift;
+    {$ifend}
     {$if declared(BN_lshift_introduced)}
     if LibVersion < BN_lshift_introduced then
     begin
       {$if declared(FC_BN_lshift)}
       BN_lshift := @FC_BN_lshift;
-      {$else}
-      {$if not defined(BN_lshift_allownil)}
-      BN_lshift := @ERR_BN_lshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_lshift_removed)}
@@ -5473,39 +4880,31 @@ begin
     begin
       {$if declared(_BN_lshift)}
       BN_lshift := @_BN_lshift;
-      {$else}
-      {$if not defined(BN_lshift_allownil)}
-      BN_lshift := @ERR_BN_lshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_lshift_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_lshift := @ERR_BN_lshift;
+    if FuncLoadError then
       AFailed.Add('BN_lshift');
-    end;
     {$ifend}
   end;
 
 
   BN_lshift1 := LoadLibFunction(ADllHandle, BN_lshift1_procname);
-  FuncLoaded := assigned(BN_lshift1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_lshift1);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_lshift1_allownil)}
+    BN_lshift1 := @ERR_BN_lshift1;
+    {$ifend}
     {$if declared(BN_lshift1_introduced)}
     if LibVersion < BN_lshift1_introduced then
     begin
       {$if declared(FC_BN_lshift1)}
       BN_lshift1 := @FC_BN_lshift1;
-      {$else}
-      {$if not defined(BN_lshift1_allownil)}
-      BN_lshift1 := @ERR_BN_lshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_lshift1_removed)}
@@ -5513,39 +4912,31 @@ begin
     begin
       {$if declared(_BN_lshift1)}
       BN_lshift1 := @_BN_lshift1;
-      {$else}
-      {$if not defined(BN_lshift1_allownil)}
-      BN_lshift1 := @ERR_BN_lshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_lshift1_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_lshift1 := @ERR_BN_lshift1;
+    if FuncLoadError then
       AFailed.Add('BN_lshift1');
-    end;
     {$ifend}
   end;
 
 
   BN_exp := LoadLibFunction(ADllHandle, BN_exp_procname);
-  FuncLoaded := assigned(BN_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_exp_allownil)}
+    BN_exp := @ERR_BN_exp;
+    {$ifend}
     {$if declared(BN_exp_introduced)}
     if LibVersion < BN_exp_introduced then
     begin
       {$if declared(FC_BN_exp)}
       BN_exp := @FC_BN_exp;
-      {$else}
-      {$if not defined(BN_exp_allownil)}
-      BN_exp := @ERR_BN_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_exp_removed)}
@@ -5553,39 +4944,31 @@ begin
     begin
       {$if declared(_BN_exp)}
       BN_exp := @_BN_exp;
-      {$else}
-      {$if not defined(BN_exp_allownil)}
-      BN_exp := @ERR_BN_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_exp := @ERR_BN_exp;
+    if FuncLoadError then
       AFailed.Add('BN_exp');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp := LoadLibFunction(ADllHandle, BN_mod_exp_procname);
-  FuncLoaded := assigned(BN_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_allownil)}
+    BN_mod_exp := @ERR_BN_mod_exp;
+    {$ifend}
     {$if declared(BN_mod_exp_introduced)}
     if LibVersion < BN_mod_exp_introduced then
     begin
       {$if declared(FC_BN_mod_exp)}
       BN_mod_exp := @FC_BN_mod_exp;
-      {$else}
-      {$if not defined(BN_mod_exp_allownil)}
-      BN_mod_exp := @ERR_BN_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_removed)}
@@ -5593,39 +4976,31 @@ begin
     begin
       {$if declared(_BN_mod_exp)}
       BN_mod_exp := @_BN_mod_exp;
-      {$else}
-      {$if not defined(BN_mod_exp_allownil)}
-      BN_mod_exp := @ERR_BN_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp := @ERR_BN_mod_exp;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp_mont := LoadLibFunction(ADllHandle, BN_mod_exp_mont_procname);
-  FuncLoaded := assigned(BN_mod_exp_mont);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp_mont);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_mont_allownil)}
+    BN_mod_exp_mont := @ERR_BN_mod_exp_mont;
+    {$ifend}
     {$if declared(BN_mod_exp_mont_introduced)}
     if LibVersion < BN_mod_exp_mont_introduced then
     begin
       {$if declared(FC_BN_mod_exp_mont)}
       BN_mod_exp_mont := @FC_BN_mod_exp_mont;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_allownil)}
-      BN_mod_exp_mont := @ERR_BN_mod_exp_mont;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_mont_removed)}
@@ -5633,39 +5008,31 @@ begin
     begin
       {$if declared(_BN_mod_exp_mont)}
       BN_mod_exp_mont := @_BN_mod_exp_mont;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_allownil)}
-      BN_mod_exp_mont := @ERR_BN_mod_exp_mont;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_mont_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp_mont := @ERR_BN_mod_exp_mont;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp_mont');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp_mont_consttime := LoadLibFunction(ADllHandle, BN_mod_exp_mont_consttime_procname);
-  FuncLoaded := assigned(BN_mod_exp_mont_consttime);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp_mont_consttime);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_mont_consttime_allownil)}
+    BN_mod_exp_mont_consttime := @ERR_BN_mod_exp_mont_consttime;
+    {$ifend}
     {$if declared(BN_mod_exp_mont_consttime_introduced)}
     if LibVersion < BN_mod_exp_mont_consttime_introduced then
     begin
       {$if declared(FC_BN_mod_exp_mont_consttime)}
       BN_mod_exp_mont_consttime := @FC_BN_mod_exp_mont_consttime;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_consttime_allownil)}
-      BN_mod_exp_mont_consttime := @ERR_BN_mod_exp_mont_consttime;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_mont_consttime_removed)}
@@ -5673,39 +5040,31 @@ begin
     begin
       {$if declared(_BN_mod_exp_mont_consttime)}
       BN_mod_exp_mont_consttime := @_BN_mod_exp_mont_consttime;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_consttime_allownil)}
-      BN_mod_exp_mont_consttime := @ERR_BN_mod_exp_mont_consttime;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_mont_consttime_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp_mont_consttime := @ERR_BN_mod_exp_mont_consttime;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp_mont_consttime');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp_mont_word := LoadLibFunction(ADllHandle, BN_mod_exp_mont_word_procname);
-  FuncLoaded := assigned(BN_mod_exp_mont_word);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp_mont_word);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_mont_word_allownil)}
+    BN_mod_exp_mont_word := @ERR_BN_mod_exp_mont_word;
+    {$ifend}
     {$if declared(BN_mod_exp_mont_word_introduced)}
     if LibVersion < BN_mod_exp_mont_word_introduced then
     begin
       {$if declared(FC_BN_mod_exp_mont_word)}
       BN_mod_exp_mont_word := @FC_BN_mod_exp_mont_word;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_word_allownil)}
-      BN_mod_exp_mont_word := @ERR_BN_mod_exp_mont_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_mont_word_removed)}
@@ -5713,39 +5072,31 @@ begin
     begin
       {$if declared(_BN_mod_exp_mont_word)}
       BN_mod_exp_mont_word := @_BN_mod_exp_mont_word;
-      {$else}
-      {$if not defined(BN_mod_exp_mont_word_allownil)}
-      BN_mod_exp_mont_word := @ERR_BN_mod_exp_mont_word;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_mont_word_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp_mont_word := @ERR_BN_mod_exp_mont_word;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp_mont_word');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp2_mont := LoadLibFunction(ADllHandle, BN_mod_exp2_mont_procname);
-  FuncLoaded := assigned(BN_mod_exp2_mont);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp2_mont);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp2_mont_allownil)}
+    BN_mod_exp2_mont := @ERR_BN_mod_exp2_mont;
+    {$ifend}
     {$if declared(BN_mod_exp2_mont_introduced)}
     if LibVersion < BN_mod_exp2_mont_introduced then
     begin
       {$if declared(FC_BN_mod_exp2_mont)}
       BN_mod_exp2_mont := @FC_BN_mod_exp2_mont;
-      {$else}
-      {$if not defined(BN_mod_exp2_mont_allownil)}
-      BN_mod_exp2_mont := @ERR_BN_mod_exp2_mont;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp2_mont_removed)}
@@ -5753,39 +5104,31 @@ begin
     begin
       {$if declared(_BN_mod_exp2_mont)}
       BN_mod_exp2_mont := @_BN_mod_exp2_mont;
-      {$else}
-      {$if not defined(BN_mod_exp2_mont_allownil)}
-      BN_mod_exp2_mont := @ERR_BN_mod_exp2_mont;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp2_mont_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp2_mont := @ERR_BN_mod_exp2_mont;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp2_mont');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp_simple := LoadLibFunction(ADllHandle, BN_mod_exp_simple_procname);
-  FuncLoaded := assigned(BN_mod_exp_simple);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp_simple);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_simple_allownil)}
+    BN_mod_exp_simple := @ERR_BN_mod_exp_simple;
+    {$ifend}
     {$if declared(BN_mod_exp_simple_introduced)}
     if LibVersion < BN_mod_exp_simple_introduced then
     begin
       {$if declared(FC_BN_mod_exp_simple)}
       BN_mod_exp_simple := @FC_BN_mod_exp_simple;
-      {$else}
-      {$if not defined(BN_mod_exp_simple_allownil)}
-      BN_mod_exp_simple := @ERR_BN_mod_exp_simple;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_simple_removed)}
@@ -5793,39 +5136,31 @@ begin
     begin
       {$if declared(_BN_mod_exp_simple)}
       BN_mod_exp_simple := @_BN_mod_exp_simple;
-      {$else}
-      {$if not defined(BN_mod_exp_simple_allownil)}
-      BN_mod_exp_simple := @ERR_BN_mod_exp_simple;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_simple_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp_simple := @ERR_BN_mod_exp_simple;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp_simple');
-    end;
     {$ifend}
   end;
 
 
   BN_mask_bits := LoadLibFunction(ADllHandle, BN_mask_bits_procname);
-  FuncLoaded := assigned(BN_mask_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mask_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mask_bits_allownil)}
+    BN_mask_bits := @ERR_BN_mask_bits;
+    {$ifend}
     {$if declared(BN_mask_bits_introduced)}
     if LibVersion < BN_mask_bits_introduced then
     begin
       {$if declared(FC_BN_mask_bits)}
       BN_mask_bits := @FC_BN_mask_bits;
-      {$else}
-      {$if not defined(BN_mask_bits_allownil)}
-      BN_mask_bits := @ERR_BN_mask_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mask_bits_removed)}
@@ -5833,39 +5168,31 @@ begin
     begin
       {$if declared(_BN_mask_bits)}
       BN_mask_bits := @_BN_mask_bits;
-      {$else}
-      {$if not defined(BN_mask_bits_allownil)}
-      BN_mask_bits := @ERR_BN_mask_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mask_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mask_bits := @ERR_BN_mask_bits;
+    if FuncLoadError then
       AFailed.Add('BN_mask_bits');
-    end;
     {$ifend}
   end;
 
 
   BN_print := LoadLibFunction(ADllHandle, BN_print_procname);
-  FuncLoaded := assigned(BN_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_print);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_print_allownil)}
+    BN_print := @ERR_BN_print;
+    {$ifend}
     {$if declared(BN_print_introduced)}
     if LibVersion < BN_print_introduced then
     begin
       {$if declared(FC_BN_print)}
       BN_print := @FC_BN_print;
-      {$else}
-      {$if not defined(BN_print_allownil)}
-      BN_print := @ERR_BN_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_print_removed)}
@@ -5873,39 +5200,31 @@ begin
     begin
       {$if declared(_BN_print)}
       BN_print := @_BN_print;
-      {$else}
-      {$if not defined(BN_print_allownil)}
-      BN_print := @ERR_BN_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_print_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_print := @ERR_BN_print;
+    if FuncLoadError then
       AFailed.Add('BN_print');
-    end;
     {$ifend}
   end;
 
 
   BN_reciprocal := LoadLibFunction(ADllHandle, BN_reciprocal_procname);
-  FuncLoaded := assigned(BN_reciprocal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_reciprocal);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_reciprocal_allownil)}
+    BN_reciprocal := @ERR_BN_reciprocal;
+    {$ifend}
     {$if declared(BN_reciprocal_introduced)}
     if LibVersion < BN_reciprocal_introduced then
     begin
       {$if declared(FC_BN_reciprocal)}
       BN_reciprocal := @FC_BN_reciprocal;
-      {$else}
-      {$if not defined(BN_reciprocal_allownil)}
-      BN_reciprocal := @ERR_BN_reciprocal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_reciprocal_removed)}
@@ -5913,39 +5232,31 @@ begin
     begin
       {$if declared(_BN_reciprocal)}
       BN_reciprocal := @_BN_reciprocal;
-      {$else}
-      {$if not defined(BN_reciprocal_allownil)}
-      BN_reciprocal := @ERR_BN_reciprocal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_reciprocal_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_reciprocal := @ERR_BN_reciprocal;
+    if FuncLoadError then
       AFailed.Add('BN_reciprocal');
-    end;
     {$ifend}
   end;
 
 
   BN_rshift := LoadLibFunction(ADllHandle, BN_rshift_procname);
-  FuncLoaded := assigned(BN_rshift);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_rshift);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_rshift_allownil)}
+    BN_rshift := @ERR_BN_rshift;
+    {$ifend}
     {$if declared(BN_rshift_introduced)}
     if LibVersion < BN_rshift_introduced then
     begin
       {$if declared(FC_BN_rshift)}
       BN_rshift := @FC_BN_rshift;
-      {$else}
-      {$if not defined(BN_rshift_allownil)}
-      BN_rshift := @ERR_BN_rshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_rshift_removed)}
@@ -5953,39 +5264,31 @@ begin
     begin
       {$if declared(_BN_rshift)}
       BN_rshift := @_BN_rshift;
-      {$else}
-      {$if not defined(BN_rshift_allownil)}
-      BN_rshift := @ERR_BN_rshift;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_rshift_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_rshift := @ERR_BN_rshift;
+    if FuncLoadError then
       AFailed.Add('BN_rshift');
-    end;
     {$ifend}
   end;
 
 
   BN_rshift1 := LoadLibFunction(ADllHandle, BN_rshift1_procname);
-  FuncLoaded := assigned(BN_rshift1);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_rshift1);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_rshift1_allownil)}
+    BN_rshift1 := @ERR_BN_rshift1;
+    {$ifend}
     {$if declared(BN_rshift1_introduced)}
     if LibVersion < BN_rshift1_introduced then
     begin
       {$if declared(FC_BN_rshift1)}
       BN_rshift1 := @FC_BN_rshift1;
-      {$else}
-      {$if not defined(BN_rshift1_allownil)}
-      BN_rshift1 := @ERR_BN_rshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_rshift1_removed)}
@@ -5993,39 +5296,31 @@ begin
     begin
       {$if declared(_BN_rshift1)}
       BN_rshift1 := @_BN_rshift1;
-      {$else}
-      {$if not defined(BN_rshift1_allownil)}
-      BN_rshift1 := @ERR_BN_rshift1;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_rshift1_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_rshift1 := @ERR_BN_rshift1;
+    if FuncLoadError then
       AFailed.Add('BN_rshift1');
-    end;
     {$ifend}
   end;
 
 
   BN_clear := LoadLibFunction(ADllHandle, BN_clear_procname);
-  FuncLoaded := assigned(BN_clear);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_clear);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_clear_allownil)}
+    BN_clear := @ERR_BN_clear;
+    {$ifend}
     {$if declared(BN_clear_introduced)}
     if LibVersion < BN_clear_introduced then
     begin
       {$if declared(FC_BN_clear)}
       BN_clear := @FC_BN_clear;
-      {$else}
-      {$if not defined(BN_clear_allownil)}
-      BN_clear := @ERR_BN_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_clear_removed)}
@@ -6033,39 +5328,31 @@ begin
     begin
       {$if declared(_BN_clear)}
       BN_clear := @_BN_clear;
-      {$else}
-      {$if not defined(BN_clear_allownil)}
-      BN_clear := @ERR_BN_clear;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_clear_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_clear := @ERR_BN_clear;
+    if FuncLoadError then
       AFailed.Add('BN_clear');
-    end;
     {$ifend}
   end;
 
 
   BN_dup := LoadLibFunction(ADllHandle, BN_dup_procname);
-  FuncLoaded := assigned(BN_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_dup_allownil)}
+    BN_dup := @ERR_BN_dup;
+    {$ifend}
     {$if declared(BN_dup_introduced)}
     if LibVersion < BN_dup_introduced then
     begin
       {$if declared(FC_BN_dup)}
       BN_dup := @FC_BN_dup;
-      {$else}
-      {$if not defined(BN_dup_allownil)}
-      BN_dup := @ERR_BN_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_dup_removed)}
@@ -6073,39 +5360,31 @@ begin
     begin
       {$if declared(_BN_dup)}
       BN_dup := @_BN_dup;
-      {$else}
-      {$if not defined(BN_dup_allownil)}
-      BN_dup := @ERR_BN_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_dup := @ERR_BN_dup;
+    if FuncLoadError then
       AFailed.Add('BN_dup');
-    end;
     {$ifend}
   end;
 
 
   BN_ucmp := LoadLibFunction(ADllHandle, BN_ucmp_procname);
-  FuncLoaded := assigned(BN_ucmp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_ucmp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_ucmp_allownil)}
+    BN_ucmp := @ERR_BN_ucmp;
+    {$ifend}
     {$if declared(BN_ucmp_introduced)}
     if LibVersion < BN_ucmp_introduced then
     begin
       {$if declared(FC_BN_ucmp)}
       BN_ucmp := @FC_BN_ucmp;
-      {$else}
-      {$if not defined(BN_ucmp_allownil)}
-      BN_ucmp := @ERR_BN_ucmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_ucmp_removed)}
@@ -6113,39 +5392,31 @@ begin
     begin
       {$if declared(_BN_ucmp)}
       BN_ucmp := @_BN_ucmp;
-      {$else}
-      {$if not defined(BN_ucmp_allownil)}
-      BN_ucmp := @ERR_BN_ucmp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_ucmp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_ucmp := @ERR_BN_ucmp;
+    if FuncLoadError then
       AFailed.Add('BN_ucmp');
-    end;
     {$ifend}
   end;
 
 
   BN_set_bit := LoadLibFunction(ADllHandle, BN_set_bit_procname);
-  FuncLoaded := assigned(BN_set_bit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_set_bit);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_set_bit_allownil)}
+    BN_set_bit := @ERR_BN_set_bit;
+    {$ifend}
     {$if declared(BN_set_bit_introduced)}
     if LibVersion < BN_set_bit_introduced then
     begin
       {$if declared(FC_BN_set_bit)}
       BN_set_bit := @FC_BN_set_bit;
-      {$else}
-      {$if not defined(BN_set_bit_allownil)}
-      BN_set_bit := @ERR_BN_set_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_set_bit_removed)}
@@ -6153,39 +5424,31 @@ begin
     begin
       {$if declared(_BN_set_bit)}
       BN_set_bit := @_BN_set_bit;
-      {$else}
-      {$if not defined(BN_set_bit_allownil)}
-      BN_set_bit := @ERR_BN_set_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_set_bit_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_set_bit := @ERR_BN_set_bit;
+    if FuncLoadError then
       AFailed.Add('BN_set_bit');
-    end;
     {$ifend}
   end;
 
 
   BN_clear_bit := LoadLibFunction(ADllHandle, BN_clear_bit_procname);
-  FuncLoaded := assigned(BN_clear_bit);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_clear_bit);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_clear_bit_allownil)}
+    BN_clear_bit := @ERR_BN_clear_bit;
+    {$ifend}
     {$if declared(BN_clear_bit_introduced)}
     if LibVersion < BN_clear_bit_introduced then
     begin
       {$if declared(FC_BN_clear_bit)}
       BN_clear_bit := @FC_BN_clear_bit;
-      {$else}
-      {$if not defined(BN_clear_bit_allownil)}
-      BN_clear_bit := @ERR_BN_clear_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_clear_bit_removed)}
@@ -6193,39 +5456,31 @@ begin
     begin
       {$if declared(_BN_clear_bit)}
       BN_clear_bit := @_BN_clear_bit;
-      {$else}
-      {$if not defined(BN_clear_bit_allownil)}
-      BN_clear_bit := @ERR_BN_clear_bit;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_clear_bit_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_clear_bit := @ERR_BN_clear_bit;
+    if FuncLoadError then
       AFailed.Add('BN_clear_bit');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2hex := LoadLibFunction(ADllHandle, BN_bn2hex_procname);
-  FuncLoaded := assigned(BN_bn2hex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2hex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2hex_allownil)}
+    BN_bn2hex := @ERR_BN_bn2hex;
+    {$ifend}
     {$if declared(BN_bn2hex_introduced)}
     if LibVersion < BN_bn2hex_introduced then
     begin
       {$if declared(FC_BN_bn2hex)}
       BN_bn2hex := @FC_BN_bn2hex;
-      {$else}
-      {$if not defined(BN_bn2hex_allownil)}
-      BN_bn2hex := @ERR_BN_bn2hex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2hex_removed)}
@@ -6233,39 +5488,31 @@ begin
     begin
       {$if declared(_BN_bn2hex)}
       BN_bn2hex := @_BN_bn2hex;
-      {$else}
-      {$if not defined(BN_bn2hex_allownil)}
-      BN_bn2hex := @ERR_BN_bn2hex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2hex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2hex := @ERR_BN_bn2hex;
+    if FuncLoadError then
       AFailed.Add('BN_bn2hex');
-    end;
     {$ifend}
   end;
 
 
   BN_bn2dec := LoadLibFunction(ADllHandle, BN_bn2dec_procname);
-  FuncLoaded := assigned(BN_bn2dec);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bn2dec);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bn2dec_allownil)}
+    BN_bn2dec := @ERR_BN_bn2dec;
+    {$ifend}
     {$if declared(BN_bn2dec_introduced)}
     if LibVersion < BN_bn2dec_introduced then
     begin
       {$if declared(FC_BN_bn2dec)}
       BN_bn2dec := @FC_BN_bn2dec;
-      {$else}
-      {$if not defined(BN_bn2dec_allownil)}
-      BN_bn2dec := @ERR_BN_bn2dec;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bn2dec_removed)}
@@ -6273,39 +5520,31 @@ begin
     begin
       {$if declared(_BN_bn2dec)}
       BN_bn2dec := @_BN_bn2dec;
-      {$else}
-      {$if not defined(BN_bn2dec_allownil)}
-      BN_bn2dec := @ERR_BN_bn2dec;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bn2dec_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bn2dec := @ERR_BN_bn2dec;
+    if FuncLoadError then
       AFailed.Add('BN_bn2dec');
-    end;
     {$ifend}
   end;
 
 
   BN_hex2bn := LoadLibFunction(ADllHandle, BN_hex2bn_procname);
-  FuncLoaded := assigned(BN_hex2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_hex2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_hex2bn_allownil)}
+    BN_hex2bn := @ERR_BN_hex2bn;
+    {$ifend}
     {$if declared(BN_hex2bn_introduced)}
     if LibVersion < BN_hex2bn_introduced then
     begin
       {$if declared(FC_BN_hex2bn)}
       BN_hex2bn := @FC_BN_hex2bn;
-      {$else}
-      {$if not defined(BN_hex2bn_allownil)}
-      BN_hex2bn := @ERR_BN_hex2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_hex2bn_removed)}
@@ -6313,39 +5552,31 @@ begin
     begin
       {$if declared(_BN_hex2bn)}
       BN_hex2bn := @_BN_hex2bn;
-      {$else}
-      {$if not defined(BN_hex2bn_allownil)}
-      BN_hex2bn := @ERR_BN_hex2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_hex2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_hex2bn := @ERR_BN_hex2bn;
+    if FuncLoadError then
       AFailed.Add('BN_hex2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_dec2bn := LoadLibFunction(ADllHandle, BN_dec2bn_procname);
-  FuncLoaded := assigned(BN_dec2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_dec2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_dec2bn_allownil)}
+    BN_dec2bn := @ERR_BN_dec2bn;
+    {$ifend}
     {$if declared(BN_dec2bn_introduced)}
     if LibVersion < BN_dec2bn_introduced then
     begin
       {$if declared(FC_BN_dec2bn)}
       BN_dec2bn := @FC_BN_dec2bn;
-      {$else}
-      {$if not defined(BN_dec2bn_allownil)}
-      BN_dec2bn := @ERR_BN_dec2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_dec2bn_removed)}
@@ -6353,39 +5584,31 @@ begin
     begin
       {$if declared(_BN_dec2bn)}
       BN_dec2bn := @_BN_dec2bn;
-      {$else}
-      {$if not defined(BN_dec2bn_allownil)}
-      BN_dec2bn := @ERR_BN_dec2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_dec2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_dec2bn := @ERR_BN_dec2bn;
+    if FuncLoadError then
       AFailed.Add('BN_dec2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_asc2bn := LoadLibFunction(ADllHandle, BN_asc2bn_procname);
-  FuncLoaded := assigned(BN_asc2bn);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_asc2bn);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_asc2bn_allownil)}
+    BN_asc2bn := @ERR_BN_asc2bn;
+    {$ifend}
     {$if declared(BN_asc2bn_introduced)}
     if LibVersion < BN_asc2bn_introduced then
     begin
       {$if declared(FC_BN_asc2bn)}
       BN_asc2bn := @FC_BN_asc2bn;
-      {$else}
-      {$if not defined(BN_asc2bn_allownil)}
-      BN_asc2bn := @ERR_BN_asc2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_asc2bn_removed)}
@@ -6393,39 +5616,31 @@ begin
     begin
       {$if declared(_BN_asc2bn)}
       BN_asc2bn := @_BN_asc2bn;
-      {$else}
-      {$if not defined(BN_asc2bn_allownil)}
-      BN_asc2bn := @ERR_BN_asc2bn;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_asc2bn_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_asc2bn := @ERR_BN_asc2bn;
+    if FuncLoadError then
       AFailed.Add('BN_asc2bn');
-    end;
     {$ifend}
   end;
 
 
   BN_gcd := LoadLibFunction(ADllHandle, BN_gcd_procname);
-  FuncLoaded := assigned(BN_gcd);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_gcd);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_gcd_allownil)}
+    BN_gcd := @ERR_BN_gcd;
+    {$ifend}
     {$if declared(BN_gcd_introduced)}
     if LibVersion < BN_gcd_introduced then
     begin
       {$if declared(FC_BN_gcd)}
       BN_gcd := @FC_BN_gcd;
-      {$else}
-      {$if not defined(BN_gcd_allownil)}
-      BN_gcd := @ERR_BN_gcd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_gcd_removed)}
@@ -6433,39 +5648,31 @@ begin
     begin
       {$if declared(_BN_gcd)}
       BN_gcd := @_BN_gcd;
-      {$else}
-      {$if not defined(BN_gcd_allownil)}
-      BN_gcd := @ERR_BN_gcd;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_gcd_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_gcd := @ERR_BN_gcd;
+    if FuncLoadError then
       AFailed.Add('BN_gcd');
-    end;
     {$ifend}
   end;
 
 
   BN_kronecker := LoadLibFunction(ADllHandle, BN_kronecker_procname);
-  FuncLoaded := assigned(BN_kronecker);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_kronecker);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_kronecker_allownil)}
+    BN_kronecker := @ERR_BN_kronecker;
+    {$ifend}
     {$if declared(BN_kronecker_introduced)}
     if LibVersion < BN_kronecker_introduced then
     begin
       {$if declared(FC_BN_kronecker)}
       BN_kronecker := @FC_BN_kronecker;
-      {$else}
-      {$if not defined(BN_kronecker_allownil)}
-      BN_kronecker := @ERR_BN_kronecker;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_kronecker_removed)}
@@ -6473,39 +5680,31 @@ begin
     begin
       {$if declared(_BN_kronecker)}
       BN_kronecker := @_BN_kronecker;
-      {$else}
-      {$if not defined(BN_kronecker_allownil)}
-      BN_kronecker := @ERR_BN_kronecker;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_kronecker_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_kronecker := @ERR_BN_kronecker;
+    if FuncLoadError then
       AFailed.Add('BN_kronecker');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_inverse := LoadLibFunction(ADllHandle, BN_mod_inverse_procname);
-  FuncLoaded := assigned(BN_mod_inverse);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_inverse);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_inverse_allownil)}
+    BN_mod_inverse := @ERR_BN_mod_inverse;
+    {$ifend}
     {$if declared(BN_mod_inverse_introduced)}
     if LibVersion < BN_mod_inverse_introduced then
     begin
       {$if declared(FC_BN_mod_inverse)}
       BN_mod_inverse := @FC_BN_mod_inverse;
-      {$else}
-      {$if not defined(BN_mod_inverse_allownil)}
-      BN_mod_inverse := @ERR_BN_mod_inverse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_inverse_removed)}
@@ -6513,39 +5712,31 @@ begin
     begin
       {$if declared(_BN_mod_inverse)}
       BN_mod_inverse := @_BN_mod_inverse;
-      {$else}
-      {$if not defined(BN_mod_inverse_allownil)}
-      BN_mod_inverse := @ERR_BN_mod_inverse;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_inverse_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_inverse := @ERR_BN_mod_inverse;
+    if FuncLoadError then
       AFailed.Add('BN_mod_inverse');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_sqrt := LoadLibFunction(ADllHandle, BN_mod_sqrt_procname);
-  FuncLoaded := assigned(BN_mod_sqrt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_sqrt);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_sqrt_allownil)}
+    BN_mod_sqrt := @ERR_BN_mod_sqrt;
+    {$ifend}
     {$if declared(BN_mod_sqrt_introduced)}
     if LibVersion < BN_mod_sqrt_introduced then
     begin
       {$if declared(FC_BN_mod_sqrt)}
       BN_mod_sqrt := @FC_BN_mod_sqrt;
-      {$else}
-      {$if not defined(BN_mod_sqrt_allownil)}
-      BN_mod_sqrt := @ERR_BN_mod_sqrt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_sqrt_removed)}
@@ -6553,39 +5744,31 @@ begin
     begin
       {$if declared(_BN_mod_sqrt)}
       BN_mod_sqrt := @_BN_mod_sqrt;
-      {$else}
-      {$if not defined(BN_mod_sqrt_allownil)}
-      BN_mod_sqrt := @ERR_BN_mod_sqrt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_sqrt_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_sqrt := @ERR_BN_mod_sqrt;
+    if FuncLoadError then
       AFailed.Add('BN_mod_sqrt');
-    end;
     {$ifend}
   end;
 
 
   BN_consttime_swap := LoadLibFunction(ADllHandle, BN_consttime_swap_procname);
-  FuncLoaded := assigned(BN_consttime_swap);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_consttime_swap);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_consttime_swap_allownil)}
+    BN_consttime_swap := @ERR_BN_consttime_swap;
+    {$ifend}
     {$if declared(BN_consttime_swap_introduced)}
     if LibVersion < BN_consttime_swap_introduced then
     begin
       {$if declared(FC_BN_consttime_swap)}
       BN_consttime_swap := @FC_BN_consttime_swap;
-      {$else}
-      {$if not defined(BN_consttime_swap_allownil)}
-      BN_consttime_swap := @ERR_BN_consttime_swap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_consttime_swap_removed)}
@@ -6593,39 +5776,31 @@ begin
     begin
       {$if declared(_BN_consttime_swap)}
       BN_consttime_swap := @_BN_consttime_swap;
-      {$else}
-      {$if not defined(BN_consttime_swap_allownil)}
-      BN_consttime_swap := @ERR_BN_consttime_swap;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_consttime_swap_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_consttime_swap := @ERR_BN_consttime_swap;
+    if FuncLoadError then
       AFailed.Add('BN_consttime_swap');
-    end;
     {$ifend}
   end;
 
 
   BN_generate_prime_ex := LoadLibFunction(ADllHandle, BN_generate_prime_ex_procname);
-  FuncLoaded := assigned(BN_generate_prime_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_generate_prime_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_generate_prime_ex_allownil)}
+    BN_generate_prime_ex := @ERR_BN_generate_prime_ex;
+    {$ifend}
     {$if declared(BN_generate_prime_ex_introduced)}
     if LibVersion < BN_generate_prime_ex_introduced then
     begin
       {$if declared(FC_BN_generate_prime_ex)}
       BN_generate_prime_ex := @FC_BN_generate_prime_ex;
-      {$else}
-      {$if not defined(BN_generate_prime_ex_allownil)}
-      BN_generate_prime_ex := @ERR_BN_generate_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_generate_prime_ex_removed)}
@@ -6633,39 +5808,31 @@ begin
     begin
       {$if declared(_BN_generate_prime_ex)}
       BN_generate_prime_ex := @_BN_generate_prime_ex;
-      {$else}
-      {$if not defined(BN_generate_prime_ex_allownil)}
-      BN_generate_prime_ex := @ERR_BN_generate_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_generate_prime_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_generate_prime_ex := @ERR_BN_generate_prime_ex;
+    if FuncLoadError then
       AFailed.Add('BN_generate_prime_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_is_prime_ex := LoadLibFunction(ADllHandle, BN_is_prime_ex_procname);
-  FuncLoaded := assigned(BN_is_prime_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_prime_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_prime_ex_allownil)}
+    BN_is_prime_ex := @ERR_BN_is_prime_ex;
+    {$ifend}
     {$if declared(BN_is_prime_ex_introduced)}
     if LibVersion < BN_is_prime_ex_introduced then
     begin
       {$if declared(FC_BN_is_prime_ex)}
       BN_is_prime_ex := @FC_BN_is_prime_ex;
-      {$else}
-      {$if not defined(BN_is_prime_ex_allownil)}
-      BN_is_prime_ex := @ERR_BN_is_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_prime_ex_removed)}
@@ -6673,39 +5840,31 @@ begin
     begin
       {$if declared(_BN_is_prime_ex)}
       BN_is_prime_ex := @_BN_is_prime_ex;
-      {$else}
-      {$if not defined(BN_is_prime_ex_allownil)}
-      BN_is_prime_ex := @ERR_BN_is_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_prime_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_prime_ex := @ERR_BN_is_prime_ex;
+    if FuncLoadError then
       AFailed.Add('BN_is_prime_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_is_prime_fasttest_ex := LoadLibFunction(ADllHandle, BN_is_prime_fasttest_ex_procname);
-  FuncLoaded := assigned(BN_is_prime_fasttest_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_is_prime_fasttest_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_is_prime_fasttest_ex_allownil)}
+    BN_is_prime_fasttest_ex := @ERR_BN_is_prime_fasttest_ex;
+    {$ifend}
     {$if declared(BN_is_prime_fasttest_ex_introduced)}
     if LibVersion < BN_is_prime_fasttest_ex_introduced then
     begin
       {$if declared(FC_BN_is_prime_fasttest_ex)}
       BN_is_prime_fasttest_ex := @FC_BN_is_prime_fasttest_ex;
-      {$else}
-      {$if not defined(BN_is_prime_fasttest_ex_allownil)}
-      BN_is_prime_fasttest_ex := @ERR_BN_is_prime_fasttest_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_is_prime_fasttest_ex_removed)}
@@ -6713,39 +5872,31 @@ begin
     begin
       {$if declared(_BN_is_prime_fasttest_ex)}
       BN_is_prime_fasttest_ex := @_BN_is_prime_fasttest_ex;
-      {$else}
-      {$if not defined(BN_is_prime_fasttest_ex_allownil)}
-      BN_is_prime_fasttest_ex := @ERR_BN_is_prime_fasttest_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_is_prime_fasttest_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_is_prime_fasttest_ex := @ERR_BN_is_prime_fasttest_ex;
+    if FuncLoadError then
       AFailed.Add('BN_is_prime_fasttest_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_X931_generate_Xpq := LoadLibFunction(ADllHandle, BN_X931_generate_Xpq_procname);
-  FuncLoaded := assigned(BN_X931_generate_Xpq);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_X931_generate_Xpq);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_X931_generate_Xpq_allownil)}
+    BN_X931_generate_Xpq := @ERR_BN_X931_generate_Xpq;
+    {$ifend}
     {$if declared(BN_X931_generate_Xpq_introduced)}
     if LibVersion < BN_X931_generate_Xpq_introduced then
     begin
       {$if declared(FC_BN_X931_generate_Xpq)}
       BN_X931_generate_Xpq := @FC_BN_X931_generate_Xpq;
-      {$else}
-      {$if not defined(BN_X931_generate_Xpq_allownil)}
-      BN_X931_generate_Xpq := @ERR_BN_X931_generate_Xpq;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_X931_generate_Xpq_removed)}
@@ -6753,39 +5904,31 @@ begin
     begin
       {$if declared(_BN_X931_generate_Xpq)}
       BN_X931_generate_Xpq := @_BN_X931_generate_Xpq;
-      {$else}
-      {$if not defined(BN_X931_generate_Xpq_allownil)}
-      BN_X931_generate_Xpq := @ERR_BN_X931_generate_Xpq;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_X931_generate_Xpq_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_X931_generate_Xpq := @ERR_BN_X931_generate_Xpq;
+    if FuncLoadError then
       AFailed.Add('BN_X931_generate_Xpq');
-    end;
     {$ifend}
   end;
 
 
   BN_X931_derive_prime_ex := LoadLibFunction(ADllHandle, BN_X931_derive_prime_ex_procname);
-  FuncLoaded := assigned(BN_X931_derive_prime_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_X931_derive_prime_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_X931_derive_prime_ex_allownil)}
+    BN_X931_derive_prime_ex := @ERR_BN_X931_derive_prime_ex;
+    {$ifend}
     {$if declared(BN_X931_derive_prime_ex_introduced)}
     if LibVersion < BN_X931_derive_prime_ex_introduced then
     begin
       {$if declared(FC_BN_X931_derive_prime_ex)}
       BN_X931_derive_prime_ex := @FC_BN_X931_derive_prime_ex;
-      {$else}
-      {$if not defined(BN_X931_derive_prime_ex_allownil)}
-      BN_X931_derive_prime_ex := @ERR_BN_X931_derive_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_X931_derive_prime_ex_removed)}
@@ -6793,39 +5936,31 @@ begin
     begin
       {$if declared(_BN_X931_derive_prime_ex)}
       BN_X931_derive_prime_ex := @_BN_X931_derive_prime_ex;
-      {$else}
-      {$if not defined(BN_X931_derive_prime_ex_allownil)}
-      BN_X931_derive_prime_ex := @ERR_BN_X931_derive_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_X931_derive_prime_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_X931_derive_prime_ex := @ERR_BN_X931_derive_prime_ex;
+    if FuncLoadError then
       AFailed.Add('BN_X931_derive_prime_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_X931_generate_prime_ex := LoadLibFunction(ADllHandle, BN_X931_generate_prime_ex_procname);
-  FuncLoaded := assigned(BN_X931_generate_prime_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_X931_generate_prime_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_X931_generate_prime_ex_allownil)}
+    BN_X931_generate_prime_ex := @ERR_BN_X931_generate_prime_ex;
+    {$ifend}
     {$if declared(BN_X931_generate_prime_ex_introduced)}
     if LibVersion < BN_X931_generate_prime_ex_introduced then
     begin
       {$if declared(FC_BN_X931_generate_prime_ex)}
       BN_X931_generate_prime_ex := @FC_BN_X931_generate_prime_ex;
-      {$else}
-      {$if not defined(BN_X931_generate_prime_ex_allownil)}
-      BN_X931_generate_prime_ex := @ERR_BN_X931_generate_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_X931_generate_prime_ex_removed)}
@@ -6833,39 +5968,31 @@ begin
     begin
       {$if declared(_BN_X931_generate_prime_ex)}
       BN_X931_generate_prime_ex := @_BN_X931_generate_prime_ex;
-      {$else}
-      {$if not defined(BN_X931_generate_prime_ex_allownil)}
-      BN_X931_generate_prime_ex := @ERR_BN_X931_generate_prime_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_X931_generate_prime_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_X931_generate_prime_ex := @ERR_BN_X931_generate_prime_ex;
+    if FuncLoadError then
       AFailed.Add('BN_X931_generate_prime_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_MONT_CTX_new := LoadLibFunction(ADllHandle, BN_MONT_CTX_new_procname);
-  FuncLoaded := assigned(BN_MONT_CTX_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_MONT_CTX_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_MONT_CTX_new_allownil)}
+    BN_MONT_CTX_new := @ERR_BN_MONT_CTX_new;
+    {$ifend}
     {$if declared(BN_MONT_CTX_new_introduced)}
     if LibVersion < BN_MONT_CTX_new_introduced then
     begin
       {$if declared(FC_BN_MONT_CTX_new)}
       BN_MONT_CTX_new := @FC_BN_MONT_CTX_new;
-      {$else}
-      {$if not defined(BN_MONT_CTX_new_allownil)}
-      BN_MONT_CTX_new := @ERR_BN_MONT_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_MONT_CTX_new_removed)}
@@ -6873,39 +6000,31 @@ begin
     begin
       {$if declared(_BN_MONT_CTX_new)}
       BN_MONT_CTX_new := @_BN_MONT_CTX_new;
-      {$else}
-      {$if not defined(BN_MONT_CTX_new_allownil)}
-      BN_MONT_CTX_new := @ERR_BN_MONT_CTX_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_MONT_CTX_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_MONT_CTX_new := @ERR_BN_MONT_CTX_new;
+    if FuncLoadError then
       AFailed.Add('BN_MONT_CTX_new');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_mul_montgomery := LoadLibFunction(ADllHandle, BN_mod_mul_montgomery_procname);
-  FuncLoaded := assigned(BN_mod_mul_montgomery);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_mul_montgomery);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_mul_montgomery_allownil)}
+    BN_mod_mul_montgomery := @ERR_BN_mod_mul_montgomery;
+    {$ifend}
     {$if declared(BN_mod_mul_montgomery_introduced)}
     if LibVersion < BN_mod_mul_montgomery_introduced then
     begin
       {$if declared(FC_BN_mod_mul_montgomery)}
       BN_mod_mul_montgomery := @FC_BN_mod_mul_montgomery;
-      {$else}
-      {$if not defined(BN_mod_mul_montgomery_allownil)}
-      BN_mod_mul_montgomery := @ERR_BN_mod_mul_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_mul_montgomery_removed)}
@@ -6913,39 +6032,31 @@ begin
     begin
       {$if declared(_BN_mod_mul_montgomery)}
       BN_mod_mul_montgomery := @_BN_mod_mul_montgomery;
-      {$else}
-      {$if not defined(BN_mod_mul_montgomery_allownil)}
-      BN_mod_mul_montgomery := @ERR_BN_mod_mul_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_mul_montgomery_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_mul_montgomery := @ERR_BN_mod_mul_montgomery;
+    if FuncLoadError then
       AFailed.Add('BN_mod_mul_montgomery');
-    end;
     {$ifend}
   end;
 
 
   BN_to_montgomery := LoadLibFunction(ADllHandle, BN_to_montgomery_procname);
-  FuncLoaded := assigned(BN_to_montgomery);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_to_montgomery);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_to_montgomery_allownil)}
+    BN_to_montgomery := @ERR_BN_to_montgomery;
+    {$ifend}
     {$if declared(BN_to_montgomery_introduced)}
     if LibVersion < BN_to_montgomery_introduced then
     begin
       {$if declared(FC_BN_to_montgomery)}
       BN_to_montgomery := @FC_BN_to_montgomery;
-      {$else}
-      {$if not defined(BN_to_montgomery_allownil)}
-      BN_to_montgomery := @ERR_BN_to_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_to_montgomery_removed)}
@@ -6953,39 +6064,31 @@ begin
     begin
       {$if declared(_BN_to_montgomery)}
       BN_to_montgomery := @_BN_to_montgomery;
-      {$else}
-      {$if not defined(BN_to_montgomery_allownil)}
-      BN_to_montgomery := @ERR_BN_to_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_to_montgomery_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_to_montgomery := @ERR_BN_to_montgomery;
+    if FuncLoadError then
       AFailed.Add('BN_to_montgomery');
-    end;
     {$ifend}
   end;
 
 
   BN_from_montgomery := LoadLibFunction(ADllHandle, BN_from_montgomery_procname);
-  FuncLoaded := assigned(BN_from_montgomery);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_from_montgomery);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_from_montgomery_allownil)}
+    BN_from_montgomery := @ERR_BN_from_montgomery;
+    {$ifend}
     {$if declared(BN_from_montgomery_introduced)}
     if LibVersion < BN_from_montgomery_introduced then
     begin
       {$if declared(FC_BN_from_montgomery)}
       BN_from_montgomery := @FC_BN_from_montgomery;
-      {$else}
-      {$if not defined(BN_from_montgomery_allownil)}
-      BN_from_montgomery := @ERR_BN_from_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_from_montgomery_removed)}
@@ -6993,39 +6096,31 @@ begin
     begin
       {$if declared(_BN_from_montgomery)}
       BN_from_montgomery := @_BN_from_montgomery;
-      {$else}
-      {$if not defined(BN_from_montgomery_allownil)}
-      BN_from_montgomery := @ERR_BN_from_montgomery;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_from_montgomery_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_from_montgomery := @ERR_BN_from_montgomery;
+    if FuncLoadError then
       AFailed.Add('BN_from_montgomery');
-    end;
     {$ifend}
   end;
 
 
   BN_MONT_CTX_free := LoadLibFunction(ADllHandle, BN_MONT_CTX_free_procname);
-  FuncLoaded := assigned(BN_MONT_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_MONT_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_MONT_CTX_free_allownil)}
+    BN_MONT_CTX_free := @ERR_BN_MONT_CTX_free;
+    {$ifend}
     {$if declared(BN_MONT_CTX_free_introduced)}
     if LibVersion < BN_MONT_CTX_free_introduced then
     begin
       {$if declared(FC_BN_MONT_CTX_free)}
       BN_MONT_CTX_free := @FC_BN_MONT_CTX_free;
-      {$else}
-      {$if not defined(BN_MONT_CTX_free_allownil)}
-      BN_MONT_CTX_free := @ERR_BN_MONT_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_MONT_CTX_free_removed)}
@@ -7033,39 +6128,31 @@ begin
     begin
       {$if declared(_BN_MONT_CTX_free)}
       BN_MONT_CTX_free := @_BN_MONT_CTX_free;
-      {$else}
-      {$if not defined(BN_MONT_CTX_free_allownil)}
-      BN_MONT_CTX_free := @ERR_BN_MONT_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_MONT_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_MONT_CTX_free := @ERR_BN_MONT_CTX_free;
+    if FuncLoadError then
       AFailed.Add('BN_MONT_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   BN_MONT_CTX_set := LoadLibFunction(ADllHandle, BN_MONT_CTX_set_procname);
-  FuncLoaded := assigned(BN_MONT_CTX_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_MONT_CTX_set);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_MONT_CTX_set_allownil)}
+    BN_MONT_CTX_set := @ERR_BN_MONT_CTX_set;
+    {$ifend}
     {$if declared(BN_MONT_CTX_set_introduced)}
     if LibVersion < BN_MONT_CTX_set_introduced then
     begin
       {$if declared(FC_BN_MONT_CTX_set)}
       BN_MONT_CTX_set := @FC_BN_MONT_CTX_set;
-      {$else}
-      {$if not defined(BN_MONT_CTX_set_allownil)}
-      BN_MONT_CTX_set := @ERR_BN_MONT_CTX_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_MONT_CTX_set_removed)}
@@ -7073,39 +6160,31 @@ begin
     begin
       {$if declared(_BN_MONT_CTX_set)}
       BN_MONT_CTX_set := @_BN_MONT_CTX_set;
-      {$else}
-      {$if not defined(BN_MONT_CTX_set_allownil)}
-      BN_MONT_CTX_set := @ERR_BN_MONT_CTX_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_MONT_CTX_set_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_MONT_CTX_set := @ERR_BN_MONT_CTX_set;
+    if FuncLoadError then
       AFailed.Add('BN_MONT_CTX_set');
-    end;
     {$ifend}
   end;
 
 
   BN_MONT_CTX_copy := LoadLibFunction(ADllHandle, BN_MONT_CTX_copy_procname);
-  FuncLoaded := assigned(BN_MONT_CTX_copy);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_MONT_CTX_copy);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_MONT_CTX_copy_allownil)}
+    BN_MONT_CTX_copy := @ERR_BN_MONT_CTX_copy;
+    {$ifend}
     {$if declared(BN_MONT_CTX_copy_introduced)}
     if LibVersion < BN_MONT_CTX_copy_introduced then
     begin
       {$if declared(FC_BN_MONT_CTX_copy)}
       BN_MONT_CTX_copy := @FC_BN_MONT_CTX_copy;
-      {$else}
-      {$if not defined(BN_MONT_CTX_copy_allownil)}
-      BN_MONT_CTX_copy := @ERR_BN_MONT_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_MONT_CTX_copy_removed)}
@@ -7113,39 +6192,31 @@ begin
     begin
       {$if declared(_BN_MONT_CTX_copy)}
       BN_MONT_CTX_copy := @_BN_MONT_CTX_copy;
-      {$else}
-      {$if not defined(BN_MONT_CTX_copy_allownil)}
-      BN_MONT_CTX_copy := @ERR_BN_MONT_CTX_copy;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_MONT_CTX_copy_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_MONT_CTX_copy := @ERR_BN_MONT_CTX_copy;
+    if FuncLoadError then
       AFailed.Add('BN_MONT_CTX_copy');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_new := LoadLibFunction(ADllHandle, BN_BLINDING_new_procname);
-  FuncLoaded := assigned(BN_BLINDING_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_new);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_new_allownil)}
+    BN_BLINDING_new := @ERR_BN_BLINDING_new;
+    {$ifend}
     {$if declared(BN_BLINDING_new_introduced)}
     if LibVersion < BN_BLINDING_new_introduced then
     begin
       {$if declared(FC_BN_BLINDING_new)}
       BN_BLINDING_new := @FC_BN_BLINDING_new;
-      {$else}
-      {$if not defined(BN_BLINDING_new_allownil)}
-      BN_BLINDING_new := @ERR_BN_BLINDING_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_new_removed)}
@@ -7153,39 +6224,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_new)}
       BN_BLINDING_new := @_BN_BLINDING_new;
-      {$else}
-      {$if not defined(BN_BLINDING_new_allownil)}
-      BN_BLINDING_new := @ERR_BN_BLINDING_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_new_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_new := @ERR_BN_BLINDING_new;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_new');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_free := LoadLibFunction(ADllHandle, BN_BLINDING_free_procname);
-  FuncLoaded := assigned(BN_BLINDING_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_free_allownil)}
+    BN_BLINDING_free := @ERR_BN_BLINDING_free;
+    {$ifend}
     {$if declared(BN_BLINDING_free_introduced)}
     if LibVersion < BN_BLINDING_free_introduced then
     begin
       {$if declared(FC_BN_BLINDING_free)}
       BN_BLINDING_free := @FC_BN_BLINDING_free;
-      {$else}
-      {$if not defined(BN_BLINDING_free_allownil)}
-      BN_BLINDING_free := @ERR_BN_BLINDING_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_free_removed)}
@@ -7193,39 +6256,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_free)}
       BN_BLINDING_free := @_BN_BLINDING_free;
-      {$else}
-      {$if not defined(BN_BLINDING_free_allownil)}
-      BN_BLINDING_free := @ERR_BN_BLINDING_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_free := @ERR_BN_BLINDING_free;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_free');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_update := LoadLibFunction(ADllHandle, BN_BLINDING_update_procname);
-  FuncLoaded := assigned(BN_BLINDING_update);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_update);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_update_allownil)}
+    BN_BLINDING_update := @ERR_BN_BLINDING_update;
+    {$ifend}
     {$if declared(BN_BLINDING_update_introduced)}
     if LibVersion < BN_BLINDING_update_introduced then
     begin
       {$if declared(FC_BN_BLINDING_update)}
       BN_BLINDING_update := @FC_BN_BLINDING_update;
-      {$else}
-      {$if not defined(BN_BLINDING_update_allownil)}
-      BN_BLINDING_update := @ERR_BN_BLINDING_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_update_removed)}
@@ -7233,39 +6288,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_update)}
       BN_BLINDING_update := @_BN_BLINDING_update;
-      {$else}
-      {$if not defined(BN_BLINDING_update_allownil)}
-      BN_BLINDING_update := @ERR_BN_BLINDING_update;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_update_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_update := @ERR_BN_BLINDING_update;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_update');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_convert := LoadLibFunction(ADllHandle, BN_BLINDING_convert_procname);
-  FuncLoaded := assigned(BN_BLINDING_convert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_convert);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_convert_allownil)}
+    BN_BLINDING_convert := @ERR_BN_BLINDING_convert;
+    {$ifend}
     {$if declared(BN_BLINDING_convert_introduced)}
     if LibVersion < BN_BLINDING_convert_introduced then
     begin
       {$if declared(FC_BN_BLINDING_convert)}
       BN_BLINDING_convert := @FC_BN_BLINDING_convert;
-      {$else}
-      {$if not defined(BN_BLINDING_convert_allownil)}
-      BN_BLINDING_convert := @ERR_BN_BLINDING_convert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_convert_removed)}
@@ -7273,39 +6320,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_convert)}
       BN_BLINDING_convert := @_BN_BLINDING_convert;
-      {$else}
-      {$if not defined(BN_BLINDING_convert_allownil)}
-      BN_BLINDING_convert := @ERR_BN_BLINDING_convert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_convert_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_convert := @ERR_BN_BLINDING_convert;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_convert');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_invert := LoadLibFunction(ADllHandle, BN_BLINDING_invert_procname);
-  FuncLoaded := assigned(BN_BLINDING_invert);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_invert);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_invert_allownil)}
+    BN_BLINDING_invert := @ERR_BN_BLINDING_invert;
+    {$ifend}
     {$if declared(BN_BLINDING_invert_introduced)}
     if LibVersion < BN_BLINDING_invert_introduced then
     begin
       {$if declared(FC_BN_BLINDING_invert)}
       BN_BLINDING_invert := @FC_BN_BLINDING_invert;
-      {$else}
-      {$if not defined(BN_BLINDING_invert_allownil)}
-      BN_BLINDING_invert := @ERR_BN_BLINDING_invert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_invert_removed)}
@@ -7313,39 +6352,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_invert)}
       BN_BLINDING_invert := @_BN_BLINDING_invert;
-      {$else}
-      {$if not defined(BN_BLINDING_invert_allownil)}
-      BN_BLINDING_invert := @ERR_BN_BLINDING_invert;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_invert_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_invert := @ERR_BN_BLINDING_invert;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_invert');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_convert_ex := LoadLibFunction(ADllHandle, BN_BLINDING_convert_ex_procname);
-  FuncLoaded := assigned(BN_BLINDING_convert_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_convert_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_convert_ex_allownil)}
+    BN_BLINDING_convert_ex := @ERR_BN_BLINDING_convert_ex;
+    {$ifend}
     {$if declared(BN_BLINDING_convert_ex_introduced)}
     if LibVersion < BN_BLINDING_convert_ex_introduced then
     begin
       {$if declared(FC_BN_BLINDING_convert_ex)}
       BN_BLINDING_convert_ex := @FC_BN_BLINDING_convert_ex;
-      {$else}
-      {$if not defined(BN_BLINDING_convert_ex_allownil)}
-      BN_BLINDING_convert_ex := @ERR_BN_BLINDING_convert_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_convert_ex_removed)}
@@ -7353,39 +6384,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_convert_ex)}
       BN_BLINDING_convert_ex := @_BN_BLINDING_convert_ex;
-      {$else}
-      {$if not defined(BN_BLINDING_convert_ex_allownil)}
-      BN_BLINDING_convert_ex := @ERR_BN_BLINDING_convert_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_convert_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_convert_ex := @ERR_BN_BLINDING_convert_ex;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_convert_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_invert_ex := LoadLibFunction(ADllHandle, BN_BLINDING_invert_ex_procname);
-  FuncLoaded := assigned(BN_BLINDING_invert_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_invert_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_invert_ex_allownil)}
+    BN_BLINDING_invert_ex := @ERR_BN_BLINDING_invert_ex;
+    {$ifend}
     {$if declared(BN_BLINDING_invert_ex_introduced)}
     if LibVersion < BN_BLINDING_invert_ex_introduced then
     begin
       {$if declared(FC_BN_BLINDING_invert_ex)}
       BN_BLINDING_invert_ex := @FC_BN_BLINDING_invert_ex;
-      {$else}
-      {$if not defined(BN_BLINDING_invert_ex_allownil)}
-      BN_BLINDING_invert_ex := @ERR_BN_BLINDING_invert_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_invert_ex_removed)}
@@ -7393,39 +6416,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_invert_ex)}
       BN_BLINDING_invert_ex := @_BN_BLINDING_invert_ex;
-      {$else}
-      {$if not defined(BN_BLINDING_invert_ex_allownil)}
-      BN_BLINDING_invert_ex := @ERR_BN_BLINDING_invert_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_invert_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_invert_ex := @ERR_BN_BLINDING_invert_ex;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_invert_ex');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_is_current_thread := LoadLibFunction(ADllHandle, BN_BLINDING_is_current_thread_procname);
-  FuncLoaded := assigned(BN_BLINDING_is_current_thread);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_is_current_thread);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_is_current_thread_allownil)}
+    BN_BLINDING_is_current_thread := @ERR_BN_BLINDING_is_current_thread;
+    {$ifend}
     {$if declared(BN_BLINDING_is_current_thread_introduced)}
     if LibVersion < BN_BLINDING_is_current_thread_introduced then
     begin
       {$if declared(FC_BN_BLINDING_is_current_thread)}
       BN_BLINDING_is_current_thread := @FC_BN_BLINDING_is_current_thread;
-      {$else}
-      {$if not defined(BN_BLINDING_is_current_thread_allownil)}
-      BN_BLINDING_is_current_thread := @ERR_BN_BLINDING_is_current_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_is_current_thread_removed)}
@@ -7433,39 +6448,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_is_current_thread)}
       BN_BLINDING_is_current_thread := @_BN_BLINDING_is_current_thread;
-      {$else}
-      {$if not defined(BN_BLINDING_is_current_thread_allownil)}
-      BN_BLINDING_is_current_thread := @ERR_BN_BLINDING_is_current_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_is_current_thread_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_is_current_thread := @ERR_BN_BLINDING_is_current_thread;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_is_current_thread');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_set_current_thread := LoadLibFunction(ADllHandle, BN_BLINDING_set_current_thread_procname);
-  FuncLoaded := assigned(BN_BLINDING_set_current_thread);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_set_current_thread);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_set_current_thread_allownil)}
+    BN_BLINDING_set_current_thread := @ERR_BN_BLINDING_set_current_thread;
+    {$ifend}
     {$if declared(BN_BLINDING_set_current_thread_introduced)}
     if LibVersion < BN_BLINDING_set_current_thread_introduced then
     begin
       {$if declared(FC_BN_BLINDING_set_current_thread)}
       BN_BLINDING_set_current_thread := @FC_BN_BLINDING_set_current_thread;
-      {$else}
-      {$if not defined(BN_BLINDING_set_current_thread_allownil)}
-      BN_BLINDING_set_current_thread := @ERR_BN_BLINDING_set_current_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_set_current_thread_removed)}
@@ -7473,39 +6480,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_set_current_thread)}
       BN_BLINDING_set_current_thread := @_BN_BLINDING_set_current_thread;
-      {$else}
-      {$if not defined(BN_BLINDING_set_current_thread_allownil)}
-      BN_BLINDING_set_current_thread := @ERR_BN_BLINDING_set_current_thread;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_set_current_thread_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_set_current_thread := @ERR_BN_BLINDING_set_current_thread;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_set_current_thread');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_lock := LoadLibFunction(ADllHandle, BN_BLINDING_lock_procname);
-  FuncLoaded := assigned(BN_BLINDING_lock);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_lock);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_lock_allownil)}
+    BN_BLINDING_lock := @ERR_BN_BLINDING_lock;
+    {$ifend}
     {$if declared(BN_BLINDING_lock_introduced)}
     if LibVersion < BN_BLINDING_lock_introduced then
     begin
       {$if declared(FC_BN_BLINDING_lock)}
       BN_BLINDING_lock := @FC_BN_BLINDING_lock;
-      {$else}
-      {$if not defined(BN_BLINDING_lock_allownil)}
-      BN_BLINDING_lock := @ERR_BN_BLINDING_lock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_lock_removed)}
@@ -7513,39 +6512,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_lock)}
       BN_BLINDING_lock := @_BN_BLINDING_lock;
-      {$else}
-      {$if not defined(BN_BLINDING_lock_allownil)}
-      BN_BLINDING_lock := @ERR_BN_BLINDING_lock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_lock_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_lock := @ERR_BN_BLINDING_lock;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_lock');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_unlock := LoadLibFunction(ADllHandle, BN_BLINDING_unlock_procname);
-  FuncLoaded := assigned(BN_BLINDING_unlock);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_unlock);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_unlock_allownil)}
+    BN_BLINDING_unlock := @ERR_BN_BLINDING_unlock;
+    {$ifend}
     {$if declared(BN_BLINDING_unlock_introduced)}
     if LibVersion < BN_BLINDING_unlock_introduced then
     begin
       {$if declared(FC_BN_BLINDING_unlock)}
       BN_BLINDING_unlock := @FC_BN_BLINDING_unlock;
-      {$else}
-      {$if not defined(BN_BLINDING_unlock_allownil)}
-      BN_BLINDING_unlock := @ERR_BN_BLINDING_unlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_unlock_removed)}
@@ -7553,39 +6544,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_unlock)}
       BN_BLINDING_unlock := @_BN_BLINDING_unlock;
-      {$else}
-      {$if not defined(BN_BLINDING_unlock_allownil)}
-      BN_BLINDING_unlock := @ERR_BN_BLINDING_unlock;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_unlock_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_unlock := @ERR_BN_BLINDING_unlock;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_unlock');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_get_flags := LoadLibFunction(ADllHandle, BN_BLINDING_get_flags_procname);
-  FuncLoaded := assigned(BN_BLINDING_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_get_flags_allownil)}
+    BN_BLINDING_get_flags := @ERR_BN_BLINDING_get_flags;
+    {$ifend}
     {$if declared(BN_BLINDING_get_flags_introduced)}
     if LibVersion < BN_BLINDING_get_flags_introduced then
     begin
       {$if declared(FC_BN_BLINDING_get_flags)}
       BN_BLINDING_get_flags := @FC_BN_BLINDING_get_flags;
-      {$else}
-      {$if not defined(BN_BLINDING_get_flags_allownil)}
-      BN_BLINDING_get_flags := @ERR_BN_BLINDING_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_get_flags_removed)}
@@ -7593,39 +6576,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_get_flags)}
       BN_BLINDING_get_flags := @_BN_BLINDING_get_flags;
-      {$else}
-      {$if not defined(BN_BLINDING_get_flags_allownil)}
-      BN_BLINDING_get_flags := @ERR_BN_BLINDING_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_get_flags := @ERR_BN_BLINDING_get_flags;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_get_flags');
-    end;
     {$ifend}
   end;
 
 
   BN_BLINDING_set_flags := LoadLibFunction(ADllHandle, BN_BLINDING_set_flags_procname);
-  FuncLoaded := assigned(BN_BLINDING_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_BLINDING_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_BLINDING_set_flags_allownil)}
+    BN_BLINDING_set_flags := @ERR_BN_BLINDING_set_flags;
+    {$ifend}
     {$if declared(BN_BLINDING_set_flags_introduced)}
     if LibVersion < BN_BLINDING_set_flags_introduced then
     begin
       {$if declared(FC_BN_BLINDING_set_flags)}
       BN_BLINDING_set_flags := @FC_BN_BLINDING_set_flags;
-      {$else}
-      {$if not defined(BN_BLINDING_set_flags_allownil)}
-      BN_BLINDING_set_flags := @ERR_BN_BLINDING_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_BLINDING_set_flags_removed)}
@@ -7633,39 +6608,31 @@ begin
     begin
       {$if declared(_BN_BLINDING_set_flags)}
       BN_BLINDING_set_flags := @_BN_BLINDING_set_flags;
-      {$else}
-      {$if not defined(BN_BLINDING_set_flags_allownil)}
-      BN_BLINDING_set_flags := @ERR_BN_BLINDING_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_BLINDING_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_BLINDING_set_flags := @ERR_BN_BLINDING_set_flags;
+    if FuncLoadError then
       AFailed.Add('BN_BLINDING_set_flags');
-    end;
     {$ifend}
   end;
 
 
   BN_RECP_CTX_free := LoadLibFunction(ADllHandle, BN_RECP_CTX_free_procname);
-  FuncLoaded := assigned(BN_RECP_CTX_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_RECP_CTX_free);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_RECP_CTX_free_allownil)}
+    BN_RECP_CTX_free := @ERR_BN_RECP_CTX_free;
+    {$ifend}
     {$if declared(BN_RECP_CTX_free_introduced)}
     if LibVersion < BN_RECP_CTX_free_introduced then
     begin
       {$if declared(FC_BN_RECP_CTX_free)}
       BN_RECP_CTX_free := @FC_BN_RECP_CTX_free;
-      {$else}
-      {$if not defined(BN_RECP_CTX_free_allownil)}
-      BN_RECP_CTX_free := @ERR_BN_RECP_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_RECP_CTX_free_removed)}
@@ -7673,39 +6640,31 @@ begin
     begin
       {$if declared(_BN_RECP_CTX_free)}
       BN_RECP_CTX_free := @_BN_RECP_CTX_free;
-      {$else}
-      {$if not defined(BN_RECP_CTX_free_allownil)}
-      BN_RECP_CTX_free := @ERR_BN_RECP_CTX_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_RECP_CTX_free_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_RECP_CTX_free := @ERR_BN_RECP_CTX_free;
+    if FuncLoadError then
       AFailed.Add('BN_RECP_CTX_free');
-    end;
     {$ifend}
   end;
 
 
   BN_RECP_CTX_set := LoadLibFunction(ADllHandle, BN_RECP_CTX_set_procname);
-  FuncLoaded := assigned(BN_RECP_CTX_set);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_RECP_CTX_set);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_RECP_CTX_set_allownil)}
+    BN_RECP_CTX_set := @ERR_BN_RECP_CTX_set;
+    {$ifend}
     {$if declared(BN_RECP_CTX_set_introduced)}
     if LibVersion < BN_RECP_CTX_set_introduced then
     begin
       {$if declared(FC_BN_RECP_CTX_set)}
       BN_RECP_CTX_set := @FC_BN_RECP_CTX_set;
-      {$else}
-      {$if not defined(BN_RECP_CTX_set_allownil)}
-      BN_RECP_CTX_set := @ERR_BN_RECP_CTX_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_RECP_CTX_set_removed)}
@@ -7713,39 +6672,31 @@ begin
     begin
       {$if declared(_BN_RECP_CTX_set)}
       BN_RECP_CTX_set := @_BN_RECP_CTX_set;
-      {$else}
-      {$if not defined(BN_RECP_CTX_set_allownil)}
-      BN_RECP_CTX_set := @ERR_BN_RECP_CTX_set;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_RECP_CTX_set_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_RECP_CTX_set := @ERR_BN_RECP_CTX_set;
+    if FuncLoadError then
       AFailed.Add('BN_RECP_CTX_set');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_mul_reciprocal := LoadLibFunction(ADllHandle, BN_mod_mul_reciprocal_procname);
-  FuncLoaded := assigned(BN_mod_mul_reciprocal);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_mul_reciprocal);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_mul_reciprocal_allownil)}
+    BN_mod_mul_reciprocal := @ERR_BN_mod_mul_reciprocal;
+    {$ifend}
     {$if declared(BN_mod_mul_reciprocal_introduced)}
     if LibVersion < BN_mod_mul_reciprocal_introduced then
     begin
       {$if declared(FC_BN_mod_mul_reciprocal)}
       BN_mod_mul_reciprocal := @FC_BN_mod_mul_reciprocal;
-      {$else}
-      {$if not defined(BN_mod_mul_reciprocal_allownil)}
-      BN_mod_mul_reciprocal := @ERR_BN_mod_mul_reciprocal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_mul_reciprocal_removed)}
@@ -7753,39 +6704,31 @@ begin
     begin
       {$if declared(_BN_mod_mul_reciprocal)}
       BN_mod_mul_reciprocal := @_BN_mod_mul_reciprocal;
-      {$else}
-      {$if not defined(BN_mod_mul_reciprocal_allownil)}
-      BN_mod_mul_reciprocal := @ERR_BN_mod_mul_reciprocal;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_mul_reciprocal_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_mul_reciprocal := @ERR_BN_mod_mul_reciprocal;
+    if FuncLoadError then
       AFailed.Add('BN_mod_mul_reciprocal');
-    end;
     {$ifend}
   end;
 
 
   BN_mod_exp_recp := LoadLibFunction(ADllHandle, BN_mod_exp_recp_procname);
-  FuncLoaded := assigned(BN_mod_exp_recp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_mod_exp_recp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_mod_exp_recp_allownil)}
+    BN_mod_exp_recp := @ERR_BN_mod_exp_recp;
+    {$ifend}
     {$if declared(BN_mod_exp_recp_introduced)}
     if LibVersion < BN_mod_exp_recp_introduced then
     begin
       {$if declared(FC_BN_mod_exp_recp)}
       BN_mod_exp_recp := @FC_BN_mod_exp_recp;
-      {$else}
-      {$if not defined(BN_mod_exp_recp_allownil)}
-      BN_mod_exp_recp := @ERR_BN_mod_exp_recp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_mod_exp_recp_removed)}
@@ -7793,39 +6736,31 @@ begin
     begin
       {$if declared(_BN_mod_exp_recp)}
       BN_mod_exp_recp := @_BN_mod_exp_recp;
-      {$else}
-      {$if not defined(BN_mod_exp_recp_allownil)}
-      BN_mod_exp_recp := @ERR_BN_mod_exp_recp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_mod_exp_recp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_mod_exp_recp := @ERR_BN_mod_exp_recp;
+    if FuncLoadError then
       AFailed.Add('BN_mod_exp_recp');
-    end;
     {$ifend}
   end;
 
 
   BN_div_recp := LoadLibFunction(ADllHandle, BN_div_recp_procname);
-  FuncLoaded := assigned(BN_div_recp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_div_recp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_div_recp_allownil)}
+    BN_div_recp := @ERR_BN_div_recp;
+    {$ifend}
     {$if declared(BN_div_recp_introduced)}
     if LibVersion < BN_div_recp_introduced then
     begin
       {$if declared(FC_BN_div_recp)}
       BN_div_recp := @FC_BN_div_recp;
-      {$else}
-      {$if not defined(BN_div_recp_allownil)}
-      BN_div_recp := @ERR_BN_div_recp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_div_recp_removed)}
@@ -7833,39 +6768,31 @@ begin
     begin
       {$if declared(_BN_div_recp)}
       BN_div_recp := @_BN_div_recp;
-      {$else}
-      {$if not defined(BN_div_recp_allownil)}
-      BN_div_recp := @ERR_BN_div_recp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_div_recp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_div_recp := @ERR_BN_div_recp;
+    if FuncLoadError then
       AFailed.Add('BN_div_recp');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_add := LoadLibFunction(ADllHandle, BN_GF2m_add_procname);
-  FuncLoaded := assigned(BN_GF2m_add);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_add);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_add_allownil)}
+    BN_GF2m_add := @ERR_BN_GF2m_add;
+    {$ifend}
     {$if declared(BN_GF2m_add_introduced)}
     if LibVersion < BN_GF2m_add_introduced then
     begin
       {$if declared(FC_BN_GF2m_add)}
       BN_GF2m_add := @FC_BN_GF2m_add;
-      {$else}
-      {$if not defined(BN_GF2m_add_allownil)}
-      BN_GF2m_add := @ERR_BN_GF2m_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_add_removed)}
@@ -7873,39 +6800,31 @@ begin
     begin
       {$if declared(_BN_GF2m_add)}
       BN_GF2m_add := @_BN_GF2m_add;
-      {$else}
-      {$if not defined(BN_GF2m_add_allownil)}
-      BN_GF2m_add := @ERR_BN_GF2m_add;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_add_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_add := @ERR_BN_GF2m_add;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_add');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod := LoadLibFunction(ADllHandle, BN_GF2m_mod_procname);
-  FuncLoaded := assigned(BN_GF2m_mod);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_allownil)}
+    BN_GF2m_mod := @ERR_BN_GF2m_mod;
+    {$ifend}
     {$if declared(BN_GF2m_mod_introduced)}
     if LibVersion < BN_GF2m_mod_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod)}
       BN_GF2m_mod := @FC_BN_GF2m_mod;
-      {$else}
-      {$if not defined(BN_GF2m_mod_allownil)}
-      BN_GF2m_mod := @ERR_BN_GF2m_mod;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_removed)}
@@ -7913,39 +6832,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod)}
       BN_GF2m_mod := @_BN_GF2m_mod;
-      {$else}
-      {$if not defined(BN_GF2m_mod_allownil)}
-      BN_GF2m_mod := @ERR_BN_GF2m_mod;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod := @ERR_BN_GF2m_mod;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_mul := LoadLibFunction(ADllHandle, BN_GF2m_mod_mul_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_mul);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_mul);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_mul_allownil)}
+    BN_GF2m_mod_mul := @ERR_BN_GF2m_mod_mul;
+    {$ifend}
     {$if declared(BN_GF2m_mod_mul_introduced)}
     if LibVersion < BN_GF2m_mod_mul_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_mul)}
       BN_GF2m_mod_mul := @FC_BN_GF2m_mod_mul;
-      {$else}
-      {$if not defined(BN_GF2m_mod_mul_allownil)}
-      BN_GF2m_mod_mul := @ERR_BN_GF2m_mod_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_mul_removed)}
@@ -7953,39 +6864,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_mul)}
       BN_GF2m_mod_mul := @_BN_GF2m_mod_mul;
-      {$else}
-      {$if not defined(BN_GF2m_mod_mul_allownil)}
-      BN_GF2m_mod_mul := @ERR_BN_GF2m_mod_mul;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_mul_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_mul := @ERR_BN_GF2m_mod_mul;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_mul');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_sqr := LoadLibFunction(ADllHandle, BN_GF2m_mod_sqr_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_sqr);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_sqr);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_sqr_allownil)}
+    BN_GF2m_mod_sqr := @ERR_BN_GF2m_mod_sqr;
+    {$ifend}
     {$if declared(BN_GF2m_mod_sqr_introduced)}
     if LibVersion < BN_GF2m_mod_sqr_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_sqr)}
       BN_GF2m_mod_sqr := @FC_BN_GF2m_mod_sqr;
-      {$else}
-      {$if not defined(BN_GF2m_mod_sqr_allownil)}
-      BN_GF2m_mod_sqr := @ERR_BN_GF2m_mod_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_sqr_removed)}
@@ -7993,39 +6896,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_sqr)}
       BN_GF2m_mod_sqr := @_BN_GF2m_mod_sqr;
-      {$else}
-      {$if not defined(BN_GF2m_mod_sqr_allownil)}
-      BN_GF2m_mod_sqr := @ERR_BN_GF2m_mod_sqr;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_sqr_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_sqr := @ERR_BN_GF2m_mod_sqr;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_sqr');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_inv := LoadLibFunction(ADllHandle, BN_GF2m_mod_inv_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_inv);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_inv);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_inv_allownil)}
+    BN_GF2m_mod_inv := @ERR_BN_GF2m_mod_inv;
+    {$ifend}
     {$if declared(BN_GF2m_mod_inv_introduced)}
     if LibVersion < BN_GF2m_mod_inv_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_inv)}
       BN_GF2m_mod_inv := @FC_BN_GF2m_mod_inv;
-      {$else}
-      {$if not defined(BN_GF2m_mod_inv_allownil)}
-      BN_GF2m_mod_inv := @ERR_BN_GF2m_mod_inv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_inv_removed)}
@@ -8033,39 +6928,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_inv)}
       BN_GF2m_mod_inv := @_BN_GF2m_mod_inv;
-      {$else}
-      {$if not defined(BN_GF2m_mod_inv_allownil)}
-      BN_GF2m_mod_inv := @ERR_BN_GF2m_mod_inv;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_inv_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_inv := @ERR_BN_GF2m_mod_inv;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_inv');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_div := LoadLibFunction(ADllHandle, BN_GF2m_mod_div_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_div);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_div);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_div_allownil)}
+    BN_GF2m_mod_div := @ERR_BN_GF2m_mod_div;
+    {$ifend}
     {$if declared(BN_GF2m_mod_div_introduced)}
     if LibVersion < BN_GF2m_mod_div_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_div)}
       BN_GF2m_mod_div := @FC_BN_GF2m_mod_div;
-      {$else}
-      {$if not defined(BN_GF2m_mod_div_allownil)}
-      BN_GF2m_mod_div := @ERR_BN_GF2m_mod_div;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_div_removed)}
@@ -8073,39 +6960,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_div)}
       BN_GF2m_mod_div := @_BN_GF2m_mod_div;
-      {$else}
-      {$if not defined(BN_GF2m_mod_div_allownil)}
-      BN_GF2m_mod_div := @ERR_BN_GF2m_mod_div;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_div_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_div := @ERR_BN_GF2m_mod_div;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_div');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_exp := LoadLibFunction(ADllHandle, BN_GF2m_mod_exp_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_exp_allownil)}
+    BN_GF2m_mod_exp := @ERR_BN_GF2m_mod_exp;
+    {$ifend}
     {$if declared(BN_GF2m_mod_exp_introduced)}
     if LibVersion < BN_GF2m_mod_exp_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_exp)}
       BN_GF2m_mod_exp := @FC_BN_GF2m_mod_exp;
-      {$else}
-      {$if not defined(BN_GF2m_mod_exp_allownil)}
-      BN_GF2m_mod_exp := @ERR_BN_GF2m_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_exp_removed)}
@@ -8113,39 +6992,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_exp)}
       BN_GF2m_mod_exp := @_BN_GF2m_mod_exp;
-      {$else}
-      {$if not defined(BN_GF2m_mod_exp_allownil)}
-      BN_GF2m_mod_exp := @ERR_BN_GF2m_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_exp := @ERR_BN_GF2m_mod_exp;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_exp');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_sqrt := LoadLibFunction(ADllHandle, BN_GF2m_mod_sqrt_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_sqrt);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_sqrt);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_sqrt_allownil)}
+    BN_GF2m_mod_sqrt := @ERR_BN_GF2m_mod_sqrt;
+    {$ifend}
     {$if declared(BN_GF2m_mod_sqrt_introduced)}
     if LibVersion < BN_GF2m_mod_sqrt_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_sqrt)}
       BN_GF2m_mod_sqrt := @FC_BN_GF2m_mod_sqrt;
-      {$else}
-      {$if not defined(BN_GF2m_mod_sqrt_allownil)}
-      BN_GF2m_mod_sqrt := @ERR_BN_GF2m_mod_sqrt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_sqrt_removed)}
@@ -8153,39 +7024,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_sqrt)}
       BN_GF2m_mod_sqrt := @_BN_GF2m_mod_sqrt;
-      {$else}
-      {$if not defined(BN_GF2m_mod_sqrt_allownil)}
-      BN_GF2m_mod_sqrt := @ERR_BN_GF2m_mod_sqrt;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_sqrt_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_sqrt := @ERR_BN_GF2m_mod_sqrt;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_sqrt');
-    end;
     {$ifend}
   end;
 
 
   BN_GF2m_mod_solve_quad := LoadLibFunction(ADllHandle, BN_GF2m_mod_solve_quad_procname);
-  FuncLoaded := assigned(BN_GF2m_mod_solve_quad);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_GF2m_mod_solve_quad);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_GF2m_mod_solve_quad_allownil)}
+    BN_GF2m_mod_solve_quad := @ERR_BN_GF2m_mod_solve_quad;
+    {$ifend}
     {$if declared(BN_GF2m_mod_solve_quad_introduced)}
     if LibVersion < BN_GF2m_mod_solve_quad_introduced then
     begin
       {$if declared(FC_BN_GF2m_mod_solve_quad)}
       BN_GF2m_mod_solve_quad := @FC_BN_GF2m_mod_solve_quad;
-      {$else}
-      {$if not defined(BN_GF2m_mod_solve_quad_allownil)}
-      BN_GF2m_mod_solve_quad := @ERR_BN_GF2m_mod_solve_quad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_GF2m_mod_solve_quad_removed)}
@@ -8193,39 +7056,31 @@ begin
     begin
       {$if declared(_BN_GF2m_mod_solve_quad)}
       BN_GF2m_mod_solve_quad := @_BN_GF2m_mod_solve_quad;
-      {$else}
-      {$if not defined(BN_GF2m_mod_solve_quad_allownil)}
-      BN_GF2m_mod_solve_quad := @ERR_BN_GF2m_mod_solve_quad;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_GF2m_mod_solve_quad_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_GF2m_mod_solve_quad := @ERR_BN_GF2m_mod_solve_quad;
+    if FuncLoadError then
       AFailed.Add('BN_GF2m_mod_solve_quad');
-    end;
     {$ifend}
   end;
 
 
   BN_nist_mod_192 := LoadLibFunction(ADllHandle, BN_nist_mod_192_procname);
-  FuncLoaded := assigned(BN_nist_mod_192);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nist_mod_192);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nist_mod_192_allownil)}
+    BN_nist_mod_192 := @ERR_BN_nist_mod_192;
+    {$ifend}
     {$if declared(BN_nist_mod_192_introduced)}
     if LibVersion < BN_nist_mod_192_introduced then
     begin
       {$if declared(FC_BN_nist_mod_192)}
       BN_nist_mod_192 := @FC_BN_nist_mod_192;
-      {$else}
-      {$if not defined(BN_nist_mod_192_allownil)}
-      BN_nist_mod_192 := @ERR_BN_nist_mod_192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nist_mod_192_removed)}
@@ -8233,39 +7088,31 @@ begin
     begin
       {$if declared(_BN_nist_mod_192)}
       BN_nist_mod_192 := @_BN_nist_mod_192;
-      {$else}
-      {$if not defined(BN_nist_mod_192_allownil)}
-      BN_nist_mod_192 := @ERR_BN_nist_mod_192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nist_mod_192_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nist_mod_192 := @ERR_BN_nist_mod_192;
+    if FuncLoadError then
       AFailed.Add('BN_nist_mod_192');
-    end;
     {$ifend}
   end;
 
 
   BN_nist_mod_224 := LoadLibFunction(ADllHandle, BN_nist_mod_224_procname);
-  FuncLoaded := assigned(BN_nist_mod_224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nist_mod_224);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nist_mod_224_allownil)}
+    BN_nist_mod_224 := @ERR_BN_nist_mod_224;
+    {$ifend}
     {$if declared(BN_nist_mod_224_introduced)}
     if LibVersion < BN_nist_mod_224_introduced then
     begin
       {$if declared(FC_BN_nist_mod_224)}
       BN_nist_mod_224 := @FC_BN_nist_mod_224;
-      {$else}
-      {$if not defined(BN_nist_mod_224_allownil)}
-      BN_nist_mod_224 := @ERR_BN_nist_mod_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nist_mod_224_removed)}
@@ -8273,39 +7120,31 @@ begin
     begin
       {$if declared(_BN_nist_mod_224)}
       BN_nist_mod_224 := @_BN_nist_mod_224;
-      {$else}
-      {$if not defined(BN_nist_mod_224_allownil)}
-      BN_nist_mod_224 := @ERR_BN_nist_mod_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nist_mod_224_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nist_mod_224 := @ERR_BN_nist_mod_224;
+    if FuncLoadError then
       AFailed.Add('BN_nist_mod_224');
-    end;
     {$ifend}
   end;
 
 
   BN_nist_mod_256 := LoadLibFunction(ADllHandle, BN_nist_mod_256_procname);
-  FuncLoaded := assigned(BN_nist_mod_256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nist_mod_256);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nist_mod_256_allownil)}
+    BN_nist_mod_256 := @ERR_BN_nist_mod_256;
+    {$ifend}
     {$if declared(BN_nist_mod_256_introduced)}
     if LibVersion < BN_nist_mod_256_introduced then
     begin
       {$if declared(FC_BN_nist_mod_256)}
       BN_nist_mod_256 := @FC_BN_nist_mod_256;
-      {$else}
-      {$if not defined(BN_nist_mod_256_allownil)}
-      BN_nist_mod_256 := @ERR_BN_nist_mod_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nist_mod_256_removed)}
@@ -8313,39 +7152,31 @@ begin
     begin
       {$if declared(_BN_nist_mod_256)}
       BN_nist_mod_256 := @_BN_nist_mod_256;
-      {$else}
-      {$if not defined(BN_nist_mod_256_allownil)}
-      BN_nist_mod_256 := @ERR_BN_nist_mod_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nist_mod_256_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nist_mod_256 := @ERR_BN_nist_mod_256;
+    if FuncLoadError then
       AFailed.Add('BN_nist_mod_256');
-    end;
     {$ifend}
   end;
 
 
   BN_nist_mod_384 := LoadLibFunction(ADllHandle, BN_nist_mod_384_procname);
-  FuncLoaded := assigned(BN_nist_mod_384);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nist_mod_384);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nist_mod_384_allownil)}
+    BN_nist_mod_384 := @ERR_BN_nist_mod_384;
+    {$ifend}
     {$if declared(BN_nist_mod_384_introduced)}
     if LibVersion < BN_nist_mod_384_introduced then
     begin
       {$if declared(FC_BN_nist_mod_384)}
       BN_nist_mod_384 := @FC_BN_nist_mod_384;
-      {$else}
-      {$if not defined(BN_nist_mod_384_allownil)}
-      BN_nist_mod_384 := @ERR_BN_nist_mod_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nist_mod_384_removed)}
@@ -8353,39 +7184,31 @@ begin
     begin
       {$if declared(_BN_nist_mod_384)}
       BN_nist_mod_384 := @_BN_nist_mod_384;
-      {$else}
-      {$if not defined(BN_nist_mod_384_allownil)}
-      BN_nist_mod_384 := @ERR_BN_nist_mod_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nist_mod_384_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nist_mod_384 := @ERR_BN_nist_mod_384;
+    if FuncLoadError then
       AFailed.Add('BN_nist_mod_384');
-    end;
     {$ifend}
   end;
 
 
   BN_nist_mod_521 := LoadLibFunction(ADllHandle, BN_nist_mod_521_procname);
-  FuncLoaded := assigned(BN_nist_mod_521);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_nist_mod_521);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_nist_mod_521_allownil)}
+    BN_nist_mod_521 := @ERR_BN_nist_mod_521;
+    {$ifend}
     {$if declared(BN_nist_mod_521_introduced)}
     if LibVersion < BN_nist_mod_521_introduced then
     begin
       {$if declared(FC_BN_nist_mod_521)}
       BN_nist_mod_521 := @FC_BN_nist_mod_521;
-      {$else}
-      {$if not defined(BN_nist_mod_521_allownil)}
-      BN_nist_mod_521 := @ERR_BN_nist_mod_521;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_nist_mod_521_removed)}
@@ -8393,39 +7216,31 @@ begin
     begin
       {$if declared(_BN_nist_mod_521)}
       BN_nist_mod_521 := @_BN_nist_mod_521;
-      {$else}
-      {$if not defined(BN_nist_mod_521_allownil)}
-      BN_nist_mod_521 := @ERR_BN_nist_mod_521;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_nist_mod_521_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_nist_mod_521 := @ERR_BN_nist_mod_521;
+    if FuncLoadError then
       AFailed.Add('BN_nist_mod_521');
-    end;
     {$ifend}
   end;
 
 
   BN_get0_nist_prime_192 := LoadLibFunction(ADllHandle, BN_get0_nist_prime_192_procname);
-  FuncLoaded := assigned(BN_get0_nist_prime_192);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get0_nist_prime_192);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get0_nist_prime_192_allownil)}
+    BN_get0_nist_prime_192 := @ERR_BN_get0_nist_prime_192;
+    {$ifend}
     {$if declared(BN_get0_nist_prime_192_introduced)}
     if LibVersion < BN_get0_nist_prime_192_introduced then
     begin
       {$if declared(FC_BN_get0_nist_prime_192)}
       BN_get0_nist_prime_192 := @FC_BN_get0_nist_prime_192;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_192_allownil)}
-      BN_get0_nist_prime_192 := @ERR_BN_get0_nist_prime_192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get0_nist_prime_192_removed)}
@@ -8433,39 +7248,31 @@ begin
     begin
       {$if declared(_BN_get0_nist_prime_192)}
       BN_get0_nist_prime_192 := @_BN_get0_nist_prime_192;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_192_allownil)}
-      BN_get0_nist_prime_192 := @ERR_BN_get0_nist_prime_192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get0_nist_prime_192_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get0_nist_prime_192 := @ERR_BN_get0_nist_prime_192;
+    if FuncLoadError then
       AFailed.Add('BN_get0_nist_prime_192');
-    end;
     {$ifend}
   end;
 
 
   BN_get0_nist_prime_224 := LoadLibFunction(ADllHandle, BN_get0_nist_prime_224_procname);
-  FuncLoaded := assigned(BN_get0_nist_prime_224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get0_nist_prime_224);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get0_nist_prime_224_allownil)}
+    BN_get0_nist_prime_224 := @ERR_BN_get0_nist_prime_224;
+    {$ifend}
     {$if declared(BN_get0_nist_prime_224_introduced)}
     if LibVersion < BN_get0_nist_prime_224_introduced then
     begin
       {$if declared(FC_BN_get0_nist_prime_224)}
       BN_get0_nist_prime_224 := @FC_BN_get0_nist_prime_224;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_224_allownil)}
-      BN_get0_nist_prime_224 := @ERR_BN_get0_nist_prime_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get0_nist_prime_224_removed)}
@@ -8473,39 +7280,31 @@ begin
     begin
       {$if declared(_BN_get0_nist_prime_224)}
       BN_get0_nist_prime_224 := @_BN_get0_nist_prime_224;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_224_allownil)}
-      BN_get0_nist_prime_224 := @ERR_BN_get0_nist_prime_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get0_nist_prime_224_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get0_nist_prime_224 := @ERR_BN_get0_nist_prime_224;
+    if FuncLoadError then
       AFailed.Add('BN_get0_nist_prime_224');
-    end;
     {$ifend}
   end;
 
 
   BN_get0_nist_prime_256 := LoadLibFunction(ADllHandle, BN_get0_nist_prime_256_procname);
-  FuncLoaded := assigned(BN_get0_nist_prime_256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get0_nist_prime_256);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get0_nist_prime_256_allownil)}
+    BN_get0_nist_prime_256 := @ERR_BN_get0_nist_prime_256;
+    {$ifend}
     {$if declared(BN_get0_nist_prime_256_introduced)}
     if LibVersion < BN_get0_nist_prime_256_introduced then
     begin
       {$if declared(FC_BN_get0_nist_prime_256)}
       BN_get0_nist_prime_256 := @FC_BN_get0_nist_prime_256;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_256_allownil)}
-      BN_get0_nist_prime_256 := @ERR_BN_get0_nist_prime_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get0_nist_prime_256_removed)}
@@ -8513,39 +7312,31 @@ begin
     begin
       {$if declared(_BN_get0_nist_prime_256)}
       BN_get0_nist_prime_256 := @_BN_get0_nist_prime_256;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_256_allownil)}
-      BN_get0_nist_prime_256 := @ERR_BN_get0_nist_prime_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get0_nist_prime_256_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get0_nist_prime_256 := @ERR_BN_get0_nist_prime_256;
+    if FuncLoadError then
       AFailed.Add('BN_get0_nist_prime_256');
-    end;
     {$ifend}
   end;
 
 
   BN_get0_nist_prime_384 := LoadLibFunction(ADllHandle, BN_get0_nist_prime_384_procname);
-  FuncLoaded := assigned(BN_get0_nist_prime_384);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get0_nist_prime_384);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get0_nist_prime_384_allownil)}
+    BN_get0_nist_prime_384 := @ERR_BN_get0_nist_prime_384;
+    {$ifend}
     {$if declared(BN_get0_nist_prime_384_introduced)}
     if LibVersion < BN_get0_nist_prime_384_introduced then
     begin
       {$if declared(FC_BN_get0_nist_prime_384)}
       BN_get0_nist_prime_384 := @FC_BN_get0_nist_prime_384;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_384_allownil)}
-      BN_get0_nist_prime_384 := @ERR_BN_get0_nist_prime_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get0_nist_prime_384_removed)}
@@ -8553,39 +7344,31 @@ begin
     begin
       {$if declared(_BN_get0_nist_prime_384)}
       BN_get0_nist_prime_384 := @_BN_get0_nist_prime_384;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_384_allownil)}
-      BN_get0_nist_prime_384 := @ERR_BN_get0_nist_prime_384;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get0_nist_prime_384_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get0_nist_prime_384 := @ERR_BN_get0_nist_prime_384;
+    if FuncLoadError then
       AFailed.Add('BN_get0_nist_prime_384');
-    end;
     {$ifend}
   end;
 
 
   BN_get0_nist_prime_521 := LoadLibFunction(ADllHandle, BN_get0_nist_prime_521_procname);
-  FuncLoaded := assigned(BN_get0_nist_prime_521);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get0_nist_prime_521);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get0_nist_prime_521_allownil)}
+    BN_get0_nist_prime_521 := @ERR_BN_get0_nist_prime_521;
+    {$ifend}
     {$if declared(BN_get0_nist_prime_521_introduced)}
     if LibVersion < BN_get0_nist_prime_521_introduced then
     begin
       {$if declared(FC_BN_get0_nist_prime_521)}
       BN_get0_nist_prime_521 := @FC_BN_get0_nist_prime_521;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_521_allownil)}
-      BN_get0_nist_prime_521 := @ERR_BN_get0_nist_prime_521;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get0_nist_prime_521_removed)}
@@ -8593,39 +7376,31 @@ begin
     begin
       {$if declared(_BN_get0_nist_prime_521)}
       BN_get0_nist_prime_521 := @_BN_get0_nist_prime_521;
-      {$else}
-      {$if not defined(BN_get0_nist_prime_521_allownil)}
-      BN_get0_nist_prime_521 := @ERR_BN_get0_nist_prime_521;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get0_nist_prime_521_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get0_nist_prime_521 := @ERR_BN_get0_nist_prime_521;
+    if FuncLoadError then
       AFailed.Add('BN_get0_nist_prime_521');
-    end;
     {$ifend}
   end;
 
 
   BN_generate_dsa_nonce := LoadLibFunction(ADllHandle, BN_generate_dsa_nonce_procname);
-  FuncLoaded := assigned(BN_generate_dsa_nonce);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_generate_dsa_nonce);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_generate_dsa_nonce_allownil)}
+    BN_generate_dsa_nonce := @ERR_BN_generate_dsa_nonce;
+    {$ifend}
     {$if declared(BN_generate_dsa_nonce_introduced)}
     if LibVersion < BN_generate_dsa_nonce_introduced then
     begin
       {$if declared(FC_BN_generate_dsa_nonce)}
       BN_generate_dsa_nonce := @FC_BN_generate_dsa_nonce;
-      {$else}
-      {$if not defined(BN_generate_dsa_nonce_allownil)}
-      BN_generate_dsa_nonce := @ERR_BN_generate_dsa_nonce;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_generate_dsa_nonce_removed)}
@@ -8633,39 +7408,31 @@ begin
     begin
       {$if declared(_BN_generate_dsa_nonce)}
       BN_generate_dsa_nonce := @_BN_generate_dsa_nonce;
-      {$else}
-      {$if not defined(BN_generate_dsa_nonce_allownil)}
-      BN_generate_dsa_nonce := @ERR_BN_generate_dsa_nonce;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_generate_dsa_nonce_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_generate_dsa_nonce := @ERR_BN_generate_dsa_nonce;
+    if FuncLoadError then
       AFailed.Add('BN_generate_dsa_nonce');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc2409_prime_768 := LoadLibFunction(ADllHandle, BN_get_rfc2409_prime_768_procname);
-  FuncLoaded := assigned(BN_get_rfc2409_prime_768);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc2409_prime_768);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc2409_prime_768_allownil)}
+    BN_get_rfc2409_prime_768 := @ERR_BN_get_rfc2409_prime_768;
+    {$ifend}
     {$if declared(BN_get_rfc2409_prime_768_introduced)}
     if LibVersion < BN_get_rfc2409_prime_768_introduced then
     begin
       {$if declared(FC_BN_get_rfc2409_prime_768)}
       BN_get_rfc2409_prime_768 := @FC_BN_get_rfc2409_prime_768;
-      {$else}
-      {$if not defined(BN_get_rfc2409_prime_768_allownil)}
-      BN_get_rfc2409_prime_768 := @ERR_BN_get_rfc2409_prime_768;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc2409_prime_768_removed)}
@@ -8673,39 +7440,31 @@ begin
     begin
       {$if declared(_BN_get_rfc2409_prime_768)}
       BN_get_rfc2409_prime_768 := @_BN_get_rfc2409_prime_768;
-      {$else}
-      {$if not defined(BN_get_rfc2409_prime_768_allownil)}
-      BN_get_rfc2409_prime_768 := @ERR_BN_get_rfc2409_prime_768;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc2409_prime_768_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc2409_prime_768 := @ERR_BN_get_rfc2409_prime_768;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc2409_prime_768');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc2409_prime_1024 := LoadLibFunction(ADllHandle, BN_get_rfc2409_prime_1024_procname);
-  FuncLoaded := assigned(BN_get_rfc2409_prime_1024);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc2409_prime_1024);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc2409_prime_1024_allownil)}
+    BN_get_rfc2409_prime_1024 := @ERR_BN_get_rfc2409_prime_1024;
+    {$ifend}
     {$if declared(BN_get_rfc2409_prime_1024_introduced)}
     if LibVersion < BN_get_rfc2409_prime_1024_introduced then
     begin
       {$if declared(FC_BN_get_rfc2409_prime_1024)}
       BN_get_rfc2409_prime_1024 := @FC_BN_get_rfc2409_prime_1024;
-      {$else}
-      {$if not defined(BN_get_rfc2409_prime_1024_allownil)}
-      BN_get_rfc2409_prime_1024 := @ERR_BN_get_rfc2409_prime_1024;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc2409_prime_1024_removed)}
@@ -8713,39 +7472,31 @@ begin
     begin
       {$if declared(_BN_get_rfc2409_prime_1024)}
       BN_get_rfc2409_prime_1024 := @_BN_get_rfc2409_prime_1024;
-      {$else}
-      {$if not defined(BN_get_rfc2409_prime_1024_allownil)}
-      BN_get_rfc2409_prime_1024 := @ERR_BN_get_rfc2409_prime_1024;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc2409_prime_1024_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc2409_prime_1024 := @ERR_BN_get_rfc2409_prime_1024;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc2409_prime_1024');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_1536 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_1536_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_1536);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_1536);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_1536_allownil)}
+    BN_get_rfc3526_prime_1536 := @ERR_BN_get_rfc3526_prime_1536;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_1536_introduced)}
     if LibVersion < BN_get_rfc3526_prime_1536_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_1536)}
       BN_get_rfc3526_prime_1536 := @FC_BN_get_rfc3526_prime_1536;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_1536_allownil)}
-      BN_get_rfc3526_prime_1536 := @ERR_BN_get_rfc3526_prime_1536;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_1536_removed)}
@@ -8753,39 +7504,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_1536)}
       BN_get_rfc3526_prime_1536 := @_BN_get_rfc3526_prime_1536;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_1536_allownil)}
-      BN_get_rfc3526_prime_1536 := @ERR_BN_get_rfc3526_prime_1536;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_1536_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_1536 := @ERR_BN_get_rfc3526_prime_1536;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_1536');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_2048 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_2048_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_2048);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_2048);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_2048_allownil)}
+    BN_get_rfc3526_prime_2048 := @ERR_BN_get_rfc3526_prime_2048;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_2048_introduced)}
     if LibVersion < BN_get_rfc3526_prime_2048_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_2048)}
       BN_get_rfc3526_prime_2048 := @FC_BN_get_rfc3526_prime_2048;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_2048_allownil)}
-      BN_get_rfc3526_prime_2048 := @ERR_BN_get_rfc3526_prime_2048;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_2048_removed)}
@@ -8793,39 +7536,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_2048)}
       BN_get_rfc3526_prime_2048 := @_BN_get_rfc3526_prime_2048;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_2048_allownil)}
-      BN_get_rfc3526_prime_2048 := @ERR_BN_get_rfc3526_prime_2048;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_2048_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_2048 := @ERR_BN_get_rfc3526_prime_2048;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_2048');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_3072 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_3072_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_3072);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_3072);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_3072_allownil)}
+    BN_get_rfc3526_prime_3072 := @ERR_BN_get_rfc3526_prime_3072;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_3072_introduced)}
     if LibVersion < BN_get_rfc3526_prime_3072_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_3072)}
       BN_get_rfc3526_prime_3072 := @FC_BN_get_rfc3526_prime_3072;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_3072_allownil)}
-      BN_get_rfc3526_prime_3072 := @ERR_BN_get_rfc3526_prime_3072;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_3072_removed)}
@@ -8833,39 +7568,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_3072)}
       BN_get_rfc3526_prime_3072 := @_BN_get_rfc3526_prime_3072;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_3072_allownil)}
-      BN_get_rfc3526_prime_3072 := @ERR_BN_get_rfc3526_prime_3072;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_3072_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_3072 := @ERR_BN_get_rfc3526_prime_3072;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_3072');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_4096 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_4096_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_4096);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_4096);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_4096_allownil)}
+    BN_get_rfc3526_prime_4096 := @ERR_BN_get_rfc3526_prime_4096;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_4096_introduced)}
     if LibVersion < BN_get_rfc3526_prime_4096_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_4096)}
       BN_get_rfc3526_prime_4096 := @FC_BN_get_rfc3526_prime_4096;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_4096_allownil)}
-      BN_get_rfc3526_prime_4096 := @ERR_BN_get_rfc3526_prime_4096;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_4096_removed)}
@@ -8873,39 +7600,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_4096)}
       BN_get_rfc3526_prime_4096 := @_BN_get_rfc3526_prime_4096;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_4096_allownil)}
-      BN_get_rfc3526_prime_4096 := @ERR_BN_get_rfc3526_prime_4096;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_4096_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_4096 := @ERR_BN_get_rfc3526_prime_4096;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_4096');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_6144 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_6144_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_6144);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_6144);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_6144_allownil)}
+    BN_get_rfc3526_prime_6144 := @ERR_BN_get_rfc3526_prime_6144;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_6144_introduced)}
     if LibVersion < BN_get_rfc3526_prime_6144_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_6144)}
       BN_get_rfc3526_prime_6144 := @FC_BN_get_rfc3526_prime_6144;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_6144_allownil)}
-      BN_get_rfc3526_prime_6144 := @ERR_BN_get_rfc3526_prime_6144;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_6144_removed)}
@@ -8913,39 +7632,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_6144)}
       BN_get_rfc3526_prime_6144 := @_BN_get_rfc3526_prime_6144;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_6144_allownil)}
-      BN_get_rfc3526_prime_6144 := @ERR_BN_get_rfc3526_prime_6144;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_6144_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_6144 := @ERR_BN_get_rfc3526_prime_6144;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_6144');
-    end;
     {$ifend}
   end;
 
 
   BN_get_rfc3526_prime_8192 := LoadLibFunction(ADllHandle, BN_get_rfc3526_prime_8192_procname);
-  FuncLoaded := assigned(BN_get_rfc3526_prime_8192);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_get_rfc3526_prime_8192);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_get_rfc3526_prime_8192_allownil)}
+    BN_get_rfc3526_prime_8192 := @ERR_BN_get_rfc3526_prime_8192;
+    {$ifend}
     {$if declared(BN_get_rfc3526_prime_8192_introduced)}
     if LibVersion < BN_get_rfc3526_prime_8192_introduced then
     begin
       {$if declared(FC_BN_get_rfc3526_prime_8192)}
       BN_get_rfc3526_prime_8192 := @FC_BN_get_rfc3526_prime_8192;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_8192_allownil)}
-      BN_get_rfc3526_prime_8192 := @ERR_BN_get_rfc3526_prime_8192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_get_rfc3526_prime_8192_removed)}
@@ -8953,39 +7664,31 @@ begin
     begin
       {$if declared(_BN_get_rfc3526_prime_8192)}
       BN_get_rfc3526_prime_8192 := @_BN_get_rfc3526_prime_8192;
-      {$else}
-      {$if not defined(BN_get_rfc3526_prime_8192_allownil)}
-      BN_get_rfc3526_prime_8192 := @ERR_BN_get_rfc3526_prime_8192;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_get_rfc3526_prime_8192_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_get_rfc3526_prime_8192 := @ERR_BN_get_rfc3526_prime_8192;
+    if FuncLoadError then
       AFailed.Add('BN_get_rfc3526_prime_8192');
-    end;
     {$ifend}
   end;
 
 
   BN_bntest_rand := LoadLibFunction(ADllHandle, BN_bntest_rand_procname);
-  FuncLoaded := assigned(BN_bntest_rand);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(BN_bntest_rand);
+  if FuncLoadError then
   begin
+    {$if not defined(BN_bntest_rand_allownil)}
+    BN_bntest_rand := @ERR_BN_bntest_rand;
+    {$ifend}
     {$if declared(BN_bntest_rand_introduced)}
     if LibVersion < BN_bntest_rand_introduced then
     begin
       {$if declared(FC_BN_bntest_rand)}
       BN_bntest_rand := @FC_BN_bntest_rand;
-      {$else}
-      {$if not defined(BN_bntest_rand_allownil)}
-      BN_bntest_rand := @ERR_BN_bntest_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(BN_bntest_rand_removed)}
@@ -8993,20 +7696,13 @@ begin
     begin
       {$if declared(_BN_bntest_rand)}
       BN_bntest_rand := @_BN_bntest_rand;
-      {$else}
-      {$if not defined(BN_bntest_rand_allownil)}
-      BN_bntest_rand := @ERR_BN_bntest_rand;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(BN_bntest_rand_allownil)}
-    if not FuncLoaded then
-    begin
-      BN_bntest_rand := @ERR_BN_bntest_rand;
+    if FuncLoadError then
       AFailed.Add('BN_bntest_rand');
-    end;
     {$ifend}
   end;
 

@@ -1320,24 +1320,23 @@ end;
 
 procedure Load(const ADllHandle: TIdLibHandle; LibVersion: TIdC_UINT; const AFailed: TStringList);
 
-var FuncLoaded: boolean;
+var FuncLoadError: boolean;
 
 begin
   DHparams_dup := LoadLibFunction(ADllHandle, DHparams_dup_procname);
-  FuncLoaded := assigned(DHparams_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DHparams_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(DHparams_dup_allownil)}
+    DHparams_dup := @ERR_DHparams_dup;
+    {$ifend}
     {$if declared(DHparams_dup_introduced)}
     if LibVersion < DHparams_dup_introduced then
     begin
       {$if declared(FC_DHparams_dup)}
       DHparams_dup := @FC_DHparams_dup;
-      {$else}
-      {$if not defined(DHparams_dup_allownil)}
-      DHparams_dup := @ERR_DHparams_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DHparams_dup_removed)}
@@ -1345,39 +1344,31 @@ begin
     begin
       {$if declared(_DHparams_dup)}
       DHparams_dup := @_DHparams_dup;
-      {$else}
-      {$if not defined(DHparams_dup_allownil)}
-      DHparams_dup := @ERR_DHparams_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DHparams_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      DHparams_dup := @ERR_DHparams_dup;
+    if FuncLoadError then
       AFailed.Add('DHparams_dup');
-    end;
     {$ifend}
   end;
 
 
   DH_OpenSSL := LoadLibFunction(ADllHandle, DH_OpenSSL_procname);
-  FuncLoaded := assigned(DH_OpenSSL);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_OpenSSL);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_OpenSSL_allownil)}
+    DH_OpenSSL := @ERR_DH_OpenSSL;
+    {$ifend}
     {$if declared(DH_OpenSSL_introduced)}
     if LibVersion < DH_OpenSSL_introduced then
     begin
       {$if declared(FC_DH_OpenSSL)}
       DH_OpenSSL := @FC_DH_OpenSSL;
-      {$else}
-      {$if not defined(DH_OpenSSL_allownil)}
-      DH_OpenSSL := @ERR_DH_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_OpenSSL_removed)}
@@ -1385,39 +1376,31 @@ begin
     begin
       {$if declared(_DH_OpenSSL)}
       DH_OpenSSL := @_DH_OpenSSL;
-      {$else}
-      {$if not defined(DH_OpenSSL_allownil)}
-      DH_OpenSSL := @ERR_DH_OpenSSL;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_OpenSSL_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_OpenSSL := @ERR_DH_OpenSSL;
+    if FuncLoadError then
       AFailed.Add('DH_OpenSSL');
-    end;
     {$ifend}
   end;
 
 
   DH_set_default_method := LoadLibFunction(ADllHandle, DH_set_default_method_procname);
-  FuncLoaded := assigned(DH_set_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set_default_method_allownil)}
+    DH_set_default_method := @ERR_DH_set_default_method;
+    {$ifend}
     {$if declared(DH_set_default_method_introduced)}
     if LibVersion < DH_set_default_method_introduced then
     begin
       {$if declared(FC_DH_set_default_method)}
       DH_set_default_method := @FC_DH_set_default_method;
-      {$else}
-      {$if not defined(DH_set_default_method_allownil)}
-      DH_set_default_method := @ERR_DH_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set_default_method_removed)}
@@ -1425,39 +1408,31 @@ begin
     begin
       {$if declared(_DH_set_default_method)}
       DH_set_default_method := @_DH_set_default_method;
-      {$else}
-      {$if not defined(DH_set_default_method_allownil)}
-      DH_set_default_method := @ERR_DH_set_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set_default_method := @ERR_DH_set_default_method;
+    if FuncLoadError then
       AFailed.Add('DH_set_default_method');
-    end;
     {$ifend}
   end;
 
 
   DH_get_default_method := LoadLibFunction(ADllHandle, DH_get_default_method_procname);
-  FuncLoaded := assigned(DH_get_default_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_default_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_default_method_allownil)}
+    DH_get_default_method := @ERR_DH_get_default_method;
+    {$ifend}
     {$if declared(DH_get_default_method_introduced)}
     if LibVersion < DH_get_default_method_introduced then
     begin
       {$if declared(FC_DH_get_default_method)}
       DH_get_default_method := @FC_DH_get_default_method;
-      {$else}
-      {$if not defined(DH_get_default_method_allownil)}
-      DH_get_default_method := @ERR_DH_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_default_method_removed)}
@@ -1465,39 +1440,31 @@ begin
     begin
       {$if declared(_DH_get_default_method)}
       DH_get_default_method := @_DH_get_default_method;
-      {$else}
-      {$if not defined(DH_get_default_method_allownil)}
-      DH_get_default_method := @ERR_DH_get_default_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_default_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_default_method := @ERR_DH_get_default_method;
+    if FuncLoadError then
       AFailed.Add('DH_get_default_method');
-    end;
     {$ifend}
   end;
 
 
   DH_set_method := LoadLibFunction(ADllHandle, DH_set_method_procname);
-  FuncLoaded := assigned(DH_set_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set_method_allownil)}
+    DH_set_method := @ERR_DH_set_method;
+    {$ifend}
     {$if declared(DH_set_method_introduced)}
     if LibVersion < DH_set_method_introduced then
     begin
       {$if declared(FC_DH_set_method)}
       DH_set_method := @FC_DH_set_method;
-      {$else}
-      {$if not defined(DH_set_method_allownil)}
-      DH_set_method := @ERR_DH_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set_method_removed)}
@@ -1505,39 +1472,31 @@ begin
     begin
       {$if declared(_DH_set_method)}
       DH_set_method := @_DH_set_method;
-      {$else}
-      {$if not defined(DH_set_method_allownil)}
-      DH_set_method := @ERR_DH_set_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set_method := @ERR_DH_set_method;
+    if FuncLoadError then
       AFailed.Add('DH_set_method');
-    end;
     {$ifend}
   end;
 
 
   DH_new_method := LoadLibFunction(ADllHandle, DH_new_method_procname);
-  FuncLoaded := assigned(DH_new_method);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_new_method);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_new_method_allownil)}
+    DH_new_method := @ERR_DH_new_method;
+    {$ifend}
     {$if declared(DH_new_method_introduced)}
     if LibVersion < DH_new_method_introduced then
     begin
       {$if declared(FC_DH_new_method)}
       DH_new_method := @FC_DH_new_method;
-      {$else}
-      {$if not defined(DH_new_method_allownil)}
-      DH_new_method := @ERR_DH_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_new_method_removed)}
@@ -1545,39 +1504,31 @@ begin
     begin
       {$if declared(_DH_new_method)}
       DH_new_method := @_DH_new_method;
-      {$else}
-      {$if not defined(DH_new_method_allownil)}
-      DH_new_method := @ERR_DH_new_method;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_new_method_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_new_method := @ERR_DH_new_method;
+    if FuncLoadError then
       AFailed.Add('DH_new_method');
-    end;
     {$ifend}
   end;
 
 
   DH_new := LoadLibFunction(ADllHandle, DH_new_procname);
-  FuncLoaded := assigned(DH_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_new);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_new_allownil)}
+    DH_new := @ERR_DH_new;
+    {$ifend}
     {$if declared(DH_new_introduced)}
     if LibVersion < DH_new_introduced then
     begin
       {$if declared(FC_DH_new)}
       DH_new := @FC_DH_new;
-      {$else}
-      {$if not defined(DH_new_allownil)}
-      DH_new := @ERR_DH_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_new_removed)}
@@ -1585,39 +1536,31 @@ begin
     begin
       {$if declared(_DH_new)}
       DH_new := @_DH_new;
-      {$else}
-      {$if not defined(DH_new_allownil)}
-      DH_new := @ERR_DH_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_new_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_new := @ERR_DH_new;
+    if FuncLoadError then
       AFailed.Add('DH_new');
-    end;
     {$ifend}
   end;
 
 
   DH_free := LoadLibFunction(ADllHandle, DH_free_procname);
-  FuncLoaded := assigned(DH_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_free);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_free_allownil)}
+    DH_free := @ERR_DH_free;
+    {$ifend}
     {$if declared(DH_free_introduced)}
     if LibVersion < DH_free_introduced then
     begin
       {$if declared(FC_DH_free)}
       DH_free := @FC_DH_free;
-      {$else}
-      {$if not defined(DH_free_allownil)}
-      DH_free := @ERR_DH_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_free_removed)}
@@ -1625,39 +1568,31 @@ begin
     begin
       {$if declared(_DH_free)}
       DH_free := @_DH_free;
-      {$else}
-      {$if not defined(DH_free_allownil)}
-      DH_free := @ERR_DH_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_free_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_free := @ERR_DH_free;
+    if FuncLoadError then
       AFailed.Add('DH_free');
-    end;
     {$ifend}
   end;
 
 
   DH_up_ref := LoadLibFunction(ADllHandle, DH_up_ref_procname);
-  FuncLoaded := assigned(DH_up_ref);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_up_ref);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_up_ref_allownil)}
+    DH_up_ref := @ERR_DH_up_ref;
+    {$ifend}
     {$if declared(DH_up_ref_introduced)}
     if LibVersion < DH_up_ref_introduced then
     begin
       {$if declared(FC_DH_up_ref)}
       DH_up_ref := @FC_DH_up_ref;
-      {$else}
-      {$if not defined(DH_up_ref_allownil)}
-      DH_up_ref := @ERR_DH_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_up_ref_removed)}
@@ -1665,39 +1600,31 @@ begin
     begin
       {$if declared(_DH_up_ref)}
       DH_up_ref := @_DH_up_ref;
-      {$else}
-      {$if not defined(DH_up_ref_allownil)}
-      DH_up_ref := @ERR_DH_up_ref;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_up_ref_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_up_ref := @ERR_DH_up_ref;
+    if FuncLoadError then
       AFailed.Add('DH_up_ref');
-    end;
     {$ifend}
   end;
 
 
   DH_bits := LoadLibFunction(ADllHandle, DH_bits_procname);
-  FuncLoaded := assigned(DH_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_bits_allownil)}
+    DH_bits := @ERR_DH_bits;
+    {$ifend}
     {$if declared(DH_bits_introduced)}
     if LibVersion < DH_bits_introduced then
     begin
       {$if declared(FC_DH_bits)}
       DH_bits := @FC_DH_bits;
-      {$else}
-      {$if not defined(DH_bits_allownil)}
-      DH_bits := @ERR_DH_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_bits_removed)}
@@ -1705,39 +1632,31 @@ begin
     begin
       {$if declared(_DH_bits)}
       DH_bits := @_DH_bits;
-      {$else}
-      {$if not defined(DH_bits_allownil)}
-      DH_bits := @ERR_DH_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_bits := @ERR_DH_bits;
+    if FuncLoadError then
       AFailed.Add('DH_bits');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_size := LoadLibFunction(ADllHandle, DH_size_procname);
-  FuncLoaded := assigned(DH_size);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_size);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_size_allownil)}
+    DH_size := @ERR_DH_size;
+    {$ifend}
     {$if declared(DH_size_introduced)}
     if LibVersion < DH_size_introduced then
     begin
       {$if declared(FC_DH_size)}
       DH_size := @FC_DH_size;
-      {$else}
-      {$if not defined(DH_size_allownil)}
-      DH_size := @ERR_DH_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_size_removed)}
@@ -1745,39 +1664,31 @@ begin
     begin
       {$if declared(_DH_size)}
       DH_size := @_DH_size;
-      {$else}
-      {$if not defined(DH_size_allownil)}
-      DH_size := @ERR_DH_size;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_size_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_size := @ERR_DH_size;
+    if FuncLoadError then
       AFailed.Add('DH_size');
-    end;
     {$ifend}
   end;
 
 
   DH_security_bits := LoadLibFunction(ADllHandle, DH_security_bits_procname);
-  FuncLoaded := assigned(DH_security_bits);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_security_bits);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_security_bits_allownil)}
+    DH_security_bits := @ERR_DH_security_bits;
+    {$ifend}
     {$if declared(DH_security_bits_introduced)}
     if LibVersion < DH_security_bits_introduced then
     begin
       {$if declared(FC_DH_security_bits)}
       DH_security_bits := @FC_DH_security_bits;
-      {$else}
-      {$if not defined(DH_security_bits_allownil)}
-      DH_security_bits := @ERR_DH_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_security_bits_removed)}
@@ -1785,39 +1696,31 @@ begin
     begin
       {$if declared(_DH_security_bits)}
       DH_security_bits := @_DH_security_bits;
-      {$else}
-      {$if not defined(DH_security_bits_allownil)}
-      DH_security_bits := @ERR_DH_security_bits;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_security_bits_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_security_bits := @ERR_DH_security_bits;
+    if FuncLoadError then
       AFailed.Add('DH_security_bits');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_set_ex_data := LoadLibFunction(ADllHandle, DH_set_ex_data_procname);
-  FuncLoaded := assigned(DH_set_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set_ex_data_allownil)}
+    DH_set_ex_data := @ERR_DH_set_ex_data;
+    {$ifend}
     {$if declared(DH_set_ex_data_introduced)}
     if LibVersion < DH_set_ex_data_introduced then
     begin
       {$if declared(FC_DH_set_ex_data)}
       DH_set_ex_data := @FC_DH_set_ex_data;
-      {$else}
-      {$if not defined(DH_set_ex_data_allownil)}
-      DH_set_ex_data := @ERR_DH_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set_ex_data_removed)}
@@ -1825,39 +1728,31 @@ begin
     begin
       {$if declared(_DH_set_ex_data)}
       DH_set_ex_data := @_DH_set_ex_data;
-      {$else}
-      {$if not defined(DH_set_ex_data_allownil)}
-      DH_set_ex_data := @ERR_DH_set_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set_ex_data := @ERR_DH_set_ex_data;
+    if FuncLoadError then
       AFailed.Add('DH_set_ex_data');
-    end;
     {$ifend}
   end;
 
 
   DH_get_ex_data := LoadLibFunction(ADllHandle, DH_get_ex_data_procname);
-  FuncLoaded := assigned(DH_get_ex_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_ex_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_ex_data_allownil)}
+    DH_get_ex_data := @ERR_DH_get_ex_data;
+    {$ifend}
     {$if declared(DH_get_ex_data_introduced)}
     if LibVersion < DH_get_ex_data_introduced then
     begin
       {$if declared(FC_DH_get_ex_data)}
       DH_get_ex_data := @FC_DH_get_ex_data;
-      {$else}
-      {$if not defined(DH_get_ex_data_allownil)}
-      DH_get_ex_data := @ERR_DH_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_ex_data_removed)}
@@ -1865,39 +1760,31 @@ begin
     begin
       {$if declared(_DH_get_ex_data)}
       DH_get_ex_data := @_DH_get_ex_data;
-      {$else}
-      {$if not defined(DH_get_ex_data_allownil)}
-      DH_get_ex_data := @ERR_DH_get_ex_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_ex_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_ex_data := @ERR_DH_get_ex_data;
+    if FuncLoadError then
       AFailed.Add('DH_get_ex_data');
-    end;
     {$ifend}
   end;
 
 
   DH_generate_parameters_ex := LoadLibFunction(ADllHandle, DH_generate_parameters_ex_procname);
-  FuncLoaded := assigned(DH_generate_parameters_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_generate_parameters_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_generate_parameters_ex_allownil)}
+    DH_generate_parameters_ex := @ERR_DH_generate_parameters_ex;
+    {$ifend}
     {$if declared(DH_generate_parameters_ex_introduced)}
     if LibVersion < DH_generate_parameters_ex_introduced then
     begin
       {$if declared(FC_DH_generate_parameters_ex)}
       DH_generate_parameters_ex := @FC_DH_generate_parameters_ex;
-      {$else}
-      {$if not defined(DH_generate_parameters_ex_allownil)}
-      DH_generate_parameters_ex := @ERR_DH_generate_parameters_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_generate_parameters_ex_removed)}
@@ -1905,39 +1792,31 @@ begin
     begin
       {$if declared(_DH_generate_parameters_ex)}
       DH_generate_parameters_ex := @_DH_generate_parameters_ex;
-      {$else}
-      {$if not defined(DH_generate_parameters_ex_allownil)}
-      DH_generate_parameters_ex := @ERR_DH_generate_parameters_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_generate_parameters_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_generate_parameters_ex := @ERR_DH_generate_parameters_ex;
+    if FuncLoadError then
       AFailed.Add('DH_generate_parameters_ex');
-    end;
     {$ifend}
   end;
 
 
   DH_check_params_ex := LoadLibFunction(ADllHandle, DH_check_params_ex_procname);
-  FuncLoaded := assigned(DH_check_params_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check_params_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_params_ex_allownil)}
+    DH_check_params_ex := @ERR_DH_check_params_ex;
+    {$ifend}
     {$if declared(DH_check_params_ex_introduced)}
     if LibVersion < DH_check_params_ex_introduced then
     begin
       {$if declared(FC_DH_check_params_ex)}
       DH_check_params_ex := @FC_DH_check_params_ex;
-      {$else}
-      {$if not defined(DH_check_params_ex_allownil)}
-      DH_check_params_ex := @ERR_DH_check_params_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_params_ex_removed)}
@@ -1945,39 +1824,31 @@ begin
     begin
       {$if declared(_DH_check_params_ex)}
       DH_check_params_ex := @_DH_check_params_ex;
-      {$else}
-      {$if not defined(DH_check_params_ex_allownil)}
-      DH_check_params_ex := @ERR_DH_check_params_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_params_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check_params_ex := @ERR_DH_check_params_ex;
+    if FuncLoadError then
       AFailed.Add('DH_check_params_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_check_ex := LoadLibFunction(ADllHandle, DH_check_ex_procname);
-  FuncLoaded := assigned(DH_check_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_ex_allownil)}
+    DH_check_ex := @ERR_DH_check_ex;
+    {$ifend}
     {$if declared(DH_check_ex_introduced)}
     if LibVersion < DH_check_ex_introduced then
     begin
       {$if declared(FC_DH_check_ex)}
       DH_check_ex := @FC_DH_check_ex;
-      {$else}
-      {$if not defined(DH_check_ex_allownil)}
-      DH_check_ex := @ERR_DH_check_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_ex_removed)}
@@ -1985,39 +1856,31 @@ begin
     begin
       {$if declared(_DH_check_ex)}
       DH_check_ex := @_DH_check_ex;
-      {$else}
-      {$if not defined(DH_check_ex_allownil)}
-      DH_check_ex := @ERR_DH_check_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check_ex := @ERR_DH_check_ex;
+    if FuncLoadError then
       AFailed.Add('DH_check_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_check_pub_key_ex := LoadLibFunction(ADllHandle, DH_check_pub_key_ex_procname);
-  FuncLoaded := assigned(DH_check_pub_key_ex);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check_pub_key_ex);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_pub_key_ex_allownil)}
+    DH_check_pub_key_ex := @ERR_DH_check_pub_key_ex;
+    {$ifend}
     {$if declared(DH_check_pub_key_ex_introduced)}
     if LibVersion < DH_check_pub_key_ex_introduced then
     begin
       {$if declared(FC_DH_check_pub_key_ex)}
       DH_check_pub_key_ex := @FC_DH_check_pub_key_ex;
-      {$else}
-      {$if not defined(DH_check_pub_key_ex_allownil)}
-      DH_check_pub_key_ex := @ERR_DH_check_pub_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_pub_key_ex_removed)}
@@ -2025,39 +1888,31 @@ begin
     begin
       {$if declared(_DH_check_pub_key_ex)}
       DH_check_pub_key_ex := @_DH_check_pub_key_ex;
-      {$else}
-      {$if not defined(DH_check_pub_key_ex_allownil)}
-      DH_check_pub_key_ex := @ERR_DH_check_pub_key_ex;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_pub_key_ex_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check_pub_key_ex := @ERR_DH_check_pub_key_ex;
+    if FuncLoadError then
       AFailed.Add('DH_check_pub_key_ex');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_check_params := LoadLibFunction(ADllHandle, DH_check_params_procname);
-  FuncLoaded := assigned(DH_check_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check_params);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_params_allownil)}
+    DH_check_params := @ERR_DH_check_params;
+    {$ifend}
     {$if declared(DH_check_params_introduced)}
     if LibVersion < DH_check_params_introduced then
     begin
       {$if declared(FC_DH_check_params)}
       DH_check_params := @FC_DH_check_params;
-      {$else}
-      {$if not defined(DH_check_params_allownil)}
-      DH_check_params := @ERR_DH_check_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_params_removed)}
@@ -2065,39 +1920,31 @@ begin
     begin
       {$if declared(_DH_check_params)}
       DH_check_params := @_DH_check_params;
-      {$else}
-      {$if not defined(DH_check_params_allownil)}
-      DH_check_params := @ERR_DH_check_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_params_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check_params := @ERR_DH_check_params;
+    if FuncLoadError then
       AFailed.Add('DH_check_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_check := LoadLibFunction(ADllHandle, DH_check_procname);
-  FuncLoaded := assigned(DH_check);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_allownil)}
+    DH_check := @ERR_DH_check;
+    {$ifend}
     {$if declared(DH_check_introduced)}
     if LibVersion < DH_check_introduced then
     begin
       {$if declared(FC_DH_check)}
       DH_check := @FC_DH_check;
-      {$else}
-      {$if not defined(DH_check_allownil)}
-      DH_check := @ERR_DH_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_removed)}
@@ -2105,39 +1952,31 @@ begin
     begin
       {$if declared(_DH_check)}
       DH_check := @_DH_check;
-      {$else}
-      {$if not defined(DH_check_allownil)}
-      DH_check := @ERR_DH_check;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check := @ERR_DH_check;
+    if FuncLoadError then
       AFailed.Add('DH_check');
-    end;
     {$ifend}
   end;
 
 
   DH_check_pub_key := LoadLibFunction(ADllHandle, DH_check_pub_key_procname);
-  FuncLoaded := assigned(DH_check_pub_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_check_pub_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_check_pub_key_allownil)}
+    DH_check_pub_key := @ERR_DH_check_pub_key;
+    {$ifend}
     {$if declared(DH_check_pub_key_introduced)}
     if LibVersion < DH_check_pub_key_introduced then
     begin
       {$if declared(FC_DH_check_pub_key)}
       DH_check_pub_key := @FC_DH_check_pub_key;
-      {$else}
-      {$if not defined(DH_check_pub_key_allownil)}
-      DH_check_pub_key := @ERR_DH_check_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_check_pub_key_removed)}
@@ -2145,39 +1984,31 @@ begin
     begin
       {$if declared(_DH_check_pub_key)}
       DH_check_pub_key := @_DH_check_pub_key;
-      {$else}
-      {$if not defined(DH_check_pub_key_allownil)}
-      DH_check_pub_key := @ERR_DH_check_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_check_pub_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_check_pub_key := @ERR_DH_check_pub_key;
+    if FuncLoadError then
       AFailed.Add('DH_check_pub_key');
-    end;
     {$ifend}
   end;
 
 
   DH_generate_key := LoadLibFunction(ADllHandle, DH_generate_key_procname);
-  FuncLoaded := assigned(DH_generate_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_generate_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_generate_key_allownil)}
+    DH_generate_key := @ERR_DH_generate_key;
+    {$ifend}
     {$if declared(DH_generate_key_introduced)}
     if LibVersion < DH_generate_key_introduced then
     begin
       {$if declared(FC_DH_generate_key)}
       DH_generate_key := @FC_DH_generate_key;
-      {$else}
-      {$if not defined(DH_generate_key_allownil)}
-      DH_generate_key := @ERR_DH_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_generate_key_removed)}
@@ -2185,39 +2016,31 @@ begin
     begin
       {$if declared(_DH_generate_key)}
       DH_generate_key := @_DH_generate_key;
-      {$else}
-      {$if not defined(DH_generate_key_allownil)}
-      DH_generate_key := @ERR_DH_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_generate_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_generate_key := @ERR_DH_generate_key;
+    if FuncLoadError then
       AFailed.Add('DH_generate_key');
-    end;
     {$ifend}
   end;
 
 
   DH_compute_key := LoadLibFunction(ADllHandle, DH_compute_key_procname);
-  FuncLoaded := assigned(DH_compute_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_compute_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_compute_key_allownil)}
+    DH_compute_key := @ERR_DH_compute_key;
+    {$ifend}
     {$if declared(DH_compute_key_introduced)}
     if LibVersion < DH_compute_key_introduced then
     begin
       {$if declared(FC_DH_compute_key)}
       DH_compute_key := @FC_DH_compute_key;
-      {$else}
-      {$if not defined(DH_compute_key_allownil)}
-      DH_compute_key := @ERR_DH_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_compute_key_removed)}
@@ -2225,39 +2048,31 @@ begin
     begin
       {$if declared(_DH_compute_key)}
       DH_compute_key := @_DH_compute_key;
-      {$else}
-      {$if not defined(DH_compute_key_allownil)}
-      DH_compute_key := @ERR_DH_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_compute_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_compute_key := @ERR_DH_compute_key;
+    if FuncLoadError then
       AFailed.Add('DH_compute_key');
-    end;
     {$ifend}
   end;
 
 
   DH_compute_key_padded := LoadLibFunction(ADllHandle, DH_compute_key_padded_procname);
-  FuncLoaded := assigned(DH_compute_key_padded);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_compute_key_padded);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_compute_key_padded_allownil)}
+    DH_compute_key_padded := @ERR_DH_compute_key_padded;
+    {$ifend}
     {$if declared(DH_compute_key_padded_introduced)}
     if LibVersion < DH_compute_key_padded_introduced then
     begin
       {$if declared(FC_DH_compute_key_padded)}
       DH_compute_key_padded := @FC_DH_compute_key_padded;
-      {$else}
-      {$if not defined(DH_compute_key_padded_allownil)}
-      DH_compute_key_padded := @ERR_DH_compute_key_padded;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_compute_key_padded_removed)}
@@ -2265,39 +2080,31 @@ begin
     begin
       {$if declared(_DH_compute_key_padded)}
       DH_compute_key_padded := @_DH_compute_key_padded;
-      {$else}
-      {$if not defined(DH_compute_key_padded_allownil)}
-      DH_compute_key_padded := @ERR_DH_compute_key_padded;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_compute_key_padded_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_compute_key_padded := @ERR_DH_compute_key_padded;
+    if FuncLoadError then
       AFailed.Add('DH_compute_key_padded');
-    end;
     {$ifend}
   end;
 
 
   d2i_DHparams := LoadLibFunction(ADllHandle, d2i_DHparams_procname);
-  FuncLoaded := assigned(d2i_DHparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DHparams);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DHparams_allownil)}
+    d2i_DHparams := @ERR_d2i_DHparams;
+    {$ifend}
     {$if declared(d2i_DHparams_introduced)}
     if LibVersion < d2i_DHparams_introduced then
     begin
       {$if declared(FC_d2i_DHparams)}
       d2i_DHparams := @FC_d2i_DHparams;
-      {$else}
-      {$if not defined(d2i_DHparams_allownil)}
-      d2i_DHparams := @ERR_d2i_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DHparams_removed)}
@@ -2305,39 +2112,31 @@ begin
     begin
       {$if declared(_d2i_DHparams)}
       d2i_DHparams := @_d2i_DHparams;
-      {$else}
-      {$if not defined(d2i_DHparams_allownil)}
-      d2i_DHparams := @ERR_d2i_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DHparams_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DHparams := @ERR_d2i_DHparams;
+    if FuncLoadError then
       AFailed.Add('d2i_DHparams');
-    end;
     {$ifend}
   end;
 
 
   i2d_DHparams := LoadLibFunction(ADllHandle, i2d_DHparams_procname);
-  FuncLoaded := assigned(i2d_DHparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DHparams);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DHparams_allownil)}
+    i2d_DHparams := @ERR_i2d_DHparams;
+    {$ifend}
     {$if declared(i2d_DHparams_introduced)}
     if LibVersion < i2d_DHparams_introduced then
     begin
       {$if declared(FC_i2d_DHparams)}
       i2d_DHparams := @FC_i2d_DHparams;
-      {$else}
-      {$if not defined(i2d_DHparams_allownil)}
-      i2d_DHparams := @ERR_i2d_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DHparams_removed)}
@@ -2345,39 +2144,31 @@ begin
     begin
       {$if declared(_i2d_DHparams)}
       i2d_DHparams := @_i2d_DHparams;
-      {$else}
-      {$if not defined(i2d_DHparams_allownil)}
-      i2d_DHparams := @ERR_i2d_DHparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DHparams_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DHparams := @ERR_i2d_DHparams;
+    if FuncLoadError then
       AFailed.Add('i2d_DHparams');
-    end;
     {$ifend}
   end;
 
 
   d2i_DHxparams := LoadLibFunction(ADllHandle, d2i_DHxparams_procname);
-  FuncLoaded := assigned(d2i_DHxparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(d2i_DHxparams);
+  if FuncLoadError then
   begin
+    {$if not defined(d2i_DHxparams_allownil)}
+    d2i_DHxparams := @ERR_d2i_DHxparams;
+    {$ifend}
     {$if declared(d2i_DHxparams_introduced)}
     if LibVersion < d2i_DHxparams_introduced then
     begin
       {$if declared(FC_d2i_DHxparams)}
       d2i_DHxparams := @FC_d2i_DHxparams;
-      {$else}
-      {$if not defined(d2i_DHxparams_allownil)}
-      d2i_DHxparams := @ERR_d2i_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(d2i_DHxparams_removed)}
@@ -2385,39 +2176,31 @@ begin
     begin
       {$if declared(_d2i_DHxparams)}
       d2i_DHxparams := @_d2i_DHxparams;
-      {$else}
-      {$if not defined(d2i_DHxparams_allownil)}
-      d2i_DHxparams := @ERR_d2i_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(d2i_DHxparams_allownil)}
-    if not FuncLoaded then
-    begin
-      d2i_DHxparams := @ERR_d2i_DHxparams;
+    if FuncLoadError then
       AFailed.Add('d2i_DHxparams');
-    end;
     {$ifend}
   end;
 
 
   i2d_DHxparams := LoadLibFunction(ADllHandle, i2d_DHxparams_procname);
-  FuncLoaded := assigned(i2d_DHxparams);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(i2d_DHxparams);
+  if FuncLoadError then
   begin
+    {$if not defined(i2d_DHxparams_allownil)}
+    i2d_DHxparams := @ERR_i2d_DHxparams;
+    {$ifend}
     {$if declared(i2d_DHxparams_introduced)}
     if LibVersion < i2d_DHxparams_introduced then
     begin
       {$if declared(FC_i2d_DHxparams)}
       i2d_DHxparams := @FC_i2d_DHxparams;
-      {$else}
-      {$if not defined(i2d_DHxparams_allownil)}
-      i2d_DHxparams := @ERR_i2d_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(i2d_DHxparams_removed)}
@@ -2425,39 +2208,31 @@ begin
     begin
       {$if declared(_i2d_DHxparams)}
       i2d_DHxparams := @_i2d_DHxparams;
-      {$else}
-      {$if not defined(i2d_DHxparams_allownil)}
-      i2d_DHxparams := @ERR_i2d_DHxparams;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(i2d_DHxparams_allownil)}
-    if not FuncLoaded then
-    begin
-      i2d_DHxparams := @ERR_i2d_DHxparams;
+    if FuncLoadError then
       AFailed.Add('i2d_DHxparams');
-    end;
     {$ifend}
   end;
 
 
   DHparams_print := LoadLibFunction(ADllHandle, DHparams_print_procname);
-  FuncLoaded := assigned(DHparams_print);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DHparams_print);
+  if FuncLoadError then
   begin
+    {$if not defined(DHparams_print_allownil)}
+    DHparams_print := @ERR_DHparams_print;
+    {$ifend}
     {$if declared(DHparams_print_introduced)}
     if LibVersion < DHparams_print_introduced then
     begin
       {$if declared(FC_DHparams_print)}
       DHparams_print := @FC_DHparams_print;
-      {$else}
-      {$if not defined(DHparams_print_allownil)}
-      DHparams_print := @ERR_DHparams_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DHparams_print_removed)}
@@ -2465,39 +2240,31 @@ begin
     begin
       {$if declared(_DHparams_print)}
       DHparams_print := @_DHparams_print;
-      {$else}
-      {$if not defined(DHparams_print_allownil)}
-      DHparams_print := @ERR_DHparams_print;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DHparams_print_allownil)}
-    if not FuncLoaded then
-    begin
-      DHparams_print := @ERR_DHparams_print;
+    if FuncLoadError then
       AFailed.Add('DHparams_print');
-    end;
     {$ifend}
   end;
 
 
   DH_get_1024_160 := LoadLibFunction(ADllHandle, DH_get_1024_160_procname);
-  FuncLoaded := assigned(DH_get_1024_160);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_1024_160);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_1024_160_allownil)}
+    DH_get_1024_160 := @ERR_DH_get_1024_160;
+    {$ifend}
     {$if declared(DH_get_1024_160_introduced)}
     if LibVersion < DH_get_1024_160_introduced then
     begin
       {$if declared(FC_DH_get_1024_160)}
       DH_get_1024_160 := @FC_DH_get_1024_160;
-      {$else}
-      {$if not defined(DH_get_1024_160_allownil)}
-      DH_get_1024_160 := @ERR_DH_get_1024_160;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_1024_160_removed)}
@@ -2505,39 +2272,31 @@ begin
     begin
       {$if declared(_DH_get_1024_160)}
       DH_get_1024_160 := @_DH_get_1024_160;
-      {$else}
-      {$if not defined(DH_get_1024_160_allownil)}
-      DH_get_1024_160 := @ERR_DH_get_1024_160;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_1024_160_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_1024_160 := @ERR_DH_get_1024_160;
+    if FuncLoadError then
       AFailed.Add('DH_get_1024_160');
-    end;
     {$ifend}
   end;
 
 
   DH_get_2048_224 := LoadLibFunction(ADllHandle, DH_get_2048_224_procname);
-  FuncLoaded := assigned(DH_get_2048_224);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_2048_224);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_2048_224_allownil)}
+    DH_get_2048_224 := @ERR_DH_get_2048_224;
+    {$ifend}
     {$if declared(DH_get_2048_224_introduced)}
     if LibVersion < DH_get_2048_224_introduced then
     begin
       {$if declared(FC_DH_get_2048_224)}
       DH_get_2048_224 := @FC_DH_get_2048_224;
-      {$else}
-      {$if not defined(DH_get_2048_224_allownil)}
-      DH_get_2048_224 := @ERR_DH_get_2048_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_2048_224_removed)}
@@ -2545,39 +2304,31 @@ begin
     begin
       {$if declared(_DH_get_2048_224)}
       DH_get_2048_224 := @_DH_get_2048_224;
-      {$else}
-      {$if not defined(DH_get_2048_224_allownil)}
-      DH_get_2048_224 := @ERR_DH_get_2048_224;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_2048_224_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_2048_224 := @ERR_DH_get_2048_224;
+    if FuncLoadError then
       AFailed.Add('DH_get_2048_224');
-    end;
     {$ifend}
   end;
 
 
   DH_get_2048_256 := LoadLibFunction(ADllHandle, DH_get_2048_256_procname);
-  FuncLoaded := assigned(DH_get_2048_256);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_2048_256);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_2048_256_allownil)}
+    DH_get_2048_256 := @ERR_DH_get_2048_256;
+    {$ifend}
     {$if declared(DH_get_2048_256_introduced)}
     if LibVersion < DH_get_2048_256_introduced then
     begin
       {$if declared(FC_DH_get_2048_256)}
       DH_get_2048_256 := @FC_DH_get_2048_256;
-      {$else}
-      {$if not defined(DH_get_2048_256_allownil)}
-      DH_get_2048_256 := @ERR_DH_get_2048_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_2048_256_removed)}
@@ -2585,39 +2336,31 @@ begin
     begin
       {$if declared(_DH_get_2048_256)}
       DH_get_2048_256 := @_DH_get_2048_256;
-      {$else}
-      {$if not defined(DH_get_2048_256_allownil)}
-      DH_get_2048_256 := @ERR_DH_get_2048_256;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_2048_256_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_2048_256 := @ERR_DH_get_2048_256;
+    if FuncLoadError then
       AFailed.Add('DH_get_2048_256');
-    end;
     {$ifend}
   end;
 
 
   DH_new_by_nid := LoadLibFunction(ADllHandle, DH_new_by_nid_procname);
-  FuncLoaded := assigned(DH_new_by_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_new_by_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_new_by_nid_allownil)}
+    DH_new_by_nid := @ERR_DH_new_by_nid;
+    {$ifend}
     {$if declared(DH_new_by_nid_introduced)}
     if LibVersion < DH_new_by_nid_introduced then
     begin
       {$if declared(FC_DH_new_by_nid)}
       DH_new_by_nid := @FC_DH_new_by_nid;
-      {$else}
-      {$if not defined(DH_new_by_nid_allownil)}
-      DH_new_by_nid := @ERR_DH_new_by_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_new_by_nid_removed)}
@@ -2625,39 +2368,31 @@ begin
     begin
       {$if declared(_DH_new_by_nid)}
       DH_new_by_nid := @_DH_new_by_nid;
-      {$else}
-      {$if not defined(DH_new_by_nid_allownil)}
-      DH_new_by_nid := @ERR_DH_new_by_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_new_by_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_new_by_nid := @ERR_DH_new_by_nid;
+    if FuncLoadError then
       AFailed.Add('DH_new_by_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get_nid := LoadLibFunction(ADllHandle, DH_get_nid_procname);
-  FuncLoaded := assigned(DH_get_nid);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_nid);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_nid_allownil)}
+    DH_get_nid := @ERR_DH_get_nid;
+    {$ifend}
     {$if declared(DH_get_nid_introduced)}
     if LibVersion < DH_get_nid_introduced then
     begin
       {$if declared(FC_DH_get_nid)}
       DH_get_nid := @FC_DH_get_nid;
-      {$else}
-      {$if not defined(DH_get_nid_allownil)}
-      DH_get_nid := @ERR_DH_get_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_nid_removed)}
@@ -2665,39 +2400,31 @@ begin
     begin
       {$if declared(_DH_get_nid)}
       DH_get_nid := @_DH_get_nid;
-      {$else}
-      {$if not defined(DH_get_nid_allownil)}
-      DH_get_nid := @ERR_DH_get_nid;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_nid_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_nid := @ERR_DH_get_nid;
+    if FuncLoadError then
       AFailed.Add('DH_get_nid');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_KDF_X9_42 := LoadLibFunction(ADllHandle, DH_KDF_X9_42_procname);
-  FuncLoaded := assigned(DH_KDF_X9_42);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_KDF_X9_42);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_KDF_X9_42_allownil)}
+    DH_KDF_X9_42 := @ERR_DH_KDF_X9_42;
+    {$ifend}
     {$if declared(DH_KDF_X9_42_introduced)}
     if LibVersion < DH_KDF_X9_42_introduced then
     begin
       {$if declared(FC_DH_KDF_X9_42)}
       DH_KDF_X9_42 := @FC_DH_KDF_X9_42;
-      {$else}
-      {$if not defined(DH_KDF_X9_42_allownil)}
-      DH_KDF_X9_42 := @ERR_DH_KDF_X9_42;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_KDF_X9_42_removed)}
@@ -2705,39 +2432,31 @@ begin
     begin
       {$if declared(_DH_KDF_X9_42)}
       DH_KDF_X9_42 := @_DH_KDF_X9_42;
-      {$else}
-      {$if not defined(DH_KDF_X9_42_allownil)}
-      DH_KDF_X9_42 := @ERR_DH_KDF_X9_42;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_KDF_X9_42_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_KDF_X9_42 := @ERR_DH_KDF_X9_42;
+    if FuncLoadError then
       AFailed.Add('DH_KDF_X9_42');
-    end;
     {$ifend}
   end;
 
 
   DH_get0_pqg := LoadLibFunction(ADllHandle, DH_get0_pqg_procname);
-  FuncLoaded := assigned(DH_get0_pqg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_pqg);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_pqg_allownil)}
+    DH_get0_pqg := @ERR_DH_get0_pqg;
+    {$ifend}
     {$if declared(DH_get0_pqg_introduced)}
     if LibVersion < DH_get0_pqg_introduced then
     begin
       {$if declared(FC_DH_get0_pqg)}
       DH_get0_pqg := @FC_DH_get0_pqg;
-      {$else}
-      {$if not defined(DH_get0_pqg_allownil)}
-      DH_get0_pqg := @ERR_DH_get0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_pqg_removed)}
@@ -2745,39 +2464,31 @@ begin
     begin
       {$if declared(_DH_get0_pqg)}
       DH_get0_pqg := @_DH_get0_pqg;
-      {$else}
-      {$if not defined(DH_get0_pqg_allownil)}
-      DH_get0_pqg := @ERR_DH_get0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_pqg_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_pqg := @ERR_DH_get0_pqg;
+    if FuncLoadError then
       AFailed.Add('DH_get0_pqg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_set0_pqg := LoadLibFunction(ADllHandle, DH_set0_pqg_procname);
-  FuncLoaded := assigned(DH_set0_pqg);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set0_pqg);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set0_pqg_allownil)}
+    DH_set0_pqg := @ERR_DH_set0_pqg;
+    {$ifend}
     {$if declared(DH_set0_pqg_introduced)}
     if LibVersion < DH_set0_pqg_introduced then
     begin
       {$if declared(FC_DH_set0_pqg)}
       DH_set0_pqg := @FC_DH_set0_pqg;
-      {$else}
-      {$if not defined(DH_set0_pqg_allownil)}
-      DH_set0_pqg := @ERR_DH_set0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set0_pqg_removed)}
@@ -2785,39 +2496,31 @@ begin
     begin
       {$if declared(_DH_set0_pqg)}
       DH_set0_pqg := @_DH_set0_pqg;
-      {$else}
-      {$if not defined(DH_set0_pqg_allownil)}
-      DH_set0_pqg := @ERR_DH_set0_pqg;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set0_pqg_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set0_pqg := @ERR_DH_set0_pqg;
+    if FuncLoadError then
       AFailed.Add('DH_set0_pqg');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_key := LoadLibFunction(ADllHandle, DH_get0_key_procname);
-  FuncLoaded := assigned(DH_get0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_key_allownil)}
+    DH_get0_key := @ERR_DH_get0_key;
+    {$ifend}
     {$if declared(DH_get0_key_introduced)}
     if LibVersion < DH_get0_key_introduced then
     begin
       {$if declared(FC_DH_get0_key)}
       DH_get0_key := @FC_DH_get0_key;
-      {$else}
-      {$if not defined(DH_get0_key_allownil)}
-      DH_get0_key := @ERR_DH_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_key_removed)}
@@ -2825,39 +2528,31 @@ begin
     begin
       {$if declared(_DH_get0_key)}
       DH_get0_key := @_DH_get0_key;
-      {$else}
-      {$if not defined(DH_get0_key_allownil)}
-      DH_get0_key := @ERR_DH_get0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_key := @ERR_DH_get0_key;
+    if FuncLoadError then
       AFailed.Add('DH_get0_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_set0_key := LoadLibFunction(ADllHandle, DH_set0_key_procname);
-  FuncLoaded := assigned(DH_set0_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set0_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set0_key_allownil)}
+    DH_set0_key := @ERR_DH_set0_key;
+    {$ifend}
     {$if declared(DH_set0_key_introduced)}
     if LibVersion < DH_set0_key_introduced then
     begin
       {$if declared(FC_DH_set0_key)}
       DH_set0_key := @FC_DH_set0_key;
-      {$else}
-      {$if not defined(DH_set0_key_allownil)}
-      DH_set0_key := @ERR_DH_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set0_key_removed)}
@@ -2865,39 +2560,31 @@ begin
     begin
       {$if declared(_DH_set0_key)}
       DH_set0_key := @_DH_set0_key;
-      {$else}
-      {$if not defined(DH_set0_key_allownil)}
-      DH_set0_key := @ERR_DH_set0_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set0_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set0_key := @ERR_DH_set0_key;
+    if FuncLoadError then
       AFailed.Add('DH_set0_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_p := LoadLibFunction(ADllHandle, DH_get0_p_procname);
-  FuncLoaded := assigned(DH_get0_p);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_p);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_p_allownil)}
+    DH_get0_p := @ERR_DH_get0_p;
+    {$ifend}
     {$if declared(DH_get0_p_introduced)}
     if LibVersion < DH_get0_p_introduced then
     begin
       {$if declared(FC_DH_get0_p)}
       DH_get0_p := @FC_DH_get0_p;
-      {$else}
-      {$if not defined(DH_get0_p_allownil)}
-      DH_get0_p := @ERR_DH_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_p_removed)}
@@ -2905,39 +2592,31 @@ begin
     begin
       {$if declared(_DH_get0_p)}
       DH_get0_p := @_DH_get0_p;
-      {$else}
-      {$if not defined(DH_get0_p_allownil)}
-      DH_get0_p := @ERR_DH_get0_p;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_p_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_p := @ERR_DH_get0_p;
+    if FuncLoadError then
       AFailed.Add('DH_get0_p');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_q := LoadLibFunction(ADllHandle, DH_get0_q_procname);
-  FuncLoaded := assigned(DH_get0_q);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_q);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_q_allownil)}
+    DH_get0_q := @ERR_DH_get0_q;
+    {$ifend}
     {$if declared(DH_get0_q_introduced)}
     if LibVersion < DH_get0_q_introduced then
     begin
       {$if declared(FC_DH_get0_q)}
       DH_get0_q := @FC_DH_get0_q;
-      {$else}
-      {$if not defined(DH_get0_q_allownil)}
-      DH_get0_q := @ERR_DH_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_q_removed)}
@@ -2945,39 +2624,31 @@ begin
     begin
       {$if declared(_DH_get0_q)}
       DH_get0_q := @_DH_get0_q;
-      {$else}
-      {$if not defined(DH_get0_q_allownil)}
-      DH_get0_q := @ERR_DH_get0_q;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_q_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_q := @ERR_DH_get0_q;
+    if FuncLoadError then
       AFailed.Add('DH_get0_q');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_g := LoadLibFunction(ADllHandle, DH_get0_g_procname);
-  FuncLoaded := assigned(DH_get0_g);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_g);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_g_allownil)}
+    DH_get0_g := @ERR_DH_get0_g;
+    {$ifend}
     {$if declared(DH_get0_g_introduced)}
     if LibVersion < DH_get0_g_introduced then
     begin
       {$if declared(FC_DH_get0_g)}
       DH_get0_g := @FC_DH_get0_g;
-      {$else}
-      {$if not defined(DH_get0_g_allownil)}
-      DH_get0_g := @ERR_DH_get0_g;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_g_removed)}
@@ -2985,39 +2656,31 @@ begin
     begin
       {$if declared(_DH_get0_g)}
       DH_get0_g := @_DH_get0_g;
-      {$else}
-      {$if not defined(DH_get0_g_allownil)}
-      DH_get0_g := @ERR_DH_get0_g;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_g_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_g := @ERR_DH_get0_g;
+    if FuncLoadError then
       AFailed.Add('DH_get0_g');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_priv_key := LoadLibFunction(ADllHandle, DH_get0_priv_key_procname);
-  FuncLoaded := assigned(DH_get0_priv_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_priv_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_priv_key_allownil)}
+    DH_get0_priv_key := @ERR_DH_get0_priv_key;
+    {$ifend}
     {$if declared(DH_get0_priv_key_introduced)}
     if LibVersion < DH_get0_priv_key_introduced then
     begin
       {$if declared(FC_DH_get0_priv_key)}
       DH_get0_priv_key := @FC_DH_get0_priv_key;
-      {$else}
-      {$if not defined(DH_get0_priv_key_allownil)}
-      DH_get0_priv_key := @ERR_DH_get0_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_priv_key_removed)}
@@ -3025,39 +2688,31 @@ begin
     begin
       {$if declared(_DH_get0_priv_key)}
       DH_get0_priv_key := @_DH_get0_priv_key;
-      {$else}
-      {$if not defined(DH_get0_priv_key_allownil)}
-      DH_get0_priv_key := @ERR_DH_get0_priv_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_priv_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_priv_key := @ERR_DH_get0_priv_key;
+    if FuncLoadError then
       AFailed.Add('DH_get0_priv_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_pub_key := LoadLibFunction(ADllHandle, DH_get0_pub_key_procname);
-  FuncLoaded := assigned(DH_get0_pub_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_pub_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_pub_key_allownil)}
+    DH_get0_pub_key := @ERR_DH_get0_pub_key;
+    {$ifend}
     {$if declared(DH_get0_pub_key_introduced)}
     if LibVersion < DH_get0_pub_key_introduced then
     begin
       {$if declared(FC_DH_get0_pub_key)}
       DH_get0_pub_key := @FC_DH_get0_pub_key;
-      {$else}
-      {$if not defined(DH_get0_pub_key_allownil)}
-      DH_get0_pub_key := @ERR_DH_get0_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_pub_key_removed)}
@@ -3065,39 +2720,31 @@ begin
     begin
       {$if declared(_DH_get0_pub_key)}
       DH_get0_pub_key := @_DH_get0_pub_key;
-      {$else}
-      {$if not defined(DH_get0_pub_key_allownil)}
-      DH_get0_pub_key := @ERR_DH_get0_pub_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_pub_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_pub_key := @ERR_DH_get0_pub_key;
+    if FuncLoadError then
       AFailed.Add('DH_get0_pub_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_clear_flags := LoadLibFunction(ADllHandle, DH_clear_flags_procname);
-  FuncLoaded := assigned(DH_clear_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_clear_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_clear_flags_allownil)}
+    DH_clear_flags := @ERR_DH_clear_flags;
+    {$ifend}
     {$if declared(DH_clear_flags_introduced)}
     if LibVersion < DH_clear_flags_introduced then
     begin
       {$if declared(FC_DH_clear_flags)}
       DH_clear_flags := @FC_DH_clear_flags;
-      {$else}
-      {$if not defined(DH_clear_flags_allownil)}
-      DH_clear_flags := @ERR_DH_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_clear_flags_removed)}
@@ -3105,39 +2752,31 @@ begin
     begin
       {$if declared(_DH_clear_flags)}
       DH_clear_flags := @_DH_clear_flags;
-      {$else}
-      {$if not defined(DH_clear_flags_allownil)}
-      DH_clear_flags := @ERR_DH_clear_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_clear_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_clear_flags := @ERR_DH_clear_flags;
+    if FuncLoadError then
       AFailed.Add('DH_clear_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_test_flags := LoadLibFunction(ADllHandle, DH_test_flags_procname);
-  FuncLoaded := assigned(DH_test_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_test_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_test_flags_allownil)}
+    DH_test_flags := @ERR_DH_test_flags;
+    {$ifend}
     {$if declared(DH_test_flags_introduced)}
     if LibVersion < DH_test_flags_introduced then
     begin
       {$if declared(FC_DH_test_flags)}
       DH_test_flags := @FC_DH_test_flags;
-      {$else}
-      {$if not defined(DH_test_flags_allownil)}
-      DH_test_flags := @ERR_DH_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_test_flags_removed)}
@@ -3145,39 +2784,31 @@ begin
     begin
       {$if declared(_DH_test_flags)}
       DH_test_flags := @_DH_test_flags;
-      {$else}
-      {$if not defined(DH_test_flags_allownil)}
-      DH_test_flags := @ERR_DH_test_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_test_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_test_flags := @ERR_DH_test_flags;
+    if FuncLoadError then
       AFailed.Add('DH_test_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_set_flags := LoadLibFunction(ADllHandle, DH_set_flags_procname);
-  FuncLoaded := assigned(DH_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set_flags_allownil)}
+    DH_set_flags := @ERR_DH_set_flags;
+    {$ifend}
     {$if declared(DH_set_flags_introduced)}
     if LibVersion < DH_set_flags_introduced then
     begin
       {$if declared(FC_DH_set_flags)}
       DH_set_flags := @FC_DH_set_flags;
-      {$else}
-      {$if not defined(DH_set_flags_allownil)}
-      DH_set_flags := @ERR_DH_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set_flags_removed)}
@@ -3185,39 +2816,31 @@ begin
     begin
       {$if declared(_DH_set_flags)}
       DH_set_flags := @_DH_set_flags;
-      {$else}
-      {$if not defined(DH_set_flags_allownil)}
-      DH_set_flags := @ERR_DH_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set_flags := @ERR_DH_set_flags;
+    if FuncLoadError then
       AFailed.Add('DH_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get0_engine := LoadLibFunction(ADllHandle, DH_get0_engine_procname);
-  FuncLoaded := assigned(DH_get0_engine);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get0_engine);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get0_engine_allownil)}
+    DH_get0_engine := @ERR_DH_get0_engine;
+    {$ifend}
     {$if declared(DH_get0_engine_introduced)}
     if LibVersion < DH_get0_engine_introduced then
     begin
       {$if declared(FC_DH_get0_engine)}
       DH_get0_engine := @FC_DH_get0_engine;
-      {$else}
-      {$if not defined(DH_get0_engine_allownil)}
-      DH_get0_engine := @ERR_DH_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get0_engine_removed)}
@@ -3225,39 +2848,31 @@ begin
     begin
       {$if declared(_DH_get0_engine)}
       DH_get0_engine := @_DH_get0_engine;
-      {$else}
-      {$if not defined(DH_get0_engine_allownil)}
-      DH_get0_engine := @ERR_DH_get0_engine;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get0_engine_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get0_engine := @ERR_DH_get0_engine;
+    if FuncLoadError then
       AFailed.Add('DH_get0_engine');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_get_length := LoadLibFunction(ADllHandle, DH_get_length_procname);
-  FuncLoaded := assigned(DH_get_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_get_length);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_get_length_allownil)}
+    DH_get_length := @ERR_DH_get_length;
+    {$ifend}
     {$if declared(DH_get_length_introduced)}
     if LibVersion < DH_get_length_introduced then
     begin
       {$if declared(FC_DH_get_length)}
       DH_get_length := @FC_DH_get_length;
-      {$else}
-      {$if not defined(DH_get_length_allownil)}
-      DH_get_length := @ERR_DH_get_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_get_length_removed)}
@@ -3265,39 +2880,31 @@ begin
     begin
       {$if declared(_DH_get_length)}
       DH_get_length := @_DH_get_length;
-      {$else}
-      {$if not defined(DH_get_length_allownil)}
-      DH_get_length := @ERR_DH_get_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_get_length_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_get_length := @ERR_DH_get_length;
+    if FuncLoadError then
       AFailed.Add('DH_get_length');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_set_length := LoadLibFunction(ADllHandle, DH_set_length_procname);
-  FuncLoaded := assigned(DH_set_length);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_set_length);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_set_length_allownil)}
+    DH_set_length := @ERR_DH_set_length;
+    {$ifend}
     {$if declared(DH_set_length_introduced)}
     if LibVersion < DH_set_length_introduced then
     begin
       {$if declared(FC_DH_set_length)}
       DH_set_length := @FC_DH_set_length;
-      {$else}
-      {$if not defined(DH_set_length_allownil)}
-      DH_set_length := @ERR_DH_set_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_set_length_removed)}
@@ -3305,39 +2912,31 @@ begin
     begin
       {$if declared(_DH_set_length)}
       DH_set_length := @_DH_set_length;
-      {$else}
-      {$if not defined(DH_set_length_allownil)}
-      DH_set_length := @ERR_DH_set_length;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_set_length_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_set_length := @ERR_DH_set_length;
+    if FuncLoadError then
       AFailed.Add('DH_set_length');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_new := LoadLibFunction(ADllHandle, DH_meth_new_procname);
-  FuncLoaded := assigned(DH_meth_new);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_new);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_new_allownil)}
+    DH_meth_new := @ERR_DH_meth_new;
+    {$ifend}
     {$if declared(DH_meth_new_introduced)}
     if LibVersion < DH_meth_new_introduced then
     begin
       {$if declared(FC_DH_meth_new)}
       DH_meth_new := @FC_DH_meth_new;
-      {$else}
-      {$if not defined(DH_meth_new_allownil)}
-      DH_meth_new := @ERR_DH_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_new_removed)}
@@ -3345,39 +2944,31 @@ begin
     begin
       {$if declared(_DH_meth_new)}
       DH_meth_new := @_DH_meth_new;
-      {$else}
-      {$if not defined(DH_meth_new_allownil)}
-      DH_meth_new := @ERR_DH_meth_new;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_new_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_new := @ERR_DH_meth_new;
+    if FuncLoadError then
       AFailed.Add('DH_meth_new');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_free := LoadLibFunction(ADllHandle, DH_meth_free_procname);
-  FuncLoaded := assigned(DH_meth_free);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_free);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_free_allownil)}
+    DH_meth_free := @ERR_DH_meth_free;
+    {$ifend}
     {$if declared(DH_meth_free_introduced)}
     if LibVersion < DH_meth_free_introduced then
     begin
       {$if declared(FC_DH_meth_free)}
       DH_meth_free := @FC_DH_meth_free;
-      {$else}
-      {$if not defined(DH_meth_free_allownil)}
-      DH_meth_free := @ERR_DH_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_free_removed)}
@@ -3385,39 +2976,31 @@ begin
     begin
       {$if declared(_DH_meth_free)}
       DH_meth_free := @_DH_meth_free;
-      {$else}
-      {$if not defined(DH_meth_free_allownil)}
-      DH_meth_free := @ERR_DH_meth_free;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_free_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_free := @ERR_DH_meth_free;
+    if FuncLoadError then
       AFailed.Add('DH_meth_free');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_dup := LoadLibFunction(ADllHandle, DH_meth_dup_procname);
-  FuncLoaded := assigned(DH_meth_dup);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_dup);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_dup_allownil)}
+    DH_meth_dup := @ERR_DH_meth_dup;
+    {$ifend}
     {$if declared(DH_meth_dup_introduced)}
     if LibVersion < DH_meth_dup_introduced then
     begin
       {$if declared(FC_DH_meth_dup)}
       DH_meth_dup := @FC_DH_meth_dup;
-      {$else}
-      {$if not defined(DH_meth_dup_allownil)}
-      DH_meth_dup := @ERR_DH_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_dup_removed)}
@@ -3425,39 +3008,31 @@ begin
     begin
       {$if declared(_DH_meth_dup)}
       DH_meth_dup := @_DH_meth_dup;
-      {$else}
-      {$if not defined(DH_meth_dup_allownil)}
-      DH_meth_dup := @ERR_DH_meth_dup;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_dup_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_dup := @ERR_DH_meth_dup;
+    if FuncLoadError then
       AFailed.Add('DH_meth_dup');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get0_name := LoadLibFunction(ADllHandle, DH_meth_get0_name_procname);
-  FuncLoaded := assigned(DH_meth_get0_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get0_name);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get0_name_allownil)}
+    DH_meth_get0_name := @ERR_DH_meth_get0_name;
+    {$ifend}
     {$if declared(DH_meth_get0_name_introduced)}
     if LibVersion < DH_meth_get0_name_introduced then
     begin
       {$if declared(FC_DH_meth_get0_name)}
       DH_meth_get0_name := @FC_DH_meth_get0_name;
-      {$else}
-      {$if not defined(DH_meth_get0_name_allownil)}
-      DH_meth_get0_name := @ERR_DH_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get0_name_removed)}
@@ -3465,39 +3040,31 @@ begin
     begin
       {$if declared(_DH_meth_get0_name)}
       DH_meth_get0_name := @_DH_meth_get0_name;
-      {$else}
-      {$if not defined(DH_meth_get0_name_allownil)}
-      DH_meth_get0_name := @ERR_DH_meth_get0_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get0_name_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get0_name := @ERR_DH_meth_get0_name;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get0_name');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set1_name := LoadLibFunction(ADllHandle, DH_meth_set1_name_procname);
-  FuncLoaded := assigned(DH_meth_set1_name);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set1_name);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set1_name_allownil)}
+    DH_meth_set1_name := @ERR_DH_meth_set1_name;
+    {$ifend}
     {$if declared(DH_meth_set1_name_introduced)}
     if LibVersion < DH_meth_set1_name_introduced then
     begin
       {$if declared(FC_DH_meth_set1_name)}
       DH_meth_set1_name := @FC_DH_meth_set1_name;
-      {$else}
-      {$if not defined(DH_meth_set1_name_allownil)}
-      DH_meth_set1_name := @ERR_DH_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set1_name_removed)}
@@ -3505,39 +3072,31 @@ begin
     begin
       {$if declared(_DH_meth_set1_name)}
       DH_meth_set1_name := @_DH_meth_set1_name;
-      {$else}
-      {$if not defined(DH_meth_set1_name_allownil)}
-      DH_meth_set1_name := @ERR_DH_meth_set1_name;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set1_name_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set1_name := @ERR_DH_meth_set1_name;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set1_name');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_flags := LoadLibFunction(ADllHandle, DH_meth_get_flags_procname);
-  FuncLoaded := assigned(DH_meth_get_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_flags_allownil)}
+    DH_meth_get_flags := @ERR_DH_meth_get_flags;
+    {$ifend}
     {$if declared(DH_meth_get_flags_introduced)}
     if LibVersion < DH_meth_get_flags_introduced then
     begin
       {$if declared(FC_DH_meth_get_flags)}
       DH_meth_get_flags := @FC_DH_meth_get_flags;
-      {$else}
-      {$if not defined(DH_meth_get_flags_allownil)}
-      DH_meth_get_flags := @ERR_DH_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_flags_removed)}
@@ -3545,39 +3104,31 @@ begin
     begin
       {$if declared(_DH_meth_get_flags)}
       DH_meth_get_flags := @_DH_meth_get_flags;
-      {$else}
-      {$if not defined(DH_meth_get_flags_allownil)}
-      DH_meth_get_flags := @ERR_DH_meth_get_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_flags := @ERR_DH_meth_get_flags;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_flags := LoadLibFunction(ADllHandle, DH_meth_set_flags_procname);
-  FuncLoaded := assigned(DH_meth_set_flags);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_flags);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_flags_allownil)}
+    DH_meth_set_flags := @ERR_DH_meth_set_flags;
+    {$ifend}
     {$if declared(DH_meth_set_flags_introduced)}
     if LibVersion < DH_meth_set_flags_introduced then
     begin
       {$if declared(FC_DH_meth_set_flags)}
       DH_meth_set_flags := @FC_DH_meth_set_flags;
-      {$else}
-      {$if not defined(DH_meth_set_flags_allownil)}
-      DH_meth_set_flags := @ERR_DH_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_flags_removed)}
@@ -3585,39 +3136,31 @@ begin
     begin
       {$if declared(_DH_meth_set_flags)}
       DH_meth_set_flags := @_DH_meth_set_flags;
-      {$else}
-      {$if not defined(DH_meth_set_flags_allownil)}
-      DH_meth_set_flags := @ERR_DH_meth_set_flags;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_flags_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_flags := @ERR_DH_meth_set_flags;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_flags');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get0_app_data := LoadLibFunction(ADllHandle, DH_meth_get0_app_data_procname);
-  FuncLoaded := assigned(DH_meth_get0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get0_app_data_allownil)}
+    DH_meth_get0_app_data := @ERR_DH_meth_get0_app_data;
+    {$ifend}
     {$if declared(DH_meth_get0_app_data_introduced)}
     if LibVersion < DH_meth_get0_app_data_introduced then
     begin
       {$if declared(FC_DH_meth_get0_app_data)}
       DH_meth_get0_app_data := @FC_DH_meth_get0_app_data;
-      {$else}
-      {$if not defined(DH_meth_get0_app_data_allownil)}
-      DH_meth_get0_app_data := @ERR_DH_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get0_app_data_removed)}
@@ -3625,39 +3168,31 @@ begin
     begin
       {$if declared(_DH_meth_get0_app_data)}
       DH_meth_get0_app_data := @_DH_meth_get0_app_data;
-      {$else}
-      {$if not defined(DH_meth_get0_app_data_allownil)}
-      DH_meth_get0_app_data := @ERR_DH_meth_get0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get0_app_data := @ERR_DH_meth_get0_app_data;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get0_app_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set0_app_data := LoadLibFunction(ADllHandle, DH_meth_set0_app_data_procname);
-  FuncLoaded := assigned(DH_meth_set0_app_data);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set0_app_data);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set0_app_data_allownil)}
+    DH_meth_set0_app_data := @ERR_DH_meth_set0_app_data;
+    {$ifend}
     {$if declared(DH_meth_set0_app_data_introduced)}
     if LibVersion < DH_meth_set0_app_data_introduced then
     begin
       {$if declared(FC_DH_meth_set0_app_data)}
       DH_meth_set0_app_data := @FC_DH_meth_set0_app_data;
-      {$else}
-      {$if not defined(DH_meth_set0_app_data_allownil)}
-      DH_meth_set0_app_data := @ERR_DH_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set0_app_data_removed)}
@@ -3665,39 +3200,31 @@ begin
     begin
       {$if declared(_DH_meth_set0_app_data)}
       DH_meth_set0_app_data := @_DH_meth_set0_app_data;
-      {$else}
-      {$if not defined(DH_meth_set0_app_data_allownil)}
-      DH_meth_set0_app_data := @ERR_DH_meth_set0_app_data;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set0_app_data_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set0_app_data := @ERR_DH_meth_set0_app_data;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set0_app_data');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_generate_key := LoadLibFunction(ADllHandle, DH_meth_get_generate_key_procname);
-  FuncLoaded := assigned(DH_meth_get_generate_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_generate_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_generate_key_allownil)}
+    DH_meth_get_generate_key := @ERR_DH_meth_get_generate_key;
+    {$ifend}
     {$if declared(DH_meth_get_generate_key_introduced)}
     if LibVersion < DH_meth_get_generate_key_introduced then
     begin
       {$if declared(FC_DH_meth_get_generate_key)}
       DH_meth_get_generate_key := @FC_DH_meth_get_generate_key;
-      {$else}
-      {$if not defined(DH_meth_get_generate_key_allownil)}
-      DH_meth_get_generate_key := @ERR_DH_meth_get_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_generate_key_removed)}
@@ -3705,39 +3232,31 @@ begin
     begin
       {$if declared(_DH_meth_get_generate_key)}
       DH_meth_get_generate_key := @_DH_meth_get_generate_key;
-      {$else}
-      {$if not defined(DH_meth_get_generate_key_allownil)}
-      DH_meth_get_generate_key := @ERR_DH_meth_get_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_generate_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_generate_key := @ERR_DH_meth_get_generate_key;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_generate_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_generate_key := LoadLibFunction(ADllHandle, DH_meth_set_generate_key_procname);
-  FuncLoaded := assigned(DH_meth_set_generate_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_generate_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_generate_key_allownil)}
+    DH_meth_set_generate_key := @ERR_DH_meth_set_generate_key;
+    {$ifend}
     {$if declared(DH_meth_set_generate_key_introduced)}
     if LibVersion < DH_meth_set_generate_key_introduced then
     begin
       {$if declared(FC_DH_meth_set_generate_key)}
       DH_meth_set_generate_key := @FC_DH_meth_set_generate_key;
-      {$else}
-      {$if not defined(DH_meth_set_generate_key_allownil)}
-      DH_meth_set_generate_key := @ERR_DH_meth_set_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_generate_key_removed)}
@@ -3745,39 +3264,31 @@ begin
     begin
       {$if declared(_DH_meth_set_generate_key)}
       DH_meth_set_generate_key := @_DH_meth_set_generate_key;
-      {$else}
-      {$if not defined(DH_meth_set_generate_key_allownil)}
-      DH_meth_set_generate_key := @ERR_DH_meth_set_generate_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_generate_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_generate_key := @ERR_DH_meth_set_generate_key;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_generate_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_compute_key := LoadLibFunction(ADllHandle, DH_meth_get_compute_key_procname);
-  FuncLoaded := assigned(DH_meth_get_compute_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_compute_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_compute_key_allownil)}
+    DH_meth_get_compute_key := @ERR_DH_meth_get_compute_key;
+    {$ifend}
     {$if declared(DH_meth_get_compute_key_introduced)}
     if LibVersion < DH_meth_get_compute_key_introduced then
     begin
       {$if declared(FC_DH_meth_get_compute_key)}
       DH_meth_get_compute_key := @FC_DH_meth_get_compute_key;
-      {$else}
-      {$if not defined(DH_meth_get_compute_key_allownil)}
-      DH_meth_get_compute_key := @ERR_DH_meth_get_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_compute_key_removed)}
@@ -3785,39 +3296,31 @@ begin
     begin
       {$if declared(_DH_meth_get_compute_key)}
       DH_meth_get_compute_key := @_DH_meth_get_compute_key;
-      {$else}
-      {$if not defined(DH_meth_get_compute_key_allownil)}
-      DH_meth_get_compute_key := @ERR_DH_meth_get_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_compute_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_compute_key := @ERR_DH_meth_get_compute_key;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_compute_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_compute_key := LoadLibFunction(ADllHandle, DH_meth_set_compute_key_procname);
-  FuncLoaded := assigned(DH_meth_set_compute_key);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_compute_key);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_compute_key_allownil)}
+    DH_meth_set_compute_key := @ERR_DH_meth_set_compute_key;
+    {$ifend}
     {$if declared(DH_meth_set_compute_key_introduced)}
     if LibVersion < DH_meth_set_compute_key_introduced then
     begin
       {$if declared(FC_DH_meth_set_compute_key)}
       DH_meth_set_compute_key := @FC_DH_meth_set_compute_key;
-      {$else}
-      {$if not defined(DH_meth_set_compute_key_allownil)}
-      DH_meth_set_compute_key := @ERR_DH_meth_set_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_compute_key_removed)}
@@ -3825,39 +3328,31 @@ begin
     begin
       {$if declared(_DH_meth_set_compute_key)}
       DH_meth_set_compute_key := @_DH_meth_set_compute_key;
-      {$else}
-      {$if not defined(DH_meth_set_compute_key_allownil)}
-      DH_meth_set_compute_key := @ERR_DH_meth_set_compute_key;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_compute_key_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_compute_key := @ERR_DH_meth_set_compute_key;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_compute_key');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_bn_mod_exp := LoadLibFunction(ADllHandle, DH_meth_get_bn_mod_exp_procname);
-  FuncLoaded := assigned(DH_meth_get_bn_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_bn_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_bn_mod_exp_allownil)}
+    DH_meth_get_bn_mod_exp := @ERR_DH_meth_get_bn_mod_exp;
+    {$ifend}
     {$if declared(DH_meth_get_bn_mod_exp_introduced)}
     if LibVersion < DH_meth_get_bn_mod_exp_introduced then
     begin
       {$if declared(FC_DH_meth_get_bn_mod_exp)}
       DH_meth_get_bn_mod_exp := @FC_DH_meth_get_bn_mod_exp;
-      {$else}
-      {$if not defined(DH_meth_get_bn_mod_exp_allownil)}
-      DH_meth_get_bn_mod_exp := @ERR_DH_meth_get_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_bn_mod_exp_removed)}
@@ -3865,39 +3360,31 @@ begin
     begin
       {$if declared(_DH_meth_get_bn_mod_exp)}
       DH_meth_get_bn_mod_exp := @_DH_meth_get_bn_mod_exp;
-      {$else}
-      {$if not defined(DH_meth_get_bn_mod_exp_allownil)}
-      DH_meth_get_bn_mod_exp := @ERR_DH_meth_get_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_bn_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_bn_mod_exp := @ERR_DH_meth_get_bn_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_bn_mod_exp');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_bn_mod_exp := LoadLibFunction(ADllHandle, DH_meth_set_bn_mod_exp_procname);
-  FuncLoaded := assigned(DH_meth_set_bn_mod_exp);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_bn_mod_exp);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_bn_mod_exp_allownil)}
+    DH_meth_set_bn_mod_exp := @ERR_DH_meth_set_bn_mod_exp;
+    {$ifend}
     {$if declared(DH_meth_set_bn_mod_exp_introduced)}
     if LibVersion < DH_meth_set_bn_mod_exp_introduced then
     begin
       {$if declared(FC_DH_meth_set_bn_mod_exp)}
       DH_meth_set_bn_mod_exp := @FC_DH_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(DH_meth_set_bn_mod_exp_allownil)}
-      DH_meth_set_bn_mod_exp := @ERR_DH_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_bn_mod_exp_removed)}
@@ -3905,39 +3392,31 @@ begin
     begin
       {$if declared(_DH_meth_set_bn_mod_exp)}
       DH_meth_set_bn_mod_exp := @_DH_meth_set_bn_mod_exp;
-      {$else}
-      {$if not defined(DH_meth_set_bn_mod_exp_allownil)}
-      DH_meth_set_bn_mod_exp := @ERR_DH_meth_set_bn_mod_exp;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_bn_mod_exp_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_bn_mod_exp := @ERR_DH_meth_set_bn_mod_exp;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_bn_mod_exp');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_init := LoadLibFunction(ADllHandle, DH_meth_get_init_procname);
-  FuncLoaded := assigned(DH_meth_get_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_init);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_init_allownil)}
+    DH_meth_get_init := @ERR_DH_meth_get_init;
+    {$ifend}
     {$if declared(DH_meth_get_init_introduced)}
     if LibVersion < DH_meth_get_init_introduced then
     begin
       {$if declared(FC_DH_meth_get_init)}
       DH_meth_get_init := @FC_DH_meth_get_init;
-      {$else}
-      {$if not defined(DH_meth_get_init_allownil)}
-      DH_meth_get_init := @ERR_DH_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_init_removed)}
@@ -3945,39 +3424,31 @@ begin
     begin
       {$if declared(_DH_meth_get_init)}
       DH_meth_get_init := @_DH_meth_get_init;
-      {$else}
-      {$if not defined(DH_meth_get_init_allownil)}
-      DH_meth_get_init := @ERR_DH_meth_get_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_init_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_init := @ERR_DH_meth_get_init;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_init := LoadLibFunction(ADllHandle, DH_meth_set_init_procname);
-  FuncLoaded := assigned(DH_meth_set_init);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_init);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_init_allownil)}
+    DH_meth_set_init := @ERR_DH_meth_set_init;
+    {$ifend}
     {$if declared(DH_meth_set_init_introduced)}
     if LibVersion < DH_meth_set_init_introduced then
     begin
       {$if declared(FC_DH_meth_set_init)}
       DH_meth_set_init := @FC_DH_meth_set_init;
-      {$else}
-      {$if not defined(DH_meth_set_init_allownil)}
-      DH_meth_set_init := @ERR_DH_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_init_removed)}
@@ -3985,39 +3456,31 @@ begin
     begin
       {$if declared(_DH_meth_set_init)}
       DH_meth_set_init := @_DH_meth_set_init;
-      {$else}
-      {$if not defined(DH_meth_set_init_allownil)}
-      DH_meth_set_init := @ERR_DH_meth_set_init;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_init_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_init := @ERR_DH_meth_set_init;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_init');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_finish := LoadLibFunction(ADllHandle, DH_meth_get_finish_procname);
-  FuncLoaded := assigned(DH_meth_get_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_finish_allownil)}
+    DH_meth_get_finish := @ERR_DH_meth_get_finish;
+    {$ifend}
     {$if declared(DH_meth_get_finish_introduced)}
     if LibVersion < DH_meth_get_finish_introduced then
     begin
       {$if declared(FC_DH_meth_get_finish)}
       DH_meth_get_finish := @FC_DH_meth_get_finish;
-      {$else}
-      {$if not defined(DH_meth_get_finish_allownil)}
-      DH_meth_get_finish := @ERR_DH_meth_get_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_finish_removed)}
@@ -4025,39 +3488,31 @@ begin
     begin
       {$if declared(_DH_meth_get_finish)}
       DH_meth_get_finish := @_DH_meth_get_finish;
-      {$else}
-      {$if not defined(DH_meth_get_finish_allownil)}
-      DH_meth_get_finish := @ERR_DH_meth_get_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_finish := @ERR_DH_meth_get_finish;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_finish');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_finish := LoadLibFunction(ADllHandle, DH_meth_set_finish_procname);
-  FuncLoaded := assigned(DH_meth_set_finish);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_finish);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_finish_allownil)}
+    DH_meth_set_finish := @ERR_DH_meth_set_finish;
+    {$ifend}
     {$if declared(DH_meth_set_finish_introduced)}
     if LibVersion < DH_meth_set_finish_introduced then
     begin
       {$if declared(FC_DH_meth_set_finish)}
       DH_meth_set_finish := @FC_DH_meth_set_finish;
-      {$else}
-      {$if not defined(DH_meth_set_finish_allownil)}
-      DH_meth_set_finish := @ERR_DH_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_finish_removed)}
@@ -4065,39 +3520,31 @@ begin
     begin
       {$if declared(_DH_meth_set_finish)}
       DH_meth_set_finish := @_DH_meth_set_finish;
-      {$else}
-      {$if not defined(DH_meth_set_finish_allownil)}
-      DH_meth_set_finish := @ERR_DH_meth_set_finish;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_finish_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_finish := @ERR_DH_meth_set_finish;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_finish');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_get_generate_params := LoadLibFunction(ADllHandle, DH_meth_get_generate_params_procname);
-  FuncLoaded := assigned(DH_meth_get_generate_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_get_generate_params);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_get_generate_params_allownil)}
+    DH_meth_get_generate_params := @ERR_DH_meth_get_generate_params;
+    {$ifend}
     {$if declared(DH_meth_get_generate_params_introduced)}
     if LibVersion < DH_meth_get_generate_params_introduced then
     begin
       {$if declared(FC_DH_meth_get_generate_params)}
       DH_meth_get_generate_params := @FC_DH_meth_get_generate_params;
-      {$else}
-      {$if not defined(DH_meth_get_generate_params_allownil)}
-      DH_meth_get_generate_params := @ERR_DH_meth_get_generate_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_get_generate_params_removed)}
@@ -4105,39 +3552,31 @@ begin
     begin
       {$if declared(_DH_meth_get_generate_params)}
       DH_meth_get_generate_params := @_DH_meth_get_generate_params;
-      {$else}
-      {$if not defined(DH_meth_get_generate_params_allownil)}
-      DH_meth_get_generate_params := @ERR_DH_meth_get_generate_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_get_generate_params_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_get_generate_params := @ERR_DH_meth_get_generate_params;
+    if FuncLoadError then
       AFailed.Add('DH_meth_get_generate_params');
-    end;
     {$ifend}
   end;
 
  {introduced 1.1.0}
   DH_meth_set_generate_params := LoadLibFunction(ADllHandle, DH_meth_set_generate_params_procname);
-  FuncLoaded := assigned(DH_meth_set_generate_params);
-  if not FuncLoaded then
+  FuncLoadError := not assigned(DH_meth_set_generate_params);
+  if FuncLoadError then
   begin
+    {$if not defined(DH_meth_set_generate_params_allownil)}
+    DH_meth_set_generate_params := @ERR_DH_meth_set_generate_params;
+    {$ifend}
     {$if declared(DH_meth_set_generate_params_introduced)}
     if LibVersion < DH_meth_set_generate_params_introduced then
     begin
       {$if declared(FC_DH_meth_set_generate_params)}
       DH_meth_set_generate_params := @FC_DH_meth_set_generate_params;
-      {$else}
-      {$if not defined(DH_meth_set_generate_params_allownil)}
-      DH_meth_set_generate_params := @ERR_DH_meth_set_generate_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if declared(DH_meth_set_generate_params_removed)}
@@ -4145,20 +3584,13 @@ begin
     begin
       {$if declared(_DH_meth_set_generate_params)}
       DH_meth_set_generate_params := @_DH_meth_set_generate_params;
-      {$else}
-      {$if not defined(DH_meth_set_generate_params_allownil)}
-      DH_meth_set_generate_params := @ERR_DH_meth_set_generate_params;
       {$ifend}
-      {$ifend}
-      FuncLoaded := true;
+      FuncLoadError := false;
     end;
     {$ifend}
     {$if not defined(DH_meth_set_generate_params_allownil)}
-    if not FuncLoaded then
-    begin
-      DH_meth_set_generate_params := @ERR_DH_meth_set_generate_params;
+    if FuncLoadError then
       AFailed.Add('DH_meth_set_generate_params');
-    end;
     {$ifend}
   end;
 
